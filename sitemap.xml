@@ -3,21 +3,52 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/go/</loc>
+    <loc>http://blog.huaifufeng.com/2019/01/post/hugo-first.html</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/categories/</loc>
+    <loc>http://blog.huaifufeng.com/go/</loc>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/tags/</loc>
+    <loc>http://blog.huaifufeng.com/tags/go/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>http://blog.huaifufeng.com/tags/hugo/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/post/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/categories/%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

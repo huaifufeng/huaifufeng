@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>怀府小阁</title>
-    <link>http://blog.huaifufeng.com/</link>
-    <description>Recent content on 怀府小阁</description>
+    <title>随笔 on 怀府小阁</title>
+    <link>http://blog.huaifufeng.com/categories/%E9%9A%8F%E7%AC%94/</link>
+    <description>Recent content in 随笔 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://blog.huaifufeng.com/categories/%E9%9A%8F%E7%AC%94/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -34,15 +34,6 @@ hugo new site example  生成网站的目录结构如下：
 . ├── archetypes ├── assets ├── config.toml //网站的配置文件 ├── content //网站内容的原始文件 ├── data ├── layouts ├── static └── themes //网站的模板文件  其他的我们暂时不关心，目前用到的是content，themes，config.toml
 首先需要把我们的项目变成一个git项目，才可以进行下面的操作：
 git init git add . git commit -m &#39;init&#39;  Hugo目前已经有了一批的模板，只需要到这个地址，就可以找到需要的模板了，我这个blog就是从中使用的模板。使用下面的命令就可以把一个模板下载到本地：</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://blog.huaifufeng.com/go/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/go/</guid>
-      <description></description>
     </item>
     
   </channel>
