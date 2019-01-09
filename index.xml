@@ -6,10 +6,32 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 06 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang学习（一）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</link>
+      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</guid>
+      <description>作为一个PHP程序员，最近因为兴趣和业务的需要(学习了一个东西，如果不使用的话，忘记的速度会非常快)，开始接触golang这门语言，这里做下学习的笔记，这里是学习的第一步，简单介绍一下golang的一些基本信息。
+简介 golang是一门谷歌开发并开源的类c语言，是一门静态、编译型语言。该语言起源于2007年，于2009年正式的发布，目前在TIBOE中排行到19位。在各个地区尤其是国内拥有大量的使用，包括京东，七牛，B站等都有使用。
+保留了C++的大部分语法，移除了其中指针运算，运算符重载等特性，增加了GC等新特性，拥有不输于C++的性能，被认为更加安全，高效。</description>
+    </item>
+    
+    <item>
+      <title>Golang学习（一）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</link>
+      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</guid>
+      <description>作为一个PHP程序员，最近因为兴趣和业务的需要(学习了一个东西，如果不使用的话，忘记的速度会非常快)，开始接触golang这门语言，这里做下学习的笔记，这里是学习的第一步，简单介绍一下golang的一些基本信息。
+简介 golang是一门谷歌开发并开源的类c语言，是一门静态、编译型语言。该语言起源于2007年，于2009年正式的发布，目前在TIBOE中排行到19位。在各个地区尤其是国内拥有大量的使用，包括京东，七牛，B站等都有使用。
+保留了C++的大部分语法，移除了其中指针运算，运算符重载等特性，增加了GC等新特性，拥有不输于C++的性能，被认为更加安全，高效。</description>
+    </item>
     
     <item>
       <title>Hugo&#43;GitHub搭建自己的blog</title>
@@ -34,15 +56,6 @@ hugo new site example  生成网站的目录结构如下：
 . ├── archetypes ├── assets ├── config.toml //网站的配置文件 ├── content //网站内容的原始文件 ├── data ├── layouts ├── static └── themes //网站的模板文件  其他的我们暂时不关心，目前用到的是content，themes，config.toml
 首先需要把我们的项目变成一个git项目，才可以进行下面的操作：
 git init git add . git commit -m &#39;init&#39;  Hugo目前已经有了一批的模板，只需要到这个地址，就可以找到需要的模板了，我这个blog就是从中使用的模板。使用下面的命令就可以把一个模板下载到本地：</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://blog.huaifufeng.com/go/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/go/</guid>
-      <description></description>
     </item>
     
   </channel>

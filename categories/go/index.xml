@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on 怀府小阁</title>
+    <link>http://blog.huaifufeng.com/categories/go/</link>
+    <description>Recent content in Go on 怀府小阁</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 06 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://blog.huaifufeng.com/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Golang学习（一）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</link>
+      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</guid>
+      <description>作为一个PHP程序员，最近因为兴趣和业务的需要(学习了一个东西，如果不使用的话，忘记的速度会非常快)，开始接触golang这门语言，这里做下学习的笔记，这里是学习的第一步，简单介绍一下golang的一些基本信息。
+简介 golang是一门谷歌开发并开源的类c语言，是一门静态、编译型语言。该语言起源于2007年，于2009年正式的发布，目前在TIBOE中排行到19位。在各个地区尤其是国内拥有大量的使用，包括京东，七牛，B站等都有使用。
+保留了C++的大部分语法，移除了其中指针运算，运算符重载等特性，增加了GC等新特性，拥有不输于C++的性能，被认为更加安全，高效。</description>
+    </item>
+    
+    <item>
+      <title>Golang学习（一）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</link>
+      <pubDate>Sun, 06 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</guid>
+      <description>作为一个PHP程序员，最近因为兴趣和业务的需要(学习了一个东西，如果不使用的话，忘记的速度会非常快)，开始接触golang这门语言，这里做下学习的笔记，这里是学习的第一步，简单介绍一下golang的一些基本信息。
+简介 golang是一门谷歌开发并开源的类c语言，是一门静态、编译型语言。该语言起源于2007年，于2009年正式的发布，目前在TIBOE中排行到19位。在各个地区尤其是国内拥有大量的使用，包括京东，七牛，B站等都有使用。
+保留了C++的大部分语法，移除了其中指针运算，运算符重载等特性，增加了GC等新特性，拥有不输于C++的性能，被认为更加安全，高效。</description>
+    </item>
+    
+  </channel>
+</rss>
