@@ -6,10 +6,27 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 06 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 12 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Golang学习（二）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/go-learn-2.html</link>
+      <pubDate>Sat, 12 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/go-learn-2.html</guid>
+      <description>上一节简单介绍了Golang的基本含义和简单的例子，接下来就详细介绍一下使用Go开发需要的详细环境配置。主要是GOPATH等环境变量和一些很有效的工具。
+环境配置 go语言一般需要设置三个环境变量：
+ GOPATH：go的工作区，是我们代码的所在目录。 GOROOT：go的安装路径，即go的安装目录。不过在1.11之后已经不需要再配置这个路径了。 GOBIN：go生成的执行文件的目录，也不需要专门的配置，默认在GOPATH目录下的src/bin目录  GOPATH go语言的代码工作区目录，可以是一个目录，也可以是多个目录，go命令会按照多个目录的顺序依次搜索相应的目录，
+GOPATH目录的基本结构如下，下面会有三个目录：
+bin/ pkg/ src/   bin目录就是GOBIN默认对应的目录，存放编译后的可执行文件，一般不用单独在设置。 src是我们的代码目录文件，下面包含.go文件，就是go的源码文件。 pkg编译后的生成的静态库文件，和平台有关系，每个平台会有相应的目录。在linux下是扩展名为.a的文件。  使用go install会bin目录生成项目的执行文件，而go build会在当前目录生成项目的执行文件。
+管理工具 我们自己在开发时，可能不同的项目会需要在不同版本的go下面执行，就需要在不同版本go下面进行切换，这里就介绍两款工具，方便我们管理不同版本的go；go的包管理工具
+GVM 管理不同版本go的管理工具GVM。
+安装 在终端执行下面的命令，因为我本地安装了oh-my-zsh，所以我这里就最开始是zsh，如果你本地是原生的bash，将zsh替换成bash就可以：
+$ zsh &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) Cloning from https://github.com/moovweb/gvm.git to /Users/test/.gvm Created profile for existing install of Go at &amp;quot;/usr/local/Cellar/go/1.11.4/libexec&amp;quot; Installed GVM v1.0.22 Please restart your terminal session or to get started right away run `source /Users/test/.gvm/scripts/gvm`  出现如上的信息就代表安装成功了，在安装下面的提示执行如下命令，激活gvm的命令：</description>
+    </item>
     
     <item>
       <title>Golang学习（一）</title>
@@ -18,8 +35,27 @@
       
       <guid>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</guid>
       <description>作为一个PHP程序员，最近因为兴趣和业务的需要(学习了一个东西，如果不使用的话，忘记的速度会非常快)，开始接触golang这门语言，这里做下学习的笔记，这里是学习的第一步，简单介绍一下golang的一些基本信息。
-简介 golang是一门谷歌开发并开源的类c语言，是一门静态、编译型语言。该语言起源于2007年，于2009年正式的发布，目前在TIBOE中排行到19位。在各个地区尤其是国内拥有大量的使用，包括京东，七牛，B站等都有使用。
-保留了C++的大部分语法，移除了其中指针运算，运算符重载等特性，增加了GC等新特性，拥有不输于C++的性能，被认为更加安全，高效。</description>
+##简介
+golang是一门谷歌开发并开源，和C++，java，c等一样的类c语言；一门静态、编译型语言。
+该语言起源于2007年，于2009年正式的发布，目前在TIBOE中排行到19位。在各个地区尤其是国内拥有大量的使用，包括京东，七牛，B站等都有使用。
+专注安全 golang在保留了C++的大部分语法，移除了其中指针运算，运算符重载等特性，同时增加了GC等新特性，拥有不输于C++的性能，是一门类型安全、内存安全的编程语言。
+统一格式 golang强制要求语言的格式，让每个人的代码格式都是一致的，也许有人会不习惯，但是我觉得相同的语言格式对于代码的一致性，更容易理解别人的代码。
+原生协程 为了更好的利用分布式和多核的计算机，实现了goroutine来达到这个目标，使用channel作为goroutine通信的工具。原生支持协程。简单的一个go func就可以实现协程。
+易于开发 虽然具备不输于C++的性能，但是去除了一些C++的不良特性，增加gc。对于开发者来说，不用再考虑那些疑惑的特性，不用考虑内存的申请，更加关注于程序自身。
+快速编译 golang的编译速度非常快，整个标准库一般在20s以下，自己的库一般也就几s就可以了，比c的编译速度更快，减少开发者等待编译的时间。
+WebAssembly golang和WebAssembly强强联合，加入WASM的大家庭，允许编写可以在浏览器运营的程序，然后使用JavaScript调用wasm的文件，处理需要运算的功能，虽然目前还比较简单，但是值得期待。
+等等，特性还有很多，我这只是列出一些比较有特色的特性。
+Hello World! 任何语言的第一步都是Hello World!，我们也从这里开始。
+安装 这里就直接使用mac环境介绍了，其他环境自行百度。
+使用mac开发的，一般都已经安装好HomeworkBrew了，这里就直接执行命令就可以：
+$ brew install go  安装网络的不同，等待的时间也不一样长，在命令行输入如下命令，就可以确定是否安装成功了:
+$ go version  当输出类似go version go1.11.4 darwin/amd64的信息就代表安装成功了。
+go一般会安装到如下目录：/usr/local/Cellar/go，目录下面是不同版本的目录。同时，会在/usr/local/bin下生成一个指向刚才目录下某个版本的go执行命令，
+代码 环境安装成功之后，只是编写Hello World 的话，在任何目录下都可以。我们就直接在自己的家目录下编写第一个文件吧。
+使用vim在命令行打开hello.go文件，然后输入如下内容：
+package main import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;Hello World!&amp;quot;) }  然后保存文件。
+想要执行一个go文件，很简单，直接使用go run filename就可以，比如要执行hello.go文件，我们可以：
+$ go run hello.go Hello World!  这我们就执行成功了，输出了我们想要的Hello World！</description>
     </item>
     
     <item>
