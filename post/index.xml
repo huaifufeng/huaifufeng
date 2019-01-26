@@ -6,10 +6,35 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 12 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 25 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git学习（一）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/git-section-1.html</link>
+      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-1.html</guid>
+      <description>开始学习Git 创建自己的项目，并添加、提交文件 首页在终端验证你是否已经安装有Git：
+在所有的操作系统上，都可以使用下面的命令：
+$ git --version  在类Unix系统还可以使用下面的命令：
+$ which git  如果什么都没有返回，或者没有通过验证，这就表明你需要通过下载并运行安装程序，在你的系统上安装Git。查看Git官网，上面有特别详细和容易的安装教程。
+安装完Git之后，在你真正的提交之前，还需要配置好你的名称和邮件地址。
+一旦安装成功Git，你就可以到你希望进行版本管理的文件夹下，初始化一个空的Git仓库：
+$ git init  这会创建一个隐藏的.git文件夹，用来存放Git工作需要的信息。
+接下来检查下Git将把什么文件加入到仓库内，这是非常值得注意的，也是在添加、提交文件之前的必要操作：
+$ git status  检查文件的列表，你可以告诉Git哪些文件你想进行版本的管理（避免将像密码这样的重要信息或者污染仓库的信息添加到Git仓库里面）：
+$ git add &amp;lt;file/directory name #1&amp;gt; &amp;lt;file/directory name #2&amp;gt; &amp;lt; ... &amp;gt;  如果所有的文件你都想和能访问这个仓库的人分享，有一个简单的命令可以添加当前目录和当前目录子目录内的所有文件：
+$ git add .  这将“暂存”所有的文件，等待将这些文件加入版本管理，准备在你的第一次提交中提交它们。
+对于你不想添加到版本管理的文件，你可以在执行add之前命令创建一个名.gitignore的文件，并且填写里面的内容。
+提交所有已经添加的文件，同时填写一个提交的注释信息：
+$ git commit -m &amp;quot;Initial commit&amp;quot;  这使用提供的信息创建了一个新的提交。一个提交就像你整个项目的一个快照。现在你就可以把本地的文件push到远端的仓库内，如果有需要的时候，你可以重新返回这里。
+如果你忽略了-m参数，你默认的编辑器将会打开，你可以在编辑器里面编辑并且保存提交信息。
+添加远端仓库 想要添加一个新的远端仓库地址，你可以在你仓库所在的文件夹内，在终端内执行git remote add命令。
+1. 一个远端的名称，比如```origin``` 2. 一个远端的URL地址，比如```https://&amp;lt;your-git-service-address&amp;gt;/user/repo.git``` ```shell $ git remote add origin https://&amp;lt;your-git-service-address&amp;gt;/owner/repository.</description>
+    </item>
     
     <item>
       <title>Golang学习（二）</title>

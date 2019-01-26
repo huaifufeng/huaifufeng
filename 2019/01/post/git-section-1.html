@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="怀府风，程序员, | 这里是怀府风的博客，与你一起发现更大的世界。">
+    <meta name="description" content="git初探">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git学习（一）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/some/localhost-127.0.0.1/">
+    <link rel="canonical" href="/2019/01/post/git-section-1.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,10 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                        
                     </div>
-                    <h1></h1>
+                    <h1>Git学习（一）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府小阁 on Monday, January 1, 0001
+                    <span  class="meta">Posted by 怀府风 on Friday, January 25, 2019
                         
                     </span>
                 </div>
@@ -162,31 +166,136 @@
                         <header>
                         <h2>TOC</h2>
                         </header>
-                        
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#开始学习git">开始学习Git</a>
+<ul>
+<li><a href="#创建自己的项目-并添加-提交文件">创建自己的项目，并添加、提交文件</a>
+<ul>
+<li><a href="#添加远端仓库">添加远端仓库</a></li>
+</ul></li>
+<li><a href="#克隆一个仓库">克隆一个仓库</a></li>
+<li><a href="#分享代码">分享代码</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
         		
-        		<p>localhost 127.0.0.1</p>
+        		
 
-<p>Localhost</p>
+<h2 id="开始学习git">开始学习Git</h2>
 
-<p>特殊的DNS域名，分配给计算机本身使用。</p>
+<h3 id="创建自己的项目-并添加-提交文件">创建自己的项目，并添加、提交文件</h3>
 
-<p>不经网卡传输，不受网络防火墙和网卡相关设置的限制</p>
+<p>首页在终端验证你是否已经安装有Git：</p>
 
-<p>访问localhost使用本机用户的权限去访问</p>
+<p>在所有的操作系统上，都可以使用下面的命令：</p>
 
-<p>127.0.0.1</p>
+<pre><code class="language-shell">$ git --version
+</code></pre>
 
-<p>通过网卡传输，依赖网卡，受网络防火墙和网卡设置限制</p>
+<p>在类Unix系统还可以使用下面的命令：</p>
 
-<p>访问127.0.0.1 使用本机通过网络去访问本机，涉及到网络用户权限</p>
+<pre><code class="language-shell">$ which git
+</code></pre>
 
-<p>访问本地程序时，使用localhost比较好，不占用网卡和网络资源</p>
+<p>如果什么都没有返回，或者没有通过验证，这就表明你需要通过下载并运行安装程序，在你的系统上安装Git。查看<a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git官网</a>，上面有特别详细和容易的安装教程。</p>
 
-<p>/etc/hosts</p>
+<p>安装完Git之后，在你真正的提交之前，还需要配置好你的名称和邮件地址。</p>
 
-<p>配置 127.0.0.1 localhost</p>
+<p>一旦安装成功Git，你就可以到你希望进行版本管理的文件夹下，初始化一个空的Git仓库：</p>
 
-<p>不配做 ping localhost  不通</p>
+<pre><code class="language-shell">$ git init
+</code></pre>
+
+<p>这会创建一个隐藏的<code>.git</code>文件夹，用来存放Git工作需要的信息。</p>
+
+<p>接下来检查下Git将把什么文件加入到仓库内，这是非常值得注意的，也是在添加、提交文件之前的必要操作：</p>
+
+<pre><code class="language-shell">$ git status
+</code></pre>
+
+<p>检查文件的列表，你可以告诉Git哪些文件你想进行版本的管理（避免将像密码这样的重要信息或者污染仓库的信息添加到Git仓库里面）：</p>
+
+<pre><code class="language-shell">$ git add &lt;file/directory name #1&gt; &lt;file/directory name #2&gt; &lt; ... &gt;
+</code></pre>
+
+<p>如果所有的文件你都想和能访问这个仓库的人分享，有一个简单的命令可以添加当前目录和当前目录子目录内的所有文件：</p>
+
+<pre><code class="language-shell">$ git add .
+</code></pre>
+
+<p>这将“暂存”所有的文件，等待将这些文件加入版本管理，准备在你的第一次提交中提交它们。</p>
+
+<p>对于你不想添加到版本管理的文件，你可以在执行<code>add</code>之前命令创建一个名<code>.gitignore</code>的文件，并且填写里面的内容。</p>
+
+<p>提交所有已经添加的文件，同时填写一个提交的注释信息：</p>
+
+<pre><code class="language-shell">$ git commit -m &quot;Initial commit&quot;
+</code></pre>
+
+<p>这使用提供的信息创建了一个新的提交。一个提交就像你整个项目的一个快照。现在你就可以把本地的文件<code>push</code>到远端的仓库内，如果有需要的时候，你可以重新返回这里。</p>
+
+<p>如果你忽略了<code>-m</code>参数，你默认的编辑器将会打开，你可以在编辑器里面编辑并且保存提交信息。</p>
+
+<h4 id="添加远端仓库">添加远端仓库</h4>
+
+<p>想要添加一个新的远端仓库地址，你可以在你仓库所在的文件夹内，在终端内执行<code>git remote add</code>命令。</p>
+
+<pre><code class="language-git">
+1. 一个远端的名称，比如```origin```
+2. 一个远端的URL地址，比如```https://&lt;your-git-service-address&gt;/user/repo.git```
+
+```shell
+$ git remote add origin https://&lt;your-git-service-address&gt;/owner/repository.git
+</code></pre>
+
+<p>注意：在添加远端仓库之前，你需要确定已经在你的git服务上建好了需要的仓库了，在你添加号远端仓库之后，你就可以<code>push/pull</code>你本地的提交了</p>
+
+<h3 id="克隆一个仓库">克隆一个仓库</h3>
+
+<pre><code class="language-git">
+举个例子，克隆一个GitHub的仓库：
+
+```shell
+$ cd &lt;path where you would like the clone to create a directory&gt; 
+$ git clone https://github.com/username/projectname.git
+</code></pre>
+
+<p>克隆一个BitBucket的项目：</p>
+
+<pre><code class="language-shell">$ cd &lt;path where you would like the clone to create a directory&gt;
+$ git clone https://yourusername@bitbucket.org/username/projectname.git
+</code></pre>
+
+<p>这将在本地机器上创建一个叫<code>projectname</code>的包含远端Git仓库所有文件的文件夹。这个文件夹将包含这个项目的所有源码文件，同时也包括一个<code>.git</code>子文件夹，这个子文件夹包含这个项目的所有历史和配置信息。</p>
+
+<p>在克隆项目时，可以指定一个不同的文件夹名称，比如<code>MyFolder</code>:</p>
+
+<pre><code class="language-shell">$ git clone https://github.com/username/projectname.git MyFolder
+</code></pre>
+
+<p>或者克隆到当前的文件夹内：</p>
+
+<pre><code class="language-shell">$ git clone https://github.com/username/projectname.git .
+</code></pre>
+
+<p>注意：</p>
+
+<ol>
+<li><p>当克隆一个项目的时候，这个文件夹必须是空的或者不存在的。</p></li>
+
+<li><p>你也可以使用<code>ssh</code>版本的命令：</p></li>
+</ol>
+
+<pre><code class="language-shell">   $ git clone git@github.com:username/projectname.git
+</code></pre>
+
+<p><code>https</code>版本和<code>ssh</code>版本是等价的。然而一些代码托管服务想GitHub<a href="https://help.github.com/articles/set-up-git/#next-steps-authenticating-with-github-from-git">推荐</a>你使用<code>https</code>而不是<code>ssh</code>。</p>
+
+<h3 id="分享代码">分享代码</h3>
 
         
                 
@@ -194,10 +303,10 @@
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/01/post/hugo-first.html" data-toggle="tooltip" data-placement="top" title="Hugo&#43;GitHub搭建自己的blog">&larr; Previous Post</a>
-                  </li>
                   
+                  <li class="next">
+                      <a href="/2019/01/post/go-learn-2.html" data-toggle="tooltip" data-placement="top" title="Golang学习（二）">Next Post &rarr;</a>
+                  </li>
                   
               </ul>
   
@@ -266,7 +375,7 @@
                     
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; 怀府小阁 , 0001
+                    Copyright &copy; 怀府小阁 , 2019
                     <br>
 
                 </p>
