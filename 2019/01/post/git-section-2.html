@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="git查看历史">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git学习（二）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/01/post/git-section-2.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git学习（二）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, January 18, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#查看历史">查看历史</a>
+<ul>
+<li><a href="#git-log">Git log</a></li>
+<li><a href="#美化日志">美化日志</a></li>
+<li><a href="#定制日志格式">定制日志格式</a></li>
+<li><a href="#单行日志">单行日志</a></li>
+<li><a href="#搜索日志">搜索日志</a></li>
+<li><a href="#按用户名分组">按用户名分组</a></li>
+<li><a href="#搜索提交字符串">搜索提交字符串</a></li>
+<li><a href="#文件指定行的日志">文件指定行的日志</a></li>
+<li><a href="#筛选日志">筛选日志</a></li>
+<li><a href="#展示修改文件">展示修改文件</a></li>
+<li><a href="#展示提交文件">展示提交文件</a></li>
+<li><a href="#当个提交内容">当个提交内容</a></li>
+<li><a href="#分支间的提交">分支间的提交</a></li>
+<li><a href="#当个提交内容-1">当个提交内容</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="查看历史">查看历史</h2>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Explanation</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>-q, &ndash;quiet</td>
+<td>Quiet, suppresses diff output</td>
+</tr>
+
+<tr>
+<td>&ndash;source</td>
+<td>Shows source of commit</td>
+</tr>
+
+<tr>
+<td>&ndash;use-mailmap</td>
+<td>Use mail map file (changes user info for committing user)</td>
+</tr>
+
+<tr>
+<td>&ndash;decorate[=&hellip;]</td>
+<td>Decorate options</td>
+</tr>
+
+<tr>
+<td>&ndash;L &lt; n,m:file&gt;</td>
+<td>Show log for specific range of lines in a file, counting from 1. Starts from line n, goes to line m. Also shows diff.</td>
+</tr>
+
+<tr>
+<td>&ndash;show-signature</td>
+<td>Display signatures of signed commits</td>
+</tr>
+
+<tr>
+<td>-i, &ndash;regexp-ignore-case</td>
+<td>Match the regular expression limiting patterns without regard to letter case</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="git-log">Git log</h3>
+
+<pre><code>$ git log
+commit ca82a6dff817ec66f44342007202690a93763949
+Author: Scott Chacon &lt;schacon@gee-mail.com&gt;
+Date:   Mon Mar 17 21:52:11 2008 -0700
+
+    changed the version number
+</code></pre>
+
+<p>将会展示你所有的提交信息，包括提交人信息和hash值。每个提交都会显示多行（如果你想每个提交显示一行，可以看单行日志这节）。使用<code>q</code>键退出日志展示。</p>
+
+<blockquote>
+<p>默认来说，如果不带参数的话，日志的列表会按照时间倒叙的方式展示：也就是说，最新的提交会置顶展示。正如你上面看到的一样，列表中每一个提交包含：SHA-1的校验码，提交人的名称和邮箱，提交日期和提交的注释信息。</p>
+</blockquote>
+
+<p>从<a href="https://github.com/FreeCodeCamp/FreeCodeCamp">Free Code Camp</a>仓库展示一个例子：</p>
+
+<pre><code>commit 87ef97f59e2a2f4dc425982f76f14a57d0900bcf
+Merge: e50ff0d eb8b729
+Author: Brian
+Date:   Thu Mar 24 15:52:07 2016 -0700
+
+Merge pull request #7724 from BKinahan/fix/where-art-thou
+
+Fix 'its' typo in Where Art Thou description
+
+commit eb8b7298d516ea20a4aadb9797c7b6fd5af27ea5
+Author: BKinahan
+Date:   Thu Mar 24 21:11:36 2016 +0000
+
+Fix 'its' typo in Where Art Thou description
+
+commit e50ff0d249705f41f55cd435f317dcfd02590ee7
+Merge: 6b01875 2652d04
+Author: Mrugesh Mohapatra
+Date:   Thu Mar 24 14:26:04 2016 +0530
+
+Merge pull request #7718 from deathsythe47/fix/unnecessary-comma
+
+Remove unnecessary comma from CONTRIBUTING.md
+</code></pre>
+
+<p>如果你想限制你的命令只展示最近的n条记录，只需要添加一个参数就可以。比如，你可以只查看最近2条记录：</p>
+
+<pre><code>$ git log -2
+</code></pre>
+
+<h3 id="美化日志">美化日志</h3>
+
+<p>看美化的图像结构的日志，使用下面的命令：</p>
+
+<pre><code>$ git log --decorate --oneline --graph
+</code></pre>
+
+<p>会有类似下面的输出：</p>
+
+<pre><code>* e0c1cea (HEAD -&gt; maint, tag: v2.9.3, origin/maint) Git 2.9.3
+* 9b601ea Merge branch 'jk/difftool-in-subdir' into maint
+|\
+| * 32b8c58 difftool: use Git::* functions instead of passing around state | * 98f917e difftool: avoid $GIT_DIR and $GIT_WORK_TREE
+| * 9ec26e7 difftool: fix argument handling in subdirs
+*| f4fd627 Merge branch 'jk/reset-ident-time-per-commit' into maint
+...
+</code></pre>
+
+<p>这是一个很长的命令，所以你可以设置一个别名：</p>
+
+<pre><code>$ git config --global alias.lol &quot;log --decorate --oneline --graph&quot;
+</code></pre>
+
+<p>接下来就可以用别名来输出了：</p>
+
+<pre><code># history of current branch :
+$ git lol
+# combined history of active branch (HEAD), develop and origin/master branches :
+$ git lol HEAD develop origin/master
+# combined history of everything in your repo :
+$ git lol --all
+</code></pre>
+
+<h3 id="定制日志格式">定制日志格式</h3>
+
+<pre><code>$ git log --graph --pretty=format:'%C(red)%h%Creset -%C(yellow)%d%Creset %s %C(green)(%cr) %C(yellow)&lt;%an&gt;%Creset'
+</code></pre>
+
+<p><code>format</code>选项允许你设置自己的日志输出格式：</p>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Details</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>%C(color_name)</td>
+<td>option colors the output that comes after it</td>
+</tr>
+
+<tr>
+<td>%h or %H</td>
+<td>abbreviates commit hash (use %H for complete hash)</td>
+</tr>
+
+<tr>
+<td>%Creset</td>
+<td>resets color to default terminal color</td>
+</tr>
+
+<tr>
+<td>%d</td>
+<td>ref names</td>
+</tr>
+
+<tr>
+<td>%s</td>
+<td>subject [commit message]</td>
+</tr>
+
+<tr>
+<td>%cr</td>
+<td>committer date, relative to current date</td>
+</tr>
+
+<tr>
+<td>%an</td>
+<td>author name</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="单行日志">单行日志</h3>
+
+<pre><code>$ git log --oneline
+</code></pre>
+
+<p>将会展示你的日志，只包含第一部分的hash值和提交的注释信息。正如<code>oneline</code>的含义一样，每个提交只展示一行内容。</p>
+
+<blockquote>
+<p>这个oneline选项保证每一行只输出一行内容，当你有很多提交的时候是非常有用的。</p>
+</blockquote>
+
+<p>从<a href="https://github.com/FreeCodeCamp/FreeCodeCamp">Free Code Camp</a>仓库展示的另一个例子：</p>
+
+<pre><code>87ef97f Merge pull request #7724 from BKinahan/fix/where-art-thou
+eb8b729 Fix 'its' typo in Where Art Thou description
+e50ff0d Merge pull request #7718 from deathsythe47/fix/unnecessary-comma
+2652d04 Remove unnecessary comma from CONTRIBUTING.md
+6b01875 Merge pull request #7667 from zerkms/patch-1
+766f088 Fixed assignment operator terminology
+d1e2468 Merge pull request #7690 from BKinahan/fix/unsubscribe-crash
+bed9de2 Merge pull request #7657 from Rafase282/fix/
+</code></pre>
+
+<p>如果你想要限制只展示最近的n条记录，可以添加一个参数。比如，你只想展示最近的2条记录，可以用个：</p>
+
+<pre><code>$ git log -2 --oneline
+</code></pre>
+
+<h3 id="搜索日志">搜索日志</h3>
+
+<pre><code>$ git log -S&quot;#define SAMPLES&quot;
+</code></pre>
+
+<p>搜索添加或删除的指定字符串，或者匹配正则表达式的字符串。这里我们搜索添加/删除的字符串<code>#define SAMPLES</code>。比如：</p>
+
+<pre><code>+#define SAMPLES 100000
+</code></pre>
+
+<p>或</p>
+
+<pre><code> -#define SAMPLES  100000
+</code></pre>
+
+<pre><code>$ git log -G&quot;#define SAMPLES&quot;
+</code></pre>
+
+<p>搜索包括指定字符串修改的行，或者匹配正则表达式的字符串。比如：</p>
+
+<pre><code>-#define SAMPLES  100000
++#define SAMPLES  100000000
+</code></pre>
+
+<h3 id="按用户名分组">按用户名分组</h3>
+
+<p><code>git shortlog</code>汇总<code>git log</code>的结果，按照提交者进行分组。</p>
+
+<p>如果没有参数的话，每个提交者的提交会按照时间进行排序。</p>
+
+<pre><code>$ git shortlog
+Committer 1 (&lt;number_of_commits&gt;):
+    Commit Message 1
+    Commit Message 2
+    ...
+Committer 2 (&lt;number_of_commits&gt;): Commit Message 1
+Commit Message 2
+...
+</code></pre>
+
+<p>只是查看每个提交者的提交数量，并且不显示提交描述的话，可以使用summary选项：<code>-s</code> <code>summary</code></p>
+
+<pre><code>$ git shortlog -s 
+&lt;number_of_commits&gt; Committer 1 
+&lt;number_of_commits&gt; Committer 2
+</code></pre>
+
+<p>如果使用提交数量排序，而不是提交者的名称排序，可以使用numbered选项： <code>-n</code>  <code>--numbered</code></p>
+
+<p>需要显示提交者的邮箱的话，可以使用email选项：<code>-e</code>  <code>--email</code></p>
+
+<p>Git同时提供了一个用来自定义输出格式的选项format，如果你提交信息之外的信息的话：<code>--format</code>。 这里可以是任何<code>git log —format</code>接收的字符串。可以查看前面<code>定制日志格式</code>章节的内容。</p>
+
+<h3 id="搜索提交字符串">搜索提交字符串</h3>
+
+<p>搜索日志中的字符串，在<code>git log</code>后面添加搜索的字符串：</p>
+
+<pre><code>git log [options] --grep &quot;search_string&quot;
+</code></pre>
+
+<p>比如：</p>
+
+<pre><code>$ git log --all --grep &quot;removed file&quot;
+</code></pre>
+
+<p>将会搜索所有<code>branch</code>中所有日志里面的<code>removed file</code>。</p>
+
+<p>从Git2.4+开始，增加了反向查找字符串的选项<code>--invert-grep</code>，比如：</p>
+
+<pre><code>$ git log --grep=&quot;add file&quot; --invert-grep
+</code></pre>
+
+<p>将会展示所有不包含<code>add file</code>的提交。</p>
+
+<h3 id="文件指定行的日志">文件指定行的日志</h3>
+
+<pre><code>$ git log -L 1,20:index.html
+commit 6a57fde739de66293231f6204cbd8b2feca3a869 Author: John Doe &lt;john@doe.com&gt;
+Date: Tue Mar 22 16:33:42 2016 -0500
+    commit message
+diff --git a/index.html b/index.html --- a/index.html
++++ b/index.html
+@@ -1,17 +1,20 @@
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+- &lt;head&gt;
+- &lt;meta charset=&quot;utf-8&quot;&gt; +
++&lt;head&gt;
++ &lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+</code></pre>
+
+<h3 id="筛选日志">筛选日志</h3>
+
+<pre><code>$ git log --after '3 days ago'
+</code></pre>
+
+<p>也可以像下面一样指定日期：</p>
+
+<pre><code>$ git log --after 2016-05-01
+</code></pre>
+
+<p>和其他接收一个日期参数的命令和选项一样，支持的GNU日期格式都是允许的。</p>
+
+<p><code>--after</code>的别名就是<code>--since</code>。另外存在的相反的选项是：<code>--before</code>和<code>--until</code>。</p>
+
+<p>也可以使用提交者<code>author</code>来过滤日志。</p>
+
+<pre><code>$ git log --author=author
+</code></pre>
+
+<h3 id="展示修改文件">展示修改文件</h3>
+
+<p>查看带有内部修改情况的日志，可以使用<code>-p</code>和<code>--patch</code>选项。</p>
+
+<pre><code>$ git log --patch
+</code></pre>
+
+<p>来自<a href="https://github.com/trello/scientist">Trello Scientist</a>的例子：</p>
+
+<pre><code>ommit 8ea1452aca481a837d9504f1b2c77ad013367d25 Author: Raymond Chou &lt;info@raychou.io&gt;
+Date: Wed Mar 2 10:35:25 2016 -0800
+
+fix readme error link
+diff --git a/README.md b/README.md index 1120a00..9bef0ce 100644
+--- a/README.md
++++ b/README.md
+@@ -134,7 +134,7 @@ the control function threw, but *after* testing the other functions and readying
+the logging. The criteria for matching errors is based on the constructor and message.
+
+-You can find this full example at [examples/errors.js](examples/error.js). +You can find this full example at [examples/errors.js](examples/errors.js).
+
+## Asynchronous behaviors
+
+commit d3178a22716cc35b6a2bdd679a7ec24bc8c63ffa
+:
+</code></pre>
+
+<h3 id="展示提交文件">展示提交文件</h3>
+
+<pre><code>$ git log --stat
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code>commit 4ded994d7fc501451fa6e233361887a2365b91d1 Author: Manassés Souza &lt;manasses.inatel@gmail.com&gt; Date: Mon Jun 6 21:32:30 2016 -0300
+    MercadoLibre java-sdk dependency
+mltracking-poc/.gitignore | 1 + mltracking-poc/pom.xml | 14 ++++++++++++--
+2 files changed, 13 insertions(+), 2 deletions(-)
+commit 506fff56190f75bc051248770fb0bcd976e3f9a5 Author: Manassés Souza &lt;manasses.inatel@gmail.com&gt; Date: Sat Jun 4 12:35:16 2016 -0300
+[manasses] generated by SpringBoot initializr
+ .gitignore
+++++++++++++
+mltracking-poc/mvnw +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+mltracking-poc/mvnw.cmd +++++++++++++++++++++++++++++++++++++++
+mltracking-poc/pom.xml ++++++++++++++++++++
+mltracking-poc/src/main/java/br/com/mls/mltracking/MltrackingPocApplication.java mltracking-poc/src/main/resources/application.properties mltracking-poc/src/test/java/br/com/mls/mltracking/MltrackingPocApplicationTests.java 7 files changed, 524 insertions(+)
+</code></pre>
+
+<h3 id="当个提交内容">当个提交内容</h3>
+
+<p>使用<code>git show</code>可以查看单个提交的内容</p>
+
+<pre><code>$ git show 48c83b3
+$ git show 48c83b3690dfc7b0e622fd220f8f37c26a77c934
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code>commit 48c83b3690dfc7b0e622fd220f8f37c26a77c934 Author: Matt Clark &lt;mrclark32493@gmail.com&gt; Date: Wed May 4 18:26:40 2016 -0400
+    The commit message will be shown here.
+diff --git a/src/main/java/org/jdm/api/jenkins/BuildStatus.java b/src/main/java/org/jdm/api/jenkins/BuildStatus.java
+index 0b57e4a..fa8e6a5 100755
+--- a/src/main/java/org/jdm/api/jenkins/BuildStatus.java
++++ b/src/main/java/org/jdm/api/jenkins/BuildStatus.java @@ -50,7 +50,7 @@ public enum BuildStatus {
+colorMap.put(BuildStatus.UNSTABLE, Color.decode( &quot;#FFFF55&quot; )); - colorMap.put(BuildStatus.SUCCESS, Color.decode( &quot;#55FF55&quot; )); + colorMap.put(BuildStatus.SUCCESS, Color.decode( &quot;#33CC33&quot; )); colorMap.put(BuildStatus.BUILDING, Color.decode( &quot;#5555FF&quot; ));
+</code></pre>
+
+<h3 id="分支间的提交">分支间的提交</h3>
+
+<p><code>git log master..foo</code>展示在分支foo上，但是不在分支master上的提交。这是非常有用的来查看某个分支之后你新添加的提交。</p>
+
+<h3 id="当个提交内容-1">当个提交内容</h3>
+
+<pre><code class="language-shell">$ tree = log --oneline --decorate --source --pretty=format:'&quot;%Cblue %h %Cgreen %ar %Cblue %an %C(yellow) %d %Creset %s&quot;' --all --graph
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>* 40554ac 3 months ago Alexander Zolotov gmandnepr/external_plugins
+|\
+| * e509f61 3 months ago Ievgen Degtiarenko | * 46d4cb6 3 months ago Ievgen Degtiarenko | * 6253da4 3 months ago Ievgen Degtiarenko | * 9fdb4e7 3 months ago Ievgen Degtiarenko important for intellij
+| * 22e82e4 3 months ago Ievgen Degtiarenko |/
+* bc3d2cb 3 months ago Alexander Zolotov
+Merge pull request #95 from
+Documenting new property
+Running idea with external plugins
+Resolve external plugin classes
+Keep original artifact name as this may be
+Declaring external plugin in intellij section Ignore DTD in plugin.xml
+</code></pre>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/01/post/git-section-2.html" data-toggle="tooltip" data-placement="top" title="Git学习（三）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/01/post/git-section-1.html" data-toggle="tooltip" data-placement="top" title="Git学习（一）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
