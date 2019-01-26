@@ -6,7 +6,7 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 25 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 14 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Git学习（一）</title>
       <link>http://blog.huaifufeng.com/2019/01/post/git-section-1.html</link>
-      <pubDate>Fri, 25 Jan 2019 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-1.html</guid>
       <description>开始学习Git 创建自己的项目，并添加、提交文件 首页在终端验证你是否已经安装有Git：
