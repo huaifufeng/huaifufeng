@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="git操作远端">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git学习（三）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/01/post/git-section-3.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git学习（三）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, January 21, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#操作远端">操作远端</a>
+<ul>
+<li><a href="#删除远端分支">删除远端分支</a></li>
+<li><a href="#修改远端地址">修改远端地址</a></li>
+<li><a href="#远端列表">远端列表</a></li>
+<li><a href="#删除分支">删除分支</a></li>
+<li><a href="#获取远端修改">获取远端修改</a></li>
+<li><a href="#ls-remote">ls-remote</a></li>
+<li><a href="#增加新的远端库">增加新的远端库</a></li>
+<li><a href="#为新分支设置远端">为新分支设置远端</a></li>
+<li><a href="#开始">开始</a></li>
+<li><a href="#重命名远端">重命名远端</a></li>
+<li><a href="#远端信息">远端信息</a></li>
+<li><a href="#设置远端url">设置远端url</a></li>
+<li><a href="#获取远端url">获取远端url</a></li>
+<li><a href="#修改远端仓库">修改远端仓库</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="操作远端">操作远端</h2>
+
+<h3 id="删除远端分支">删除远端分支</h3>
+
+<p>想要删除一个远端的分支：</p>
+
+<pre><code>$ git push [remote-name] --delete [branch-name]
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>$ git push [remote-name] :[branch-name]
+</code></pre>
+
+<h3 id="修改远端地址">修改远端地址</h3>
+
+<p>查看已经存在的远端地址：</p>
+
+<pre><code>$ git remote -v
+# origin https://github.com/username/repo.git (fetch) 
+# origin https://github.com/usernam/repo.git (push)
+</code></pre>
+
+<p>修改仓库的地址：</p>
+
+<pre><code>$ git remote set-url origin https://github.com/username/repo2.git 
+# Change the 'origin' remote's URL
+</code></pre>
+
+<p>查看验证新的远端地址：</p>
+
+<pre><code>$ git remote -v
+# origin https://github.com/username/repo2.git (fetch) 
+# origin https://github.com/username/repo2.git (push)
+</code></pre>
+
+<h3 id="远端列表">远端列表</h3>
+
+<p>查看这个仓库关联的远端列表：</p>
+
+<pre><code>$ git remote
+</code></pre>
+
+<p>查看这个仓库关联的远端列表，包括这些远端的<code>fetch</code>和<code>push</code>的Url地址。</p>
+
+<pre><code>$ git remote --verbose
+</code></pre>
+
+<p>或者</p>
+
+<pre><code>$ git remote -v
+</code></pre>
+
+<h3 id="删除分支">删除分支</h3>
+
+<p>当远端分支被删除了，你本地仓库必须删除对这个分支的引用。</p>
+
+<p>删除一个远端的已被删除的分支：</p>
+
+<pre><code>$ git fetch [remote-name] --prune
+</code></pre>
+
+<p>删除所有远端的已删除分支：</p>
+
+<pre><code>$ git fetch --all --prune
+</code></pre>
+
+<h3 id="获取远端修改">获取远端修改</h3>
+
+<p>假设你已经设置的远端上游：</p>
+
+<pre><code>$ git fetch remote-name
+$ git merge remote-name/branch-name
+</code></pre>
+
+<p><code>pull</code>命令包含了<code>fetch</code>和<code>merge</code>两个命令</p>
+
+<pre><code>$ git pull
+</code></pre>
+
+<p><code>pull</code>命令的<code>--rebase</code>标识包含了<code>fetch</code>和<code>rebase</code>。</p>
+
+<pre><code>$ git pull --rebase remote-name branch-name
+</code></pre>
+
+<h3 id="ls-remote">ls-remote</h3>
+
+<p><code>git ls-remote</code>是唯一一个允许你在还没有<code>clone/fetch</code>仓库的情况下查看仓库。</p>
+
+<p>这个命令将列出远端仓库的refs/heads 和 refs/tags。</p>
+
+<p>你将看到几个<code>refs/tags/v0.1.6</code>和<code>refs/tags/v0.1.6^{}</code>：其中<code>^{}</code>表示解除引用的标签（这个标签所引用的提交）。</p>
+
+<p>从Git2.8（2016年3月），你可以避免一个标签有两个入口，直接列出那些取消引用的标签：</p>
+
+<pre><code>$ git ls-remote --ref
+</code></pre>
+
+<p>当你使用<code>url.&lt;base&gt;.insteadOf</code>的配置的时候，可以用来获取远端库使用的实际网址。</p>
+
+<p>如果<code>git remote --get-url &lt;aremotename&gt;</code>返回<a href="https://server.com/user/repo。">https://server.com/user/repo。</a> 并且你已经设置了<code>git config url.ssh://git@server.com:.insteadOf https://server.com/</code>：</p>
+
+<pre><code> $ git ls-remote --get-url &lt;aremotename&gt; 
+ ssh://git@server.com:user/repo
+</code></pre>
+
+<h3 id="增加新的远端库">增加新的远端库</h3>
+
+<pre><code>$ git remote add upstream git-repository-url
+</code></pre>
+
+<p>为当前的Git库添加<code>git-respository-url</code>代表的远端库，这个新远端库的名称是<code>upstream</code>。</p>
+
+<h3 id="为新分支设置远端">为新分支设置远端</h3>
+
+<p>你可以创建一个新分支，并且切换到这个分支去使用它：</p>
+
+<pre><code>$ git checkout -b AP-57
+</code></pre>
+
+<p>切换到这个分支之后，你需要为这个设置远端origin用来push和fetch。</p>
+
+<pre><code>$ git push --set-upstream origin AP-57
+</code></pre>
+
+<p>当你在这个分支的时候，可以使用git来push修改了。</p>
+
+<h3 id="开始">开始</h3>
+
+<p>推送修改到远端分支的语法：</p>
+
+<pre><code>$ git push &lt;remote_name&gt; &lt;branch_name&gt;
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code>$ git push origin master
+</code></pre>
+
+<h3 id="重命名远端">重命名远端</h3>
+
+<p>重命名远端，使用<code>git remote rename</code>命令。这个命令有两个参数：</p>
+
+<ol>
+<li>一个已经存在的远端名称，比如：origin</li>
+<li>已经新的远端名称，比如：destination</li>
+</ol>
+
+<p>查看仓库已经存在的远端：</p>
+
+<pre><code>$ git remote
+# origin
+</code></pre>
+
+<p>查看已经存在的远端地址：</p>
+
+<pre><code>$ git remote -v 
+# origin https://github.com/username/repo.git (fetch) 
+# origin https://github.com/usernam/repo.git (push)
+</code></pre>
+
+<p>修改远端名称：</p>
+
+<pre><code>$ git remote rename origin destination
+# Change remote name from 'origin' to 'destination'
+</code></pre>
+
+<p>验证远端：</p>
+
+<pre><code>$ git remote -v
+# destination https://github.com/username/repo.git (fetch) 
+# destination https://github.com/usernam/repo.git (push)
+</code></pre>
+
+<p>===可能的错误===</p>
+
+<ol>
+<li>Could not rename config section &lsquo;remote.[old name]&rsquo; to &lsquo;remote.[new name]&rsquo;</li>
+</ol>
+
+<p>这个错误意味你这想要修改的旧远端名(origin)不存在</p>
+
+<ol>
+<li>Remote [new name] already exists.</li>
+</ol>
+
+<p>这个错误意味远端名称已经存在了。</p>
+
+<h3 id="远端信息">远端信息</h3>
+
+<p>输出一个知道名称的远端的信息：</p>
+
+<pre><code>$ git remote show origin
+</code></pre>
+
+<p>只获取远端的网址：</p>
+
+<pre><code>$ git config --get remote.origin.url
+</code></pre>
+
+<p>从2.7+开始，有比上面用<code>config</code>更好的命令：</p>
+
+<pre><code>$ git remote get-url origin
+</code></pre>
+
+<h3 id="设置远端url">设置远端url</h3>
+
+<p>你可以使用命令修改远端的地址：</p>
+
+<pre><code>$ git remote set-url remote-name url
+</code></pre>
+
+<h3 id="获取远端url">获取远端url</h3>
+
+<p>你可以使用命令<code>git remote get-url &lt;remote-name&gt;</code>获取已存在远端的Url地址。</p>
+
+<p>默认它是<code>git remote get-url origin</code></p>
+
+<h3 id="修改远端仓库">修改远端仓库</h3>
+
+<p>修改你本地仓库指向的远端的地址，你可以使用下面的命令：</p>
+
+<pre><code>$ git remote set-url &lt;remote_name&gt; &lt;remote_repository_url&gt;
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code>$ git remote set-url heroku https://git.heroku.com/fictional-remote-repository.git
+</code></pre>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/01/post/git-section-4.html" data-toggle="tooltip" data-placement="top" title="Git学习（四）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/01/post/git-section-2.html" data-toggle="tooltip" data-placement="top" title="Git学习（二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

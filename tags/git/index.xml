@@ -6,17 +6,33 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Git学习（四）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/git-section-4.html</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-4.html</guid>
+      <description>暂存区 暂存所有文件 想要删除一个远端的分支：
+$ git add -A  在Git 2.0+之后的版本
+$ git add .  在版本2.x时，git add .命令将会添加当前目录及其子目录下的所有修改的文件。但是在1.x的版本，只会暂存新建或修改的文件，不会暂存删除的文件。
+使用git add -A或者git add --all来存储所有修改的文件，不管在哪个版本都是有效的。
+取消存储的修改文件 $ git reset &amp;lt;filePath&amp;gt;  添加大片修改 你可以看到大片的选项是怎么被存储的，通过使用patch选项：
+$ git add -p  或者
+$ git add --patch  这个命令将会打开一个交互界面，允许你查看修改，并且决定哪些内容去被存储起来：
+Stage this hunk [y,n,q,a,d,/,s,e,?]?   y stage this hunk for the next commit n do not stage this hunk for the next commit q quit; do not stage this hunk or any of the remaining hunks a stage this hunk and all later hunks in the file d do not stage this hunk or any of the later hunks in the file g select a hunk to go to / search for a hunk matching the given regex j leave this hunk undecided, see next undecided hunk J leave this hunk undecided, see next hunk k leave this hunk undecided, see previous undecided hunk K leave this hunk undecided, see previous hunk s split the current hunk into smaller hunks e manually edit the current hunk ?</description>
+    </item>
+    
+    <item>
       <title>Git学习（三）</title>
-      <link>http://blog.huaifufeng.com/2019/01/post/git-section-2.html</link>
+      <link>http://blog.huaifufeng.com/2019/01/post/git-section-3.html</link>
       <pubDate>Mon, 21 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-2.html</guid>
+      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-3.html</guid>
       <description>操作远端 删除远端分支 想要删除一个远端的分支：
 $ git push [remote-name] --delete [branch-name]  或者
 $ git push [remote-name] :[branch-name]  修改远端地址 查看已经存在的远端地址：
