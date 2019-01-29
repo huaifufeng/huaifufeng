@@ -6,13 +6,29 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 27 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Git学习（四）</title>
+      <title>Git专业笔记（五）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/git-section-5.html</link>
+      <pubDate>Sun, 27 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-5.html</guid>
+      <description>忽略文件文件夹 这章的主题是介绍怎么避免把不想要的文件（或者文件的修改）添加到Git仓库内。有好几种方式可以实现这个目的：全局或者本地的.gitignore ，.git/exclude，git update-index --assume-unchanged，git update-index --skip-tree。但是请记住Git是用来管理内容的：忽略实际忽略的是文件夹的内容。一个空的文件夹将会被自动忽略，因为它不能不添加到仓库内。
+.gitignore 你可以让Git通过添加一个或多个.gitignore文件来忽略某些文件或者文件夹，即不把这些内容通过Git来追踪。
+在一些软件项目中，.gitignore文件会包含一列在构建程序或运行时产生的文件或文件夹。在.gitignore中，可能包含指向下面内容的名称或路径：
+ 临时资源，像缓存，log文件，编译文件等 不应该分享给其他人的配置文件 包含密码、秘钥、证书等隐秘信息的文件  当在顶层目录创建这个文件时，这些规则将会应用到这个仓库所有的文件和子目录。当在子目录创建时，这些规则只会应用到这个目录和这个目录子目录的文件中。
+当一个文件或目录被忽略了，这代表：
+ 不会被Git库追踪。 不会再git status和git diff命令中输出处理。 不会通过git add -A命令暂存这些内容。  在一些特殊的场景下，你需要把已经追踪的文件忽略掉，这时你要特别小心。可以查看下面章节：忽略已提交内容。
+例子： 下面是一些.gitignore中比较简单的例子，基于glob file patterns：
+# Lines starting with `#` are comments. # Ignore files called &#39;file.ext&#39; file.ext # Comments can&#39;t be on the same line as rules! # The following line ignores files called &#39;file.ext # not a comment&#39; file.ext # not a comment # Ignoring files with full path.</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（四）</title>
       <link>http://blog.huaifufeng.com/2019/01/post/git-section-4.html</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
@@ -28,7 +44,7 @@ Stage this hunk [y,n,q,a,d,/,s,e,?]?   y stage this hunk for the next commit n d
     </item>
     
     <item>
-      <title>Git学习（三）</title>
+      <title>Git专业笔记（三）</title>
       <link>http://blog.huaifufeng.com/2019/01/post/git-section-3.html</link>
       <pubDate>Mon, 21 Jan 2019 00:00:00 +0000</pubDate>
       
@@ -44,7 +60,7 @@ $ git remote --verbose  或者</description>
     </item>
     
     <item>
-      <title>Git学习（二）</title>
+      <title>Git专业笔记（二）</title>
       <link>http://blog.huaifufeng.com/2019/01/post/git-section-2.html</link>
       <pubDate>Fri, 18 Jan 2019 00:00:00 +0000</pubDate>
       
@@ -53,7 +69,7 @@ $ git remote --verbose  或者</description>
     </item>
     
     <item>
-      <title>Git学习（一）</title>
+      <title>Git专业笔记（一）</title>
       <link>http://blog.huaifufeng.com/2019/01/post/git-section-1.html</link>
       <pubDate>Tue, 15 Jan 2019 00:00:00 +0000</pubDate>
       
