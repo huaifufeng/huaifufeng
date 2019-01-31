@@ -6,10 +6,60 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 28 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 31 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(四)</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/bash-section-4.html</link>
+      <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/bash-section-4.html</guid>
+      <description>文件列表    Option Description     -a, &amp;ndash;all 列出所有文件，包含.开头的文件   -A, &amp;ndash;almost-all 列出所有文件，处理.和..   -c 按修改时间排序文件   -d, &amp;ndash;directory 列出所有的目录   -h, &amp;ndash;human-readable 使用人可读的单位列出文件的大小（K, M等）   -H 和上面的参数一样，只是使用1000来代替1024   -l 显示文件的详细信息   -o 显示详细信息处理分组信息   -r, &amp;ndash;reverse 倒序显示文件内容   -s, &amp;ndash;size 显示文件的块大小   -S 以文件大小排序   &amp;ndash;sort=WORD 按照某个词排序（size，version，status等）。ps：mac没有这个选项   -t 按照修改时间排序   -u 按照访问时间排序   -v 按照版本排序   -1 每行返回一个文件    列出文件详情 ls命令的-l参数，打印文件长列表格式的详细信息。如果没有指定文件夹，默认列出当前文件夹的内容。</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(三)</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/bash-section-3.html</link>
+      <pubDate>Wed, 30 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/bash-section-3.html</guid>
+      <description>导航目录 绝对目录和相对目录 想要切换到一个绝对路径的目录，可以使用/开头的完整目录名称：
+$ cd /home/username/project/abc  如果你想到达的目录在这个目录的下级目录，可以使用一个相对路径。例如，你当前在/home/username/project目录，如果想要到这个目录的abc子目录：
+$ cd abc  如果你想到当前目录的上级目录，可以使用..符号。比如，如果你当前在/home/username/project/abc这个目录，现在想要到/home/username/project这个目录，可以使用下面的命令：
+$ cd ..  这也可以称作“向上”目录。
+到之前目录 在当前的shell中，你可以到你之前在的目录，而不用管这个目录在哪：
+$ cd -  如果多次执行这个目录，你将会在当前目录和之前的目录之间切换。
+home目录 默认的目录是home目录（$HOME，特别是/home/username），所以当没有带目录参数的执行cd命令的时候，将会直接到home目录：
+$ cd  或者你可以更加明确的执行：
+$ cd $HOME  home目录的简单符合是~，所以也可以这样执行：
+$ cd ~  脚本目录 通常，有两种bash脚本：
+ 在当前目录执行的系统工具。 相对于自己目录修改文件的项目工具。  对第二中脚本来说，到的脚本所在的目录是非常有用的。这可以使用下面的命令：
+$ cd &amp;quot;$(dirname &amp;quot;$(readlink -f &amp;quot;$0&amp;quot;)&amp;quot;)&amp;quot;  这个命令运行了3个命令：
+ readlink -f &amp;quot;$0&amp;quot;获取当前脚本的目录。 dirname获取脚本的目录。 cd修改当前的目录到dirname返回的目录。  参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(二)</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/bash-section-2.html</link>
+      <pubDate>Wed, 30 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/bash-section-2.html</guid>
+      <description>脚本shebang 环境shebang 想要使用bash命令执行一个脚本文件，可以使用可以执行的env来指定PATH环境变量中的bash命令。脚本文件的第一行需要是：带有bash参数的绝对路径的env可执行文件：
+#!/usr/bin/env bash  只有在使用下面这样的方式执行脚本的时候，shebang里面的env命令才会被解析：
+script.sh  当然，这个脚本必须有执行权限。
+当直接指明bash解析器来执行脚本的时候，这个shebang是被忽略的：
+bash script.sh  直接shebang 想要用bash来执行一个脚本，也可以定义一个可以执行的bash路径：
+#!/bin/bash  当直接执行脚本的时候，shebang将会被解析并执行：
+./script.sh  脚本需要可以执行的权限。
+当bash解析器直接指明来执行这个脚本的时候，这个shebang不会被执行：
+bash script.sh  其他的shebang 操作系统内核能识别的有两种程序：一种是用ELF (ExtenableLoadableFormat)头声明的二进制程序，通常是编译生成的；另一种就是各种的脚本。
+如果一个文件的第一行以#!开头，下一个字符串必须是一个解析器的路径。如果操作系统内核读到了这行，会调用路径指向的解析器，然后把后面的字符都传给这个解析器作为参数。如果没有文件焦作something或者wrong：
+#!/bin/bash something wrong echo &amp;quot;This line never gets printed&amp;quot;  bash执行的时候，参数something wrong是不存在的。脚本文件的名称也会被添加。下面看下直接声明echo命令的shebang：
+#&amp;quot;/bin/echo something wrong # and now call this script named &amp;quot;thisscript&amp;quot; like so: # thisscript one two # the output will be: something wrong ./thisscript one two  一些想awk的程序就用这种技术来运行长时间留在硬盘上的脚本。</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(一)</title>
