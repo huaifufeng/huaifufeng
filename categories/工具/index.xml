@@ -81,6 +81,15 @@ $ echo &amp;quot;Hello World&amp;quot; #&amp;gt; Hello World # Output Example  �
     </item>
     
     <item>
+      <title>Git专业笔记（六）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/git-section-6.html</link>
+      <pubDate>Mon, 28 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-6.html</guid>
+      <description>git diff    parameter details     -p, -u, &amp;ndash;patch 生成补丁。   -s, &amp;ndash;no-patch 取消差异的输出。对于像git diff这样显示补丁的命令非常有用。或者用来取消—patch选项的效果。   &amp;ndash;raw 输出原生格式信息的文件差异信息。   &amp;ndash;diff-algorithm= 选择差异对比的算法。可选的算法有：myers，minimal，patience，histogram   &amp;ndash;summary 输出一个压缩的扩展头信息，包括（创建，重命名和模式修改等）   &amp;ndash;name-only 只展示修改文件的名称   &amp;ndash;name-status 展示已修改文件的名称和状态，常见的状态有：M 修改 A 添加 D 删除   &amp;ndash;check 如果修改出现了标记冲突和空白错误会发出警告。被视作空白错误的信息是由core.whitespace控制的。默认情况下，尾随空格（包括仅由空格组成的行）和空格字符（在行的初始缩进内紧跟制表符）被视为空格错误。如果出现问题就会以非0的退出码退出。不和--exit-code兼容。   &amp;ndash;full-index 当想产生补丁格式的输出时，取代最开始的几个字符，将会把完整的pre-和post-image二进制对象显示在索引行中。   &amp;ndash;binary 除了像--full-index外，还会输出一个可以用于git apply命令的二进制差异文件。   -a, &amp;ndash;text 把所有的文件视作文本。   &amp;ndash;color 设置颜色模式：如果要将diff设置为较小并保持git的颜色，请使用--color=always    展示工作区差异 $ git diff  这将展示当前分支未暂存的修改和之前的提交的差异。这只展示相对于索引的差异，也就是只展示你可以在下次提交的，但是还没有提交的修改。想要添加这些修改，可以使用git add。</description>
+    </item>
+    
+    <item>
       <title>Git专业笔记（五）</title>
       <link>http://blog.huaifufeng.com/2019/01/post/git-section-5.html</link>
       <pubDate>Sun, 27 Jan 2019 00:00:00 +0000</pubDate>
