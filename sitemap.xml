@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/01/post/git-section-9.html</loc>
+    <lastmod>2019-01-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/01/post/bash-section-3.html</loc>
     <lastmod>2019-01-30T00:00:00+00:00</lastmod>
   </url>
@@ -15,6 +20,16 @@
   <url>
     <loc>http://blog.huaifufeng.com/2019/01/post/bash-section-2.html</loc>
     <lastmod>2019-01-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/01/post/git-section-8.html</loc>
+    <lastmod>2019-01-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/01/post/git-section-7.html</loc>
+    <lastmod>2019-01-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -84,18 +99,18 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/git/</loc>
-    <lastmod>2019-01-28T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/categories/go/</loc>
-    <lastmod>2019-01-12T00:00:00+00:00</lastmod>
+    <lastmod>2019-01-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/go/</loc>
+    <lastmod>2019-01-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/categories/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

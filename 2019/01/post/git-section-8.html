@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="导航目录">
+    <meta name="description" content="git提交合并">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(三)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（八）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/01/post/bash-section-3.html">
+    <link rel="canonical" href="/2019/01/post/git-section-8.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,12 +133,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(三)</h1>
+                    <h1>Git专业笔记（八）</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Wednesday, January 30, 2019
                         
@@ -170,12 +170,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#导航目录">导航目录</a>
+<li><a href="#merge">merge</a>
 <ul>
-<li><a href="#绝对目录和相对目录">绝对目录和相对目录</a></li>
-<li><a href="#到之前目录">到之前目录</a></li>
-<li><a href="#home目录">home目录</a></li>
-<li><a href="#脚本目录">脚本目录</a></li>
+<li><a href="#自动合并">自动合并</a></li>
+<li><a href="#找到没有merge提交的分支">找到没有merge提交的分支</a></li>
+<li><a href="#取消合并">取消合并</a></li>
+<li><a href="#合并一个分支">合并一个分支</a></li>
+<li><a href="#只保留合并一次的修改过">只保留合并一次的修改过</a></li>
+<li><a href="#合并分支">合并分支</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -183,76 +185,118 @@
         		
         		
 
-<h2 id="导航目录">导航目录</h2>
+<h2 id="merge">merge</h2>
 
-<h3 id="绝对目录和相对目录">绝对目录和相对目录</h3>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>Details</th>
+</tr>
+</thead>
 
-<p>想要切换到一个绝对路径的目录，可以使用<code>/</code>开头的完整目录名称：</p>
+<tbody>
+<tr>
+<td>-m</td>
+<td>在merge提交里使用的信息</td>
+</tr>
 
-<pre><code>$ cd /home/username/project/abc
+<tr>
+<td>-v</td>
+<td>显示详细的输出</td>
+</tr>
+
+<tr>
+<td>&ndash;abort</td>
+<td>中断把文件恢复到之前的状态</td>
+</tr>
+
+<tr>
+<td>&ndash;ff-only</td>
+<td>当一个merge提交被要求的话立即中断</td>
+</tr>
+
+<tr>
+<td>&ndash;no-ff</td>
+<td>强制创建一个merge提交，即使它不是强制的</td>
+</tr>
+
+<tr>
+<td>&ndash;no-commit</td>
+<td>假装merge失败了，允许去检查和调整这个结果</td>
+</tr>
+
+<tr>
+<td>&ndash;stat</td>
+<td>merge合并之后，展示状态的不同</td>
+</tr>
+
+<tr>
+<td>-n/&ndash;no-stat</td>
+<td>不显示状态的不同</td>
+</tr>
+
+<tr>
+<td>&ndash;sqaush</td>
+<td>允许对这个分支的merge修改做一个单独的提交</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="自动合并">自动合并</h3>
+
+<p>当两个分支的提交不冲突的话，Git可以自动的合并他们：</p>
+
+<pre><code>~/Stack Overflow(branch:master) » git merge another_branch 
+Auto-merging file_a
+Merge made by the 'recursive' strategy.
+	file_a | 2 +-
+	1 file changed, 1 insertion(+), 1 deletion(-)
 </code></pre>
 
-<p>如果你想到达的目录在这个目录的下级目录，可以使用一个相对路径。例如，你当前在<code>/home/username/project</code>目录，如果想要到这个目录的<code>abc</code>子目录：</p>
+<h3 id="找到没有merge提交的分支">找到没有merge提交的分支</h3>
 
-<pre><code>$ cd abc
+<p>有时候你有一些已经把修改merge到master上的分支。这将找出来所有不是<code>master</code>分支并且和<code>master</code>分支没有区别提交的分支。这用来查找在PR合并到master之后，没有删除的分支非常有帮助：</p>
+
+<pre><code>for branch in $(git branch -r) ; do
+	[ &quot;${branch}&quot; != &quot;origin/master&quot; ] &amp;&amp; [ $(git diff master...${branch} | wc -l) -eq 0 ] &amp;&amp; echo -e `git show --pretty=format:&quot;%ci %cr&quot; $branch | head -n 1`\\t$branch 
+done | sort -r
 </code></pre>
 
-<p>如果你想到当前目录的上级目录，可以使用<code>..</code>符号。比如，如果你当前在<code>/home/username/project/abc</code>这个目录，现在想要到<code>/home/username/project</code>这个目录，可以使用下面的命令：</p>
+<h3 id="取消合并">取消合并</h3>
 
-<pre><code>$ cd ..
+<p>在开始合并之后，你可能想要停止合并，并且把所有的文件恢复到合并之前的状态。使用<code>--abort</code>：</p>
+
+<pre><code>$ git merge --abort
 </code></pre>
 
-<p>这也可以称作“向上”目录。</p>
+<h3 id="合并一个分支">合并一个分支</h3>
 
-<h3 id="到之前目录">到之前目录</h3>
+<p>一个合并想要解析为向前合并分支的默认行为是只修改分支所在的位置，并不会创建一个合并分支。使用<code>--no-ff</code>：</p>
 
-<p>在当前的shell中，你可以到你之前在的目录，而不用管这个目录在哪：</p>
-
-<pre><code>$ cd -
+<pre><code>$ git merge &lt;branch_name&gt; --no-ff -m &quot;&lt;commit message&gt;&quot;
 </code></pre>
 
-<p>如果多次执行这个目录，你将会在当前目录和之前的目录之间切换。</p>
+<h3 id="只保留合并一次的修改过">只保留合并一次的修改过</h3>
 
-<h3 id="home目录">home目录</h3>
+<p>在合并的时候，可以在<code>git checkout</code>命令使用<code>--ours</code>或者<code>--others</code>选项将会使用合并一侧或另一侧的文件修改：</p>
 
-<p>默认的目录是home目录（<code>$HOME</code>，特别是<code>/home/username</code>），所以当没有带目录参数的执行<code>cd</code>命令的时候，将会直接到home目录：</p>
-
-<pre><code>$ cd
+<pre><code>$ git checkout --ours -- file1.txt # Use our version of file1, delete all their changes $ git checkout --theirs -- file2.txt # Use their version of file2, delete all our changes
 </code></pre>
 
-<p>或者你可以更加明确的执行：</p>
+<h3 id="合并分支">合并分支</h3>
 
-<pre><code>$ cd $HOME
+<pre><code>$ git merge incomingBranch
 </code></pre>
 
-<p>home目录的简单符合是<code>~</code>，所以也可以这样执行：</p>
+<p>这将把<code>incomingBranch</code>这个分支合并到你当前的分支上面。例如：当前你在<code>master</code>分支上面，然后你就会把<code>incomingBranch</code>分支合并到<code>master</code>分支。</p>
 
-<pre><code>$ cd ~
+<p>merge在一些情况下回产生冲突。如果发生的了冲突，你可以看到下面的信息：<code>Automatic merge failed; fix conflicts and then commit the result</code>。你需要手动的修改冲突文件或者取消掉你的合并操作：</p>
+
+<pre><code>$ git merge --abort
 </code></pre>
 
-<h3 id="脚本目录">脚本目录</h3>
-
-<p>通常，有两种bash脚本：</p>
-
-<ol>
-<li>在当前目录执行的系统工具。</li>
-<li>相对于自己目录修改文件的项目工具。</li>
-</ol>
-
-<p>对第二中脚本来说，到的脚本所在的目录是非常有用的。这可以使用下面的命令：</p>
-
-<pre><code>$ cd &quot;$(dirname &quot;$(readlink -f &quot;$0&quot;)&quot;)&quot;
-</code></pre>
-
-<p>这个命令运行了3个命令：</p>
-
-<ol>
-<li><code>readlink -f &quot;$0&quot;</code>获取当前脚本的目录。</li>
-<li><code>dirname</code>获取脚本的目录。</li>
-<li><code>cd</code>修改当前的目录到<code>dirname</code>返回的目录。</li>
-</ol>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -261,12 +305,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/01/post/git-section-9.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（九）">&larr; Previous Post</a>
+                      <a href="/2019/01/post/bash-section-2.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/01/post/bash-section-2.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二)">Next Post &rarr;</a>
+                      <a href="/2019/01/post/git-section-7.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（七）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="git子模块">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（九）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/01/post/git-section-9.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（九）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, January 31, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#submodule">submodule</a>
+<ul>
+<li><a href="#clone一个有子模块的仓库">clone一个有子模块的仓库</a></li>
+<li><a href="#更新子模块">更新子模块</a></li>
+<li><a href="#添加子模块">添加子模块</a></li>
+<li><a href="#设置模块分支">设置模块分支</a></li>
+<li><a href="#移动子模块">移动子模块</a></li>
+<li><a href="#删除子模块">删除子模块</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="submodule">submodule</h2>
+
+<h3 id="clone一个有子模块的仓库">clone一个有子模块的仓库</h3>
+
+<p>当你克隆了一个有子模块的仓库时，你需要初始化和更新他们：</p>
+
+<pre><code>$ git clone --recursive https://github.com/username/repo.git
+</code></pre>
+
+<p>这将会克隆关联的子模块，并且把子模块放到合适的位置上面（包括子模块关联的子模块）。这个命令等价于在仓库克隆之后立即执行<code>git submodule update --init --recursive</code>这个命令。</p>
+
+<h3 id="更新子模块">更新子模块</h3>
+
+<p>如果一个子模块引用了另一个仓库中的子模块的特定提交。想要切换到所有引用子模块的特定状态的话，可以使用下面的命令：</p>
+
+<pre><code>$ git submodule update --recursive
+</code></pre>
+
+<p>有时候为了替换引用子模块当前的状态，你想要把本地米宽的分支切换到远端的最新状态。使用下面的命令可以把所有引用的子模块切换到远端最新的分支：</p>
+
+<pre><code>$ git submodule foreach git pull &lt;remote&gt; &lt;branch&gt;
+</code></pre>
+
+<p>或者使用默认的<code>git pull</code>参数：</p>
+
+<pre><code>$ git submodule foreach git pull
+</code></pre>
+
+<p>注意：这将只会更新本地工作区副本。如果一个子模块用这个命令更新了，他将会出现在<code>git status</code>命令的文件列表内。如果你想要把你的引用更新到最新的状态，你可以提交这些修改：</p>
+
+<pre><code> git add &lt;submodule_directory&gt;
+ git commit
+</code></pre>
+
+<p>如果你使用<code>git pull</code>的话，这写修改可能会造成合并冲突。你可以使用<code>git pull —rebase</code>来把修改到会到最新。大多数情况下这会减少出现冲突的次数。这也会把所有的分支pull到本地：</p>
+
+<pre><code>$ git submodule foreach git pull --rebase
+</code></pre>
+
+<p>想要把某个分支切换到最新的状态，可以使用：</p>
+
+<pre><code>$ git submodule update --remote &lt;submodule_directory&gt;
+</code></pre>
+
+<h3 id="添加子模块">添加子模块</h3>
+
+<p>你可以把另外的Git仓库当做你自己项目的一个文件夹，使用Git来追踪：</p>
+
+<pre><code>$ git submodule add https://github.com/jquery/jquery.git
+</code></pre>
+
+<p>你应该添加并且提交新的<code>.gitmodules</code>，当你执行<code>git submodule update</code>这个命令的时候，这将通知Git什么子模块将会被获取到本地。</p>
+
+<h3 id="设置模块分支">设置模块分支</h3>
+
+<p>一个子模块会被切换到一个指定的提交上（作为仓库索引的入口）。</p>
+
+<p>有时候，需要更新到某个子模块远端仓库的某个分支的最新提交。除了在每个子模块里面执行<code>git checkout abranch --track origin/abranch, git pull</code>这个命令，可以见到的执行一个个命令：</p>
+
+<pre><code>$ git submodule update --remote --recursive
+</code></pre>
+
+<p>当子模块有修改，你可以把修改提交：</p>
+
+<pre><code>$ git add .
+$ git commit -m &quot;update submodules&quot;
+</code></pre>
+
+<p>假设下面的子模块的操作：</p>
+
+<ul>
+<li>可以使用一个分支来提交：</li>
+</ul>
+
+<pre><code>  $ git submodule -b abranch -- /url/of/submodule/repo
+</code></pre>
+
+<ul>
+<li>或者配置子模块跟踪某个分支：</li>
+</ul>
+
+<pre><code>  $ cd /path/to/parent/repo
+  $ git config -f .gitmodules submodule.asubmodule.branch abranch
+</code></pre>
+
+<h3 id="移动子模块">移动子模块</h3>
+
+<p>Git 1.8+以上使用下面的命令：</p>
+
+<pre><code>$ git mv /path/to/modulenew/path/to/module
+</code></pre>
+
+<p>Git 1.8以下的话：</p>
+
+<ol>
+<li><p>编辑<code>.gitmodules</code>文件，然后修改子模块的路径到需要的地址，使用<code>git add .gitmodules</code>添加这个文件到仓库呢。</p></li>
+
+<li><p>如果有必要的话，使用<code>mkdir -p /path/to</code>创建新地址的父目录。</p></li>
+
+<li><p>使用命令<code>mv -vi /path/to/module new/path/to/submodule</code>把所有的文件从老的目录移动到新的目录</p></li>
+
+<li><p>使用命令<code>git add /path/to</code>把目录添加到Git仓库追踪中。</p></li>
+
+<li><p>移除就当目录，使用命令<code>git rm --cached /path/to/module.</code></p></li>
+
+<li><p>移动<code>.git/modules//path/to/module</code>目录，包括目录里面的所有文件</p></li>
+
+<li><p>修改<code>.git/modules//path/to/config</code>文件，保证worktree指向新的目录，在这个例子里面是<code>worktree = ../../../../..//path/to/module</code>。特别是使用2个以上的<code>..</code>来指向实际的地址。编辑<code>/path/to/module/.git</code>文件，确保其中的路径指向主仓库中<code>.git</code>目录的正确地址。所以在这个例子里面是<code>../../../.git/modules//path/to/module</code>：</p></li>
+</ol>
+
+<p><code>git status</code>命令将会有下面的这样的输出：</p>
+
+<pre><code>   # On branch master
+   # Changes to be committed:
+   #   (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)
+   #    	modified:   .gitmodules
+   #    	renamed:    old/path/to/submodule -&gt; new/path/to/submodule
+</code></pre>
+
+<ol>
+<li> 最后就是提交这个修改。</li>
+</ol>
+
+<p>这个例子来着 <a href="https://stackoverflow.com/questions/4604486/how-do-i-move-an-existing-git-submodule-within-a-git-repository/6310246#6310246">Stack Overflow</a></p>
+
+<h3 id="删除子模块">删除子模块</h3>
+
+<p>GIt 1.8+以上：</p>
+
+<p>你可以使用下面的命令删除一个子模块：</p>
+
+<pre><code>$ git submodule deinit the_submodule 
+$ git rm the_submodule
+</code></pre>
+
+<ul>
+<li><code>git submodule deinit the_submodule</code>命令将会删除<code>.git/config</code>文件中<code>the_submodule</code>的入口。这将会把<code>the_submodule</code>这个分支从下面的命令中移除：<code>git submodule update</code>，<code>git submodule sync</code>，<code>git submodule foreach</code>，并且删除本地的文件内容。这你就做我你父仓库的修改。<code>git submodule init</code>和<code>git submodule update</code>将会在你的父仓库中重新存储这个子模块，并且没有可以提交的修改。</li>
+<li><code>git rm the_submodule</code>将会从仓库工作树中移除这个子模块。子模块在<code>.gitmodules</code>的入口文件也会被移除，如果只有<code>git rm the_submodule</code>命令，没有之前执行的<code>git submodule deinit the_submodule</code>命令，<code>.git/config</code>中的子模块入口文件将会被爆了。</li>
+</ul>
+
+<p>Git1.8以下的话：</p>
+
+<p>像下面这样操作：</p>
+
+<ol>
+<li>删除<code>.gitmodules</code>中相关的部分</li>
+<li>使用<code>git add .gitmodules</code>命令添加<code>.gitmodules</code>文件。</li>
+<li>删除<code>.git/config</code>相关的部分。</li>
+<li>运行<code>git rm --cached path_to_submodule</code>命令</li>
+<li>运行<code>rm -rf .git/modules/path_to_submodule</code></li>
+<li>提交这些修改<code>git commit -m &quot;Removed submodule &lt;name&gt;&quot;</code></li>
+<li>删除未追踪的子模块文件</li>
+<li><code>rm -rf path_to_submodule</code></li>
+</ol>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/01/post/bash-section-4.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/01/post/bash-section-3.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

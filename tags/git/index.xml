@@ -6,10 +6,57 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 28 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 31 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（九）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/git-section-9.html</link>
+      <pubDate>Thu, 31 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-9.html</guid>
+      <description>submodule clone一个有子模块的仓库 当你克隆了一个有子模块的仓库时，你需要初始化和更新他们：
+$ git clone --recursive https://github.com/username/repo.git  这将会克隆关联的子模块，并且把子模块放到合适的位置上面（包括子模块关联的子模块）。这个命令等价于在仓库克隆之后立即执行git submodule update --init --recursive这个命令。
+更新子模块 如果一个子模块引用了另一个仓库中的子模块的特定提交。想要切换到所有引用子模块的特定状态的话，可以使用下面的命令：
+$ git submodule update --recursive  有时候为了替换引用子模块当前的状态，你想要把本地米宽的分支切换到远端的最新状态。使用下面的命令可以把所有引用的子模块切换到远端最新的分支：
+$ git submodule foreach git pull &amp;lt;remote&amp;gt; &amp;lt;branch&amp;gt;  或者使用默认的git pull参数：
+$ git submodule foreach git pull  注意：这将只会更新本地工作区副本。如果一个子模块用这个命令更新了，他将会出现在git status命令的文件列表内。如果你想要把你的引用更新到最新的状态，你可以提交这些修改：
+ git add &amp;lt;submodule_directory&amp;gt; git commit  如果你使用git pull的话，这写修改可能会造成合并冲突。你可以使用git pull —rebase来把修改到会到最新。大多数情况下这会减少出现冲突的次数。这也会把所有的分支pull到本地：
+$ git submodule foreach git pull --rebase  想要把某个分支切换到最新的状态，可以使用：
+$ git submodule update --remote &amp;lt;submodule_directory&amp;gt;  添加子模块 你可以把另外的Git仓库当做你自己项目的一个文件夹，使用Git来追踪：</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（八）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/git-section-8.html</link>
+      <pubDate>Wed, 30 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-8.html</guid>
+      <description>merge    parameter Details     -m 在merge提交里使用的信息   -v 显示详细的输出   &amp;ndash;abort 中断把文件恢复到之前的状态   &amp;ndash;ff-only 当一个merge提交被要求的话立即中断   &amp;ndash;no-ff 强制创建一个merge提交，即使它不是强制的   &amp;ndash;no-commit 假装merge失败了，允许去检查和调整这个结果   &amp;ndash;stat merge合并之后，展示状态的不同   -n/&amp;ndash;no-stat 不显示状态的不同   &amp;ndash;sqaush 允许对这个分支的merge修改做一个单独的提交    自动合并 当两个分支的提交不冲突的话，Git可以自动的合并他们：
+~/Stack Overflow(branch:master) » git merge another_branch Auto-merging file_a Merge made by the &#39;recursive&#39; strategy. file_a | 2 +- 1 file changed, 1 insertion(+), 1 deletion(-)  找到没有merge提交的分支 有时候你有一些已经把修改merge到master上的分支。这将找出来所有不是master分支并且和master分支没有区别提交的分支。这用来查找在PR合并到master之后，没有删除的分支非常有帮助：</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（七）</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/git-section-7.html</link>
+      <pubDate>Tue, 29 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/git-section-7.html</guid>
+      <description>撤销修改 返回前一个提交 返回前一个提交，首先使用git log找到前一个提交的hash值。然后要临时返回那个提交的话，使用下面的命令：
+$ git checkout 789abcd  这将返回hash值为789abcd的提交。现在你可以在不影响你的HEAD的情况下，在这个老提交的基础上建立新的提交。你可以使用branch或checkout -b命令来建立一个分支，然后把这些修改放到这个分支上面。
+使用下面的命令返回上一个提交的话，会保留之前的修改：
+$ git reset --soft 789abcd  去返回上一个提交，可以使用下面的命令：
+$ git reset --soft HEAD~  想要抛弃某个提交之后的修改，可以使用下面的命令：
+$ git reset --hard 789abcd  想要抛弃上一个提交之后的修改，使用下面的命令：
+$ git reset --hard HEAD~  注意：你可以使用reflog和reset恢复丢弃的提交，但是没有提交的修改是无法恢复的。
+撤销修改 撤消对工作副本中文件或目录的更改。
+$ git checkout -- file.txt  下面的命令将会递归的应用到当前目录的所有文件和文件夹上面，他将撤销工作区副本的所有修改：
+$ git checkout .  想要撤销部分修改的话，可以使用---patch选项。这样对每个修改，你都将被询问，是要撤销还是保留：
+$ git checkout --patch -- dir  想要撤销添加到index的修改，使用下面的命令：
+$ git reset --hard  如果没有—hard选项的话，这将会执行一个软reset命令。</description>
+    </item>
     
     <item>
       <title>Git专业笔记（六）</title>

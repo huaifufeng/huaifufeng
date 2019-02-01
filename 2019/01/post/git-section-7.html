@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="git撤销修改">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（七）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/01/post/git-section-7.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（七）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Tuesday, January 29, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#撤销修改">撤销修改</a>
+<ul>
+<li><a href="#返回前一个提交">返回前一个提交</a></li>
+<li><a href="#撤销修改-1">撤销修改</a></li>
+<li><a href="#使用reflog">使用reflog</a></li>
+<li><a href="#撤销merge">撤销merge</a>
+<ul>
+<li><a href="#撤销一个没有推送到远端的merge">撤销一个没有推送到远端的merge</a></li>
+<li><a href="#撤销一个推送到远端的分支">撤销一个推送到远端的分支</a></li>
+</ul></li>
+<li><a href="#revert已存在分支">revert已存在分支</a></li>
+<li><a href="#撤销或重新提交一系列提交">撤销或重新提交一系列提交</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="撤销修改">撤销修改</h2>
+
+<h3 id="返回前一个提交">返回前一个提交</h3>
+
+<p>返回前一个提交，首先使用<code>git log</code>找到前一个提交的hash值。然后要临时返回那个提交的话，使用下面的命令：</p>
+
+<pre><code>$ git checkout 789abcd
+</code></pre>
+
+<p>这将返回hash值为<code>789abcd</code>的提交。现在你可以在不影响你的<code>HEAD</code>的情况下，在这个老提交的基础上建立新的提交。你可以使用<code>branch</code>或<code>checkout -b</code>命令来建立一个分支，然后把这些修改放到这个分支上面。</p>
+
+<p>使用下面的命令返回上一个提交的话，会保留之前的修改：</p>
+
+<pre><code>$ git reset --soft 789abcd 
+</code></pre>
+
+<p>去返回上一个提交，可以使用下面的命令：</p>
+
+<pre><code>$ git reset --soft HEAD~
+</code></pre>
+
+<p>想要抛弃某个提交之后的修改，可以使用下面的命令：</p>
+
+<pre><code>$ git reset --hard 789abcd
+</code></pre>
+
+<p>想要抛弃上一个提交之后的修改，使用下面的命令：</p>
+
+<pre><code>$ git reset --hard HEAD~
+</code></pre>
+
+<p><strong>注意：</strong>你可以使用<code>reflog</code>和<code>reset</code>恢复丢弃的提交，但是没有提交的修改是无法恢复的。</p>
+
+<h3 id="撤销修改-1">撤销修改</h3>
+
+<p>撤消对工作副本中文件或目录的更改。</p>
+
+<pre><code>$ git checkout -- file.txt
+</code></pre>
+
+<p>下面的命令将会递归的应用到当前目录的所有文件和文件夹上面，他将撤销工作区副本的所有修改：</p>
+
+<pre><code>$ git checkout .
+</code></pre>
+
+<p>想要撤销部分修改的话，可以使用<code>---patch</code>选项。这样对每个修改，你都将被询问，是要撤销还是保留：</p>
+
+<pre><code>$ git checkout --patch -- dir
+</code></pre>
+
+<p>想要撤销添加到<strong>index</strong>的修改，使用下面的命令：</p>
+
+<pre><code>$ git reset --hard
+</code></pre>
+
+<p>如果没有<code>—hard</code>选项的话，这将会执行一个软reset命令。</p>
+
+<p>当你本地的修改还没有push到远端的时候，你可以执行一个软reset命令。因此你可以重新编辑这些文件，然后重新提交：</p>
+
+<pre><code>$ git reset HEAD~2
+</code></pre>
+
+<p>上面的例子将会解除最后两次提交，并且将文件返回到工作区副本。然后你就可以做进一步的修改并重新提交这些修改。</p>
+
+<p><strong>注意：</strong>除了软reset之外，所有这些修改都会永久性删除你的修改。为了安全起见，可以执行下面的命令的一个：<code>git stash -p</code>或者<code>git stash</code>。稍后你可以使用<code>git stash pop</code>取回这些修改，或者使用<code>git stash drop</code>命令删除这些修改。</p>
+
+<h3 id="使用reflog">使用reflog</h3>
+
+<p>如果你弄错了一个rebase命令，你可以选择返回rebase命令执行之前的那个提交。你可以使用<code>reflog</code>命令（这包含了你过去90天内做的每一件事的历史，这个是可以配置的）。</p>
+
+<pre><code>$ git reflog
+4a5cbb3 HEAD@{0}: rebase finished: returning to refs/heads/foo 
+4a5cbb3 HEAD@{1}: rebase: fixed such and such
+904f7f0 HEAD@{2}: rebase: checkout upstream/master
+3cbe20a HEAD@{3}: commit: fixed such and such
+...
+</code></pre>
+
+<p>你可以使用<code>HEAD@{3}</code>获取rebase之前的提交，也可以指定hash值：</p>
+
+<pre><code>$ git checkout HEAD@{3}
+</code></pre>
+
+<p>现在你可以创建一个新分支，删除一个老分支，重新rebase等等。</p>
+
+<p>你可以直接reset到你<code>reflog</code>指定的提交，不过只有你100%确定这是你想要做的，才做这个操作：</p>
+
+<pre><code>$ git reset --hard HEAD@{3}
+</code></pre>
+
+<p>这将把Git的文件树，设置为和当时一样的情况。</p>
+
+<p>如果你只是想看看，一个分支rebase到另一个分支的情况怎么样，但是又不想保留这些修改，这个命令是很有用的。</p>
+
+<h3 id="撤销merge">撤销merge</h3>
+
+<h4 id="撤销一个没有推送到远端的merge">撤销一个没有推送到远端的merge</h4>
+
+<p>如果你还没有推送你的merge到远端仓库，你可以执行和撤销提交一样的操作，虽然两者有一些细微的差别。</p>
+
+<p>一个reset就是一个简单的操作：用来撤销这个分支上所有的merge提交和添加的提交。然而，你需要知道reset到哪个SHA值，这回非常麻烦，<code>git log</code>会返回来着两个分支的提交。如果你reset到错误的提交（另一个分支），这将会破坏已提交的分支。</p>
+
+<pre><code>$ git reset --hard &lt;last commit from the branch you are on&gt;
+</code></pre>
+
+<p>或者，假设这个合并是你最新的提交。</p>
+
+<pre><code>$ git reset HEAD~
+</code></pre>
+
+<p>还原修改时安全的，因为这不会破坏你之前的提交，但是在你再次合并分支之前，涉及到很多的工作。</p>
+
+<h4 id="撤销一个推送到远端的分支">撤销一个推送到远端的分支</h4>
+
+<p>假设你merge到一个新的分组<code>add-gremlins</code>：</p>
+
+<pre><code>$ git merge feature/add-gremlins ...
+#Resolve any merge conflicts 
+$ git commit #commit the merge ...
+$ git push
+...
+501b75d..17a51fd master -&gt; master
+</code></pre>
+
+<p>但是之后你发现你merge的特性，造成了其他开发人员系统的错误，因此你必须把修改撤销到正确的地方。但是修改这个特性又要花费很长的时间，因此你只想撤销这个merge：</p>
+
+<pre><code>$ git revert -m 1 17a51fd ...
+$ git push
+...
+17a51fd..e443799 master -&gt; master
+</code></pre>
+
+<p>这是你的分支gremlins已经从系统中移除了，你的开发伙伴也不会在对你大喊大叫了。然而，我们还没有结束。一旦你修复了add-gremlins这个分支的问题，你需要撤销之前的revert然后才能提交：</p>
+
+<pre><code>$ git checkout feature/add-gremlins
+...
+   #Various commits to fix the bug.
+$ git checkout master
+...
+$ git revert e443799
+...
+$ git merge feature/add-gremlins 
+...
+#Fix any merge conflicts introduced by the bug fix 
+$ git commit #commit the merge
+...
+$ git push
+</code></pre>
+
+<p>这样的话你就成功添加了这个特性了。但是，考虑到这种类型的bug通常是由合并冲突引入的，稍微不同的工作流有时更有用，因为它允许你修复分支上的合并冲突。</p>
+
+<pre><code>&gt; git checkout feature/add-gremlins 
+...
+   #Merge in master and revert the revert right away.  This puts your branch in
+   #the same broken state that master was in before.
+&gt; git merge master
+...
+&gt; git revert e443799 
+...
+#Now go ahead and fix the bug (various commits go here)
+&gt; git checkout master 
+...
+   #Don't need to revert the revert at this point since it was done earlier
+&gt; git merge feature/add-gremlins
+...
+#Fix any merge conflicts introduced by the bug fix &gt; git commit #commit the merge
+...
+&gt; git push
+</code></pre>
+
+<h3 id="revert已存在分支">revert已存在分支</h3>
+
+<p>使用<code>git revert</code>来还原已经存在的分支，特别是这些分支已经被push到远端了。它记录了一些新的提交，以逆转早期提交的效果，您可以在不重写历史的情况下安全地推送这些提交。</p>
+
+<p><strong>不要</strong>使用<code>git push —force</code>命令，除非你想活动仓库其他开发人员的谴责。不要重写公共仓库的历史。</p>
+
+<p>比如，你刚刚push了一个提交，但是这个提交包含一个bug，你需要把这个提交回退，你可以这么做：</p>
+
+<pre><code>$ git revert HEAD~1 
+$ git push
+</code></pre>
+
+<p>现在你可以revert你之前还原的本地修改了，修复你的代码，并重新提交这个修改：</p>
+
+<pre><code>$ git revert HEAD~1
+work .. work .. work ..
+$ git add -A .
+$ git commit -m &quot;Update error code&quot;
+$ git push
+</code></pre>
+
+<p>如果你想revert的提交已经在历史记录的后面了，你可以简单的传递一个hash值。git将会创建一个撤销原始提交的技术提交，你可以建的的push这个提交：</p>
+
+<pre><code>$ git revert 912aaf0228338d0c8fb8cca0a064b0161a451fdc 
+$ git push
+</code></pre>
+
+<h3 id="撤销或重新提交一系列提交">撤销或重新提交一系列提交</h3>
+
+<p>假设你要撤销一批提交，但是你只需要其中的一部分：</p>
+
+<pre><code>git rebase -i &lt;earlier SHA&gt;
+</code></pre>
+
+<p><code>-i</code>创建“交互模式”的rebase。这个和上面的一样，但是在rebase每个提交之前，都会暂停并允许你修改每个提交。<code>rebase -i</code>将会打开你的默认编辑器，里面是一系列将要处理的提交，就像下面一样：</p>
+
+<p><img src="/img/git/VHTqM.png" alt="提交列表" /></p>
+
+<p>想要丢掉一个提交，只要从编辑器中删除这个提交的行就可以了。如果不想要项目中有错误的提交，你可以删除上面的1和3-4行。如果你想把两个提交合并在一起，可以使用<code>squash</code>和<code>fixup</code>命令。</p>
+
+<p><img src="/img/git/MV9Xd.png" alt="处理" /></p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/01/post/git-section-8.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（八）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/01/post/bash-section-1.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(一)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
