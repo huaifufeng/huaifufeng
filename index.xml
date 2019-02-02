@@ -6,10 +6,57 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 31 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(六)</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/bash-section-6.html</link>
+      <pubDate>Sat, 02 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/bash-section-6.html</guid>
+      <description>grep 找bar文件中的foo字符：
+$ grep foo ~/Desktop/bar  寻找bar文件中不包含foo字符的其他字符串：
+$ grep –v foo ~/Desktop/bar  显示所有以foo结尾的字符串：
+$ grep &amp;quot;*foo&amp;quot; ~/Desktop/bar  参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（十一）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-11.html</link>
+      <pubDate>Sat, 02 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-11.html</guid>
+      <description>别名 简单别名 有两种方法来创建Git别名：
+ 编辑~/.gitconfig文件：   [alias] ci = commit st = status co = checkout   使用命令行：   git config --global alias.ci &amp;quot;commit&amp;quot; git config --global alias.st &amp;quot;status&amp;quot; git config --global alias.co &amp;quot;checkout&amp;quot;  在别名创建之后：
+ git ci就是git commit git st就是git status git co就是git checkout  像正常的命令一样，别名也可以使用参数，例如：
+ git ci -m &amp;quot;Commit message...&amp;quot; git co -b feature-42  显示搜索别名 你可以使用--get-regexp选项来列出所有的别名：
+$ git config --get-regexp &#39;^alias\.&#39;  搜索别名 想要搜索别名的话，在.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(五)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-5.html</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-5.html</guid>
+      <description>cat    Option Description     -n 输出行号   -v 使用^和M-代替不能打印的字符，除了LFD和TAB   -T 使用^I代替TAB   -E 使用$代替换行符(LF)   -e 和-vE一个含义   -b 输出非空行行号，覆盖-n   -A 等价于-vET   -s 抑制重复输出空行    拼接文件 这是cat命令的主要作用：
+$ cat file1 file2 file3 &amp;gt; file_all  cat命令也用来把拼接文件的结果作为管道的一部分：
+$ cat file1 file2 file3 | grep foo  输出文件内容 $ cat file.txt  将会输出文件的所有内容。</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（十）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-10.html</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-10.html</guid>
+      <description>提交    参数 详情     &amp;ndash;message, -m 包含在提交中的信息。这将会打开一个编辑器   &amp;ndash;amend 指定这个参数将会把当前暂存区的信息添加到之前的提交内。请注意，这将会修改之前的提交历史   &amp;ndash;no-edit 使用选择的提交信息但是不打开编辑器，例如：git commit --amend --no-edit追加提交到之前的提交上，并且不修改提交信息。   &amp;ndash;all, -a 提交包括未暂存的文件在内的修改   &amp;ndash;date 手动设置关联到这个提交的日期信息   &amp;ndash;only 只提交指定路径的信息。这将只会提交指定的文件   &amp;ndash;patch,-p 使用交互的补丁选择窗口来选择提交哪些修改   -S[keyid], -S &amp;ndash;gpg- sign[=keyid], -S &amp;ndash;no-gpg-sign Sign commit, GPG-sign commit, 取消 commit.gpgSign 配置变量   -n,&amp;ndash;no-verify 这个参数取消执行预提交和提交信息的钩子。详情看钩子    暂存提交修改 基础 在你修改了你的本地文件之后，在你准备提交这些修改之前，需要把文件暂存起来。
+例如，如果你修改README.md和program.py这两文件：
+$ git add README.</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(四)</title>

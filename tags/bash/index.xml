@@ -6,10 +6,33 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 31 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(六)</title>
+      <link>http://blog.huaifufeng.com/2019/01/post/bash-section-6.html</link>
+      <pubDate>Sat, 02 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/01/post/bash-section-6.html</guid>
+      <description>grep 找bar文件中的foo字符：
+$ grep foo ~/Desktop/bar  寻找bar文件中不包含foo字符的其他字符串：
+$ grep –v foo ~/Desktop/bar  显示所有以foo结尾的字符串：
+$ grep &amp;quot;*foo&amp;quot; ~/Desktop/bar  参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(五)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-5.html</link>
+      <pubDate>Fri, 01 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-5.html</guid>
+      <description>cat    Option Description     -n 输出行号   -v 使用^和M-代替不能打印的字符，除了LFD和TAB   -T 使用^I代替TAB   -E 使用$代替换行符(LF)   -e 和-vE一个含义   -b 输出非空行行号，覆盖-n   -A 等价于-vET   -s 抑制重复输出空行    拼接文件 这是cat命令的主要作用：
+$ cat file1 file2 file3 &amp;gt; file_all  cat命令也用来把拼接文件的结果作为管道的一部分：
+$ cat file1 file2 file3 | grep foo  输出文件内容 $ cat file.txt  将会输出文件的所有内容。</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(四)</title>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="git别名">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/02/post/git-section-11.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（十一）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Saturday, February 2, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#别名">别名</a>
+<ul>
+<li><a href="#简单别名">简单别名</a></li>
+<li><a href="#显示搜索别名">显示搜索别名</a>
+<ul>
+<li><a href="#搜索别名">搜索别名</a></li>
+</ul></li>
+<li><a href="#高级别名">高级别名</a></li>
+<li><a href="#临时忽略追踪文件">临时忽略追踪文件</a></li>
+<li><a href="#分支图显示好看的日志">分支图显示好看的日志</a></li>
+<li><a href="#查看-gitignore忽略的文件">查看.gitignore忽略的文件</a></li>
+<li><a href="#在保持线性历史的同时更新代码">在保持线性历史的同时更新代码</a></li>
+<li><a href="#取消暂存文件">取消暂存文件</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="别名">别名</h2>
+
+<h3 id="简单别名">简单别名</h3>
+
+<p>有两种方法来创建Git别名：</p>
+
+<ul>
+<li>编辑<code>~/.gitconfig</code>文件：</li>
+</ul>
+
+<pre><code>  [alias]
+  ci = commit 
+  st = status 
+  co = checkout
+</code></pre>
+
+<ul>
+<li>使用命令行：</li>
+</ul>
+
+<pre><code>  git config --global alias.ci &quot;commit&quot; 
+  git config --global alias.st &quot;status&quot; 
+  git config --global alias.co &quot;checkout&quot;
+</code></pre>
+
+<p>在别名创建之后：</p>
+
+<ul>
+<li><code>git ci</code>就是<code>git commit</code></li>
+<li><code>git st</code>就是<code>git status</code></li>
+<li><code>git co</code>就是<code>git checkout</code></li>
+</ul>
+
+<p>像正常的命令一样，别名也可以使用参数，例如：</p>
+
+<pre><code> git ci -m &quot;Commit message...&quot; 
+ git co -b feature-42
+</code></pre>
+
+<h3 id="显示搜索别名">显示搜索别名</h3>
+
+<p>你可以使用<code>--get-regexp</code>选项来<a href="https://stackoverflow.com/questions/7066325/list-git-aliases">列出所有的别名</a>：</p>
+
+<pre><code>$ git config --get-regexp '^alias\.'
+</code></pre>
+
+<h4 id="搜索别名">搜索别名</h4>
+
+<p>想要<a href="https://stackoverflow.com/questions/39466417/how-do-i-search-my-git-aliases/39466418#39466418">搜索别名</a>的话，在<code>.gitconfig</code>中添加下面的配置：</p>
+
+<pre><code>aliases = !git config --list | grep ^alias\\. | cut -c 7- | grep -Ei --color \&quot;$1\&quot; &quot;#&quot;
+</code></pre>
+
+<p>然后你就可以使用过下面的命令：</p>
+
+<ul>
+<li><code>git aliases</code>显示所有的别名</li>
+<li><code>git aliases commit</code>只显示包含commit的别名</li>
+</ul>
+
+<h3 id="高级别名">高级别名</h3>
+
+<p>Git允许你在别名中使用非Git命令和完全的shell语法，如果你在命令的签名使用！。在你的<code>~/.gitconfig</code>文件中添加下面的内容：</p>
+
+<pre><code>[alias]
+	temp = !git add -A &amp;&amp; git commit -m &quot;Temp&quot;
+</code></pre>
+
+<p>这在签名的别名中提供了完善的shell语法，意味着可以使用完整的shell函数来构建更加复杂的别名，例如使用过命令行参数的别名：</p>
+
+<pre><code>[alias]
+    ignore = &quot;!f() { echo $1 &gt;&gt; .gitignore; }; f&quot;
+</code></pre>
+
+<p>上面的别名定义了一个<code>f</code>函数，可以运行这个命令带上不同的参数。<code>git ignore .tmp/</code>将会添加<code>.tmp/</code>文件夹到<code>.gitignore</code>文件中。</p>
+
+<p>实际上，这个模式非常有用，Git为您定义了$1、$2等变量，因此您甚至不必为它定义特殊的函数。（但请记住，Git无论如何也会附加参数，即使您通过这些变量访问它，所以您可能希望在末尾添加一个虚拟命令。）</p>
+
+<p>注意带有！前缀的别名命令是在你迁出的项目的根目录执行的，即使你再代码树更深处的地方。这样在项目的根目录执行命令就不用显示的使用<code>cd</code>命令切换到具体的目录了。</p>
+
+<pre><code> [alias]
+ 	ignore = &quot;! echo $1 &gt;&gt; .gitignore&quot;
+</code></pre>
+
+<h3 id="临时忽略追踪文件">临时忽略追踪文件</h3>
+
+<p>临时标记文件为忽略的（在别名后面使用文件名）：</p>
+
+<pre><code>unwatch = update-index --assume-unchanged
+</code></pre>
+
+<p>重新追踪文件使用：</p>
+
+<pre><code>watch = update-index --no-assume-unchanged
+</code></pre>
+
+<p>列出所有临时忽略的文件：</p>
+
+<pre><code>unwatched = &quot;!git ls-files -v | grep '^[[:lower:]]'&quot;
+</code></pre>
+
+<p>清除临时忽略的列表：</p>
+
+<pre><code>watchall = &quot;!git unwatched | xargs -L 1 -I % sh -c 'git watch `echo % | cut -c 2-`'&quot;
+</code></pre>
+
+<p>下面是这些别名的使用例子：</p>
+
+<pre><code>git unwatch my_file.txt 
+git watch my_file.txt 
+git unwatched
+git watchall
+</code></pre>
+
+<h3 id="分支图显示好看的日志">分支图显示好看的日志</h3>
+
+<pre><code>[alias]
+  logp=log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+  lg =  log --graph --date-order --first-parent \
+     --pretty=format:'%C(auto)%h%Creset %C(auto)%d%Creset %s %C(green)(%ad) %C(bold cyan)&lt;%an&gt;%Creset'
+  lgb = log --graph --date-order --branches --first-parent \
+     --pretty=format:'%C(auto)%h%Creset %C(auto)%d%Creset %s %C(green)(%ad) %C(bold
+cyan)&lt;%an&gt;%Creset'
+ lga = log --graph --date-order --all \
+   --pretty=format:'%C(auto)%h%Creset %C(auto)%d%Creset %s %C(green)(%ad) %C(bold
+cyan)&lt;%an&gt;%Creset'
+</code></pre>
+
+<p>下面是<code>--pretty</code>选项使用的选项和占位符的含义介绍（<code>git help log</code>这个命令可以查看详细信息）：</p>
+
+<p><code>--graph</code>显示提交树。</p>
+
+<p><code>--date-order</code>可能的话按照提交的时间戳排序。</p>
+
+<p><code>--first-parent</code>在merge的提交上只显示第一级父</p>
+
+<p><code>--branches</code>显示所有的本地分支（默认只显示当前分支）</p>
+
+<p><code>--all</code>显示所有的本地和远端分支</p>
+
+<p><code>%h</code>显示hash值</p>
+
+<p><code>%ad</code>作者的日期戳</p>
+
+<p><code>%an</code>作者名称</p>
+
+<p><code>%C(auto)</code>使用[color]模块定义的颜色</p>
+
+<p><code>%Creset</code>重置这个颜色</p>
+
+<p><code>%d</code>装饰（分支和标记名称）</p>
+
+<p><code>%s</code>提交的信息</p>
+
+<p><code>%ad</code>作者日期（和<code>--date</code>选项效果一样，不是提交者日期）</p>
+
+<h3 id="查看-gitignore忽略的文件">查看.gitignore忽略的文件</h3>
+
+<pre><code>[ alias ]
+	ignored = ! git ls-files --others --ignored --exclude-standard --directory \ &amp;&amp; git 		ls-files --others -i --exclude-standard
+</code></pre>
+
+<p>想要一行显示一个的话，可以使用<code>grep</code>命令（只是文件夹）：</p>
+
+<pre><code>$ git ignored | grep '/$' 
+.yardoc/
+doc/
+</code></pre>
+
+<p>或者统计文件数量：</p>
+
+<pre><code>$ git ignored | wc -l
+199811   # oops, my home directory is getting crowded
+</code></pre>
+
+<h3 id="在保持线性历史的同时更新代码">在保持线性历史的同时更新代码</h3>
+
+<p>有时候你想要为你代码的提交保持一个线性的历史。如果你在一个分支上工作了一段时间，现在需要<code>git pull</code>一个分支到本地，这回创建一个merge提交。</p>
+
+<pre><code> [alias]
+  	up = pull --rebase
+</code></pre>
+
+<p>这将会更新上游的源，把所有本地未提交的工作放到你pull下了的工作的最开头。</p>
+
+<p>可以使用：</p>
+
+<pre><code>git up
+</code></pre>
+
+<h3 id="取消暂存文件">取消暂存文件</h3>
+
+<p>一般来说，想要删除等待提交的暂存文件使用<code>git reset</code>命令，<code>reset</code>根据传给他参数的不同，有很多的方法执行。为了完全取消对所有文件的暂存，我们可以创建一个不需要记忆传递什么参数的新的<code>reset</code>别名。</p>
+
+<pre><code>$ git config --global alias.unstage &quot;reset --&quot;
+</code></pre>
+
+<p>现在当你想要取消文件的暂存是，可以使用<code>git unstag</code>这个命令，这将会很好的执行。</p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/01/post/bash-section-6.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/bash-section-5.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="列出文件列表">
+    <meta name="description" content="cat命令">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(四)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(五)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/01/post/bash-section-4.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-5.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(四)</h1>
+                    <h1>Bash专业笔记(五)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Thursday, January 31, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, February 1, 2019
                         
                     </span>
                 </div>
@@ -170,18 +170,15 @@
 <ul>
 <li>
 <ul>
-<li><a href="#文件列表">文件列表</a>
+<li><a href="#cat">cat</a>
 <ul>
-<li><a href="#列出文件详情">列出文件详情</a>
-<ul>
-<li><a href="#文件类型">文件类型</a></li>
-</ul></li>
-<li><a href="#列出最近修改的十个文件">列出最近修改的十个文件</a></li>
-<li><a href="#列出隐藏文件">列出隐藏文件</a></li>
-<li><a href="#不使用ls列出文件">不使用ls列出文件</a></li>
-<li><a href="#列出文件">列出文件</a></li>
-<li><a href="#树格式输出文件">树格式输出文件</a></li>
-<li><a href="#按照大小排序">按照大小排序</a></li>
+<li><a href="#拼接文件">拼接文件</a></li>
+<li><a href="#输出文件内容">输出文件内容</a></li>
+<li><a href="#写入文件">写入文件</a></li>
+<li><a href="#显示不可打印字符串">显示不可打印字符串</a></li>
+<li><a href="#标准输入读取内容">标准输入读取内容</a></li>
+<li><a href="#显示行号">显示行号</a></li>
+<li><a href="#拼接gizp加密文件">拼接gizp加密文件</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -189,7 +186,7 @@
         		
         		
 
-<h2 id="文件列表">文件列表</h2>
+<h2 id="cat">cat</h2>
 
 <table>
 <thead>
@@ -201,344 +198,215 @@
 
 <tbody>
 <tr>
-<td>-a, &ndash;all</td>
-<td>列出所有文件，包含.开头的文件</td>
-</tr>
-
-<tr>
-<td>-A, &ndash;almost-all</td>
-<td>列出所有文件，处理.和..</td>
-</tr>
-
-<tr>
-<td>-c</td>
-<td>按修改时间排序文件</td>
-</tr>
-
-<tr>
-<td>-d, &ndash;directory</td>
-<td>列出所有的目录</td>
-</tr>
-
-<tr>
-<td>-h, &ndash;human-readable</td>
-<td>使用人可读的单位列出文件的大小（K, M等）</td>
-</tr>
-
-<tr>
-<td>-H</td>
-<td>和上面的参数一样，只是使用1000来代替1024</td>
-</tr>
-
-<tr>
-<td>-l</td>
-<td>显示文件的详细信息</td>
-</tr>
-
-<tr>
-<td>-o</td>
-<td>显示详细信息处理分组信息</td>
-</tr>
-
-<tr>
-<td>-r, &ndash;reverse</td>
-<td>倒序显示文件内容</td>
-</tr>
-
-<tr>
-<td>-s, &ndash;size</td>
-<td>显示文件的块大小</td>
-</tr>
-
-<tr>
-<td>-S</td>
-<td>以文件大小排序</td>
-</tr>
-
-<tr>
-<td>&ndash;sort=WORD</td>
-<td>按照某个词排序（size，version，status等）。ps：mac没有这个选项</td>
-</tr>
-
-<tr>
-<td>-t</td>
-<td>按照修改时间排序</td>
-</tr>
-
-<tr>
-<td>-u</td>
-<td>按照访问时间排序</td>
+<td>-n</td>
+<td>输出行号</td>
 </tr>
 
 <tr>
 <td>-v</td>
-<td>按照版本排序</td>
+<td>使用^和M-代替不能打印的字符，除了LFD和TAB</td>
 </tr>
 
 <tr>
-<td>-1</td>
-<td>每行返回一个文件</td>
+<td>-T</td>
+<td>使用^I代替TAB</td>
+</tr>
+
+<tr>
+<td>-E</td>
+<td>使用$代替换行符(LF)</td>
+</tr>
+
+<tr>
+<td>-e</td>
+<td>和-vE一个含义</td>
+</tr>
+
+<tr>
+<td>-b</td>
+<td>输出非空行行号，覆盖-n</td>
+</tr>
+
+<tr>
+<td>-A</td>
+<td>等价于-vET</td>
+</tr>
+
+<tr>
+<td>-s</td>
+<td>抑制重复输出空行</td>
 </tr>
 </tbody>
 </table>
 
-<h3 id="列出文件详情">列出文件详情</h3>
+<h3 id="拼接文件">拼接文件</h3>
 
-<p><code>ls</code>命令的<code>-l</code>参数，打印文件长列表格式的详细信息。如果没有指定文件夹，默认列出当前文件夹的内容。</p>
+<p>这是<code>cat</code>命令的主要作用：</p>
 
-<pre><code>$ ls -l /etc
+<pre><code>$ cat file1 file2 file3 &gt; file_all
 </code></pre>
 
-<p>输出例子：</p>
+<p><code>cat</code>命令也用来把拼接文件的结果作为管道的一部分：</p>
 
-<pre><code>total 1204
-drwxr-xr-x  3 root root  4096 Apr 21 03:44 acpi
--rw-r--r--  1 root root  3028 Apr 21 03:38 adduser.conf
-drwxr-xr-x  2 root root  4096 Jun 11 20:42 alternatives
-...
+<pre><code>$ cat file1 file2 file3 | grep foo
 </code></pre>
 
-<p>输出显示的<code>total</code>表示列表内所有文件的块大小，之后显示文件夹内每个文件的八列信息。下面是每一列的详细含义：</p>
+<h3 id="输出文件内容">输出文件内容</h3>
 
-<table>
-<thead>
-<tr>
-<th>列号</th>
-<th>例子</th>
-<th>描述</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>1.1</td>
-<td>d</td>
-<td>文件类型（看下表）</td>
-</tr>
-
-<tr>
-<td>1.2</td>
-<td>rwxr-xr-x</td>
-<td>权限信息字符串</td>
-</tr>
-
-<tr>
-<td>2</td>
-<td>3</td>
-<td>硬链接数</td>
-</tr>
-
-<tr>
-<td>3</td>
-<td>root</td>
-<td>文件所有人姓名</td>
-</tr>
-
-<tr>
-<td>4</td>
-<td>root</td>
-<td>文件所有人分组名</td>
-</tr>
-
-<tr>
-<td>5</td>
-<td>4096</td>
-<td>文件大小</td>
-</tr>
-
-<tr>
-<td>6</td>
-<td>Apr 21 03:44</td>
-<td>文件修改日期</td>
-</tr>
-
-<tr>
-<td>7</td>
-<td>acpi</td>
-<td>文件名称</td>
-</tr>
-</tbody>
-</table>
-
-<h4 id="文件类型">文件类型</h4>
-
-<p>文件类型可以是下面字符中的一个：</p>
-
-<table>
-<thead>
-<tr>
-<th>字符</th>
-<th>类型</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>-</td>
-<td>常规文件</td>
-</tr>
-
-<tr>
-<td>b</td>
-<td>块特殊文件</td>
-</tr>
-
-<tr>
-<td>c</td>
-<td>字符特殊文件</td>
-</tr>
-
-<tr>
-<td>C</td>
-<td>高性能文件</td>
-</tr>
-
-<tr>
-<td>d</td>
-<td>目录</td>
-</tr>
-
-<tr>
-<td>D</td>
-<td>Door（仅限Solaris+2.5的特殊IPC文件）</td>
-</tr>
-
-<tr>
-<td>l</td>
-<td>符合链接文件</td>
-</tr>
-
-<tr>
-<td>M</td>
-<td>离线（迁移）文件（Cray DMF）</td>
-</tr>
-
-<tr>
-<td>n</td>
-<td>特殊的网络文件（HP-UX）</td>
-</tr>
-
-<tr>
-<td>p</td>
-<td>FIFO (命名的pipe文件)</td>
-</tr>
-
-<tr>
-<td>p</td>
-<td>Port (Solaris 10+的特殊系统文件)</td>
-</tr>
-
-<tr>
-<td>s</td>
-<td>Socket文件</td>
-</tr>
-
-<tr>
-<td>？</td>
-<td>其他的文件</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="列出最近修改的十个文件">列出最近修改的十个文件</h3>
-
-<p>下面的命令将会输出最近修改的10个文件，使用列表详情参数<code>-l</code>和修改时间排序参数<code>-t</code>：</p>
-
-<pre><code>$ ls -lt | head
+<pre><code>$ cat file.txt
 </code></pre>
 
-<h3 id="列出隐藏文件">列出隐藏文件</h3>
+<p>将会输出文件的所有内容。</p>
 
-<p>一个dot文件就是一个以.开头的文件。在<code>ls</code>命令中这些文件时默认不显示的，除非要求显示这些文件。下面是<code>ls</code>命令的输出显示：</p>
+<p>如果文件中包含非ASCII的字符，你可以使用<code>cat -v</code>来把这些字符当做符合现实出来。这个用来解决控制字符不显示的情况非常有用。</p>
 
-<pre><code>$ ls 
-bin pki
+<pre><code>$ cat -v unicode.txt
 </code></pre>
 
-<p>使用<code>-a</code>或<code>--all</code>选项可以列出所有的文件，包括dot文件：</p>
+<p>不过对于交互使用，通常使用<code>less</code>和<code>more</code>这类有分页效果的命令。<code>less</code>命令比<code>more</code>命令更加强大，所以通常使用<code>less</code>命令多余<code>more</code>命令。</p>
 
-<pre><code>$ ls -a
-. .ansible .bash_logout .bashrc .lesshst .puppetlabs .viminfo .. .bash_history 
-.bash_profile bin pki .ssh
+<pre><code>$ less file.txt
 </code></pre>
 
-<p><code>-A</code>和<code>--almost-all</code>选项可以列出所有的dot文件，处理<code>.</code>和<code>..</code>文件夹。注意：<code>.</code>代表当前的目录，<code>..</code>代表他的父文件目录。</p>
+<p>想要将文件的内容当做参数传递给命令，使用创定下是更好的选择：</p>
 
-<pre><code>$ ls -A
-.ansible .bash_logout .bashrc .lesshst .puppetlabs .viminfo .bash_history 
-.bash_profile bin pki .ssh
+<pre><code>$ tr A-Z a-z &lt;file.txt # as an alternative to cat file.txt | tr A-Z a-z
 </code></pre>
 
-<h3 id="不使用ls列出文件">不使用ls列出文件</h3>
+<p>想要把一个文件的内容从尾部想前输出可以使用<code>tac</code>命令：</p>
 
-<p>使用Bash的<a href="https://www.gnu.org/software/bash/manual/bashref.html#Filename-Expansion">文件名扩展</a>和<a href="https://www.gnu.org/software/bash/manual/bashref.html#Brace-Expansion">花括号扩展</a>功能可以获取文件的名称：</p>
-
-<pre><code># display the files and directories that are in the current directory
-printf &quot;%s\n&quot; *
-
-# display only the directories in the current directory
-printf &quot;%s\n&quot; */
-
-# display only (some) image files
-printf &quot;%s\n&quot; *.{gif,jpg,png}
+<pre><code>$ tac file.txt
 </code></pre>
 
-<p>想要在程序中把文件的列表放入一个变量，使用<a href="https://www.gnu.org/software/bash/manual/bashref.html#Arrays">bash数组</a>是一个很好的办法：</p>
+<p>如果你想要输出带有行号的文件内容，可以使用<code>cat</code>的<code>-n</code>选项：</p>
 
-<pre><code>files=( * )
-
-# iterate over them
-for file in &quot;${files[@]}&quot;; do 
-	echo &quot;$file&quot;
-done
+<pre><code>$ cat -n file.txt
 </code></pre>
 
-<h3 id="列出文件">列出文件</h3>
+<p>想要一个字节一个字节的线上文件的所有内容，使用16进制是一个标准的解决办法。当你不知道文件的编码方式时，使用这个来处理文件的小片段是非常有效的。标准的16进制输出命令是<code>od -cH</code>，虽然说起来很麻烦，通常可以使用<code>xxd</code>和<code>hexdump</code>来替换。</p>
 
-<p><code>ls</code>命令列出指定文件夹的文件列表，处理dot文件。如果没有指定文件夹的话，将会列出当前文件夹的文件列表。列出的文件默认安装字符顺序排序，当一行不能放下时，会分成不同的列：</p>
-
-<pre><code>$ ls
-apt configs Documents Fonts Music Programming Templates workspace bin Desktop eclipse git Pictures Public Videos
+<pre><code>$ printf 'Hëllö wörld' | xxd
+0000000: 48c3 ab6c 6cc3 b620 77c3 b672 6c64 H..ll.. w..rld
 </code></pre>
 
-<h3 id="树格式输出文件">树格式输出文件</h3>
+<h3 id="写入文件">写入文件</h3>
 
-<p><code>tree</code>像树一样输出指定目录的文件列表。没有指定目录的话，默认会输出当前目录的文件列表。输出的格式像下面一样：</p>
-
-<pre><code>$ tree /tmp
-/tmp
-├── 5037
-├── adb.log
-└── evince-20965
-	└── image.FPWTJY.png
+<pre><code>$ cat &gt; file
 </code></pre>
 
-<p><code>tree</code>使用<code>-L</code>选项可以限制输出的文件层级，使用<code>-d</code>命令只输出文件夹。例如：</p>
+<p>这将会让你吧终端中的文件保存到一个命名为<code>file</code>的文件里面。</p>
 
-<pre><code>$ tree -L 1 -d /tmp 
-/tmp
-└── evince-20965
+<pre><code>$ cat &gt;&gt;file
 </code></pre>
 
-<h3 id="按照大小排序">按照大小排序</h3>
+<p>这将会执行相同的操作，唯一不同的是只会把内容添加到文件的末尾。</p>
 
-<p><code>ls</code>命令的<code>-S</code>参数会输出按照文件大小降序排序的文件列表。</p>
+<p>使用<code>Ctrl + D</code>命令可以在终端中终端像文件中写内容。</p>
 
-<pre><code>$ ls -l -S ./Fruits
-total 444
--rw-rw-rw- 1 root root 295303 Jul 28 19:19 apples.jpg 
--rw-rw-rw- 1 root root 102283 Jul 28 19:19 kiwis.jpg 
--rw-rw-rw- 1 root root 50197 Jul 28 19:19 bananas.jpg
+<p>这里文件说明一个文件的内容可以被用于一个命令或者脚本：</p>
+
+<pre><code>$ cat &lt;&lt;END &gt;file 
+Hello, World. 
+END
 </code></pre>
 
-<p>使用<code>-r</code>的话，会按照相反的顺序输出文件的列表：</p>
+<p>重定向标识符<code>&lt;&lt;</code>后面可以是一个可以在一行内显示的任意字符串（在开始和结尾处没有任何空格），出现在文档的结尾处。你可以添加引号来避免执行命令的替换和变量插值：</p>
 
-<pre><code>$ ls -l -S -r /Fruits
-total 444
--rw-rw-rw- 1 root root 50197 Jul 28 19:19 bananas.jpg 
--rw-rw-rw- 1 root root 102283 Jul 28 19:19 kiwis.jpg 
--rw-rw-rw- 1 root root 295303 Jul 28 19:19 apples.jpg
+<pre><code>$ cat &lt;&lt;'fnord'
+Nothing in `here` will be $changed 
+fnord
 </code></pre>
+
+<p>如果没有引号，<code>here</code>将会像命令一样被执行，如果<code>$changed</code>被定义了，将会被替换成这个变量的值，如果没有定义的话，将会是一个空值。</p>
+
+<h3 id="显示不可打印字符串">显示不可打印字符串</h3>
+
+<p>有时候你想要看一些不能打印的字符串，或者ASCII字符。</p>
+
+<p>如果你从网上复制粘贴了一部分字符串，这些字符串的引号将会是<code>“</code>这类引号而不是<code>&quot;</code>这类引号。</p>
+
+<pre><code>$ cat -v file.txt
+$ cat -vE file.txt # Useful in detecting trailing spaces.
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code> $ echo '” ' | cat -vE # echo | will be replaced by actual file. 
+ M-bM-^@M-^] $
+</code></pre>
+
+<p>你也可以使用<code>cat -A</code>，这个是等价于<code>cat -vET</code>。这将会把TAB字符显示为<code>^I</code>，不可以打印的字符和行末尾的字符：</p>
+
+<pre><code>$ echo '” `' | cat -A 
+M-bM-^@M-^]^I`$
+</code></pre>
+
+<h3 id="标准输入读取内容">标准输入读取内容</h3>
+
+<pre><code>$ cat &lt; file.txt
+</code></pre>
+
+<p>输出和<code>cat file.txt</code>一样，只不过这是从标准输入读取内容，而不是从一个文件：</p>
+
+<pre><code>$ printf &quot;first line\nSecond line\n&quot; | cat -n
+</code></pre>
+
+<p><code>|</code>之前的echo命令会输出两行文本。<code>cat</code>命令将会给这些字符串添加行号。</p>
+
+<h3 id="显示行号">显示行号</h3>
+
+<p>可以使用<code>--number</code>和<code>-n</code>选项来输出每行的行号：</p>
+
+<pre><code>$ cat --number file
+1 line1
+2 line2
+3
+4 line4
+5 line5
+</code></pre>
+
+<p>统计行号的时候想要过滤掉空行，可以使用<code>--number-nonblank</code>或<code>-b</code>选项：</p>
+
+<pre><code>$ cat -b file 
+1 line1
+2 line2
+3 line4 
+4 line5
+</code></pre>
+
+<h3 id="拼接gizp加密文件">拼接gizp加密文件</h3>
+
+<p>使用<code>gizp</code>加密的文件可以拼接到一个更大的<code>gizp</code>文件。</p>
+
+<pre><code>$ cat file1.gz file2.gz file3.gz &gt; combined.gz
+</code></pre>
+
+<p>这个是<code>gizp</code>的一个属性，这比直接拼接文件然后<code>gizp</code>压缩效率差一些：</p>
+
+<pre><code>$ cat file1 file2 file3 | gzip &gt; combined.gz
+</code></pre>
+
+<p>一个完整的例子：</p>
+
+<pre><code>$ echo 'Hello world!' &gt; hello.txt 
+$ echo 'Howdy world!' &gt; howdy.txt 
+$ gzip hello.txt
+$ gzip howdy.txt
+
+$ cat hello.txt.gz howdy.txt.gz &gt; greetings.txt.gz
+
+$ gunzip greetings.txt.gz
+
+$ cat greetings.txt
+</code></pre>
+
+<p>这些命令将会输出：</p>
+
+<pre><code> Hello world! 
+ Howdy world!
+</code></pre>
+
+<p><strong>注意：</strong><code>greetings.txt.gz</code>是一个单独的文件，将被解压缩到<code>greeting.txt</code>这个文件。和<code>tar -czf hello.txt howdy.txt &gt; greetings.tar.gz</code>这个命令相比，将会把文件分开放到压缩包内。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -549,12 +417,12 @@ total 444
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/git-section-10.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十）">&larr; Previous Post</a>
+                      <a href="/2019/02/post/git-section-11.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十一）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/01/post/git-section-9.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（九）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-10.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十）">Next Post &rarr;</a>
                   </li>
                   
               </ul>
