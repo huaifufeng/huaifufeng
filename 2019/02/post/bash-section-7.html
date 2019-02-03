@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="bash别名">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Bash专业笔记(七)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/02/post/bash-section-7.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
+                        </a>
+                       
+                    </div>
+                    <h1>Bash专业笔记(七)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, February 3, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#别名">别名</a>
+<ul>
+<li><a href="#绕过别名">绕过别名</a></li>
+<li><a href="#创建别名">创建别名</a></li>
+<li><a href="#删除别名">删除别名</a></li>
+<li><a href="#bash-aliases">BASH_ALIASES</a></li>
+<li><a href="#展开别名">展开别名</a></li>
+<li><a href="#别名列表">别名列表</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="别名">别名</h2>
+
+<p>shell的别名是一种创建新命令或者在已有命令添加自己代码的方式。这和shell的函数有重叠的地方，但是shell函数更加通用，最好优先使用。</p>
+
+<h3 id="绕过别名">绕过别名</h3>
+
+<p>有时候你想临时绕过一个别名，而不是让别名不能使用了。下面就是一个例子：</p>
+
+<pre><code>alias ls='ls --color=auto'
+</code></pre>
+
+<p>如果我们想要使用<code>ls</code>命令而不是<code>ls</code>别名，有下面几种方法：</p>
+
+<ul>
+<li>使用内建的<code>command</code>命令：<code>command ls</code></li>
+<li>使用命令的完整路径：<code>/bin/ls</code></li>
+<li>在命令名的任何地方添加一个<code>\</code>：<code>\ls</code>或<code>l\s</code></li>
+<li>把命令引用起来：&rdquo;ls&rdquo;或&rsquo;ls&rsquo;</li>
+</ul>
+
+<h3 id="创建别名">创建别名</h3>
+
+<pre><code>alias word='command'
+</code></pre>
+
+<p>使用<code>word</code>就是运行命令<code>command</code>。任何追加到别名后面的参数就会添加到命令后面：</p>
+
+<pre><code> alias myAlias='some command --with --options' 
+ myAlias foo bar baz
+</code></pre>
+
+<p>上面的别名将会执行下面的命令：</p>
+
+<pre><code>some command --with --options foo bar baz
+</code></pre>
+
+<p>想要在一行中执行多个命令，可以使用<code>&amp;&amp;</code>连接多个命令字符串。李润：</p>
+
+<pre><code>alias print_things='echo &quot;foo&quot; &amp;&amp; echo &quot;bar&quot; &amp;&amp; echo &quot;baz&quot;'
+</code></pre>
+
+<h3 id="删除别名">删除别名</h3>
+
+<p>删除别名使用下面的命令：</p>
+
+<pre><code>unalias {alias_name}
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code># create an alias
+$ alias now='date'
+
+# preview the alias
+$ now
+Thu Jul 21 17:11:25 CEST 2016
+
+# remove the alias
+$ unalias now
+
+# test if removed
+$ now
+-bash: now: command not found
+</code></pre>
+
+<h3 id="bash-aliases">BASH_ALIASES</h3>
+
+<p>别名是一些命令的快捷方式，可以在交互式bash实例中定义和使用。这些别名被保存在一个名字文件<code>BASH_ALIASES</code>的关联数组文件。想要在脚本中使用这些别名的话，必须在交互式的shell中：</p>
+
+<pre><code>#!/bin/bash -li
+# note the -li above! -l makes this behave like a login shell
+# -i makes it behave like an interactive shell
+#
+# shopt -s expand_aliases will not work in most cases
+
+echo There are ${#BASH_ALIASES[*]} aliases defined.
+
+for ali in &quot;${!BASH_ALIASES[@]}&quot;; do
+	printf &quot;alias: %-10s triggers: %s\n&quot; &quot;$ali&quot; &quot;${BASH_ALIASES[$ali]}&quot;
+done
+</code></pre>
+
+<h3 id="展开别名">展开别名</h3>
+
+<p>假设<code>bar</code>是命令<code>someCommand -flag1</code>的别名：</p>
+
+<p>在命令行中输入<code>bar</code>命令，然后按下<code>Ctrl+alt+e</code>。</p>
+
+<p>当<code>bar</code>执行的时候，你实际执行的<code>someCommand -flag1</code>命令。</p>
+
+<h3 id="别名列表">别名列表</h3>
+
+<pre><code>$ alias -p
+</code></pre>
+
+<p>可以列出所有的当前拥有的别名。</p>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/git-section-12.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

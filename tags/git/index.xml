@@ -6,10 +6,22 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 02 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（十二）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-12.html</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-12.html</guid>
+      <description>rebase    Parameter Detals     &amp;ndash;continue 在解决完merge冲突之后，重新开始执行rebase命令   &amp;ndash;abort 中断rebase操作之后，重新吧HEAD定位到原有分支上。如果在使用rebase命令的时候提供了分支名，HEAD将会被设置到这个分支上。否则HEAD将会重新设置到rebase操作开始的位置。   &amp;ndash;keep-empty 保留那些没有修改的提交   &amp;ndash;skip 重新开始rebase命令，忽略掉当前的补丁   -m,&amp;ndash;merge 在rebase的时候使用megre策略。当使用递归(默认)合并策略的话，这允许rebase知道上游的重命名。注意rebase合并的工作方式是从上游分支顶部的工作分支重放每个提交。因此，当合并冲突发生时，报告为我们的一方是迄今为止重新定位的系列，从上游开始，他们是工作分支。换句话说，双方交换。   &amp;ndash;stat 显示上次rebase之后，上游做的修改。这些不同将会有rebase.stat配置项控制   -x, &amp;ndash;exec command 执行交互式rebase，在每个提交和执行command之间暂停    本地分支rebase rebase在另外提交的顶部应用一系列的提交。rebase一个分支的话，首先切换到这个分支，然后rebase到另一个分支的顶部：
+$ git checkout topic $ git rebase master  这会导致：
+	A---B---C topic / D---E---F---G master  变成：
+ A&#39;--B&#39;--C&#39; topic / D---E---F---G master  这些操作可以合并到一个简单命令上面：切换分支然后执行rebase命令</description>
+    </item>
     
     <item>
       <title>Git专业笔记（十一）</title>

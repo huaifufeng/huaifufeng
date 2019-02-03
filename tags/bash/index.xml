@@ -6,17 +6,34 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 02 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Bash专业笔记(七)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-7.html</link>
+      <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-7.html</guid>
+      <description>别名 shell的别名是一种创建新命令或者在已有命令添加自己代码的方式。这和shell的函数有重叠的地方，但是shell函数更加通用，最好优先使用。
+绕过别名 有时候你想临时绕过一个别名，而不是让别名不能使用了。下面就是一个例子：
+alias ls=&#39;ls --color=auto&#39;  如果我们想要使用ls命令而不是ls别名，有下面几种方法：
+ 使用内建的command命令：command ls 使用命令的完整路径：/bin/ls 在命令名的任何地方添加一个\：\ls或l\s 把命令引用起来：&amp;rdquo;ls&amp;rdquo;或&amp;rsquo;ls&amp;rsquo;  创建别名 alias word=&#39;command&#39;  使用word就是运行命令command。任何追加到别名后面的参数就会添加到命令后面：
+ alias myAlias=&#39;some command --with --options&#39; myAlias foo bar baz  上面的别名将会执行下面的命令：
+some command --with --options foo bar baz  想要在一行中执行多个命令，可以使用&amp;amp;&amp;amp;连接多个命令字符串。李润：
+alias print_things=&#39;echo &amp;quot;foo&amp;quot; &amp;amp;&amp;amp; echo &amp;quot;bar&amp;quot; &amp;amp;&amp;amp; echo &amp;quot;baz&amp;quot;&#39;  删除别名 删除别名使用下面的命令：
+unalias {alias_name}  例如：
+# create an alias $ alias now=&#39;date&#39; # preview the alias $ now Thu Jul 21 17:11:25 CEST 2016 # remove the alias $ unalias now # test if removed $ now -bash: now: command not found  BASH_ALIASES 别名是一些命令的快捷方式，可以在交互式bash实例中定义和使用。这些别名被保存在一个名字文件BASH_ALIASES的关联数组文件。想要在脚本中使用这些别名的话，必须在交互式的shell中：</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(六)</title>
-      <link>http://blog.huaifufeng.com/2019/01/post/bash-section-6.html</link>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-6.html</link>
       <pubDate>Sat, 02 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.huaifufeng.com/2019/01/post/bash-section-6.html</guid>
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-6.html</guid>
       <description>grep 找bar文件中的foo字符：
 $ grep foo ~/Desktop/bar  寻找bar文件中不包含foo字符的其他字符串：
 $ grep –v foo ~/Desktop/bar  显示所有以foo结尾的字符串：
