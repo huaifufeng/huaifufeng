@@ -6,10 +6,24 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 04 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(八)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-8.html</link>
+      <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-8.html</guid>
+      <description>任务和进程 任务处理 创建任务 要创建一个任务，可以在命令后面添加&amp;amp;符号：
+$ sleep 10 &amp;amp; [1] 20024  你也可以创建一个运行任务进程，可以按下Ctrl+z：
+前后台进程 想要把一个后台进程获取到前台执行，可以使用fg命令加上%和进程数：
+$ sleep 10 &amp;amp; [1] 20024 $ fg %1 sleep 10  现在你可以控制流程，想要把进程放回到后台运行的话，使用bg命令。因为终端的缓存，你需要使用Ctrl+z来终端进行。
+$ sleep 10 ^Z [1]+ Stopped sleep 10 $ bg %1 [1]+ sleep 10 &amp;amp;  因为程序员的&amp;rdquo;惰性&amp;rdquo;，当只有一个进程或者想要处理列表中第一个进程，可以只适使用一个%。
+$ sleep 10 &amp;amp; [1] 20024 $ fg % # to bring a process to foreground &#39;fg %&#39; is also working. sleep 10  或者：</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(七)</title>

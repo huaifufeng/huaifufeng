@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="bash别名">
+    <meta name="description" content="工作和流程">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(七)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(八)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-7.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-8.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(七)</h1>
+                    <h1>Bash专业笔记(八)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, February 3, 2019
+                    <span  class="meta">Posted by 怀府风 on Monday, February 4, 2019
                         
                     </span>
                 </div>
@@ -170,14 +170,20 @@
 <ul>
 <li>
 <ul>
-<li><a href="#别名">别名</a>
+<li><a href="#任务和进程">任务和进程</a>
 <ul>
-<li><a href="#绕过别名">绕过别名</a></li>
-<li><a href="#创建别名">创建别名</a></li>
-<li><a href="#删除别名">删除别名</a></li>
-<li><a href="#bash-aliases">BASH_ALIASES</a></li>
-<li><a href="#展开别名">展开别名</a></li>
-<li><a href="#别名列表">别名列表</a></li>
+<li><a href="#任务处理">任务处理</a>
+<ul>
+<li><a href="#创建任务">创建任务</a></li>
+<li><a href="#前后台进程">前后台进程</a></li>
+<li><a href="#杀掉运行的进程">杀掉运行的进程</a></li>
+<li><a href="#开始和删掉指定进程">开始和删掉指定进程</a></li>
+</ul></li>
+<li><a href="#检查指定端口运行的进程">检查指定端口运行的进程</a></li>
+<li><a href="#保持后台进程">保持后台进程</a></li>
+<li><a href="#列出当前任务">列出当前任务</a></li>
+<li><a href="#显示允许进程的信息">显示允许进程的信息</a></li>
+<li><a href="#列出所有进程">列出所有进程</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -185,102 +191,215 @@
         		
         		
 
-<h2 id="别名">别名</h2>
+<h2 id="任务和进程">任务和进程</h2>
 
-<p>shell的别名是一种创建新命令或者在已有命令添加自己代码的方式。这和shell的函数有重叠的地方，但是shell函数更加通用，最好优先使用。</p>
+<h3 id="任务处理">任务处理</h3>
 
-<h3 id="绕过别名">绕过别名</h3>
+<h4 id="创建任务">创建任务</h4>
 
-<p>有时候你想临时绕过一个别名，而不是让别名不能使用了。下面就是一个例子：</p>
+<p>要创建一个任务，可以在命令后面添加<code>&amp;</code>符号：</p>
 
-<pre><code>alias ls='ls --color=auto'
+<pre><code>$ sleep 10 &amp; 
+[1] 20024
 </code></pre>
 
-<p>如果我们想要使用<code>ls</code>命令而不是<code>ls</code>别名，有下面几种方法：</p>
+<p>你也可以创建一个运行任务进程，可以按下<code>Ctrl+z</code>：</p>
 
-<ul>
-<li>使用内建的<code>command</code>命令：<code>command ls</code></li>
-<li>使用命令的完整路径：<code>/bin/ls</code></li>
-<li>在命令名的任何地方添加一个<code>\</code>：<code>\ls</code>或<code>l\s</code></li>
-<li>把命令引用起来：&rdquo;ls&rdquo;或&rsquo;ls&rsquo;</li>
-</ul>
+<h4 id="前后台进程">前后台进程</h4>
 
-<h3 id="创建别名">创建别名</h3>
+<p>想要把一个后台进程获取到前台执行，可以使用<code>fg</code>命令加上<code>%</code>和进程数：</p>
 
-<pre><code>alias word='command'
+<pre><code>$ sleep 10 &amp; 
+[1] 20024
+
+$ fg %1 
+sleep 10
 </code></pre>
 
-<p>使用<code>word</code>就是运行命令<code>command</code>。任何追加到别名后面的参数就会添加到命令后面：</p>
+<p>现在你可以控制流程，想要把进程放回到后台运行的话，使用<code>bg</code>命令。因为终端的缓存，你需要使用<code>Ctrl+z</code>来终端进行。</p>
 
-<pre><code> alias myAlias='some command --with --options' 
- myAlias foo bar baz
+<pre><code>$ sleep 10
+^Z
+[1]+ Stopped sleep 10
+
+$ bg %1
+[1]+ sleep 10 &amp;
 </code></pre>
 
-<p>上面的别名将会执行下面的命令：</p>
+<p>因为程序员的&rdquo;惰性&rdquo;，当只有一个进程或者想要处理列表中第一个进程，可以只适使用一个<code>%</code>。</p>
 
-<pre><code>some command --with --options foo bar baz
+<pre><code>$ sleep 10 &amp; 
+[1] 20024
+
+$ fg % # to bring a process to foreground 'fg %' is also working. 
+sleep 10
 </code></pre>
 
-<p>想要在一行中执行多个命令，可以使用<code>&amp;&amp;</code>连接多个命令字符串。李润：</p>
+<p>或者：</p>
 
-<pre><code>alias print_things='echo &quot;foo&quot; &amp;&amp; echo &quot;bar&quot; &amp;&amp; echo &quot;baz&quot;'
+<pre><code>$ % # laziness knows no boundaries, '%' is also working. 
+sleep 10
 </code></pre>
 
-<h3 id="删除别名">删除别名</h3>
+<p>另外，只是使用<code>fg</code>或<code>bg</code>不带任何参数的话，这将只会处理最后一个进程：</p>
 
-<p>删除别名使用下面的命令：</p>
-
-<pre><code>unalias {alias_name}
+<pre><code>$ sleep 20 &amp; 
+$ sleep 10 &amp; 
+$ fg
+sleep 10 ^C
+$ fg 
+sleep 20
 </code></pre>
+
+<h4 id="杀掉运行的进程">杀掉运行的进程</h4>
+
+<pre><code>$ sleep 10 &amp; 
+[1] 20024
+
+$ kill %1
+[1]+ Terminated sleep 10
+</code></pre>
+
+<p>这个sleep进程运行在后台，它的进程id是20024，任务id是1。你想用这个进程的话，可以使用进程id，也可以使用任务id。如果你使用了任务id，必须在前面加上<code>%</code>。kill发送的默认kill信号是SIGTERM，它允许目标进程正常退出。</p>
+
+<p>下面是一些通用的kill信号标识。想要查看完整的kill信号标识的话，可以使用<code>kill -l</code>：</p>
+
+<table>
+<thead>
+<tr>
+<th>信号名</th>
+<th>信号值</th>
+<th>效果</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>SIGHUP</td>
+<td>1</td>
+<td>挂断</td>
+</tr>
+
+<tr>
+<td>SIGINT</td>
+<td>2</td>
+<td>键盘终端</td>
+</tr>
+
+<tr>
+<td>SIGKILL</td>
+<td>9</td>
+<td>删掉信号</td>
+</tr>
+
+<tr>
+<td>SIGTERM</td>
+<td>15</td>
+<td>终止信息</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="开始和删掉指定进程">开始和删掉指定进程</h4>
+
+<p>杀死进程最简单的方式是像下面命令这样，在<code>pkill</code>中指定进程名称：</p>
+
+<pre><code>$ pkill -f test.py
+</code></pre>
+
+<p>或者应更简单的方法是通过<code>pgrep</code>命令搜索实际的进程id：</p>
+
+<pre><code>$ kill $(pgrep -f 'python test.py')
+</code></pre>
+
+<p>相同的结果可以通过<code>grep</code>的<code>ps -ef|grep name_of_process</code>来获取进程的id，然后kill掉这个进程。使用进程名在开发环境是方便的，但是在生产环境就可能是很危险的。你机会不能确定这个名称就是生成环境进程的名称你想要kill的。在这些情况下，后面的方法实际上是安全的。</p>
+
+<p>使用以下方法启动最终将终止的脚本。 让我们假设您要执行并最终终止的命令是<code>python test.py</code>。</p>
+
+<pre><code>#!/bin/bash
+if [[ ! -e /tmp/test.py.pid ]]; then # Check if the file already exists 
+	python test.py &amp; #+and if so do not run another process. 
+	echo $! &gt; /tmp/test.py.pid
+else
+	echo -n &quot;ERROR: The process is already running with pid &quot; 
+	cat /tmp/test.py.pid
+	echo
+fi
+</code></pre>
+
+<p>这个脚本会在<code>/tmp</code>目录下面创建一个包含<code>python test.py</code>进程pid的文件。如果这个文件已经存在了，我们假设这个命令已经在运行了，脚本会返回一个错误。</p>
+
+<p>当你想要kill这个命令时，可以使用下面的脚本：</p>
+
+<pre><code>#!/bin/bash
+
+if [[ -e /tmp/test.py.pid ]]; then  # If the file do not exists, then the
+	kill `cat /tmp/test.py.pid`     #+the process is not running. Useless
+	rm /tmp/test.py.pid             #+trying to kill it.
+else
+	echo &quot;test.py is not running&quot;
+fi
+</code></pre>
+
+<p>这将会完全kill和你命令有关的进程，而不用任何易失去的信息（如运行命令的字符串）。即使在文件不存在的情况下，脚本也假设你要终止没有在运行的进程。</p>
+
+<p>最后一个例子可以轻松的改进，对于多次运行的命令（例如追加pid带文件的后面而不是覆盖），并管理进程在以外的情况下关闭。</p>
+
+<h3 id="检查指定端口运行的进程">检查指定端口运行的进程</h3>
+
+<p>检查8080端口运行的进程：</p>
+
+<pre><code>$ lsof -i :8080
+</code></pre>
+
+<h3 id="保持后台进程">保持后台进程</h3>
+
+<pre><code>$ gzip extremelylargefile.txt &amp; 
+$ bg
+$ disown %1
+</code></pre>
+
+<p>这些命令允许你的进程继续运行，在终端shell关闭的情况下。</p>
+
+<h3 id="列出当前任务">列出当前任务</h3>
+
+<pre><code>$ tail -f /var/log/syslog &gt; log.txt
+[1]+ Stopped  tail -f /var/log/syslog &gt; log.txt
+$ sleep 10 &amp; 
+
+$ jobs
+[1]+ Stopped  tail -f /var/log/syslog &gt; log.txt
+[2]- Running  sleep 10 &amp;
+</code></pre>
+
+<h3 id="显示允许进程的信息">显示允许进程的信息</h3>
+
+<p><code>ps aux|grep &lt;search-term&gt;</code>显示<code>&lt;search-term&gt;</code>匹配到的进程的信息。</p>
 
 <p>例如：</p>
 
-<pre><code># create an alias
-$ alias now='date'
-
-# preview the alias
-$ now
-Thu Jul 21 17:11:25 CEST 2016
-
-# remove the alias
-$ unalias now
-
-# test if removed
-$ now
--bash: now: command not found
+<pre><code>root@server7:~# ps aux | grep nginx
+root      315 0.0 0.3 144392 1020 ? Ss May28 0:00 nginx: master process /usr/sbin/nginx
+www-data 5647 0.0 1.1 145124 3048 ? S  Jul18 2:53 nginx: worker process
+www-data 5648 0.0 0.1 144392  376 ? S  Jul18 0:00 nginx: cache manager process
+root    13134 0.0 0.3 4960 920 pts/0 S+ 14:33 0:00 grep --color=auto nginx
+root@server7:~#
 </code></pre>
 
-<h3 id="bash-aliases">BASH_ALIASES</h3>
+<p>这里第二列就是经常的id。例如你想要kill掉nginx的进程使用<code>kill 5647</code>这个命令。推荐<code>kill</code>命令使用<code>SIGTERM</code>而不是<code>SIGKILL</code>。</p>
 
-<p>别名是一些命令的快捷方式，可以在交互式bash实例中定义和使用。这些别名被保存在一个名字文件<code>BASH_ALIASES</code>的关联数组文件。想要在脚本中使用这些别名的话，必须在交互式的shell中：</p>
+<h3 id="列出所有进程">列出所有进程</h3>
 
-<pre><code>#!/bin/bash -li
-# note the -li above! -l makes this behave like a login shell
-# -i makes it behave like an interactive shell
-#
-# shopt -s expand_aliases will not work in most cases
+<p>有两种方法列出系统所有的进程。两者都列出了所有用户运行的所有进程，但它们输出的格式不同（差异的原因是历史的）。</p>
 
-echo There are ${#BASH_ALIASES[*]} aliases defined.
-
-for ali in &quot;${!BASH_ALIASES[@]}&quot;; do
-	printf &quot;alias: %-10s triggers: %s\n&quot; &quot;$ali&quot; &quot;${BASH_ALIASES[$ali]}&quot;
-done
+<pre><code>$ ps -ef # lists all processes
+$ ps aux # lists all processes in alternative format (BSD)
 </code></pre>
 
-<h3 id="展开别名">展开别名</h3>
+<p>这可以用来检查哪个进程在运行。例如，检查SSH的服务端（sshd）是否在运行：</p>
 
-<p>假设<code>bar</code>是命令<code>someCommand -flag1</code>的别名：</p>
-
-<p>在命令行中输入<code>bar</code>命令，然后按下<code>Ctrl+alt+e</code>。</p>
-
-<p>当<code>bar</code>执行的时候，你实际执行的<code>someCommand -flag1</code>命令。</p>
-
-<h3 id="别名列表">别名列表</h3>
-
-<pre><code>$ alias -p
+<pre><code>$ ps -ef | grep sshd
 </code></pre>
-
-<p>可以列出所有的当前拥有的别名。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -290,13 +409,9 @@ done
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/02/post/git-section-13.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十三）">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-12.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十二）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-13.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十三）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

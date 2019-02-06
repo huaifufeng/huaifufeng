@@ -6,10 +6,23 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 03 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 04 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（十三）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-13.html</link>
+      <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-13.html</guid>
+      <description>配置    Parameter Detals     &amp;ndash;system 编辑为每个人使用的系统配置（在linux上，配置文件在$(prefix)/etc/gitconfig）   &amp;ndash;global 修改为你的每个仓库使用的全局配置文件（在linux上，配置文件在~/.gitconfig）   &amp;ndash;local 编辑指定仓库的配置文件，在你仓库的.git/config这个文件内，这个是默认的配置    配置编辑器 有多个方式来配置你commit和rebase的时候使用的编辑器：
+ 修改core.editor配置项：   $ git config --global core.editor nano   设置GIT_EDITOR环境变量：  举个例子，应用到一个命令：
+ $ GIT_EDITOR=nano git commit  或者为终端执行的所有git命令。注意：直到你关闭了终端，这个配置才会生效：
+ $ export GIT_EDITOR=nano   想要修改终端所有程序的编辑器，不仅仅是git，可以VISUAL或EDITOR环境变量（可以查看VISUAL vs EDITOR）:   $ export EDITOR=nano  注意：像上面一样，这个命令只会应用到当前的终端页面。你的shell通常会有一个配置文件，允许你永远的设置你的配置。（比如在bash时，可以添加上面的配置到~/.bashrc获取~/.bash_profile配置文件）。
+一些文本编辑器（主要是GUI编辑器）一次只运行一个实例，如果你已经打开了一个实例，通常会退出。如果您的文本编辑器就是这种情况，Git将打印Aborting commit due to empty commit message。不允许你先编辑你的提交信息。如果你遇到了这种情况，检查你的编辑器文档是否有--wait这个配置项。允许你在文档关闭之前终端提交。</description>
+    </item>
     
     <item>
       <title>Git专业笔记（十二）</title>
