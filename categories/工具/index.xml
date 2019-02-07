@@ -6,10 +6,20 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 05 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（十五）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-15.html</link>
+      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-15.html</guid>
+      <description>Rev-List    Parameter Detals     &amp;ndash;online 将提交显示为带有标题的单行。    列出在master不在远端master提交 git rev-list --oneline master ^origin/master  git rev-list命令会列出在一个分支不在另一个分支的提交。当您试图弄清楚代码是否已合并到分支中时，它是一个很好的工具。
+ 使用--oneline选项显示每个提交的标题 ^操作符会在列表中过滤指定的分支 如果需要，可以传递两个以上的分支。git rev-list foo bar ^baz将会列出foo和bar的提交，不包括baz。  参考：Git® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(九)</title>
@@ -23,6 +33,18 @@ $ ls &amp;gt;file.txt $ &amp;gt; file.txt ls  如果目标文件不存在的话�
 默认的文件标识符是标准输出，或者没有提供的话就是1。下面的命令和之前的一样，只是指定了标准输出：
 $ ls 1&amp;gt;file.txt  注意：重定向是执行的shell初始化的，而不是由执行的命令初始化的，因此在命令执行前，初始化工作就已经完成了。
 追加 Vs 重置 重置 &amp;gt;  文件不存在创建指定文件 重置（删除文件内容） 向文件写入内容  $ echo &amp;quot;first line&amp;quot; &amp;gt; /tmp/lines $ echo &amp;quot;second line&amp;quot; &amp;gt; /tmp/lines $ cat /tmp/lines second line  追加 &amp;gt;&amp;gt;  不存在创建文件 追加文件（向文件末尾写入内容）  # Overwrite existing file $ echo &amp;quot;first line&amp;quot; &amp;gt; /tmp/lines # Append a second line $ echo &amp;quot;second line&amp;quot; &amp;gt;&amp;gt; /tmp/lines $ cat /tmp/lines first line second line  重定向到STDOUT和STDERR 文件标识符0和1是指针。我们通过重定向更改文件描述符指向的内容。&amp;gt;/dev/null意味着1指向/dev/null。</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（十四）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-14.html</link>
+      <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-14.html</guid>
+      <description>分支    Parameter Detals     -d,&amp;ndash;delete 删除分支。这个分支必须合并到它的远端分支，如果设置了--track或--set-upstream的话，就需要在HEAD中   -D --delete --force强制删除的简称   -m,&amp;ndash;move 移动/重命名分支和相应的reflog   -M --move —force命令的简称   -r,&amp;ndash;remotes 列出或删除（使用-d）远端追踪的分支   -a,&amp;ndash;all 列出远端追踪分支和本地分支   &amp;ndash;list 激活列表模式。git branch &amp;lt;pattern&amp;gt;会试着新建分支。git branch -- list &amp;lt;pattern&amp;gt;列出所有匹配的分支   &amp;ndash;set-upstream 如果指定的分支不存在或者指定了--force参数，行为会和--track一样。否则在创建分支时设置像--track那样的配置，除了分支指向的地方没有改变    创建和切换新分支 创建一个新分支，并且保留在当前分支，执行下面的命令：
+$ git branch &amp;lt;name&amp;gt;  通常，分支名称不得包含空格，并且符合列出的这里列出的其他规范。切换到已经存在的分支：
+$ git checkout &amp;lt;name&amp;gt;  创建并且切换到新分支：
+$ git checkout -b &amp;lt;name&amp;gt;  在指定索引创建一个分支，而不是在当前分支的最后提交（就是HEAD），可以使用下面任何一个命令：</description>
     </item>
     
     <item>
@@ -50,18 +72,6 @@ $ sleep 10 &amp;amp; [1] 20024 $ fg % # to bring a process to foreground &#39;fg
  $ GIT_EDITOR=nano git commit  或者为终端执行的所有git命令。注意：直到你关闭了终端，这个配置才会生效：
  $ export GIT_EDITOR=nano   想要修改终端所有程序的编辑器，不仅仅是git，可以VISUAL或EDITOR环境变量（可以查看VISUAL vs EDITOR）:   $ export EDITOR=nano  注意：像上面一样，这个命令只会应用到当前的终端页面。你的shell通常会有一个配置文件，允许你永远的设置你的配置。（比如在bash时，可以添加上面的配置到~/.bashrc获取~/.bash_profile配置文件）。
 一些文本编辑器（主要是GUI编辑器）一次只运行一个实例，如果你已经打开了一个实例，通常会退出。如果您的文本编辑器就是这种情况，Git将打印Aborting commit due to empty commit message。不允许你先编辑你的提交信息。如果你遇到了这种情况，检查你的编辑器文档是否有--wait这个配置项。允许你在文档关闭之前终端提交。</description>
-    </item>
-    
-    <item>
-      <title>Git专业笔记（十三）</title>
-      <link>http://blog.huaifufeng.com/2019/02/post/git-section-13.html</link>
-      <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-13.html</guid>
-      <description>分支    Parameter Detals     -d,&amp;ndash;delete 删除分支。这个分支必须合并到它的远端分支，如果设置了--track或--set-upstream的话，就需要在HEAD中   -D --delete --force强制删除的简称   -m,&amp;ndash;move 移动/重命名分支和相应的reflog   -M --move —force命令的简称   -r,&amp;ndash;remotes 列出或删除（使用-d）远端追踪的分支   -a,&amp;ndash;all 列出远端追踪分支和本地分支   &amp;ndash;list 激活列表模式。git branch &amp;lt;pattern&amp;gt;会试着新建分支。git branch -- list &amp;lt;pattern&amp;gt;列出所有匹配的分支   &amp;ndash;set-upstream 如果指定的分支不存在或者指定了--force参数，行为会和--track一样。否则在创建分支时设置像--track那样的配置，除了分支指向的地方没有改变    创建和切换新分支 创建一个新分支，并且保留在当前分支，执行下面的命令：
-$ git branch &amp;lt;name&amp;gt;  通常，分支名称不得包含空格，并且符合列出的这里列出的其他规范。切换到已经存在的分支：
-$ git checkout &amp;lt;name&amp;gt;  创建并且切换到新分支：
-$ git checkout -b &amp;lt;name&amp;gt;  在指定索引创建一个分支，而不是在当前分支的最后提交（就是HEAD），可以使用下面任何一个命令：</description>
     </item>
     
     <item>
