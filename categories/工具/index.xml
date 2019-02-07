@@ -6,10 +6,31 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（十六）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-16.html</link>
+      <pubDate>Thu, 07 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-16.html</guid>
+      <description>压缩 不使用rebase压缩提交 如果你想把之前的x个提交压缩到一个提交，你可以使用下面的命令：
+$ git reset --soft HEAD~x $ git commit  这里，你可以替换x为你想要压缩到一个提交的多个提交的数量。
+请记住这将会创建一个新的提交，基本上会丢掉之前x个提交包含的提交人，提交信息和提交日期。你可能需要首先复制粘贴现有的提交消息。
+merge时压缩提交 你可以使用git merge —squash命令把这个分支的修改压缩到一个提交。并不是实际的提交被创建了。
+ git merge --squash &amp;lt;branch&amp;gt; git commit  这或多或少相当于使用git reset命令，但当合并更改具有符号名时更方便。比较：
+git checkout &amp;lt;branch&amp;gt; git reset --soft $(git merge-base master &amp;lt;branch&amp;gt;) git commit  rebase时压缩提交 在git rebase命令执行的时候可以压缩多个提交。建议您在尝试以这种方式压缩提交之前了解rebase命令。
+ 确定要从哪个提交中rebase，并注意其提交的hash值。
+ 执行git rebase -i [commit hash]
+  或者，你可以使用HEAD~4来代替提交的hash值，来查看最新的提交和最新之前4个提交
+ 在运行这个命令打开的编辑器中，选择哪些提交你想要合并。替换这些行之前的pick为squash来吧这些提交压缩的签名的提交中。
+ 在选择了压缩的提交之后，你需要编辑提交的信息
+  查看提交并且决定哪些提交要rebase:
+&amp;gt; git log --oneline 612f2f7 This commit should not be squashed d84b05d This commit should be squashed ac60234 Yet another commit 36d15de Rebase from here 17692d1 Did some more stuff e647334 Another Commit 2e30df6 Initial commit &amp;gt; git rebase -i 36d15de  这时你选择的编辑器就会打开，在这里你可以描述你想要这些提交做什么。Git在注释中提供了帮助信息。如果你退出了这个编辑器，什么都不会发生，因为每个提交都会保持和之前一样的顺序。在这个例子中，我们应用下面的命令：</description>
+    </item>
     
     <item>
       <title>Git专业笔记（十五）</title>
