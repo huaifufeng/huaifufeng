@@ -25,6 +25,18 @@
     </item>
     
     <item>
+      <title>Git专业笔记（十三）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-13.html</link>
+      <pubDate>Mon, 04 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-13.html</guid>
+      <description>分支    Parameter Detals     -d,&amp;ndash;delete 删除分支。这个分支必须合并到它的远端分支，如果设置了--track或--set-upstream的话，就需要在HEAD中   -D --delete --force强制删除的简称   -m,&amp;ndash;move 移动/重命名分支和相应的reflog   -M --move —force命令的简称   -r,&amp;ndash;remotes 列出或删除（使用-d）远端追踪的分支   -a,&amp;ndash;all 列出远端追踪分支和本地分支   &amp;ndash;list 激活列表模式。git branch &amp;lt;pattern&amp;gt;会试着新建分支。git branch -- list &amp;lt;pattern&amp;gt;列出所有匹配的分支   &amp;ndash;set-upstream 如果指定的分支不存在或者指定了--force参数，行为会和--track一样。否则在创建分支时设置像--track那样的配置，除了分支指向的地方没有改变    创建和切换新分支 创建一个新分支，并且保留在当前分支，执行下面的命令：
+$ git branch &amp;lt;name&amp;gt;  通常，分支名称不得包含空格，并且符合列出的这里列出的其他规范。切换到已经存在的分支：
+$ git checkout &amp;lt;name&amp;gt;  创建并且切换到新分支：
+$ git checkout -b &amp;lt;name&amp;gt;  在指定索引创建一个分支，而不是在当前分支的最后提交（就是HEAD），可以使用下面任何一个命令：</description>
+    </item>
+    
+    <item>
       <title>Git专业笔记（十二）</title>
       <link>http://blog.huaifufeng.com/2019/02/post/git-section-12.html</link>
       <pubDate>Sun, 03 Feb 2019 00:00:00 +0000</pubDate>

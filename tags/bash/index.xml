@@ -6,10 +6,24 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 04 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 05 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(九)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-9.html</link>
+      <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-9.html</guid>
+      <description>重定向    Parameter Details     内部文件标识 整形   重定向 &amp;gt;或&amp;lt;或&amp;lt;&amp;gt;   外部文件标识或路径 文件标识或路径后面加&amp;amp;    重定向标准输出 &amp;gt;重定向当前命令的标准输出（STDOUT）到一个文件或者另外的描述符。
+下面的例子会把ls命令的标准输出，输出到一个文件file.txt：
+$ ls &amp;gt;file.txt $ &amp;gt; file.txt ls  如果目标文件不存在的话，就会创建这个文件，否则就会重置这个文件。
+默认的文件标识符是标准输出，或者没有提供的话就是1。下面的命令和之前的一样，只是指定了标准输出：
+$ ls 1&amp;gt;file.txt  注意：重定向是执行的shell初始化的，而不是由执行的命令初始化的，因此在命令执行前，初始化工作就已经完成了。
+追加 Vs 重置 重置 &amp;gt;  文件不存在创建指定文件 重置（删除文件内容） 向文件写入内容  $ echo &amp;quot;first line&amp;quot; &amp;gt; /tmp/lines $ echo &amp;quot;second line&amp;quot; &amp;gt; /tmp/lines $ cat /tmp/lines second line  追加 &amp;gt;&amp;gt;  不存在创建文件 追加文件（向文件末尾写入内容）  # Overwrite existing file $ echo &amp;quot;first line&amp;quot; &amp;gt; /tmp/lines # Append a second line $ echo &amp;quot;second line&amp;quot; &amp;gt;&amp;gt; /tmp/lines $ cat /tmp/lines first line second line  重定向到STDOUT和STDERR 文件标识符0和1是指针。我们通过重定向更改文件描述符指向的内容。&amp;gt;/dev/null意味着1指向/dev/null。</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(八)</title>
