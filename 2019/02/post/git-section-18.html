@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="Rev-List">
+    <meta name="description" content="恢复修改">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（十六）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（十八）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/git-section-16.html">
+    <link rel="canonical" href="/2019/02/post/git-section-18.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（十六）</h1>
+                    <h1>Git专业笔记（十八）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Thursday, February 7, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, February 9, 2019
                         
                     </span>
                 </div>
@@ -170,13 +170,17 @@
 <ul>
 <li>
 <ul>
-<li><a href="#压缩">压缩</a>
+<li><a href="#恢复">恢复</a>
 <ul>
-<li><a href="#不使用rebase压缩提交">不使用rebase压缩提交</a></li>
-<li><a href="#merge时压缩提交">merge时压缩提交</a></li>
-<li><a href="#rebase时压缩提交">rebase时压缩提交</a></li>
-<li><a href="#自动压缩和修正">自动压缩和修正</a></li>
-<li><a href="#自动压缩-在rebase时压缩">自动压缩：在rebase时压缩</a></li>
+<li><a href="#恢复reset操作">恢复reset操作</a></li>
+<li><a href="#恢复stash">恢复stash</a>
+<ul>
+<li><a href="#git-stash-pop">git stash pop</a></li>
+</ul></li>
+<li><a href="#从丢失的提交中恢复">从丢失的提交中恢复</a></li>
+<li><a href="#提交后恢复已删除的文件">提交后恢复已删除的文件</a></li>
+<li><a href="#从先前版本恢复文件">从先前版本恢复文件</a></li>
+<li><a href="#恢复删除的分支">恢复删除的分支</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -184,167 +188,149 @@
         		
         		
 
-<h2 id="压缩">压缩</h2>
+<h2 id="恢复">恢复</h2>
 
-<h3 id="不使用rebase压缩提交">不使用rebase压缩提交</h3>
+<h3 id="恢复reset操作">恢复reset操作</h3>
 
-<p>如果你想把之前的<code>x</code>个提交压缩到一个提交，你可以使用下面的命令：</p>
+<p>使用Git，你总是（几乎）可以把时钟倒转。</p>
 
-<pre><code>$ git reset --soft HEAD~x 
-$ git commit
+<p>不要害怕尝试重写历史的命令。Git默认不会删除你90天内的提交，在此期间你可以使用<code>reflog</code>轻松的恢复这些修改：</p>
+
+<pre><code>$ git reset @~3 # go back 3 commits
+$ git reflog
+c4f708b HEAD@{0}: reset: moving to @~3
+2c52489 HEAD@{1}: commit: more changes
+4a5246d HEAD@{2}: commit: make important changes e8571e4 HEAD@{3}: commit: make some changes
+... earlier commits ...
+$ git reset 2c52489
+... and you're back where you started
 </code></pre>
 
-<p>这里，你可以替换<code>x</code>为你想要压缩到一个提交的多个提交的数量。</p>
+<p>*<em>注意像<code>--hard</code>和<code>—force</code>这样的选项：他们会丢弃修改</em></p>
 
-<p>请记住这将会创建一个新的提交，基本上会丢掉之前<code>x</code>个提交包含的提交人，提交信息和提交日期。你可能需要首先复制粘贴现有的提交消息。</p>
+<p>*<em>另外，避免在协助的分支上面修改提交历史。</em></p>
 
-<h3 id="merge时压缩提交">merge时压缩提交</h3>
+<h3 id="恢复stash">恢复stash</h3>
 
-<p>你可以使用<code>git merge —squash</code>命令把这个分支的修改压缩到一个提交。并不是实际的提交被创建了。</p>
+<p>获取你在执行<code>git stash</code>命令之后你最新的暂存修改，使用下面命令：</p>
 
-<pre><code> git merge --squash &lt;branch&gt; 
- git commit
+<pre><code>git stash apply
 </code></pre>
 
-<p>这或多或少相当于使用<code>git reset</code>命令，但当合并更改具有符号名时更方便。比较：</p>
+<p>查看你暂存的信息列表：</p>
 
-<pre><code>git checkout &lt;branch&gt;
-git reset --soft $(git merge-base master &lt;branch&gt;) 
-git commit
+<pre><code>git stash list
 </code></pre>
 
-<h3 id="rebase时压缩提交">rebase时压缩提交</h3>
+<p>你可以获取像下面这样的修改：</p>
 
-<p>在<code>git rebase</code>命令执行的时候可以压缩多个提交。建议您在尝试以这种方式压缩提交之前了解<code>rebase</code>命令。</p>
-
-<ol>
-<li><p>确定要从哪个提交中<code>rebase</code>，并注意其提交的hash值。</p></li>
-
-<li><p>执行<code>git rebase -i [commit hash]</code></p></li>
-</ol>
-
-<p>或者，你可以使用<code>HEAD~4</code>来代替提交的hash值，来查看最新的提交和最新之前4个提交</p>
-
-<ol>
-<li><p>在运行这个命令打开的编辑器中，选择哪些提交你想要合并。替换这些行之前的<code>pick</code>为<code>squash</code>来吧这些提交压缩的签名的提交中。</p></li>
-
-<li><p>在选择了压缩的提交之后，你需要编辑提交的信息</p></li>
-</ol>
-
-<p>查看提交并且决定哪些提交要rebase:</p>
-
-<pre><code>&gt; git log --oneline
-612f2f7 This commit should not be squashed 
-d84b05d This commit should be squashed 
-ac60234 Yet another commit
-36d15de Rebase from here
-17692d1 Did some more stuff 
-e647334 Another Commit 
-2e30df6 Initial commit
-&gt; git rebase -i 36d15de
+<pre><code>stash@{0}: WIP on master: 67a4e01 Merge tests into develop
+stash@{1}: WIP on master: 70f0d95 Add user role to localStorage on user login
 </code></pre>
 
-<p>这时你选择的编辑器就会打开，在这里你可以描述你想要这些提交做什么。Git在注释中提供了帮助信息。如果你退出了这个编辑器，什么都不会发生，因为每个提交都会保持和之前一样的顺序。在这个例子中，我们应用下面的命令：</p>
+<p>选择一个不同的git stash，使用显示所需存储的数字进行恢复：</p>
 
-<pre><code>pick ac60234 Yet another commit
-squash d84b05d This commit should be squashed
-pick 612f2f7 This commit should not be squashed
-
-# Rebase 36d15de..612f2f7 onto 36d15de (3 command(s))
-#
-# Commands:
-# p, pick = use commit
-# r, reword = use commit, but edit the commit message
-# e, edit = use commit, but stop for amending
-# s, squash = use commit, but meld into previous commit
-# f, fixup = like &quot;squash&quot;, but discard this commit's log message
-# x, exec = run command (the rest of the line) using shell
-#
-# These lines can be re-ordered; they are executed from top to bottom.
-#
-# If you remove a line here THAT COMMIT WILL BE LOST.
-#
-# However, if you remove everything, the rebase will be aborted.
-#
-# Note that empty commits are commented out
+<pre><code>git stash apply stash@{2}
 </code></pre>
 
-<p>在填写完提交信息之后，查看日志信息：</p>
+<p>也可以使用命令<code>git stash pop</code>，这个和<code>git stash apply</code>一样：</p>
 
-<pre><code>&gt; git log --oneline
-77393eb This commit should not be squashed 
-e090a8c Yet another commit
-36d15de Rebase from here
-17692d1 Did some more stuff
-e647334 Another Commit
-2e30df6 Initial commit
+<pre><code>git stash pop
 </code></pre>
 
-<h3 id="自动压缩和修正">自动压缩和修正</h3>
+<p>或</p>
 
-<p>提交更改时，可以指定将来的提交将被压缩到另一个提交，可以这样做：</p>
-
-<pre><code>git commit --squash=[commit hash of commit to which this commit will be squashed to]
+<pre><code>git stash pop stash@{2}
 </code></pre>
 
-<p><code>--fixup=[commit hash]</code>这个选项是可选的，用来进行修正。</p>
+<p>两个命令的不同之处：</p>
 
-<p>也可以使用提交信息中的字词来代替这个hash值：</p>
+<h4 id="git-stash-pop">git stash pop</h4>
 
-<pre><code>git commit --squash :/things
+<p>暂存的数据将会从暂存列表中删除。</p>
+
+<p>例子：</p>
+
+<pre><code>git stash list
 </code></pre>
 
-<p>带有单次<code>things</code>的最新提交教会被使用</p>
+<p>你会获得类似下面的列表：</p>
 
-<p>这些提交的信息将会以<code>'fixup!'</code>或<code>'squash!'</code>开头，后面是被压缩到的提交的提交信息。</p>
-
-<p>当rebase命令带有<code>--autosquash</code>这个选项的时候，将会应用<code>autosquash/fixup</code>特性。</p>
-
-<h3 id="自动压缩-在rebase时压缩">自动压缩：在rebase时压缩</h3>
-
-<p>看看下面的提交历史，想象你想把一些修改压缩到<code>bbb2222 A second commit</code>这个提交：</p>
-
-<pre><code>$ git log --oneline --decorate
-ccc3333 (HEAD -&gt; master) A third commit 
-bbb2222 A second commit
-aaa1111 A first commit
-9999999 Initial commit
+<pre><code>stash@{0}: WIP on master: 67a4e01 Merge tests into develop
+stash@{1}: WIP on master: 70f0d95 Add user role to localStorage on user login
 </code></pre>
 
-<p>一旦你完成了你的修改，可以像往常一样添加，并且使用带有<code>—fixup</code>选项的提交命令，加上想要压缩到的提交hash值：</p>
+<p>现在使用<code>pop</code>命令获取暂存的数据：</p>
 
-<pre><code>$ git add .
-$ git commit --fixup bbb2222
-[my-feature-branch ddd4444] fixup! A second commit
+<pre><code>git stash pop
 </code></pre>
 
-<p>这将创建一个新的提交，包括Git在交互式rebase中识别到的提交信息：</p>
+<p>然后从新查看暂存信息列表：</p>
 
-<pre><code>$ git log --oneline --decorate
-ddd4444 (HEAD -&gt; master) fixup! A second commit 
-ccc3333 A third commit
-bbb2222 A second commit
-aaa1111 A first commit
-9999999 Initial commit
+<pre><code>git stash list
 </code></pre>
 
-<p>接下来，使用<code>--autosquash</code>选项做一个交互式rebase：</p>
+<p>你会看到下面的列表信息：</p>
 
-<pre><code>$ git rebase --autosquash --interactive HEAD~4
+<pre><code>stash@{0}: WIP on master: 70f0d95 Add user role to localStorage on user login
 </code></pre>
 
-<p>Git会建议你使用<code>commit --fixup</code>来压缩你的提交到正确的位置：</p>
+<p>你可以看到一个暂存信息被删除了，而且<code>stash@{1}</code>变为了<code>stash@{0}</code>。</p>
 
-<pre><code>pick aaa1111 A first commit
-pick bbb2222 A second commit
-fixup ddd4444 fixup! A second commit 
-pick ccc3333 A third commit
+<h3 id="从丢失的提交中恢复">从丢失的提交中恢复</h3>
+
+<p>如果您已恢复到过去的提交并丢失了较新的提交，则可以通过运行下面的命令来恢复丢失的提交：</p>
+
+<pre><code>git reflog
 </code></pre>
 
-<p>为了避免每次rebase都是添加<code>--autosquash</code>选项，你可以把这个设置成默认的选项：</p>
+<p>然后你找到丢失提交的值，使用下面的命令来恢复：</p>
 
-<pre><code>$ git config --global rebase.autosquash true
+<pre><code>git reset HEAD --hard &lt;sha1-of-commit&gt;
 </code></pre>
+
+<h3 id="提交后恢复已删除的文件">提交后恢复已删除的文件</h3>
+
+<p>万一你不小心提交了删除文件的提交，但是后面你意识到你需要这个文件。</p>
+
+<p>首先找到你提交删除文件的提交信息：</p>
+
+<pre><code>git log --diff-filter=D --summary
+</code></pre>
+
+<p>将为您提供已删除文件的提交的已排序摘要。</p>
+
+<p>然后使用下面的命令恢复文件：</p>
+
+<pre><code>git checkout 81eeccf~1 &lt;your-lost-file-name&gt;
+</code></pre>
+
+<p>把<code>81eeccf</code>替换为你自己的提交id。</p>
+
+<h3 id="从先前版本恢复文件">从先前版本恢复文件</h3>
+
+<p>你可以使用<code>reset</code>命令从先前版本恢复文件：</p>
+
+<pre><code>git reset &lt;sha1-of-commit&gt; &lt;file-name&gt;
+</code></pre>
+
+<p>如果你已经对这个文件做了本地的修改（不需要的），你可以使用<code>--hard</code>选项。</p>
+
+<h3 id="恢复删除的分支">恢复删除的分支</h3>
+
+<p>要恢复已删除的分支，您需要通过运行下面的命令找到已删除分支的头部的提交：</p>
+
+<pre><code>git reflog
+</code></pre>
+
+<p>你可以使用下面的命令重建这个提交：</p>
+
+<pre><code>git checkout -b &lt;branch-name&gt; &lt;sha1-of-commit&gt;
+</code></pre>
+
+<p>如果git的垃圾收集器删除了悬空提交（没有引用），你将无法恢复已删除的分支。</p>
+
+<p>保持你的仓库一直有备份存在，哪怕你在一个很小的团队/专有项目组工作时。</p>
 
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
@@ -355,12 +341,12 @@ pick ccc3333 A third commit
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/git-section-17.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十七）">&larr; Previous Post</a>
+                      <a href="/2019/02/post/git-section-19.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十九）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-15.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十五）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-17.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十七）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -6,10 +6,67 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 07 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-20.html</link>
+      <pubDate>Mon, 11 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-20.html</guid>
+      <description>.gitattributes文件 自动行结束符标准化 在项目的更目录创建.gitattributes文件，里面添加下面的内容：
+* text=auto  这将导致所有文本文件（由Git标识的）使用LF提交，但根据操作系统的不同默认检出合适的格式。
+这等价于core.autocrlf配置项使用下面的配置：
+ Linux/macOS里面是input Windows里面是true  识别二进制文件 Git非常擅长识别二进制文件，但是你可以指明哪些文件时二进制的。在项目的根目录创建.gitattributes文件，并添加下面的配置：
+*.png binary  binary是内建的宏命令，等价于-diff -merge -text。
+.gitattributes模板 如果你确定你的.gitattributes文件是否少了某些规则，或者你只是想给你的项目添加一个通用的配置，你可以在下面的地址中选择或生成一个.gitattributes文件：
+ https://gitattributes.io/ https://github.com/alexkaratarakis/gitattributes  进制行结束符标准化 在项目的根目录创建.gitattributes文件，并在里面添加：
+* -text  这个配置等价于下面的配置core.autocrlf = false。
+参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（十九）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-19.html</link>
+      <pubDate>Sun, 10 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-19.html</guid>
+      <description>Git清理    Parameter Details     -d 除了未追踪的文件外，删除未追踪的文件夹。如果未追踪的文件夹由不同的Git仓库管理，默认是不删除的。如果你一定要删除，使用两次-f选项。   -f,&amp;ndash;force 如果Git的配置clean. requireForce配置为false，Git将不会删除任何文件或目录，除了提供-f，-n或-i选项。除非给出第二个-f，否则Git将拒绝删除有.git子目录的目录或文件。   -i,&amp;ndash;interactive 交互式操作删除每个文件   -n,&amp;ndash;dry-run 只显示将要被删除的文件列表，而不实际删除这些内容   -q,&amp;ndash;quiet 只显示删除出错的文件，不显示成功的文件    交互式清理 git clean -i  打印出将要被清理的文件，使用下面的命令进行确认：
+Would remove the following items: folder/file1.py folder/file2.py *** Commands *** 1: clean 2: filter by pattern 3: select by numbers 4: ask each 5: quit 6: help What now&amp;gt;  交互式选项-i可以和其他的选项-X，-d一起添加。</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（十八）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-18.html</link>
+      <pubDate>Sat, 09 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-18.html</guid>
+      <description>恢复 恢复reset操作 使用Git，你总是（几乎）可以把时钟倒转。
+不要害怕尝试重写历史的命令。Git默认不会删除你90天内的提交，在此期间你可以使用reflog轻松的恢复这些修改：
+$ git reset @~3 # go back 3 commits $ git reflog c4f708b HEAD@{0}: reset: moving to @~3 2c52489 HEAD@{1}: commit: more changes 4a5246d HEAD@{2}: commit: make important changes e8571e4 HEAD@{3}: commit: make some changes ... earlier commits ... $ git reset 2c52489 ... and you&#39;re back where you started  *注意像--hard和—force这样的选项：他们会丢弃修改
+*另外，避免在协助的分支上面修改提交历史。
+恢复stash 获取你在执行git stash命令之后你最新的暂存修改，使用下面命令：
+git stash apply  查看你暂存的信息列表：
+git stash list  你可以获取像下面这样的修改：</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（十七）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-17.html</link>
+      <pubDate>Fri, 08 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-17.html</guid>
+      <description>随意选取    Parameter Details     -e,&amp;ndash;edit 选择这个选项，使用git cherry-pick命令允许你在提交信息之前编辑提交信息   -x 记录提交时，在原始提交消息中附加一行（cherry picked from commit&amp;hellip;），以指示从哪个提交中挑选出这个更改。这个只适用于没有冲突的选取。   &amp;ndash;ff 如果当前的HEAD和cherry的提交的父提交同级，将会执行此提交的快进。   &amp;ndash;continue 使用.git/sequencer里面的信息继续进行当前的操作。可以在解决失败的挑选或恢复中的冲突后继续使用   &amp;ndash;quit 忘记当前的操作。在选取或恢复失败后，可以用来清除sequencer的信息   &amp;ndash;abort 取消当前操作，恢复之前的状态    一个随意选取获取提交中引入的补丁，并尝试在您当前所在的分支上重新应用它。
+Source：Git SCM Book
+从一个分支复制提交到另一个分支 git cherry-pick &amp;lt;commit-hash&amp;gt;会应用另一个分支上的已经存在的提交修改，将会记录一个新的修改。实际上，你可以把提交从分支复制到另一个分支。
+已经有下面的提交树(source)：
+dd2e86 - 946992 - 9143a9 - a6fd86 - 5a6057 [master] \ 76cada - 62ecb3 - b886a0 [feature]  我们想把b886a0这个分支的修改复制到master上（5a6057之上）：
+我们使用下面的命令：
+ git checkout master git cherry-pick b886a0  下面我们的提交树就变成下面这样：</description>
+    </item>
     
     <item>
       <title>Git专业笔记（十六）</title>
