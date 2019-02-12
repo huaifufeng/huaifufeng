@@ -6,10 +6,25 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 11 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 12 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十一）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-21.html</link>
+      <pubDate>Tue, 12 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-21.html</guid>
+      <description>.mailmap文件 按别名合并贡献者以在短日志中显示提交计数 当贡献者从不同的机器或操作系统添加到一个项目中时，他们可能会为此使用不同的电子邮件或名称，这将分割贡献者列表和统计信息。
+git shortlog -sn命令可以获取贡献者的列表和他们各自的提交数量，具体的结果像下面这样：
+Patrick Rothfuss 871 Elizabeth Moon 762 E. Moon 184 Rothfuss, Patrick 90  可以通过提供包含电子邮件映射的纯文本文件.mailmap来调整此碎片/解除关联。
+一行中列出的所有名称和电子邮件地址将分别与第一个命名实体关联。
+像上面的例子，一个map邮件像下面这样：
+Patrick Rothfuss &amp;lt;fussy@kingkiller.com&amp;gt; Rothfuss, Patrick &amp;lt;fussy@kingkiller.com&amp;gt; Elizabeth Moon &amp;lt;emoon@marines.mil&amp;gt; E. Moon &amp;lt;emoon@scifi.org&amp;gt;  如果这个文件在项目的根目录，运行git shortlog -sn命令将会返回缩减之后的结果：
+Patrick Rothfuss 961 Elizabeth Moon 946  参考：Git® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Git专业笔记（二十）</title>
