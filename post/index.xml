@@ -54,6 +54,22 @@ git stash list  你可以获取像下面这样的修改：</description>
     </item>
     
     <item>
+      <title>Bash专业笔记(十二)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-12.html</link>
+      <pubDate>Fri, 08 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-12.html</guid>
+      <description>数组 数组赋值 列表赋值 如果你熟悉Perl，C或者Java的话，你可能会认为Bash使用逗号来分隔数组的元素，然而不是这样的，Bash使用空格来分隔元素：
+# Perl中的数组 my @array = (1, 2, 3, 4); #Bash中的数组 array=(1 2 3 4)  使用新元素创建数组：
+array=(&#39;first element&#39; &#39;second element&#39; &#39;third element&#39;)  下标赋值 使用明确的元素索引创建一个数组：
+array=([3]=&#39;fourth element&#39; [4]=&#39;fifth element&#39;)  索引赋值 array[0]=&#39;first element&#39; array[1]=&#39;second element&#39;  关联数组 Version&amp;gt;= 4.0
+decalare -A array array[first]=&#39;First element&#39; array[second]=&#39;Second elemet&#39;  动态赋值 从其他命令的输出结果创建一个数组，例如使用seq获取1到10的值：
+array=(`seq 1 10`)  从脚本的输入参数赋值给数组：
+array=(&amp;quot;$@&amp;quot;)  使用循环赋值：
+while read -r; do #array+=(&amp;quot;$REPLY&amp;quot;) #数组追加 array[$i]=&amp;quot;$REPLY&amp;quot; #索引赋值 let i++ #索引增加 done &amp;lt; &amp;lt;(seq 1 10) #?</description>
+    </item>
+    
+    <item>
       <title>Git专业笔记（十七）</title>
       <link>http://blog.huaifufeng.com/2019/02/post/git-section-17.html</link>
       <pubDate>Fri, 08 Feb 2019 00:00:00 +0000</pubDate>
