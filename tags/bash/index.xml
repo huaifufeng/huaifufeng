@@ -6,10 +6,26 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 09 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(十四)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-14.html</link>
+      <pubDate>Sun, 10 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-14.html</guid>
+      <description>函数 带参数函数 在helloJohn.sh文件里面有下面的代码：
+#!/bin/bash greet() { local name=&amp;quot;$1&amp;quot; echo &amp;quot;Hello, $name&amp;quot; } greet &amp;quot;John Doe&amp;quot;  执行这个文件：
+$ bash helloJohn.sh Hello, John Doe   如果你没有修改参数，可以不用把这个参数放到本地变量中，可以直接使用`echo &amp;ldquo;Hello, $1&amp;rdquo;
+ 你可以在函数中使用$1，$2，$3等等的变量访问函数的参数。
+   注意：对于超过9个的参数，使用$10是没有用的，因为这将被解析成为$10，所以你需要使用${10}、${11}这样的变量。
+  在函数中，$@引用所有的参数：   #!/bin/bash foo() { echo &amp;quot;$@&amp;quot; } foo 1 2 3 # output =&amp;gt; 1 2 3   注意：你应该像这里展示的一样，在$@周围使用双引号。
+ 省略引号将导致shell扩展通配符（即使用户为避免这种情况而专门引用通配符），并且通常会引入不受欢迎的行为，甚至潜在的安全问题。
+ foo &amp;quot;string with spaces;&amp;quot; &#39;$HOME&#39; &amp;quot;*&amp;quot; # output =&amp;gt; string with spaces; $HOME *   想要使用默认值的话，用${1:-default_val}的格式：   #!</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(十三)</title>

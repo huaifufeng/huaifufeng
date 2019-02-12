@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/02/post/bash-section-14.html</loc>
+    <lastmod>2019-02-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/02/post/git-section-19.html</loc>
     <lastmod>2019-02-10T00:00:00+00:00</lastmod>
   </url>
@@ -188,7 +193,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/bash/</loc>
-    <lastmod>2019-02-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -204,13 +209,13 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/go/</loc>
+    <loc>http://blog.huaifufeng.com/tags/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/go/</loc>
+    <loc>http://blog.huaifufeng.com/categories/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -234,7 +239,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/</loc>
-    <lastmod>2019-02-09T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
