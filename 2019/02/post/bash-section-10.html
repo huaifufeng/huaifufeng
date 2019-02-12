@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="控制结构">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Bash专业笔记(十)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/02/post/bash-section-10.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
+                        </a>
+                       
+                    </div>
+                    <h1>Bash专业笔记(十)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, February 6, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#控制结构">控制结构</a>
+<ul>
+<li><a href="#命令列表的条件执行">命令列表的条件执行</a>
+<ul>
+<li><a href="#如何使用命令列表的条件执行">如何使用命令列表的条件执行</a></li>
+<li><a href="#为什么使用命令列表的条件执行">为什么使用命令列表的条件执行</a></li>
+</ul></li>
+<li><a href="#if语句">if语句</a></li>
+<li><a href="#循环数组">循环数组</a></li>
+<li><a href="#for循环可迭代数">for循环可迭代数</a></li>
+<li><a href="#continue和break">continue和break</a></li>
+<li><a href="#循环中断">循环中断</a></li>
+<li><a href="#while循环">while循环</a></li>
+<li><a href="#类c语法的for循环">类C语法的for循环</a></li>
+<li><a href="#until循环">until循环</a></li>
+<li><a href="#case语句">case语句</a></li>
+<li><a href="#for循环没有字符列表">for循环没有字符列表</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="控制结构">控制结构</h2>
+
+<table>
+<thead>
+<tr>
+<th>Parameter to [ or test</th>
+<th>Details</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><strong>File Operators</strong></td>
+<td>Details</td>
+</tr>
+
+<tr>
+<td>-e &ldquo;$file&rdquo;</td>
+<td>如果文件存在，返回true</td>
+</tr>
+
+<tr>
+<td>-d &ldquo;$file&rdquo;</td>
+<td>如果文件存在并且是一个目录的话，返回true</td>
+</tr>
+
+<tr>
+<td>-f &ldquo;$file&rdquo;</td>
+<td>如果文件存在并且是一个普通文件的话，返回true</td>
+</tr>
+
+<tr>
+<td>-h &ldquo;$file&rdquo;</td>
+<td>如果文件存在并且是一个符号链接的话，返回true</td>
+</tr>
+
+<tr>
+<td><strong>String Comparators</strong></td>
+<td>Details</td>
+</tr>
+
+<tr>
+<td>-z &ldquo;$str&rdquo;</td>
+<td>字符串长度为0时为true</td>
+</tr>
+
+<tr>
+<td>-n &ldquo;$str&rdquo;</td>
+<td>字符串长度不为0时为true</td>
+</tr>
+
+<tr>
+<td>&rdquo;$str&rdquo; = &ldquo;$str2&rdquo;</td>
+<td>如果字符串<code>$str</code>等于字符串<code>$str2</code>。对整数是不合适的，虽然可以工作，但是结果可能不符合预期。</td>
+</tr>
+
+<tr>
+<td>&rdquo;$str&rdquo; != &ldquo;$str2&rdquo;</td>
+<td>如果字符串<code>$str</code>不等于<code>$str2</code>时返回true</td>
+</tr>
+
+<tr>
+<td><strong>Integer Comparators</strong></td>
+<td>Details</td>
+</tr>
+
+<tr>
+<td>&rdquo;$int1&rdquo; -eq &ldquo;$int2&rdquo;</td>
+<td>如果整数相等返回true</td>
+</tr>
+
+<tr>
+<td>&rdquo;$int1&rdquo; -ne &ldquo;$int2&rdquo;</td>
+<td>如果整数不相等返回true</td>
+</tr>
+
+<tr>
+<td>&rdquo;$int1&rdquo; -gt &ldquo;$int2&rdquo;</td>
+<td>如果整数<code>$int1</code>大于<code>$int2</code>返回true</td>
+</tr>
+
+<tr>
+<td>&rdquo;$int1&rdquo; -ge &ldquo;$int2&rdquo;</td>
+<td>如果整数<code>$int1</code>大于等于<code>$int2</code>返回true</td>
+</tr>
+
+<tr>
+<td>&rdquo;$int1&rdquo; -lt &ldquo;$int2&rdquo;</td>
+<td>如果整数<code>$int1</code>小于<code>$int2</code>返回true</td>
+</tr>
+
+<tr>
+<td>&rdquo;$int1&rdquo; -le &ldquo;$int2&rdquo;</td>
+<td>如果整数<code>$int1</code>小于等于<code>$int2</code>返回true</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="命令列表的条件执行">命令列表的条件执行</h3>
+
+<h4 id="如何使用命令列表的条件执行">如何使用命令列表的条件执行</h4>
+
+<p>任何内建的命令、表达式或函数，以及外部的命令或脚本都可以使用<code>&amp;&amp;</code>或<code>||</code>运算符有条件的执行。</p>
+
+<p>例如，下面的命令只会在<code>cd</code>命令执行成功的情况下打印当前目录的路径：</p>
+
+<pre><code>$ cd my_directory &amp;&amp; pwd
+</code></pre>
+
+<p>同样，下面的命令在<code>cd</code>执行失败的时候，会中断执行，避免后面的灾难操作：</p>
+
+<pre><code>$ cd my_directory || exit
+$ rm -rf *
+</code></pre>
+
+<p>当使用这种方式组织多个语句是，需要记住的是（和类c语言不通）<a href="https://www.gnu.org/software/bash/manual/html_node/Lists.html#Lists">这些运算符没有优先级并且是左关联的</a>。</p>
+
+<p>因此，下面的语句将按照预期进行工作：</p>
+
+<pre><code>$ cd my_directory &amp;&amp; pwd || echo &quot;No such directory&quot;
+</code></pre>
+
+<ul>
+<li>如果<code>cd</code>命令执行成功了，<code>&amp;&amp; pwd</code>将会执行，当前的工作目录的路径将会被打印出来。除非<code>pwd</code>命令执行失败(少见) <code>|| echo …</code>将不会被执行。</li>
+<li>如果<code>cd</code>命令执行失败，<code>&amp;&amp; pwd</code>将会被忽略，<code>|| echo..</code>将会被执行</li>
+</ul>
+
+<p>如果你认为是<code>if...then...else</code>的话，并不是：</p>
+
+<pre><code>$ cd my_directory &amp;&amp; ls || echo &quot;No such directory&quot;
+</code></pre>
+
+<ul>
+<li><p>如果<code>cd</code>执行失败，<code>&amp;&amp; ls</code>将会被忽略，<code>|| echo..</code>将会被执行</p></li>
+
+<li><p>如果<code>cd</code>执行成功，<code>&amp;&amp; ls</code>将会被执行</p>
+
+<ul>
+<li><p>如果<code>ls</code>执行成功，<code>|| ehco…</code>将会被忽略（到这里还是很好的）</p></li>
+
+<li><p>但是，如果<code>ls</code>执行失败，<code>|| echo...</code>将会被执行</p></li>
+</ul>
+
+<blockquote>
+<p>这里之前执行的命令是<code>ls</code>而不是<code>cd</code></p>
+</blockquote></li>
+</ul>
+
+<h4 id="为什么使用命令列表的条件执行">为什么使用命令列表的条件执行</h4>
+
+<p>条件执行是比<code>if...then</code>快，但是这主要的优点是允许函数和脚本尽早退出，或者说是&rdquo;短路&rdquo;执行。</p>
+
+<p>不像很多类C语言一样，内存明确的分配给结构，变量等(因此必须释放变量)，<code>bash</code>自动处理这个情况。在大多数情况下，我们在退出函数的时候，不用清理任何数据。一个<code>return</code>语句将会释放函数本地的内容，并在堆栈中<code>return</code>的地址执行。</p>
+
+<p>通过避免不必要的代码执行，尽快从函数返回或退出脚本可以显著提高性能并减少系统负载。例如：</p>
+
+<pre><code>my_function () {
+
+    ### ALWAYS CHECK THE RETURN CODE
+
+	# one argument required. &quot;&quot; evaluates to false(1)
+	[[ &quot;$1&quot; ]] || return 1
+    
+    # work with the argument. exit on failure
+	do_something_with &quot;$1&quot; || return 1 
+	do_something_else || return 1
+    
+    # Success! no failures detected, or we wouldn't be here
+	return 0 
+}
+</code></pre>
+
+<h3 id="if语句">if语句</h3>
+
+<pre><code>if [[ $1 -eq 1 ]]; then
+	echo &quot;1 was passed in the first parameter&quot;
+elif [[ $1 -gt 2 ]]; then
+	echo &quot;2 was not passed in the first parameter&quot;
+else
+	echo &quot;The first parameter was not 1 and is not more than 2.&quot; 
+fi
+</code></pre>
+
+<p>这个关闭标识<code>fi</code>是必须的，但是<code>elif</code>和/或<code>else</code>是可以忽略的。</p>
+
+<p><code>then</code>前面的分号是在一行中使用两个命令的标准语法，只有在<code>then</code>被移到下一行的情况下，分号可以被删除。</p>
+
+<p>理解方括号不是语法的一部分是非常重要的，这里被视为一个命令。这是正在判断的命令的退出码。因此，你不必须一直在方括号周围添加空格。</p>
+
+<p>这也意味着可以判断任何命令的结果。如果命令的退出码是0，这个语句就被认为是true。</p>
+
+<pre><code>if grep &quot;foo&quot; bar.txt; then
+	echo &quot;foo was found&quot;
+else
+	echo &quot;foo was not found&quot; 
+fi
+</code></pre>
+
+<p>当数学表达式放到双圆括号中，返回一个0或者1，也可以被判断：</p>
+
+<pre><code>if (( $1 + 5 &gt; 91 )); then
+	echo &quot;$1 is greater than 86&quot;
+fi
+</code></pre>
+
+<p>你也可以在<code>if</code>语句中使用单方括号。这是被POSIX标准定义的，可以在所有兼容POSIX的shell上正常执行，包括Bash。语法和Bash非常相似：</p>
+
+<pre><code>if [ &quot;$1&quot; -eq 1 ]; then
+	echo &quot;1 was passed in the first parameter&quot;
+elif [ &quot;$1&quot; -gt 2 ]; then
+	echo &quot;2 was not passed in the first parameter&quot;
+else
+	echo &quot;The first parameter was not 1 and is not more than 2.&quot; 
+fi
+</code></pre>
+
+<h3 id="循环数组">循环数组</h3>
+
+<p><code>for</code>循环：</p>
+
+<pre><code>arr=(a b c d e f)
+for i in &quot;${arr[@]}&quot;;do
+    echo &quot;$i&quot;
+done
+</code></pre>
+
+<p>或者：</p>
+
+<pre><code>for ((i=0;i&lt;${#arr[@]};i++));do
+    echo &quot;${arr[$i]}&quot;
+done
+</code></pre>
+
+<p><code>while</code>循环：</p>
+
+<pre><code>i=0
+while [$i -lt ${#arr[@]}];do
+    echo &quot;$arr[$i]&quot;
+    i=$(expr $i+1)
+done
+</code></pre>
+
+<p>或者：</p>
+
+<pre><code>i=0
+while (($i&lt;${#arr[@]} ));do
+    echo &quot;${{arr[$i]}}&quot;
+    ((i++))
+done
+</code></pre>
+
+<h3 id="for循环可迭代数">for循环可迭代数</h3>
+
+<pre><code>#! /bin/bash
+for i in {1..10}; do #{1..10}等价于&quot;1 2 3 4 5 6 7 8 9 10&quot;
+    echo $i
+done
+</code></pre>
+
+<p>会有下面的输出：</p>
+
+<pre><code>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</code></pre>
+
+<h3 id="continue和break">continue和break</h3>
+
+<p>continue的例子：</p>
+
+<pre><code>for i in [series]
+do 
+    command 1
+    command 2
+    if (condition) #跳过command 3的条件
+        continue
+    fi
+    command 3
+done
+</code></pre>
+
+<p>break的例子：</p>
+
+<pre><code>for i in [series]
+do 
+    command 4
+    if (condition) #终端循环的条件
+    then
+        command 5
+        break
+    fi
+    command 6
+done
+</code></pre>
+
+<h3 id="循环中断">循环中断</h3>
+
+<p>中断多个循环：</p>
+
+<pre><code>arr=(a b c d e f)
+for i in &quot;${arr[@]}&quot;; do
+    echo &quot;$i&quot;
+    for j in &quot;${arr[@]}&quot;; do
+        echo &quot;$j&quot;
+        break 2
+    done
+done
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>a
+a
+</code></pre>
+
+<p>终端一层循环：</p>
+
+<pre><code>arr=(a b c d e f)
+for i in &quot;${arr[@]}&quot;; do
+    echo &quot;$i&quot;
+    for j in &quot;${arr[@]}&quot;; do
+        echo &quot;$j&quot;
+        break
+    done
+done
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>a
+a
+b
+a
+c
+a
+d
+a
+e
+a
+f
+a
+</code></pre>
+
+<h3 id="while循环">while循环</h3>
+
+<pre><code>#! /bin/bash
+i=0
+
+while [$i -lt 5] #当i小于5执行
+do
+    echo &quot;i is currently $i&quot;
+    i=$[$i+1] #注意括号周围没有空格，这说明不是判断表达式
+done
+</code></pre>
+
+<p>注意在判断语句中的括号周围有空格存在（while后面）。这些空格是必须的。</p>
+
+<p>这个循环输出下面的内容：</p>
+
+<pre><code>i is currently 0
+i is currently 1
+i is currently 2
+i is currently 3
+i is currently 4
+</code></pre>
+
+<h3 id="类c语法的for循环">类C语法的for循环</h3>
+
+<p>类C语法的for循环是下面的基本格式：</p>
+
+<pre><code>for (( variable assignment; condition; iteration process ))
+</code></pre>
+
+<p>注意：</p>
+
+<ul>
+<li>在类C语法的<code>for</code>循环中变量的赋值包含空格，这点不像常用的赋值语句</li>
+<li>在类C的<code>for</code>循环中，变量前面没有<code>$</code>符号。</li>
+</ul>
+
+<p>例如：</p>
+
+<pre><code>for (( i = 0; i &lt; 10; i++ ))
+do
+    echo &quot;The Iteration number is $i&quot;
+done
+</code></pre>
+
+<p>我们也可以在类C的<code>for</code>循环中声明多个变量：</p>
+
+<pre><code>for (( i = 0, j = 0; i &lt; 10; i++, j = i * i )) 
+do
+	echo &quot;The square of $i is equal to $j&quot;
+done
+</code></pre>
+
+<h3 id="until循环">until循环</h3>
+
+<p>until循环执行直到条件是true：</p>
+
+<pre><code>i=5
+until [[ i -eq 10]]; do #判断i是否等于10
+    echo &quot;i=$i&quot;  #输出当前的i值
+    i=$((i+1))  #i加1
+done
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>i=5
+i=6
+i=7
+i=8
+i=9
+</code></pre>
+
+<p>当i达到10的时候，until循环的表达式返回true，循环结束。</p>
+
+<h3 id="case语句">case语句</h3>
+
+<p>使用<code>case</code>语句，你可以匹配变量的一个值。</p>
+
+<p>传递给<code>case</code>语句的变量，将会尝试匹配每个模式。</p>
+
+<p>如果匹配到了，知道一个<code>;;</code>的命令都将被执行。</p>
+
+<pre><code>case &quot;$BASH_VERSION&quot; in
+    [34]*)
+        echo {1..4}
+        ;;
+    *)
+        seq -s&quot; &quot; 1 4
+esac
+</code></pre>
+
+<p>这里的模式不是正则表达式，而是shell的模式匹配（aka globs）。</p>
+
+<h3 id="for循环没有字符列表">for循环没有字符列表</h3>
+
+<pre><code>for arg; do
+    echo arg=$arg
+done
+</code></pre>
+
+<p>一个没有字符列表参数的<code>for</code>循环语句将会迭代位置变量。换句话说，上面的例子等价于下面的方法：</p>
+
+<pre><code>for arg in &quot;$@&quot;; do
+    echo arg=$arg
+done
+</code></pre>
+
+<p>换句话说，一旦你发现你写了<code>for arg in &quot;$@&quot;; do …; done</code>这样的语句，可以丢弃in的部分，只是使用下面的方式<code>for i; do ...; done</code>。</p>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/02/post/git-section-16.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十六）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/git-section-15.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十五）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -6,10 +6,19 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 05 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(十)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-10.html</link>
+      <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-10.html</guid>
+      <description>控制结构    Parameter to [ or test Details     File Operators Details   -e &amp;ldquo;$file&amp;rdquo; 如果文件存在，返回true   -d &amp;ldquo;$file&amp;rdquo; 如果文件存在并且是一个目录的话，返回true   -f &amp;ldquo;$file&amp;rdquo; 如果文件存在并且是一个普通文件的话，返回true   -h &amp;ldquo;$file&amp;rdquo; 如果文件存在并且是一个符号链接的话，返回true   String Comparators Details   -z &amp;ldquo;$str&amp;rdquo; 字符串长度为0时为true   -n &amp;ldquo;$str&amp;rdquo; 字符串长度不为0时为true   &amp;rdquo;$str&amp;rdquo; = &amp;ldquo;$str2&amp;rdquo; 如果字符串$str等于字符串$str2。对整数是不合适的，虽然可以工作，但是结果可能不符合预期。   &amp;rdquo;$str&amp;rdquo; != &amp;ldquo;$str2&amp;rdquo; 如果字符串$str不等于$str2时返回true   Integer Comparators Details   &amp;rdquo;$int1&amp;rdquo; -eq &amp;ldquo;$int2&amp;rdquo; 如果整数相等返回true   &amp;rdquo;$int1&amp;rdquo; -ne &amp;ldquo;$int2&amp;rdquo; 如果整数不相等返回true   &amp;rdquo;$int1&amp;rdquo; -gt &amp;ldquo;$int2&amp;rdquo; 如果整数$int1大于$int2返回true   &amp;rdquo;$int1&amp;rdquo; -ge &amp;ldquo;$int2&amp;rdquo; 如果整数$int1大于等于$int2返回true   &amp;rdquo;$int1&amp;rdquo; -lt &amp;ldquo;$int2&amp;rdquo; 如果整数$int1小于$int2返回true   &amp;rdquo;$int1&amp;rdquo; -le &amp;ldquo;$int2&amp;rdquo; 如果整数$int1小于等于$int2返回true    命令列表的条件执行 如何使用命令列表的条件执行 任何内建的命令、表达式或函数，以及外部的命令或脚本都可以使用&amp;amp;&amp;amp;或||运算符有条件的执行。</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(九)</title>
