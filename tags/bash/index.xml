@@ -6,10 +6,21 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(十一)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-11.html</link>
+      <pubDate>Thu, 07 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-11.html</guid>
+      <description>true，false和：命令 无限循环 while true; do echo ok done  或者
+while :; do echo ok done  或者
+until false; do echo ok done  函数返回 function positive() { return 0 } function negative() { return 1 }  一直或从不执行的代码 if true; then echo Always executed fi if false; then echo Never executed fi  参考：Bash Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(十)</title>
