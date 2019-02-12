@@ -39,6 +39,16 @@ Would remove the following items: folder/file1.py folder/file2.py *** Commands *
     </item>
     
     <item>
+      <title>Bash专业笔记(十三)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-13.html</link>
+      <pubDate>Sat, 09 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-13.html</guid>
+      <description>关联数组 操作关联数组 以下代码段显示了所有需要的用法：
+#!/usr/bin/env bash declare -A assoc_array=([key_string]=value \ [one]=&amp;quot;something&amp;quot; \ [two]=&amp;quot;another thing&amp;quot; \ [ three ]=&#39;mind the blanks!&#39; \ [ &amp;quot; four&amp;quot; ]=&#39;count the blanks of this key later!&#39; \ [IMPORTANT]=&#39;SPACES DO ADD UP!!!&#39; \ [1]=&#39;there are no integers!&#39; \ [info]=&amp;quot;to avoid history expansion &amp;quot; \ [info2]=&amp;quot;quote exclamation mark with single quotes&amp;quot; \ ) echo # just a blank line echo now here are the values of assoc_array: echo ${assoc_array[@]} echo not that useful, echo # just a blank line echo this is better: declare -p assoc_array # -p == print echo have a close look at the spaces above\!</description>
+    </item>
+    
+    <item>
       <title>Git专业笔记（十八）</title>
       <link>http://blog.huaifufeng.com/2019/02/post/git-section-18.html</link>
       <pubDate>Sat, 09 Feb 2019 00:00:00 +0000</pubDate>
