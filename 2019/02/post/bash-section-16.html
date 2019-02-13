@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content=".mailmap文件">
+    <meta name="description" content="复制">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（二十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(十六)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/git-section-21.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-16.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,12 +133,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/git" title="Git">
-                           Git
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（二十一）</h1>
+                    <h1>Bash专业笔记(十六)</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Tuesday, February 12, 2019
                         
@@ -170,9 +170,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#mailmap文件">.mailmap文件</a>
+<li><a href="#复制">复制</a>
 <ul>
-<li><a href="#按别名合并贡献者以在短日志中显示提交计数">按别名合并贡献者以在短日志中显示提交计数</a></li>
+<li><a href="#复制一个文件">复制一个文件</a></li>
+<li><a href="#复制目录">复制目录</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -180,36 +181,81 @@
         		
         		
 
-<h2 id="mailmap文件">.mailmap文件</h2>
+<h2 id="复制">复制</h2>
 
-<h3 id="按别名合并贡献者以在短日志中显示提交计数">按别名合并贡献者以在短日志中显示提交计数</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
 
-<p>当贡献者从不同的机器或操作系统添加到一个项目中时，他们可能会为此使用不同的电子邮件或名称，这将分割贡献者列表和统计信息。</p>
+<tbody>
+<tr>
+<td>-a,-archive</td>
+<td>和选项<code>d</code>，<code>p</code>，<code>r</code>一起使用</td>
+</tr>
 
-<p><code>git shortlog -sn</code>命令可以获取贡献者的列表和他们各自的提交数量，具体的结果像下面这样：</p>
+<tr>
+<td>-b,-backup</td>
+<td>在删除之前，建立一个备份</td>
+</tr>
 
-<pre><code>Patrick Rothfuss 871
-Elizabeth Moon 762
-E. Moon 184
-Rothfuss, Patrick 90
+<tr>
+<td>-d,&ndash;no-deference</td>
+<td>保存连接</td>
+</tr>
+
+<tr>
+<td>-f,&ndash;force</td>
+<td>在不提醒用户的情况下删除目标地址存在的文件</td>
+</tr>
+
+<tr>
+<td>-i,&ndash;interactive</td>
+<td>在覆盖前进行提示</td>
+</tr>
+
+<tr>
+<td>-l,&ndash;link</td>
+<td>不复制文件，而是使用文件连接</td>
+</tr>
+
+<tr>
+<td>-p,&ndash;preserve</td>
+<td>尽可能保留文件的属性</td>
+</tr>
+
+<tr>
+<td>-R,&ndash;recursive</td>
+<td>递归复制目录的文件</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="复制一个文件">复制一个文件</h3>
+
+<p>把文件<code>foo.txt</code>从<code>/path/to/source/</code>复制到<code>/path/to/target/folder/</code>。</p>
+
+<pre><code>cp /path/to/source/foo.txt /path/to/target/folder/
 </code></pre>
 
-<p>可以通过提供包含电子邮件映射的纯文本文件<code>.mailmap</code>来调整此碎片/解除关联。</p>
+<p>把文件<code>foo.txt</code>从<code>/path/to/source/</code>复制到<code>/path/to/target/folder/</code>，并且修改文件名称为<code>bar.txt</code>。</p>
 
-<p>一行中列出的所有名称和电子邮件地址将分别与第一个命名实体关联。</p>
-
-<p>像上面的例子，一个map邮件像下面这样：</p>
-
-<pre><code>Patrick Rothfuss &lt;fussy@kingkiller.com&gt; Rothfuss, Patrick &lt;fussy@kingkiller.com&gt; Elizabeth Moon &lt;emoon@marines.mil&gt; E. Moon &lt;emoon@scifi.org&gt;
+<pre><code>cp /path/to/source/foo.txt /path/to/target/folder/bar.txt
 </code></pre>
 
-<p>如果这个文件在项目的根目录，运行<code>git shortlog -sn</code>命令将会返回缩减之后的结果：</p>
+<h3 id="复制目录">复制目录</h3>
 
-<pre><code>Patrick Rothfuss 961
-Elizabeth Moon 946
+<p>把目录<code>foo</code>复制到目录<code>bar</code>里面：</p>
+
+<pre><code>cp -r /path/to/foo /path/to/bar
 </code></pre>
 
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+<p>如果目录<code>bar</code>在执行命令之前存在，目录<code>foo</code>和它的内容将会被复制到目录<code>bar</code>中。但是如果执行命令之前<code>bar</code>目录不存在的话，会创建目录<code>bar</code>，并且把目录<code>foo</code>的内容存放到<code>bar</code>中。</p>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -217,13 +263,9 @@ Elizabeth Moon 946
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/02/post/bash-section-16.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(十六)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-15.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(十五)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-21.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十一）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

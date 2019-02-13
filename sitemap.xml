@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/02/post/bash-section-16.html</loc>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/02/post/git-section-21.html</loc>
     <lastmod>2019-02-12T00:00:00+00:00</lastmod>
   </url>
@@ -203,7 +208,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/bash/</loc>
-    <lastmod>2019-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -219,13 +224,13 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/go/</loc>
+    <loc>http://blog.huaifufeng.com/categories/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/go/</loc>
+    <loc>http://blog.huaifufeng.com/tags/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -249,7 +254,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/</loc>
-    <lastmod>2019-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2019-02-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

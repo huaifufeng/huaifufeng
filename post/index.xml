@@ -12,6 +12,19 @@
     
     
     <item>
+      <title>Bash专业笔记(十六)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-16.html</link>
+      <pubDate>Tue, 12 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-16.html</guid>
+      <description>复制    Option Description     -a,-archive 和选项d，p，r一起使用   -b,-backup 在删除之前，建立一个备份   -d,&amp;ndash;no-deference 保存连接   -f,&amp;ndash;force 在不提醒用户的情况下删除目标地址存在的文件   -i,&amp;ndash;interactive 在覆盖前进行提示   -l,&amp;ndash;link 不复制文件，而是使用文件连接   -p,&amp;ndash;preserve 尽可能保留文件的属性   -R,&amp;ndash;recursive 递归复制目录的文件    复制一个文件 把文件foo.txt从/path/to/source/复制到/path/to/target/folder/。
+cp /path/to/source/foo.txt /path/to/target/folder/  把文件foo.txt从/path/to/source/复制到/path/to/target/folder/，并且修改文件名称为bar.txt。
+cp /path/to/source/foo.txt /path/to/target/folder/bar.txt  复制目录 把目录foo复制到目录bar里面：
+cp -r /path/to/foo /path/to/bar  如果目录bar在执行命令之前存在，目录foo和它的内容将会被复制到目录bar中。但是如果执行命令之前bar目录不存在的话，会创建目录bar，并且把目录foo的内容存放到bar中。
+参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>Git专业笔记（二十一）</title>
       <link>http://blog.huaifufeng.com/2019/02/post/git-section-21.html</link>
       <pubDate>Tue, 12 Feb 2019 00:00:00 +0000</pubDate>
