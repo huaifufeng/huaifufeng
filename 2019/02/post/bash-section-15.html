@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="bash参数扩展">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Bash专业笔记(十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/02/post/bash-section-15.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
+                        </a>
+                       
+                    </div>
+                    <h1>Bash专业笔记(十五)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, February 11, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#bash参数扩展">bash参数扩展</a>
+<ul>
+<li><a href="#修改字母字符的大小写">修改字母字符的大小写</a></li>
+<li><a href="#变量长度">变量长度</a></li>
+<li><a href="#替换字符串中的模式">替换字符串中的模式</a></li>
+<li><a href="#子字符串和子数组">子字符串和子数组</a></li>
+<li><a href="#从字符串开头删除模式">从字符串开头删除模式</a></li>
+<li><a href="#参数间接">参数间接</a></li>
+<li><a href="#参数扩展和文件名">参数扩展和文件名</a></li>
+<li><a href="#默认值替换">默认值替换</a></li>
+<li><a href="#字符串末尾删除模式">字符串末尾删除模式</a></li>
+<li><a href="#扩展中处理">扩展中处理</a></li>
+<li><a href="#变量为空或未设置就错误">变量为空或未设置就错误</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="bash参数扩展">bash参数扩展</h2>
+
+<p><code>$</code>字符引入了参数扩展、命令替换或算术扩展。要扩展的参数名称或符号可以用大括号括起来，大括号是可选的，但可以将变量从紧跟在其后面的字符扩展中选取出来，不然这些字符可以被解释为名称的一部分。</p>
+
+<p><a href="https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html">查看更多。</a></p>
+
+<h3 id="修改字母字符的大小写">修改字母字符的大小写</h3>
+
+<p>Version&gt;=4.0</p>
+
+<p>修改为大写字母：</p>
+
+<pre><code class="language-shell">$ v=&quot;hello&quot;
+# Just the first character 
+$ printf '%s\n' &quot;${v^}&quot; Hello
+# All characters
+$ printf '%s\n' &quot;${v^^}&quot; HELLO
+# Alternative
+$ v=&quot;hello world&quot;
+$ declare -u string=&quot;$v&quot; 
+$ echo &quot;$string&quot;
+HELLO WORLD
+</code></pre>
+
+<p>转换字符为小写：</p>
+
+<pre><code>$ v=&quot;BYE&quot;
+# Just the first character 
+$ printf '%s\n' &quot;${v,}&quot; bYE
+# All characters
+$ printf '%s\n' &quot;${v,,}&quot; bye
+# Alternative
+$ v=&quot;HELLO WORLD&quot;
+$ declare -l string=&quot;$v&quot; 
+$ echo &quot;$string&quot;
+hello world
+</code></pre>
+
+<p>大写修改为小写，小写修改为大写：</p>
+
+<pre><code>$ v=&quot;Hello World&quot; 
+# All chars
+$ echo &quot;${v~~}&quot; 
+hELLO wORLD
+$ echo &quot;${v~}&quot;
+# Just the first char 
+hello World
+</code></pre>
+
+<h3 id="变量长度">变量长度</h3>
+
+<pre><code># Length of a string
+$ var='12345'
+$ echo &quot;${#var}&quot;
+5
+</code></pre>
+
+<p>注意：这是字符的长度，不一定和字节数相等（例如UTF8，大多数字符使用多个字节编码），也不是字形/字形的数量（其中一些是字符组合），也不一定和显示宽度相同。</p>
+
+<pre><code># Number of array elements
+$ myarr=(1 2 3)
+$ echo &quot;${#myarr[@]}&quot; 
+3
+
+# Works for positional parameters as well
+$ set -- 1 2 3 4 
+$ echo &quot;${#@}&quot;
+4
+
+# But more commonly (and portably to other shells), one would use
+$ echo &quot;$#&quot; 
+4
+</code></pre>
+
+<h3 id="替换字符串中的模式">替换字符串中的模式</h3>
+
+<p>匹配第一个：</p>
+
+<pre><code>$ a='I am a string' 
+$ echo &quot;${a/a/A}&quot;
+I Am a string
+</code></pre>
+
+<p>匹配所有的：</p>
+
+<pre><code>$ echo &quot;${a//a/A}&quot; 
+I Am A string
+</code></pre>
+
+<p>匹配开头的：</p>
+
+<pre><code>$ echo &quot;${a/#I/y}&quot; 
+y am a string
+</code></pre>
+
+<p>匹配结尾的：</p>
+
+<pre><code>$ echo &quot;${a/%g/N}&quot; 
+I am a strinN
+</code></pre>
+
+<p>匹配但没有替换值：</p>
+
+<pre><code> $ echo &quot;${a/g/}&quot; 
+ I am a strin
+</code></pre>
+
+<p>数组元素增加前缀：</p>
+
+<pre><code>$ A=(hello world)
+$ echo &quot;${A[@]/#/R}&quot; 
+Rhello Rworld
+</code></pre>
+
+<h3 id="子字符串和子数组">子字符串和子数组</h3>
+
+<pre><code>var='0123456789abcdef'
+
+# Define a zero-based offset
+$ printf '%s\n' &quot;${var:3}&quot; 
+3456789abcdef
+
+# Offset and length of substring
+$ printf '%s\n' &quot;${var:3:4}&quot; 
+3456
+</code></pre>
+
+<p>Version ≥ 4.2</p>
+
+<pre><code># Negative length counts from the end of the string
+$ printf '%s\n' &quot;${var:3:-5}&quot; 
+3456789a
+
+# Negative offset counts from the end
+# Needs a space to avoid confusion with ${var:-6} 
+$ printf '%s\n' &quot;${var: -6}&quot;
+abcdef
+
+# Alternative: parentheses
+$ printf '%s\n' &quot;${var:(-6)}&quot; 
+abcdef
+
+# Negative offset and negative length
+$ printf '%s\n' &quot;${var: -6:-5}&quot; 
+a
+</code></pre>
+
+<p>如果参数是位置参数或下标数组的元素，则应用相同的扩展：</p>
+
+<pre><code># Set positional parameter $1
+set -- 0123456789abcdef
+
+# Define offset
+$ printf '%s\n' &quot;${1:5}&quot; 
+56789abcdef
+
+# Assign to array element
+myarr[0]='0123456789abcdef'
+
+# Define offset and length
+$ printf '%s\n' &quot;${myarr[0]:7:3}&quot;
+789
+</code></pre>
+
+<p>类似的扩展适用于位置参数，其中偏移是基于一：</p>
+
+<pre><code># Set positional parameters $1, $2, ...
+$ set -- 1 2 3 4 5 6 7 8 9 0 a b c d e f
+
+# Define an offset (beware $0 (not a positional parameter) 
+# is being considered here as well)
+$ printf '%s\n' &quot;${@:10}&quot;
+0
+a 
+b 
+c
+d
+e
+f
+
+# Define an offset and a length
+$ printf '%s\n' &quot;${@:10:3}&quot; 
+0
+a
+b
+
+# No negative lengths allowed for positional parameters
+$ printf '%s\n' &quot;${@:10:-2}&quot;
+bash: -2: substring expression &lt; 0
+
+# Negative offset counts from the end
+# Needs a space to avoid confusion with ${@:-10:2} 
+$ printf '%s\n' &quot;${@: -10:2}&quot;
+7
+8
+
+# ${@:0} is $0 which is not otherwise a positional parameters or part 
+# of $@
+$ printf '%s\n' &quot;${@:0:2}&quot;
+/usr/bin/bash
+1
+</code></pre>
+
+<p>子字符串扩展可用于索引数组：</p>
+
+<pre><code># Create array (zero-based indices)
+$ myarr=(0 1 2 3 4 5 6 7 8 9 a b c d e f)
+
+# Elements with index 5 and higher
+$ printf '%s\n' &quot;${myarr[@]:12}&quot; 
+c
+d
+e
+f
+
+# 3 elements, starting with index 5
+$ printf '%s\n' &quot;${myarr[@]:5:3}&quot; 
+5
+6
+7
+
+# The last element of the array
+$ printf '%s\n' &quot;${myarr[@]: -1}&quot; 
+f
+</code></pre>
+
+<h3 id="从字符串开头删除模式">从字符串开头删除模式</h3>
+
+<p>短匹配：</p>
+
+<pre><code>$ a='I am a string' 
+$ echo &quot;${a#*a}&quot;
+m a string
+</code></pre>
+
+<p>长匹配：</p>
+
+<pre><code> $ echo &quot;${a##*a}&quot;
+ string
+</code></pre>
+
+<h3 id="参数间接">参数间接</h3>
+
+<p>Bash允许间接获取名称包含在另一个变量中的变量的值。 变量示例：</p>
+
+<pre><code>$ red=&quot;the color red&quot;
+$ green=&quot;the color green&quot;
+
+$ color=red
+$ echo &quot;${!color}&quot; 
+the color red
+$ color=green
+$ echo &quot;${!color}&quot; 
+the color green
+</code></pre>
+
+<p>一些演示间接扩展用法的示例：</p>
+
+<pre><code>$ foo=10
+$ x=foo
+$ echo ${x} 
+foo
+
+$ foo=10
+$ x=foo
+$ echo ${!x} 
+10
+</code></pre>
+
+<p>更多的例子：</p>
+
+<pre><code>$ argtester () { for (( i=1; i&lt;=&quot;$#&quot;; i++ )); do echo &quot;${i}&quot;;done; }; argtester -ab -cd -ef
+1 #i expanded to 1
+2 #i expanded to 2
+3 #i expanded to 3
+
+$ argtester () { for (( i=1; i&lt;=&quot;$#&quot;; i++ )); do echo &quot;${!i}&quot;;done; }; argtester -ab -cd -ef 
+-ab # i=1 --&gt; expanded to $1 ---&gt; expanded to first argument sent to function
+-cd # i=2 --&gt; expanded to $2 ---&gt; expanded to second argument sent to function
+-ef # i=3 --&gt; expanded to $3 ---&gt; expanded to third argument sent to function
+</code></pre>
+
+<h3 id="参数扩展和文件名">参数扩展和文件名</h3>
+
+<p>您可以使用Bash参数扩展来模拟常见的文件名处理操作，如<code>basename</code>和<code>dirname</code>。</p>
+
+<p>我们用下面这个路径作为例子的路径：</p>
+
+<pre><code>FILENAME=&quot;/tmp/example/myfile.txt&quot;
+</code></pre>
+
+<p>模拟<code>dirname</code>命令，获取文件的目录：</p>
+
+<pre><code>echo &quot;${FILENAME%/*}&quot; 
+#Out: /tmp/example
+</code></pre>
+
+<p>模拟<code>basename $FILENAME</code>命令，返回文件路径的文件名：</p>
+
+<pre><code>echo &quot;${FILENAME##*/}&quot;
+#Out: myfile.txt
+</code></pre>
+
+<p>模拟<code>basename $FILENAME .txt</code>返回不带<code>.txt</code>扩展的文件名：</p>
+
+<pre><code>BASENAME=&quot;${FILENAME##*/}&quot; 
+echo &quot;${BASENAME%%.txt}&quot; 
+#Out: myfile
+</code></pre>
+
+<h3 id="默认值替换">默认值替换</h3>
+
+<blockquote>
+<p><code>${parameter:-word}</code></p>
+
+<p>如果参数未设置或为null，则替换单词的扩展。 否则，参数的值将被替换。</p>
+</blockquote>
+
+<pre><code>$ unset var
+$ echo &quot;${var:-XX}&quot; 
+XX
+$ var=&quot;&quot;
+$ echo &quot;${var:-XX}&quot; 
+XX
+$ var=23
+$ echo &quot;${var:-XX}&quot; 
+23
+</code></pre>
+
+<blockquote>
+<p><code>${parameter:=word}</code></p>
+
+<p>如果参数未设置或为null，则将字的展开指定给参数。然后替换参数值。位置参数和特殊参数不能以这种方式分配给。</p>
+</blockquote>
+
+<pre><code>$ unset var
+$ echo &quot;${var:=XX}&quot; 
+XX
+$ echo &quot;$var&quot;
+XX
+$ var=&quot;&quot;
+$ echo &quot;${var:=XX}&quot;
+XX
+$ echo &quot;$var&quot;
+XX
+$ var=23
+$ echo &quot;${var:=XX}&quot; 
+23
+$ echo &quot;$var&quot;
+23
+</code></pre>
+
+<h3 id="字符串末尾删除模式">字符串末尾删除模式</h3>
+
+<p>短匹配：</p>
+
+<pre><code>$ a='I am a string' 
+$ echo &quot;${a%a*}&quot;
+I am
+</code></pre>
+
+<p>长匹配：</p>
+
+<pre><code> $ echo &quot;${a%%a*}&quot; 
+ I
+</code></pre>
+
+<h3 id="扩展中处理">扩展中处理</h3>
+
+<p>变量不一定必须扩展到它们的值 - 可以在扩展期间提取子字符串，这对于提取文件扩展名或路径的一部分很有用。globbing字符保留了它们通常的含义，所以<code>.*</code>指的是一个文本点，后面跟着任何字符序列；它不是正则表达式。</p>
+
+<pre><code>$ v=foo-bar-baz 
+$ echo ${v%%-*} 
+foo
+$ echo ${v%-*} 
+foo-bar
+$ echo ${v##*-} 
+baz
+$ echo ${v#*-} 
+bar-baz
+</code></pre>
+
+<p>也可以使用默认值来扩展变量，比如我想调用用户的编辑器，但是如果他们没有设置，我想给他们VIM。</p>
+
+<pre><code>$ EDITOR=nano
+$ ${EDITOR:-vim} 
+/tmp/some_file
+# opens nano
+$ unset EDITOR
+$ $ ${EDITOR:-vim} /tmp/some_file 
+# opens vim
+</code></pre>
+
+<p>有两种不同的方法来执行这个扩展，不同之处在于判断变量是空的还是未设置的。使用<code>:-</code>方法时，当变量是空的或者未设置的都会使用默认值；使用<code>-</code>时，只会在变量未设置时会使用默认值，当变量为空时，是使用变量的值。</p>
+
+<pre><code>$ a=&quot;set&quot;
+$ b=&quot;&quot;
+$ unset c
+$ echo ${a:-default_a} ${b:-default_b} ${c:-default_c} 
+set default_b default_c
+$ echo ${a-default_a} ${b-default_b} ${c-default_c} 
+set default_c
+</code></pre>
+
+<p>与默认值类似，可以给出备选值；如果某个特定变量不可用，则使用默认值；如果该变量可用，则使用备选值。</p>
+
+<pre><code>$ a=&quot;set&quot;
+$ b=&quot;&quot;
+$ echo ${a:+alternative_a} ${b:+alternative_b} 
+alternative_a
+</code></pre>
+
+<p>注意到这些扩展可以嵌套，在向命令行标志提供参数时，使用替代项变得特别有用；</p>
+
+<pre><code>$ output_file=/tmp/foo
+$ wget ${output_file:+&quot;-o ${output_file}&quot;} www.stackexchange.com 
+# expands to wget -o /tmp/foo www.stackexchange.com
+$ unset output_file
+$ wget ${output_file:+&quot;-o ${output_file}&quot;} www.stackexchange.com 
+# expands to wget www.stackexchange.com
+</code></pre>
+
+<h3 id="变量为空或未设置就错误">变量为空或未设置就错误</h3>
+
+<p>这个的语法类似于默认值替换，但它不替换默认值，而是返回一些错误信息。语法的格式是<code>${VARNAME?ERRMSG}</code>和<code>${VARNAME:?ERRMSG}</code>。带有<code>:</code>号的语法，当变量未设置或为空时都会输出错误，但没有这个符号时，只有在变量未设置时输出错误信息。如果抛出了错误，将会输出错误信息，并且退出码设置为1。</p>
+
+<pre><code>#!/bin/bash
+FOO=
+# ./script.sh: line 4: FOO: EMPTY 
+echo &quot;FOO is ${FOO:?EMPTY}&quot;
+# FOO is
+echo &quot;FOO is ${FOO?UNSET}&quot;
+# ./script.sh: line 8: BAR: EMPTY 
+echo &quot;BAR is ${BAR:?EMPTY}&quot;
+# ./script.sh: line 10: BAR: UNSET 
+echo &quot;BAR is ${BAR?UNSET}&quot;
+</code></pre>
+
+<p>每个错误的echo语句上面的完整示例运行需要被注释掉以继续。</p>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/02/post/git-section-21.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十一）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/git-section-20.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>

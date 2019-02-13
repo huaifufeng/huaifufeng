@@ -27,6 +27,20 @@ Patrick Rothfuss 961 Elizabeth Moon 946  参考：Git® Notes for Professionals 
     </item>
     
     <item>
+      <title>Bash专业笔记(十五)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-15.html</link>
+      <pubDate>Mon, 11 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-15.html</guid>
+      <description>bash参数扩展 $字符引入了参数扩展、命令替换或算术扩展。要扩展的参数名称或符号可以用大括号括起来，大括号是可选的，但可以将变量从紧跟在其后面的字符扩展中选取出来，不然这些字符可以被解释为名称的一部分。
+查看更多。
+修改字母字符的大小写 Version&amp;gt;=4.0
+修改为大写字母：
+$ v=&amp;quot;hello&amp;quot; # Just the first character $ printf &#39;%s\n&#39; &amp;quot;${v^}&amp;quot; Hello # All characters $ printf &#39;%s\n&#39; &amp;quot;${v^^}&amp;quot; HELLO # Alternative $ v=&amp;quot;hello world&amp;quot; $ declare -u string=&amp;quot;$v&amp;quot; $ echo &amp;quot;$string&amp;quot; HELLO WORLD  转换字符为小写：
+$ v=&amp;quot;BYE&amp;quot; # Just the first character $ printf &#39;%s\n&#39; &amp;quot;${v,}&amp;quot; bYE # All characters $ printf &#39;%s\n&#39; &amp;quot;${v,,}&amp;quot; bye # Alternative $ v=&amp;quot;HELLO WORLD&amp;quot; $ declare -l string=&amp;quot;$v&amp;quot; $ echo &amp;quot;$string&amp;quot; hello world  大写修改为小写，小写修改为大写：</description>
+    </item>
+    
+    <item>
       <title>Git专业笔记（二十）</title>
       <link>http://blog.huaifufeng.com/2019/02/post/git-section-20.html</link>
       <pubDate>Mon, 11 Feb 2019 00:00:00 +0000</pubDate>
