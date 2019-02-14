@@ -12,6 +12,23 @@
     
     
     <item>
+      <title>Bash专业笔记(十八)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-18.html</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-18.html</guid>
+      <description>Sort    Option meaning     -u 每行输出都唯一    sort是一个Unix命令，用来按顺序对文件中的数据进行排序。
+命令输出 sort用来排序一列行。
+输入一个文件 sort file.txt  排序另个命令的输出 你可以排序任何输出命令的输出。在下面的例子中，会排序一列符合条件的文件：
+find * -name pattern | sort  输出唯一 如果想要输出的行保持唯一，可以使用-u选项。
+输出目录中文件的所有者：
+ls -l | awk &#39;{print $3}&#39; | sort -u  数字排序 假设我们有下面的文件：
+$ cat file 10.Gryffindor 4.Hogwarts 2.Harry 3.Dumbledore 1.The sorting hat  想要按数字排序这些内容，使用-n选项：
+sort -n file  这个命令会输出下面的内容：
+1.The sorting hat 2.Harry 3.Dumbledore 4.Hogwarts 10.</description>
+    </item>
+    
+    <item>
       <title>Git专业笔记（二十三）</title>
       <link>http://blog.huaifufeng.com/2019/02/post/git-section-23.html</link>
       <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>

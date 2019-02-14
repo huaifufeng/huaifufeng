@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="pull拉取代码">
+    <meta name="description" content="sort排序命令">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（二十三）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(十八)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/git-section-23.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-18.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,12 +133,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/git" title="Git">
-                           Git
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（二十三）</h1>
+                    <h1>Bash专业笔记(十八)</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Thursday, February 14, 2019
                         
@@ -170,24 +170,19 @@
 <ul>
 <li>
 <ul>
-<li><a href="#pull">Pull</a>
+<li><a href="#sort">Sort</a>
 <ul>
-<li><a href="#获取修改到本地代码库">获取修改到本地代码库</a>
+<li><a href="#命令输出">命令输出</a>
 <ul>
-<li><a href="#简单pull">简单pull</a></li>
-<li><a href="#从不同的远端或分支获取">从不同的远端或分支获取</a></li>
-<li><a href="#手动pull">手动pull</a></li>
+<li><a href="#输入一个文件">输入一个文件</a></li>
+<li><a href="#排序另个命令的输出">排序另个命令的输出</a></li>
 </ul></li>
-<li><a href="#使用本地更改">使用本地更改</a></li>
-<li><a href="#覆盖本地">覆盖本地</a></li>
-<li><a href="#pull代码">pull代码</a></li>
-<li><a href="#保留线性历史">保留线性历史</a>
+<li><a href="#输出唯一">输出唯一</a></li>
+<li><a href="#数字排序">数字排序</a></li>
+<li><a href="#按key排序">按key排序</a>
 <ul>
-<li><a href="#pull时rebase">pull时rebase</a></li>
-<li><a href="#作为默认行为">作为默认行为</a></li>
-<li><a href="#检查是否快进">检查是否快进</a></li>
+<li><a href="#t选项">-t选项</a></li>
 </ul></li>
-<li><a href="#pull权限禁止">pull权限禁止</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,176 +190,160 @@
         		
         		
 
-<h2 id="pull">Pull</h2>
+<h2 id="sort">Sort</h2>
 
 <table>
 <thead>
 <tr>
-<th>Parameter</th>
-<th>Details</th>
+<th>Option</th>
+<th>meaning</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td>&ndash;quiet</td>
-<td>没有文本输出</td>
-</tr>
-
-<tr>
-<td>-q</td>
-<td><code>—-quiet</code>的短格式</td>
-</tr>
-
-<tr>
-<td>&ndash;verbose</td>
-<td>详细文本输出。可以分别传给merge/rebase命令</td>
-</tr>
-
-<tr>
-<td>-v</td>
-<td><code>—verbos</code>的短格式</td>
-</tr>
-
-<tr>
-<td>&ndash;[no-]recurse-submodules[=yes|on-demand|no]</td>
-<td>获取子模块的新提交？（注意这个不是pull/checkout）</td>
+<td>-u</td>
+<td>每行输出都唯一</td>
 </tr>
 </tbody>
 </table>
 
-<p>不像push是把你本地的修改推到集中版本关联服务器，而是从代码仓库服务器获取服务器上当前的代码，并且把代码从远端服务器拉取到本地机器。本主题说明了使用Git从代码库中提取代码的过程，以及将不同代码提取到本地副本时可能遇到的情况。</p>
+<p><code>sort</code>是一个Unix命令，用来按顺序对文件中的数据进行排序。</p>
 
-<h3 id="获取修改到本地代码库">获取修改到本地代码库</h3>
+<h3 id="命令输出">命令输出</h3>
 
-<h4 id="简单pull">简单pull</h4>
+<p><code>sort</code>用来排序一列行。</p>
 
-<p>当你和其他人在一个远端仓库（例如Github）协同工作时，某些时候你想和其他人分享你的修改。当他们已经把自己的修改推送到这个仓库时，你可以使用<code>pull</code>命令从这个仓库获取这些修改。</p>
+<h4 id="输入一个文件">输入一个文件</h4>
 
-<pre><code>git pull
+<pre><code>sort file.txt
 </code></pre>
 
-<p>在大多数的情况下，这都会正常工作的。</p>
+<h4 id="排序另个命令的输出">排序另个命令的输出</h4>
 
-<h4 id="从不同的远端或分支获取">从不同的远端或分支获取</h4>
+<p>你可以排序任何输出命令的输出。在下面的例子中，会排序一列符合条件的文件：</p>
 
-<p>你可以通过指定远端或分支的名字来从远端仓库获取这些修改：</p>
-
-<pre><code>git pull origin feature-A
+<pre><code>find * -name pattern | sort
 </code></pre>
 
-<p>将会从<code>origin</code>拉取分支<code>feature-A</code>的修改到本地分支。注意你可以直接使用远端url来代替远端名称，使用提交的SHA来代替分支名称。</p>
+<h3 id="输出唯一">输出唯一</h3>
 
-<h4 id="手动pull">手动pull</h4>
+<p>如果想要输出的行保持唯一，可以使用<code>-u</code>选项。</p>
 
-<p>你可以使用<code>git fetch</code>和<code>git merge</code>模拟<code>pull</code>命令的行为：</p>
+<p>输出目录中文件的所有者：</p>
 
-<pre><code>git fetch origin # retrieve objects and update refs from origin 
-git merge origin/feature-A # actually perform the merge
+<pre><code>ls -l | awk '{print $3}' | sort -u
 </code></pre>
 
-<p>这给与你更多的控制器，允许你在合并分支之前检查分支的内容。实际上，在<code>fetch</code>代码之后，你可以使用<code>git branch -a</code>命令来查看远端的分支，然后切换到这个分支：</p>
+<h3 id="数字排序">数字排序</h3>
 
-<pre><code>git checkout -b local-branch-name origin/feature-A # checkout the remote branch 
-# inspect the branch, make commits, squash, ammend or whatever
-git checkout merging-branches # moving to the destination branch
-git merge local-branch-name # performing the merge
+<p>假设我们有下面的文件：</p>
+
+<pre><code>$ cat file 
+10.Gryffindor 
+4.Hogwarts 
+2.Harry 
+3.Dumbledore 
+1.The sorting hat
 </code></pre>
 
-<p>这在处理<code>pull request</code>的时候非常方便。</p>
+<p>想要按数字排序这些内容，使用<code>-n</code>选项：</p>
 
-<h3 id="使用本地更改">使用本地更改</h3>
-
-<p>当本地有修改存在时，<code>pull</code>命令会中断执行，并曝出下面的错误信息：</p>
-
-<blockquote>
-<p>error: Your local changes to the following files would be overwritten by merge</p>
-</blockquote>
-
-<p>要继续更新这些内容（像在subversion中使用<code>svn update</code>命令），可以运行下面的命令：</p>
-
-<pre><code>git stash
-git pull --rebase 
-git stash pop
+<pre><code>sort -n file
 </code></pre>
 
-<p>一个更方便的方法是定义一个别名：</p>
+<p>这个命令会输出下面的内容：</p>
 
-<p>Version&lt;2.9</p>
-
-<pre><code>git config --global alias.up '!git stash &amp;&amp; git pull --rebase &amp;&amp; git stash pop'
+<pre><code>1.The sorting hat
+2.Harry
+3.Dumbledore
+4.Hogwarts
+10.Gryffindor
 </code></pre>
 
-<p>Version&gt;=2.9</p>
+<p>想要倒序排列的话，使用<code>-r</code>选项：</p>
 
-<pre><code>git config --global alias.up 'pull --rebase --autostash'
+<pre><code>sort -rn file
 </code></pre>
 
-<p>现在你只需要简单的执行下面的命令就可以了：</p>
+<p>这将会输出下面的结果：</p>
 
-<pre><code>git up
+<pre><code>10.Gryffindor
+4.Hogwarts
+3.Dumbledore
+2.Harry
+1.The sorting hat
 </code></pre>
 
-<h3 id="覆盖本地">覆盖本地</h3>
+<h3 id="按key排序">按key排序</h3>
 
-<pre><code>git fetch
-git reset --hard origin/master
+<p>假设我们有这样一个文件：</p>
+
+<pre><code>$ cat Hogwarts
+Harry       Malfoy      Rowena       Helga
+Gryffindor  Slytherin   Ravenclaw    Hufflepuff
+Hermione    Goyle       Lockhart     Tonks
+Ron         Snape       Olivander    Newt
+Ron         Goyle       Flitwick     Sprout
 </code></pre>
 
-<p><strong>注意：</strong>当使用<code>reset --hard</code>丢弃提交的时候，已经提交的内容可以通过<code>reflog</code>和<code>reset</code>命令恢复，但是未提交的内容就永远丢掉了。</p>
+<p>想用某个列作为key来排序，可以使用<code>k</code>选项：</p>
 
-<p>如果命名方式不同，则将origin和master分别更改为要强制拉出的远程和分支。</p>
-
-<h3 id="pull代码">pull代码</h3>
-
-<pre><code>git pull
+<pre><code>sort -k 2 Hogwarts
 </code></pre>
 
-<h3 id="保留线性历史">保留线性历史</h3>
+<p>这将会把第2列作为排序的key，有下面的输出：</p>
 
-<h4 id="pull时rebase">pull时rebase</h4>
-
-<p>如果你从远端仓库拉取新的提交，你在本地分支已经做了修改，Git会自动的合并远端代码和本地代码。如果你想减少本地分支上merge提交的数量，你可以告诉Git把你的本地修改rebase到远端的修改上。</p>
-
-<pre><code>git pull --rebase
+<pre><code>Ron        Goyle      Flitwick  Sprout
+Hermione   Goyle      Lockhart  Tonks
+Harry      Malfoy     Rowena    Helga
+Gryffindor Slytherin  Ravenclaw Hufflepuff
+Ron        Snape      Olivander Newt
 </code></pre>
 
-<h4 id="作为默认行为">作为默认行为</h4>
+<p>如果我们在使用主key的基础上，想用再用第二个key来排序：</p>
 
-<p>想要在新分支上把这个当做默认行为，可以执行下面的命令：</p>
-
-<pre><code>git config branch.autosetuprebase always
+<pre><code>sort -k 2,2 -k 1,1 Hogwarts
 </code></pre>
 
-<p>想要修改已经存在分支的行为，使用下面的命令：</p>
+<p>这将会把第二列作为主key，然后将第一列作为第二个key：</p>
 
-<pre><code>git config branch.BRANCH_NAME.rebase true
+<pre><code>Hermione   Goyle     Lockhart   Tonks
+Ron        Goyle     Flitwick   Sprout
+Harry      Malfoy    Rowena     Helga
+Gryffindor Slytherin Ravenclaw  Hufflepuff
+Ron        Snape     Olivander  Newt
 </code></pre>
 
-<p>下面的命令将会执行默认的行为（merge而不是rebase）:</p>
+<p>当你使用一个以上的key排序时，对于每个<code>-k</code>选项都要指定排序结束。所以<code>-k 1,1</code>意味着以第一列开始排序，在第一列结束排序。</p>
 
-<pre><code>git pull --no-rebase
+<h4 id="t选项">-t选项</h4>
+
+<p>在前面的例子中，文件有默认的分隔符<code>tab</code>。如果文件没有默认分隔符，我们需要使用<code>-t</code>选项指定分隔符。假设我们有下面的文件：</p>
+
+<pre><code>$ cat file
+5.|Gryffindor 
+4.|Hogwarts 
+2.|Harry 
+3.|Dumbledore 
+1.|The sorting hat
 </code></pre>
 
-<h4 id="检查是否快进">检查是否快进</h4>
+<p>使用第二列来排列这个文件：</p>
 
-<p>想只允许本地快进分支，可以使用：</p>
-
-<pre><code>git pull --ff-only
+<pre><code>$ sort -t &quot;|&quot; -k 2 file
 </code></pre>
 
-<p>当本地分支不能快速前进时，这将显示一个错误，需要重新调整或与上游合并。</p>
+<p>将会有下面的输出：</p>
 
-<h3 id="pull权限禁止">pull权限禁止</h3>
-
-<p>如果<code>.git</code>目录权限错误，就会出现一些问题。可以通过修改整个<code>.git</code>目录的拥有者来修复这个问题。有时会发生另一个用户拉取并更改.git文件夹或文件的权限的情况。</p>
-
-<p>使用下面的命令修改这个问题：</p>
-
-<pre><code>chown -R youruser:yourgroup .git/
+<pre><code>3.|Dumbledore 
+5.|Gryffindor 
+2.|Harry 
+4.|Hogwarts
+1.|The sorting hat
 </code></pre>
 
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -372,13 +351,9 @@ git reset --hard origin/master
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/02/post/bash-section-18.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(十八)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-17.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(十七)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-23.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十三）">Next Post &rarr;</a>
                   </li>
                   
               </ul>
