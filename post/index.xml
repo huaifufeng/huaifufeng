@@ -6,10 +6,25 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 13 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 14 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十三）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-23.html</link>
+      <pubDate>Thu, 14 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-23.html</guid>
+      <description>Pull    Parameter Details     &amp;ndash;quiet 没有文本输出   -q —-quiet的短格式   &amp;ndash;verbose 详细文本输出。可以分别传给merge/rebase命令   -v —verbos的短格式   &amp;ndash;[no-]recurse-submodules[=yes|on-demand|no] 获取子模块的新提交？（注意这个不是pull/checkout）    不像push是把你本地的修改推到集中版本关联服务器，而是从代码仓库服务器获取服务器上当前的代码，并且把代码从远端服务器拉取到本地机器。本主题说明了使用Git从代码库中提取代码的过程，以及将不同代码提取到本地副本时可能遇到的情况。
+获取修改到本地代码库 简单pull 当你和其他人在一个远端仓库（例如Github）协同工作时，某些时候你想和其他人分享你的修改。当他们已经把自己的修改推送到这个仓库时，你可以使用pull命令从这个仓库获取这些修改。
+git pull  在大多数的情况下，这都会正常工作的。
+从不同的远端或分支获取 你可以通过指定远端或分支的名字来从远端仓库获取这些修改：
+git pull origin feature-A  将会从origin拉取分支feature-A的修改到本地分支。注意你可以直接使用远端url来代替远端名称，使用提交的SHA来代替分支名称。
+手动pull 你可以使用git fetch和git merge模拟pull命令的行为：
+git fetch origin # retrieve objects and update refs from origin git merge origin/feature-A # actually perform the merge  这给与你更多的控制器，允许你在合并分支之前检查分支的内容。实际上，在fetch代码之后，你可以使用git branch -a命令来查看远端的分支，然后切换到这个分支：</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(十七)</title>

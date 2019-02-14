@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="pull拉取代码">
+    
+    <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（二十三）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/02/post/git-section-23.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（二十三）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, February 14, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#pull">Pull</a>
+<ul>
+<li><a href="#获取修改到本地代码库">获取修改到本地代码库</a>
+<ul>
+<li><a href="#简单pull">简单pull</a></li>
+<li><a href="#从不同的远端或分支获取">从不同的远端或分支获取</a></li>
+<li><a href="#手动pull">手动pull</a></li>
+</ul></li>
+<li><a href="#使用本地更改">使用本地更改</a></li>
+<li><a href="#覆盖本地">覆盖本地</a></li>
+<li><a href="#pull代码">pull代码</a></li>
+<li><a href="#保留线性历史">保留线性历史</a>
+<ul>
+<li><a href="#pull时rebase">pull时rebase</a></li>
+<li><a href="#作为默认行为">作为默认行为</a></li>
+<li><a href="#检查是否快进">检查是否快进</a></li>
+</ul></li>
+<li><a href="#pull权限禁止">pull权限禁止</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="pull">Pull</h2>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Details</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>&ndash;quiet</td>
+<td>没有文本输出</td>
+</tr>
+
+<tr>
+<td>-q</td>
+<td><code>—-quiet</code>的短格式</td>
+</tr>
+
+<tr>
+<td>&ndash;verbose</td>
+<td>详细文本输出。可以分别传给merge/rebase命令</td>
+</tr>
+
+<tr>
+<td>-v</td>
+<td><code>—verbos</code>的短格式</td>
+</tr>
+
+<tr>
+<td>&ndash;[no-]recurse-submodules[=yes|on-demand|no]</td>
+<td>获取子模块的新提交？（注意这个不是pull/checkout）</td>
+</tr>
+</tbody>
+</table>
+
+<p>不像push是把你本地的修改推到集中版本关联服务器，而是从代码仓库服务器获取服务器上当前的代码，并且把代码从远端服务器拉取到本地机器。本主题说明了使用Git从代码库中提取代码的过程，以及将不同代码提取到本地副本时可能遇到的情况。</p>
+
+<h3 id="获取修改到本地代码库">获取修改到本地代码库</h3>
+
+<h4 id="简单pull">简单pull</h4>
+
+<p>当你和其他人在一个远端仓库（例如Github）协同工作时，某些时候你想和其他人分享你的修改。当他们已经把自己的修改推送到这个仓库时，你可以使用<code>pull</code>命令从这个仓库获取这些修改。</p>
+
+<pre><code>git pull
+</code></pre>
+
+<p>在大多数的情况下，这都会正常工作的。</p>
+
+<h4 id="从不同的远端或分支获取">从不同的远端或分支获取</h4>
+
+<p>你可以通过指定远端或分支的名字来从远端仓库获取这些修改：</p>
+
+<pre><code>git pull origin feature-A
+</code></pre>
+
+<p>将会从<code>origin</code>拉取分支<code>feature-A</code>的修改到本地分支。注意你可以直接使用远端url来代替远端名称，使用提交的SHA来代替分支名称。</p>
+
+<h4 id="手动pull">手动pull</h4>
+
+<p>你可以使用<code>git fetch</code>和<code>git merge</code>模拟<code>pull</code>命令的行为：</p>
+
+<pre><code>git fetch origin # retrieve objects and update refs from origin 
+git merge origin/feature-A # actually perform the merge
+</code></pre>
+
+<p>这给与你更多的控制器，允许你在合并分支之前检查分支的内容。实际上，在<code>fetch</code>代码之后，你可以使用<code>git branch -a</code>命令来查看远端的分支，然后切换到这个分支：</p>
+
+<pre><code>git checkout -b local-branch-name origin/feature-A # checkout the remote branch 
+# inspect the branch, make commits, squash, ammend or whatever
+git checkout merging-branches # moving to the destination branch
+git merge local-branch-name # performing the merge
+</code></pre>
+
+<p>这在处理<code>pull request</code>的时候非常方便。</p>
+
+<h3 id="使用本地更改">使用本地更改</h3>
+
+<p>当本地有修改存在时，<code>pull</code>命令会中断执行，并曝出下面的错误信息：</p>
+
+<blockquote>
+<p>error: Your local changes to the following files would be overwritten by merge</p>
+</blockquote>
+
+<p>要继续更新这些内容（像在subversion中使用<code>svn update</code>命令），可以运行下面的命令：</p>
+
+<pre><code>git stash
+git pull --rebase 
+git stash pop
+</code></pre>
+
+<p>一个更方便的方法是定义一个别名：</p>
+
+<p>Version&lt;2.9</p>
+
+<pre><code>git config --global alias.up '!git stash &amp;&amp; git pull --rebase &amp;&amp; git stash pop'
+</code></pre>
+
+<p>Version&gt;=2.9</p>
+
+<pre><code>git config --global alias.up 'pull --rebase --autostash'
+</code></pre>
+
+<p>现在你只需要简单的执行下面的命令就可以了：</p>
+
+<pre><code>git up
+</code></pre>
+
+<h3 id="覆盖本地">覆盖本地</h3>
+
+<pre><code>git fetch
+git reset --hard origin/master
+</code></pre>
+
+<p><strong>注意：</strong>当使用<code>reset --hard</code>丢弃提交的时候，已经提交的内容可以通过<code>reflog</code>和<code>reset</code>命令恢复，但是未提交的内容就永远丢掉了。</p>
+
+<p>如果命名方式不同，则将origin和master分别更改为要强制拉出的远程和分支。</p>
+
+<h3 id="pull代码">pull代码</h3>
+
+<pre><code>git pull
+</code></pre>
+
+<h3 id="保留线性历史">保留线性历史</h3>
+
+<h4 id="pull时rebase">pull时rebase</h4>
+
+<p>如果你从远端仓库拉取新的提交，你在本地分支已经做了修改，Git会自动的合并远端代码和本地代码。如果你想减少本地分支上merge提交的数量，你可以告诉Git把你的本地修改rebase到远端的修改上。</p>
+
+<pre><code>git pull --rebase
+</code></pre>
+
+<h4 id="作为默认行为">作为默认行为</h4>
+
+<p>想要在新分支上把这个当做默认行为，可以执行下面的命令：</p>
+
+<pre><code>git config branch.autosetuprebase always
+</code></pre>
+
+<p>想要修改已经存在分支的行为，使用下面的命令：</p>
+
+<pre><code>git config branch.BRANCH_NAME.rebase true
+</code></pre>
+
+<p>下面的命令将会执行默认的行为（merge而不是rebase）:</p>
+
+<pre><code>git pull --no-rebase
+</code></pre>
+
+<h4 id="检查是否快进">检查是否快进</h4>
+
+<p>想只允许本地快进分支，可以使用：</p>
+
+<pre><code>git pull --ff-only
+</code></pre>
+
+<p>当本地分支不能快速前进时，这将显示一个错误，需要重新调整或与上游合并。</p>
+
+<h3 id="pull权限禁止">pull权限禁止</h3>
+
+<p>如果<code>.git</code>目录权限错误，就会出现一些问题。可以通过修改整个<code>.git</code>目录的拥有者来修复这个问题。有时会发生另一个用户拉取并更改.git文件夹或文件的权限的情况。</p>
+
+<p>使用下面的命令修改这个问题：</p>
+
+<pre><code>chown -R youruser:yourgroup .git/
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/bash-section-17.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(十七)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
