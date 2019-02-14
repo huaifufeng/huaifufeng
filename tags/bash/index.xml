@@ -6,10 +6,28 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 12 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(十七)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-17.html</link>
+      <pubDate>Wed, 13 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-17.html</guid>
+      <description>Find find是一个用于在目录中递归搜索与条件匹配的文件（或目录）的命令，然后对所选文件执行某些操作。
+find search_path selection_criteria action  按照文件名或扩展名搜索文件 使用指定的文件名在pwd指向的本地目录内搜索文件或目录：
+$ find . -name &amp;quot;myFile.txt&amp;quot; ./myFile.txt  使用通配符查找有指定扩展名的文件或目录：
+$ find . -name &amp;quot;*.txt&amp;quot; ./myFile.txt ./myFile2.txt  想要搜索包含多个扩展的文件或目录，使用or选项：
+$ find . -name &amp;quot;*.txt&amp;quot; -o -name &amp;quot;*.sh&amp;quot;  想要搜索以abc开头，后面跟着一个字符，之后跟着一个数字使用下面的模式：
+$ find . -name &amp;quot;abc[a-z][0-9]&amp;quot;  获取指定目录下所有的文件：
+$ find /opt  只显示目录下面的文件，使用-type f：
+$ find /opt -type f  只显示目录下面的目录，使用-type d:
+$ find /opt -type d  对找到的文件执行命令 有时候我们需要在一批文件上面运行命令。这里就可以使用xargs命令。
+find . -type d -print | xargs -r chmod 770  上面的命令将会在.</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(十六)</title>
