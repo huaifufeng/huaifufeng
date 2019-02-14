@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="怀府风，程序员, | 这里是怀府风的博客，与你一起发现更大的世界。">
+    <meta name="description" content="访问本地服务localhost">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>工具-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>访问本地服务-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/categories/%E5%B7%A5%E5%85%B7/">
+    <link rel="canonical" href="/2019/02/post/localhost.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -120,14 +120,29 @@
 
 
 
-<header class="intro-header" style="background-image: url('/img/head_bg.jpg')">
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>怀府小阁 </h1>
-                    
-		    <span class="subheading">积跬步 至远方</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>访问本地服务</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, February 14, 2019
+                        
+                    </span>
                 </div>
             </div>
         </div>
@@ -136,150 +151,132 @@
 
 
 
-  
-<div class="container">
-    <div class="row">
-        
-        
-   	    <div class="
-            col-lg-8 col-lg-offset-1
-            col-md-8 col-md-offset-1
-            col-sm-12
-            col-xs-12
-            post-container
-        ">
-            
 
-<div class="post-preview">
-    <a href="http://blog.huaifufeng.com/2019/01/post/git-section-2.html">
-        <h2 class="post-title">
-            Git专业笔记（二）
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            git查看历史
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by 怀府风 Friday, January 18, 2019
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://blog.huaifufeng.com/2019/01/post/git-section-1.html">
-        <h2 class="post-title">
-            Git专业笔记（一）
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            git初探
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by 怀府风 Tuesday, January 15, 2019
-    </p>
-</div>
-<hr>
-
+<article>
+    <div class="container">
+        <div class="row">
 
             
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-
-<ul class="pager">
-    
-    <li class="previous">
-        <a href="/categories/%E5%B7%A5%E5%85%B7/page/4/">&larr; Newer Posts</a>
-    </li>
-    
-    
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#本地访问">本地访问</a>
+<ul>
+<li><a href="#127-0-0-1">127.0.0.1</a></li>
+<li><a href="#localhost">localhost</a></li>
+<li><a href="#其他">其他</a></li>
+</ul></li>
+</ul></li>
 </ul>
+</nav>
+        		
+        		
 
+<h2 id="本地访问">本地访问</h2>
 
-       	</div>
+<p>我们在访问本地服务的时候，有的时候使用的是localhost，有的时候用的是127.0.0.1。这在大多数的情况下都是可以互换的，可以使用一种方法换另一种方法。但是在某些情况下localhost可以访问，但是127.0.0.1不可以访问。这说明两者还是有不同存在的。</p>
+
+<h3 id="127-0-0-1">127.0.0.1</h3>
+
+<p>这个地址一般是分配给loopback接口的，这是一种特殊的接口，用于本机应用的相互通信。只要本机的网络组件正常，这个接口就可以使用。实际上整个127.*的网段都是可以使用的，只不过127.0.0.1是默认的设置而已。ping 127.0.0.2也是可以访问的。</p>
+
+<p>因为数据的传输通过网卡，所以受到网络防火墙和网卡设置的限制。这个在访问的过程中就涉及到网络用户权限的问题。</p>
+
+<h3 id="localhost">localhost</h3>
+
+<p>localhost是一个域名，默认指向127.0.0.1。现在支持IPv6，同时也指向[::1]。</p>
+
+<p>可以设置localhost指向的ip地址，一般是在操作系统的<code>hosts</code>文件中进行配置。在这个配置文件中，可以把不同的ip地址设置到localhost上面。</p>
+
+<p>因为localhost的访问不走网卡，所以不收网络防火墙和网卡的限制。</p>
+
+<p>访问这个地址也是使用本地用户权限去访问的。</p>
+
+<h3 id="其他">其他</h3>
+
+<p>所以访问本地程序时，使用localhost比较好，不占用网卡和网络资源。</p>
+
         
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/02/post/git-section-23.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十三）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/bash-section-17.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(十七)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
 
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
-    
-    
-    <section>
-        <hr class="hidden-sm hidden-xs">
-        <h5>特色标签</h5>
-        <div class="tags">
-             
-            
-                
-                    <a href="/tags/bash" title="bash">
-                        bash
-                    </a>
-                
-            
-                
-                    <a href="/tags/git" title="git">
-                        git
-                    </a>
-                
-            
-                
-                    <a href="/tags/go" title="go">
-                        go
-                    </a>
-                
-            
-                
-                    <a href="/tags/hugo" title="hugo">
-                        hugo
-                    </a>
-                
-            
-        </div>
-    </section>
-    
 
-    
-    <section class="visible-md visible-lg">
-        <hr><h5><a href="">ABOUT ME</a></h5>
-        <div class="short-about">
-            
-            <img src="/img/avatar-lufu.jpg" />
-            
-            
-                <p>慢慢前行，不断前进，向着远方前行...</p>
-            
-           
-           <ul class="list-inline"> 
-               
-               
-               
-               
-               
-               
-               
-               
-               
-                </ul>
+
             </div>
-    </section>
-    
-    
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-    
-    
-</div>
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
 
-	</div>
-</div>
-
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
 
 
 
