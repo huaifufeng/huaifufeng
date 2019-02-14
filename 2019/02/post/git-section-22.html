@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="复制">
+    <meta name="description" content="分析工作流的类型">
     
     <meta name="keyword"  content="怀府风的博客, 博客, 互联网, Redis, Go, 微服务, PHP">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(十六)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（二十二）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-16.html">
+    <link rel="canonical" href="/2019/02/post/git-section-22.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(十六)</h1>
+                    <h1>Git专业笔记（二十二）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Tuesday, February 12, 2019
+                    <span  class="meta">Posted by 怀府风 on Wednesday, February 13, 2019
                         
                     </span>
                 </div>
@@ -170,10 +170,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#复制">复制</a>
+<li><a href="#工作流的类型">工作流的类型</a>
 <ul>
-<li><a href="#复制一个文件">复制一个文件</a></li>
-<li><a href="#复制目录">复制目录</a></li>
+<li><a href="#集中工作流">集中工作流</a></li>
+<li><a href="#gitflow工作流">Gitflow工作流</a></li>
+<li><a href="#特性分支工作流">特性分支工作流</a></li>
+<li><a href="#github工作流">Github工作流</a></li>
+<li><a href="#fork工作流">Fork工作流</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -181,81 +184,82 @@
         		
         		
 
-<h2 id="复制">复制</h2>
+<h2 id="工作流的类型">工作流的类型</h2>
 
-<table>
-<thead>
-<tr>
-<th>Option</th>
-<th>Description</th>
-</tr>
-</thead>
+<h3 id="集中工作流">集中工作流</h3>
 
-<tbody>
-<tr>
-<td>-a,-archive</td>
-<td>和选项<code>d</code>，<code>p</code>，<code>r</code>一起使用</td>
-</tr>
+<p>使用这种基础工作流程，<code>master</code>分支包含所有进行中的开发分支。在继续开发前，贡献者需要特别确定他们能够获取最新的修改，因为这个分支会迅速变化。每个可以访问这个仓库的人都可以把提交修改到<code>master</code>分支上面。</p>
 
-<tr>
-<td>-b,-backup</td>
-<td>在删除之前，建立一个备份</td>
-</tr>
+<p>这种模型的图形展示：</p>
 
-<tr>
-<td>-d,&ndash;no-deference</td>
-<td>保存连接</td>
-</tr>
+<p><img src="/img/git/dAYXB.png" alt="集中工作流" /></p>
 
-<tr>
-<td>-f,&ndash;force</td>
-<td>在不提醒用户的情况下删除目标地址存在的文件</td>
-</tr>
+<p>这是经典的版本控制范例，旧的版本管理系统<code>Subversion</code>和<code>CVS</code>就是基于这种模型。以这种方式工作的软件成为集中版本控制系统或者CVCS。虽然Git可以以这种方式工作，但是存在的名下的缺点，例如在每次拉取之前都要进行合并操作。团队可以按这种方式工作，但不断的合并解决冲突最终会占用大量的宝贵时间。</p>
 
-<tr>
-<td>-i,&ndash;interactive</td>
-<td>在覆盖前进行提示</td>
-</tr>
+<p>这就是为什么Linus Torvalds创建Git不是按照CVCS模式，而是DVCS（分布式版本控制系统），类似于Mercurial。这种模式的优点是本章其他示例展示的灵活性。</p>
 
-<tr>
-<td>-l,&ndash;link</td>
-<td>不复制文件，而是使用文件连接</td>
-</tr>
+<h3 id="gitflow工作流">Gitflow工作流</h3>
 
-<tr>
-<td>-p,&ndash;preserve</td>
-<td>尽可能保留文件的属性</td>
-</tr>
+<p>最初由<a href="https://nvie.com/posts/a-successful-git-branching-model/">Vincent Driessen</a>提出的，Gitflow是使用Git和几个预定义的分支的开发流程。这可以看做是<code>特性分支工作流</code>的一种特例。</p>
 
-<tr>
-<td>-R,&ndash;recursive</td>
-<td>递归复制目录的文件</td>
-</tr>
-</tbody>
-</table>
+<p>这种想法是为开发中的特定部分保留在单独的分支上面：</p>
 
-<h3 id="复制一个文件">复制一个文件</h3>
+<ul>
+<li><code>master</code>分支一直包含最新的生产代码，实验性代码不能包含到这个分支上面。</li>
+<li><code>develop</code>包含所有最新的开发内容。这些最新的修改可以包含基本所有的内容，但是大的特性应该包含在自己的分支内。这里的代码在发布/部署之前要合并到<code>release</code>分支上面。</li>
+<li><code>hotfix</code>分支代表一些小的bug修复功能，这些修复功能等不到代码发布了。<code>hotfix</code>从<code>master</code>分支上切出来，并且要合并到<code>master</code>和<code>develop</code>分支上面。</li>
+<li><code>release</code>分支用来把最新的开发从<code>develop</code>分支发布到<code>master</code>分支上。任何最后一分钟的修改（像版本号冲突）都在<code>release</code>分支修改，然后合并到<code>master</code>和<code>develop</code>分支上。部署新版本时，master应标记当前版本号（例如，使用语义版本），以供将来参考和轻松回滚。</li>
+<li><code>feature</code>分支包含大的特性的修改。这些修改都在专门的分支中进行，开发结束之后合并到<code>develop</code>分支。专门的<code>feature</code>分支可以把开发工作分库，对于每个特性可以单独部署。</li>
+</ul>
 
-<p>把文件<code>foo.txt</code>从<code>/path/to/source/</code>复制到<code>/path/to/target/folder/</code>。</p>
+<p>这种模型的图形展示：</p>
 
-<pre><code>cp /path/to/source/foo.txt /path/to/target/folder/
-</code></pre>
+<p><img src="/img/git/TBHkD.png" alt="Gitflow工作流" /></p>
 
-<p>把文件<code>foo.txt</code>从<code>/path/to/source/</code>复制到<code>/path/to/target/folder/</code>，并且修改文件名称为<code>bar.txt</code>。</p>
+<p>这种模型的原始展现形式是：</p>
 
-<pre><code>cp /path/to/source/foo.txt /path/to/target/folder/bar.txt
-</code></pre>
+<p><img src="/img/git/RGIng.png" alt="Gitflow工作流原始形式" /></p>
 
-<h3 id="复制目录">复制目录</h3>
+<h3 id="特性分支工作流">特性分支工作流</h3>
 
-<p>把目录<code>foo</code>复制到目录<code>bar</code>里面：</p>
+<p>特性分支工作流的核心思想是把所有的特性放到不同的分支中进行开发，而不是统统放到<code>master</code>分支。这种封装使得多个开发人员可以在不干扰主代码库的情况下轻松地完成特定功能的开发。这还意味着主分支永远不会包含损坏的代码，对于持续集成环境来说是一个巨大的优势。</p>
 
-<pre><code>cp -r /path/to/foo /path/to/bar
-</code></pre>
+<p>封装特性开发可以利用<code>pull request</code>的优势，这也是围绕分支讨论的一种方法。这给了其他开发者在特性合并到主线之前进行确认的机会。或者，你可以在一个特性分支的开发中，你可以打开一个<code>pull request</code>来请求同时的建议。最关键的是，<code>pull request</code>使您的团队非常容易对彼此的工作进行评论。</p>
 
-<p>如果目录<code>bar</code>在执行命令之前存在，目录<code>foo</code>和它的内容将会被复制到目录<code>bar</code>中。但是如果执行命令之前<code>bar</code>目录不存在的话，会创建目录<code>bar</code>，并且把目录<code>foo</code>的内容存放到<code>bar</code>中。</p>
+<p>基于<a href="https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow">Atlassian Tutorials</a>。</p>
 
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<h3 id="github工作流">Github工作流</h3>
+
+<p>这在很多开源项目中是很有名的，但不仅仅这样。特定位置的<code>master</code>分支（Github,Gitlab,BitBucket,本地服务器）包含最新的可发布版本。</p>
+
+<p>对于每个新特性/错误修复/体系结构更改，每个开发人员都创建一个分支。所有的修改都在这个分支上进行，并且可以在<code>pull request</code>或<code>code review</code>中进行讨论。一旦这些修改都被接受了，可以合并到<code>master</code>主分支。</p>
+
+<p><code>Scott Chacon</code>提供的全部流程：</p>
+
+<ul>
+<li><code>master</code>分支上的任何信息都是可以发布的</li>
+<li>要处理新的功能，请从master创建一个描述性命名的分支（即：new-oauth2-scopes）</li>
+<li>在本地提交该分支，并定期将您的工作推送到服务器上的同一个命名分支</li>
+<li>当您需要反馈或帮助时，或者您认为分支已准备好进行合并时，请建立一个<code>pull request</code>。</li>
+<li>在其他人查看并且接受了这个分支之后，你就可以把这个分支合并到<code>master</code>了。</li>
+<li>一旦这个分支被合并到<code>master</code>并且push到远端的<code>master</code>分支，你应该立即把这个<code>master</code>分支发布。</li>
+</ul>
+
+<p><a href="http://scottchacon.com/2011/08/31/github-flow.html">Scott Chacon私人站点</a>表述的原始流程：</p>
+
+<p><img src="/img/git/KoMdO.png" alt="Gitflow工作流原始形式" /></p>
+
+<p>图片由<a href="https://guides.github.com/introduction/flow/">Github Flow reference</a>提供。</p>
+
+<h3 id="fork工作流">Fork工作流</h3>
+
+<p>这种工作流和其他提到的工作流有着根本的不同。每个人都有一个他/她自己从主库fork的新库，而不是所有人使用一个集中主库。这样做的好处是开发人员可以将修改发布到自己的存储库而不是共享存储库，维护人员可以在适当的时候将其他人存储库中的更改集成到原始存储库中。</p>
+
+<p>下面是这种工作流的一种图形展示：</p>
+
+<p><img src="/img/git/FAI5q.png" alt="Gitflow工作流原始形式" /></p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -263,13 +267,9 @@
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/02/post/git-section-22.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十二）">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-21.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十一）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-16.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(十六)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

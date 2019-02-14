@@ -6,10 +6,37 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 12 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十二）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-22.html</link>
+      <pubDate>Wed, 13 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-22.html</guid>
+      <description>工作流的类型 集中工作流 使用这种基础工作流程，master分支包含所有进行中的开发分支。在继续开发前，贡献者需要特别确定他们能够获取最新的修改，因为这个分支会迅速变化。每个可以访问这个仓库的人都可以把提交修改到master分支上面。
+这种模型的图形展示：
+这是经典的版本控制范例，旧的版本管理系统Subversion和CVS就是基于这种模型。以这种方式工作的软件成为集中版本控制系统或者CVCS。虽然Git可以以这种方式工作，但是存在的名下的缺点，例如在每次拉取之前都要进行合并操作。团队可以按这种方式工作，但不断的合并解决冲突最终会占用大量的宝贵时间。
+这就是为什么Linus Torvalds创建Git不是按照CVCS模式，而是DVCS（分布式版本控制系统），类似于Mercurial。这种模式的优点是本章其他示例展示的灵活性。
+Gitflow工作流 最初由Vincent Driessen提出的，Gitflow是使用Git和几个预定义的分支的开发流程。这可以看做是特性分支工作流的一种特例。
+这种想法是为开发中的特定部分保留在单独的分支上面：
+ master分支一直包含最新的生产代码，实验性代码不能包含到这个分支上面。 develop包含所有最新的开发内容。这些最新的修改可以包含基本所有的内容，但是大的特性应该包含在自己的分支内。这里的代码在发布/部署之前要合并到release分支上面。 hotfix分支代表一些小的bug修复功能，这些修复功能等不到代码发布了。hotfix从master分支上切出来，并且要合并到master和develop分支上面。 release分支用来把最新的开发从develop分支发布到master分支上。任何最后一分钟的修改（像版本号冲突）都在release分支修改，然后合并到master和develop分支上。部署新版本时，master应标记当前版本号（例如，使用语义版本），以供将来参考和轻松回滚。 feature分支包含大的特性的修改。这些修改都在专门的分支中进行，开发结束之后合并到develop分支。专门的feature分支可以把开发工作分库，对于每个特性可以单独部署。  这种模型的图形展示：
+这种模型的原始展现形式是：
+特性分支工作流 特性分支工作流的核心思想是把所有的特性放到不同的分支中进行开发，而不是统统放到master分支。这种封装使得多个开发人员可以在不干扰主代码库的情况下轻松地完成特定功能的开发。这还意味着主分支永远不会包含损坏的代码，对于持续集成环境来说是一个巨大的优势。
+封装特性开发可以利用pull request的优势，这也是围绕分支讨论的一种方法。这给了其他开发者在特性合并到主线之前进行确认的机会。或者，你可以在一个特性分支的开发中，你可以打开一个pull request来请求同时的建议。最关键的是，pull request使您的团队非常容易对彼此的工作进行评论。
+基于Atlassian Tutorials。
+Github工作流 这在很多开源项目中是很有名的，但不仅仅这样。特定位置的master分支（Github,Gitlab,BitBucket,本地服务器）包含最新的可发布版本。
+对于每个新特性/错误修复/体系结构更改，每个开发人员都创建一个分支。所有的修改都在这个分支上进行，并且可以在pull request或code review中进行讨论。一旦这些修改都被接受了，可以合并到master主分支。
+Scott Chacon提供的全部流程：
+ master分支上的任何信息都是可以发布的 要处理新的功能，请从master创建一个描述性命名的分支（即：new-oauth2-scopes） 在本地提交该分支，并定期将您的工作推送到服务器上的同一个命名分支 当您需要反馈或帮助时，或者您认为分支已准备好进行合并时，请建立一个pull request。 在其他人查看并且接受了这个分支之后，你就可以把这个分支合并到master了。 一旦这个分支被合并到master并且push到远端的master分支，你应该立即把这个master分支发布。  Scott Chacon私人站点表述的原始流程：
+图片由Github Flow reference提供。
+Fork工作流 这种工作流和其他提到的工作流有着根本的不同。每个人都有一个他/她自己从主库fork的新库，而不是所有人使用一个集中主库。这样做的好处是开发人员可以将修改发布到自己的存储库而不是共享存储库，维护人员可以在适当的时候将其他人存储库中的更改集成到原始存储库中。
+下面是这种工作流的一种图形展示：
+参考：Git® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Git专业笔记（二十一）</title>
