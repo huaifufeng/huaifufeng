@@ -6,10 +6,24 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 14 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 15 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十四）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-24.html</link>
+      <pubDate>Fri, 15 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-24.html</guid>
+      <description>钩子 pre-push 在Git1.8.2及以上是有效的。
+Version&amp;gt;=1.8
+Pre-push钩子可以用来避免过度推送。这很有用，这是其中的一些原因：阻止意外的手动推送到指定分支，或者当遇到错误时阻止推送（单元检测，语法等）。
+创建一个Pre-push钩子是很贱的，只需要在.git/hooks/目录下面创建一个名为pre-push的文件，（警戒），并且确保这个文件有执行的权限：chmod +x ./git/hooks/pre-push。
+下面是Hannah Wolfe提供的一个阻止推送到master分支的钩子：
+#!/bin/bash protected_branch=&#39;master&#39; current_branch=$(git symbolic -ref HEAD | sed -e &#39;s,.*/\(.*\),\1,&#39;) if [$protected_branch = $current_branch] then read -p &amp;quot;You&#39;re about to push master, is that what you intended? [y|n] &amp;quot; -n 1 -r &amp;lt; /dev/tty echo if echo $REPLY | grep -E &#39;^[Yy]$&#39; &amp;gt; /dev/null then exit 0 #push 将会执行 fi exit 1 #push 将不会执行 else exit 0 #push 执行 fi  下面是Volkan Unsal提供的要求在push之前需要确保通过了RSpec的测试的例子：</description>
+    </item>
     
     <item>
       <title>Git专业笔记（二十三）</title>
