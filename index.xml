@@ -6,10 +6,29 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 14 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 15 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(十九)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-19.html</link>
+      <pubDate>Fri, 15 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-19.html</guid>
+      <description>Source source一个文件和执行命令是不同的，因为所有的命令都是在当前bash会话的上下文环境中执行的—这就意味着所有的变量、函数或别名在整个会话中是保持不变的。
+创建一个你想要source的文件sourcename.sh：
+#!/bin/bash export A=&amp;quot;hello_world&amp;quot; alias sayHi=&amp;quot;echo Hi&amp;quot; sayHello() { echo Hello }  在你当前的bash会话中，source这个文件：
+$ source sourcename.sh  从这时开始，在当前的会话中你拥有了被source文件内的所有变量：
+$ echo $A hello_world $ sayHi Hi $ sayHello Hello  另外注意：.命令是source命令的简称，所以你可以简单的使用下面的命令：
+. sourcename.sh  source虚拟环境 当在一个机器上面开发多个应用的时候，把不同的依赖分别放入不同的虚拟环境是很有用的。
+通过使用virtualenv命令，这些环境变量被source到你的shell环境中。这样当你执行一个命令的时候，它是被运行在一个虚拟环境中。
+下面是使用pip按照软件的常用方法：
+pip install https://github.com/pypa/virtualenv/tarball/15.0.2  创建一个新的环境变量：
+virtualenv --python=python3.5 my_env  激活这个环境：
+source my_env/bin/activate  参考：Bash Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(十八)</title>
