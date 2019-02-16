@@ -6,10 +6,29 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 15 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 16 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十五）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-25.html</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-25.html</guid>
+      <description>clone 浅克隆 克隆一个大项目（像已经有多年历史的项目）可能会花费很长的时间，或者因为需要传输太多的数据而出现问题。因此你不需要获取所有有效的历史，你可以使用一个浅克隆：
+git clone [repo_url] --depth 1  上面的命令只会获取远端仓库的最新提交。
+注意你可能无法在浅克隆仓库中解析merge提交。获取足够解析merge提交的提交数是个好的主意。例如，获取至少50个提交：
+git clone [rrepo_url] --depth 50  之后如果需要的话，你可以fetch仓库其他的提交：
+Version &amp;gt;= 1.8.3
+git fetch --unshallow # equivalent of git fetch -–depth=2147483647 # fetches the rest of the repository  Version &amp;lt; 1.8.3
+git fetch --depth=1000 # fetch the last 1000 commits  普通克隆 下载整个仓库包括所有的历史和所有的分支，输入：
+git clone &amp;lt;url&amp;gt;  上面的例子将会把仓库的信息放到一个和仓库名称一致的目录内。
+下载一个仓库，并且把仓库的信息放到指定的目录内：
+git clone &amp;lt;url&amp;gt; [directory]  克隆指定分支 克隆一个仓库指定的分支，可以在仓库地址前面加上--branch选项：
+git clone --branch &amp;lt;branch_name&amp;gt; &amp;lt;url&amp;gt; [directory]  也可以使用—branch选项的简写格式-b。这个命令会下载整个仓库，并且切换到&amp;lt;branch_name&amp;gt;分支。</description>
+    </item>
     
     <item>
       <title>Git专业笔记（二十四）</title>

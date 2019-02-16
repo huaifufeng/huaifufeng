@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="脚本的shebang">
+    <meta name="description" content="here文档和here字符串">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(二十)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/01/post/bash-section-2.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-20.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二)</h1>
+                    <h1>Bash专业笔记(二十)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, January 30, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, February 16, 2019
                         
                     </span>
                 </div>
@@ -170,11 +170,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#脚本shebang">脚本shebang</a>
+<li><a href="#here语法">Here语法</a>
 <ul>
-<li><a href="#环境shebang">环境shebang</a></li>
-<li><a href="#直接shebang">直接shebang</a></li>
-<li><a href="#其他的shebang">其他的shebang</a></li>
+<li><a href="#here文档执行命令">here文档执行命令</a></li>
+<li><a href="#here缩进">here缩进</a></li>
+<li><a href="#创建文件">创建文件</a></li>
+<li><a href="#here字符串">here字符串</a></li>
+<li><a href="#使用sudo运行多个命令">使用sudo运行多个命令</a></li>
+<li><a href="#限制字符串">限制字符串</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -182,66 +185,195 @@
         		
         		
 
-<h2 id="脚本shebang">脚本shebang</h2>
+<h2 id="here语法">Here语法</h2>
 
-<h3 id="环境shebang">环境shebang</h3>
+<h3 id="here文档执行命令">here文档执行命令</h3>
 
-<p>想要使用<code>bash</code>命令执行一个脚本文件，可以使用可以执行的<code>env</code>来指定<code>PATH</code>环境变量中的<code>bash</code>命令。脚本文件的第一行需要是：带有<code>bash</code>参数的绝对路径的<code>env</code>可执行文件：</p>
-
-<pre><code>#!/usr/bin/env bash
+<pre><code>ssh -p 21 example@example.com &lt;&lt;EOF
+	echo 'printing pwd'
+	echo &quot;\${pwd}&quot;
+	ls -a
+	find '*.txt'
+EOF
 </code></pre>
 
-<p>只有在使用下面这样的方式执行脚本的时候，shebang里面的<code>env</code>命令才会被解析：</p>
+<p><code>$</code>这里是被逃脱的，因为我们不想让这个变量在当前shell中解析。<code>$(pwd)</code>应该在远端的shell中执行。</p>
 
-<pre><code>script.sh
+<p>另外一种方式：</p>
+
+<pre><code>ssh -p 21 example@example.com &lt;&lt;'EOF'
+	echo 'printing pwd'
+	echo &quot;$(pwd)&quot;
+	ls -a
+	find '*.txt'
+EOF
 </code></pre>
 
-<p>当然，这个脚本必须有执行权限。</p>
+<p>注意：这个结束的<code>EOF</code>标识需要在一行的最开始（前面没有任何空格）。如果需要缩进的话，当你的hera语法是以<code>&lt;&lt;-</code>开头的话，可以使用<code>tab</code>。查看here文档的缩进和限制字符串来获取更多信息。</p>
 
-<p>当直接指明<code>bash</code>解析器来执行脚本的时候，这个shebang是被忽略的：</p>
+<h3 id="here缩进">here缩进</h3>
 
-<pre><code>bash script.sh
+<p>你可以在here文档中使用<code>tab</code>来进行缩进操作，但是这个时候你就需要使用<code>&lt;&lt;-</code>来代替<code>&lt;&lt;</code>符号了：</p>
+
+<pre><code>$ cat &lt;&lt;- EOF
+	This is some content indented with tabs `\t`.
+	You cannot indent with spaces you __have__ to use tabs.
+	Bash will remove empty space before these lines.
+	__Note__: Be sure to replace spaces with tabs when copying this example.
+EOF
+
+This is some content indented with tabs _\t_.
+You cannot indent with spaces you __have__ to use tabs.
+Bash will remove empty space before these lines.
+__Note__: Be sure to replace spaces with tabs when copying this example.
 </code></pre>
 
-<h3 id="直接shebang">直接shebang</h3>
+<p>一个特别重要的用处是在shell脚本中，可以查看<code>man bash</code>，例如：</p>
 
-<p>想要用<code>bash</code>来执行一个脚本，也可以定义一个可以执行的<code>bash</code>路径：</p>
-
-<pre><code>#!/bin/bash
+<pre><code>if cond; then
+	cat &lt;&lt;- EOF
+	hello
+	there
+	EOF
+fi
 </code></pre>
 
-<p>当直接执行脚本的时候，shebang将会被解析并执行：</p>
+<p>通常为了更好的可读性，将代码块中的行缩进为if语句的行。如果没有<code>&lt;&lt;-</code>语法，我们必须按照下面这么写：</p>
 
-<pre><code>./script.sh
+<pre><code>if cond; then 
+	cat &lt;&lt; EOF
+hello 
+there 
+EOF 
+fi
 </code></pre>
 
-<p>脚本需要可以执行的权限。</p>
+<p>这中写法非常不可读，尤其是在真实的复杂脚本中，非常容易出现错误。</p>
 
-<p>当<code>bash</code>解析器直接指明来执行这个脚本的时候，这个shebang不会被执行：</p>
+<h3 id="创建文件">创建文件</h3>
 
-<pre><code>bash script.sh
+<p>一个here语法的经典用处是列出文件的内容来创建一个文件：</p>
+
+<pre><code>cat &gt; fruits.txt &lt;&lt; EOF
+apple
+orange
+lemon
+EOF
 </code></pre>
 
-<h3 id="其他的shebang">其他的shebang</h3>
+<p>这个文件的内容是<code>&lt;&lt; EOF</code>和<code>EOF</code>之间的内容。</p>
 
-<p>操作系统内核能识别的有两种程序：一种是用ELF (ExtenableLoadableFormat)头声明的二进制程序，通常是编译生成的；另一种就是各种的脚本。</p>
+<p>这里here文档的输入变成了<code>cat</code>命令的输入。然后<code>cat</code>命令只是把获取的输入内容简单的输出出来，然后重定向到<code>fruits.txt</code>文件中。</p>
 
-<p>如果一个文件的第一行以<code>#!</code>开头，下一个字符串必须是一个解析器的路径。如果操作系统内核读到了这行，会调用路径指向的解析器，然后把后面的字符都传给这个解析器作为参数。如果没有文件焦作<code>something</code>或者<code>wrong</code>：</p>
+<p>这个命令就创建了一个叫做<code>fruits.txt</code>的文件，并且文件的内容是：</p>
 
-<pre><code>#!/bin/bash something wrong
-echo &quot;This line never gets printed&quot;
+<pre><code>apple
+orange
+lemon
 </code></pre>
 
-<p>bash执行的时候，参数<code>something wrong</code>是不存在的。脚本文件的名称也会被添加。下面看下直接声明<code>echo</code>命令的shebang：</p>
+<p>输出重定向的规则生效了：如果文件<code>fruits.txt</code>文件不存在，就会创建这个文件；如果文件存在的话，就会清空文件的内容，然后填入上述的信息。</p>
 
-<pre><code>#&quot;/bin/echo something wrong
-# and now call this script named &quot;thisscript&quot; like so: 
-# thisscript one two
-# the output will be:
-something wrong ./thisscript one two
+<h3 id="here字符串">here字符串</h3>
+
+<p>Version&gt;=2.05b</p>
+
+<p>你可以使用下面的here语法给命令传递参数：</p>
+
+<pre><code>$ awk '{print $2}' &lt;&lt;&lt; &quot;hello world - how are you?&quot;
+world
+
+$ awk '{print $1}' &lt;&lt;&lt; &quot;hello how are you
+&gt; she is fine&quot;
+hello
+she
 </code></pre>
 
-<p>一些想<code>awk</code>的程序就用这种技术来运行长时间留在硬盘上的脚本。</p>
+<p>你也可以在<code>while</code>循环中使用here字符串语法：</p>
+
+<pre><code>$ while IFS=&quot; &quot; read -r word1 word2 rest
+&gt; do
+&gt; echo &quot;$word1&quot;
+&gt; done &lt;&lt;&lt; &quot;hello how are you - i am fine&quot;
+hello
+</code></pre>
+
+<h3 id="使用sudo运行多个命令">使用sudo运行多个命令</h3>
+
+<pre><code>sudo -s &lt;&lt;EOF
+a='var'
+echo 'Running serveral commands with sudo'
+mktemp -d
+echo &quot;\$a&quot;
+EOF
+</code></pre>
+
+<ul>
+<li><code>$a</code>需要被逃脱，避免在当前的shell中直接解析</li>
+</ul>
+
+<p>或者</p>
+
+<pre><code>sudo -s &lt;&lt;'EOF'
+a='var'
+echo &quot;Running serveral commands with sudo&quot;
+mktemp -d
+echo &quot;$a&quot;
+EOF
+</code></pre>
+
+<h3 id="限制字符串">限制字符串</h3>
+
+<p>heredoc使用限制字符串来确定什么时候停止获取输入。这里限制字符串必须：</p>
+
+<ul>
+<li>在一行的开头</li>
+<li>这一行只有这个标识字符串。<strong>注意：</strong>如果你使用<code>&lt;&lt;-</code>限制字符，可以在内容前面使用<code>tab</code></li>
+</ul>
+
+<p>正确的用法：</p>
+
+<pre><code>cat &lt;&lt;limitstrinng
+line 1
+line 2
+limitstring
+</code></pre>
+
+<p>这个将会输出：</p>
+
+<blockquote>
+<p>line 1</p>
+
+<p>line2</p>
+</blockquote>
+
+<p>不正确的用法：</p>
+
+<pre><code>cat &lt;&lt;limitstring
+line 1
+line 2
+  limitstring
+</code></pre>
+
+<p>因为在最后一行的<code>limitstring</code>字符没有在行的最开始，这个shell将会等待进一步的输入，直到遇到一行以<code>limitstring</code>开头，并且没有其他内容的时候才停止。只有在这个时候，shell才会中断等待输入，输入的内容也会被传递给<code>cat</code>命令。</p>
+
+<p>注意：当你在开始时使用<code>&lt;&lt;-</code>的标识符，每行开始的<code>tab</code>在解析的时候将会被移除，所以数据和限制字符串前面可以添加<code>tab</code>（为了便于shell脚本阅读）：</p>
+
+<pre><code>cat &lt;&lt;-limitstring
+	line 1	has a tab each before the words line and has 
+		line 2 has two leading tabs
+		limitstring
+</code></pre>
+
+<p>这也会正常的工作：</p>
+
+<blockquote>
+<p>line 1    has a tab each before the words line and has</p>
+
+<p>line 2 has two leading tabs</p>
+</blockquote>
+
+<p>开始的<code>tab</code>将会被移除（文档内部的tab不变）。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -251,13 +383,9 @@ something wrong ./thisscript one two
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/01/post/bash-section-3.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/01/post/git-section-8.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（八）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-25.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十五）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

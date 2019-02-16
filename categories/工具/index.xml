@@ -6,10 +6,42 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 15 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 16 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-20.html</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-20.html</guid>
+      <description>Here语法 here文档执行命令 ssh -p 21 example@example.com &amp;lt;&amp;lt;EOF echo &#39;printing pwd&#39; echo &amp;quot;\${pwd}&amp;quot; ls -a find &#39;*.txt&#39; EOF  $这里是被逃脱的，因为我们不想让这个变量在当前shell中解析。$(pwd)应该在远端的shell中执行。
+另外一种方式：
+ssh -p 21 example@example.com &amp;lt;&amp;lt;&#39;EOF&#39; echo &#39;printing pwd&#39; echo &amp;quot;$(pwd)&amp;quot; ls -a find &#39;*.txt&#39; EOF  注意：这个结束的EOF标识需要在一行的最开始（前面没有任何空格）。如果需要缩进的话，当你的hera语法是以&amp;lt;&amp;lt;-开头的话，可以使用tab。查看here文档的缩进和限制字符串来获取更多信息。
+here缩进 你可以在here文档中使用tab来进行缩进操作，但是这个时候你就需要使用&amp;lt;&amp;lt;-来代替&amp;lt;&amp;lt;符号了：
+$ cat &amp;lt;&amp;lt;- EOF This is some content indented with tabs `\t`. You cannot indent with spaces you __have__ to use tabs. Bash will remove empty space before these lines. __Note__: Be sure to replace spaces with tabs when copying this example.</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（二十五）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-25.html</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-25.html</guid>
+      <description>clone 浅克隆 克隆一个大项目（像已经有多年历史的项目）可能会花费很长的时间，或者因为需要传输太多的数据而出现问题。因此你不需要获取所有有效的历史，你可以使用一个浅克隆：
+git clone [repo_url] --depth 1  上面的命令只会获取远端仓库的最新提交。
+注意你可能无法在浅克隆仓库中解析merge提交。获取足够解析merge提交的提交数是个好的主意。例如，获取至少50个提交：
+git clone [rrepo_url] --depth 50  之后如果需要的话，你可以fetch仓库其他的提交：
+Version &amp;gt;= 1.8.3
+git fetch --unshallow # equivalent of git fetch -–depth=2147483647 # fetches the rest of the repository  Version &amp;lt; 1.8.3
+git fetch --depth=1000 # fetch the last 1000 commits  普通克隆 下载整个仓库包括所有的历史和所有的分支，输入：
+git clone &amp;lt;url&amp;gt;  上面的例子将会把仓库的信息放到一个和仓库名称一致的目录内。
+下载一个仓库，并且把仓库的信息放到指定的目录内：
+git clone &amp;lt;url&amp;gt; [directory]  克隆指定分支 克隆一个仓库指定的分支，可以在仓库地址前面加上--branch选项：
+git clone --branch &amp;lt;branch_name&amp;gt; &amp;lt;url&amp;gt; [directory]  也可以使用—branch选项的简写格式-b。这个命令会下载整个仓库，并且切换到&amp;lt;branch_name&amp;gt;分支。</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(十九)</title>

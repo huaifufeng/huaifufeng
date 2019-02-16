@@ -6,10 +6,23 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 15 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 16 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-20.html</link>
+      <pubDate>Sat, 16 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-20.html</guid>
+      <description>Here语法 here文档执行命令 ssh -p 21 example@example.com &amp;lt;&amp;lt;EOF echo &#39;printing pwd&#39; echo &amp;quot;\${pwd}&amp;quot; ls -a find &#39;*.txt&#39; EOF  $这里是被逃脱的，因为我们不想让这个变量在当前shell中解析。$(pwd)应该在远端的shell中执行。
+另外一种方式：
+ssh -p 21 example@example.com &amp;lt;&amp;lt;&#39;EOF&#39; echo &#39;printing pwd&#39; echo &amp;quot;$(pwd)&amp;quot; ls -a find &#39;*.txt&#39; EOF  注意：这个结束的EOF标识需要在一行的最开始（前面没有任何空格）。如果需要缩进的话，当你的hera语法是以&amp;lt;&amp;lt;-开头的话，可以使用tab。查看here文档的缩进和限制字符串来获取更多信息。
+here缩进 你可以在here文档中使用tab来进行缩进操作，但是这个时候你就需要使用&amp;lt;&amp;lt;-来代替&amp;lt;&amp;lt;符号了：
+$ cat &amp;lt;&amp;lt;- EOF This is some content indented with tabs `\t`. You cannot indent with spaces you __have__ to use tabs. Bash will remove empty space before these lines. __Note__: Be sure to replace spaces with tabs when copying this example.</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(十九)</title>

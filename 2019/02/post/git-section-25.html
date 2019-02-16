@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="脚本的shebang">
+    <meta name="description" content="克隆仓库">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（二十五）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/01/post/bash-section-2.html">
+    <link rel="canonical" href="/2019/02/post/git-section-25.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二)</h1>
+                    <h1>Git专业笔记（二十五）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, January 30, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, February 16, 2019
                         
                     </span>
                 </div>
@@ -170,11 +170,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#脚本shebang">脚本shebang</a>
+<li><a href="#clone">clone</a>
 <ul>
-<li><a href="#环境shebang">环境shebang</a></li>
-<li><a href="#直接shebang">直接shebang</a></li>
-<li><a href="#其他的shebang">其他的shebang</a></li>
+<li><a href="#浅克隆">浅克隆</a></li>
+<li><a href="#普通克隆">普通克隆</a></li>
+<li><a href="#克隆指定分支">克隆指定分支</a></li>
+<li><a href="#递归克隆">递归克隆</a></li>
+<li><a href="#使用代理克隆">使用代理克隆</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -182,68 +184,88 @@
         		
         		
 
-<h2 id="脚本shebang">脚本shebang</h2>
+<h2 id="clone">clone</h2>
 
-<h3 id="环境shebang">环境shebang</h3>
+<h3 id="浅克隆">浅克隆</h3>
 
-<p>想要使用<code>bash</code>命令执行一个脚本文件，可以使用可以执行的<code>env</code>来指定<code>PATH</code>环境变量中的<code>bash</code>命令。脚本文件的第一行需要是：带有<code>bash</code>参数的绝对路径的<code>env</code>可执行文件：</p>
+<p>克隆一个大项目（像已经有多年历史的项目）可能会花费很长的时间，或者因为需要传输太多的数据而出现问题。因此你不需要获取所有有效的历史，你可以使用一个浅克隆：</p>
 
-<pre><code>#!/usr/bin/env bash
+<pre><code>git clone [repo_url] --depth 1
 </code></pre>
 
-<p>只有在使用下面这样的方式执行脚本的时候，shebang里面的<code>env</code>命令才会被解析：</p>
+<p>上面的命令只会获取远端仓库的最新提交。</p>
 
-<pre><code>script.sh
+<p>注意你可能无法在浅克隆仓库中解析merge提交。获取足够解析merge提交的提交数是个好的主意。例如，获取至少50个提交：</p>
+
+<pre><code>git clone [rrepo_url] --depth 50
 </code></pre>
 
-<p>当然，这个脚本必须有执行权限。</p>
+<p>之后如果需要的话，你可以<code>fetch</code>仓库其他的提交：</p>
 
-<p>当直接指明<code>bash</code>解析器来执行脚本的时候，这个shebang是被忽略的：</p>
+<p>Version &gt;= 1.8.3</p>
 
-<pre><code>bash script.sh
+<pre><code>git fetch --unshallow # equivalent of git fetch -–depth=2147483647 
+					  # fetches the rest of the repository
 </code></pre>
 
-<h3 id="直接shebang">直接shebang</h3>
+<p>Version &lt; 1.8.3</p>
 
-<p>想要用<code>bash</code>来执行一个脚本，也可以定义一个可以执行的<code>bash</code>路径：</p>
-
-<pre><code>#!/bin/bash
+<pre><code>git fetch --depth=1000 # fetch the last 1000 commits
 </code></pre>
 
-<p>当直接执行脚本的时候，shebang将会被解析并执行：</p>
+<h3 id="普通克隆">普通克隆</h3>
 
-<pre><code>./script.sh
+<p>下载整个仓库包括所有的历史和所有的分支，输入：</p>
+
+<pre><code class="language-xquery">git clone &lt;url&gt;
 </code></pre>
 
-<p>脚本需要可以执行的权限。</p>
+<p>上面的例子将会把仓库的信息放到一个和仓库名称一致的目录内。</p>
 
-<p>当<code>bash</code>解析器直接指明来执行这个脚本的时候，这个shebang不会被执行：</p>
+<p>下载一个仓库，并且把仓库的信息放到指定的目录内：</p>
 
-<pre><code>bash script.sh
+<pre><code>git clone &lt;url&gt; [directory]
 </code></pre>
 
-<h3 id="其他的shebang">其他的shebang</h3>
+<h3 id="克隆指定分支">克隆指定分支</h3>
 
-<p>操作系统内核能识别的有两种程序：一种是用ELF (ExtenableLoadableFormat)头声明的二进制程序，通常是编译生成的；另一种就是各种的脚本。</p>
+<p>克隆一个仓库指定的分支，可以在仓库地址前面加上<code>--branch</code>选项：</p>
 
-<p>如果一个文件的第一行以<code>#!</code>开头，下一个字符串必须是一个解析器的路径。如果操作系统内核读到了这行，会调用路径指向的解析器，然后把后面的字符都传给这个解析器作为参数。如果没有文件焦作<code>something</code>或者<code>wrong</code>：</p>
-
-<pre><code>#!/bin/bash something wrong
-echo &quot;This line never gets printed&quot;
+<pre><code>git clone --branch &lt;branch_name&gt; &lt;url&gt; [directory]
 </code></pre>
 
-<p>bash执行的时候，参数<code>something wrong</code>是不存在的。脚本文件的名称也会被添加。下面看下直接声明<code>echo</code>命令的shebang：</p>
+<p>也可以使用<code>—branch</code>选项的简写格式<code>-b</code>。这个命令会下载整个仓库，并且切换到<code>&lt;branch_name&gt;</code>分支。</p>
 
-<pre><code>#&quot;/bin/echo something wrong
-# and now call this script named &quot;thisscript&quot; like so: 
-# thisscript one two
-# the output will be:
-something wrong ./thisscript one two
+<p>为了节省硬盘空间，你可以只克隆一个分支的历史：</p>
+
+<pre><code>git clone --branch &lt;branch_name&gt; --single-branch &lt;url&gt; [directory]
 </code></pre>
 
-<p>一些想<code>awk</code>的程序就用这种技术来运行长时间留在硬盘上的脚本。</p>
+<p>如果没有指定<code>--single-branch</code>选项，仓库所有的分支历史都会被看了到<code>[directory]</code>里面。这对于大仓库是一个问题。</p>
 
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<p>之后可以取消<code>--single-branch</code>选项，然后获取仓库剩余的部分：</p>
+
+<pre><code> git config remote.origin.fetch &quot;+refs/heads/*:refs/remotes/origin/*&quot; 
+ git fetch origin
+</code></pre>
+
+<h3 id="递归克隆">递归克隆</h3>
+
+<p>Version&gt;=1.6.5</p>
+
+<pre><code>git clone &lt;url&gt; --recursive
+</code></pre>
+
+<p>克隆一个仓库并且克隆所有的子模块。如果子模块包含有其他的子模块，Git也将会克隆这些子模块。</p>
+
+<h3 id="使用代理克隆">使用代理克隆</h3>
+
+<p>如果你需要在代理的情况下使用Git下载文件，在系统范围内设置代理是不够的。你可以尝试下面的内容：</p>
+
+<pre><code>git config --global http.proxy http://&lt;proxy-server&gt;:&lt;port&gt;/
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -252,12 +274,12 @@ something wrong ./thisscript one two
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/01/post/bash-section-3.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三)">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-20.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/01/post/git-section-8.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（八）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-19.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(十九)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
