@@ -6,10 +6,22 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 16 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 17 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十一)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-21.html</link>
+      <pubDate>Sun, 17 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-21.html</guid>
+      <description>引号 变量和命令替换的双引号 变量的个替换只能够被用在双引号中。
+calculation=&#39;2 * 3&#39; echo &amp;quot;$calculation&amp;quot; # prints 2 * 3 echo $calculation # prints 2, the list of files in the current directory, and 3 echo &amp;quot;$(($calculation))&amp;quot; # prints 6  在双引号之外，$var使用变量var的值，然后用空格分隔这个值的每一部分，并将每一部分解析为一个(通配符)模式。除非你需要这种方式，否则每次都把$var放到双引号里面&amp;quot;$var&amp;quot;。
+这也适用于命令的方式，&amp;quot;$(mycommand)&amp;quot;输出mycommand的值。mycommand将会输出空格分隔之后的结果。
+echo &amp;quot;$var&amp;quot; # good echo &amp;quot;$(mycommand)&amp;quot; # good another=$var # also works, assignment is implicitly double-quoted make -D THING=$var # BAD! This is not a bash assignment. make -D THING=&amp;quot;$var&amp;quot; # good make -D &amp;quot;THING=$var&amp;quot; # also good  命令替换有它自己的上下文环境。编写任意嵌套替换很容易，因为解析器将跟踪嵌套深度，而不是贪婪地搜索第一个“字符”。不过，StackOverflow语法高亮分析错误。例如：</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十)</title>

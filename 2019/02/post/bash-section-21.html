@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="here文档和here字符串">
+    <meta name="description" content="引号的用法">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二十)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(二十一)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-20.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-21.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二十)</h1>
+                    <h1>Bash专业笔记(二十一)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Saturday, February 16, 2019
+                    <span  class="meta">Posted by 怀府风 on Sunday, February 17, 2019
                         
                     </span>
                 </div>
@@ -170,14 +170,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#here语法">Here语法</a>
+<li><a href="#引号">引号</a>
 <ul>
-<li><a href="#here文档执行命令">here文档执行命令</a></li>
-<li><a href="#here缩进">here缩进</a></li>
-<li><a href="#创建文件">创建文件</a></li>
-<li><a href="#here字符串">here字符串</a></li>
-<li><a href="#使用sudo运行多个命令">使用sudo运行多个命令</a></li>
-<li><a href="#限制字符串">限制字符串</a></li>
+<li><a href="#变量和命令替换的双引号">变量和命令替换的双引号</a></li>
+<li><a href="#单双引号的不同">单双引号的不同</a></li>
+<li><a href="#换行和控制符">换行和控制符</a></li>
+<li><a href="#引用字符文本">引用字符文本</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -185,195 +183,163 @@
         		
         		
 
-<h2 id="here语法">Here语法</h2>
+<h2 id="引号">引号</h2>
 
-<h3 id="here文档执行命令">here文档执行命令</h3>
+<h3 id="变量和命令替换的双引号">变量和命令替换的双引号</h3>
 
-<pre><code>ssh -p 21 example@example.com &lt;&lt;EOF
-	echo 'printing pwd'
-	echo &quot;\${pwd}&quot;
-	ls -a
-	find '*.txt'
-EOF
+<p>变量的个替换只能够被用在双引号中。</p>
+
+<pre><code>calculation='2 * 3'
+echo &quot;$calculation&quot;  # prints 2 * 3
+echo $calculation    # prints 2, the list of files in the current directory, and 3
+echo &quot;$(($calculation))&quot;  # prints 6
 </code></pre>
 
-<p><code>$</code>这里是被逃脱的，因为我们不想让这个变量在当前shell中解析。<code>$(pwd)</code>应该在远端的shell中执行。</p>
+<p>在双引号之外，<code>$var</code>使用变量<code>var</code>的值，然后用空格分隔这个值的每一部分，并将每一部分解析为一个(通配符)模式。除非你需要这种方式，否则每次都把<code>$var</code>放到双引号里面<code>&quot;$var&quot;</code>。</p>
 
-<p>另外一种方式：</p>
+<p>这也适用于命令的方式，<code>&quot;$(mycommand)&quot;输出</code>mycommand的值。<code>mycommand</code>将会输出空格分隔之后的结果。</p>
 
-<pre><code>ssh -p 21 example@example.com &lt;&lt;'EOF'
-	echo 'printing pwd'
-	echo &quot;$(pwd)&quot;
-	ls -a
-	find '*.txt'
-EOF
+<pre><code>echo &quot;$var&quot;  # good
+echo &quot;$(mycommand)&quot; # good
+another=$var  # also works, assignment is implicitly double-quoted
+make -D THING=$var   # BAD! This is not a bash assignment.
+make -D THING=&quot;$var&quot;  # good
+make -D &quot;THING=$var&quot;  # also good
 </code></pre>
 
-<p>注意：这个结束的<code>EOF</code>标识需要在一行的最开始（前面没有任何空格）。如果需要缩进的话，当你的hera语法是以<code>&lt;&lt;-</code>开头的话，可以使用<code>tab</code>。查看here文档的缩进和限制字符串来获取更多信息。</p>
+<p>命令替换有它自己的上下文环境。编写任意嵌套替换很容易，因为解析器将跟踪嵌套深度，而不是贪婪地搜索第一个“字符”。不过，StackOverflow语法高亮分析错误。例如：</p>
 
-<h3 id="here缩进">here缩进</h3>
-
-<p>你可以在here文档中使用<code>tab</code>来进行缩进操作，但是这个时候你就需要使用<code>&lt;&lt;-</code>来代替<code>&lt;&lt;</code>符号了：</p>
-
-<pre><code>$ cat &lt;&lt;- EOF
-	This is some content indented with tabs `\t`.
-	You cannot indent with spaces you __have__ to use tabs.
-	Bash will remove empty space before these lines.
-	__Note__: Be sure to replace spaces with tabs when copying this example.
-EOF
-
-This is some content indented with tabs _\t_.
-You cannot indent with spaces you __have__ to use tabs.
-Bash will remove empty space before these lines.
-__Note__: Be sure to replace spaces with tabs when copying this example.
+<pre><code>echo &quot;formatted text: $(printf &quot;a + b = %04d&quot; &quot;${c}&quot;)&quot; # “formatted text: a + b = 0000”
 </code></pre>
 
-<p>一个特别重要的用处是在shell脚本中，可以查看<code>man bash</code>，例如：</p>
+<p>命令替换中的变量参数需要添加自己的双引号。例如：</p>
 
-<pre><code>if cond; then
-	cat &lt;&lt;- EOF
-	hello
-	there
-	EOF
-fi
+<pre><code>echo &quot;$(mycommand &quot;$arg1&quot; &quot;$arg2&quot;)&quot;
 </code></pre>
 
-<p>通常为了更好的可读性，将代码块中的行缩进为if语句的行。如果没有<code>&lt;&lt;-</code>语法，我们必须按照下面这么写：</p>
+<h3 id="单双引号的不同">单双引号的不同</h3>
 
-<pre><code>if cond; then 
-	cat &lt;&lt; EOF
-hello 
-there 
-EOF 
-fi
-</code></pre>
+<table>
+<thead>
+<tr>
+<th>双引号</th>
+<th>单引号</th>
+</tr>
+</thead>
 
-<p>这中写法非常不可读，尤其是在真实的复杂脚本中，非常容易出现错误。</p>
+<tbody>
+<tr>
+<td>允许变量的解析</td>
+<td>禁止变量的解析</td>
+</tr>
 
-<h3 id="创建文件">创建文件</h3>
+<tr>
+<td>允许历史扩展</td>
+<td>禁止历史扩展</td>
+</tr>
 
-<p>一个here语法的经典用处是列出文件的内容来创建一个文件：</p>
+<tr>
+<td>允许命令替换</td>
+<td>禁止命令替换</td>
+</tr>
 
-<pre><code>cat &gt; fruits.txt &lt;&lt; EOF
-apple
-orange
-lemon
-EOF
-</code></pre>
+<tr>
+<td>*和@可以有特殊的含义</td>
+<td>*和@是字符常量</td>
+</tr>
 
-<p>这个文件的内容是<code>&lt;&lt; EOF</code>和<code>EOF</code>之间的内容。</p>
+<tr>
+<td>可以包含双引号也可以包含单引号</td>
+<td>单引号不能在单引号里面</td>
+</tr>
 
-<p>这里here文档的输入变成了<code>cat</code>命令的输入。然后<code>cat</code>命令只是把获取的输入内容简单的输出出来，然后重定向到<code>fruits.txt</code>文件中。</p>
+<tr>
+<td>$,&lsquo;,&ldquo;,\可以使用\逃脱，避免他们自己的特殊含义</td>
+<td>所有前面的符号都是字符常量</td>
+</tr>
+</tbody>
+</table>
 
-<p>这个命令就创建了一个叫做<code>fruits.txt</code>的文件，并且文件的内容是：</p>
-
-<pre><code>apple
-orange
-lemon
-</code></pre>
-
-<p>输出重定向的规则生效了：如果文件<code>fruits.txt</code>文件不存在，就会创建这个文件；如果文件存在的话，就会清空文件的内容，然后填入上述的信息。</p>
-
-<h3 id="here字符串">here字符串</h3>
-
-<p>Version&gt;=2.05b</p>
-
-<p>你可以使用下面的here语法给命令传递参数：</p>
-
-<pre><code>$ awk '{print $2}' &lt;&lt;&lt; &quot;hello world - how are you?&quot;
-world
-
-$ awk '{print $1}' &lt;&lt;&lt; &quot;hello how are you
-&gt; she is fine&quot;
-hello
-she
-</code></pre>
-
-<p>你也可以在<code>while</code>循环中使用here字符串语法：</p>
-
-<pre><code>$ while IFS=&quot; &quot; read -r word1 word2 rest
-&gt; do
-&gt; echo &quot;$word1&quot;
-&gt; done &lt;&lt;&lt; &quot;hello how are you - i am fine&quot;
-hello
-</code></pre>
-
-<h3 id="使用sudo运行多个命令">使用sudo运行多个命令</h3>
-
-<pre><code>sudo -s &lt;&lt;EOF
-a='var'
-echo 'Running serveral commands with sudo'
-mktemp -d
-echo &quot;\$a&quot;
-EOF
-</code></pre>
+<p>相同点：</p>
 
 <ul>
-<li><code>$a</code>需要被逃脱，避免在当前的shell中直接解析</li>
+<li>禁止通配符</li>
+<li>禁止字符分割</li>
 </ul>
 
-<p>或者</p>
-
-<pre><code>sudo -s &lt;&lt;'EOF'
-a='var'
-echo &quot;Running serveral commands with sudo&quot;
-mktemp -d
-echo &quot;$a&quot;
-EOF
+<pre><code>$ echo &quot;!cat&quot; 
+echo &quot;cat file&quot; 
+cat file
+$ echo '!cat'
+!cat
+echo &quot;\&quot;'\&quot;&quot; 
+&quot;'&quot;
+$ a='var'
+$ echo '$a' 
+$a
+$ echo &quot;$a&quot; 
+var
 </code></pre>
 
-<h3 id="限制字符串">限制字符串</h3>
+<h3 id="换行和控制符">换行和控制符</h3>
 
-<p>heredoc使用限制字符串来确定什么时候停止获取输入。这里限制字符串必须：</p>
+<p>换行符可以被包含在单引号或者双引号中。注意，反斜杠换行符不会产生换行，会把忽略。</p>
 
-<ul>
-<li>在一行的开头</li>
-<li>这一行只有这个标识字符串。<strong>注意：</strong>如果你使用<code>&lt;&lt;-</code>限制字符，可以在内容前面使用<code>tab</code></li>
-</ul>
+<pre><code>newline1='
+'
+newline2=&quot;
+&quot;
 
-<p>正确的用法：</p>
+newline3=$'\n'
+empty=\
 
-<pre><code>cat &lt;&lt;limitstrinng
-line 1
-line 2
-limitstring
+echo &quot;Line${newline1}break&quot;
+echo &quot;Line${newline2}break&quot;
+echo &quot;Line${newline3}break&quot;
+echo &quot;No line break${empty} here&quot;
 </code></pre>
 
-<p>这个将会输出：</p>
+<p>在美元引号字符串中，反斜杠字母或反斜杠八进制可以用来插入控制字符，就像在许多其他编程语言中一样。</p>
 
-<blockquote>
-<p>line 1</p>
-
-<p>line2</p>
-</blockquote>
-
-<p>不正确的用法：</p>
-
-<pre><code>cat &lt;&lt;limitstring
-line 1
-line 2
-  limitstring
+<pre><code>echo $'Tab: [\t]'
+echo $'Tab again: [\009]' 
+echo $'Form feed: [\f]' 
+echo $'Line\nbreak'
 </code></pre>
 
-<p>因为在最后一行的<code>limitstring</code>字符没有在行的最开始，这个shell将会等待进一步的输入，直到遇到一行以<code>limitstring</code>开头，并且没有其他内容的时候才停止。只有在这个时候，shell才会中断等待输入，输入的内容也会被传递给<code>cat</code>命令。</p>
+<h3 id="引用字符文本">引用字符文本</h3>
 
-<p>注意：当你在开始时使用<code>&lt;&lt;-</code>的标识符，每行开始的<code>tab</code>在解析的时候将会被移除，所以数据和限制字符串前面可以添加<code>tab</code>（为了便于shell脚本阅读）：</p>
+<p>这节所有的内容都会输出下面这行：</p>
 
-<pre><code>cat &lt;&lt;-limitstring
-	line 1	has a tab each before the words line and has 
-		line 2 has two leading tabs
-		limitstring
+<pre><code>!&quot;#$&amp;'()*;&lt;=&gt;? @[\]^`{|}~
 </code></pre>
 
-<p>这也会正常的工作：</p>
+<p>反斜杠引用下一个字符，即下一个字符按字面解释。唯一的例外是换行：反斜杠换行符扩展为空字符串。</p>
 
-<blockquote>
-<p>line 1    has a tab each before the words line and has</p>
+<pre><code>echo \!\&quot;\#\$\&amp;\'\(\)\*\;\&lt;\=\&gt;\?\ \ \@\[\\\]\^\`\{\|\}\~
+</code></pre>
 
-<p>line 2 has two leading tabs</p>
-</blockquote>
+<p>单引号（前引号，也称为单引号）之间的所有文本都按字面顺序打印。即使是反斜杠也是按照本身输出的，并且单引号里面不能拥有单引号。相反，你可以在单引号内使用反斜杠后跟随的单引号终止字符串，然后开启新的字符串。<code>'\''</code>允许在文本中包含字符串。</p>
 
-<p>开始的<code>tab</code>将会被移除（文档内部的tab不变）。</p>
+<pre><code>echo '!&quot;#$&amp;'\''()*;&lt;=&gt;? @[\]^`{|}~'
+#          ^^^^
+</code></pre>
+
+<p>$的单引号像其他语言一样<code>\$'...'</code>，使用反斜杠后面加上单引号：</p>
+
+<pre><code>echo $'!&quot;#$&amp;\'()*;&lt;=&gt;? @[\\]^`{|}~' 
+#           ^^           ^^
+</code></pre>
+
+<p>双引号分割半文本的字符串，只有<code>&quot;\$</code>和`保留原有的含义。这些字符之前需要一个反斜杠（请注意，如果反斜杠后面跟着其他字符，则反斜杠将保留）。双引号是很有用的，在包含一个变量和命令替换的情况下：</p>
+
+<pre><code>echo &quot;!\&quot;#\$&amp;'()*;&lt;=&gt;? @[\\]^\`{|}~&quot;
+#      ^^                ^^  ^^
+echo &quot;!\&quot;#\$&amp;'()*;&lt;=&gt;? @[\]^\`{|}~&quot;
+#      ^^                ^  ^^ \[ prints \[
+</code></pre>
+
+<p>注意：双引号里面的<code>!</code>会触发历史扩展：<code>&quot;!oops&quot;</code>会寻找一个包含<code>oops</code>的历史命令。<code>\!oops</code>不会进行历史扩展，但是会保留这个反斜杠。这个在脚本里面不会出现。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -383,13 +349,9 @@ line 2
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/02/post/bash-section-21.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十一)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-25.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十五）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-20.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
