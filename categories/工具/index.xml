@@ -6,10 +6,21 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 17 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十二)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-22.html</link>
+      <pubDate>Mon, 18 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-22.html</guid>
+      <description>条件表达式 文件类型检查 -e检查文件是否存在，包括所有的文件类型（如：括号，文件。。。）
+if [[ -e $filename ]]; then echo &amp;quot;$filename exists&amp;quot; fi  也可以对指定类型的文件格式进行检查：
+if [[ -f $filename ]]; then echo &amp;quot;$filename is a regular file&amp;quot; elif [[ -d $filename ]]; then echo &amp;quot;$filename is a directory&amp;quot; elif [[ -p $filename ]]; then echo &amp;quot;$filename is a named pipe&amp;quot; elif [[ -S $filename ]]; then echo &amp;quot;$filename is a named socket&amp;quot; elif [[ -b $filename ]]; then echo &amp;quot;$filename is a block device&amp;quot; elif [[ -c $filename ]]; then echo &amp;quot;$filename is a character device&amp;quot; fi if [[ -L $filename ]]; then echo &amp;quot;$filename is a symbolic link (to any file type)&amp;quot; fi  对于符号链接，使用-L这些测试应用到目标上，当时坏链接的时候返回false。</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十一)</title>

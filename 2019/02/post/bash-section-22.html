@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="条件表达式">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Bash专业笔记(二十二)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/02/post/bash-section-22.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
+                        </a>
+                       
+                    </div>
+                    <h1>Bash专业笔记(二十二)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, February 18, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#条件表达式">条件表达式</a>
+<ul>
+<li><a href="#文件类型检查">文件类型检查</a></li>
+<li><a href="#字符串比较和匹配">字符串比较和匹配</a></li>
+<li><a href="#测试命令状态">测试命令状态</a></li>
+<li><a href="#单行测试">单行测试</a></li>
+<li><a href="#文件比较">文件比较</a></li>
+<li><a href="#文件访问测试">文件访问测试</a></li>
+<li><a href="#数字比较">数字比较</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="条件表达式">条件表达式</h2>
+
+<h3 id="文件类型检查">文件类型检查</h3>
+
+<p><code>-e</code>检查文件是否存在，包括所有的文件类型（如：括号，文件。。。）</p>
+
+<pre><code>if [[ -e $filename ]]; then 
+	echo &quot;$filename exists&quot;
+fi
+</code></pre>
+
+<p>也可以对指定类型的文件格式进行检查：</p>
+
+<pre><code>if [[ -f $filename ]]; then
+	echo &quot;$filename is a regular file&quot;
+elif [[ -d $filename ]]; then 
+	echo &quot;$filename is a directory&quot;
+elif [[ -p $filename ]]; then
+	echo &quot;$filename is a named pipe&quot;
+elif [[ -S $filename ]]; then
+	echo &quot;$filename is a named socket&quot;
+elif [[ -b $filename ]]; then
+	echo &quot;$filename is a block device&quot;
+elif [[ -c $filename ]]; then
+	echo &quot;$filename is a character device&quot;
+fi
+if [[ -L $filename ]]; then
+	echo &quot;$filename is a symbolic link (to any file type)&quot; 
+fi
+</code></pre>
+
+<p>对于符号链接，使用<code>-L</code>这些测试应用到目标上，当时坏链接的时候返回false。</p>
+
+<pre><code>if [[ -L $filename || -e $filename ]]; then
+	echo &quot;$filename exists (but may be a broken symbolic link)&quot;
+fi
+if [[ -L $filename &amp;&amp; ! -e $filename ]]; then 
+	echo &quot;$filename is a broken symbolic link&quot;
+fi
+</code></pre>
+
+<h3 id="字符串比较和匹配">字符串比较和匹配</h3>
+
+<p>带有引号的字符串之间的比较使用<code>==</code>，<code>!=</code>表示的是否定的比较。</p>
+
+<pre><code>if [[ &quot;$string1&quot; == &quot;$string2&quot; ]]; then
+	echo &quot;\$string1 and \$string2 are identical&quot;
+fi
+if [[ &quot;$string1&quot; != &quot;$string2&quot; ]]; then
+	echo &quot;\$string1 and \$string2 are not identical&quot; 
+fi
+</code></pre>
+
+<p>如果右边没有被引用，则<code>$string1</code>匹配一个占位符模式：</p>
+
+<pre><code>string='abc'
+pattern1='a*'
+pattern2='x*'
+if [[ &quot;$string&quot; == $pattern1 ]]; then
+# the test is true
+	echo &quot;The string $string matches the pattern $pattern&quot; fi
+if [[ &quot;$string&quot; != $pattern2 ]]; then
+# the test is false
+	echo &quot;The string $string does not match the pattern $pattern&quot;
+fi
+</code></pre>
+
+<p><code>&lt;</code>和<code>&gt;</code>表示按照字典进行排序（字符串没有大于等于和小于等于的比较）。</p>
+
+<p>空字符串有一元测试符。</p>
+
+<pre><code>if [[ -n &quot;$string&quot; ]]; then 
+	echo &quot;$string is non-empty&quot;
+fi
+if [[ -z &quot;${string// }&quot; ]]; then
+	echo &quot;$string is empty or contains only spaces&quot; fi
+if [[ -z &quot;$string&quot; ]]; then 
+	echo &quot;$string is empty&quot;
+fi
+</code></pre>
+
+<p>上面<code>-z</code>表示字符串没有设置或字符串为空字符串。要区分空字符串和未设置可以使用：</p>
+
+<pre><code>if [[ -n &quot;${string+x}&quot; ]]; then
+	echo &quot;$string is set, possibly to the empty string&quot;
+fi
+if [[ -n &quot;${string-x}&quot; ]]; then
+	echo &quot;$string is either unset or set to a non-empty string&quot; 
+fi
+if [[ -z &quot;${string+x}&quot; ]]; then 
+	echo &quot;$string is unset&quot;
+fi
+if [[ -z &quot;${string-x}&quot; ]]; then
+	echo &quot;$string is set to an empty string&quot; 
+fi
+</code></pre>
+
+<p>这里<code>x</code>是任意的。下面在<a href="https://serverfault.com/questions/7503/how-to-determine-if-a-bash-variable-is-empty">表格</a>中展示：</p>
+
+<pre><code>                        +-------+-------+-----------+
+$string is: | unset | empty | non-empty |
++-----------------------+-------+-------+-----------+
+| [[ -z ${string} ]]    | true  | true  | false     |
+| [[ -z ${string+x} ]]  | true  | false | false     |
+| [[ -z ${string-x} ]]  | false | true  | false     |
+| [[ -n ${string} ]]    | false | false | true      |
+| [[ -n ${string+x} ]]  | false | true  | true      |
+| [[ -n ${string-x} ]]  | true  | false | true      |
++-----------------------+-------+-------+-----------+
+</code></pre>
+
+<p><a href="https://unix.stackexchange.com/questions/146942/how-can-i-test-if-a-variable-is-empty-or-contains-only-spaces/147362#147362">也可以</a>使用下面的<code>case</code>方法来检查：</p>
+
+<pre><code>case ${var+x$var} in
+  (x) echo empty;;
+  (&quot;&quot;) echo unset;; 
+  (x*[![:blank:]]*) echo non-blank;; 
+  (*) echo blank
+esac
+</code></pre>
+
+<p>其中<code>[:blank:]</code>是特定于区域设置的水平间距字符（制表符、空格等）。</p>
+
+<h3 id="测试命令状态">测试命令状态</h3>
+
+<p>退出状态0：成功</p>
+
+<p>退出状态非0：失败</p>
+
+<p>测试命令的退出状态：</p>
+
+<pre><code>if command;then 
+	echo 'success'
+else
+	echo 'failure' 
+fi
+</code></pre>
+
+<h3 id="单行测试">单行测试</h3>
+
+<p>你可以像下面这样：</p>
+
+<pre><code>[[ $s = 'something' ]] &amp;&amp; echo 'matched' || echo &quot;didn't match&quot; [[ $s == 'something' ]] &amp;&amp; echo 'matched' || echo &quot;didn't match&quot; [[ $s != 'something' ]] &amp;&amp; echo &quot;didn't match&quot; || echo &quot;matched&quot; [[ $s -eq 10 ]] &amp;&amp; echo 'equal' || echo &quot;not equal&quot;
+(( $s == 10 )) &amp;&amp; echo 'equal' || echo 'not equal'
+</code></pre>
+
+<p>退出状态的单行测试：</p>
+
+<pre><code>command &amp;&amp; echo 'exited with 0' || echo 'non 0 exit'
+cmd &amp;&amp; cmd1 &amp;&amp; echo 'previous cmds were successful' || echo 'one of them failed' cmd || cmd1 #If cmd fails try cmd1
+</code></pre>
+
+<h3 id="文件比较">文件比较</h3>
+
+<pre><code>if [[ $file1 -ef $file2 ]]; then
+	echo &quot;$file1 and $file2 are the same file&quot;
+fi
+</code></pre>
+
+<p>这里“same file”意味着修改一个文件也会影响到另一个文件。即使两个文件的名称不同，两个文件也可以是相同的：例如它们是硬链接，它们是相同目标的符号链接，或者一个是另个文件的符号链接。</p>
+
+<p>如果两个文件包含相同的内容，但是它们是不同的（修改一个文件不会影响到另一个文件），<code>-ef</code>将会返回false。如果你想要一个字节一个字节的比较两个文件，可以使用<code>cmp</code>工具：</p>
+
+<pre><code>if cmp -s -- &quot;$file1&quot; &quot;$file2&quot;; then
+	echo &quot;$file1 and $file2 have identical contents&quot;
+else
+	echo &quot;$file1 and $file2 differ&quot;
+fi
+</code></pre>
+
+<p>想要获取一个人可读格式的文件的不同之处，可以使用<code>diff</code>命令：</p>
+
+<pre><code>if diff -u &quot;$file1&quot; &quot;$file2&quot;; then
+	echo &quot;$file1 and $file2 have identical contents&quot; 
+else
+: # the differences between the files have been listed 
+fi
+</code></pre>
+
+<h3 id="文件访问测试">文件访问测试</h3>
+
+<pre><code>if [[ -r $filename ]]; then
+	echo &quot;$filename is a readable file&quot;
+fi
+if [[ -w $filename ]]; then
+	echo &quot;$filename is a writable file&quot;
+fi
+if [[ -x $filename ]]; then
+	echo &quot;$filename is an executable file&quot;
+fi
+</code></pre>
+
+<p>这些测试将权限和所有权考虑在内，以确定脚本（或从脚本启动的程序）是否可以访问该文件。</p>
+
+<p>小心<a href="https://en.wikipedia.org/wiki/Time_of_check_to_time_of_use">race conditions(TOCTOU)</a>：仅仅因为测试现在成功但不代表下一行也成功。通常最好尝试访问一个文件，并处理错误，而不是先测试，然后再处理错误，以防文件同时发生更改。</p>
+
+<h3 id="数字比较">数字比较</h3>
+
+<p>数字比较使用<code>-eq</code>运算符和其他相关的：</p>
+
+<pre><code>if [[ $num1 -eq $num2 ]]; then 
+	echo &quot;$num1 == $num2&quot;
+fi
+if [[ $num1 -le $num2 ]]; then
+	echo &quot;$num1 &lt;= $num2&quot;
+fi
+</code></pre>
+
+<p>一共有6个运算符：</p>
+
+<ul>
+<li><code>-eq</code>等于</li>
+<li><code>-ne</code>不等于</li>
+<li><code>-le</code>小于或等于</li>
+<li><code>-lt</code>小于</li>
+<li><code>-ge</code>大于或等于</li>
+<li><code>-gt</code>大于</li>
+</ul>
+
+<p>注意在<code>[[]]</code>中的<code>&lt;</code>和<code>&gt;</code>运算符是比较字符串的，不是比较数字的：</p>
+
+<pre><code>if [[ 9 -lt 10 ]]; then
+	echo &quot;9 is before 10 in numeric order&quot;
+fi
+if [[ 9 &gt; 10 ]]; then
+	echo &quot;9 is after 10 in lexicographic order&quot; 
+fi
+</code></pre>
+
+<p>比较符的两边必须都是十进制数字（或者以0开头的八进制）。或者，使用<code>（（…））</code>算术表达式语法，它以C/Java/类似的语法执行整数计算。</p>
+
+<pre><code>x=2
+if ((2*x == 4)); then
+    echo &quot;2 times 2 is 4&quot; 
+fi
+((x += 1))
+echo &quot;2 plus 1 is $x&quot;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/bash-section-21.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十一)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
