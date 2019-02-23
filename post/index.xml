@@ -6,10 +6,22 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 18 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 19 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十三)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-23.html</link>
+      <pubDate>Tue, 19 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-23.html</guid>
+      <description>脚本变量 多变量解析 解析很多变量，最好的办法就是使用while循环，加上case语句和shift。
+shift是从一系列变量中回去第一个变量，比如当前是$1，使用这个你将会获得$2。这在一次处理多个变量的时候非常有用。
+#!/bin/bash #加载用户定义的变量 while [[ $# &amp;gt; 0 ]] do case &amp;quot;$1&amp;quot; in -a|--valueA） valA=&amp;quot;$2&amp;quot; shift ;; -b|--valueB) valB=&amp;quot;$2&amp;quot; shift ;; --help|*) echo &amp;quot;Usage:&amp;quot; echo &amp;quot; --valueA \&amp;quot;value\&amp;quot;&amp;quot; echo &amp;quot; --valueB \&amp;quot;\value&amp;quot;&amp;quot; echo &amp;quot; --help&amp;quot; exit 1 ;; esac shift done echo &amp;quot;A: $valA&amp;quot; echo &amp;quot;B: $valB&amp;quot;  输入和输出：
+$ ./multipleParams.sh --help Usage: --valueA &amp;quot;value&amp;quot; --valueB &amp;quot;value&amp;quot; --help $ ./multipleParams.sh A: B: $ ./multipleParams.sh --valueB 2 A: B: 2 $ .</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十二)</title>
