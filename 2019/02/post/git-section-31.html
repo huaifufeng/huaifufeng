@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="变量的作用区间">
+    <meta name="description" content="git-tfs">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二十七)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（三十一）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-27.html">
+    <link rel="canonical" href="/2019/02/post/git-section-31.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二十七)</h1>
+                    <h1>Git专业笔记（三十一）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Saturday, February 23, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, February 22, 2019
                         
                     </span>
                 </div>
@@ -170,9 +170,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#scoping">Scoping</a>
+<li><a href="#git-tfs">git-tfs</a>
 <ul>
-<li><a href="#动态作用域">动态作用域</a></li>
+<li><a href="#git-tfs克隆">git-tfs克隆</a></li>
+<li><a href="#从裸git仓库克隆">从裸Git仓库克隆</a></li>
+<li><a href="#通过chocolatey安装">通过Chocolatey安装</a></li>
+<li><a href="#签入">签入</a></li>
+<li><a href="#推送">推送</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -180,26 +184,61 @@
         		
         		
 
-<h2 id="scoping">Scoping</h2>
+<h2 id="git-tfs">git-tfs</h2>
 
-<h3 id="动态作用域">动态作用域</h3>
+<h3 id="git-tfs克隆">git-tfs克隆</h3>
 
-<p>动态作用域的含义是：动态范围是指变量查找发生在调用函数的范围内，而不是在定义函数的范围内。</p>
+<p>这将创建一个和项目名一样的目录，/My.Project.Name：</p>
 
-<pre><code>$ x=3
-$ func1 () { echo &quot;in func1: $x&quot;;}
-$ func2 () { local x=9; func1;}
-$ func2
-in func1 9
-$ func1
-in func1: 3
+<pre><code>$ git tfs clone http://tfs:8080/tfs/DefaultCollection/ $/My.Project.Name
 </code></pre>
 
-<p>在词汇范围语言中，func1总是在全局范围中查找x的值，因为func1是在本地范围中定义的。</p>
+<h3 id="从裸git仓库克隆">从裸Git仓库克隆</h3>
 
-<p>在动态范围语言中，func1查找调用它的范围。当从func2中调用它时，它首先在func2的主体中查找值x。如果没有在那里定义它，它将在全局范围中查找，其中func2是从全局范围调用的。</p>
+<p>从git仓库克隆比直接从TFV仓库克隆快10倍，并且在团队中工作的很好。至少有一个团队成员必须首先通过执行常规的git-tfs克隆来创建裸露的git存储库。然后可以引导新的存储库使用TFV。</p>
 
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<pre><code>$ git clone x:/fileshare/git/My.Project.Name.git 
+$ cd My.Project.Name
+$ git tfs bootstrap
+$ git tfs pull
+</code></pre>
+
+<h3 id="通过chocolatey安装">通过Chocolatey安装</h3>
+
+<p>下面假设你使用kdiff3来进行文件差异，虽然不是必须的但是这是给好主意：</p>
+
+<pre><code>C:\&gt; choco install kdiff3
+</code></pre>
+
+<p>可以先安装Git，这样就可以说出你想要的任何参数。这里还安装了所有Unix工具，&rsquo;NoAutoCrlf&rsquo;表示按原样切换，按原样提交。</p>
+
+<pre><code>C:\&gt; choco install git -params '&quot;/GitAndUnixToolsOnPath /NoAutoCrlf&quot;'
+</code></pre>
+
+<p>这是所有你使用Chocolatey安装git-tfs的所有事情：</p>
+
+<pre><code>C:\&gt; choco install git-tfs
+</code></pre>
+
+<h3 id="签入">签入</h3>
+
+<p>启动TFVS的“检入”对话框。</p>
+
+<pre><code>$ git tfs checkintool
+</code></pre>
+
+<p>这将占用您所有的本地提交并创建一个单一的check-in。</p>
+
+<h3 id="推送">推送</h3>
+
+<p>推送本地的所有提交到TFVS远端。</p>
+
+<pre><code>$ git tfs rcheckin
+</code></pre>
+
+<p>注意：如果需要签入备注，这将失败。 可以通过将<code>git-tfs-force：rcheckin</code>添加到提交消息来绕过这些。</p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -208,12 +247,12 @@ in func1: 3
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-28.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十八)">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-26.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十六)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-32.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（三十二）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-25.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十五)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

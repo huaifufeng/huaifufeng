@@ -6,10 +6,43 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 21 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 23 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（三十二）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-32.html</link>
+      <pubDate>Sat, 23 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-32.html</guid>
+      <description>空目录 假设你用下面的目录结构初始化了一个项目：
+/build app.js  然后你添加所有的文件并且提交：
+git init git add . git commit -m &amp;quot;Initial commit&amp;quot;  git将会值追踪app.js文件。
+假设你想应用程序添加了一个构建步骤，并依赖“构建”目录作为输出目录（你不想让它成为每个人都必须遵循的安装命令），惯例是在目录中包含一个“.gitkeep”文件，并让git跟踪该文件。
+/build .gitkeep app.js  然后添加这个新文件：
+git add build/.gitkeep git commit -m &amp;quot;Keep the build directory around&amp;quot;  git现在追踪文件build/.gitkeep，因此build目录讲座签出时有效。同时这只是一个月的，而不是git的特性。
+参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（三十一）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-31.html</link>
+      <pubDate>Fri, 22 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-31.html</guid>
+      <description>git-tfs git-tfs克隆 这将创建一个和项目名一样的目录，/My.Project.Name：
+$ git tfs clone http://tfs:8080/tfs/DefaultCollection/ $/My.Project.Name  从裸Git仓库克隆 从git仓库克隆比直接从TFV仓库克隆快10倍，并且在团队中工作的很好。至少有一个团队成员必须首先通过执行常规的git-tfs克隆来创建裸露的git存储库。然后可以引导新的存储库使用TFV。
+$ git clone x:/fileshare/git/My.Project.Name.git $ cd My.Project.Name $ git tfs bootstrap $ git tfs pull  通过Chocolatey安装 下面假设你使用kdiff3来进行文件差异，虽然不是必须的但是这是给好主意：
+C:\&amp;gt; choco install kdiff3  可以先安装Git，这样就可以说出你想要的任何参数。这里还安装了所有Unix工具，&amp;rsquo;NoAutoCrlf&amp;rsquo;表示按原样切换，按原样提交。
+C:\&amp;gt; choco install git -params &#39;&amp;quot;/GitAndUnixToolsOnPath /NoAutoCrlf&amp;quot;&#39;  这是所有你使用Chocolatey安装git-tfs的所有事情：
+C:\&amp;gt; choco install git-tfs  签入 启动TFVS的“检入”对话框。
+$ git tfs checkintool  这将占用您所有的本地提交并创建一个单一的check-in。
+推送 推送本地的所有提交到TFVS远端。
+$ git tfs rcheckin  注意：如果需要签入备注，这将失败。 可以通过将git-tfs-force：rcheckin添加到提交消息来绕过这些。
+参考：Git® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Git专业笔记（三十）</title>
