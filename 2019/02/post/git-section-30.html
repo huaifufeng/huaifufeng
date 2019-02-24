@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="数学相关">
+    <meta name="description" content="内部概念">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（三十）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-25.html">
+    <link rel="canonical" href="/2019/02/post/git-section-30.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,12 +133,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二十五)</h1>
+                    <h1>Git专业笔记（三十）</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Thursday, February 21, 2019
                         
@@ -170,11 +170,23 @@
 <ul>
 <li>
 <ul>
-<li><a href="#math">Math</a>
+<li><a href="#内部概念">内部概念</a>
 <ul>
-<li><a href="#使用bash功能的数学">使用Bash功能的数学</a></li>
-<li><a href="#使用bc的数学">使用bc的数学</a></li>
-<li><a href="#使用expr的数学">使用expr的数学</a></li>
+<li><a href="#仓库">仓库</a></li>
+<li><a href="#对象">对象</a></li>
+<li><a href="#head引用">HEAD引用</a></li>
+<li><a href="#引用">引用</a></li>
+<li><a href="#提交对象">提交对象</a>
+<ul>
+<li><a href="#tree">tree</a></li>
+<li><a href="#parent">Parent</a></li>
+</ul></li>
+<li><a href="#tree对象">tree对象</a></li>
+<li><a href="#blob对象">blob对象</a></li>
+<li><a href="#创建新提交">创建新提交</a></li>
+<li><a href="#移动head">移动HEAD</a></li>
+<li><a href="#移动refs">移动refs</a></li>
+<li><a href="#创建新ref">创建新ref</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -182,180 +194,217 @@
         		
         		
 
-<h2 id="math">Math</h2>
+<h2 id="内部概念">内部概念</h2>
 
-<p><code>dc</code>是Unix系统中最古老的命令之一。</p>
+<h3 id="仓库">仓库</h3>
 
-<p>它使用<a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">reverse polish notation</a>，这意味着：你首先存在数字，然后提供操作符。例如<code>1+1</code>就写成<code>1 1 +</code>。</p>
+<p>一个<code>git repository</code>就是硬盘上面存储了一系列的文件和目录信息的数据结构。</p>
 
-<p>打印前面存储的数据，使用<code>p</code>命令：</p>
+<p>这些信息在你的<code>.git/</code>目录下面。每一次你使用git提交数据，它都会把数据存储在这里。反过来说，<code>.git/</code>目录保存了每一个单独提交。</p>
 
-<pre><code>$ echo '2 3 + p' | dc
-5
+<p>它基本的结构像下面一样：</p>
 
-# 或者
-
-$ dc &lt;&lt;&lt; '2 3 + p'
-5
+<pre><code>.git/
+    objects/
+    refs/
 </code></pre>
 
-<p>你可以多次打印顶层元素：</p>
+<h3 id="对象">对象</h3>
 
-<pre><code>$ dc &lt;&lt;&lt; '1 1 + p 2 + p'
-2
-4
+<p>Git从根本上说是一个键值存储。当你向git添加数据的时候，将会构建一个对象，并且使用对象内容的SHA-1值作为键值。</p>
+
+<p>因此，任何git里面的内容都可以通过hash值找到：</p>
+
+<pre><code>git cat-file -p 4bb6f98
 </code></pre>
 
-<p>负数使用_前缀：</p>
+<p>有四种类型的对象：</p>
 
-<pre><code>$ dc &lt;&lt;&lt; '_1 p'
--1
+<ul>
+<li>blob</li>
+<li>tree</li>
+<li>commit</li>
+<li>tag</li>
+</ul>
+
+<h3 id="head引用">HEAD引用</h3>
+
+<p>HEAD是一个特殊的<code>ref</code>。它将会一直指向当前的对象。</p>
+
+<p>你可以查看<code>.git/HEAD</code>文件当前指向的内容。</p>
+
+<p>一般来说，HEAD指向另一个ref：</p>
+
+<pre><code>$ cat .git/HEAD
+ref: refs/heads/mainline
 </code></pre>
 
-<p>你可以使用<code>A</code>到<code>F</code>之前的字符标识<code>10</code>到<code>15</code>之间的数字。<code>.</code>表示小数符合。</p>
+<p>但是它也可以指向另外的对象：</p>
 
-<pre><code>$ dc &lt;&lt;&lt; 'A.4 p'
-10.4
+<pre><code>$ cat .git/HEAD
+4bb6f98a223abc9345a0cef9200562333
 </code></pre>
 
-<p><code>dc</code>是<a href="https://en.wikipedia.org/wiki/Arbitrary-precision_arithmetic">任意精度</a>的，这意味着只要内存许可精度是不收限制的。默认情况下精度是0：</p>
+<p>这就是所谓的“分离的头部”——因为HEAD不连接（指向）任何引用，而是直接指向一个对象。</p>
 
-<pre><code>$ dc &lt;&lt;&lt; '4 3 / p'
-1
+<h3 id="引用">引用</h3>
+
+<p>一个<code>ref</code>本质是一个指针，指向对象的名称。例如：</p>
+
+<pre><code>&quot;master&quot; --&gt; 1a410e...
 </code></pre>
 
-<p>我们可以提升之前命令的精度使用<code>k</code>命令。像下面这样：</p>
+<p>他们都存储在<code>.git/refs/heads/</code>这个文本文件内。</p>
 
-<pre><code>$ dc &lt;&lt;&lt; '2k 4 3 / p'
-1.33
-
-$ dc &lt;&lt;&lt; '4k 4 3 / p'
-1.3333
+<pre><code>$ cat .git/refs/heads/mainline
+4bb6f98a223abc9345a0cef9200562333
 </code></pre>
 
-<p>你也可以使用多行：</p>
+<p>这通常被叫做分支。但是你要注意在Git里面没有分支，只有引用。</p>
 
-<pre><code>$ dc &lt;&lt;EOF
-1 1 +
-3 *
-p
-EOF
-6
+<p>现在完全可以通过hash值来跳转到不同的对象。但这会非常不方便。引用提供了一个便捷的名称来引用对象。要求Git按名称而不是哈希去特定的地方要容易得多。</p>
+
+<h3 id="提交对象">提交对象</h3>
+
+<p>提交可能是用户最熟悉的对象类型。因为这是他们使用git命令创建的对象类型。</p>
+
+<p>然后提交没有直接包含任何修改过的文件或数据。相反，它主要包括元数据和指向其他对象的指针，这些对象包含提交的实际内容。</p>
+
+<p>一个提交对象包含下面的内容：</p>
+
+<ul>
+<li>一个<code>tree</code>的hash值</li>
+<li>父<code>commit</code>的hash值</li>
+<li>作者的名称/邮箱，提交者的名称/邮箱</li>
+<li>提交信息</li>
+</ul>
+
+<p>你可以像下面一样查看任何提交的内容：</p>
+
+<pre><code>$ git cat-file commit 5bac93
+tree 04d1daef...
+parent b7850ef5...
+author Geddy Lee &lt;glee@rush.com&gt; 
+commiter Neil Peart &lt;npeart@rush.com&gt;
+
+First commit!
 </code></pre>
 
-<blockquote>
-<p>bc是dc的预处理器。</p>
-</blockquote>
+<h4 id="tree">tree</h4>
 
-<h3 id="使用bash功能的数学">使用Bash功能的数学</h3>
+<p>一个非常重要的注意点：<code>tree</code>对象存储你项目的每一个文件，它存储整个文件而不是diff区别。这意味着每个提交包含整个项目的一个快照。</p>
 
-<p>也可以在不涉及任何其他命令的情况下使用算数表达式：</p>
+<p><strong><em>从技术上讲，只存储更改的文件。但这更像是实现效率的一个细节。从设计角度看，提交应该被视为包含项目的完整副本。</em></strong></p>
 
-<p>乘法：</p>
+<h4 id="parent">Parent</h4>
 
-<pre><code>$ echo $((5 * 2))
-10
+<p>一个<code>parent</code>行包含另一个<code>commit</code>对象的hash，可以这样想：一个<code>父指针</code>指向<code>之前提交</code>。这隐式地形成了一个提交的图，称为提交图。特别它是一个<a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">DAG</a>。</p>
+
+<h3 id="tree对象">tree对象</h3>
+
+<p><code>tree</code>对象基本表示了一个传统系统中的文件夹：文件或其他文件夹的嵌套容器。</p>
+
+<p>一个<code>tree</code>包含：</p>
+
+<ul>
+<li>0或多个blob对象</li>
+<li>0或多个tree对象</li>
+</ul>
+
+<p>像你使用<code>ls</code>或<code>dir</code>来列出一个目录的内容一样，你可以列出<code>tree</code>对象的内容：</p>
+
+<pre><code>$ git cat-file -p 07b1a631
+100644 blob b91bba1b  .gitignore
+100644 blob cc0956f1  Makefile
+040000 tree 92e1ca7e  src
+...
 </code></pre>
 
-<p>除法：</p>
+<p>你可以在提交中查找文件，方法是首先在提交中查找tree的hash值，然后查看这个tree：</p>
 
-<pre><code>$ echo $((5 / 2))
-2
+<pre><code>$ git cat-file commit 4bb6f93a 
+tree 07b1a631
+parent ...
+author ...
+commiter ...
+
+$ git cat-file -p 07b1a631
+100644 blob b91bba1b  .gitignore
+100644 blob cc0956f1  Makefile
+040000 tree 92e1ca7e  src
+...
 </code></pre>
 
-<p>取余：</p>
+<h3 id="blob对象">blob对象</h3>
 
-<pre><code>$ echo $((5 % 2))
-1
+<p>一个<code>blob</code>对象包含任意的二进制文件内容。通常他是一个原生文本，像源代码或博客文章。但是它也可以很容易的成为PNG文件的字节或者其他任何东西。</p>
+
+<p>如果你有一个<code>blob</code>对象的hash值，你可以查看它的内容：</p>
+
+<pre><code>$ git cat-file -p d429810
+package com.example.project
+
+class Foo { ...
+}
+...
 </code></pre>
 
-<p>幂次方：</p>
+<p>例如，你可以像上面一样查看一个<code>tree</code>对象，然后查看它里面的一个<code>blob</code>对象：</p>
 
-<pre><code>$ echo $((5 ** 2))
-25
+<pre><code>$ git cat-file -p 07b1a631
+100644 blob b91bba1b  .gitignore
+100644 blob cc0956f1  Makefile
+040000 tree 92e1ca7e  src
+100644 blob cae391ff  Readme.txt
+
+$ git cat-file -p cae391ff
+Welcome to my project! This is the readmefile
+...
 </code></pre>
 
-<h3 id="使用bc的数学">使用bc的数学</h3>
+<h3 id="创建新提交">创建新提交</h3>
 
-<p><code>bc</code>是任意精度的计算器语言。它可以交互式使用，也可以像命令一样执行。</p>
+<p><code>git commit</code>做下面的内容：</p>
 
-<p>例如，可以打印表达式的结果：</p>
+<ol>
+<li>创建<code>blob</code>和<code>tree</code>对象来表示项目的目录-存储在<code>.git/objects</code>中</li>
+<li>创建一个包含作者信息、提交信息和步骤1中的根项目树的提交对象，也存储在<code>.git/objects</code>中</li>
+<li>更新<code>.git/HEAD</code>中的HEAD对象为新创建提交的hash值</li>
+</ol>
 
-<pre><code>$ echo '2 + 3' | bc
-5
+<h3 id="移动head">移动HEAD</h3>
 
-$ echo '12 / 5' | bc
-2
+<p>当你在一个提交（指定hash或ref）上运行<code>git checkout</code>命令的时候，你告诉Git把你的工作目录变成和快照时的工作目录一样。</p>
+
+<ol>
+<li>更新工作目录的文件，和提交中的<code>tree</code>对象的内容一致</li>
+<li>更新HEAD指向指定的hash或ref</li>
+</ol>
+
+<h3 id="移动refs">移动refs</h3>
+
+<p>运行<code>git rreset —hard</code>把ref移动到指定的hash或ref中。</p>
+
+<p>移动<code>MyBranch</code>到<code>b8dc53</code>：</p>
+
+<pre><code>$ git checkout MyBranch # moves HEAD to MyBranch
+$ git reset --hard b8dc53 # makes MyBranch point to b8dc53
 </code></pre>
 
-<p>对于浮点后置算法，你可以使用<code>bc -l</code>导入标准库：</p>
+<h3 id="创建新ref">创建新ref</h3>
 
-<pre><code>$ echo '12 / 5' | bc -l
-2.400000000000
+<p>运行<code>git checkout -b &lt;branchname&gt;</code>来创建一个新的ref指向当前的提交：</p>
+
+<pre><code>$ cat .git/head 
+1f324a
+
+$ git checkout -b TestBranch
+
+$ cat .git/refs/heads/TestBranch 
+1f324a
 </code></pre>
 
-<p>可以被用到比较表达式中：</p>
-
-<pre><code>$ echo '8 &gt; 5' | bc
-1 
-
-$ echo '10 == 11' | bc
-0
-
-$ echo '10 == 10 &amp;&amp; 8&gt;3' | bc
-1
-</code></pre>
-
-<h3 id="使用expr的数学">使用expr的数学</h3>
-
-<p><code>expr</code>或<code>Evaluate expressions</code>执行一个表达式然后把结果输出到标准输出。</p>
-
-<p>基本算法：</p>
-
-<pre><code>$ expr 2 + 3
-5
-</code></pre>
-
-<p>在执行乘法的时候，你需要在乘号*前面加上反斜杠：</p>
-
-<pre><code>$ expr 2 \* 3
-6
-</code></pre>
-
-<p>你也可以使用变量：</p>
-
-<pre><code>a=2
-expr $a + 3
-5
-</code></pre>
-
-<p>但是要注意，这里只支持整形，所以下面的表达式就会报错：</p>
-
-<pre><code>$ expr 3.0 / 2
-</code></pre>
-
-<p>输出下面的错误信息：<code>expr: not a decimal number: '3.0'.</code></p>
-
-<p>支持正则表达式匹配模式：</p>
-
-<pre><code> expr 'Hello World' : 'Hell\(.*\)rld'
- o Wo
-</code></pre>
-
-<p>或者查找搜索字符串匹配的第一个字符的位置。</p>
-
-<blockquote>
-<p>这将会在Mac OS X上面输出这样的错误：expr: syntax error。因为BSD expr没有index的命令。但是在GNU expr是正常执行的。</p>
-</blockquote>
-
-<pre><code>expr index hello l
-3
-
-expr index 'hello' 'lo'
-3
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -364,12 +413,12 @@ expr index 'hello' 'lo'
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-26.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十六)">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-25.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十五)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-30.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（三十）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-24.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十四)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -6,10 +6,38 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 20 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 21 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（三十）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-30.html</link>
+      <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-30.html</guid>
+      <description>内部概念 仓库 一个git repository就是硬盘上面存储了一系列的文件和目录信息的数据结构。
+这些信息在你的.git/目录下面。每一次你使用git提交数据，它都会把数据存储在这里。反过来说，.git/目录保存了每一个单独提交。
+它基本的结构像下面一样：
+.git/ objects/ refs/  对象 Git从根本上说是一个键值存储。当你向git添加数据的时候，将会构建一个对象，并且使用对象内容的SHA-1值作为键值。
+因此，任何git里面的内容都可以通过hash值找到：
+git cat-file -p 4bb6f98  有四种类型的对象：
+ blob tree commit tag  HEAD引用 HEAD是一个特殊的ref。它将会一直指向当前的对象。
+你可以查看.git/HEAD文件当前指向的内容。
+一般来说，HEAD指向另一个ref：
+$ cat .git/HEAD ref: refs/heads/mainline  但是它也可以指向另外的对象：
+$ cat .git/HEAD 4bb6f98a223abc9345a0cef9200562333  这就是所谓的“分离的头部”——因为HEAD不连接（指向）任何引用，而是直接指向一个对象。
+引用 一个ref本质是一个指针，指向对象的名称。例如：
+&amp;quot;master&amp;quot; --&amp;gt; 1a410e...  他们都存储在.git/refs/heads/这个文本文件内。
+$ cat .git/refs/heads/mainline 4bb6f98a223abc9345a0cef9200562333  这通常被叫做分支。但是你要注意在Git里面没有分支，只有引用。
+现在完全可以通过hash值来跳转到不同的对象。但这会非常不方便。引用提供了一个便捷的名称来引用对象。要求Git按名称而不是哈希去特定的地方要容易得多。
+提交对象 提交可能是用户最熟悉的对象类型。因为这是他们使用git命令创建的对象类型。
+然后提交没有直接包含任何修改过的文件或数据。相反，它主要包括元数据和指向其他对象的指针，这些对象包含提交的实际内容。
+一个提交对象包含下面的内容：
+ 一个tree的hash值 父commit的hash值 作者的名称/邮箱，提交者的名称/邮箱 提交信息  你可以像下面一样查看任何提交的内容：
+$ git cat-file commit 5bac93 tree 04d1daef.</description>
+    </item>
     
     <item>
       <title>Git专业笔记（二十九）</title>
