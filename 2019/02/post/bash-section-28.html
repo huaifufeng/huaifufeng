@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="变量的作用区间">
+    <meta name="description" content="过程替换">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二十七)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(二十八)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-27.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-28.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二十七)</h1>
+                    <h1>Bash专业笔记(二十八)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Saturday, February 23, 2019
+                    <span  class="meta">Posted by 怀府风 on Sunday, February 24, 2019
                         
                     </span>
                 </div>
@@ -170,9 +170,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#scoping">Scoping</a>
+<li><a href="#过程替换">过程替换</a>
 <ul>
-<li><a href="#动态作用域">动态作用域</a></li>
+<li><a href="#比较web文件">比较web文件</a></li>
+<li><a href="#while循环从命令输出获取">while循环从命令输出获取</a></li>
+<li><a href="#拼接文件">拼接文件</a></li>
+<li><a href="#同时通过多个程序传输文件">同时通过多个程序传输文件</a></li>
+<li><a href="#paste命令">paste命令</a></li>
+<li><a href="#避免子shell">避免子shell</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -180,24 +185,101 @@
         		
         		
 
-<h2 id="scoping">Scoping</h2>
+<h2 id="过程替换">过程替换</h2>
 
-<h3 id="动态作用域">动态作用域</h3>
+<h3 id="比较web文件">比较web文件</h3>
 
-<p>动态作用域的含义是：动态范围是指变量查找发生在调用函数的范围内，而不是在定义函数的范围内。</p>
+<p>下面的例子用<code>diff</code>命令执行过程替换来比较两个文件，而不是创建两个临时文件。</p>
 
-<pre><code>$ x=3
-$ func1 () { echo &quot;in func1: $x&quot;;}
-$ func2 () { local x=9; func1;}
-$ func2
-in func1 9
-$ func1
-in func1: 3
+<pre><code>diff &lt;(curl http://www.example.com/page1) &lt;(curl http://www.example.com/page2)
 </code></pre>
 
-<p>在词汇范围语言中，func1总是在全局范围中查找x的值，因为func1是在本地范围中定义的。</p>
+<h3 id="while循环从命令输出获取">while循环从命令输出获取</h3>
 
-<p>在动态范围语言中，func1查找调用它的范围。当从func2中调用它时，它首先在func2的主体中查找值x。如果没有在那里定义它，它将在全局范围中查找，其中func2是从全局范围调用的。</p>
+<p>下面使用<code>grep</code>命令的输出作为<code>while</code>循环的输出参数：</p>
+
+<pre><code>while IFS=&quot;:&quot; read -r user _
+do
+    #&quot;$user&quot; 有/etc/passwd中的密码
+done &lt; &lt;(grep &quot;hello&quot; /etc/passwd)
+</code></pre>
+
+<h3 id="拼接文件">拼接文件</h3>
+
+<p>总所周知，你不能在一个命令里面把一个文件既当做输入文件也当做输出文件，例如：</p>
+
+<pre><code>$ cat header.txt body.txt &gt;body.txt
+</code></pre>
+
+<p>不会产生你希望的结果。当<code>cat</code>命令读取body.txt文件的内容时，这个文件已经被重定向截断，并且内容是空。最后body.txt只会有header.txt的内容。</p>
+
+<p>某些人可能相应使用进程替换来避免这个效果，就是下边这样：</p>
+
+<pre><code>$ cat header.txt &lt;(cat body.txt) &gt; body.txt
+</code></pre>
+
+<p>将强制在重定向截断文件之前，将body.txt的原始内容以某种方式保存在某个缓冲区中。但是这并没有作用。括号中的cat只有在所有文件描述符都设置好之后才开始读取文件，就像外部的描述符一样。在这种情况下，尝试使用流程替换是没有意义的。</p>
+
+<p>将文件预处理到另一个文件的唯一方法是创建中间文件：</p>
+
+<pre><code>$ cat header.txt body.txt &gt; body.txt.new
+$ mv body.txt.new body.txt
+</code></pre>
+
+<p>当使用交互编辑选项-i调用sed、perl或类似的命令时，会在后台默默执行这些命令。</p>
+
+<h3 id="同时通过多个程序传输文件">同时通过多个程序传输文件</h3>
+
+<p>下面的命令使用<code>wc -l</code>计算同时使用<code>gzip</code>压缩大文件的行数，两者同时运行：</p>
+
+<pre><code>$ tee &gt;(wc -l &gt;&amp;2) &lt; bigfile | gzip &gt; bigfile.gz
+</code></pre>
+
+<p>通常<code>tee</code>命令把他的输入写入一个或多个文件（包括标准输出）。我们可以使用<code>tee &gt;(command)</code>把内容写入命令而不是文件。</p>
+
+<p>这里命令<code>wc -l &gt;&amp;2</code>统计的是从<code>tee</code>命令读入的文件（从bigfile读入）。这个行数被输出到stderr(&gt;&amp;2)，避免混淆<code>gzip</code>的输出。这个<code>tee</code>命令的输出同时作为<code>gzip</code>命令的输入。</p>
+
+<h3 id="paste命令">paste命令</h3>
+
+<pre><code>#paste中使用过程替换是常见的
+
+paste &lt;( ls /path/to/directory1) &lt;( ls /path/to/directory2)
+</code></pre>
+
+<h3 id="避免子shell">避免子shell</h3>
+
+<p>流程替换的一个主要方面是，它允许我们避免在通过管道从shell发送命令时使用子shell。</p>
+
+<p>下面是一个简单的例子，我们在当前目录下面有一些文件：</p>
+
+<pre><code>$ find . -maxdepth 1 -type f -print
+foo bar zoo foobar foozoo barzoo
+</code></pre>
+
+<p>下面我通过管道连接一个<code>while/read</code>循环，进行一个递增的计数：</p>
+
+<pre><code>count=0
+find . -maxdepth 1 -type f -print | while IFS= read -r _; do
+    ((count++))
+done
+</code></pre>
+
+<p><code>$count</code>不是6个，因为它在子shell环境中被修改了。下面显示的任何命令都在子shell上下文中运行，子shell终止后，内部使用的变量范围将丢失。</p>
+
+<pre><code>command &amp;
+command | command
+( command )
+</code></pre>
+
+<p>进程替换用来解决这个问题，避免管道运算符|:</p>
+
+<pre><code>count=0
+while IFS= read -r _; do
+    ((count++))
+done &lt; &lt;(find . -maxdepth 1 -type f -print)
+</code></pre>
+
+<p>这将保留count变量值，因为没有调用子shell。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -207,13 +289,9 @@ in func1: 3
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/02/post/bash-section-28.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十八)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-26.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十六)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-27.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十七)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

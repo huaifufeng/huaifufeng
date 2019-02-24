@@ -6,10 +6,28 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 23 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十八)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-28.html</link>
+      <pubDate>Sun, 24 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-28.html</guid>
+      <description>过程替换 比较web文件 下面的例子用diff命令执行过程替换来比较两个文件，而不是创建两个临时文件。
+diff &amp;lt;(curl http://www.example.com/page1) &amp;lt;(curl http://www.example.com/page2)  while循环从命令输出获取 下面使用grep命令的输出作为while循环的输出参数：
+while IFS=&amp;quot;:&amp;quot; read -r user _ do #&amp;quot;$user&amp;quot; 有/etc/passwd中的密码 done &amp;lt; &amp;lt;(grep &amp;quot;hello&amp;quot; /etc/passwd)  拼接文件 总所周知，你不能在一个命令里面把一个文件既当做输入文件也当做输出文件，例如：
+$ cat header.txt body.txt &amp;gt;body.txt  不会产生你希望的结果。当cat命令读取body.txt文件的内容时，这个文件已经被重定向截断，并且内容是空。最后body.txt只会有header.txt的内容。
+某些人可能相应使用进程替换来避免这个效果，就是下边这样：
+$ cat header.txt &amp;lt;(cat body.txt) &amp;gt; body.txt  将强制在重定向截断文件之前，将body.txt的原始内容以某种方式保存在某个缓冲区中。但是这并没有作用。括号中的cat只有在所有文件描述符都设置好之后才开始读取文件，就像外部的描述符一样。在这种情况下，尝试使用流程替换是没有意义的。
+将文件预处理到另一个文件的唯一方法是创建中间文件：
+$ cat header.txt body.txt &amp;gt; body.txt.new $ mv body.txt.new body.txt  当使用交互编辑选项-i调用sed、perl或类似的命令时，会在后台默默执行这些命令。
+同时通过多个程序传输文件 下面的命令使用wc -l计算同时使用gzip压缩大文件的行数，两者同时运行：
+$ tee &amp;gt;(wc -l &amp;gt;&amp;amp;2) &amp;lt; bigfile | gzip &amp;gt; bigfile.</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十七)</title>
