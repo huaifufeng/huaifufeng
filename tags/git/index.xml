@@ -6,10 +6,22 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 17 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 18 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十七）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-27.html</link>
+      <pubDate>Mon, 18 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-27.html</guid>
+      <description>子树 创建、拉入和反向端口子树 创建子树 添加一个新的远端plugin指向组件的远端仓库：
+git remote add plugin https://path.to/remotes/plugin.git  然后创建一个子树指定一个plugins/demo前缀的新目录。plugin是远端的名称，master是引用的子树仓库的master分支名。
+git subtree add --prefix=plugins/demo plugin master  子树更新 pull拉取plugin中正常的提交：
+git subtree pull --prefix=plugins/demo plugin master  反向端口子树更新  指定在超级项目中进行的要进行反向移植的提交：   git commit -am &amp;quot;new changes to be backported&amp;quot;   签出要合并的新分支，设置为跟踪子树存储库   git checkout -b backport plugin/master   Cherry-pick backports   git cherry-pick -x --strategy=subtree master   推送修改到远端的plugin   git push plugin backport:master  参考：Git® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Git专业笔记（二十六）</title>
