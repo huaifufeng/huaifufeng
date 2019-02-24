@@ -6,10 +6,26 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 20 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 21 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十五)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-25.html</link>
+      <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-25.html</guid>
+      <description>Math dc是Unix系统中最古老的命令之一。
+它使用reverse polish notation，这意味着：你首先存在数字，然后提供操作符。例如1+1就写成1 1 +。
+打印前面存储的数据，使用p命令：
+$ echo &#39;2 3 + p&#39; | dc 5 # 或者 $ dc &amp;lt;&amp;lt;&amp;lt; &#39;2 3 + p&#39; 5  你可以多次打印顶层元素：
+$ dc &amp;lt;&amp;lt;&amp;lt; &#39;1 1 + p 2 + p&#39; 2 4  负数使用_前缀：
+$ dc &amp;lt;&amp;lt;&amp;lt; &#39;_1 p&#39; -1  你可以使用A到F之前的字符标识10到15之间的数字。.表示小数符合。
+$ dc &amp;lt;&amp;lt;&amp;lt; &#39;A.4 p&#39; 10.4  dc是任意精度的，这意味着只要内存许可精度是不收限制的。默认情况下精度是0：
+$ dc &amp;lt;&amp;lt;&amp;lt; &#39;4 3 / p&#39; 1  我们可以提升之前命令的精度使用k命令。像下面这样：</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十四)</title>
