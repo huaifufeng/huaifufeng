@@ -6,10 +6,22 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 22 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 23 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十七)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-27.html</link>
+      <pubDate>Sat, 23 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-27.html</guid>
+      <description>Scoping 动态作用域 动态作用域的含义是：动态范围是指变量查找发生在调用函数的范围内，而不是在定义函数的范围内。
+$ x=3 $ func1 () { echo &amp;quot;in func1: $x&amp;quot;;} $ func2 () { local x=9; func1;} $ func2 in func1 9 $ func1 in func1: 3  在词汇范围语言中，func1总是在全局范围中查找x的值，因为func1是在本地范围中定义的。
+在动态范围语言中，func1查找调用它的范围。当从func2中调用它时，它首先在func2的主体中查找值x。如果没有在那里定义它，它将在全局范围中查找，其中func2是从全局范围调用的。
+参考：Bash Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十六)</title>

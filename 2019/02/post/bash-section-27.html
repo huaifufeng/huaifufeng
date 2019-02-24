@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="Bash算法相关">
+    <meta name="description" content="变量的作用区间">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二十六)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(二十七)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-26.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-27.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二十六)</h1>
+                    <h1>Bash专业笔记(二十七)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, February 22, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, February 23, 2019
                         
                     </span>
                 </div>
@@ -170,11 +170,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#bash算法">Bash算法</a>
+<li><a href="#scoping">Scoping</a>
 <ul>
-<li><a href="#算法">(())算法</a></li>
-<li><a href="#算法命令">算法命令</a></li>
-<li><a href="#expr算法">expr算法</a></li>
+<li><a href="#动态作用域">动态作用域</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -182,92 +180,24 @@
         		
         		
 
-<h2 id="bash算法">Bash算法</h2>
+<h2 id="scoping">Scoping</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>详情</th>
-</tr>
-</thead>
+<h3 id="动态作用域">动态作用域</h3>
 
-<tbody>
-<tr>
-<td>EXPRESSION</td>
-<td>执行的表达式</td>
-</tr>
-</tbody>
-</table>
+<p>动态作用域的含义是：动态范围是指变量查找发生在调用函数的范围内，而不是在定义函数的范围内。</p>
 
-<h3 id="算法">(())算法</h3>
-
-<pre><code>#!/bin/bash
-echo $((2 + 1))
+<pre><code>$ x=3
+$ func1 () { echo &quot;in func1: $x&quot;;}
+$ func2 () { local x=9; func1;}
+$ func2
+in func1 9
+$ func1
+in func1: 3
 </code></pre>
 
-<p>输出3。</p>
+<p>在词汇范围语言中，func1总是在全局范围中查找x的值，因为func1是在本地范围中定义的。</p>
 
-<pre><code>#!/bin/bash
-var1=4
-var2=5
-((output=$var1 * $var2))
-printf &quot;%d\n&quot; &quot;$output&quot;
-</code></pre>
-
-<p>输出20</p>
-
-<h3 id="算法命令">算法命令</h3>
-
-<ul>
-<li>let</li>
-</ul>
-
-<pre><code>  let num=1+2
-  let num=&quot;1+2&quot;
-  let 'num= 1 + 2'
-  let num=1 num+=2
-</code></pre>
-
-<p>如果有空格或者填充字符，你就需要引号了。所有下面会出现错误：</p>
-
-<pre><code>  let num= 1 + 2 //错误
-  let 'num = 1 + 2'  //正确
-  let a[1] = 1 + 1  //错误
-  let 'a[1] = 1 + 1'  //正确
-</code></pre>
-
-<ul>
-<li>(())</li>
-</ul>
-
-<pre><code>  ((a=$a+1))   //a加1
-  ((a = a + 1))  //a加1
-  ((a += 1)) //a加1
-</code></pre>
-
-<p>我们可以在if表达式中使用(())。例如：</p>
-
-<pre><code>if (( a &gt; 1)); then echo &quot;a is greater than 1&quot;; fi
-</code></pre>
-
-<p>(())的输出可以被设置给一个变量：</p>
-
-<pre><code>result=$((a+1))
-</code></pre>
-
-<p>或者直接输出：</p>
-
-<pre><code>echo &quot;The result of a + 1 $((a + 1))&quot;
-</code></pre>
-
-<h3 id="expr算法">expr算法</h3>
-
-<pre><code>#!/bin/bash
-expr 1 + 2
-</code></pre>
-
-<p>输出3。</p>
+<p>在动态范围语言中，func1查找调用它的范围。当从func2中调用它时，它首先在func2的主体中查找值x。如果没有在那里定义它，它将在全局范围中查找，其中func2是从全局范围调用的。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -277,13 +207,9 @@ expr 1 + 2
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/02/post/bash-section-27.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十七)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-25.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十五)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-26.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十六)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
