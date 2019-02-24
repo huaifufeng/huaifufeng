@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="带有变量的脚本">
+    <meta name="description" content="推送代码教程">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二十三)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（二十九）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-23.html">
+    <link rel="canonical" href="/2019/02/post/git-section-29.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二十三)</h1>
+                    <h1>Git专业笔记（二十九）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Tuesday, February 19, 2019
+                    <span  class="meta">Posted by 怀府风 on Wednesday, February 20, 2019
                         
                     </span>
                 </div>
@@ -170,19 +170,32 @@
 <ul>
 <li>
 <ul>
-<li><a href="#脚本变量">脚本变量</a>
+<li><a href="#push">push</a>
 <ul>
-<li><a href="#多变量解析">多变量解析</a></li>
-<li><a href="#for循环解析变量">for循环解析变量</a></li>
-<li><a href="#包装脚本">包装脚本</a></li>
-<li><a href="#访问变量">访问变量</a>
+<li><a href="#推送指定对象到远端分支">推送指定对象到远端分支</a>
 <ul>
-<li><a href="#获取所有变量">获取所有变量</a></li>
-<li><a href="#获取参数数量">获取参数数量</a></li>
-<li><a href="#例子一">例子一</a></li>
-<li><a href="#例子二">例子二</a></li>
+<li><a href="#一般语法">一般语法</a></li>
+<li><a href="#例子">例子</a></li>
+<li><a href="#删除远端分支">删除远端分支</a></li>
+<li><a href="#例子-1">例子</a></li>
+<li><a href="#例子-2">例子</a></li>
+<li><a href="#推送单独提交">推送单独提交</a></li>
+<li><a href="#例子-3">例子</a></li>
 </ul></li>
-<li><a href="#将字符串切分到数组">将字符串切分到数组</a></li>
+<li><a href="#push-1">push</a>
+<ul>
+<li><a href="#指定远端仓库">指定远端仓库</a></li>
+<li><a href="#指定分支">指定分支</a></li>
+<li><a href="#设置远端追踪分支">设置远端追踪分支</a></li>
+<li><a href="#推送到一个新仓库">推送到一个新仓库</a></li>
+<li><a href="#解释">解释</a></li>
+</ul></li>
+<li><a href="#强制推送">强制推送</a>
+<ul>
+<li><a href="#重要注意">重要注意：</a></li>
+</ul></li>
+<li><a href="#推送tag">推送tag</a></li>
+<li><a href="#修改默认推送行为">修改默认推送行为</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,265 +203,208 @@
         		
         		
 
-<h2 id="脚本变量">脚本变量</h2>
-
-<h3 id="多变量解析">多变量解析</h3>
-
-<p>解析很多变量，最好的办法就是使用<code>while</code>循环，加上<code>case</code>语句和<code>shift</code>。</p>
-
-<p><code>shift</code>是从一系列变量中回去第一个变量，比如当前是<code>$1</code>，使用这个你将会获得<code>$2</code>。这在一次处理多个变量的时候非常有用。</p>
-
-<pre><code>#!/bin/bash
-
-#加载用户定义的变量
-while [[ $# &gt; 0 ]]
-do
-    case &quot;$1&quot; in
-         -a|--valueA）
-             valA=&quot;$2&quot;
-             shift
-             ;;
-              
-         -b|--valueB)
-             valB=&quot;$2&quot;
-             shift
-             ;;
-             
-         --help|*)
-             echo &quot;Usage:&quot;
-             echo &quot;    --valueA \&quot;value\&quot;&quot;
-             echo &quot;    --valueB \&quot;\value&quot;&quot;
-             echo &quot;    --help&quot;
-             exit 1
-             ;;
-    esac
-    shift
-done
-
-echo &quot;A: $valA&quot;
-echo &quot;B: $valB&quot;
-</code></pre>
-
-<p>输入和输出：</p>
-
-<pre><code>$ ./multipleParams.sh --help
-Usage:
-    --valueA &quot;value&quot;
-    --valueB &quot;value&quot;
-    --help
-    
-$ ./multipleParams.sh
-A:
-B:
-
-$ ./multipleParams.sh --valueB 2
-A:
-B: 2
-
-$ ./multipleParams.sh --valueB 2 --valueA &quot;hello world&quot;
-A: hello world
-B: 2
-</code></pre>
-
-<h3 id="for循环解析变量">for循环解析变量</h3>
-
-<p>下面是一个简单的例子，使用了下面说明的选项：</p>
+<h2 id="push">push</h2>
 
 <table>
 <thead>
 <tr>
-<th>Opt</th>
-<th>Alt. Opt</th>
-<th>Details</th>
+<th>参数</th>
+<th>详情</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td>-h</td>
-<td>&ndash;help</td>
-<td>显示帮助信息</td>
+<td>&ndash;force</td>
+<td>强制重命名或移动一个文件，哪怕目标已经存在</td>
 </tr>
 
 <tr>
-<td>-v</td>
-<td>&ndash;version</td>
-<td>显示版本信息</td>
+<td>—verbose</td>
+<td>运行详细信息</td>
 </tr>
 
 <tr>
-<td>-dr path</td>
-<td>&ndash;doc-root path</td>
-<td>接收一个二级参数的选项</td>
+<td><remote></td>
+<td>将要push到的远端仓库</td>
 </tr>
 
 <tr>
-<td>-i</td>
-<td>—install</td>
-<td>一个接收True或False的布尔值选项</td>
-</tr>
-
-<tr>
-<td>-*</td>
-<td>&ndash;</td>
-<td>无效选项</td>
+<td><refspec>&hellip;</td>
+<td>指明将要使用本地ref或对象更新的远端引用</td>
 </tr>
 </tbody>
 </table>
 
-<pre><code>#!/bin/bash
-dr=''
-install=false
+<p>在Git修改，暂存和提交代码之后，接下来就需要push操作来把你本地的修改分享给其他人，把你本地的修改推送到仓库服务器。这个主题主要介绍如果使用Git来推送代码。</p>
 
-skip=false
-for op in &quot;$@&quot;;do
-    if $skip;then skip=false;continue;fi
-    case &quot;$op&quot; in
-        -v|--version)
-            echo &quot;$ver_info&quot;
-            shift
-            exit 0
-            ;;
-        -h|--help)
-            echo &quot;$help&quot;
-            shift
-            exit 0
-            ;;
-        -dr|--doc-root)
-            shift
-            if [[ &quot;$1&quot; != &quot;&quot; ]]; then
-                dr=&quot;${$1/%\//}&quot;
-                shift
-                skip=true
-            else
-                echo &quot;E: Arg missing for -dr option&quot;
-                exit 1
-            fi
-            ;;
-        -i|--install)
-            install==true
-            shift
-            ;;
-        -*)
-            echo &quot;E: Invalid option: $1&quot;
-            shift
-            exit 1
-            ;;
-    esac
-done
+<h3 id="推送指定对象到远端分支">推送指定对象到远端分支</h3>
+
+<h4 id="一般语法">一般语法</h4>
+
+<pre><code>git push &lt;remottename&gt; &lt;object&gt;:&lt;remotebranchname&gt;
 </code></pre>
 
-<h3 id="包装脚本">包装脚本</h3>
+<h4 id="例子">例子</h4>
 
-<p>包装脚本是包装在另外脚本或命令之外的脚本，用来提供额外的功能或只是减少繁琐的工作。</p>
-
-<p>例如，在一个新的GNU/Linux系统中，<code>egrep</code>命令被一个包装命令<code>egrep</code>替换了。就像下面这样：</p>
-
-<pre><code>#!/bin/bash
-exec grep -E &quot;$@&quot;
+<pre><code>git push origin master:wip-yourname
 </code></pre>
 
-<p>所以，当你允许<code>egrep</code>命令的时候，实际上你是运行带有命令所有参数的<code>grep -E</code>命令。</p>
+<p>这个例子将会推送你本地的<code>master</code>分支到origin的<code>wip-yourname</code>分支上面（一般是你克隆的仓库）。</p>
 
-<p>一般来说，你想要运行一个例子脚本或命令<code>exmp</code>使用另外的<code>mexmp</code>脚本的方式，可以像下面这样封装一个<code>mexmp</code>脚本：</p>
+<h4 id="删除远端分支">删除远端分支</h4>
 
-<pre><code>#!/bin/bash
-exmp &quot;$@&quot;
-#或者
-#full/path/to/exmp  &quot;$@&quot;
+<p>删除远端分支就等价于推送一个空对象到远端。</p>
+
+<pre><code>git push &lt;remotename&gt; :&lt;remotebranchname&gt;
 </code></pre>
 
-<h3 id="访问变量">访问变量</h3>
+<h4 id="例子-1">例子</h4>
 
-<p>当执行一个Bash脚本的时候，传递给脚本的变量是按照变量的位置命名的：<code>$1</code>是第一个变量的名字，<code>$2</code>是第二个变量的名字，依次类推。</p>
-
-<p>一个不存在的变量就相当于一个空字符串。可以像下面这样坚持一个变量是否存在：</p>
-
-<pre><code>if [ -z &quot;$1&quot; ]; then
-    echo &quot;没有提供变量&quot;
-fi
+<pre><code>git push origin :wip-yourname
 </code></pre>
 
-<h4 id="获取所有变量">获取所有变量</h4>
+<p>将会删除你的远端分支<code>wip-yourname</code>。</p>
 
-<p><code>$@</code>和<code>$*</code>是获取所有脚本参数的方式。查看<a href="https://linux.die.net/man/1/bash">the Bash man page</a>，我们可以看到：</p>
+<p>除了使用冒号，你可以使用<code>—delete</code>选项来代替，在一些情况下是更加可读的。</p>
+
+<h4 id="例子-2">例子</h4>
+
+<pre><code>git push origin --delete wip-yourname
+</code></pre>
+
+<h4 id="推送单独提交">推送单独提交</h4>
+
+<p>如果你本地有一个单独的提交，你想要推送到远端不推送其他的内容，你可以使用下面的命令：</p>
+
+<pre><code>git push &lt;remotename&gt; &lt;commit SHA&gt;:&lt;remotebrranchname&gt;
+</code></pre>
+
+<h4 id="例子-3">例子</h4>
+
+<p>假设存在一个像下面一样的提交历史：</p>
+
+<pre><code>eeb32bc Commit 1 - already pushed
+347d700 Commit 2 - want to push
+e539af8 Commit 3 - only local
+5d339db Commit 4 - only local
+</code></pre>
+
+<p>只想要吧提交<code>347d700</code>推送到远端的master分支，使用下面的命令：</p>
+
+<pre><code>git push origin 347d700:master
+</code></pre>
+
+<h3 id="push-1">push</h3>
+
+<pre><code>git push
+</code></pre>
+
+<p>将会推送你的代码到存在的上游。根据git配置文件的不同，将会推送你当前分支的代码（默认在版本2.x），或者推送所有的分支（默认版本1.x）。</p>
+
+<h4 id="指定远端仓库">指定远端仓库</h4>
+
+<p>使用Git的时候，拥有多个远端仓库时非常方便的。想要指定一个要推送的远端仓库，只需要在命令后面添加仓库名称：</p>
+
+<pre><code>git push origin
+</code></pre>
+
+<h4 id="指定分支">指定分支</h4>
+
+<p>想要推送指定的分支<code>feature_x</code>：</p>
+
+<pre><code>git push origin feature_x
+</code></pre>
+
+<h4 id="设置远端追踪分支">设置远端追踪分支</h4>
+
+<p>除非你工作的分支最初来源于远端仓库，否则你第一次使用<code>git push</code>推送代码不会有作用。你必须执行下面的命令来告诉Git将当前分支推送到特定的远端/分支组合。</p>
+
+<pre><code>git push --set-upstream origin master
+</code></pre>
+
+<p>在这个例子里，<code>master</code>分支是远端<code>origin</code>的分支名。你可以使用<code>—set-upstream</code>的简写<code>-u</code>。</p>
+
+<h4 id="推送到一个新仓库">推送到一个新仓库</h4>
+
+<p>想要推送到一个你还没有创建或者现在空的仓库内：</p>
+
+<ol>
+<li>在GitHub上面创建一个仓库（如果可以的话）</li>
+<li>复制你获得的url，像<code>https://github.com/USERNAME/REPO_NAME.git</code>这种格式的</li>
+<li>在你的本地仓库执行<code>git remote add origin url</code>命令，添加远端仓库的地址
 
 <ul>
-<li><code>$*</code>：获取所有的位置变量，从1开始。当扩展出现在双引号中时，它将扩展到单个单词，每个参数的值由IFS特殊变量的第一个字符分隔。</li>
-<li><code>$@</code>：获取所有的位置变量，从1开始。当扩展出现在双引号中时，每个变量都会放到单独的单词中。</li>
+<li>验证添加的结果，使用<code>git remote -v</code></li>
+</ul></li>
+<li>使用<code>git push origin master</code>推送代码</li>
+</ol>
+
+<p>现在你的代码被添加到GitHub上面了。</p>
+
+<h4 id="解释">解释</h4>
+
+<p>推送代码意味着：分析本地提交和远端仓库代码的不同，然后把这些修改写入上游。当推送成功之后，你本地代码库和远端仓库时同步的，其他用户可以看到你的提交。</p>
+
+<h3 id="强制推送">强制推送</h3>
+
+<p>有时候，当你本地的修改和远端修改不兼容的时候（当你没有跟进远端分支，或者远端分支不是你本地分支的祖先分支），唯一的办法就是你强制推送你的修改：</p>
+
+<pre><code>git push -f
+</code></pre>
+
+<p>或者：</p>
+
+<pre><code>git push --force
+</code></pre>
+
+<h4 id="重要注意">重要注意：</h4>
+
+<p>这将会<strong>覆盖</strong>远端的修改，然后你的远端将会和你的本地保持一致。</p>
+
+<p>注意：使用这个命令将会造成远端仓库<strong>丢失提交</strong>。此外，强烈建议不要在与其他人共享远端仓库的情况下进行强制推送操作。因为其他人的历史记录中会保存每个被覆盖的提交，从而让他们的工作与远端仓库不同步。</p>
+
+<p>根据经验，只在下面的情况下进行强制推送：</p>
+
+<ul>
+<li>除了你拉取了你要覆盖的提交，其他人都没有拉取</li>
+<li>您可以强制每个人在强制推送之后克隆一个新副本，并使每个人都将其更改应用于该副本（人们可能会因此而恨您）。</li>
 </ul>
 
-<h4 id="获取参数数量">获取参数数量</h4>
+<h3 id="推送tag">推送tag</h3>
 
-<p><code>$#</code>获取传递给脚本的变量的数量。一个特别的用处就是检查传递个脚本的参数数量是否正确：</p>
-
-<pre><code>if [ $# -eq 0 ];then
-    echo &quot;没有提供参数&quot;
-fi
+<pre><code>git push --tags
 </code></pre>
 
-<h4 id="例子一">例子一</h4>
+<p>推送所有在本地但不在远端仓库的<code>git tags</code>。</p>
 
-<p>循环所有传入的参数，检查这些参数是不是文件：</p>
+<h3 id="修改默认推送行为">修改默认推送行为</h3>
 
-<pre><code>for item in &quot;$@&quot;
-do
-    if [[ -f $item ]]; then
-        echo &quot;$item is a file&quot;
-    fi
-done
+<p><strong>Current</strong> 修改远端仓库中与当前分支共享名称的分支：</p>
+
+<pre><code>git config push.default current
 </code></pre>
 
-<h4 id="例子二">例子二</h4>
+<p><strong>Simple</strong> 推送到上游分支，如果上游分支被叫做其他名称的话就没有作用</p>
 
-<p>循环所有传入的参数，检查这些参数是不是文件：</p>
-
-<pre><code>for (( i = 1; i &lt;= $#; ++i ))
-do
-    item=${@:$i:1}
-    
-    if [[ -f $item ]]; then
-        echo &quot;$item is a file&quot;
-    fi
-done
+<pre><code>git config push.default simple
 </code></pre>
 
-<h3 id="将字符串切分到数组">将字符串切分到数组</h3>
+<p><strong>Upstream</strong> 推送到上游分支，不管它叫什么名称</p>
 
-<p>我们现在有一个字符串变量，想要按照逗号分隔字符串：</p>
-
-<pre><code>my_param=&quot;foo,bar,bash&quot;
+<pre><code>git config push.default upstream
 </code></pre>
 
-<p>想要使用逗号分隔字符串，可以像下面这样：</p>
+<p><strong>Matching</strong> 将与本地和远程git config push.default匹配的所有分支向上推送。</p>
 
-<pre><code>IFS=',' read -r -a array &lt;&lt;&lt; &quot;$my_param&quot;
+<p>在你设置首选样式之后，使用:</p>
+
+<pre><code>git push
 </code></pre>
 
-<p>这里，IFS是一种特殊的变量，叫做<a href="https://en.wikipedia.org/wiki/Internal_field_separator">internal filed separator</a>，用来定义被用作分隔模式的一个或一组字符。</p>
+<p>来更新远端仓库。</p>
 
-<p>访问一个单独的元素：</p>
-
-<pre><code>echo &quot;${array[0]}&quot;
-</code></pre>
-
-<p>迭代访问每一个元素：</p>
-
-<pre><code>for element in &quot;${array[@]}&quot;
-do
-    echo &quot;$element&quot;
-done
-</code></pre>
-
-<p>获取数组的键和值：</p>
-
-<pre><code>for index in &quot;${!array[@]}&quot;
-do
-    echo &quot;$index ${array[index]}&quot;
-done
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -457,12 +413,12 @@ done
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/git-section-29.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十九）">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-24.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十四)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-28.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十八）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-23.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十三)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

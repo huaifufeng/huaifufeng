@@ -6,10 +6,25 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 19 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 20 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十九）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-29.html</link>
+      <pubDate>Wed, 20 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-29.html</guid>
+      <description>push    参数 详情     &amp;ndash;force 强制重命名或移动一个文件，哪怕目标已经存在   —verbose 运行详细信息    将要push到的远端仓库   &amp;hellip; 指明将要使用本地ref或对象更新的远端引用    在Git修改，暂存和提交代码之后，接下来就需要push操作来把你本地的修改分享给其他人，把你本地的修改推送到仓库服务器。这个主题主要介绍如果使用Git来推送代码。
+推送指定对象到远端分支 一般语法 git push &amp;lt;remottename&amp;gt; &amp;lt;object&amp;gt;:&amp;lt;remotebranchname&amp;gt;  例子 git push origin master:wip-yourname  这个例子将会推送你本地的master分支到origin的wip-yourname分支上面（一般是你克隆的仓库）。
+删除远端分支 删除远端分支就等价于推送一个空对象到远端。
+git push &amp;lt;remotename&amp;gt; :&amp;lt;remotebranchname&amp;gt;  例子 git push origin :wip-yourname  将会删除你的远端分支wip-yourname。
+除了使用冒号，你可以使用—delete选项来代替，在一些情况下是更加可读的。
+例子 git push origin --delete wip-yourname  推送单独提交 如果你本地有一个单独的提交，你想要推送到远端不推送其他的内容，你可以使用下面的命令：
+git push &amp;lt;remotename&amp;gt; &amp;lt;commit SHA&amp;gt;:&amp;lt;remotebrranchname&amp;gt;  例子 假设存在一个像下面一样的提交历史：</description>
+    </item>
     
     <item>
       <title>Git专业笔记（二十八）</title>
