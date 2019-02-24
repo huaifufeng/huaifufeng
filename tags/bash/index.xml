@@ -6,10 +6,22 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 21 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 22 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十六)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-26.html</link>
+      <pubDate>Fri, 22 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-26.html</guid>
+      <description>Bash算法    参数 详情     EXPRESSION 执行的表达式    (())算法 #!/bin/bash echo $((2 + 1))  输出3。
+#!/bin/bash var1=4 var2=5 ((output=$var1 * $var2)) printf &amp;quot;%d\n&amp;quot; &amp;quot;$output&amp;quot;  输出20
+算法命令  let   let num=1+2 let num=&amp;quot;1+2&amp;quot; let &#39;num= 1 + 2&#39; let num=1 num+=2  如果有空格或者填充字符，你就需要引号了。所有下面会出现错误：
+ let num= 1 + 2 //错误 let &#39;num = 1 + 2&#39; //正确 let a[1] = 1 + 1 //错误 let &#39;a[1] = 1 + 1&#39; //正确   (())   ((a=$a+1)) //a加1 ((a = a + 1)) //a加1 ((a += 1)) //a加1  我们可以在if表达式中使用(())。例如：</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十五)</title>
