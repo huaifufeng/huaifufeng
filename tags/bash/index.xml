@@ -6,10 +6,22 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 19 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 20 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十四)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-24.html</link>
+      <pubDate>Wed, 20 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-24.html</guid>
+      <description>Bash的历史替换 快速引用 操作历史记录 #列出所有之前的命令 history #如果你不小心输入了命令，这时候清除所有的历史是很有用的 history -c  事件指示符 #执行历史中第n行的命令 !n #执行最后的命令 !! #执行最后以&#39;text&#39;文本开始的命令 !text #执行最后包含&#39;text&#39;的命令 !?text #执行n行之前的命令 !-n #执行最后一个以&#39;foo&#39;开头的并将&#39;foo&#39;替换为&#39;bar&#39;的命令 ^foo^bar^ #执行当前的命令 !#  单词指示符 它们由:与它们所引用的事件指示符分开。如果事件指示符不是数字开始的，可以省略冒号：!^和!:^是一样的。
+#获取最后命令的第一个参数 !^ #获取最后命令的最后参数(!!:$的短格式) !$ #获取最后命令的第3个参数 !:3 #获取最后命令从x到y之间的参数，可以是数字，也可以是 $ ^ !:x-y #获取最后命令处理第0个之外的所有参数，等价于 :^-$ !*  修改 这些会修改前面的事件或单词指示符。
+#使用sed语法替换。允许标记在s和可选分隔符之前 :s/foo/bar/ #替换最开始的foo为bar :gs|foo|bar| #替换所有的foo为bar #从最后一个参数删除前导路径(tail) :t #从最后一个参数删除尾随路径(head) :h #删除最后一个参数的文件扩展名 :r  如果Bash变量HISTCONTROL包含ignorrespace或ignoreboth（或者包含模式[ ]*）,这样你不想把你的命令添加到history的时候，可以在命令前面添加空格：
+#不保存 foo #保存 bar  以sudo权限执行之前的命令 $ apt-get install r-base E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied) E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十三)</title>
