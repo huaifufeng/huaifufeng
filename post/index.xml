@@ -94,6 +94,22 @@ $ ./multipleParams.sh --help Usage: --valueA &amp;quot;value&amp;quot; --valueB 
     </item>
     
     <item>
+      <title>Git专业笔记（二十八）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-28.html</link>
+      <pubDate>Tue, 19 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-28.html</guid>
+      <description>重命名    参数 详情     -f 或者&amp;ndash;force 强制重命名或移动一个文件，哪怕目标已经存在    重命名目录 重命名一个目录，从oldname到newname：
+git mv directoryToFolder/oldName directoryToFolder/newName  然后就可以git commit和git push了。
+如果出现了错误：
+ fatal: renaming &amp;lsquo;directoryToFolder/oldName&amp;rsquo; failed: Invalid argument
+ 使用下面的命令：
+git mv directoryToFolder/oldName temp &amp;amp;&amp;amp; git mv temp directoryToFolder/newName  重命名本地和远端分支 最简单的方式是切换出本地的分支：
+git checkout old_branch  然后重命名本地分支，删除老分支，设置上游的新分支名称：
+git branch -m new_branch git push origin :old_branch git push --set-upstream origin new_branch  重命名本地分支 你可以使用下面的命令重命名本地分支：</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(二十二)</title>
       <link>http://blog.huaifufeng.com/2019/02/post/bash-section-22.html</link>
       <pubDate>Mon, 18 Feb 2019 00:00:00 +0000</pubDate>

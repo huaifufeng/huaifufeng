@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="带有变量的脚本">
+    <meta name="description" content="重命名">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二十三)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（二十八）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-23.html">
+    <link rel="canonical" href="/2019/02/post/git-section-28.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,12 +133,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二十三)</h1>
+                    <h1>Git专业笔记（二十八）</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Tuesday, February 19, 2019
                         
@@ -170,19 +170,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#脚本变量">脚本变量</a>
+<li><a href="#重命名">重命名</a>
 <ul>
-<li><a href="#多变量解析">多变量解析</a></li>
-<li><a href="#for循环解析变量">for循环解析变量</a></li>
-<li><a href="#包装脚本">包装脚本</a></li>
-<li><a href="#访问变量">访问变量</a>
-<ul>
-<li><a href="#获取所有变量">获取所有变量</a></li>
-<li><a href="#获取参数数量">获取参数数量</a></li>
-<li><a href="#例子一">例子一</a></li>
-<li><a href="#例子二">例子二</a></li>
-</ul></li>
-<li><a href="#将字符串切分到数组">将字符串切分到数组</a></li>
+<li><a href="#重命名目录">重命名目录</a></li>
+<li><a href="#重命名本地和远端分支">重命名本地和远端分支</a></li>
+<li><a href="#重命名本地分支">重命名本地分支</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,265 +182,66 @@
         		
         		
 
-<h2 id="脚本变量">脚本变量</h2>
-
-<h3 id="多变量解析">多变量解析</h3>
-
-<p>解析很多变量，最好的办法就是使用<code>while</code>循环，加上<code>case</code>语句和<code>shift</code>。</p>
-
-<p><code>shift</code>是从一系列变量中回去第一个变量，比如当前是<code>$1</code>，使用这个你将会获得<code>$2</code>。这在一次处理多个变量的时候非常有用。</p>
-
-<pre><code>#!/bin/bash
-
-#加载用户定义的变量
-while [[ $# &gt; 0 ]]
-do
-    case &quot;$1&quot; in
-         -a|--valueA）
-             valA=&quot;$2&quot;
-             shift
-             ;;
-              
-         -b|--valueB)
-             valB=&quot;$2&quot;
-             shift
-             ;;
-             
-         --help|*)
-             echo &quot;Usage:&quot;
-             echo &quot;    --valueA \&quot;value\&quot;&quot;
-             echo &quot;    --valueB \&quot;\value&quot;&quot;
-             echo &quot;    --help&quot;
-             exit 1
-             ;;
-    esac
-    shift
-done
-
-echo &quot;A: $valA&quot;
-echo &quot;B: $valB&quot;
-</code></pre>
-
-<p>输入和输出：</p>
-
-<pre><code>$ ./multipleParams.sh --help
-Usage:
-    --valueA &quot;value&quot;
-    --valueB &quot;value&quot;
-    --help
-    
-$ ./multipleParams.sh
-A:
-B:
-
-$ ./multipleParams.sh --valueB 2
-A:
-B: 2
-
-$ ./multipleParams.sh --valueB 2 --valueA &quot;hello world&quot;
-A: hello world
-B: 2
-</code></pre>
-
-<h3 id="for循环解析变量">for循环解析变量</h3>
-
-<p>下面是一个简单的例子，使用了下面说明的选项：</p>
+<h2 id="重命名">重命名</h2>
 
 <table>
 <thead>
 <tr>
-<th>Opt</th>
-<th>Alt. Opt</th>
-<th>Details</th>
+<th>参数</th>
+<th>详情</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td>-h</td>
-<td>&ndash;help</td>
-<td>显示帮助信息</td>
-</tr>
-
-<tr>
-<td>-v</td>
-<td>&ndash;version</td>
-<td>显示版本信息</td>
-</tr>
-
-<tr>
-<td>-dr path</td>
-<td>&ndash;doc-root path</td>
-<td>接收一个二级参数的选项</td>
-</tr>
-
-<tr>
-<td>-i</td>
-<td>—install</td>
-<td>一个接收True或False的布尔值选项</td>
-</tr>
-
-<tr>
-<td>-*</td>
-<td>&ndash;</td>
-<td>无效选项</td>
+<td>-f 或者&ndash;force</td>
+<td>强制重命名或移动一个文件，哪怕目标已经存在</td>
 </tr>
 </tbody>
 </table>
 
-<pre><code>#!/bin/bash
-dr=''
-install=false
+<h3 id="重命名目录">重命名目录</h3>
 
-skip=false
-for op in &quot;$@&quot;;do
-    if $skip;then skip=false;continue;fi
-    case &quot;$op&quot; in
-        -v|--version)
-            echo &quot;$ver_info&quot;
-            shift
-            exit 0
-            ;;
-        -h|--help)
-            echo &quot;$help&quot;
-            shift
-            exit 0
-            ;;
-        -dr|--doc-root)
-            shift
-            if [[ &quot;$1&quot; != &quot;&quot; ]]; then
-                dr=&quot;${$1/%\//}&quot;
-                shift
-                skip=true
-            else
-                echo &quot;E: Arg missing for -dr option&quot;
-                exit 1
-            fi
-            ;;
-        -i|--install)
-            install==true
-            shift
-            ;;
-        -*)
-            echo &quot;E: Invalid option: $1&quot;
-            shift
-            exit 1
-            ;;
-    esac
-done
+<p>重命名一个目录，从<code>oldname</code>到<code>newname</code>：</p>
+
+<pre><code>git mv directoryToFolder/oldName directoryToFolder/newName
 </code></pre>
 
-<h3 id="包装脚本">包装脚本</h3>
+<p>然后就可以<code>git commit</code>和<code>git push</code>了。</p>
 
-<p>包装脚本是包装在另外脚本或命令之外的脚本，用来提供额外的功能或只是减少繁琐的工作。</p>
+<p>如果出现了错误：</p>
 
-<p>例如，在一个新的GNU/Linux系统中，<code>egrep</code>命令被一个包装命令<code>egrep</code>替换了。就像下面这样：</p>
+<blockquote>
+<p>fatal: renaming &lsquo;directoryToFolder/oldName&rsquo; failed: Invalid argument</p>
+</blockquote>
 
-<pre><code>#!/bin/bash
-exec grep -E &quot;$@&quot;
+<p>使用下面的命令：</p>
+
+<pre><code>git mv directoryToFolder/oldName temp &amp;&amp; git mv temp directoryToFolder/newName
 </code></pre>
 
-<p>所以，当你允许<code>egrep</code>命令的时候，实际上你是运行带有命令所有参数的<code>grep -E</code>命令。</p>
+<h3 id="重命名本地和远端分支">重命名本地和远端分支</h3>
 
-<p>一般来说，你想要运行一个例子脚本或命令<code>exmp</code>使用另外的<code>mexmp</code>脚本的方式，可以像下面这样封装一个<code>mexmp</code>脚本：</p>
+<p>最简单的方式是切换出本地的分支：</p>
 
-<pre><code>#!/bin/bash
-exmp &quot;$@&quot;
-#或者
-#full/path/to/exmp  &quot;$@&quot;
+<pre><code>git checkout old_branch
 </code></pre>
 
-<h3 id="访问变量">访问变量</h3>
+<p>然后重命名本地分支，删除老分支，设置上游的新分支名称：</p>
 
-<p>当执行一个Bash脚本的时候，传递给脚本的变量是按照变量的位置命名的：<code>$1</code>是第一个变量的名字，<code>$2</code>是第二个变量的名字，依次类推。</p>
-
-<p>一个不存在的变量就相当于一个空字符串。可以像下面这样坚持一个变量是否存在：</p>
-
-<pre><code>if [ -z &quot;$1&quot; ]; then
-    echo &quot;没有提供变量&quot;
-fi
+<pre><code>git branch -m new_branch
+git push origin :old_branch
+git push --set-upstream origin new_branch
 </code></pre>
 
-<h4 id="获取所有变量">获取所有变量</h4>
+<h3 id="重命名本地分支">重命名本地分支</h3>
 
-<p><code>$@</code>和<code>$*</code>是获取所有脚本参数的方式。查看<a href="https://linux.die.net/man/1/bash">the Bash man page</a>，我们可以看到：</p>
+<p>你可以使用下面的命令重命名本地分支：</p>
 
-<ul>
-<li><code>$*</code>：获取所有的位置变量，从1开始。当扩展出现在双引号中时，它将扩展到单个单词，每个参数的值由IFS特殊变量的第一个字符分隔。</li>
-<li><code>$@</code>：获取所有的位置变量，从1开始。当扩展出现在双引号中时，每个变量都会放到单独的单词中。</li>
-</ul>
-
-<h4 id="获取参数数量">获取参数数量</h4>
-
-<p><code>$#</code>获取传递给脚本的变量的数量。一个特别的用处就是检查传递个脚本的参数数量是否正确：</p>
-
-<pre><code>if [ $# -eq 0 ];then
-    echo &quot;没有提供参数&quot;
-fi
+<pre><code>git branch -m old_name new_name
 </code></pre>
 
-<h4 id="例子一">例子一</h4>
-
-<p>循环所有传入的参数，检查这些参数是不是文件：</p>
-
-<pre><code>for item in &quot;$@&quot;
-do
-    if [[ -f $item ]]; then
-        echo &quot;$item is a file&quot;
-    fi
-done
-</code></pre>
-
-<h4 id="例子二">例子二</h4>
-
-<p>循环所有传入的参数，检查这些参数是不是文件：</p>
-
-<pre><code>for (( i = 1; i &lt;= $#; ++i ))
-do
-    item=${@:$i:1}
-    
-    if [[ -f $item ]]; then
-        echo &quot;$item is a file&quot;
-    fi
-done
-</code></pre>
-
-<h3 id="将字符串切分到数组">将字符串切分到数组</h3>
-
-<p>我们现在有一个字符串变量，想要按照逗号分隔字符串：</p>
-
-<pre><code>my_param=&quot;foo,bar,bash&quot;
-</code></pre>
-
-<p>想要使用逗号分隔字符串，可以像下面这样：</p>
-
-<pre><code>IFS=',' read -r -a array &lt;&lt;&lt; &quot;$my_param&quot;
-</code></pre>
-
-<p>这里，IFS是一种特殊的变量，叫做<a href="https://en.wikipedia.org/wiki/Internal_field_separator">internal filed separator</a>，用来定义被用作分隔模式的一个或一组字符。</p>
-
-<p>访问一个单独的元素：</p>
-
-<pre><code>echo &quot;${array[0]}&quot;
-</code></pre>
-
-<p>迭代访问每一个元素：</p>
-
-<pre><code>for element in &quot;${array[@]}&quot;
-do
-    echo &quot;$element&quot;
-done
-</code></pre>
-
-<p>获取数组的键和值：</p>
-
-<pre><code>for index in &quot;${!array[@]}&quot;
-do
-    echo &quot;$index ${array[index]}&quot;
-done
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -457,12 +250,12 @@ done
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-24.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十四)">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-23.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十三)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-28.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十八）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-22.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十二)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
