@@ -6,10 +6,21 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 16 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 17 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（二十六）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-26.html</link>
+      <pubDate>Sun, 17 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-26.html</guid>
+      <description>暂存    参数 详情     show 线上暂存区中处于暂存状态的文件和原始父文件的不同，当没有时，显示最新的一个。   list 列出当前拥有的暂存内容。每一个列出的暂存有名称（stash@{0}是最新的，stash@{1}是上一个），暂存创建是处于的分支名称，暂存基于的提交的简单描述   pop 从暂存列表中删除一个暂存，并把修改应用到当前工作树状态内   apply 和pop类似，但是不会删除暂存列表中的新   clear 删除所有的暂存信息。注意这些状态都会被删除，并且无法修复   drop 从暂存列表删除一个暂存状态。当没有给出时，会删除最新的一个stash@{0}。否则是stash列表中指向stash@{}中的有效信息   create 创建一个stash（它是一个常规提交对象）并返回其对象名，而不将其存储在ref命名空间的任何位置。这对脚本很有用。它可能不是您想要使用的命令；请参见上面的“save”。   store 将通过git stash create创建的给定存储（这是一个悬空合并提交）存储在stash ref中，更新stash reflog。这对脚本很有用。它可能不是您想要使用的命令；请参见上面的“save”。    什么是暂存 当在一个项目上面做开发，你目前在一个特性分支上做修改做了一半，但是现在master分支出现了一个bug。你还没有准备好提交你的信息，但是你也不想丢掉你的修改。这个就到git stash出马的时候了。
+运行git status查看你当前分支没有提交的修改：
+(master) $ git status On branch master Your branch is up-to-date with &#39;origin/master&#39;. Changes not staged for commit: (use &amp;quot;git add &amp;lt;file&amp;gt;.</description>
+    </item>
     
     <item>
       <title>Git专业笔记（二十五）</title>

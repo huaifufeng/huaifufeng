@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="暂存区介绍">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（二十六）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/02/post/git-section-26.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（二十六）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, February 17, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#暂存">暂存</a>
+<ul>
+<li><a href="#什么是暂存">什么是暂存</a></li>
+<li><a href="#创建stash">创建stash</a></li>
+<li><a href="#应用和删除stash">应用和删除stash</a></li>
+<li><a href="#应用但是不删除stash">应用但是不删除stash</a></li>
+<li><a href="#显示stash">显示stash</a></li>
+<li><a href="#部分stash">部分stash</a></li>
+<li><a href="#列出stash">列出stash</a></li>
+<li><a href="#将正在进行的工作移到另一个分支">将正在进行的工作移到另一个分支</a></li>
+<li><a href="#删除stash">删除stash</a></li>
+<li><a href="#checkout应用部分修改">checkout应用部分修改</a></li>
+<li><a href="#从stash回复之前修改">从stash回复之前修改</a></li>
+<li><a href="#交互式stash">交互式stash</a>
+<ul>
+<li><a href="#只存储修改文件">只存储修改文件</a></li>
+<li><a href="#存储未追踪文件">存储未追踪文件</a></li>
+<li><a href="#只存储指定修改">只存储指定修改</a></li>
+</ul></li>
+<li><a href="#恢复删除的stash">恢复删除的stash</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="暂存">暂存</h2>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>show</td>
+<td>线上暂存区中处于暂存状态的文件和原始父文件的不同，当没有<stash>时，显示最新的一个。</td>
+</tr>
+
+<tr>
+<td>list</td>
+<td>列出当前拥有的暂存内容。每一个列出的暂存有名称（stash@{0}是最新的，stash@{1}是上一个），暂存创建是处于的分支名称，暂存基于的提交的简单描述</td>
+</tr>
+
+<tr>
+<td>pop</td>
+<td>从暂存列表中删除一个暂存，并把修改应用到当前工作树状态内</td>
+</tr>
+
+<tr>
+<td>apply</td>
+<td>和pop类似，但是不会删除暂存列表中的新</td>
+</tr>
+
+<tr>
+<td>clear</td>
+<td>删除所有的暂存信息。注意这些状态都会被删除，并且无法修复</td>
+</tr>
+
+<tr>
+<td>drop</td>
+<td>从暂存列表删除一个暂存状态。当没有<stash>给出时，会删除最新的一个stash@{0}。否则<stash>是stash列表中指向stash@{<reversion>}中的有效信息</td>
+</tr>
+
+<tr>
+<td>create</td>
+<td>创建一个stash（它是一个常规提交对象）并返回其对象名，而不将其存储在ref命名空间的任何位置。这对脚本很有用。它可能不是您想要使用的命令；请参见上面的“save”。</td>
+</tr>
+
+<tr>
+<td>store</td>
+<td>将通过git stash create创建的给定存储（这是一个悬空合并提交）存储在stash ref中，更新stash reflog。这对脚本很有用。它可能不是您想要使用的命令；请参见上面的“save”。</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="什么是暂存">什么是暂存</h3>
+
+<p>当在一个项目上面做开发，你目前在一个特性分支上做修改做了一半，但是现在master分支出现了一个bug。你还没有准备好提交你的信息，但是你也不想丢掉你的修改。这个就到<code>git stash</code>出马的时候了。</p>
+
+<p>运行<code>git status</code>查看你当前分支没有提交的修改：</p>
+
+<pre><code>(master) $ git status
+On branch master
+Your branch is up-to-date with 'origin/master'. 
+Changes not staged for commit:
+	(use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+	(use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+	
+	modified: business/com/test/core/actions/Photo.c
+	
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre>
+
+<p>然后允许<code>git stash</code>把这些修改过缓存起来：</p>
+
+<pre><code>(master) $ git stash
+Saved working directory and index state WIP on master:
+2f2a6e1 Merge pull request #1 from test/test-branch
+HEAD is now at 2f2a6e1 Merge pull request #1 from test/test-branch
+</code></pre>
+
+<p>如果你在当前分支添加了一些文件，这些文件也会被暂存起来。你只需要暂存他们就好：</p>
+
+<pre><code>(master) $ git stash
+Saved working directory and index state WIP on master: 
+(master) $ git status
+On branch master
+Untracked files:
+	(use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+		NewPhoto.c
+		
+nothing added to commit but untracked files present (use &quot;git add&quot; to track) 
+(master) $ git stage NewPhoto.c
+(master) $ git stash
+Saved working directory and index state WIP on master:
+(master) $ git status
+On branch master
+nothing to commit, working tree clean 
+(master) $
+</code></pre>
+
+<p>现在你的工作目录已经没有你做的任何修改。你可以使用<code>git status</code>确认一下：</p>
+
+<pre><code>(master) $ git status
+On branch master
+Your branch is up-to-date with 'origin/master'. 
+nothing to commit, working directory clean
+</code></pre>
+
+<p>获取这个最新的stash，你可以运行<code>git stash apply</code>(如果你想要应用并删除这个stash的话，可以运行<code>git stash pop</code>)：</p>
+
+<pre><code>(master) $ git stash apply
+On branch master
+Your branch is up-to-date with 'origin/master'. 
+Changes not staged for commit:
+	(use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+	(use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+	
+		modified: business/com/test/core/actions/Photo.c
+	
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre>
+
+<p>然而注意：这个stash并不会记录你当前工作的分支。在上面的例子中，这个用户stash在master分支上。如果他们切换到dev分支，然后运行<code>git stash apply</code>将会把最新的stash应用到dev分支：</p>
+
+<pre><code>(master) $ git checkout -b dev 
+Switched to a new branch 'dev' 
+(dev) $ git stash apply
+On branch dev
+Changes not staged for commit:
+	(use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+	(use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+	
+		modified: business/com/test/core/actions/Photo.c
+		
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre>
+
+<h3 id="创建stash">创建stash</h3>
+
+<p>将工作目录和索引（也称为临时区域）的当前状态保存在一个存储堆栈中。</p>
+
+<pre><code>git stash
+</code></pre>
+
+<p>要在存储中包含所有未跟踪的文件，请使用&ndash;include untracked或-u标志。</p>
+
+<pre><code>git stash --include-untracked
+</code></pre>
+
+<p>想要在你的stash中包含信息，只需要在后面加上信息：</p>
+
+<pre><code>git stash save &quot;&lt;whatever message&gt;&quot;
+</code></pre>
+
+<p>要在存储后使临时区域保持当前状态，请使用&ndash;keep index或-k标志。</p>
+
+<pre><code>git stash --keep-index
+</code></pre>
+
+<h3 id="应用和删除stash">应用和删除stash</h3>
+
+<p>想要应用最新的stash然后删除它：</p>
+
+<pre><code>git stash pop
+</code></pre>
+
+<p>应用指定的stash然后删除它：</p>
+
+<pre><code>git stash pop stash@{n}
+</code></pre>
+
+<h3 id="应用但是不删除stash">应用但是不删除stash</h3>
+
+<p>应用最新的stash并且不删除它：</p>
+
+<pre><code>git stash apply
+</code></pre>
+
+<p>或者应用指定的stash不删除它：</p>
+
+<pre><code>git stash apply stash@{n}
+</code></pre>
+
+<h3 id="显示stash">显示stash</h3>
+
+<p>显示保存在最新的stash中的修改：</p>
+
+<pre><code>git stash show
+</code></pre>
+
+<p>或者显示指定stash的信息：</p>
+
+<pre><code>git stash show stash@{n}
+</code></pre>
+
+<p>显示指定修改的内容：</p>
+
+<pre><code>git stash show -p stash@{n}
+</code></pre>
+
+<h3 id="部分stash">部分stash</h3>
+
+<p>如果你只想stash工作区中的一部分修改，你可以使用部分stash：</p>
+
+<pre><code>git stash -p
+</code></pre>
+
+<p>然后交互式的选择你想要stash的部分。</p>
+
+<p>从2.13.0版开始，您还可以避免交互模式，并使用新的push关键字创建带有路径规范的部分存储。</p>
+
+<pre><code>git stash push -m &quot;My partial stash&quot; -- app.config
+</code></pre>
+
+<h3 id="列出stash">列出stash</h3>
+
+<pre><code>git stash list
+</code></pre>
+
+<p>这将按相反的时间顺序列出堆栈中的所有存储。</p>
+
+<p>你可以获得类似下面这样的信息：</p>
+
+<pre><code>stash@{0}: WIP on master: 67a4e01 Merge tests into develop
+stash@{1}: WIP on master: 70f0d95 Add user role to localStorage on user login
+</code></pre>
+
+<p>你可以通过名称获取指定的stash，例如stash@{1}</p>
+
+<h3 id="将正在进行的工作移到另一个分支">将正在进行的工作移到另一个分支</h3>
+
+<p>如果你开发的时候，发现你在错误的分支上面进行了开发，如果你还没有任何提交操作，使用stash可以很方便的把你的修改移到另一个分支上面：</p>
+
+<pre><code>git stash 
+git checkout correct-branch
+git stash pop
+</code></pre>
+
+<p>记住<code>git stash pop</code>会应用最新的stah并且删除它。想要保留这些修改，只是应用这个修改：</p>
+
+<pre><code>git stash apply
+</code></pre>
+
+<h3 id="删除stash">删除stash</h3>
+
+<p>删除所有的stash：</p>
+
+<pre><code>git stash clear
+</code></pre>
+
+<p>删除最新的stash：</p>
+
+<pre><code>git stash drop
+</code></pre>
+
+<p>删除指定的stash：</p>
+
+<pre><code>git stash drop stash@{n}
+</code></pre>
+
+<h3 id="checkout应用部分修改">checkout应用部分修改</h3>
+
+<p>你可以暂存你的修改过，只想切换这个stash的一部分修改文件：</p>
+
+<pre><code>gitt checkout stash@{0} -- myfile.txt
+</code></pre>
+
+<h3 id="从stash回复之前修改">从stash回复之前修改</h3>
+
+<p>在stash之后获取最新的stash。使用：</p>
+
+<pre><code>git stash apply
+</code></pre>
+
+<p>查看所有的stash：</p>
+
+<pre><code>git stash list
+</code></pre>
+
+<p>你会获取类似下面的信息：</p>
+
+<pre><code>stash@{0}: WIP on master: 67a4e01 Merge tests into develop
+stash@{1}: WIP on master: 70f0d95 Add user role to localStorage on user login
+</code></pre>
+
+<p>选择你想要应用的stash ：</p>
+
+<pre><code>git stash apply stash@{2}
+</code></pre>
+
+<h3 id="交互式stash">交互式stash</h3>
+
+<p>存储将获取工作目录的脏状态，即修改过的跟踪文件和阶段性更改，并将其保存在一堆未完成的更改上，您可以随时重新应用这些更改。</p>
+
+<h4 id="只存储修改文件">只存储修改文件</h4>
+
+<p>假设您不想存储阶段文件，只存储修改后的文件，这样您就可以使用：</p>
+
+<pre><code>git stash --keep-index
+</code></pre>
+
+<p>这将只存储修改的文件。</p>
+
+<h4 id="存储未追踪文件">存储未追踪文件</h4>
+
+<p>stash从不保存未跟踪的文件，它只保存修改过的和分阶段的文件。因此，假设您还需要存储未跟踪的文件，那么您可以使用：</p>
+
+<pre><code>git stash -u
+</code></pre>
+
+<p>这将stash未追踪文件，阶段文件，修改文件。</p>
+
+<h4 id="只存储指定修改">只存储指定修改</h4>
+
+<p>假设您只需要从文件中存储部分代码，或者只需要从所有修改和存储的文件中存储一些文件，那么您可以这样做：</p>
+
+<pre><code>git stash --patch
+</code></pre>
+
+<p>Git不会存储所有修改过的内容，而是以交互方式提示您要存储哪些更改以及要保存在工作目录中的哪些更改。</p>
+
+<h3 id="恢复删除的stash">恢复删除的stash</h3>
+
+<p>如果你只是pop了一个stash，并且没有关闭终端页面。你运行<code>git stash pop</code>命令时这个hash还在：</p>
+
+<pre><code>$ git stash pop
+[...]
+Dropped refs/stash@{0} (2ca03e22256be97f9e40f08e6d6773c7d41dbfd1)
+</code></pre>
+
+<p>注意drop的时候会有相同的信息。</p>
+
+<p>否则，你可以使用下面的命令查找hash值：</p>
+
+<pre><code>git fsck --no-reflog | awk '/dangling commit/ {print $3}'
+</code></pre>
+
+<p>这将在提交图的提示处显示所有提交，这些提交不再从任何分支或标记中引用——每个丢失的提交，包括您曾经创建的每个隐藏提交，都将位于该图的某个位置。</p>
+
+<p>找到所需的隐藏提交的最简单方法可能是将该列表传递给Gitk：</p>
+
+<pre><code>gitk --all $( git fsck --no-reflog | awk '/dangling commit/ {print $3}' )
+</code></pre>
+
+<p>这将启动一个存储库浏览器，向您显示存储库中的每一次提交，无论它是否可访问。</p>
+
+<p>如果您更喜欢控制台上的图形而不是单独的图形用户界面应用程序，你可以使用<code>git log --graph --oneline --decorate</code>的命令来替换gitk。</p>
+
+<p>一旦知道了所需提交的hash值，就可以行stash一样应用它：</p>
+
+<pre><code>git stash apply sh_hash
+</code></pre>
+
+<p>或者，您可以使用<code>gitk</code>中的上下文菜单为您感兴趣的任何不可访问的提交创建分支。在那之后，你可以用所有普通的工具来做你想做的任何事情。做完后，再把分支删除。</p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/02/post/bash-section-21.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十一)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/bash-section-20.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
