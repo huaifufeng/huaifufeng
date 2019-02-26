@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="变量的作用区间">
+    <meta name="description" content="git-svn">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(二十七)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（三十三）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/bash-section-27.html">
+    <link rel="canonical" href="/2019/02/post/git-section-33.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(二十七)</h1>
+                    <h1>Git专业笔记（三十三）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Saturday, February 23, 2019
+                    <span  class="meta">Posted by 怀府风 on Sunday, February 24, 2019
                         
                     </span>
                 </div>
@@ -170,9 +170,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#scoping">Scoping</a>
+<li><a href="#git-svn">git-svn</a>
 <ul>
-<li><a href="#动态作用域">动态作用域</a></li>
+<li><a href="#克隆一个svn仓库">克隆一个SVN仓库</a></li>
+<li><a href="#推送修改到svn">推送修改到SVN</a></li>
+<li><a href="#在本地工作">在本地工作</a></li>
+<li><a href="#从svn回去最新修改">从SVN回去最新修改</a></li>
+<li><a href="#处理空目录">处理空目录</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -180,26 +184,109 @@
         		
         		
 
-<h2 id="scoping">Scoping</h2>
+<h2 id="git-svn">git-svn</h2>
 
-<h3 id="动态作用域">动态作用域</h3>
+<h3 id="克隆一个svn仓库">克隆一个SVN仓库</h3>
 
-<p>动态作用域的含义是：动态范围是指变量查找发生在调用函数的范围内，而不是在定义函数的范围内。</p>
+<p>你需要使用下面的命令创建一个仓库的本地新副本。</p>
 
-<pre><code>$ x=3
-$ func1 () { echo &quot;in func1: $x&quot;;}
-$ func2 () { local x=9; func1;}
-$ func2
-in func1 9
-$ func1
-in func1: 3
+<pre><code>git svn clone SVN_REPO_ROOT_URL [DEST_FOLDER_PATH] -T TRUNK_REPO_PATH -t TAGS_REPO_PATH -b BRANCHES_REPO_PATH
 </code></pre>
 
-<p>在词汇范围语言中，func1总是在全局范围中查找x的值，因为func1是在本地范围中定义的。</p>
+<p>如果你的SVN仓库在标准的模式下面（trunk，branchs，tags目录），你可以使用下面的命令。</p>
 
-<p>在动态范围语言中，func1查找调用它的范围。当从func2中调用它时，它首先在func2的主体中查找值x。如果没有在那里定义它，它将在全局范围中查找，其中func2是从全局范围调用的。</p>
+<pre><code>git svn clone -s SVN_REPO_ROOT_URL [DEST_FOLDER_PATH]
+</code></pre>
 
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<p><code>git svn clone</code>命令一个接一个的切换成SVN的修改，在你的本地仓库新建一个Git提交来重建历史的提交。如果SVN仓库有很多的提交，这将会花费很多的时间。</p>
+
+<p>当命令执行完毕之后，你会获得一个仓库的完整信息，本地的git分支名称叫做master，也就是SVN仓库的trunk分支。</p>
+
+<h3 id="推送修改到svn">推送修改到SVN</h3>
+
+<p>下面的命令</p>
+
+<pre><code>git svn dcommit
+</code></pre>
+
+<p>将会为你本地的每一个git提交创建一个SVN的修订历史。和svn一样，你的本地git仓库必须同步svn仓库的全部修改，所以如果这个命令失败了，就先尝试运行<code>git svn rebase</code>。</p>
+
+<h3 id="在本地工作">在本地工作</h3>
+
+<p>就像git仓库一样使用本地的git仓库，使用git常用的命令：</p>
+
+<ul>
+<li><code>git add FILE</code>和<code>git checkout — FILE</code>暂存或取消暂存一个文件</li>
+<li><code>git commit</code>来提交修改。这些提交都是本地的，不会推送到SVN仓库，像普通的git仓库一样。</li>
+<li><code>git stash</code>和<code>git stash pop</code>暂存和应用暂存修改</li>
+<li><code>git reset HEAD —hard</code>恢复本地所有的修改</li>
+<li><code>git log</code>访问仓库的所有历史</li>
+<li><code>git rebase -i</code>可以自由的修改提交历史</li>
+<li><code>git branch</code>和<code>git checkout -b</code>创建新的本地分支</li>
+</ul>
+
+<p>就像git-svn描述的：Subversion是一个远没有git复杂的系统。所以你不能在不毁坏Subversion服务的情况下使用过全部的git功能。幸运的是规则非常简单：保持线性的提交历史。</p>
+
+<p>这意味着你可以做几乎所有的git操作：创建分支，删除/重拍/压缩提交，改变提交历史，删除提交等等。除了merge操作。如果你要整合本地提交的历史，使用<code>git rebase</code>命令。</p>
+
+<p>当你进行merge操作的时候，一个merge提交就建立了。一个特别需要注意的事：merge提交拥有两个父提交，这样提交历史就不是线性的了。当你推送一个merge提交到这个仓库的时候，SVN会非常糊涂。</p>
+
+<p>但是不用担心：<strong>推送一个merge提交并不会毁坏任何东西</strong>。当你把一个merge提交推送到SVN，svn会保存所有的修改，但是会丢掉这些提交的历史。</p>
+
+<h3 id="从svn回去最新修改">从SVN回去最新修改</h3>
+
+<p>等价于<code>git pull</code>的命令是：</p>
+
+<pre><code>git svn rebase
+</code></pre>
+
+<p>这将会获得仓库的所有修改，并且把它们应用到本地当前分支提交的顶部。</p>
+
+<p>你也可以使用下面的命令：</p>
+
+<pre><code>git svn fetch
+</code></pre>
+
+<p>这将获取仓库的所有修改过，并且把这些修改获取到本地，但是不会把这些修改应用到你的当前分支。</p>
+
+<h3 id="处理空目录">处理空目录</h3>
+
+<p>git不识别目录的概念，只识别文件和文件路径。这意味着git不会追踪空目录。然而SVN会追踪空目录。使用<code>git svn</code>意味着，默认情况下，使用git对空文件夹所做的任何更改都不会提交到svn。</p>
+
+<p>在提交时使用<code>—rmdir</code>选项可以解决这个问题，当删除本地SVN目录中的最后一个文件，也会删除这个空的目录。</p>
+
+<pre><code>git svn dcommit --rmdir
+</code></pre>
+
+<p><strong>不幸的是这不会删除已经存在的空目录</strong>，这意味着你要自己处理。</p>
+
+<p>为了避免你每次都要输出这个选项，或者在使用git的gui工具（如sourcetree）时安全的进行工作，可以使用下面的命令把这个设置为默认的行为：</p>
+
+<pre><code>git config --global svn.rmdir true
+</code></pre>
+
+<p>这将会修改你的.gitconfig文件，在文件内加入下面这行：</p>
+
+<pre><code>[svn]
+rmdir = true
+</code></pre>
+
+<p>删除所有在SVN中应该为空的文件和目录，使用下面的git命令：</p>
+
+<pre><code>git clean -fd
+</code></pre>
+
+<p>注意：这个命令会删除所有未追踪的文件和空目录，包括应该被SVN仓库追踪的。如果你想要重新生成SVN仓库追踪的目录，使用下面的命令：</p>
+
+<pre><code>git svn mkdirs
+</code></pre>
+
+<p>在实践中，这意味着如果要从未跟踪的文件和文件夹中清理工作区，则应该始终使用这两个命令重新创建SVN跟踪的空文件夹：</p>
+
+<pre><code>git clean -fd &amp;&amp; git svn mkdirs
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -208,12 +295,12 @@ in func1: 3
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/git-section-33.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（三十三）">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-28.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十八)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-32.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（三十二）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-27.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十七)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

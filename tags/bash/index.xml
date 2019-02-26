@@ -6,10 +6,20 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 24 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 25 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(二十九)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-29.html</link>
+      <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-29.html</guid>
+      <description>可编程补全 函数实现补全 _mycompletion(){ local command_name=&amp;quot;$1&amp;quot; local current_word=&amp;quot;$2&amp;quot; local previous_word=&amp;quot;$3&amp;quot; # COMPREPLY is an array which has to be filled with the possible completions # compgen is used to filter matching completions COMPREPLY==( $(compgen -W &#39;hello world&#39; -- &amp;quot;$current_word&amp;quot;) ) } complette -F _mycompletion mycommand  使用例子：
+$ mycommand [TAB][TAB] hello world $ mycommand h[TAB][TAB] $ mycommand hello  选项和文件名的简单补全 # The following shell function will be used to generate completions for # the &amp;quot;nuance_tune&amp;quot; command.</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(二十八)</title>

@@ -6,10 +6,28 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 23 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（三十三）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-33.html</link>
+      <pubDate>Sun, 24 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-33.html</guid>
+      <description>git-svn 克隆一个SVN仓库 你需要使用下面的命令创建一个仓库的本地新副本。
+git svn clone SVN_REPO_ROOT_URL [DEST_FOLDER_PATH] -T TRUNK_REPO_PATH -t TAGS_REPO_PATH -b BRANCHES_REPO_PATH  如果你的SVN仓库在标准的模式下面（trunk，branchs，tags目录），你可以使用下面的命令。
+git svn clone -s SVN_REPO_ROOT_URL [DEST_FOLDER_PATH]  git svn clone命令一个接一个的切换成SVN的修改，在你的本地仓库新建一个Git提交来重建历史的提交。如果SVN仓库有很多的提交，这将会花费很多的时间。
+当命令执行完毕之后，你会获得一个仓库的完整信息，本地的git分支名称叫做master，也就是SVN仓库的trunk分支。
+推送修改到SVN 下面的命令
+git svn dcommit  将会为你本地的每一个git提交创建一个SVN的修订历史。和svn一样，你的本地git仓库必须同步svn仓库的全部修改，所以如果这个命令失败了，就先尝试运行git svn rebase。
+在本地工作 就像git仓库一样使用本地的git仓库，使用git常用的命令：
+ git add FILE和git checkout — FILE暂存或取消暂存一个文件 git commit来提交修改。这些提交都是本地的，不会推送到SVN仓库，像普通的git仓库一样。 git stash和git stash pop暂存和应用暂存修改 git reset HEAD —hard恢复本地所有的修改 git log访问仓库的所有历史 git rebase -i可以自由的修改提交历史 git branch和git checkout -b创建新的本地分支  就像git-svn描述的：Subversion是一个远没有git复杂的系统。所以你不能在不毁坏Subversion服务的情况下使用过全部的git功能。幸运的是规则非常简单：保持线性的提交历史。
+这意味着你可以做几乎所有的git操作：创建分支，删除/重拍/压缩提交，改变提交历史，删除提交等等。除了merge操作。如果你要整合本地提交的历史，使用git rebase命令。
+当你进行merge操作的时候，一个merge提交就建立了。一个特别需要注意的事：merge提交拥有两个父提交，这样提交历史就不是线性的了。当你推送一个merge提交到这个仓库的时候，SVN会非常糊涂。</description>
+    </item>
     
     <item>
       <title>Git专业笔记（三十二）</title>
