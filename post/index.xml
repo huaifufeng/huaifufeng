@@ -22,6 +22,17 @@ $ mycommand [TAB][TAB] hello world $ mycommand h[TAB][TAB] $ mycommand hello  �
     </item>
     
     <item>
+      <title>Git专业笔记（三十四）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-34.html</link>
+      <pubDate>Mon, 25 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-34.html</guid>
+      <description>Archive    参数 详情     —format= 归档结果的格式：tar或zip。如果没有这个选项，并且提供了文件名称，可能的话就会从文件名中解析。否则就是tar。   -l,—list 列出所有有效的归档   -v,—verbose 将详细的进度输出到stderr   —prefix=/ 在归档的每个文件前面添加/   -o file, —output file 把归档写入某个文件，而不是stdout   —worktree-abttributes 寻找工作树中gitattributes中的属性    可以是任何归档后台程序理解的选项。对zip来说，使用-0是不降低质量，使用-1到-9调整压缩速度和比率   —remote= 从远端仓库获取归档而不是从本地仓库   —exec= 使用—remote来指定远端上的路径    用来归档的tree或者提交    如果没有一个选项，本地工作目录的所有文件和目录都会被包含在归档中。如果一个或多个路径制定了，只会把这些文件包含到归档内。    创建git仓库的归档 使用git archive命令可以创建仓库的压缩归档文件，例如用来分发版本。
+创建一个当前HEAD修订的归档文件：
+git archive --format tar HEAD | cat &amp;gt; archive-HEAD.</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(二十八)</title>
       <link>http://blog.huaifufeng.com/2019/02/post/bash-section-28.html</link>
       <pubDate>Sun, 24 Feb 2019 00:00:00 +0000</pubDate>
