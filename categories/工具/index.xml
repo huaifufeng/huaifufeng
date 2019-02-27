@@ -6,10 +6,27 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 26 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 27 Feb 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（三十六）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-36.html</link>
+      <pubDate>Wed, 27 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-36.html</guid>
+      <description>迁移到git subGit subGit可以用来把SVN仓库一次性导入到git仓库内。
+$ subgit import --non-interactive --svn-url http://svn.my.cm/repos/myproject myproject.git  使用Atlassian转换工具迁移SVN到GIT 从这里下载Atlassian转换工具。这个工具依赖于java，所以在你计划迁移之前确保你的本地安装有java运行环境JRE。
+使用java -jar svn-migration-scripts.jar verify命令来检查你是否缺少完成迁移工作必须的程序。特别是这个命令会检查Git，subversion，git-svn工具。也会检查你的系统是否区分大小写。迁移到Git的工作应该在区分大小写的系统上进行，避免毁坏仓库。
+接下来你需要生成一个作者文件。Subversion只追踪提交者做的修改。然而Git使用两种信息来区分一个用户：真实名称和邮箱地址。下面的命令会生成一个txt文件，会把Subversion的用户名和Git等价起来：
+java -jar svn-migration-scripts.jar authors &amp;lt;svn-repo&amp;gt; authors.txt  这里是你想要进行转换的Subversion仓库的地址。运行这个命令只会，贡献者的身份信息会把映射到authors.txt中。邮箱地址会是下面这样的格式：@mycompany.com。在作者文件里面，你需要手动修改每一个人的默认名称（默认是他们的用户名）为他们的实际名称。在使用之前确保所有的邮箱地址是正确的。
+下面的命令会克隆一个SVN库到Git仓库：
+git svn clone --stdlayout --authors-file=authors.txt &amp;lt;svn-repo&amp;gt; &amp;lt;git-repo-name&amp;gt;  是像上面一样的仓库地址，是当前目录中用来克隆仓库的目录名称。在执行这个命令之前有一些需要注意的地方：
+ —stdlayout选项告诉Git使用trunk，branches，tags目录的标准布局。非标准的Subversion仓库的布局要求你指定trunk目录，branch目录，tag目录的本地路径。这可以使用下面的例子：git svn clone --trunk=/trunk --branches=/branches --branches=/bugfixes --tags=/tags --quthors-file=authors.txt &amp;lt;svn-repo&amp;gt; &amp;lt;git-repo-name&amp;gt; 这个命令执行多长时间依赖于你仓库的大小 要减少大仓库的转换时间，这个转换过程可以在Subversion仓库的服务器上运行，减少网络传输时间  git svn clone将Subversion的分支（包括trunk）导入为远端的分支，包括Subversion的tags（远端分支前缀为tags/）。要将它们转换为实际的分支和标记，请在Linux机器上按提供的顺序运行以下命令。运行这个命令之后，git branch -a显示所有正确的分支名称，git tag -l显示仓库的标记。
+git for-each-ref refs/remotes/origin/tags | cut -d / -f 5- | grep -v @ | while read tagname; do git tag $tagname origin/tags/$tagname; git branch -r -d origin/tags/$tagname; done git for-each-ref refs/remotes | cut -d / -f 4- | grep -v @ | while read branchname; do git branch &amp;quot;$branchname&amp;quot; &amp;quot;refs/remotes/origin/$branchname&amp;quot;; git branch -r -d &amp;quot;origin/$branchname&amp;quot;; done  这样从svn到Git的转换过程就完成了。可以使用push把本地的仓库推送到服务器。并且可以继续使用git来更新仓库，这个仓库包括svn的所有提交历史。</description>
+    </item>
     
     <item>
       <title>Git专业笔记（三十五）</title>

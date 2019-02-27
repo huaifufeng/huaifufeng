@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="迁移到git">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（三十六）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/02/post/git-section-36.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（三十六）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, February 27, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#迁移到git">迁移到git</a>
+<ul>
+<li><a href="#subgit">subGit</a></li>
+<li><a href="#使用atlassian转换工具迁移svn到git">使用Atlassian转换工具迁移SVN到GIT</a></li>
+<li><a href="#mercurial迁移到git">Mercurial迁移到Git</a></li>
+<li><a href="#从team-foundation-version-control-tfvc-迁移到git">从Team Foundation Version Control(TFVC)迁移到Git</a>
+<ul>
+<li><a href="#下载git-tf">下载Git-TF</a></li>
+<li><a href="#克隆tfvc">克隆TFVC</a></li>
+<li><a href="#清理">清理</a></li>
+<li><a href="#提交与push">提交与push</a></li>
+</ul></li>
+<li><a href="#使用svn2git迁移svn到git">使用svn2git迁移SVN到Git</a>
+<ul>
+<li><a href="#例子">例子</a></li>
+<li><a href="#迁移后优化">迁移后优化</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="迁移到git">迁移到git</h2>
+
+<h3 id="subgit">subGit</h3>
+
+<p><a href="http://www.subgit.com/remote-book.html#7">subGit</a>可以用来把SVN仓库一次性导入到git仓库内。</p>
+
+<pre><code>$ subgit import --non-interactive --svn-url http://svn.my.cm/repos/myproject myproject.git
+</code></pre>
+
+<h3 id="使用atlassian转换工具迁移svn到git">使用Atlassian转换工具迁移SVN到GIT</h3>
+
+<p>从<a href="https://bitbucket.org/atlassian/svn-migration-scripts/downloads/svn-migration-scripts.jar">这里</a>下载Atlassian转换工具。这个工具依赖于java，所以在你计划迁移之前确保你的本地安装有java运行环境<a href="https://www.java.com/en/download/installed.jsp">JRE</a>。</p>
+
+<p>使用<code>java -jar svn-migration-scripts.jar verify</code>命令来检查你是否缺少完成迁移工作必须的程序。特别是这个命令会检查<code>Git</code>，<code>subversion</code>，<code>git-svn</code>工具。也会检查你的系统是否区分大小写。迁移到Git的工作应该在区分大小写的系统上进行，避免毁坏仓库。</p>
+
+<p>接下来你需要生成一个作者文件。Subversion只追踪提交者做的修改。然而Git使用两种信息来区分一个用户：真实名称和邮箱地址。下面的命令会生成一个txt文件，会把Subversion的用户名和Git等价起来：</p>
+
+<pre><code>java -jar svn-migration-scripts.jar authors &lt;svn-repo&gt; authors.txt
+</code></pre>
+
+<p>这里<sv-repo>是你想要进行转换的Subversion仓库的地址。运行这个命令只会，贡献者的身份信息会把映射到<code>authors.txt</code>中。邮箱地址会是下面这样的格式：<username>@mycompany.com。在作者文件里面，你需要手动修改每一个人的默认名称（默认是他们的用户名）为他们的实际名称。在使用之前确保所有的邮箱地址是正确的。</p>
+
+<p>下面的命令会克隆一个SVN库到Git仓库：</p>
+
+<pre><code>git svn clone --stdlayout --authors-file=authors.txt &lt;svn-repo&gt; &lt;git-repo-name&gt;
+</code></pre>
+
+<p><svn-repo>是像上面一样的仓库地址，<git-repo-name>是当前目录中用来克隆仓库的目录名称。在执行这个命令之前有一些需要注意的地方：</p>
+
+<ul>
+<li><code>—stdlayout</code>选项告诉Git使用trunk，branches，tags目录的标准布局。非标准的Subversion仓库的布局要求你指定trunk目录，branch目录，tag目录的本地路径。这可以使用下面的例子：<code>git svn clone --trunk=/trunk --branches=/branches --branches=/bugfixes --tags=/tags --quthors-file=authors.txt &lt;svn-repo&gt; &lt;git-repo-name&gt;</code></li>
+<li>这个命令执行多长时间依赖于你仓库的大小</li>
+<li>要减少大仓库的转换时间，这个转换过程可以在Subversion仓库的服务器上运行，减少网络传输时间</li>
+</ul>
+
+<p><code>git svn clone</code>将Subversion的分支（包括trunk）导入为远端的分支，包括Subversion的tags（远端分支前缀为tags/）。要将它们转换为实际的分支和标记，请在Linux机器上按提供的顺序运行以下命令。运行这个命令之后，<code>git branch -a</code>显示所有正确的分支名称，<code>git tag -l</code>显示仓库的标记。</p>
+
+<pre><code>git for-each-ref refs/remotes/origin/tags | cut -d / -f 5- | grep -v @ | while read tagname; do git tag $tagname origin/tags/$tagname; git branch -r -d origin/tags/$tagname; done
+git for-each-ref refs/remotes | cut -d / -f 4- | grep -v @ | while read branchname; do git branch &quot;$branchname&quot; &quot;refs/remotes/origin/$branchname&quot;; git branch -r -d &quot;origin/$branchname&quot;; done
+</code></pre>
+
+<p>这样从svn到Git的转换过程就完成了。可以使用<code>push</code>把本地的仓库推送到服务器。并且可以继续使用git来更新仓库，这个仓库包括svn的所有提交历史。</p>
+
+<h3 id="mercurial迁移到git">Mercurial迁移到Git</h3>
+
+<p>按照下面的顺序依次执行相应的命令从Mercurial仓库迁移到Git仓库：</p>
+
+<ol>
+<li>使用<a href="https://github.com/frej/fast-export">fast-export</a>：</li>
+</ol>
+
+<pre><code>   cd
+   git clone git://repo.or.cz/fast-export.git
+   git init git_repo
+   cd git_repo
+   ~/fast-export/hg-fast-export.sh -r /path/to/old/mercurial_repo
+   git checkout HEAD
+</code></pre>
+
+<ol>
+<li><p>使用<a href="http://hg-git.github.io/">Hg-Git</a>：<a href="https://stackoverflow.com/questions/10710250/converting-mercurial-folder-to-a-git-repository/31827990#31827990">这里</a>有非常详细的解答</p></li>
+
+<li><p>使用<a href="https://help.github.com/en/articles/about-github-importer">GitHub的导入器</a>：按照<a href="https://github.com/new/import">GitHub</a>的详细流程。</p></li>
+</ol>
+
+<h3 id="从team-foundation-version-control-tfvc-迁移到git">从Team Foundation Version Control(TFVC)迁移到Git</h3>
+
+<p>你可以使用开源工具Git-TF迁移TFVC仓库到Git仓库。迁移过程也会被你已经存在的历史转换为git的提交。</p>
+
+<p>按照下面的布置使用Git-TF迁移仓库：</p>
+
+<h4 id="下载git-tf">下载Git-TF</h4>
+
+<p>你可以从Codeplex下载和安装Git-TF：<a href="https://gittf.codeplex.com/">GIt-TF@Codeplex</a></p>
+
+<h4 id="克隆tfvc">克隆TFVC</h4>
+
+<p>打开powershell然后输入下面的内容：</p>
+
+<pre><code> git-tf clone http://my.tfs.server.address:port/tfs/mycollection '$/myproject/mybranch/mysolution' - -deep
+</code></pre>
+
+<p>这里<code>—deep</code>需要专门注意：这告诉Git-TF去复制你的历史。现在，您在从中调用CLOE命令的文件夹中有一个本地Git存储库。</p>
+
+<h4 id="清理">清理</h4>
+
+<ul>
+<li>添加<code>.gitignore</code>文件。如果你使用Visual Studio，编辑器就可以自动帮你完成这个功能，否则你就需要手动到<a href="https://github.com/github/gitignore">github/gitignore</a>下载这个文件。</li>
+<li>删除TFS版本控制相关的文件（删除所有的*.vssscc文件）。你也可以修改你的解决方案文件通过删除GlobalSection(TeamFoundationVersionControl)……EndClobalSection。</li>
+</ul>
+
+<h4 id="提交与push">提交与push</h4>
+
+<p>提交并且push你本地仓库到你的远端，这就完成了整个转换过程。</p>
+
+<pre><code>git add .
+git commit -a -m &quot;Coverted solution source control from TFVC to Git&quot;
+git remote add origin https://my.remote/project/repo.git
+git push origin master
+</code></pre>
+
+<h3 id="使用svn2git迁移svn到git">使用svn2git迁移SVN到Git</h3>
+
+<p><a href="https://github.com/nirvdrum/svn2git">svn2git</a>是一个Ruby封装的通过<a href="https://git-scm.com/docs/git-svn">git-svn</a>来来实现的。这可以帮助你从SVN迁移项目到Git，并且保留所有的历史（包括trunk，tags和branches）。</p>
+
+<h4 id="例子">例子</h4>
+
+<p>以标准的布局迁移一个svn仓库（在仓库跟级别的branches，tags和trunk）：</p>
+
+<pre><code>$ svn2git http://svn.exmaple.com/path/to/repo
+</code></pre>
+
+<p>不使用标准布局迁移一个svn仓库：</p>
+
+<pre><code>$ svn2git http://svn.exmaple.com/path/to/repo --trunk trunk-dir --tags tags-dir --branches branches-dir
+</code></pre>
+
+<p>如果你不想迁移（或者没有）branches，tags或者trunk的话，你可以使用选项<code>—notrunk</code>，<code>—nobranches</code>，<code>—notags</code>。</p>
+
+<p>例如<code>$ svn2git http://svn.example.com/path/to/repo —trunk trunk-dir —notags —nobranches</code>将会只迁移trunk。</p>
+
+<p>为了减少新存储库所需的空间，您可能希望排除在不应包含的情况下添加的任何目录或文件（例如，构建目录或存档）：</p>
+
+<pre><code>$ svn2git http://svn.exmaple.com/path/to/rep --exclude build --exclude '.*\.zip$'
+</code></pre>
+
+<h4 id="迁移后优化">迁移后优化</h4>
+
+<p>如果你新创建的仓库拥有几千的提交（或者更多），你可能想在推送你的仓库到远端之前减少仓库占用的空间。这可以使用下面的命令实现：</p>
+
+<pre><code>$ git gc --aggressive
+</code></pre>
+
+<p><strong>注意：</strong>这个命令在大仓库上面会话费几个小时的时间。（几万个提交或几百兆的历史）</p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/02/post/git-section-35.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（三十五）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
