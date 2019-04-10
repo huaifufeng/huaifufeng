@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="使用filter-branch修改提交历史">
+    <meta name="description" content="show显示git的对象">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（三十五）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（三十七）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/git-section-35.html">
+    <link rel="canonical" href="/2019/02/post/git-section-37.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（三十五）</h1>
+                    <h1>Git专业笔记（三十七）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Tuesday, February 26, 2019
+                    <span  class="meta">Posted by 怀府风 on Thursday, February 28, 2019
                         
                     </span>
                 </div>
@@ -170,10 +170,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#filter-branch修改提交历史">filter-branch修改提交历史</a>
+<li><a href="#show">show</a>
 <ul>
-<li><a href="#修改提交作者">修改提交作者</a></li>
-<li><a href="#修改提交人为提交作者">修改提交人为提交作者</a></li>
+<li><a href="#简介">简介</a>
+<ul>
+<li><a href="#显示commit">显示Commit:</a></li>
+<li><a href="#显示tree和blob">显示tree和blob：</a></li>
+<li><a href="#显示tags">显示tags:</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -181,38 +185,68 @@
         		
         		
 
-<h2 id="filter-branch修改提交历史">filter-branch修改提交历史</h2>
+<h2 id="show">show</h2>
 
-<h3 id="修改提交作者">修改提交作者</h3>
+<h3 id="简介">简介</h3>
 
-<p>你可以使用环境筛选器修改提交的作者。只需要在修改提交作者的脚本中修改并导出<code>$GIT_AUTHOR_NAME</code>。</p>
+<p><code>git show</code>显示各种git对象。</p>
 
-<p>创建一个包含下面内容的<code>filter.sh</code>脚本：</p>
+<h4 id="显示commit">显示Commit:</h4>
 
-<pre><code>if [ &quot;$GIT_AUTHOR_NAME&quot; = &quot;Author to Change From&quot; ]
-then
-    export GIT_AUTHOR_NAME=&quot;Author to Change To&quot;
-    export GIT_AUTHOR_EMAIL=&quot;email.to.change.to@example.com&quot;
-fi
-</code></pre>
+<p>显示提交信息和其中包含的修改信息。</p>
 
-<p>然后在命令行中运行这个命令：</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
 
-<pre><code>chmod +x ./filter.sh
-git filter-branch --env-filter ./filter.sh
-</code></pre>
+<tbody>
+<tr>
+<td>git show</td>
+<td>显示之前的提交</td>
+</tr>
 
-<h3 id="修改提交人为提交作者">修改提交人为提交作者</h3>
+<tr>
+<td>git show @~3</td>
+<td>显示最后提交之前第3个提交</td>
+</tr>
+</tbody>
+</table>
 
-<p>下面的命令修改<code>commit1..commit2</code>之间提交的提交人为提交的作者。</p>
+<h4 id="显示tree和blob">显示tree和blob：</h4>
 
-<pre><code>git filter-branch -f --commit-filter \
-   'export GIT_COMMITER_NAME=\&quot;$GIT_AUTHOR_NAME\&quot;;
-	export GIT_COMMITER_EMAIL=\&quot;$GIT_AUTHOR_EMAIL\&quot;;
-	export GIT_COMMITER_DATE=\&quot;$GIT_AUTHOR_DATE\&quot;;
-	git commit-tree $@' \
-	-- commit1..commit2
-</code></pre>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>git show @~3</td>
+<td>显示项目的根目录，显示3个提交之前的（tree）</td>
+</tr>
+
+<tr>
+<td>git show @~3:src/program.js</td>
+<td>显示3个提交之前src/program.js的信息（blob）</td>
+</tr>
+
+<tr>
+<td>git show @:a.txt @:b.txt</td>
+<td>现在当前提交中a.txt和b.txt的拼接</td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="显示tags">显示tags:</h4>
+
+<p>显示tag的信息和引用的对象。</p>
 
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
@@ -223,12 +257,12 @@ git filter-branch --env-filter ./filter.sh
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-30.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十)">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-32.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十二)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-29.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十九)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-31.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十一)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

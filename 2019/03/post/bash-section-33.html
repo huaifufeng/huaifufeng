@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="使用filter-branch修改提交历史">
+    <meta name="description" content="debug调试">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（三十五）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(三十三)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/git-section-35.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-33.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/git" title="Git">
-                           Git
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（三十五）</h1>
+                    <h1>Bash专业笔记(三十三)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Tuesday, February 26, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, March 1, 2019
                         
                     </span>
                 </div>
@@ -170,10 +170,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#filter-branch修改提交历史">filter-branch修改提交历史</a>
+<li><a href="#debug调试">debug调试</a>
 <ul>
-<li><a href="#修改提交作者">修改提交作者</a></li>
-<li><a href="#修改提交人为提交作者">修改提交人为提交作者</a></li>
+<li><a href="#使用-n检查脚本语法">使用-n检查脚本语法</a></li>
+<li><a href="#使用bashdb调试">使用bashdb调试</a></li>
+<li><a href="#使用-x调试一个脚本">使用-x调试一个脚本</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -181,40 +182,76 @@
         		
         		
 
-<h2 id="filter-branch修改提交历史">filter-branch修改提交历史</h2>
+<h2 id="debug调试">debug调试</h2>
 
-<h3 id="修改提交作者">修改提交作者</h3>
+<h3 id="使用-n检查脚本语法">使用-n检查脚本语法</h3>
 
-<p>你可以使用环境筛选器修改提交的作者。只需要在修改提交作者的脚本中修改并导出<code>$GIT_AUTHOR_NAME</code>。</p>
+<p>使用-n允许你在不执行脚本的情况下检查这个脚本：</p>
 
-<p>创建一个包含下面内容的<code>filter.sh</code>脚本：</p>
-
-<pre><code>if [ &quot;$GIT_AUTHOR_NAME&quot; = &quot;Author to Change From&quot; ]
-then
-    export GIT_AUTHOR_NAME=&quot;Author to Change To&quot;
-    export GIT_AUTHOR_EMAIL=&quot;email.to.change.to@example.com&quot;
-fi
+<pre><code>~&gt; $ bash -n testscript.sh
+testscript.sh: line 128: unexpected EOF while looking for matching `&quot;' 
+testscript.sh: line 130: syntax error: unexpected end of file
 </code></pre>
 
-<p>然后在命令行中运行这个命令：</p>
+<h3 id="使用bashdb调试">使用bashdb调试</h3>
 
-<pre><code>chmod +x ./filter.sh
-git filter-branch --env-filter ./filter.sh
+<p>bashdb是一个和gdb雷士的工具，使用这个工具你可以实现某行或者某个方法的中断，输出变量的内容，或者重启脚本等等。</p>
+
+<p>通常可以使用包管理器按照这个工具，像在Fedroa中：</p>
+
+<pre><code>sudo dnf install bashdb
 </code></pre>
 
-<h3 id="修改提交人为提交作者">修改提交人为提交作者</h3>
+<p>你可以从<a href="http://bashdb.sourceforge.net">首页</a>上获取这个工具。然后可以使用它像参数一样运行这个脚本：</p>
 
-<p>下面的命令修改<code>commit1..commit2</code>之间提交的提交人为提交的作者。</p>
-
-<pre><code>git filter-branch -f --commit-filter \
-   'export GIT_COMMITER_NAME=\&quot;$GIT_AUTHOR_NAME\&quot;;
-	export GIT_COMMITER_EMAIL=\&quot;$GIT_AUTHOR_EMAIL\&quot;;
-	export GIT_COMMITER_DATE=\&quot;$GIT_AUTHOR_DATE\&quot;;
-	git commit-tree $@' \
-	-- commit1..commit2
+<pre><code>bashdb &lt;YOUR SCRIPT&gt;
 </code></pre>
 
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+<p>下面是一些你可以使用的命令：</p>
+
+<pre><code>l - show local lines, press l again to scroll down
+s - step to next line
+print $VAR - echo out content of variable
+restart - reruns bashscript, it re-loads it prior to execution.
+eval - evaluate some custom command, ex: eval echo hi
+b  set breakpoint on some line
+c - continue till some breakpoint
+i b - info on break points
+d  - delete breakpoint at line #
+shell - launch a sub-shell in the middle of execution, this is handy for manipulating variables
+</code></pre>
+
+<p>更多的信息，我推荐查看下面的文档：</p>
+
+<p><a href="http://www.rodericksmith.plus.com/outlines/manuals/bashdbOutline.html">http://www.rodericksmith.plus.com/outlines/manuals/bashdbOutline.html</a></p>
+
+<p>也可以查看软件的首页：</p>
+
+<p><a href="http://bashdb.sourceforge.net/">http://bashdb.sourceforge.net/</a></p>
+
+<h3 id="使用-x调试一个脚本">使用-x调试一个脚本</h3>
+
+<p>使用-x可以调试执行行的输出。它可以在整个会话或脚本上运行，也可以在脚本中以编程方式启用。</p>
+
+<p>使用debug输出运行一个脚本，可以像下面：</p>
+
+<pre><code>$ bash -x myscript.sh
+</code></pre>
+
+<p>也可以：</p>
+
+<pre><code>$ bash --debug myscript.sh
+</code></pre>
+
+<p>在一个脚本内部开启debug。尽管调试输出在脚本退出时自动重置，但它可以选择重新打开。</p>
+
+<pre><code>#!/bin/bash
+set -x # Enable debugging
+# some code here
+set +x # Disable debugging output.
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -222,13 +259,9 @@ git filter-branch --env-filter ./filter.sh
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/02/post/bash-section-30.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-29.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十九)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/git-section-38.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（三十八）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

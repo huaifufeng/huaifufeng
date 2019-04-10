@@ -6,10 +6,69 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 27 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 01 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(三十三)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-33.html</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-33.html</guid>
+      <description>debug调试 使用-n检查脚本语法 使用-n允许你在不执行脚本的情况下检查这个脚本：
+~&amp;gt; $ bash -n testscript.sh testscript.sh: line 128: unexpected EOF while looking for matching `&amp;quot;&#39; testscript.sh: line 130: syntax error: unexpected end of file  使用bashdb调试 bashdb是一个和gdb雷士的工具，使用这个工具你可以实现某行或者某个方法的中断，输出变量的内容，或者重启脚本等等。
+通常可以使用包管理器按照这个工具，像在Fedroa中：
+sudo dnf install bashdb  你可以从首页上获取这个工具。然后可以使用它像参数一样运行这个脚本：
+bashdb &amp;lt;YOUR SCRIPT&amp;gt;  下面是一些你可以使用的命令：
+l - show local lines, press l again to scroll down s - step to next line print $VAR - echo out content of variable restart - reruns bashscript, it re-loads it prior to execution.</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（三十八）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-38.html</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-38.html</guid>
+      <description>解决冲突 手动解决 当你在执行一个git merge命令的时候，你可能会发现一个“merge conflict”的错误。这将会告诉你哪些文件冲突了，你需要解决这些冲突。
+一个git status不管在什么时候都可以给你提供一个帮助信息，帮助你查看你需要做什么事情。
+On branch master You have unmerged paths. (fix conflicts and run &amp;quot;git commit&amp;quot;) Unmerged paths: (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to mark resolution) both modified: index.html no changes added to commit (use &amp;quot;git add&amp;quot; and/or &amp;quot;git commit -a&amp;quot;)  Git在冲突文件中添加了一些标识来告诉你哪些地方发生冲突了：
+&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD: index.html #indicates the state of your current branch &amp;lt;div id=&amp;quot;footer&amp;quot;&amp;gt;contact : email@somedomain.com&amp;lt;/div&amp;gt; ========= #indicates break between conflicts &amp;lt;div id=&amp;quot;footer&amp;quot;&amp;gt; please contact us at email@somedomain.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(三十二)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-32.html</link>
+      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-32.html</guid>
+      <description>getopts:智能位置-参数分析    参数 详情     optstring 要识别的选项字符串   name 然后命名存储解析选项的位置    pingmap #!/bin/bash # Script name : pingnmap # Scenario : The systems admin in company X is tired of the monotonous job # of pinging and nmapping, so he decided to simplify the job using a script. # The tasks he wish to achieve is # 1. Ping - with a max count of 5 -the given IP address/domain.</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（三十七）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-37.html</link>
+      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-37.html</guid>
+      <description>show 简介 git show显示各种git对象。
+显示Commit: 显示提交信息和其中包含的修改信息。
+   Command Description     git show 显示之前的提交   git show @~3 显示最后提交之前第3个提交    显示tree和blob：    Command Description     git show @~3 显示项目的根目录，显示3个提交之前的（tree）   git show @~3:src/program.js 显示3个提交之前src/program.js的信息（blob）   git show @:a.txt @:b.txt 现在当前提交中a.txt和b.txt的拼接    显示tags: 显示tag的信息和引用的对象。
+参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(三十一)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-31.html</link>
+      <pubDate>Wed, 27 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-31.html</guid>
+      <description>花括号扩展 修改文件名扩展 $ mv filename.{jar,zip}  这个将会执行mv filename.jar filename.zip这个命令
+创建按照年月分组文件的目录 $ mkdir 20{09..11}-{01-12}  执行ls命令，将会看到下面的目录被创建了：
+2009-01 2009-04 2009-07 2009-10 2010-01 2010-04 2010-07 2010-10 2011-01 2011-04 2011-07 2011-10 2009-02 2009-05 2009-08 2009-11 2010-02 2010-05 2010-08 2010-11 2011-02 2011-05 2011-08 2011-11 2009-03 2009-06 2009-09 2009-12 2010-03 2010-06 2010-09 2010-12 2011-03 2011-06 2011-09 2011-12  在9前面加上0确保当个数字有一个0。你也可以在数字前面使用多个0，例如：
+$ echo {001..10} 001 002 003 004 005 006 007 008 009 010  创建.文件的备份 $ cp .</description>
+    </item>
     
     <item>
       <title>Git专业笔记（三十六）</title>
@@ -26,6 +85,15 @@ java -jar svn-migration-scripts.jar authors &amp;lt;svn-repo&amp;gt; authors.txt
 git svn clone --stdlayout --authors-file=authors.txt &amp;lt;svn-repo&amp;gt; &amp;lt;git-repo-name&amp;gt;  是像上面一样的仓库地址，是当前目录中用来克隆仓库的目录名称。在执行这个命令之前有一些需要注意的地方：
  —stdlayout选项告诉Git使用trunk，branches，tags目录的标准布局。非标准的Subversion仓库的布局要求你指定trunk目录，branch目录，tag目录的本地路径。这可以使用下面的例子：git svn clone --trunk=/trunk --branches=/branches --branches=/bugfixes --tags=/tags --quthors-file=authors.txt &amp;lt;svn-repo&amp;gt; &amp;lt;git-repo-name&amp;gt; 这个命令执行多长时间依赖于你仓库的大小 要减少大仓库的转换时间，这个转换过程可以在Subversion仓库的服务器上运行，减少网络传输时间  git svn clone将Subversion的分支（包括trunk）导入为远端的分支，包括Subversion的tags（远端分支前缀为tags/）。要将它们转换为实际的分支和标记，请在Linux机器上按提供的顺序运行以下命令。运行这个命令之后，git branch -a显示所有正确的分支名称，git tag -l显示仓库的标记。
 git for-each-ref refs/remotes/origin/tags | cut -d / -f 5- | grep -v @ | while read tagname; do git tag $tagname origin/tags/$tagname; git branch -r -d origin/tags/$tagname; done git for-each-ref refs/remotes | cut -d / -f 4- | grep -v @ | while read branchname; do git branch &amp;quot;$branchname&amp;quot; &amp;quot;refs/remotes/origin/$branchname&amp;quot;; git branch -r -d &amp;quot;origin/$branchname&amp;quot;; done  这样从svn到Git的转换过程就完成了。可以使用push把本地的仓库推送到服务器。并且可以继续使用git来更新仓库，这个仓库包括svn的所有提交历史。</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(三十)</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/bash-section-30.html</link>
+      <pubDate>Tue, 26 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-30.html</guid>
+      <description>定制化PS1 修改终端的颜色和提示 gitPS1(){ gitps1=$(git branch 2&amp;gt;/dev/null | grep &#39;*&#39;) gitps1=&amp;quot;${gitps1:+ (${gitps1/#\* /})}&amp;quot; echo &amp;quot;$gitps1&amp;quot; } #Please use the below function if you are a mac user gitPS1ForMac(){ git branch 2&amp;gt; /dev/null | sed -e &#39;/^[^*]/d&#39; -e &#39;s/* \(.*\)/ (\1)/&#39; } timeNow(){ echo &amp;quot;$(date +%r)&amp;quot; } if [ &amp;quot;$color_prompt&amp;quot; = yes ]; then if [ x$EUID = x0 ]; then PS1=&#39;\[\033[1;38m\][$(timeNow)]\[\033[00m\] \[\033[1;31m\]\u\[\033[00m\]\[\033[1;37m\]@\[\033[00m\]\[\033[1;33m\]\h\[\033[00m\] \[\033[1;34m\]\w\[\033[00m\]\[\033[1;36m\]$(gitPS1)\[\033[00m\] \[\033[1;31m\]:/#\[\033[00m\] &#39; else PS1=&#39;\[\033[1;38m\][$(timeNow)]\[\033[00m\] \[\033[1;32m\]\u\[\033[00m\]\[\033[1;37m\]@\[\033[00m\]\[\033[1;33m\]\h\[\033[00m\] \[\033[1;34m\]\w\[\033[00m\]\[\033[1;36m\]$(gitPS1)\[\033[00m\] \[\033[1;32m\]:/$\[\033[00m\] &#39; fi else PS1=&#39;[$(timeNow)] \u@\h \w$(gitPS1) :/$ &#39; fi  下面就是配置终端的显示样式：</description>
     </item>
     
     <item>

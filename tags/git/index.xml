@@ -6,10 +6,34 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 27 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 01 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（三十八）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-38.html</link>
+      <pubDate>Fri, 01 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-38.html</guid>
+      <description>解决冲突 手动解决 当你在执行一个git merge命令的时候，你可能会发现一个“merge conflict”的错误。这将会告诉你哪些文件冲突了，你需要解决这些冲突。
+一个git status不管在什么时候都可以给你提供一个帮助信息，帮助你查看你需要做什么事情。
+On branch master You have unmerged paths. (fix conflicts and run &amp;quot;git commit&amp;quot;) Unmerged paths: (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to mark resolution) both modified: index.html no changes added to commit (use &amp;quot;git add&amp;quot; and/or &amp;quot;git commit -a&amp;quot;)  Git在冲突文件中添加了一些标识来告诉你哪些地方发生冲突了：
+&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD: index.html #indicates the state of your current branch &amp;lt;div id=&amp;quot;footer&amp;quot;&amp;gt;contact : email@somedomain.com&amp;lt;/div&amp;gt; ========= #indicates break between conflicts &amp;lt;div id=&amp;quot;footer&amp;quot;&amp;gt; please contact us at email@somedomain.</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（三十七）</title>
+      <link>http://blog.huaifufeng.com/2019/02/post/git-section-37.html</link>
+      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/02/post/git-section-37.html</guid>
+      <description>show 简介 git show显示各种git对象。
+显示Commit: 显示提交信息和其中包含的修改信息。
+   Command Description     git show 显示之前的提交   git show @~3 显示最后提交之前第3个提交    显示tree和blob：    Command Description     git show @~3 显示项目的根目录，显示3个提交之前的（tree）   git show @~3:src/program.js 显示3个提交之前src/program.js的信息（blob）   git show @:a.txt @:b.txt 现在当前提交中a.txt和b.txt的拼接    显示tags: 显示tag的信息和引用的对象。
+参考：Git® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Git专业笔记（三十六）</title>

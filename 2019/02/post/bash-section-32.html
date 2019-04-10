@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="使用filter-branch修改提交历史">
+    <meta name="description" content="getopts:智能位置-参数分析">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（三十五）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(三十二)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/git-section-35.html">
+    <link rel="canonical" href="/2019/02/post/bash-section-32.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/git" title="Git">
-                           Git
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（三十五）</h1>
+                    <h1>Bash专业笔记(三十二)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Tuesday, February 26, 2019
+                    <span  class="meta">Posted by 怀府风 on Thursday, February 28, 2019
                         
                     </span>
                 </div>
@@ -170,10 +170,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#filter-branch修改提交历史">filter-branch修改提交历史</a>
+<li><a href="#getopts-智能位置-参数分析">getopts:智能位置-参数分析</a>
 <ul>
-<li><a href="#修改提交作者">修改提交作者</a></li>
-<li><a href="#修改提交人为提交作者">修改提交人为提交作者</a></li>
+<li><a href="#pingmap">pingmap</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -181,40 +180,125 @@
         		
         		
 
-<h2 id="filter-branch修改提交历史">filter-branch修改提交历史</h2>
+<h2 id="getopts-智能位置-参数分析">getopts:智能位置-参数分析</h2>
 
-<h3 id="修改提交作者">修改提交作者</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
 
-<p>你可以使用环境筛选器修改提交的作者。只需要在修改提交作者的脚本中修改并导出<code>$GIT_AUTHOR_NAME</code>。</p>
+<tbody>
+<tr>
+<td>optstring</td>
+<td>要识别的选项字符串</td>
+</tr>
 
-<p>创建一个包含下面内容的<code>filter.sh</code>脚本：</p>
+<tr>
+<td>name</td>
+<td>然后命名存储解析选项的位置</td>
+</tr>
+</tbody>
+</table>
 
-<pre><code>if [ &quot;$GIT_AUTHOR_NAME&quot; = &quot;Author to Change From&quot; ]
+<h3 id="pingmap">pingmap</h3>
+
+<pre><code>#!/bin/bash
+# Script name : pingnmap
+# Scenario : The systems admin in company X is tired of the monotonous job
+# of pinging and nmapping, so he decided to simplify the job using a script.
+# The tasks he wish to achieve is
+# 1. Ping - with a max count of 5 -the given IP address/domain. AND/OR
+# 2. Check if a particular port is open with a given IP address/domain.
+# And getopts is for her rescue.
+# A brief overview of the options
+# n : meant for nmap
+# t : meant for ping
+# i : The option to enter the IP address
+# p : The option to enter the port
+# v : The option to get the script version
+
+while getopts ':nti:p:v' opt
+#putting : in the beginnnig suppresses the errors for invalid options
+do
+case &quot;$opt&quot; in
+    'i')ip=&quot;${OPTARG}&quot;
+        ;;
+    'p')port=&quot;${OPTARG}&quot;
+        ;;
+    'n')nmp_yes=1
+        ;;
+    't')ping_yes=1
+        ;;
+    'v')echo &quot;pingnmap version 1.0.0&quot;
+        ;;
+    *)  echo &quot;Invalid option $opt&quot;
+        echo &quot;Usage : &quot;
+        echo &quot;pingmap -[n|t[i|p]|v]
+        ;;
+esac
+done
+if [ ! -z &quot;$namp_yes&quot; ] &amp;&amp; [ &quot;$name_yes&quot; -eq &quot;1&quot; ]
 then
-    export GIT_AUTHOR_NAME=&quot;Author to Change To&quot;
-    export GIT_AUTHOR_EMAIL=&quot;email.to.change.to@example.com&quot;
+    if [ ! -z &quot;$ip&quot; ] &amp;&amp; [ ! -z &quot;$port&quot;]
+    then
+        nmap -p &quot;$port&quot; &quot;ip&quot;
+    fi
+fi
+
+if [ ! -z &quot;$ping_yes&quot; ] &amp;&amp; [ &quot;$ping_yes&quot; -eq &quot;1&quot; ]
+then
+    if [ ! -z &quot;$ip&quot; ]
+    then
+        ping -c 5 ip&quot;
+    fi
+fi
+shift $(( OPTIND - 1 ))
+if [ ! -z &quot;$@&quot; ]
+then
+    echo &quot;Bogus arguments at the end : $@&quot;
 fi
 </code></pre>
 
-<p>然后在命令行中运行这个命令：</p>
+<p>输出：</p>
 
-<pre><code>chmod +x ./filter.sh
-git filter-branch --env-filter ./filter.sh
+<pre><code>$ ./pingnmap -nt -i google.com -p 80
+
+Starting Nmap 6.40 ( http://nmap.org ) at 2016-07-23 14:31 IST
+Nmap scan report for google.com (216.58.197.78)
+Host is up (0.034s latency).
+rDNS record for 216.58.197.78: maa03s21-in-f14.1e100.net
+PORT   STATE SERVICE
+80/tcp open  http
+
+Nmap done: 1 IP address (1 host up) scanned in 0.22 seconds
+PING google.com (216.58.197.78) 56(84) bytes of data.
+64 bytes from maa03s21-in-f14.1e100.net (216.58.197.78): icmp_seq=1 ttl=57 time=29.3 ms
+64 bytes from maa03s21-in-f14.1e100.net (216.58.197.78): icmp_seq=2 ttl=57 time=30.9 ms
+64 bytes from maa03s21-in-f14.1e100.net (216.58.197.78): icmp_seq=3 ttl=57 time=34.7 ms
+64 bytes from maa03s21-in-f14.1e100.net (216.58.197.78): icmp_seq=4 ttl=57 time=39.6 ms
+64 bytes from maa03s21-in-f14.1e100.net (216.58.197.78): icmp_seq=5 ttl=57 time=32.7 ms
+
+--- google.com ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 4007ms
+rtt min/avg/max/mdev = 29.342/33.481/39.631/3.576 ms
+$ ./pingnmap -v
+pingnmap version 1.0.0
+$ ./pingnmap -h
+Invalid option ?
+Usage :
+pingmap -[n|t[i|p]|v]
+$ ./pingnmap -v
+pingnmap version 1.0.0
+$ ./pingnmap -h
+Invalid option ?
+Usage :
+pingmap -[n|t[i|p]|v]
 </code></pre>
 
-<h3 id="修改提交人为提交作者">修改提交人为提交作者</h3>
-
-<p>下面的命令修改<code>commit1..commit2</code>之间提交的提交人为提交的作者。</p>
-
-<pre><code>git filter-branch -f --commit-filter \
-   'export GIT_COMMITER_NAME=\&quot;$GIT_AUTHOR_NAME\&quot;;
-	export GIT_COMMITER_EMAIL=\&quot;$GIT_AUTHOR_EMAIL\&quot;;
-	export GIT_COMMITER_DATE=\&quot;$GIT_AUTHOR_DATE\&quot;;
-	git commit-tree $@' \
-	-- commit1..commit2
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -223,12 +307,12 @@ git filter-branch --env-filter ./filter.sh
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-30.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/git-section-38.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（三十八）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-29.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十九)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-37.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（三十七）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

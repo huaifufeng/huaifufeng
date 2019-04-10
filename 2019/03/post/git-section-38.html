@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="使用filter-branch修改提交历史">
+    <meta name="description" content="解决合并冲突">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（三十五）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（三十八）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/02/post/git-section-35.html">
+    <link rel="canonical" href="/2019/03/post/git-section-38.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（三十五）</h1>
+                    <h1>Git专业笔记（三十八）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Tuesday, February 26, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, March 1, 2019
                         
                     </span>
                 </div>
@@ -170,10 +170,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#filter-branch修改提交历史">filter-branch修改提交历史</a>
+<li><a href="#解决冲突">解决冲突</a>
 <ul>
-<li><a href="#修改提交作者">修改提交作者</a></li>
-<li><a href="#修改提交人为提交作者">修改提交人为提交作者</a></li>
+<li><a href="#手动解决">手动解决</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -181,38 +180,37 @@
         		
         		
 
-<h2 id="filter-branch修改提交历史">filter-branch修改提交历史</h2>
+<h2 id="解决冲突">解决冲突</h2>
 
-<h3 id="修改提交作者">修改提交作者</h3>
+<h3 id="手动解决">手动解决</h3>
 
-<p>你可以使用环境筛选器修改提交的作者。只需要在修改提交作者的脚本中修改并导出<code>$GIT_AUTHOR_NAME</code>。</p>
+<p>当你在执行一个<code>git merge</code>命令的时候，你可能会发现一个“merge conflict”的错误。这将会告诉你哪些文件冲突了，你需要解决这些冲突。</p>
 
-<p>创建一个包含下面内容的<code>filter.sh</code>脚本：</p>
+<p>一个<code>git status</code>不管在什么时候都可以给你提供一个帮助信息，帮助你查看你需要做什么事情。</p>
 
-<pre><code>if [ &quot;$GIT_AUTHOR_NAME&quot; = &quot;Author to Change From&quot; ]
-then
-    export GIT_AUTHOR_NAME=&quot;Author to Change To&quot;
-    export GIT_AUTHOR_EMAIL=&quot;email.to.change.to@example.com&quot;
-fi
+<pre><code>On branch master
+You have unmerged paths.
+	(fix conflicts and run &quot;git commit&quot;) 
+
+Unmerged paths:
+	(use &quot;git add &lt;file&gt;...&quot; to mark resolution) 
+	
+	both modified: index.html
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
 </code></pre>
 
-<p>然后在命令行中运行这个命令：</p>
+<p>Git在冲突文件中添加了一些标识来告诉你哪些地方发生冲突了：</p>
 
-<pre><code>chmod +x ./filter.sh
-git filter-branch --env-filter ./filter.sh
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD: index.html #indicates the state of your current branch &lt;div id=&quot;footer&quot;&gt;contact : email@somedomain.com&lt;/div&gt;
+========= #indicates break between conflicts
+&lt;div id=&quot;footer&quot;&gt;
+please contact us at email@somedomain.com
+&lt;/div&gt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; iss2: index.html #indicates the state of the other branch (iss2)
 </code></pre>
 
-<h3 id="修改提交人为提交作者">修改提交人为提交作者</h3>
-
-<p>下面的命令修改<code>commit1..commit2</code>之间提交的提交人为提交的作者。</p>
-
-<pre><code>git filter-branch -f --commit-filter \
-   'export GIT_COMMITER_NAME=\&quot;$GIT_AUTHOR_NAME\&quot;;
-	export GIT_COMMITER_EMAIL=\&quot;$GIT_AUTHOR_EMAIL\&quot;;
-	export GIT_COMMITER_DATE=\&quot;$GIT_AUTHOR_DATE\&quot;;
-	git commit-tree $@' \
-	-- commit1..commit2
-</code></pre>
+<p>为了解决冲突，你需要修改&lt;&lt;&lt;&lt;&lt;&lt;和&gt;&gt;&gt;&gt;&gt;&gt;标记之前的部分。完成之后删除这些状态行（&lt;&lt;&lt;&lt;&lt;&lt;，&gt;&gt;&gt;&gt;&gt;&gt;，========）。然后使用<code>git add index.html</code>来标记这个文件解决完了，使用<code>git commit</code>来结束这次合并操作。</p>
 
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
@@ -223,12 +221,12 @@ git filter-branch --env-filter ./filter.sh
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-30.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-33.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十三)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-29.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十九)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-32.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十二)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
