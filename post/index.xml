@@ -6,10 +6,34 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 01 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 03 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(三十五)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-35.html</link>
+      <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-35.html</guid>
+      <description>修改shell 查找当前的shell 有好几种方式获取当前的shell：
+echo $0 ps -p $$ echo $SHELL  列出所有有效shell 列出所有有效的shell
+cat /etc/shells  例如：
+$ cat /etc/shells # /etc/shells: valid login shells /bin/sh /bin/dash /bin/bash /bin/rbash  修改shell 修改当前的shell可以使用下面的命令：
+ export SHELL=/bin/bash exec /bin/bash  修改.profile文件，添加上面的内容。
+参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(三十四)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-34.html</link>
+      <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-34.html</guid>
+      <description>模式匹配和正则表达式 获取字符串正则匹配的内容 a=&#39;I am a simple string with digits 1234&#39; pat=&#39;(.*) ([0-9]+)&#39; [[ &amp;quot;$a&amp;quot; =~ $pat ]] echo &amp;quot;${BASH_REMATCH[0]}&amp;quot; echo &amp;quot;${BASH_REMATCH[1]}&amp;quot; echo &amp;quot;${BASH_REMATCH[2]}&amp;quot;  输出：
+I am a simple string with digits 1234 I am a simple string with digits 1234  glob未匹配时的行为 $ mkdir globbing $ cd globbing $ mkdir -p folder/{sub,another}folder/content/deepfolder/ touch macy stacy tracy &amp;quot;file with space&amp;quot; folder/{sub,another}folder/content/deepfolder/file .hiddenfile $ shopt -u nullglob $ shopt -u failglob $ shopt -u dotglob $ shopt -u nocaseglob $ shopt -u extglob $ shopt -u globstar  在这个例子里面，使用nullglob和failglob时将没有匹配任何内容。无论使用了哪一个，如果没有匹配的时候，bash将会返回glob本身。</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(三十三)</title>
