@@ -6,10 +6,19 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 03 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 04 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(三十六)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-36.html</link>
+      <pubDate>Mon, 04 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-36.html</guid>
+      <description>内部变量 参考：Bash Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(三十五)</title>

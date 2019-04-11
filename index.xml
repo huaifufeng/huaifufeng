@@ -6,10 +6,31 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 03 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 04 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(三十六)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-36.html</link>
+      <pubDate>Mon, 04 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-36.html</guid>
+      <description>内部变量 参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（四十一）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-41.html</link>
+      <pubDate>Mon, 04 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-41.html</guid>
+      <description>搜索/查找错误提交 二进制搜索(git bisect) git bisect允许你使用二进制搜索查找哪个提交引入了错误。
+首先通过两个提交的引用来搜索：一个在bug之前的提交，一个在bug之后的提交。一般来说，错误的提交时HEAD。
+# start the git bisect session $ git bisect start # give a commit where the bug doesn&#39;t exist $ git bisect good 49c747d # give a commit where the bug exist $ git bisect bad HEAD  这里git开启了一个二进制搜索：这里把修订分为两个部分，并把仓库切换到中间的修订。检查代码确定这个修订是好的还是坏的：
+# tell git the revision is good, # which means it doesn&#39;t contain the bug $ git bisect good # if the revision contains the bug, # then tell git it&#39;s bad $ git bisect bad  git会根据你的操作对没有改包含错误修改的部分进行二进制的搜索。git最后只会有一个修改版本，除非你标记错误了，否则这个版本就是包含错误的版本。</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(三十五)</title>
@@ -26,6 +47,17 @@ $ cat /etc/shells # /etc/shells: valid login shells /bin/sh /bin/dash /bin/bash 
     </item>
     
     <item>
+      <title>Git专业笔记（四十）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-40.html</link>
+      <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-40.html</guid>
+      <description>使用gitk图形化显示提交历史 显示一个文件的提交历史 gitk path/to/myfile  显示两个提交之间的提交 假设你有d9e1db9和5651067两个提交，然后想要看这两个提交之间的提交。d9e1db9是老提交，5651067是提交链上的末尾提交。
+gitk --ancestry-path d9e1db9 5651067  显示tag之后的提交 如果你有v2.3的tag，你可以获取这个tag之后的所有提交
+gitk v2.3..  参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(三十四)</title>
       <link>http://blog.huaifufeng.com/2019/03/post/bash-section-34.html</link>
       <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
@@ -33,6 +65,18 @@ $ cat /etc/shells # /etc/shells: valid login shells /bin/sh /bin/dash /bin/bash 
       <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-34.html</guid>
       <description>模式匹配和正则表达式 获取字符串正则匹配的内容 a=&#39;I am a simple string with digits 1234&#39; pat=&#39;(.*) ([0-9]+)&#39; [[ &amp;quot;$a&amp;quot; =~ $pat ]] echo &amp;quot;${BASH_REMATCH[0]}&amp;quot; echo &amp;quot;${BASH_REMATCH[1]}&amp;quot; echo &amp;quot;${BASH_REMATCH[2]}&amp;quot;  输出：
 I am a simple string with digits 1234 I am a simple string with digits 1234  glob未匹配时的行为 $ mkdir globbing $ cd globbing $ mkdir -p folder/{sub,another}folder/content/deepfolder/ touch macy stacy tracy &amp;quot;file with space&amp;quot; folder/{sub,another}folder/content/deepfolder/file .hiddenfile $ shopt -u nullglob $ shopt -u failglob $ shopt -u dotglob $ shopt -u nocaseglob $ shopt -u extglob $ shopt -u globstar  在这个例子里面，使用nullglob和failglob时将没有匹配任何内容。无论使用了哪一个，如果没有匹配的时候，bash将会返回glob本身。</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（三十九）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-39.html</link>
+      <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-39.html</guid>
+      <description>bundles 在本地创建一个bundle并应用到另一个 如果你想保持没有网络的机器上面的仓库的版本信息。 bundle允许你打包一台机器上这个仓库的对象和引用，然后应用到另一台机器的仓库上。
+git tag 2016_07_04 git bundle create changes_between_tags.bundle [some_previous_tag]..2016_07_24  以某种方式把changes_between_tags.bundle传到远端的机器上，例如：thumb drive。一旦你有了这个文件：
+git bundle verify changes_between_tags.bundle # make sure bundle arrived intact git checkout [some branch] # in the repo on the remote machine git bundle list-heads changes_between_tags.bundle # list the references in the bundle git pull changes_between_tags.bundle [reference from the bundle, e.g. last field from the previous output]  反过来也是可能的。一旦对远程存储库进行了更改，您就可以将增量放入bundle里面；将更改放在（例如）一个拇指驱动器上，然后将它们合并回本地存储库，这样两个存储库就可以保持同步，而不需要在计算机之间直接访问git、ssh、rsync或http协议。
+参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>

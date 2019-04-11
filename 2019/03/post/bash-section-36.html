@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="修改shell">
+    <meta name="description" content="内部变量">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(三十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(三十六)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-35.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-36.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -138,9 +138,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(三十五)</h1>
+                    <h1>Bash专业笔记(三十六)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, March 3, 2019
+                    <span  class="meta">Posted by 怀府风 on Monday, March 4, 2019
                         
                     </span>
                 </div>
@@ -170,54 +170,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#修改shell">修改shell</a>
-<ul>
-<li><a href="#查找当前的shell">查找当前的shell</a></li>
-<li><a href="#列出所有有效shell">列出所有有效shell</a></li>
-<li><a href="#修改shell-1">修改shell</a></li>
-</ul></li>
+<li><a href="#内部变量">内部变量</a></li>
 </ul></li>
 </ul>
 </nav>
         		
         		
 
-<h2 id="修改shell">修改shell</h2>
-
-<h3 id="查找当前的shell">查找当前的shell</h3>
-
-<p>有好几种方式获取当前的shell：</p>
-
-<pre><code>echo $0
-ps -p $$ 
-echo $SHELL
-</code></pre>
-
-<h3 id="列出所有有效shell">列出所有有效shell</h3>
-
-<p>列出所有有效的shell</p>
-
-<pre><code>cat /etc/shells
-</code></pre>
-
-<p>例如：</p>
-
-<pre><code>$ cat /etc/shells
-# /etc/shells: valid login shells /bin/sh
-/bin/dash
-/bin/bash
-/bin/rbash
-</code></pre>
-
-<h3 id="修改shell-1">修改shell</h3>
-
-<p>修改当前的shell可以使用下面的命令：</p>
-
-<pre><code> export SHELL=/bin/bash 
- exec /bin/bash
-</code></pre>
-
-<p>修改.profile文件，添加上面的内容。</p>
+<h2 id="内部变量">内部变量</h2>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -227,13 +187,9 @@ echo $SHELL
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/03/post/git-section-41.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十一）">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-40.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/git-section-41.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十一）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

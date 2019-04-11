@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="修改shell">
+    <meta name="description" content="搜索/查找错误提交">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(三十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（四十一）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-35.html">
+    <link rel="canonical" href="/2019/03/post/git-section-41.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(三十五)</h1>
+                    <h1>Git专业笔记（四十一）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, March 3, 2019
+                    <span  class="meta">Posted by 怀府风 on Monday, March 4, 2019
                         
                     </span>
                 </div>
@@ -170,11 +170,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#修改shell">修改shell</a>
+<li><a href="#搜索-查找错误提交">搜索/查找错误提交</a>
 <ul>
-<li><a href="#查找当前的shell">查找当前的shell</a></li>
-<li><a href="#列出所有有效shell">列出所有有效shell</a></li>
-<li><a href="#修改shell-1">修改shell</a></li>
+<li><a href="#二进制搜索-git-bisect">二进制搜索(git bisect)</a></li>
+<li><a href="#半自动查找错误提交">半自动查找错误提交</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -182,44 +181,84 @@
         		
         		
 
-<h2 id="修改shell">修改shell</h2>
+<h2 id="搜索-查找错误提交">搜索/查找错误提交</h2>
 
-<h3 id="查找当前的shell">查找当前的shell</h3>
+<h3 id="二进制搜索-git-bisect">二进制搜索(git bisect)</h3>
 
-<p>有好几种方式获取当前的shell：</p>
+<p><a href="https://git-scm.com/docs/git-bisect">git bisect</a>允许你使用二进制搜索查找哪个提交引入了错误。</p>
 
-<pre><code>echo $0
-ps -p $$ 
-echo $SHELL
+<p>首先通过两个提交的引用来搜索：一个在bug之前的提交，一个在bug之后的提交。一般来说，错误的提交时HEAD。</p>
+
+<pre><code class="language-shell"># start the git bisect session
+$ git bisect start
+# give a commit where the bug doesn't exist
+$ git bisect good 49c747d
+# give a commit where the bug exist
+$ git bisect bad HEAD
 </code></pre>
 
-<h3 id="列出所有有效shell">列出所有有效shell</h3>
+<p>这里<code>git</code>开启了一个二进制搜索：这里把修订分为两个部分，并把仓库切换到中间的修订。检查代码确定这个修订是好的还是坏的：</p>
 
-<p>列出所有有效的shell</p>
+<pre><code># tell git the revision is good,
+# which means it doesn't contain the bug 
+$ git bisect good
 
-<pre><code>cat /etc/shells
+# if the revision contains the bug, 
+# then tell git it's bad
+$ git bisect bad
 </code></pre>
 
-<p>例如：</p>
+<p><code>git</code>会根据你的操作对没有改包含错误修改的部分进行二进制的搜索。<code>git</code>最后只会有一个修改版本，除非你标记错误了，否则这个版本就是包含错误的版本。</p>
 
-<pre><code>$ cat /etc/shells
-# /etc/shells: valid login shells /bin/sh
-/bin/dash
-/bin/bash
-/bin/rbash
+<p>然后不要忘记执行<code>git bisect reset</code>来退出这次搜索，返回到HEAD。</p>
+
+<pre><code>$ git bisect reset
 </code></pre>
 
-<h3 id="修改shell-1">修改shell</h3>
+<p>如果你有一个可以坚持这个bug的脚本，可以使用这个脚本自动处理这个过程：</p>
 
-<p>修改当前的shell可以使用下面的命令：</p>
-
-<pre><code> export SHELL=/bin/bash 
- exec /bin/bash
+<pre><code>$ git bisect run [script] [arguments]
 </code></pre>
 
-<p>修改.profile文件，添加上面的内容。</p>
+<p><code>[script]</code>是你的脚本的位置，<code>[arguments]</code>是任何你要传个这个脚本的参数。</p>
 
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<p>执行这个命令将会自动的进行二进制搜索，根据你脚本的返回值执行<code>git bisect good</code>或者<code>git bisect bad</code>。返回0代表是<code>good</code>，返回<code>1-124,126,127</code>代表是<code>bad</code>。125代表这个脚本无法判断这个修改，将会触发<code>git bisect skip</code>。</p>
+
+<h3 id="半自动查找错误提交">半自动查找错误提交</h3>
+
+<p>想象一下你在<code>master</code>分支上，但是一些功能没有如期进行(引入回归)，但是你不知道哪里有问题。但是你知道，在上一个版本(例如tag或者提交的hash值，这里使用<code>old-rel</code>代替)，这个功能还是好的。</p>
+
+<p>git将会帮助你，使用很少的步骤(二进制搜索)找到出现问题的地方。</p>
+
+<p>首先开始一个bisect：</p>
+
+<pre><code>git bisect start master old-rel
+</code></pre>
+
+<p>这会通知git<code>master</code>是一个会的版本(或第一个坏的版本)，<code>old-rel</code>是最后一个好的版本。</p>
+
+<p>git现在会在两个提交之间checkout一个分类的head。现在你可以进行测试，检查它是否有效。</p>
+
+<pre><code>git bisect good
+</code></pre>
+
+<p>或</p>
+
+<pre><code>git bisect bad
+</code></pre>
+
+<p>如果无法测试这个提交，你可以简单的<code>git reset</code>然后测试另外一个，git可以处理这个问题。</p>
+
+<p>在一些步骤之后，git就会输出错误提交的hash值。</p>
+
+<p>为了中的bisect处理过程：</p>
+
+<pre><code>git bisect reset
+</code></pre>
+
+<p>然后会返回之前的状态。</p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -228,12 +267,12 @@ echo $SHELL
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/git-section-41.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十一）">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-36.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十六)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-40.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-35.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十五)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

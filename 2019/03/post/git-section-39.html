@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="修改shell">
+    <meta name="description" content="bundles">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(三十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（三十九）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-35.html">
+    <link rel="canonical" href="/2019/03/post/git-section-39.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -133,14 +133,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(三十五)</h1>
+                    <h1>Git专业笔记（三十九）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, March 3, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, March 2, 2019
                         
                     </span>
                 </div>
@@ -170,11 +170,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#修改shell">修改shell</a>
+<li><a href="#bundles">bundles</a>
 <ul>
-<li><a href="#查找当前的shell">查找当前的shell</a></li>
-<li><a href="#列出所有有效shell">列出所有有效shell</a></li>
-<li><a href="#修改shell-1">修改shell</a></li>
+<li><a href="#在本地创建一个bundle并应用到另一个">在本地创建一个bundle并应用到另一个</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -182,44 +180,27 @@
         		
         		
 
-<h2 id="修改shell">修改shell</h2>
+<h2 id="bundles">bundles</h2>
 
-<h3 id="查找当前的shell">查找当前的shell</h3>
+<h3 id="在本地创建一个bundle并应用到另一个">在本地创建一个bundle并应用到另一个</h3>
 
-<p>有好几种方式获取当前的shell：</p>
+<p>如果你想保持没有网络的机器上面的仓库的版本信息。 bundle允许你打包一台机器上这个仓库的对象和引用，然后应用到另一台机器的仓库上。</p>
 
-<pre><code>echo $0
-ps -p $$ 
-echo $SHELL
+<pre><code>git tag 2016_07_04
+git bundle create changes_between_tags.bundle [some_previous_tag]..2016_07_24
 </code></pre>
 
-<h3 id="列出所有有效shell">列出所有有效shell</h3>
+<p>以某种方式把<code>changes_between_tags.bundle</code>传到远端的机器上，例如：thumb drive。一旦你有了这个文件：</p>
 
-<p>列出所有有效的shell</p>
-
-<pre><code>cat /etc/shells
+<pre><code>git bundle verify changes_between_tags.bundle # make sure bundle arrived intact
+git checkout [some branch] # in the repo on the remote machine
+git bundle list-heads changes_between_tags.bundle # list the references in the bundle
+git pull changes_between_tags.bundle [reference from the bundle, e.g. last field from the previous output]
 </code></pre>
 
-<p>例如：</p>
+<p>反过来也是可能的。一旦对远程存储库进行了更改，您就可以将增量放入bundle里面；将更改放在（例如）一个拇指驱动器上，然后将它们合并回本地存储库，这样两个存储库就可以保持同步，而不需要在计算机之间直接访问git、ssh、rsync或http协议。</p>
 
-<pre><code>$ cat /etc/shells
-# /etc/shells: valid login shells /bin/sh
-/bin/dash
-/bin/bash
-/bin/rbash
-</code></pre>
-
-<h3 id="修改shell-1">修改shell</h3>
-
-<p>修改当前的shell可以使用下面的命令：</p>
-
-<pre><code> export SHELL=/bin/bash 
- exec /bin/bash
-</code></pre>
-
-<p>修改.profile文件，添加上面的内容。</p>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -228,12 +209,12 @@ echo $SHELL
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/git-section-41.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十一）">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-34.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十四)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-40.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-33.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十三)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
