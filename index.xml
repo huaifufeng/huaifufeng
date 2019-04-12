@@ -6,10 +6,19 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 04 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（四十二）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-42.html</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-42.html</guid>
+      <description>blame    参数 详情     filename 需要显示详情的文件名称   -f 在详情中显示文件的名称   -e 使用作者的邮箱地址代替作者的名称   -w 当在父子版本之间比较时忽略掉空格   -L start,end 显示指定行范围内的详情，行从1开始。例如 git blame -L 1,2 [filename]   —show-stats 在详情末尾输出额外的统计信息   -l 输出长的hash值(默认不输出)   -t 输出时间戳(默认输出时间格式)   -reverse 反向输出详情信息   -p,—porcelain 输出机器理解的格式   -M 检查文件中移动或复制的行   -C 除了想-M一样，还检查统一提交中其他文件中移动或复制的行   -h 显示帮助信息   -c 使用和git annotate相同格式的输出(默认off)   -n 输出在原来提交中的行号(默认off)    只显示指定的行 输出可以被限定在指定的行区间内：</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(三十六)</title>
