@@ -6,10 +6,34 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 05 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（一）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-1.html</link>
+      <pubDate>Mon, 01 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-1.html</guid>
+      <description>开始使用PHP PHP 7.x
+   版本 支持截止时间 发版时间     7.1 2019-12-01 2016-12-01   7.0 2018-12-03 2015-12-03    PHP 5.x
+   版本 支持截止时间 发版时间     5.6 2018-12-31 2014-08-28   5.5 2016-07-21 2013-06-20   5.4 2015-09-03 2012-03-01   5.3 2014-08-14 2009-06-30   5.2 2011-01-06 2006-11-02   5.1 2006-08-24 2005-11-24   5.0 2005-09-05 2004-07-13    PHP 4.</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（四十三）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-43.html</link>
+      <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-43.html</guid>
+      <description>git revisions的语法 通过对象名指定revision $ git show dae86e1950b1277e545cee180551750029cfe735 $ git show dae86e19  你可以使用SHA-1对象名称（完整的40位16进制字符串，或者在仓库中唯一的部分字符串）指定revision(或者任何的对象：tag，tree等待。目录内容，blob等等文件内容)。
+象征的引用名称：分支，tag，远端分支 $ git log master #指定分支 $ git show v1.0 #指定tag $ git show HEAD #指定当前分支 $ git show origin #指定远端Origin默认追踪的分支  你可以使用象征名称指定一个revision：例如分支(如 master next 等)，tag(如v1.0 v2.0等)，如远端追踪分支(例如 origin，origin/master等)，或者当前分支的特定名称HEAD。
+如果符号引用名称不明确，例如，如果同时具有名为“fix”的分支和标记（不建议使用同名的分支和标记），则需要指定要使用的引用类型：
+$ git show heads/fix #或者 refs/heads/fix $ git show tags/fix #或者 refs/tags/fix  默认的revision:HEAD $ git show #等价于git show HEAD  HEAD是你当前工作树基于的提交所在的分支，通常是当前分支。很多(但不是全部)命令如果没有蚕食时都会使用HEAD作为默认的值。
+Reflog references: @{} $ git show @{1} #显示当前分支的reflog $ git show master@{1} #显示分支master的reflog $ git show HEAD@{1} #显示HEAD的reflog  一个引用(通常是一个分支或HEAD)后面跟着@之后一个{}包围的数字，指定当前仓库向前数第n个的提交。你可以使用git reflog命令或者使用git log的—walk-reflogs/ -g选项。</description>
+    </item>
     
     <item>
       <title>Git专业笔记（四十二）</title>

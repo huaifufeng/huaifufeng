@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="开始使用PHP">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（一）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/php-section-1.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（一）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, April 1, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#开始使用php">开始使用PHP</a>
+<ul>
+<li><a href="#web服务器输出html">web服务器输出HTML</a></li>
+<li><a href="#hello-world">Hello, World!</a></li>
+<li><a href="#web服务器输出非html内容">web服务器输出非HTMl内容</a></li>
+<li><a href="#php内建服务器">PHP内建服务器</a>
+<ul>
+<li><a href="#示例">示例：</a></li>
+<li><a href="#配置">配置</a></li>
+<li><a href="#logs">Logs</a></li>
+</ul></li>
+<li><a href="#php命令行">PHP命令行</a>
+<ul>
+<li><a href="#触发">触发</a></li>
+<li><a href="#输出">输出</a>
+<ul>
+<li><a href="#example-php">Example.php</a></li>
+<li><a href="#shell命令行">Shell命令行</a></li>
+<li><a href="#输入">输入</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#指令分离">指令分离</a></li>
+<li><a href="#php标记">PHP标记</a>
+<ul>
+<li><a href="#标准标记">标准标记</a></li>
+<li><a href="#echo标记">echo标记</a></li>
+<li><a href="#短标记">短标记</a></li>
+<li><a href="#asp标记">ASP标记</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="开始使用php">开始使用PHP</h2>
+
+<p>PHP 7.x</p>
+
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>支持截止时间</th>
+<th>发版时间</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="https://www.php.net/releases/7_1_0.php">7.1</a></td>
+<td>2019-12-01</td>
+<td>2016-12-01</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/7_0_0.php">7.0</a></td>
+<td>2018-12-03</td>
+<td>2015-12-03</td>
+</tr>
+</tbody>
+</table>
+
+<p>PHP 5.x</p>
+
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>支持截止时间</th>
+<th>发版时间</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="https://www.php.net/releases/5_6_0.php">5.6</a></td>
+<td>2018-12-31</td>
+<td>2014-08-28</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/5_6_0.php">5.5</a></td>
+<td>2016-07-21</td>
+<td>2013-06-20</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/5_4_0.php">5.4</a></td>
+<td>2015-09-03</td>
+<td>2012-03-01</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/5_3_0.php">5.3</a></td>
+<td>2014-08-14</td>
+<td>2009-06-30</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/5_2_0.php">5.2</a></td>
+<td>2011-01-06</td>
+<td>2006-11-02</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/5_1_0.php">5.1</a></td>
+<td>2006-08-24</td>
+<td>2005-11-24</td>
+</tr>
+
+<tr>
+<td><a href="http://news.php.net/php.announce/50">5.0</a></td>
+<td>2005-09-05</td>
+<td>2004-07-13</td>
+</tr>
+</tbody>
+</table>
+
+<p>PHP 4.x</p>
+
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>支持截止时间</th>
+<th>发版时间</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="https://php.net/releases/4_4_0.php">4.4</a></td>
+<td>2008–08-07</td>
+<td>2005-07-11</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/4_3_0.php">4.3</a></td>
+<td>2005-03-31</td>
+<td>2002-12-27</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/4_2_0.php">4.2</a></td>
+<td>2002-09-06</td>
+<td>2002-04-22</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/releases/4_1_0.php">4.1</a></td>
+<td>2002-03-12</td>
+<td>2001-12-10</td>
+</tr>
+
+<tr>
+<td><a href="http://news.php.net/php.announce/22">4.0</a></td>
+<td>2001-06-23</td>
+<td>2000-05-22</td>
+</tr>
+</tbody>
+</table>
+
+<p>逻辑版本</p>
+
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>支持截止时间</th>
+<th>发版时间</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><a href="https://www.php.net/manual/php3.php">3.0</a></td>
+<td>2000-10-20</td>
+<td>1998-06-06</td>
+</tr>
+
+<tr>
+<td><a href="https://www.php.net/manual/phpfi2.php">2.0</a></td>
+<td></td>
+<td>1997-11-01</td>
+</tr>
+
+<tr>
+<td><a href="http://museum.php.net/php1/">1.0</a></td>
+<td></td>
+<td>1995-06-08</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="web服务器输出html">web服务器输出HTML</h3>
+
+<p>PHP可以用来在HTML文件里面添加内容。当HTML被web服务器处理的时候，PHP的脚本将会被web服务器执行，然后结果的HTML内容将会被输出到浏览器。</p>
+
+<p>下面的HTML代码包含了一个输出<code>Hello World!</code>的内容到HTML中的PHP代码：</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;PHP!&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;&lt;?php echo &quot;Hello World!&quot;; ?&gt;&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>当这些内容被保存到一个PHP的脚本，并且被一个web服务器执行之后。下面的HTML代码将会被发送给用户的浏览器：</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+				&lt;title&gt;PHP!&lt;/title&gt; 
+		&lt;/head&gt;
+		&lt;body&gt;
+				&lt;p&gt;Hello world!&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>PHP 5.x Version&gt;=5.4</p>
+
+<p><code>echo</code>有一种短语法，可以让你打印相同的值。在PHP 5.4.0之前，这种短语法只有在<a href="http://php.net/manual/en/ini.core.php#ini.short-open-tag">short_open_tag</a>开启的情况下才会生效。</p>
+
+<p>例如，下面的代码：</p>
+
+<pre><code>&lt;p&gt;&lt;?= &quot;Hello World!&quot; ?&gt;&lt;/p&gt;
+</code></pre>
+
+<p>它的输出和下面代码的输出是完全等级的：</p>
+
+<pre><code>&lt;p&gt;&lt;?php echo &quot;Hello world!&quot;; ?&gt;&lt;/p&gt;
+</code></pre>
+
+<p>实际的应用中，所有由PHP输出到HTML页面的代码都有进行转义，用来防范XSS(跨站脚本工具)攻击或文本损坏。</p>
+
+<p>也可以查看<a href="http://www.php-fig.org/psr/psr-1/">PSR-1</a>：描述了正确的开发方式，包括使用短标签(&lt;?= ?&gt;)</p>
+
+<h3 id="hello-world">Hello, World!</h3>
+
+<p>在PHP里面最常用的打印输出的方法是<code>echo</code>:</p>
+
+<pre><code>echo &quot;Hello, World!\n&quot;;
+</code></pre>
+
+<p>另外，你可以使用<code>print</code>:</p>
+
+<pre><code>print &quot;Hello, World!\n&quot;;
+</code></pre>
+
+<p>这两个语句实现了相同的功能，但有一些细微的区别：</p>
+
+<ul>
+<li><code>echo</code>没有返回值，但是<code>print</code>有一个int型的1返回值</li>
+<li><code>echo</code>不加括号时可以有多个参数，但是<code>print</code>只能有一个参数</li>
+<li><code>echo</code>比<code>print</code><a href="http://www.phpbench.com/">稍微快一些</a></li>
+</ul>
+
+<p><code>echo</code>和<code>print</code>都是语言结构，而不是一个函数。这意味着它们不需要为参数加上括号。当然也可以和函数一样，使用括号。很多地方都有使用<code>echo</code>和<code>print</code>的地方。</p>
+
+<p>和C类似的<code>printf</code>方法也是支持的，像下面这个例子：</p>
+
+<pre><code>printf(&quot;%s\n&quot;, &quot;Hello, World!&quot;);
+</code></pre>
+
+<p>有关在PHP中输出变量的全面介绍，可以在后面的&rdquo;输出变量的值&rdquo;中详细查看。</p>
+
+<h3 id="web服务器输出非html内容">web服务器输出非HTMl内容</h3>
+
+<p>有时候，需要修改web服务器的默认内容格式。例如，在某些情况下，你可能需要输出纯文本，JSON，或者XML等等。</p>
+
+<p><code>header()</code>函数可以发送一个原生的HTTP头。你可以添加<code>Content-Type</code>头来通知浏览器我们发送内容的格式。</p>
+
+<p>看下面的代码，我们发送的头<code>Content-Type</code>是<code>text/plain</code>格式的内容：</p>
+
+<pre><code>header(&quot;Content-Type: text/plain&quot;);
+echo &quot;Hello World!&quot;;
+</code></pre>
+
+<p>这将会产生一个包含下面内容的纯文本文件：</p>
+
+<blockquote>
+<p>Hello World!</p>
+</blockquote>
+
+<p>要产生一个<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse">JSON</a>文件，可以使用<code>application/json</code>格式的文件内容头：</p>
+
+<pre><code>header(&quot;Content-Type: application/json&quot;);
+
+//创建一个PHP数组
+$data= [&quot;response&quot; =&gt; &quot;Hello World&quot;];
+
+//转换生成一个有效的JSON串
+echo json_encode($data);
+</code></pre>
+
+<p>这将会产生一个包含下面内容的<code>application/json</code>格式的文件：</p>
+
+<blockquote>
+<p>{&ldquo;response&rdquo;:&ldquo;Hello World&rdquo;}</p>
+</blockquote>
+
+<p>注意：<code>header()</code>方法必须在PHP输出任何内容之前，或者已经发生响应头之前执行。下面的代码：</p>
+
+<pre><code>//错误：我们不能在header方法之前发送内容
+echo &quot;Hello&quot;;
+
+//header必须在其他输出之前执行
+header(&quot;Content-Type: text/plain&quot;);
+echo &quot;World&quot;;
+</code></pre>
+
+<p>这将会产生一个报警：</p>
+
+<blockquote>
+<p><strong>Warning：</strong>不能修改头信息-头信息已经发送了(输出产生在/dir/example.php:2) /dir/example.php 第3行</p>
+</blockquote>
+
+<p>当使用<code>header()</code>函数的时候，它必须是第一个从服务器发送的字节。因为这个原因，在PHP开始符<code>&lt;?php</code>之前不能有空行或者空格。同样的原因，在<a href="http://www.php-fig.org/psr/psr-2/#2-2-files">PSR-2</a>中，省略PHP的结束符<code>?&gt;</code>，使用PHP的代码作为文件的结尾是一种非常号的编程方式。</p>
+
+<p>可以查看&rdquo;输出缓存&rdquo;章节，来学习怎么把你的内容放入一个变量，之后在输出这些内容，例如在header方法之后。</p>
+
+<h3 id="php内建服务器">PHP内建服务器</h3>
+
+<p>PHP 5.4+开始提供一个开发用的服务器。这可以被用来运行代码而不必按照生存使用的服务器，如nginx和Apache。这个内建服务器是为了开发和测试建立的。</p>
+
+<p>可以通过<code>-S</code>选项来开启这个服务器：</p>
+
+<pre><code>php -S host/ip:port
+</code></pre>
+
+<h4 id="示例">示例：</h4>
+
+<ol>
+<li>创建一个包含下面内容的<code>index.php</code>文件：</li>
+</ol>
+
+<pre><code>   &lt;?php
+   echo &quot;Hello World from built-in PHP server&quot;;
+</code></pre>
+
+<ol>
+<li><p>在命令行中运行<code>php -S localhost:8080</code>这个命令。记住不要包含<code>http://</code>。这将开始一个监听8080端口，以当前目录为根目录的服务器。</p></li>
+
+<li><p>打开浏览器，输出<code>localhost:8080</code>。你就可以在浏览器中开的<code>Hello World</code>。</p></li>
+</ol>
+
+<h4 id="配置">配置</h4>
+
+<p>要替换默认的文件根目录(例如：当前的目录)。可以使用<code>-t</code>选项：</p>
+
+<pre><code>php -S &lt;host/ip&gt;:&lt;port&gt; -t &lt;directory&gt;
+</code></pre>
+
+<p>例如：你有一个<code>public/</code>目录，你可以使用下面的命令把<code>public</code>目录作为服务器的文件根目录：</p>
+
+<pre><code>php -S localhost:8080 -t public/
+</code></pre>
+
+<h4 id="logs">Logs</h4>
+
+<p>开发服务器的每次请求，都会在命令行下面输出下面的内容：</p>
+
+<pre><code>[Mon Aug 15 18:20:19 2016] ::1:52455 [200]: /
+</code></pre>
+
+<h3 id="php命令行">PHP命令行</h3>
+
+<p>PHP也可以直接使用CLI(命令行接口)来运行命令。</p>
+
+<p>CLI基本上和PHPweb服务器执行过程，除了输入和输出的不同。</p>
+
+<h4 id="触发">触发</h4>
+
+<p>PHP的CLI允许你用四种方式执行PHP：</p>
+
+<ol>
+<li>标准输入。运行没有参数的PHP命令，但是使用管道执行：<code>echo '&lt;?php echo &quot;Hello World!&quot;;' | php</code></li>
+<li>把文件名作为参数。执行<code>php</code>命令，其中php源码文件是第一个参数：<code>php hello_world.php</code></li>
+<li>把代码作为参数。使用<code>-r</code>选项执行php命令，后面是要执行的代码。其中<code>&lt;?php</code>不是需要的，任何参数都被认为是PHP代码。<code>php -r 'echo &quot;Hello World!&quot;';</code></li>
+<li>交互模式。使用<code>-a</code>选项来开启一个交互的shell。然后输入php代码，按下<code>return</code>执行。<code>$ php -a</code>开启交互。<code>php &gt; echo &quot;Hello World!&quot;</code></li>
+</ol>
+
+<h4 id="输出">输出</h4>
+
+<p>所有那些用来在web服务器产生输出的函数和控制都可以用来进行标准输出（文件标识符1），所有在web服务器产生错误的操作都会产生错误输出(文件标识符2)。</p>
+
+<h5 id="example-php">Example.php</h5>
+
+<pre><code>&lt;?php
+echo &quot;Stdout 1\n&quot;;
+trigger_error(&quot;Stderr 2\n&quot;); print_r(&quot;Stdout 3\n&quot;);
+fwrite(STDERR, &quot;Stderr 4\n&quot;);
+throw new RuntimeException(&quot;Stderr 5\n&quot;); 
+?&gt;
+Stdout 6
+</code></pre>
+
+<h5 id="shell命令行">Shell命令行</h5>
+
+<pre><code>$ php Example.php 2&gt;stderr.log &gt;stdout.log;\
+&gt; echo STDOUT; cat stdout.log; echo;\
+&gt; echo STDERR; cat stderr.log\
+
+STDOUT
+Stdout 1
+Stdout 3
+
+STDERR
+Stderr 4
+PHP Notice:  Stderr 2
+ in /Example.php on line 3
+PHP Fatal error:  Uncaught RuntimeException: Stderr 5
+in /Example.php:6 Stack trace:
+#0 {main}
+ thrown in /Example.php on line 6
+</code></pre>
+
+<h5 id="输入">输入</h5>
+
+<p>查看：命令行接口(CLI)部分</p>
+
+<h3 id="指令分离">指令分离</h3>
+
+<p>像大多数类C的语言一样，没一个语句都是用一个分号结尾。当然，一个结束符也可以作为PHP代码的结束标志。</p>
+
+<p>如果PHP代码最后使用分号结尾，代码结束符是可选的，如果之后已经没有代码了。例如，在下面的代码中，我们可以省略<code>echo &quot;No error&quot;;</code>后面的结尾符。</p>
+
+<pre><code>&lt;?php echo &quot;No error&quot;; //没有结束符
+</code></pre>
+
+<p>然而，如果PHP代码块之后还有其他的代码，这里的结束符是不能省略的：</p>
+
+<pre><code>&lt;?php echo &quot;This will cause an error if you leave out the closing tag&quot;; ?&gt; 
+&lt;html&gt;
+		&lt;body&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>如果PHP代码块的最后有一个结束符，我们可以省略末尾的分号：</p>
+
+<pre><code> &lt;?php echo &quot;I hope this helps! :D&quot;; 
+ echo &quot;No error&quot; ?&gt;
+</code></pre>
+
+<p>通常推荐在每一个语句后面使用分号，处理后面没有代码之外，每一个PHP代码块都使用结束符。</p>
+
+<p>所以你的代码基本是下面这样的：</p>
+
+<pre><code>&lt;?php
+    echo &quot;Here we use a semicolon!&quot;;
+    echo &quot;Here as well!&quot;;
+    echo &quot;Here as well!&quot;;
+    echo &quot;Here we use a semicolon and a closing tag because more code follows&quot;;
+?&gt;
+&lt;p&gt;Some HTML code goes here&lt;/p&gt; &lt;?php
+    echo &quot;Here we use a semicolon!&quot;;
+    echo &quot;Here as well!&quot;;
+    echo &quot;Here as well!&quot;;
+    echo &quot;Here we use a semicolon and a closing tag because more code follows&quot;;
+?&gt;
+&lt;p&gt;Some HTML code goes here&lt;/p&gt; &lt;?php
+    echo &quot;Here we use a semicolon!&quot;;
+    echo &quot;Here as well!&quot;;
+    echo &quot;Here as well!&quot;;
+    echo &quot;Here we use a semicolon but leave out the closing tag&quot;;
+</code></pre>
+
+<h3 id="php标记">PHP标记</h3>
+
+<p>有3中标记来在一个文件中声明PHP代码块。PHP语法分析器寻找开始和结束符(如果存在)，来同时解释器什么代码是需要解析的。</p>
+
+<h4 id="标准标记">标准标记</h4>
+
+<p>这些标签是文件中嵌套PHP代码的标准方法：</p>
+
+<pre><code>&lt;?php
+    echo &quot;Hello World!&quot;;
+?&gt;
+</code></pre>
+
+<p>PHP 5.x Version&gt;=5.4</p>
+
+<h4 id="echo标记">echo标记</h4>
+
+<p>这些标签是所有PHP版本都有效的，但是从5.4开始是默认开启的。在以前的版本中，echo标签总是和短标签一起使用：</p>
+
+<pre><code>&lt;?= &quot;Hello World&quot; ?&gt;
+</code></pre>
+
+<h4 id="短标记">短标记</h4>
+
+<p>你可以使用<code>short_open_tag</code>来开启和关闭短标签：</p>
+
+<pre><code>&lt;?
+		echo &quot;Hello World!&quot;;
+?&gt;
+</code></pre>
+
+<p>短标签：</p>
+
+<ul>
+<li>在所有主要的PHP<a href="http://www.php-fig.org/psr/psr-1/">代码规范</a>中是不被允许的</li>
+<li>在<a href="https://secure.php.net/manual/en/language.basic-syntax.phptags.php">官方文档</a>中是阻止使用的</li>
+<li>在大多版本中是默认禁止的</li>
+<li>干扰内部的XML处理指令</li>
+<li>在大多数开源项目中不被接受</li>
+</ul>
+
+<p>PHP 5.x Version &lt;= 5.6</p>
+
+<h4 id="asp标记">ASP标记</h4>
+
+<p>通过开始<code>asp_tags</code>选项，可以使用ASP格式的标签：</p>
+
+<pre><code>&lt;%
+    echo &quot;Hello World!&quot;;
+%&gt;
+</code></pre>
+
+<p>这是一个历史性的问题，不应该使用。并且它们在PHP7.0中被移除了。</p>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/03/post/git-section-43.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十三）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
