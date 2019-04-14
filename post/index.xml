@@ -6,10 +6,23 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 01 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 02 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（二）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-2.html</link>
+      <pubDate>Tue, 02 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-2.html</guid>
+      <description>变量 变量的变量 可以通过动态的变量名字访问变量。任务允许被动态访问的变量的名字都可以放到另一个变量内。这样的变量就叫做变量的变量。
+想要把一个变量放到另一个变量里面，可以在变量的前面添加一个额外的$符。
+$variableName = &#39;foo&#39;; $foo = &#39;bar&#39;; //下面这些都是等价的，都会输出bar echo $foo; echo ${$variableName}; echo $$variableName; //下面相似的 $variableName = &#39;foo&#39;; $$variableName = &#39;bar&#39;; //下面的语句也会输出bar echo $foo; echo ${$variableName}; echo $$variableName;  变量的变量对于映射函数/方法非常有用。
+function add($a, $b) { return $a + $b; } $funcName = &#39;add&#39;; echo $funcName(1, 2); // outputs 3  这在PHP的类里面是特别有用的：
+class myClass { public function __construct() { $functionName = &#39;doSomething&#39;; $this-&amp;gt;$functionName(&#39;Hello World&#39;); } private function doSomething($string) { echo $string; // Outputs &amp;quot;Hello World&amp;quot; } }  可以单并不要求把变量$variableName放到{}里面：</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（一）</title>
@@ -50,7 +63,8 @@ Reflog references: @{} $ git show @{1} #显示当前分支的reflog $ git show m
       <pubDate>Mon, 04 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-36.html</guid>
-      <description>内部变量 参考：Bash Notes for Professionals book</description>
+      <description>内部变量 简单介绍一下Bash的内部变量，并说明在什么地方，怎么使用以及何时使用这些变量。
+Bash内部变量一览    变量 详情      函数/脚本可以选择的变量或参数。   $* $@ $*和$@和$1 $2..这样的内容是一样的(注意：通常不引用这些内容是没有意义的) &amp;quot;$*&amp;quot; 和 &amp;quot;$1 $2 … 一样。&amp;quot;$@&amp;quot;和&amp;quot;$1&amp;quot; &amp;quot;$2&amp;quot; …一样。&amp;quot;$*&amp;quot;是由$IFS的第一个字符分割的，不一定是空格   $# 传个脚本或者函数的参数的数量   $! 最后放入后台工作(管道的最右边那个)的job的id。(注意：当启用作业控制时，它不一定和作业的组id相同)   $$ bash正在执行的进程的id   $? 最后一个命令的退出状态   $n 指定位置的参数 n=1,2,3,4…9   ${n} 和上面一样，但是n可以大于9   $0 在执行脚本时，是脚本的路径。bash -c &#39;printf &amp;quot;%s\n&amp;quot; &amp;quot;$0&amp;quot;&#39; name。name(内部脚本的第一个参数)或者，argv[0]会获得bash   $_ 命令的最后一个字段   $IFS 内建的字段分隔符   $PATH 用来寻找可执行脚本的路径地址   $OLDPWD 前一个工作目录   PWD 当前的工作目录   FUNCNAME 调用栈内的函数名称数组   BASH_SOURCE 包含FUNCNAME数组中函数的地址的数组。可以用来寻找脚本路径。   $BASH_ALIAS 当前定义别名的管理数组   BASH_REMATCH 上一个正则表达式匹配的结果   BASH_VERSION bash版本的字符串   BASH 到当前执行的bash的绝对路径。(由bash根据argv[0]和$path的值以启发式方式确定；在某些情况下可能是错误的)   BASH_SUBSHELL bash subshell的等级   $UID 运行bash的进程的实际（如果不同则无效）用户ID   $PS1 主进程的命令提示   $PS2 辅助命令行提示（用于附加输入）   PS3 三级命令行提示（用于select循环）   PS4 第四级命令行提示（用于附加详细输出的信息）   RANDOM 0-32767之间的伪随机整数   $REPLY 当变量没有指定时，默认为read的使用的变量。SELECT还用于用户返回的值   PIPESTATUS 数组变量，保存最近执行的前台管道中每个命令的退出状态值。     变量赋值的时候等号前后不能有空格。a=123而不是a = 123。后者（由空格包围的等号）单独表示使用参数=和123运行命令a，尽管在字符串比较运算符（从语法上讲，它是[或[[或使用的任何测试]的参数）中也可以看到。</description>
     </item>
     
     <item>

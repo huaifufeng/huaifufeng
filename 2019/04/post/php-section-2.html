@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="PHP的变量">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（二）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/php-section-2.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（二）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Tuesday, April 2, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#变量">变量</a>
+<ul>
+<li><a href="#变量的变量">变量的变量</a>
+<ul>
+<li><a href="#php5和php7的不同">PHP5和PHP7的不同</a></li>
+</ul></li>
+<li><a href="#数据类型">数据类型</a>
+<ul>
+<li><a href="#null">Null</a></li>
+<li><a href="#boolean">Boolean</a></li>
+<li><a href="#整数">整数</a></li>
+<li><a href="#浮点数">浮点数</a></li>
+<li><a href="#数组">数组</a></li>
+<li><a href="#字符串">字符串</a></li>
+<li><a href="#对象">对象</a></li>
+<li><a href="#资源">资源</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="变量">变量</h2>
+
+<h3 id="变量的变量">变量的变量</h3>
+
+<p>可以通过动态的变量名字访问变量。任务允许被动态访问的变量的名字都可以放到另一个变量内。这样的变量就叫做变量的变量。</p>
+
+<p>想要把一个变量放到另一个变量里面，可以在变量的前面添加一个额外的$符。</p>
+
+<pre><code>$variableName = 'foo';
+$foo = 'bar';
+
+//下面这些都是等价的，都会输出bar
+echo $foo;
+echo ${$variableName};
+echo $$variableName;
+
+//下面相似的
+$variableName = 'foo';
+$$variableName = 'bar';
+
+//下面的语句也会输出bar
+echo $foo;
+echo ${$variableName};
+echo $$variableName;
+</code></pre>
+
+<p>变量的变量对于映射函数/方法非常有用。</p>
+
+<pre><code>function add($a, $b) { 
+		return $a + $b;
+}
+$funcName = 'add';
+echo $funcName(1, 2); // outputs 3
+</code></pre>
+
+<p>这在PHP的类里面是特别有用的：</p>
+
+<pre><code>class myClass {
+    public function __construct() {
+        $functionName = 'doSomething';
+        $this-&gt;$functionName('Hello World');
+    }
+    private function doSomething($string) { 
+        echo $string; // Outputs &quot;Hello World&quot;
+    } 
+}
+</code></pre>
+
+<p>可以单并不要求把变量<code>$variableName</code>放到{}里面：</p>
+
+<pre><code>${$variableName} = $value;
+</code></pre>
+
+<p>下面的例子是等价的，并且都会输出<code>baz</code>:</p>
+
+<pre><code>$fooBar = 'baz';
+$varPrefix = 'foo';
+
+echo $fooBar; // Outputs &quot;baz&quot;
+echo ${$varPrefix . 'Bar'}; // Also outputs &quot;baz&quot;
+</code></pre>
+
+<p>只有当变量本身是一个表达式的时候，{}才是必须的，就像下面这样：</p>
+
+<pre><code>${$variableNamePart1 . $variableNamePart2} = $value;
+</code></pre>
+
+<p>但是建议始终使用{}，因为这更加易于阅读。</p>
+
+<p>虽然不建议这么做，但是可以连接多个变量：</p>
+
+<pre><code> $$$$$$$$DoNotTryThisAtHomeKids = $value;
+</code></pre>
+
+<blockquote>
+<p>重点注意：变量的变量被过渡使用被许多开发者认为是一种坏的开发习惯。由于它们不太适合现代IDE进行静态分析，因此具有许多变量的变量（或动态方法调用）的大型代码很快就会变得难以维护。</p>
+</blockquote>
+
+<h4 id="php5和php7的不同">PHP5和PHP7的不同</h4>
+
+<p>另外一个使用{}或()的原因是，PHP5和PHP7在处理动态变量时会有细微的不同，同一个表达式会有不同的结果。</p>
+
+<p>在PHP7中，动态变量、属性和方法会严格按照从左到右的顺序解析，而不会出现PHP5混合使用的情况。</p>
+
+<p>Case 1：<code>$$foo['bar']['baz']</code></p>
+
+<ul>
+<li>PHP5解析结果：<code>${$foo['bar']['baz']}</code></li>
+<li>PHP7解析结果：<code>($$foo)['bar']['baz']</code></li>
+</ul>
+
+<p>Case 2: <code>$foo-&gt;$bar['baz']</code></p>
+
+<ul>
+<li>PHP5解析结果：<code>$foo-&gt;{$bar['baz']}</code></li>
+<li>PHP7解析结果：<code>($foo-&gt;$bar)['baz']</code></li>
+</ul>
+
+<p>Case 3: <code>$foo-&gt;$bar['baz']()</code></p>
+
+<ul>
+<li>PHP5解析结果：<code>$foo-&gt;{$bar['baz']}()</code></li>
+<li>PHP7解析结果：<code>($foo-&gt;$bar)['baz']()</code></li>
+</ul>
+
+<p>Case 4: <code>Foo::$bar['baz']</code></p>
+
+<ul>
+<li>PHP5解析结果：<code>Foo::{$bar['baz']}()</code></li>
+<li>PHP7解析结果：<code>(Foo::$bar)['baz']()</code></li>
+</ul>
+
+<h3 id="数据类型">数据类型</h3>
+
+<p>为了不同的目的有不同的数据类型。PHP没有显示类型定义，但是变量的类型是由赋值给这个变量的值的类型决定的，或者是强制转换的类型。这里只是类型的简单介绍，详细的文档和例子可以看&rdquo;PHP类型&rdquo;章节。</p>
+
+<p>PHP有下面几种类型：字符串，整数，浮点数，Null，布尔值，资源，数组，对象。</p>
+
+<h4 id="null">Null</h4>
+
+<p>Null可以赋值给任何变量。这就表示这个变量没有值。</p>
+
+<pre><code>$foo = null;
+</code></pre>
+
+<p>这注销这个变量，这个变量的值是未定义的或void的。这个变量将会从内存中清理，并被GC删除掉。</p>
+
+<h4 id="boolean">Boolean</h4>
+
+<p>这是只有两个值的最简单的类型。</p>
+
+<pre><code>$foo = true;
+$bar = false;
+</code></pre>
+
+<p>布尔值可以用来控制代码流。</p>
+
+<pre><code>$foo = true;
+if ($foo) {
+    echo &quot;true&quot;;
+} else {
+    echo &quot;false&quot;;
+}
+</code></pre>
+
+<h4 id="整数">整数</h4>
+
+<p>一个整数就是一个正整数或负整数。可以使用任何进制的数字。整数的大小是依赖于操作系统的。PHP不支持非负整数。</p>
+
+<pre><code>$foo = -3; // negative
+$foo = 0; // zero (can also be null or false (as boolean)
+$foo = 123; // positive decimal
+$bar = 0123; // octal = 83 decimal
+$bar = 0xAB; // hexadecimal = 171 decimal
+$bar = 0b1010; // binary = 10 decimal
+var_dump(0123, 0xAB, 0b1010); // output: int(83) int(171) int(10)
+</code></pre>
+
+<h4 id="浮点数">浮点数</h4>
+
+<p>浮点数，“双精度”或简称“浮点数”是十进制数。</p>
+
+<pre><code>$foo = 1.23;
+$foo = 10.0;
+$bar = -INF;
+$bar = NAN;
+</code></pre>
+
+<h4 id="数组">数组</h4>
+
+<p>一个数组就像值的一个列表。最简单的数组是数字索引的，并按照索引排序的，第一个值的索引是0。</p>
+
+<pre><code>$foo = array(1, 2, 3); // An array of integers
+$bar = [&quot;A&quot;, true, 123 =&gt; 5]; // Short array syntax, PHP 5.4+
+echo $bar[0]; // Returns &quot;A&quot; 
+echo $bar[1]; // Returns true 
+echo $bar[123]; // Returns 5 
+echo $bar[1234]; // Returns null
+</code></pre>
+
+<p>数组也可以是关联数组，使用一个键而不是数字做索引。在PHP里面，数组底层都是关联数组实现的。但当我们明确说&rdquo;关联数组&rdquo;的时候，通常指包含一个或多个非整数键的数组。</p>
+
+<pre><code>$array = array();
+$array[&quot;foo&quot;] = &quot;bar&quot;;
+$array[&quot;baz&quot;] = &quot;quux&quot;;
+$array[42] = &quot;hello&quot;;
+echo $array[&quot;foo&quot;]; // Outputs &quot;bar&quot; 
+echo $array[&quot;bar&quot;]; // Outputs &quot;quux&quot; 
+echo $array[42]; // Outputs &quot;hello&quot;
+</code></pre>
+
+<h4 id="字符串">字符串</h4>
+
+<p>一个字符串就是一个字符的数组。</p>
+
+<pre><code>$foo = 'bar';
+</code></pre>
+
+<p>像数组一样，字符串可以使用索引获取单个字符的值。</p>
+
+<pre><code>$foo = &quot;bar&quot;;
+echo $foo[0]; // Prints 'b', the first character of the string in $foo.
+</code></pre>
+
+<h4 id="对象">对象</h4>
+
+<p>对象是一个类的实例。它的变量和方法可以通过<code>-&gt;</code>访问。</p>
+
+<pre><code>$foo = new stdClass(); // create new object of class stdClass, which a predefined, empty class $foo-&gt;bar = &quot;baz&quot;;
+echo $foo-&gt;bar; // Outputs &quot;baz&quot;
+// Or we can cast an array to an object:
+$quux = (object) [&quot;foo&quot; =&gt; &quot;bar&quot;];
+echo $quux-&gt;foo; // This outputs &quot;bar&quot;.
+</code></pre>
+
+<h4 id="资源">资源</h4>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-1.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
