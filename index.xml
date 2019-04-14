@@ -36,6 +36,22 @@ class myClass { public function __construct() { $functionName = &#39;doSomething
     </item>
     
     <item>
+      <title>Bash专业笔记(三十八)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-38.html</link>
+      <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-38.html</guid>
+      <description>case语句 简单语句 在所有bash版本支持的最简单格式中，case语句执行与模式匹配的case。如果有的话，;;在第一次匹配后中断。
+#!/bin/bash var=1 case $var in 1) echo &amp;quot;Antartica&amp;quot; ;; 2) echo &amp;quot;Brazil&amp;quot; ;; 3) echo &amp;quot;Cat&amp;quot; ;; esac  输出：
+Antartica  贯穿语句 Version&amp;gt;=4.0
+从4.0开始，引入了新的操作符;&amp;amp;，支持贯穿操作。
+#!/bin/bash var=1 case $var in 1) echo &amp;quot;Antartica&amp;quot; ;&amp;amp; 2) echo &amp;quot;Brazil&amp;quot; ;&amp;amp; 3) echo &amp;quot;Cat&amp;quot; ;&amp;amp; esac  输出：
+Antartica Brazil Cat  子模式匹配贯穿 Version&amp;gt;=4.0
+4.0开始，另一个操作符;;&amp;amp;，只有子语句匹配才贯穿的操作。
+#!/bin/bash var=abc case $var in a*) echo &amp;quot;Antartica&amp;quot; ;;&amp;amp; xyz) echo &amp;quot;Brazil&amp;quot; ;;&amp;amp; *b*) echo &amp;quot;Cat&amp;quot; ;;&amp;amp; esac  输出：</description>
+    </item>
+    
+    <item>
       <title>Git专业笔记（四十三）</title>
       <link>http://blog.huaifufeng.com/2019/03/post/git-section-43.html</link>
       <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
@@ -46,6 +62,22 @@ class myClass { public function __construct() { $functionName = &#39;doSomething
 如果符号引用名称不明确，例如，如果同时具有名为“fix”的分支和标记（不建议使用同名的分支和标记），则需要指定要使用的引用类型：
 $ git show heads/fix #或者 refs/heads/fix $ git show tags/fix #或者 refs/tags/fix  默认的revision:HEAD $ git show #等价于git show HEAD  HEAD是你当前工作树基于的提交所在的分支，通常是当前分支。很多(但不是全部)命令如果没有蚕食时都会使用HEAD作为默认的值。
 Reflog references: @{} $ git show @{1} #显示当前分支的reflog $ git show master@{1} #显示分支master的reflog $ git show HEAD@{1} #显示HEAD的reflog  一个引用(通常是一个分支或HEAD)后面跟着@之后一个{}包围的数字，指定当前仓库向前数第n个的提交。你可以使用git reflog命令或者使用git log的—walk-reflogs/ -g选项。</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(三十七)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-37.html</link>
+      <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-37.html</guid>
+      <description>任务管理 显示后台进程 $ jobs [1] Running sleep 500 &amp;amp; (wd: ~) [2]- Running sleep 600 &amp;amp; (wd: ~) [3]+ Running ./Fritzing &amp;amp;  第一个字段是任务的id。+和-表示当前任务结束时的默认任务和下一个候选任务。当在没有任何参数的情况下使用fg或bg命令时，将使用默认作业。
+第二个字段是当前任务的状态。第三个字段时用来启动这个进程的命令。
+最后一个字段（wd：~）表示sleep命令是从工作目录（home）启动的。
+从后台取一个进程到前台  $ fg %2 sleep 600  %2意味着第2个进程。如果fg命令没有带参数，将会把最后一个命令取到前台。
+ $ fg %?sle sleep 500  ?sle意味着取出包含sle的命令。如果有多个后台命令匹配，将会出现一个错误。
+重启以停止的命令 $ bg [8]+ sleep 600 &amp;amp;  运行后台命令  $ sleep 500 &amp;amp; [1] 7582  把sleep命令放到后台执行。7582就是这个进程的id。
+终止一个前台进程 Ctrl+Z终止前台进程，并放入到后台执行。
+$ sleep 600 ^Z [8]+ Stopped sleep 600  参考：Bash Notes for Professionals book</description>
     </item>
     
     <item>
