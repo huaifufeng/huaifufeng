@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="PHP的变量作用域">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（三）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/php-section-3.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（三）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, April 3, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#变量作用域">变量作用域</a>
+<ul>
+<li><a href="#超全局变量">超全局变量</a></li>
+<li><a href="#静态属性和变量">静态属性和变量</a></li>
+<li><a href="#用户定义的全局变量">用户定义的全局变量</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="变量作用域">变量作用域</h2>
+
+<p>变量作用域表示变量可以被访问到的代码范围。这也经常被称为<code>可见性</code>。PHP的块作用域是函数，类定义的。一个全局作用域变量在整个应用都是有效的。</p>
+
+<h3 id="超全局变量">超全局变量</h3>
+
+<p>超全局变量是PHP定义的，可以在任何地方使用而不需要使用<code>global</code>关键字。</p>
+
+<pre><code>&lt;?php
+function getPostValue($key, $default = NULL) {
+    // $_POST is a superglobal and can be used without 
+    // having to specify 'global $_POST;'
+    if (isset($_POST[$key])) {
+        return $_POST[$key];
+    }
+    return $default;
+}
+
+// retrieves $_POST['username']
+echo getPostValue('username');
+// retrieves $_POST['email'] and defaults to empty string
+echo getPostValue('email', '');
+</code></pre>
+
+<h3 id="静态属性和变量">静态属性和变量</h3>
+
+<p>定义为public的静态类属性和全局变量的功能类似。在任何类定义的地方都可以访问他们。</p>
+
+<pre><code>class SomeClass {
+    public static int $counter = 0;
+}
+// The static $counter variable can be read/written from anywhere 
+// and doesn't require an instantiation of the class 
+SomeClass::$counter += 1;
+</code></pre>
+
+<p>可以在函数内部定义静态变量。这些静态变量可以在多次调用之间保持存在，这个定义在函数中的普通变量不同。这可以非常简单的实现单例模式。</p>
+
+<pre><code>class Singleton {
+    public static function getInstance() {
+        // Static variable $instance is not deleted when the function ends
+        static $instance;
+        // Second call to this function will not get into the if-statement, 
+        // Because an instance of Singleton is now stored in the $instance 
+        // variable and is persisted through multiple calls
+        if (!$instance) {
+            // First call to this function will reach this line,
+            // because the $instance has only been declared, not initialized 
+            $instance = new Singleton();
+        }
+        
+        return $instance;
+    }
+}
+
+$instance1 = Singleton::getInstance();
+$instance2 = Singleton::getInstance();
+// Comparing objects with the '===' operator checks whether they are
+// the same instance. Will print 'true', because the static $instance
+// variable in the getInstance() method is persisted through multiple calls var_dump($instance1 === $instance2);
+</code></pre>
+
+<h3 id="用户定义的全局变量">用户定义的全局变量</h3>
+
+<p>在任何函数或类之外的作用域是全局作用域。当一个PHP脚本包含（使用include或require）另外的文件，两者的作用域是相同的。如果一个文件被包含在任何函数或类之外，全局变量将会被包含到相同的全局变量作用域内，但是如果被包含在一个函数里面，这个被包含文件的变量是函数作用域。</p>
+
+<p>在函数或者类方法的作用域内，<code>global</code>关键字可能被用来创建一个用户访问的全局变量。</p>
+
+<pre><code>&lt;?php
+$amount_of_log_calls = 0;
+
+function log_message($message) {
+    // Accessing global variable from function scope // requires this explicit statement
+    global $amount_of_log_calls;
+    // This change to the global variable is permanent
+    $amount_of_log_calls += 1;
+    echo $message;
+}
+// When in the global scope, regular global variables can be used 
+// without explicitly stating 'global $variable;'
+echo $amount_of_log_calls; // 0
+
+log_message(&quot;First log message!&quot;); 
+echo $amount_of_log_calls; // 1
+log_message(&quot;Second log message!&quot;);
+echo $amount_of_log_calls; // 2
+</code></pre>
+
+<p>第二种访问全局变量的方法是使用超全局变量<code>$GLOBALS</code>数组。</p>
+
+<p><code>$GLOBALS</code>数组是一个关联数组，全局变量的名字作为key，变量的内容作为数组的值。注意<code>$GLOBALS</code>在任何地方都是有效的，因为这是一个超全局变量。</p>
+
+<p>这意味着<code>log_message</code>函数可以被重写：</p>
+
+<pre><code>function log_message($message) {
+    // Access the global $amount_of_log_calls variable via the
+    // $GLOBALS array. No need for     'global $GLOBALS;', since it
+    // is a superglobal variable.
+    $GLOBALS['amount_of_log_calls'] += 1;
+    echo $messsage;
+}
+</code></pre>
+
+<p>有人可能要问了，可以使用<code>$GLOBALS</code>来获取全局变量，为什么还有一个<code>global</code>关键字？主要原因是使用<code>global</code>可以把变量引入当前作用域。你不能本地作用域使用相同的名称。</p>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-2.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

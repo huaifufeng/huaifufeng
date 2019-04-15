@@ -6,10 +6,22 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 02 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（三）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-3.html</link>
+      <pubDate>Wed, 03 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-3.html</guid>
+      <description>变量作用域 变量作用域表示变量可以被访问到的代码范围。这也经常被称为可见性。PHP的块作用域是函数，类定义的。一个全局作用域变量在整个应用都是有效的。
+超全局变量 超全局变量是PHP定义的，可以在任何地方使用而不需要使用global关键字。
+&amp;lt;?php function getPostValue($key, $default = NULL) { // $_POST is a superglobal and can be used without // having to specify &#39;global $_POST;&#39; if (isset($_POST[$key])) { return $_POST[$key]; } return $default; } // retrieves $_POST[&#39;username&#39;] echo getPostValue(&#39;username&#39;); // retrieves $_POST[&#39;email&#39;] and defaults to empty string echo getPostValue(&#39;email&#39;, &#39;&#39;);  静态属性和变量 定义为public的静态类属性和全局变量的功能类似。在任何类定义的地方都可以访问他们。
+class SomeClass { public static int $counter = 0; } // The static $counter variable can be read/written from anywhere // and doesn&#39;t require an instantiation of the class SomeClass::$counter += 1;  可以在函数内部定义静态变量。这些静态变量可以在多次调用之间保持存在，这个定义在函数中的普通变量不同。这可以非常简单的实现单例模式。</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（二）</title>

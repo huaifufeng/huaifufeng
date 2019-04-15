@@ -177,6 +177,10 @@
 <li><a href="#默认的revision-head">默认的revision:HEAD</a></li>
 <li><a href="#reflog-references-refname-n">Reflog references: <refname>@{<n>}</a></li>
 <li><a href="#reflog-references-refname-date">Reflog references: <refname>@{<date>}</a></li>
+<li><a href="#tracked-upstream-branch-branchname-upstream">Tracked / upstream branch: <branchname>@{upstream}</a></li>
+<li><a href="#提交祖先链-rev-rev-n-etc">提交祖先链: <rev>^, <rev>~<n>, etc</a></li>
+<li><a href="#取消引用分支和标记-rev-0-rev-type">取消引用分支和标记: <rev>^0, <rev>^{<type>}</a></li>
+<li><a href="#最小匹配提交-rev-text-text">最小匹配提交: <rev>^{/<text>}, :/<text></a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -246,12 +250,94 @@ $ git show HEAD@{5 minutes ago}   #或者HEAD@{5.minutes.ago}
 
 <p>引用后面加上后缀@和括号对中包含的日期规范（例如昨天、1个月2周3天1小时1秒前或1979-02-26 18:30:00）指定引用在上一个时间点（或其最近点）的值。请注意，这会在给定时间查找本地引用的状态；例如，上周本地“主”分支中的内容。</p>
 
-<p>您可以使用带有日期说明符的<code>git reflog</code>来查找在本地存储库中对给定的ref执行某些操作的确切时间。</p>
+<p>您可以使用带有日期说明符的<a href="https://www.kernel.org/pub/software/scm/git/docs/git-reflog.html">git reflog</a>来查找在本地存储库中对给定的ref执行某些操作的确切时间。</p>
 
 <pre><code>$ git reflog HEAD@{now}
 08bb350 HEAD@{Sat Jul 23 19:48:13 2016 +0200}: reset: moving to HEAD^
 4ebf58d HEAD@{Sat Jul 23 19:39:20 2016 +0200}: commit: gitweb(1): Document query parameters 08bb350 HEAD@{Sat Jul 23 19:26:43 2016 +0200}: pull: Fast-forward
 </code></pre>
+
+<h3 id="tracked-upstream-branch-branchname-upstream">Tracked / upstream branch: <branchname>@{upstream}</h3>
+
+<pre><code>$ git log @{upstream}..  //# what was done locally and not yet published, current branch
+$ git show master@{upstream}  //# show upstream of branch 'master'
+</code></pre>
+
+<p>分支名后面加上<code>@{upstream}</code>后缀(简单方式<code>&lt;branchname&gt;@{u}</code>)，指向分支名指定的分支(使用<code>branch.&lt;name&gt;.remote</code>和<code>branch.&lt;name&gt;.merge</code>或<code>git branch —set-upstream-to=&lt;branch&gt;</code>)。如果没有指定分支名的话就是当前的分支。</p>
+
+<p>结合revision范围语法，查看你的分支在upstream之前的提交信息是很有用(在你本地提交还没有推送到upstream)和你当前提交之后的提交(还没有合并到本地的upstream中的提交)，或者两者：</p>
+
+<pre><code>$ git log --oneline @{u}..
+$ git log --oneline ..@{u}
+$ git log --oneline --left-right @{u}... # same as ...@{u}
+</code></pre>
+
+<h3 id="提交祖先链-rev-rev-n-etc">提交祖先链: <rev>^, <rev>~<n>, etc</h3>
+
+<pre><code>$ git reset --hard HEAD^   #丢弃上一个提交
+$ git rebase --interactive HEAD~5  #rebase上4个提交
+</code></pre>
+
+<p>revision后缀<code>^</code>表示当前提交对象的第一个父提交。<code>^&lt;n&gt;</code>代表第n个父提交(<code>&lt;rev&gt;^</code>等价于<code>&lt;rev&gt;^1</code>)。</p>
+
+<p>revision的后缀<code>~&lt;n&gt;</code>代表着命名的提交对象的第<n>个祖先提交，在同一个父提交之后的。这意味着<code>&lt;rev&gt;~3</code>等价于<code>&lt;rev&gt;^^^</code>。其中<code>&lt;rev&gt;~</code>是<code>&lt;rev&gt;~1</code>的短语法，等价于<code>&lt;rev&gt;^1</code>，或者简单写法<code>&lt;rev&gt;^</code>。</p>
+
+<p>语法是可以组合使用的。</p>
+
+<p>可以使用<a href="https://www.kernel.org/pub/software/scm/git/docs/git-name-rev.html">git name-rev</a>来查找提交的符合名称。</p>
+
+<pre><code>$ git name-rev 33db5f4d9027a10e477ccf054b2c1ab94f74c85a 33db5f4d9027a10e477ccf054b2c1ab94f74c85a tags/v0.99~940
+</code></pre>
+
+<p>注意<code>—pretty=oneline</code>和不是<code>—online</code>是下面例子必须使用的选项：</p>
+
+<pre><code>$ git log --pretty=oneline | git name-rev --stdin --name-only master Sixth batch of topics for 2.10
+master~1 Merge branch 'ls/p4-tmp-refs'
+master~2 Merge branch 'js/am-call-theirs-theirs-in-fallback-3way' 
+[...]
+master~14^2 sideband.c: small optimization of strbuf usage 
+master~16^2 connect: read $GIT_SSH_COMMAND from config file 
+[...]
+master~22^2~1 t7810-grep.sh: fix a whitespace inconsistency
+master~22^2~2 t7810-grep.sh: fix duplicated test name
+</code></pre>
+
+<h3 id="取消引用分支和标记-rev-0-rev-type">取消引用分支和标记: <rev>^0, <rev>^{<type>}</h3>
+
+<p>在一些情况下，命令的行为依赖是否传递了分支名、tag名、或者任意的revision。在后面需要的使用可以使用&rdquo;de-referencing&rdquo;语法。</p>
+
+<p>后缀<code>^</code>后接括号对中包含的对象类型名称（标记、提交、树、blob）（例如<code>v0.99.8^{commit}</code>）表示递归地取消对对象的引用，直到找到类型为<code>&lt;type&gt;</code>的对象或无法再取消对对象的引用。<code>&lt;rev&gt;^0</code>是<code>&lt;rev&gt;^{commit}</code>的缩写。</p>
+
+<pre><code>$ git checkout HEAD^0  //等价于git checkout --detach
+</code></pre>
+
+<p><code>^</code>后面跟着空花括号(例如<code>v0.99.8^{}</code>)意味着递归着取消tag直到遇到不是tag的对象。</p>
+
+<p>比较下面两个例子：</p>
+
+<pre><code>$ git show v1.0
+$ git cat-file -p v1.0
+$ git replace --edit v1.0
+</code></pre>
+
+<pre><code>$ git show v1.0^{}
+$ git cat-file -p v1.0^{}
+$ git replace --edit v1.0^{}
+</code></pre>
+
+<h3 id="最小匹配提交-rev-text-text">最小匹配提交: <rev>^{/<text>}, :/<text></h3>
+
+<pre><code>$ git show HEAD^{/fix nasty bug} # find starting from HEAD
+$ git show ':/fix nasty bug' # find starting from any branch
+</code></pre>
+
+<p>冒号（“：”），后跟斜杠（“/”），后跟文本，命名提交消息与指定的正则表达式匹配的提交。此名称返回可从任何引用访问的最小匹配的提交。</p>
+
+<p>正则表达式可以匹配提交消息的任何部分。要匹配以字符串开头的消息，请</p>
+
+<p>正则表达式可以匹配提交消息的任何部分。要匹配以字符串开头的邮件，可以使用例如：<code>/^foo</code>。特殊顺序<code>:/！</code>为匹配的修饰符保留。<code>//! -foo</code>执行负匹配，而<code>:/!!foo</code>匹配文字<code>!</code>字符，后跟<code>foo</code>。</p>
+
+<p>修订参数的后缀<code>^</code>后跟大括号对，其中包含以斜杠开头的文本，与下面的<code>:/&lt;text&gt;</code>语法相同，它返回可从<code>^</code>之前的<code>&lt;rev&gt;</code>访问的最年轻匹配提交。</p>
 
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
