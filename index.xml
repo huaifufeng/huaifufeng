@@ -6,10 +6,34 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 03 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 04 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-4.html</link>
+      <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-4.html</guid>
+      <description>超全局变量 超全局变量是内建的在任何地方都一直有效的变量。
+一些预定义的PHP变量叫做&amp;rdquo;超全局变量&amp;rdquo;，这意味着这些变量在一个脚本的任何作用域都是有效的。不用在函数或方法内使用global $variable来访问这些变量。
+超全局变量解释 简介 简单来说，这些变量就是在你的脚本中全部作用域有效的变量。
+这意味着没有必要把它们作为参数传递给你的函数，或者为了让不同的作用域访问这些变量把他们存放在块作用域之外。
+什么是超全局变量？ 如果你认为它们就像超级英雄一样-它们不是的。
+在PHP 7.1.3之后，有9个超全局变量，下面是它们的列表：
+ $GLOBALS：包含所有的全局变量 $_SERVER：服务器和执行环境的信息 $_GET：HTTP GET的变量 $_POST：HTTP POST的变量 $_FILES：HTTP文件上传变量 $_COOKIE：HTTP的Cookie $_SESSION：Session变量 $_REQUEST：HTTP的请求变量 $_ENV：环境变量  查看文档。
+更多信息 这里是它的参考资料。
+是时候解释这些超全局变量了。
+$GLOBALS  一个定义了当前脚本定义的所有全局作用域的变量的关联数组。变量名就是这个数组的键。
+ 代码：
+$myGlobal = &amp;quot;global&amp;quot;; function test() { $myLocal = &amp;quot;local&amp;quot;; var_dump($myLocal); var_dump($GLOBALS[&#39;myGlobal&#39;]); } test(); var_dump($myLocal); var_dump($myGlobal);  输出：
+string &#39;local&#39; (length=5) string &#39;global&#39; (length=6) null string &#39;global&#39; (length=6)  在上面的例子中$myLocal第二次没有显示因为这个变量定义在函数test()内部，当函数关闭之后这个变量就销毁了。
+变为全局 实现这个有两种方法。
+第一种方法：global关键字
+function test() { global $myLocal; $myLocal = &amp;quot;local&amp;quot;; var_dump($myLocal); var_dump($GLOBALS[&amp;quot;myGloabl&amp;quot;]); }  这个关键字global放到变量前面，强制这个变量变为全局作用域变量。</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（三）</title>
