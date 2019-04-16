@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="PHP的常量">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（六）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/php-section-6.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（六）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Saturday, April 6, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#常量">常量</a>
+<ul>
+<li><a href="#定义常量">定义常量</a>
+<ul>
+<li><a href="#明确值定义常量">明确值定义常量</a></li>
+<li><a href="#用常量定义常量">用常量定义常量</a></li>
+<li><a href="#保留常量">保留常量</a></li>
+<li><a href="#条件定义">条件定义</a>
+<ul>
+<li><a href="#const-vs-define">const vs define</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#类常量">类常量</a></li>
+<li><a href="#检查常量是否定义">检查常量是否定义</a>
+<ul>
+<li><a href="#简单检查">简单检查</a></li>
+<li><a href="#获取所有定义的常量">获取所有定义的常量</a></li>
+</ul></li>
+<li><a href="#使用常量">使用常量</a></li>
+<li><a href="#常量数组">常量数组</a>
+<ul>
+<li><a href="#类常量-1">类常量</a></li>
+<li><a href="#普通常量">普通常量</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="常量">常量</h2>
+
+<h3 id="定义常量">定义常量</h3>
+
+<p>常量可以使用<code>const</code>语句或者<code>define</code>函数定义。惯例是使用全大写字母作为常量的名称。</p>
+
+<h4 id="明确值定义常量">明确值定义常量</h4>
+
+<pre><code>const PI = 3.14; //float
+define(&quot;EARTH_IS_FLAT&quot;, false); //boolean
+const UNKNOWN = null;  //null
+define(&quot;APP_ENV&quot;, &quot;dev&quot;); //string
+const MAX_SESSION_TIME = 60 * 60; //integer，标量表达式也是可以的
+const APP_LANGUAGES = [&quot;de&quot;, &quot;en&quot;];  //数组
+define(&quot;BETTER_APP_LANGUAGES&quot;, [&quot;lu&quot;, &quot;de&quot;]);  //数组
+</code></pre>
+
+<h4 id="用常量定义常量">用常量定义常量</h4>
+
+<p>如果你有一个常量，你可以用这个常量定义另外的常量。</p>
+
+<pre><code>cosnt TAU = PI * 2;
+define(&quot;EARTH_IS_ROUND&quot;, !EARTH_IS_FLAT);
+define(&quot;MORE_UNKNOWN&quot;, UNKNOWN);
+define(&quot;APP_ENV_UPPERCASE&quot;, strtoupper(APP_ENV));  //字符串操作也是可以的
+//上面的示例(函数调用)不适合const语句
+//cosnt TIME = time();  出现致命错误，不是标量表达式
+define(&quot;MAX_SESSION_TIME_IN_MINUTES&quot;, MAX_SESSION_TIME / 60);
+
+const APP_FUTURE_LANGUAGES = [-1 =&gt; 'es'] + APP_LANGUAGES;  //数组操作
+
+define(&quot;APP_BETTER_FUTURE_LANGUAGES&quot;, array_merge(['fr'], APP_BETTER_LANGUAGES));
+</code></pre>
+
+<h4 id="保留常量">保留常量</h4>
+
+<p>一些常量名称是被PHP保留的，不能被重新定义。下面的例子都是失败的：</p>
+
+<pre><code>define(&quot;true&quot;, false);  //内部常量
+define(&quot;false&quot;, true);  //内部常量
+define(&quot;CURLOPT_AUTOREFERER&quot;, &quot;something&quot;)；  //curl扩展加载的时候会出错
+</code></pre>
+
+<p>一个Notice级别报错会出现：</p>
+
+<pre><code>Constant ... already defined in ...
+</code></pre>
+
+<h4 id="条件定义">条件定义</h4>
+
+<p>如果你有几个文件定义了相同的变量(例如，你的main配置和本地配置)，下面的语法可以避免冲突：</p>
+
+<pre><code>defined(&quot;PI&quot;) || define(&quot;PI&quot;, 3,1415); //如果没有定义就定义
+</code></pre>
+
+<h5 id="const-vs-define">const vs define</h5>
+
+<p><code>define</code>是运行时定义，<code>const</code>是编译的时候定义。</p>
+
+<p><code>define</code>运行动态的值(函数调用，变量等)，甚至动态的名称，条件定义等。但是，它总是相对于根命名空间定义的。</p>
+
+<p><code>const</code>是静态的(只允许其他常量，标量，数组等，并且是他们的一个子集。所以叫做常量标量表达式。算数、逻辑和比较运算符以及数组的解引用)，但会自动在名称空间前面加上当前活动的名称空间。</p>
+
+<p><code>const</code>值支持其他常量和标量作为值，不支持操作。</p>
+
+<h3 id="类常量">类常量</h3>
+
+<p>可以在类里面使用<code>const</code>关键字定义常量。</p>
+
+<pre><code>class Foo {
+    const BAR_TYPE = &quot;bar&quot;;
+    
+    //使用self::引用常量
+    public function myMehtod() {
+        return self::BAR_TYPE;
+    }
+}
+
+//使用类名::引用
+echo Foo::BAR_TYPE;
+</code></pre>
+
+<p>这用来存储类型元素很有用：</p>
+
+<pre><code>&lt;?php
+clas Logger {
+    const LEVEL_INFO = 1;
+    const LEVEL_WARNING = 2;
+    const LEVEL_ERROR = 3;
+    
+    //我们可以使用常量做默认值
+    public function log($message, $level = self::LEVEL_INFO) {
+        echo &quot;Message level &quot; . $level . &quot;: &quot; . $message;
+     }
+}
+
+$logger = new Logger();
+$logger-&gt;log(&quot;Info&quot;);  //使用默认值
+$logger-&gt;log(&quot;Warning&quot;, $logger::LEVEL_WARNING); //使用变量
+$logger-&gt;log(&quot;Error&quot;, Logger::LEVEL_ERROR);  //使用类
+</code></pre>
+
+<h3 id="检查常量是否定义">检查常量是否定义</h3>
+
+<h4 id="简单检查">简单检查</h4>
+
+<p>检查常量是否定义使用<code>defined</code>函数。注意这个函数不关心常量的值，只关心常量是否存在。即使常量的值是<code>null</code>或者<code>false</code>，函数还是会返回<code>true</code>。</p>
+
+<pre><code>&lt;?php
+define(&quot;GOOD&quot;, false);
+
+if (defined(&quot;GOOD&quot;)) {
+    print &quot;GOOD is defined&quot;; //输出 GOOD is defined
+    
+    if (GOOD) {
+        print &quot;GOOD is true&quot;;  //不会输出任何信息 因为GOOD是false
+    }
+}
+
+if (!defined(&quot;AWESOME&quot;)) {
+    define(&quot;AWESOME&quot;, true);
+}
+</code></pre>
+
+<p>在你定义之后常量就变成了<code>可见</code>的了。</p>
+
+<pre><code>if (defined(&quot;GOOD&quot;)) {
+    print &quot;GOOD is defined&quot;;  //不会输出，没有定义
+}
+
+define(&quot;GOOD&quot;, false);
+
+if (defined(&quot;GOOD&quot;)) {
+    print &quot;GOOD is defined&quot;;  //输出 GOOD is defined
+}
+</code></pre>
+
+<h4 id="获取所有定义的常量">获取所有定义的常量</h4>
+
+<p>获取所有定义的常量包含PHP定义的可以使用函数<code>get_defined_constants</code>：</p>
+
+<pre><code>&lt;?php
+$constants = get_defined_constants(); 
+var_dump($constants); // pretty large list
+</code></pre>
+
+<p>只获取你自己定义的常量，在你定义常量之前调用，然后定义常量之后调用(之后获取两者之差)：</p>
+
+<pre><code>&lt;?php
+$constants = get_defined_constants();
+
+define(&quot;HELLO&quot;, &quot;hello&quot;);
+define(&quot;WORLD&quot;, &quot;world&quot;);
+
+$new_constants = get_defined_constants();
+$myconstants = array_diff_assoc($new_constants, $constants);
+
+var_export($myconstants);
+
+/* Output:
+array (
+  'HELLO' =&gt; 'hello',
+  'WORLD' =&gt; 'world',
+) */
+</code></pre>
+
+<p>有时候调试的时候会很有用。</p>
+
+<h3 id="使用常量">使用常量</h3>
+
+<p>使用常量就是简单的使用常量名就可以：</p>
+
+<pre><code>if (EARTH_IS_FLAT) {
+    print &quot;Earth is flat&quot;;
+}
+print APP_ENV_UPPERCASE;
+</code></pre>
+
+<p>或者你不知道常量名称的时候使用<code>constant</code>函数：</p>
+
+<pre><code>// this code is equivalent to the above code
+$const1 = &quot;EARTH_IS_FLAT&quot;;
+$const2 = &quot;APP_ENV_UPPERCASE&quot;;
+
+if (constant($const1)) {
+    print &quot;Earth is flat&quot;;
+}
+print constant($const2);
+</code></pre>
+
+<h3 id="常量数组">常量数组</h3>
+
+<p>从PHP 5.6开始，数组可以作为普通常量和类常量使用。</p>
+
+<h4 id="类常量-1">类常量</h4>
+
+<pre><code>class Answer {
+    const C = [2,4];
+}
+print Answer::C[1] . Answer::C[0]; // 42
+</code></pre>
+
+<h4 id="普通常量">普通常量</h4>
+
+<pre><code>const ANSWER = [2,4];
+print ANSWER[1] . ANSWER[0]; // 42
+</code></pre>
+
+<p>从PHP 7.0开始，<code>define</code>也可以定义数组常量。</p>
+
+<pre><code>define('VALUES', [2, 3]);
+define('MY_ARRAY', [
+    1,
+    VALUES, 
+]);
+
+print MY_ARRAY[1][1]; // 3
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/php-section-7.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-5.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

@@ -6,10 +6,44 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 05 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（八）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-8.html</link>
+      <pubDate>Mon, 08 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-8.html</guid>
+      <description>代码注释 单行注释 单行注释使用//或#开头。当遇到的时候，所有符号右边的文本都被PHP解析器忽略。
+// This is a comment # This is also a comment echo &amp;quot;Hello World!&amp;quot;; // This is also a comment, beginning where we see &amp;quot;//&amp;quot;  多行注释 多行注释可以用来注释大块的代码，使用/*做开始，*/做结尾。
+/* This is a multi-line comment. It spans multiple lines. This is still part of the comment. */  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（七）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-7.html</link>
+      <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-7.html</guid>
+      <description>魔术常量 __FUNCTION__和__METHOD__的不同 __FUNCTION__只返回函数的名称，__METHOD__返回带有类名的函数名称：
+&amp;lt;?php class trick { public function doit() { echo __FUNCTION__; } public function doitagain() { echo __METHOD__; } } $obj = new trick(); $obj-&amp;gt;doit(); // Outputs: doit $obj-&amp;gt;doitagain(); // Outputs: trick::doitagain  __CLASS__、get_class和get_called_class的不同 __CLASS__和get_class没有参数情况下的结果一样，都是这两者定义所在的类的名称(调用这个常量或方法的地方)。
+相反，get_class($this)和get_called_class()函数都会返回实际调用的类的名称。
+&amp;lt;?php class Definition_Class { public function say(){ echo &#39;__CLASS__ value: &#39; . __CLASS__ . &amp;quot;\n&amp;quot;; echo &#39;get_called_class() value: &#39; . get_called_class() . &amp;quot;\n&amp;quot;; echo &#39;get_class($this) value: &#39; . get_class($this) . &amp;quot;\n&amp;quot;; echo &#39;get_class() value: &#39; .</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（六）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-6.html</link>
+      <pubDate>Sat, 06 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-6.html</guid>
+      <description>常量 定义常量 常量可以使用const语句或者define函数定义。惯例是使用全大写字母作为常量的名称。
+明确值定义常量 const PI = 3.14; //float define(&amp;quot;EARTH_IS_FLAT&amp;quot;, false); //boolean const UNKNOWN = null; //null define(&amp;quot;APP_ENV&amp;quot;, &amp;quot;dev&amp;quot;); //string const MAX_SESSION_TIME = 60 * 60; //integer，标量表达式也是可以的 const APP_LANGUAGES = [&amp;quot;de&amp;quot;, &amp;quot;en&amp;quot;]; //数组 define(&amp;quot;BETTER_APP_LANGUAGES&amp;quot;, [&amp;quot;lu&amp;quot;, &amp;quot;de&amp;quot;]); //数组  用常量定义常量 如果你有一个常量，你可以用这个常量定义另外的常量。
+cosnt TAU = PI * 2; define(&amp;quot;EARTH_IS_ROUND&amp;quot;, !EARTH_IS_FLAT); define(&amp;quot;MORE_UNKNOWN&amp;quot;, UNKNOWN); define(&amp;quot;APP_ENV_UPPERCASE&amp;quot;, strtoupper(APP_ENV)); //字符串操作也是可以的 //上面的示例(函数调用)不适合const语句 //cosnt TIME = time(); 出现致命错误，不是标量表达式 define(&amp;quot;MAX_SESSION_TIME_IN_MINUTES&amp;quot;, MAX_SESSION_TIME / 60); const APP_FUTURE_LANGUAGES = [-1 =&amp;gt; &#39;es&#39;] + APP_LANGUAGES; //数组操作 define(&amp;quot;APP_BETTER_FUTURE_LANGUAGES&amp;quot;, array_merge([&#39;fr&#39;], APP_BETTER_LANGUAGES));  保留常量 一些常量名称是被PHP保留的，不能被重新定义。下面的例子都是失败的：</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（五）</title>

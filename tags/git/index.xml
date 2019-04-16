@@ -6,81 +6,10 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 05 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>PHP专业笔记（五）</title>
-      <link>http://blog.huaifufeng.com/2019/04/post/php-section-5.html</link>
-      <pubDate>Fri, 05 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-5.html</guid>
-      <description>输出变量的值 创建一个动态的、交互的PHP项目，输出变量和他们的值是有用的。PHP提供了多个变量值的输出方法。这里主要介绍标准的输出方法和这些方法的使用场景。
-echo和print echo和print是语言结构，不是函数。这意味着它们不想函数那样需要括号在参数的周围(当然也可以在参数的周围添加括号，这样也没有什么问题)。这将会输出变量、常量和表达式的字符串格式。不能用来输出数组和对象。
- 把字符串joel赋值给变量$name   $name = &#39;joel&#39;;   使用echo和print来输出$name的值   echo $name; #&amp;gt; Joel print $name; #&amp;gt; Joel   括号不是要求的，但是可以使用   echo($name); #&amp;gt; Joel print($name); #&amp;gt; Joel   使用多个参数(只有echo支持)   echo $name, &amp;quot;Smith&amp;quot;; #&amp;gt; JoelSmith echo($name, &amp;quot; &amp;quot;, &amp;quot;Smith&amp;quot;); #&amp;gt; Joel Smith   print不像echo，是一个返回值为1的表达式，可以被用在更多的地方   print(&amp;quot;hey&amp;quot;) &amp;amp;&amp;amp; print(&amp;quot; &amp;quot;) &amp;amp;&amp;amp; print(&amp;quot;you&amp;quot;); #&amp;gt; you11   下面和上面是相等的   print (&amp;quot;hey&amp;quot; &amp;amp;&amp;amp; (print (&amp;quot; &amp;quot; &amp;amp;&amp;amp; print &amp;quot;you&amp;quot;))); #&amp;gt; you11  echo的简短写法 在outside of PHP tags，echo的简短写法是有效的。使用&amp;lt;?</description>
-    </item>
-    
-    <item>
-      <title>PHP专业笔记（四）</title>
-      <link>http://blog.huaifufeng.com/2019/04/post/php-section-4.html</link>
-      <pubDate>Thu, 04 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-4.html</guid>
-      <description>超全局变量 超全局变量是内建的在任何地方都一直有效的变量。
-一些预定义的PHP变量叫做&amp;rdquo;超全局变量&amp;rdquo;，这意味着这些变量在一个脚本的任何作用域都是有效的。不用在函数或方法内使用global $variable来访问这些变量。
-超全局变量解释 简介 简单来说，这些变量就是在你的脚本中全部作用域有效的变量。
-这意味着没有必要把它们作为参数传递给你的函数，或者为了让不同的作用域访问这些变量把他们存放在块作用域之外。
-什么是超全局变量？ 如果你认为它们就像超级英雄一样-它们不是的。
-在PHP 7.1.3之后，有9个超全局变量，下面是它们的列表：
- $GLOBALS：包含所有的全局变量 $_SERVER：服务器和执行环境的信息 $_GET：HTTP GET的变量 $_POST：HTTP POST的变量 $_FILES：HTTP文件上传变量 $_COOKIE：HTTP的Cookie $_SESSION：Session变量 $_REQUEST：HTTP的请求变量 $_ENV：环境变量  查看文档。
-更多信息 这里是它的参考资料。
-是时候解释这些超全局变量了。
-$GLOBALS  一个定义了当前脚本定义的所有全局作用域的变量的关联数组。变量名就是这个数组的键。
- 代码：
-$myGlobal = &amp;quot;global&amp;quot;; function test() { $myLocal = &amp;quot;local&amp;quot;; var_dump($myLocal); var_dump($GLOBALS[&#39;myGlobal&#39;]); } test(); var_dump($myLocal); var_dump($myGlobal);  输出：
-string &#39;local&#39; (length=5) string &#39;global&#39; (length=6) null string &#39;global&#39; (length=6)  在上面的例子中$myLocal第二次没有显示因为这个变量定义在函数test()内部，当函数关闭之后这个变量就销毁了。
-变为全局 实现这个有两种方法。
-第一种方法：global关键字
-function test() { global $myLocal; $myLocal = &amp;quot;local&amp;quot;; var_dump($myLocal); var_dump($GLOBALS[&amp;quot;myGloabl&amp;quot;]); }  这个关键字global放到变量前面，强制这个变量变为全局作用域变量。</description>
-    </item>
-    
-    <item>
-      <title>PHP专业笔记（三）</title>
-      <link>http://blog.huaifufeng.com/2019/04/post/php-section-3.html</link>
-      <pubDate>Wed, 03 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-3.html</guid>
-      <description>变量作用域 变量作用域表示变量可以被访问到的代码范围。这也经常被称为可见性。PHP的块作用域是函数，类定义的。一个全局作用域变量在整个应用都是有效的。
-超全局变量 超全局变量是PHP定义的，可以在任何地方使用而不需要使用global关键字。
-&amp;lt;?php function getPostValue($key, $default = NULL) { // $_POST is a superglobal and can be used without // having to specify &#39;global $_POST;&#39; if (isset($_POST[$key])) { return $_POST[$key]; } return $default; } // retrieves $_POST[&#39;username&#39;] echo getPostValue(&#39;username&#39;); // retrieves $_POST[&#39;email&#39;] and defaults to empty string echo getPostValue(&#39;email&#39;, &#39;&#39;);  静态属性和变量 定义为public的静态类属性和全局变量的功能类似。在任何类定义的地方都可以访问他们。
-class SomeClass { public static int $counter = 0; } // The static $counter variable can be read/written from anywhere // and doesn&#39;t require an instantiation of the class SomeClass::$counter += 1;  可以在函数内部定义静态变量。这些静态变量可以在多次调用之间保持存在，这个定义在函数中的普通变量不同。这可以非常简单的实现单例模式。</description>
-    </item>
-    
-    <item>
-      <title>PHP专业笔记（二）</title>
-      <link>http://blog.huaifufeng.com/2019/04/post/php-section-2.html</link>
-      <pubDate>Tue, 02 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-2.html</guid>
-      <description>变量 变量的变量 可以通过动态的变量名字访问变量。任务允许被动态访问的变量的名字都可以放到另一个变量内。这样的变量就叫做变量的变量。
-想要把一个变量放到另一个变量里面，可以在变量的前面添加一个额外的$符。
-$variableName = &#39;foo&#39;; $foo = &#39;bar&#39;; //下面这些都是等价的，都会输出bar echo $foo; echo ${$variableName}; echo $$variableName; //下面相似的 $variableName = &#39;foo&#39;; $$variableName = &#39;bar&#39;; //下面的语句也会输出bar echo $foo; echo ${$variableName}; echo $$variableName;  变量的变量对于映射函数/方法非常有用。
-function add($a, $b) { return $a + $b; } $funcName = &#39;add&#39;; echo $funcName(1, 2); // outputs 3  这在PHP的类里面是特别有用的：
-class myClass { public function __construct() { $functionName = &#39;doSomething&#39;; $this-&amp;gt;$functionName(&#39;Hello World&#39;); } private function doSomething($string) { echo $string; // Outputs &amp;quot;Hello World&amp;quot; } }  可以单并不要求把变量$variableName放到{}里面：</description>
-    </item>
-    
-    <item>
-      <title>PHP专业笔记（一）</title>
-      <link>http://blog.huaifufeng.com/2019/04/post/php-section-1.html</link>
-      <pubDate>Mon, 01 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-1.html</guid>
-      <description>开始使用PHP PHP 7.x
-   版本 支持截止时间 发版时间     7.1 2019-12-01 2016-12-01   7.0 2018-12-03 2015-12-03    PHP 5.x
-   版本 支持截止时间 发版时间     5.6 2018-12-31 2014-08-28   5.5 2016-07-21 2013-06-20   5.4 2015-09-03 2012-03-01   5.3 2014-08-14 2009-06-30   5.2 2011-01-06 2006-11-02   5.1 2006-08-24 2005-11-24   5.0 2005-09-05 2004-07-13    PHP 4.</description>
-    </item>
     
     <item>
       <title>Git专业笔记（四十三）</title>
