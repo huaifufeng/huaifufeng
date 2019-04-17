@@ -6,10 +6,20 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 08 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 09 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（九）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-9.html</link>
+      <pubDate>Tue, 09 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-9.html</guid>
+      <description>类型 类型比较符 两种类型的比较符：松散比较符==和严格比较符===。严格比较符要求比较符两端的变量的类型和值都要相同。
+// Loose comparisons var_dump(1 == 1); // true var_dump(1 == &amp;quot;1&amp;quot;); // true var_dump(1 == true); // true var_dump(0 == false); // true // Strict comparisons var_dump(1 === 1); // true var_dump(1 === &amp;quot;1&amp;quot;); // false var_dump(1 === true); // false var_dump(0 === false); // false // Notable exception: NAN — it never is equal to anything var_dump(NAN == NAN); // false var_dump(NAN === NAN); // false  你也可以使用严格比较符的相对于的反比较符!</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（八）</title>
