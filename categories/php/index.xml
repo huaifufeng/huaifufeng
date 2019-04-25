@@ -6,10 +6,75 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 09 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 13 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（十三）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-13.html</link>
+      <pubDate>Sat, 13 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-13.html</guid>
+      <description>数组迭代 一次迭代多个数组 有时候两个数组由相同的长度，需要一起迭代处理：
+$people = [&#39;Tim&#39;, &#39;Tony&#39;, &#39;Turanga&#39;]; $foods = [&#39;chicken&#39;, &#39;beef&#39;, &#39;slurm&#39;];  array_map可以简单的实现这个要求：
+array_map(function($person, $food) { retrun &amp;quot;$person likes $food\n&amp;quot;; }, $people, $foods);  这将会输出：
+Tim likes chicken Tony likes beef Turanga likes slurm  这可以通过索引来实现：
+assert(count($people) === count($foods)); for ($i = 0; $i &amp;lt; count($people); $i++) { echo &amp;quot;$people[$i] likes $foods[$i]\n&amp;quot;; }  如果没有递增的索引值，需要使用array_values($array)[$i]来代替$array[$i]。
+如果两个数组拥有相同的索引，可以使用foreach来处理其中的一个数组：
+foreach ($people as $index =&amp;gt; $person) { $food = $foods[$index]; echo &amp;quot;$person likes $food\n&amp;quot;; }  不同的数组只有当它们的长度一样，并且拥有一样的key时，才可以这么处理。这意味着要么多个数组是数字递增的，要么它们是相同的key按照相同的顺序排列的。</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（十二）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-12.html</link>
+      <pubDate>Fri, 12 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-12.html</guid>
+      <description>数组    参数 详情     Key key是数组唯一的标识和索引。可以是string和integer。因此有效的key包括foo 5 10 a2b   Value 对于每个key都有一个值和其对应（否知就是null，在访问是会出问题）。这个值没有严格限制的类型    一个数组就是存储任意个元素到单独一个值中的数据结构。PHP中的数组实际是一个有序的映射，其中映射是一种键值关联的结构。
+数组初始化 一个数组可以是空的。
+//空数组 $foo = array(); //从PHP5.4的简短格式 $foo = [];  一个数组可以初始化，并且有值：
+//创建3个值的简单数组 $fruit = array(&#39;apples&#39;, &#39;pears&#39;, &#39;oranges&#39;); //5.4之后的简短格式 $fruit = [&#39;apples&#39;, &#39;pears&#39;, &#39;oranges&#39;];  一个数组可以带有自定义索引的值（这时数组叫关联数组）：
+//简单关联数组 $fruit = array( &#39;first&#39; =&amp;gt; &#39;apples&#39;, &#39;second&#39; =&amp;gt; &#39;pears&#39;, &#39;third&#39; =&amp;gt; &#39;oranges&#39; ); //也可以在之后赋值 $fruit[&#39;first&#39;] = &#39;apples&#39;; //短格式 $fruit = [ &#39;first&#39; =&amp;gt; &#39;apples&#39;, &#39;second&#39; =&amp;gt; &#39;pears&#39;, &#39;third&#39; =&amp;gt; &#39;oranges&#39; ];  如果一个变量之前没有用过，PHP将自动创建。虽然方便了，但也让代码更加难读了：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（十一）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-11.html</link>
+      <pubDate>Thu, 11 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-11.html</guid>
+      <description>引用 引用赋值 这是引用使用的第一个阶段。实际你在引用赋值的时候，这里允许你两个变量拥有相同的值。
+$foo = &amp;amp;$bar;  $foo和$bar是相等的。它们指向相同的地址，而不是不同的地址。
+你也可以在array()语言结构中使用引用赋值。并不是严格的引用赋值：
+$foo = &#39;hi&#39;; $bar = array(1, 2); $array = array(&amp;amp;$foo, &amp;amp;$bar[0]);   注意：数组里面的引用是非常危险的一种行为。使用右侧引用对左侧进行普通赋值不会将左边变为引用。但是数组中这样的赋值引用将会被保留。在函数中，数组作为值传递时也有这个问题。
+ 引用赋值不限制在变量和数组中。在函数和所有&amp;rdquo;引用传递的值&amp;rdquo;都可以。
+function incrementArray(&amp;amp;$arr) { foreach ($arr as $$val) { $var++; } } function &amp;amp;getArray() { statice $arr = [1, 2, 3]; return $arr; } incremetnArray(getArray()); var_dump(getArray()); //[2,3,4]  赋值是上面函数定义的关键点。不能通过引用传递表达式，只能传递值/变量。
+返回引用 偶尔会出现让你通过引用隐藏返回的情况。
+ 引用返回在函数定义的参数是引用变量的时候非常有用。不要用返回引用来提升性能。PHP引擎会自动处理这些问题。只有在您有有效的技术原因时才返回引用。
+ 查看返回引用的PHP文档。
+有很多不同的方式可以返回引用，包括下面的例子：
+function parent(&amp;amp;$var) { echo $var; $var = &amp;quot;updated&amp;quot;; } function &amp;amp;child() { static $a = &amp;quot;test&amp;quot;; return $a; } parent(child()); //返回test parent(child()); //返回updated  引用返回不仅限于函数引用。您还可以隐式调用函数：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（十）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-10.html</link>
+      <pubDate>Wed, 10 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-10.html</guid>
+      <description>运算符 一个运算符就是处理一个或多个值(或表达式，编程术语)，然后产生一个新的值(把本身构造成表达式)的符号。
+可以根据运算符操作的数量把它们进行分组。
+空合并运算符?? 空合并运算符是PHP7新增加的运算符。如果第一个操作数设置了并不为null，就返回这个运算符。否则返回第二个运算符的值。
+下面是一个例子：
+$name = $_POST[&#39;name&#39;] ?? &#39;nobody&#39;;  这和下面这个例子是等价的：
+if (isset($_POST[&#39;name&#39;])) { $name = $_POST[&#39;name&#39;]; } else { $name = &#39;nobody&#39;; }  也和下面等价：
+$name = isset($_POST[&#39;name&#39;]) ? $_POST[&#39;name&#39;] : &#39;nobody&#39;;  这个操作符也可以连着使用，从左到右进行处理：
+$name = $_GET[&#39;name&#39;] ?? $_POST[&#39;name&#39;] ?? &#39;nobody&#39;;  这和下面是等价的:
+if (isset($_GET[&#39;name&#39;])) { $name = $_GET[&#39;name&#39;]; } elseif (isset($_POST[&#39;name&#39;])) { $name = $_POST[&#39;name&#39;]; } else { $name = &#39;nobody&#39;; }  注意在字符串中使用空合并运算符，不要忘了使用括号：
+$firstName = &amp;quot;John&amp;quot;; $lastName = &amp;quot;Doe&amp;quot;; echo $firstName ?</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（九）</title>

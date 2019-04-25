@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="数组迭代">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（十三）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/php-section-13.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（十三）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Saturday, April 13, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#数组迭代">数组迭代</a>
+<ul>
+<li><a href="#一次迭代多个数组">一次迭代多个数组</a></li>
+<li><a href="#递增索引">递增索引</a></li>
+<li><a href="#内部数组指针">内部数组指针</a>
+<ul>
+<li><a href="#each">each</a></li>
+<li><a href="#next">next</a></li>
+</ul></li>
+<li><a href="#使用foreach">使用foreach</a>
+<ul>
+<li><a href="#直接循环">直接循环</a></li>
+<li><a href="#带key的循环">带key的循环</a></li>
+<li><a href="#带索引循环">带索引循环</a></li>
+<li><a href="#并发">并发</a></li>
+</ul></li>
+<li><a href="#使用arrayobejct迭代">使用ArrayObejct迭代</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="数组迭代">数组迭代</h2>
+
+<h3 id="一次迭代多个数组">一次迭代多个数组</h3>
+
+<p>有时候两个数组由相同的长度，需要一起迭代处理：</p>
+
+<pre><code>$people = ['Tim', 'Tony', 'Turanga'];
+$foods = ['chicken', 'beef', 'slurm'];
+</code></pre>
+
+<p><a href="https://www.php.net/manual/en/function.array-map.php">array_map</a>可以简单的实现这个要求：</p>
+
+<pre><code>array_map(function($person, $food) {
+    retrun &quot;$person likes $food\n&quot;;
+}, $people, $foods);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Tim likes chicken
+Tony likes beef
+Turanga likes slurm
+</code></pre>
+
+<p>这可以通过索引来实现：</p>
+
+<pre><code>assert(count($people) === count($foods));
+for ($i = 0; $i &lt; count($people); $i++) {
+    echo &quot;$people[$i] likes $foods[$i]\n&quot;; 
+}
+</code></pre>
+
+<p>如果没有递增的索引值，需要使用<code>array_values($array)[$i]</code>来代替<code>$array[$i]</code>。</p>
+
+<p>如果两个数组拥有相同的索引，可以使用<code>foreach</code>来处理其中的一个数组：</p>
+
+<pre><code>foreach ($people as $index =&gt; $person) { 
+    $food = $foods[$index];
+    echo &quot;$person likes $food\n&quot;;
+}
+</code></pre>
+
+<p>不同的数组只有当它们的长度一样，并且拥有一样的key时，才可以这么处理。这意味着要么多个数组是数字递增的，要么它们是相同的key按照相同的顺序排列的。</p>
+
+<p>你也可以使用<a href="https://www.php.net/manual/zh/function.array-combine.php">array_combine</a>函数来处理：</p>
+
+<pre><code> $combinedArray = array_combine($people, $foods);
+// $combinedArray = ['Tim' =&gt; 'chicken', 'Tony' =&gt; 'beef', 'Turanga' =&gt; 'slurm'];
+</code></pre>
+
+<p>然后就可以循环这个数组达到之前一样的目的：</p>
+
+<pre><code>foreach ($combinedArray as $person =&gt; $meal) { 
+    echo &quot;$person likes $meal\n&quot;;
+}
+</code></pre>
+
+<h3 id="递增索引">递增索引</h3>
+
+<p>此方法的工作原理是将整数从0增加到数组中最大的索引。</p>
+
+<pre><code>$colors = ['red', 'yellow', 'blue', 'green'];
+for ($i = 0; $i &lt; count($colors); $i++) {
+    echo 'I am the color ' . $colors[$i] . '&lt;br&gt;';
+}
+</code></pre>
+
+<p>这允许在不使用<a href="https://www.php.net/manual/zh/function.array-reverse.php">array_reverse</a>方法的情况下，将数组倒序。当在数组很大的时候，会带来很大的开销：</p>
+
+<pre><code>$colors = ['red', 'yellow', 'blue', 'green'];
+for ($i = count($colors) - 1; $i &gt;= 0; $i--) {
+    echo 'I am the color ' . $colors[$i] . '&lt;br&gt;';
+}
+</code></pre>
+
+<p>使用这个方法你可以跳过或者倒排索引：</p>
+
+<pre><code>$array = [&quot;alpha&quot;, &quot;beta&quot;, &quot;gamma&quot;, &quot;delta&quot;, &quot;epsilon&quot;];
+for ($i = 0; $i &lt; count($array); $i++) {
+    echo $array[$i], PHP_EOL;
+    if ($array[$i] === &quot;gamma&quot;) {
+        $array[$i] = &quot;zeta&quot;;
+        $i -= 2;
+    } elseif ($array[$i] === &quot;zeta&quot;) {
+        $i++; 
+    }
+}
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>alpha
+beta
+gamma
+beta
+zeta
+epsilon
+</code></pre>
+
+<p>对于那些没有递增索引的数组(包括倒序的<code>[1 =&gt; &quot;foo&quot;, 0 =&gt; &quot;bar&quot;], [&quot;foo&quot; =&gt; &quot;f&quot;, &quot;bar&quot; =&gt; &quot;b&quot;]</code>)，这就不能直接这样处理了，可以首先通过<code>array_values</code>和<code>array_keys</code>来处理数组：</p>
+
+<pre><code>$array = [&quot;a&quot; =&gt; &quot;alpha&quot;, &quot;b&quot; =&gt; &quot;beta&quot;, &quot;c&quot; =&gt; &quot;gamma&quot;, &quot;d&quot; =&gt; &quot;delta&quot;];
+$keys = array_keys($array);
+for ($i = 0; $i &lt; count($array); $i++) {
+    $key = $keys[$i];
+    $value = $array[$key];
+    echo &quot;$value is $key\n&quot;;
+}
+</code></pre>
+
+<h3 id="内部数组指针">内部数组指针</h3>
+
+<p>每一个数组实例都包含了一个内部的指针。通过操作此指针，可以在不同的时间从同一调用中检索数组的不同元素。</p>
+
+<h4 id="each">each</h4>
+
+<p>使用<a href="https://www.php.net/manual/zh/function.each.php">each()</a>返回数组当前的key和值，然后把数组的指针向前移动一步。</p>
+
+<pre><code>$array = [&quot;f&quot; =&gt; &quot;foo&quot;, &quot;b&quot; =&gt; &quot;bar&quot;];
+while (list($key, $value) = each($array)) {
+    echo &quot;$value begins with $key&quot;; 
+}
+</code></pre>
+
+<p><strong>注意：</strong>这个方法在PHP7.2已经被标记为不推荐使用，会在之后的某个版本移除。</p>
+
+<h4 id="next">next</h4>
+
+<pre><code>$array = [&quot;Alpha&quot;, &quot;Beta&quot;, &quot;Gamma&quot;, &quot;Delta&quot;]; 
+while (($value = next($array)) !== false) {
+    echo &quot;$value\n&quot;;
+}
+</code></pre>
+
+<p>注意：这里例子里面假定数组中没有为<code>false</code>的值。为了避免这种假设，使用检查<code>key</code>是否存在来作为索引是否到末尾的判断：</p>
+
+<pre><code>$array = [&quot;Alpha&quot;, &quot;Beta&quot;, &quot;Gamma&quot;, &quot;Delta&quot;]; 
+while (key($array) !== null) {
+    echo current($array) . PHP_EOL;
+    next($array);
+}
+</code></pre>
+
+<p>这有助于在不使用直接循环的情况下，迭代一个数组：</p>
+
+<pre><code>class ColorPicker {
+    private $colors = [&quot;#FF0064&quot;, &quot;#0064FF&quot;, &quot;#64FF00&quot;, &quot;#FF6400&quot;, &quot;#00FF64&quot;, &quot;#6400FF&quot;]; 
+    public function nextColor() : string {
+        $result = next($colors);
+        // if end of array reached
+        if (key($colors) === null) {
+            reset($colors);
+        }
+        return $result;
+    }
+}
+</code></pre>
+
+<h3 id="使用foreach">使用foreach</h3>
+
+<h4 id="直接循环">直接循环</h4>
+
+<pre><code>foreach ($colors as $color) {
+    echo &quot;I am the color $color&lt;br&gt;&quot;;
+}
+</code></pre>
+
+<h4 id="带key的循环">带key的循环</h4>
+
+<pre><code>$foods = ['healthy' =&gt; 'Apples', 'bad' =&gt; 'Ice Cream'];
+foreach ($foods as $key =&gt; $food) {
+    echo &quot;Eating $food is $key&quot;;
+}
+</code></pre>
+
+<h4 id="带索引循环">带索引循环</h4>
+
+<p>在上面的<code>foreach</code>循环中，直接修改值<code>$value或$food</code>将不会修改数组中的值。使用<code>&amp;</code>符来获取数组中这个值的指针：</p>
+
+<pre><code>$years = [2001, 2002, 3, 4];
+foreach ($years as &amp;$year) {
+    if ($year &lt; 2000) {
+        $year += 2000;
+    }
+}
+</code></pre>
+
+<p>这和下面是相似的：</p>
+
+<pre><code>$years = [2001, 2002, 3, 4];
+for($i = 0; $i &lt; count($years); $i++) { // these two lines
+    $year = &amp;$years[$i]; // are changed to foreach by reference
+    if($year &lt; 2000) { 
+        $year += 2000;
+    }
+}
+</code></pre>
+
+<h4 id="并发">并发</h4>
+
+<p>PHP数组在迭代中进行处理不会有并发问题(不像Java的List)。如果使用引用的话，迭代中的处理会影响到数组的值。但是这个迭代的修改不会影响到之后的迭代(如果你使用数组的副本的话)。下面是值迭代：</p>
+
+<pre><code>$array = [0 =&gt; 1, 2 =&gt; 3, 4 =&gt; 5, 6 =&gt; 7];
+foreach ($array as $key =&gt; $value) {
+    if ($key === 0) {
+        $array[6] = 17;
+        unset($array[4]);
+    }
+    echo &quot;$key =&gt; $value\n&quot;;
+}
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>0 =&gt; 1
+2 =&gt; 3
+4 =&gt; 5
+6 =&gt; 7
+</code></pre>
+
+<p>如果使用引用迭代的话：</p>
+
+<pre><code>$array = [0 =&gt; 1, 2 =&gt; 3, 4 =&gt; 5, 6 =&gt; 7];
+foreach ($array as $key =&gt; &amp;$value) {
+    if ($key === 0) {
+        $array[6] = 17;
+        unset($array[4]);
+    }
+    echo &quot;$key =&gt; $value\n&quot;; 
+}
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>0 =&gt; 1
+2 =&gt; 3
+6 =&gt; 17
+</code></pre>
+
+<p>这个键值对中<code>4=&gt;5</code>不存在了，<code>6=&gt;7</code>变为了<code>6=&gt;17</code>。</p>
+
+<h3 id="使用arrayobejct迭代">使用ArrayObejct迭代</h3>
+
+<p>PHP的数组迭代器允许你在迭代的时候修改或删除数组的值。</p>
+
+<p>例如：</p>
+
+<pre><code>$array = ['1' =&gt; 'apple', '2' =&gt; 'banana', '3' =&gt; 'cherry']; 
+$arrayObject = new ArrayObject($array);
+$iterator = $arrayObject-&gt;getIterator();
+for($iterator; $iterator-&gt;valid(); $iterator-&gt;next()) {
+    echo $iterator-&gt;key() . ' =&gt; ' . $iterator-&gt;current() . &quot;&lt;/br&gt;&quot;;
+}
+</code></pre>
+
+<p>将会输出：</p>
+
+<pre><code>1 =&gt; apple
+2 =&gt; banana
+3 =&gt; cherry
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/java-section-1.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（一）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-12.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
