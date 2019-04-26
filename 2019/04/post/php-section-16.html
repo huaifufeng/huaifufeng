@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="一次处理多个数组">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（十六）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/php-section-16.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（十六）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Tuesday, April 16, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#一次处理多个数组">一次处理多个数组</a>
+<ul>
+<li><a href="#数组交集">数组交集</a></li>
+<li><a href="#合并或拼接数组">合并或拼接数组</a></li>
+<li><a href="#多维数组修改为关联数组">多维数组修改为关联数组</a></li>
+<li><a href="#混合两个数组-一个做key-一个做值">混合两个数组(一个做key，一个做值)</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="一次处理多个数组">一次处理多个数组</h2>
+
+<h3 id="数组交集">数组交集</h3>
+
+<p><a href="https://www.php.net/manual/zh/function.array-intersect.php">array_intersect</a>将会将所有数组中共有的值放入一个数组中。</p>
+
+<pre><code>$array_one = ['one', 'two', 'three'];
+$array_two = ['two', 'three', 'four'];
+$array_three = ['two', 'three'];
+$intersect = array_intersect($array_one, $array_two, $array_three); // $intersect contains ['two', 'three']
+</code></pre>
+
+<p>第一个数组的key将会被保留，数字索引不会。</p>
+
+<p><code>array_intersect</code>只会检查数组的值，<a href="https://www.php.net/manual/zh/function.array-intersect-assoc.php">array_intersect_assoc</a>将会对key也进行比较：</p>
+
+<pre><code>$array_one = [1 =&gt; 'one',2 =&gt; 'two',3 =&gt; 'three'];
+$array_two = [1 =&gt; 'one', 2 =&gt; 'two', 3 =&gt; 'two', 4 =&gt; 'three'];
+$array_three = [1 =&gt; 'one', 2 =&gt; 'two'];
+$intersect = array_intersect_assoc($array_one, $array_two, $array_three); // $intersect contains [1 =&gt;'one',2 =&gt; 'two']
+</code></pre>
+
+<p><a href="https://www.php.net/manual/zh/function.array-intersect-key.php">array_intersect_key</a>将会检查数组的key，将会返回数组中都存在的key：</p>
+
+<pre><code>$array_one = [1 =&gt; 'one',2 =&gt; 'two',3 =&gt; 'three'];
+$array_two = [1 =&gt; 'one', 2 =&gt; 'two', 3 =&gt; 'four'];
+$array_three = [1 =&gt; 'one', 3 =&gt; 'five'];
+$intersect = array_intersect_key($array_one, $array_two, $array_three); // $intersect contains [1 =&gt;'one',3 =&gt; 'three']
+</code></pre>
+
+<h3 id="合并或拼接数组">合并或拼接数组</h3>
+
+<pre><code>$fruit1 = ['apples', 'pears'];
+$fruit2 = ['bananas', 'oranges'];
+$all_of_fruits = array_merge($fruit1, $fruit2);
+// now value of $all_of_fruits is [0 =&gt; 'apples', 1 =&gt; 'pears', 2 =&gt; 'bananas', 3 =&gt; 'oranges']
+</code></pre>
+
+<p>注意：<code>array_merge</code>将会重置数字索引，覆盖文字索引：</p>
+
+<pre><code>$fruit1 = ['one' =&gt; 'apples',  'two' =&gt; 'pears'];
+$fruit2 = ['one' =&gt; 'bananas', 'two' =&gt; 'oranges'];
+$all_of_fruits = array_merge($fruit1, $fruit2);
+// now value of $all_of_fruits is ['one' =&gt; 'bananas', 'two' =&gt; 'oranges']
+</code></pre>
+
+<p><code>array_merge</code>将会覆盖第一个数组中的文字索引值，重新计数数字索引值。</p>
+
+<p>你也可以使用<code>+</code>来合并两个数组。第一个数组的值不会被覆盖，但是相同索引的值，后面数组的值将会被丢弃。</p>
+
+<pre><code>$fruit1 = ['one' =&gt; 'apples',  'two' =&gt; 'pears'];
+$fruit2 = ['one' =&gt; 'bananas', 'two' =&gt; 'oranges'];
+$all_of_fruits = $fruit1 + $fruit2;
+// now value of $all_of_fruits is ['one' =&gt; 'apples', 'two' =&gt; 'pears']
+
+$fruit1 = ['apples', 'pears'];
+$fruit2 = ['bananas', 'oranges'];
+$all_of_fruits = $fruit1 + $fruit2;
+// now value of $all_of_fruits is [0 =&gt; 'apples', 1 =&gt; 'pears']
+</code></pre>
+
+<h3 id="多维数组修改为关联数组">多维数组修改为关联数组</h3>
+
+<p>如果你有一个下面这样的多维数组：</p>
+
+<pre><code>[
+    ['foo',  'bar'],
+    ['fizz', 'buzz'],
+]
+</code></pre>
+
+<p>然后你想把它修改为下面这样的数组：</p>
+
+<pre><code>[
+    'foo'  =&gt; 'bar',
+    'fizz' =&gt; 'buzz',
+]
+</code></pre>
+
+<p>你可以使用下面的代码：</p>
+
+<pre><code>$multidimensionalArray = [
+    ['foo',  'bar'],
+    ['fizz', 'buzz'],
+];
+$associativeArrayKeys   = array_column($multidimensionalArray, 0);
+$associativeArrayValues = array_column($multidimensionalArray, 1);
+$associativeArray       = array_combine($associativeArrayKeys, $associativeArrayValues);
+</code></pre>
+
+<p>当然你也可以忽略<code>$associativeArrayKeys</code>和<code>$associativeArrayValues</code>。</p>
+
+<pre><code>$associativeArray = array_combine(array_column($multidimensionalArray, 0),
+array_column($multidimensionalArray, 1));
+</code></pre>
+
+<h3 id="混合两个数组-一个做key-一个做值">混合两个数组(一个做key，一个做值)</h3>
+
+<p>下面显示了如何把两个数组合并到一个数组，key来自第一个数组，值来自第二个数组。</p>
+
+<pre><code>$array_one = ['key1', 'key2', 'key3'];
+$array_two = ['value1', 'value2', 'value3'];
+$array_three = array_combine($array_one, $array_two);
+var_export($array_three);
+/*
+array (
+      'key1' =&gt; 'value1',
+      'key2' =&gt; 'value2',
+      'key3' =&gt; 'value3',
+) */
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/java-section-1.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（一）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-15.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十五）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

@@ -21,6 +21,18 @@
     </item>
     
     <item>
+      <title>PHP专业笔记（十六）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-16.html</link>
+      <pubDate>Tue, 16 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-16.html</guid>
+      <description>一次处理多个数组 数组交集 array_intersect将会将所有数组中共有的值放入一个数组中。
+$array_one = [&#39;one&#39;, &#39;two&#39;, &#39;three&#39;]; $array_two = [&#39;two&#39;, &#39;three&#39;, &#39;four&#39;]; $array_three = [&#39;two&#39;, &#39;three&#39;]; $intersect = array_intersect($array_one, $array_two, $array_three); // $intersect contains [&#39;two&#39;, &#39;three&#39;]  第一个数组的key将会被保留，数字索引不会。
+array_intersect只会检查数组的值，array_intersect_assoc将会对key也进行比较：
+$array_one = [1 =&amp;gt; &#39;one&#39;,2 =&amp;gt; &#39;two&#39;,3 =&amp;gt; &#39;three&#39;]; $array_two = [1 =&amp;gt; &#39;one&#39;, 2 =&amp;gt; &#39;two&#39;, 3 =&amp;gt; &#39;two&#39;, 4 =&amp;gt; &#39;three&#39;]; $array_three = [1 =&amp;gt; &#39;one&#39;, 2 =&amp;gt; &#39;two&#39;]; $intersect = array_intersect_assoc($array_one, $array_two, $array_three); // $intersect contains [1 =&amp;gt;&#39;one&#39;,2 =&amp;gt; &#39;two&#39;]  array_intersect_key将会检查数组的key，将会返回数组中都存在的key：</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（十五）</title>
       <link>http://blog.huaifufeng.com/2019/04/post/php-section-15.html</link>
       <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
