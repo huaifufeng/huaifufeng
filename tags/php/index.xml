@@ -6,10 +6,38 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 13 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（十五）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-15.html</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-15.html</guid>
+      <description>操作数组 筛选数组 从数组中筛选值，并且把按照筛选条件找出的值放入一个新数组中，可以使用array_filter函数。
+筛选非空数组 一个简单例子来筛选非空的值：
+$myArray = [1, 0, 2, null, 3, &#39;&#39;, 4, [], 5, 6, 7, 8]; $nonEmpties = array_filter($myArray); //[1, 2, 3, 4, 5, 6, 7, 8];  使用回调筛选 我们可以定义我们自己的筛选规则。这里假设我们想要偶数值：
+$myArray = [1, 2, 3, 4, 5, 6, 7, 8]; $evenNumbers = array_filter($myArray, function($number) { return $number % 2 === 0; })  array_filter的第一个参数是等待筛选的数组，第二个参数是定义筛选规则的回调函数。
+按索引筛选 Version &amp;gt;= 5.6
+array_filter的第三个参数是用来决定哪个值传递给回调函数。这个参数有两个选项：ARRAY_FILTER_USE_KEY 或 ARRAY_FILTER_USE_BOTH。这决定回调函数的参数是数组的key还是key和值都有。例如，你想要使用索引而不是值：
+$numbers = [16,3,5,8,1,4,6]; $even_indexed_numbers = array_filter($numbers, function($index) { return $index % 2 === 0; }, ARRAY_FILTER_USE_KEY);  筛选结果数组的索引 注意：array_filter函数会保留原本数组的key。一个常见的错误是使用for循环处理筛选后的数组：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（十四）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-14.html</link>
+      <pubDate>Sun, 14 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-14.html</guid>
+      <description>对数组操作 对数组每个元素进行函数处理 对数组每一个元素进行函数的处理，使用array_map函数。这将会返回一个新的数组。
+$array = array(1,2,3,4,5); //each array item is iterated over and gets stored in the function parameter. $newArray = array_map(function($item) { return $item + 1; }, $array);  返回的新数组$newArray的值是array(2,3,4,5,6)。
+除了使用匿名函数外，还可以使用一个命名的函数。上面的例子也可以写成下面这样：
+function addOne($item) { return $item + 1; } $array = array(1, 2, 3, 4, 5); $newArray = array_map(&#39;addOne&#39;, $array);  如果这个命名函数是一个类的方法，在使用的时候需要保护类的一个对象：
+class Example { public function addOne($item) { return $item + 1; } public function doCalculation() { $array = array(1, 2, 3, 4, 5); $newArray = array_map(array($this, &#39;addOne&#39;), $array); } }  另外的对数组每个元素使用方法的函数是array_walk()和array_walk_recursive()。在这些函数中使用的调用函数解释数组每个元素的键/值作为参数。这两个函数不返回一个新的数组，而是函数执行成功与否的布尔值。例如：打印一个简单数组的每个元素：</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（十三）</title>

@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="操作数组">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（十五）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/php-section-15.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（十五）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, April 15, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#操作数组">操作数组</a>
+<ul>
+<li><a href="#筛选数组">筛选数组</a>
+<ul>
+<li><a href="#筛选非空数组">筛选非空数组</a></li>
+<li><a href="#使用回调筛选">使用回调筛选</a></li>
+<li><a href="#按索引筛选">按索引筛选</a></li>
+<li><a href="#筛选结果数组的索引">筛选结果数组的索引</a></li>
+</ul></li>
+<li><a href="#从数组删除元素">从数组删除元素</a>
+<ul>
+<li><a href="#移除前后的元素">移除前后的元素</a></li>
+</ul></li>
+<li><a href="#数组排序">数组排序</a>
+<ul>
+<li><a href="#sort">sort()</a></li>
+<li><a href="#rsort">rsort()</a></li>
+<li><a href="#asort">asort()</a></li>
+<li><a href="#arsort">arsort()</a></li>
+<li><a href="#ksort">ksort()</a></li>
+<li><a href="#ksort-1">ksort()</a></li>
+<li><a href="#natsort">natsort()</a></li>
+<li><a href="#natcasesort">natcasesort()</a></li>
+<li><a href="#shuffle">shuffle</a></li>
+<li><a href="#usort">usort</a></li>
+<li><a href="#uasort">uasort()</a></li>
+<li><a href="#uksort">uksort()</a></li>
+</ul></li>
+<li><a href="#只有指定数组key有效">只有指定数组key有效</a></li>
+<li><a href="#在数组开头添加元素">在数组开头添加元素</a></li>
+<li><a href="#交换键值">交换键值</a></li>
+<li><a href="#合并数组到一个数组">合并数组到一个数组</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="操作数组">操作数组</h2>
+
+<h3 id="筛选数组">筛选数组</h3>
+
+<p>从数组中筛选值，并且把按照筛选条件找出的值放入一个新数组中，可以使用<a href="https://www.php.net/manual/zh/function.array-filter.php">array_filter</a>函数。</p>
+
+<h4 id="筛选非空数组">筛选非空数组</h4>
+
+<p>一个简单例子来筛选非空的值：</p>
+
+<pre><code>$myArray = [1, 0, 2, null, 3, '', 4, [], 5, 6, 7, 8];
+$nonEmpties = array_filter($myArray);  //[1, 2, 3, 4, 5, 6, 7, 8];
+</code></pre>
+
+<h4 id="使用回调筛选">使用回调筛选</h4>
+
+<p>我们可以定义我们自己的筛选规则。这里假设我们想要偶数值：</p>
+
+<pre><code>$myArray = [1, 2, 3, 4, 5, 6, 7, 8];
+
+$evenNumbers = array_filter($myArray, function($number) {
+    return $number % 2 === 0;
+})
+</code></pre>
+
+<p><code>array_filter</code>的第一个参数是等待筛选的数组，第二个参数是定义筛选规则的回调函数。</p>
+
+<h4 id="按索引筛选">按索引筛选</h4>
+
+<p>Version &gt;= 5.6</p>
+
+<p><code>array_filter</code>的第三个参数是用来决定哪个值传递给回调函数。这个参数有两个选项：ARRAY_FILTER_USE_KEY 或 ARRAY_FILTER_USE_BOTH。这决定回调函数的参数是数组的key还是key和值都有。例如，你想要使用索引而不是值：</p>
+
+<pre><code>$numbers = [16,3,5,8,1,4,6];
+$even_indexed_numbers = array_filter($numbers, function($index) { 
+    return $index % 2 === 0;
+}, ARRAY_FILTER_USE_KEY);
+</code></pre>
+
+<h4 id="筛选结果数组的索引">筛选结果数组的索引</h4>
+
+<p>注意：<code>array_filter</code>函数会保留原本数组的key。一个常见的错误是使用<code>for</code>循环处理筛选后的数组：</p>
+
+<pre><code>&lt;?php
+$my_array = [1,0,2,null,3,'',4,[],5,6,7,8]; 
+$filtered = array_filter($my_array);
+
+error_reporting(E_ALL); // show all errors and notices
+
+// innocently looking &quot;for&quot; loop
+for ($i = 0; $i &lt; count($filtered); $i++) {
+   print $filtered[$i];
+}
+
+/*
+Output:
+1
+Notice: Undefined offset: 1
+2
+Notice: Undefined offset: 3
+3
+Notice: Undefined offset: 5
+4
+Notice: Undefined offset: 7
+*/
+</code></pre>
+
+<p>这是因为索引为1(值为0)，3(值为null)，5(值为&rdquo;)，7(值为[])的已经被移除了。</p>
+
+<p>如果你想像上面一样循环数组，你可以首先使用<code>array_values</code>函数来处理筛选之后的数组，重新为数组添加索引。</p>
+
+<pre><code>$my_array = [1,0,2,null,3,'',4,[],5,6,7,8]; 
+$filtered = array_filter($my_array);
+$iterable = array_values($filtered);
+error_reporting(E_ALL); // show all errors and notices
+for ($i = 0; $i &lt; count($iterable); $i++) {
+   print $iterable[$i];
+}
+// No warnings!
+</code></pre>
+
+<h3 id="从数组删除元素">从数组删除元素</h3>
+
+<p>删除数组中的元素，比如删除索引为1的元素：</p>
+
+<pre><code>$fruit = ['bananas', 'apples', 'peaches'];
+unset($fruit[1]);
+</code></pre>
+
+<p>这将会从数组中删除<code>apples</code>，但是注意<code>unset</code>函数不会重置剩余数组元素的索引值。所以<code>$fruit</code>现在包含索引<code>0</code>和<code>2</code>。</p>
+
+<p>对于关联数组你也可以这样删除元素：</p>
+
+<pre><code>$fruit = ['banana', 'one' =&gt; 'apple', 'peaches'];
+
+print_r($fruit);
+/*
+Array (
+        [0] =&gt; banana
+        [one] =&gt; apple
+        [1] =&gt; peaches
+) */
+unset($fruit['one']);
+</code></pre>
+
+<p>现在<code>$fruit</code>就变成下面这样了：</p>
+
+<pre><code>print_r($fruit);
+/* Array (
+[0] =&gt; banana
+    [1] =&gt; peaches
+)
+*/
+</code></pre>
+
+<p>注意：<code>unset($fruit)</code>将会删除这个变量，这将会移除整个数组，数组的元素都不能访问了。</p>
+
+<h4 id="移除前后的元素">移除前后的元素</h4>
+
+<p><a href="https://php.net/manual/en/function.array-shift.php">array_shift()</a> 将会从数组开头移除一个元素：</p>
+
+<p>例如：</p>
+
+<pre><code>$fruit = ['bananas', 'apples', 'peaches'];
+array_shift($fruit);
+print_r($fruit);
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>Array
+(
+    [0] =&gt; apples
+    [1] =&gt; peaches
+)
+</code></pre>
+
+<p><a href="https://php.net/manual/en/function.array-pop.php">array_pop()</a> 移除数组末尾的元素:</p>
+
+<p>例如：</p>
+
+<pre><code>$fruit = array(&quot;bananas&quot;, &quot;apples&quot;, &quot;peaches&quot;);
+array_pop($fruit);
+print_r($fruit);
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>Array
+(
+    [0] =&gt; bananas
+    [1] =&gt; apples
+)
+</code></pre>
+
+<h3 id="数组排序">数组排序</h3>
+
+<p>PHP中有多个数组排序的方法。</p>
+
+<h4 id="sort">sort()</h4>
+
+<p>按照升序排列数组的值。</p>
+
+<pre><code>$fruits = ['Zitrone', 'Orange', 'Banana', 'Apfel'];
+sort($fruits);
+print_r($fruits);
+</code></pre>
+
+<p>这将会输出下面的结果：</p>
+
+<pre><code>Array
+(
+    [0] =&gt; Apfel
+    [1] =&gt; Banane
+    [2] =&gt; Orange
+    [3] =&gt; Zitrone
+)
+</code></pre>
+
+<h4 id="rsort">rsort()</h4>
+
+<p>按照数组值降序排列。</p>
+
+<pre><code>$fruits = ['Zitrone', 'Orange', 'Banana', 'Apfel'];
+rsort($fruits);
+print_r($fruits);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [0] =&gt; Zitrone
+    [1] =&gt; Orange
+    [2] =&gt; Banane
+    [3] =&gt; Apfel
+)
+</code></pre>
+
+<h4 id="asort">asort()</h4>
+
+<p>按照数组值的升序排列数组，并且保持数组的索引：</p>
+
+<pre><code>$fruits = [1 =&gt; 'lemon', 2 =&gt; 'orange',  3 =&gt; 'banana', 4 =&gt; 'apple'];
+asort($fruits);
+print_r($fruits);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [4] =&gt; apple
+    [3] =&gt; banana
+    [1] =&gt; lemon
+    [2] =&gt; orange
+)
+</code></pre>
+
+<h4 id="arsort">arsort()</h4>
+
+<p>按照数组值的降序排列，并保持数组的索引：</p>
+
+<pre><code>$fruits = [1 =&gt; 'lemon', 2 =&gt; 'orange',  3 =&gt; 'banana', 4 =&gt; 'apple'];
+arsort($fruits);
+print_r($fruits);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [2] =&gt; orange
+    [1] =&gt; lemon
+    [3] =&gt; banana
+    [4] =&gt; apple
+)
+</code></pre>
+
+<h4 id="ksort">ksort()</h4>
+
+<p>按照数组的关键字升序排列：</p>
+
+<pre><code>$fruits = ['d'=&gt;'lemon', 'a'=&gt;'orange', 'b'=&gt;'banana', 'c'=&gt;'apple'];
+ksort($fruits);
+print_r($fruits);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [a] =&gt; orange
+    [b] =&gt; banana
+    [c] =&gt; apple
+    [d] =&gt; lemon
+)
+</code></pre>
+
+<h4 id="ksort-1">ksort()</h4>
+
+<p>按照数组的关键字降序排列：</p>
+
+<pre><code>$fruits = ['d'=&gt;'lemon', 'a'=&gt;'orange', 'b'=&gt;'banana', 'c'=&gt;'apple'];
+krsort($fruits);
+print_r($fruits);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [d] =&gt; lemon
+    [c] =&gt; apple
+    [b] =&gt; banana
+    [a] =&gt; orange
+)
+</code></pre>
+
+<h4 id="natsort">natsort()</h4>
+
+<p>按照人们的习惯将数组进行排序(自然排序)：</p>
+
+<pre><code>$files = ['File8.stack', 'file77.stack', 'file7.stack', 'file13.stack', 'File2.stack']; natsort($files);
+print_r($files);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [4] =&gt; File2.stack
+    [0] =&gt; File8.stack
+    [2] =&gt; file7.stack
+    [3] =&gt; file13.stack
+    [1] =&gt; file77.stack
+)
+</code></pre>
+
+<h4 id="natcasesort">natcasesort()</h4>
+
+<p>按照人们的习惯将数组进行排序(自然排序)，并且不区分大小写：</p>
+
+<pre><code>$files = ['File8.stack', 'file77.stack', 'file7.stack', 'file13.stack', 'File2.stack']; natcasesort($files);
+print_r($files);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [4] =&gt; File2.stack
+    [2] =&gt; file7.stack
+    [0] =&gt; File8.stack
+    [3] =&gt; file13.stack
+    [1] =&gt; file77.stack
+)
+</code></pre>
+
+<h4 id="shuffle">shuffle</h4>
+
+<p>打乱数组的排序(随机排序)：</p>
+
+<pre><code>$array = ['aa', 'bb', 'cc'];
+shuffle($array);
+print_r($array);
+</code></pre>
+
+<p>像上面说的，将会按照随机的顺序排序，下面只是一个例子：</p>
+
+<pre><code>Array
+(
+    [0] =&gt; cc
+    [1] =&gt; bb
+    [2] =&gt; aa 
+)
+</code></pre>
+
+<h4 id="usort">usort</h4>
+
+<p>使用用户定义的函数进行数组元素的排序：</p>
+
+<pre><code>function compare($a, $b) {
+    if ($a == $b) {
+        return 0;
+    }
+    return ($a &lt; $b) ? -1 : 1;
+}
+$array = [3, 2, 5, 6, 1];
+usort($array, 'compare');
+print_r($array);
+</code></pre>
+
+<p>这将会输出下面的结果：</p>
+
+<pre><code>Array
+(
+    [0] =&gt; 1
+    [1] =&gt; 2
+    [2] =&gt; 3
+    [3] =&gt; 5
+    [4] =&gt; 6
+)
+</code></pre>
+
+<h4 id="uasort">uasort()</h4>
+
+<p>按照用户定义的比较函数来进行数组的排序，并且保留元素的key：</p>
+
+<pre><code>function compare($a, $b) {
+    if ($a == $b) {
+        return 0;
+    }
+    return ($a &lt; $b) ? -1 : 1;
+}
+$array = ['a' =&gt; 1, 'b' =&gt; -3, 'c' =&gt; 5, 'd' =&gt; 3, 'e' =&gt; -5];
+uasort($array, 'compare');
+print_r($array);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [e] =&gt; -5
+    [b] =&gt; -3
+    [a] =&gt; 1
+    [d] =&gt; 3
+    [c] =&gt; 5
+)
+</code></pre>
+
+<h4 id="uksort">uksort()</h4>
+
+<p>使用用户定义的函数，对数组的key进行处理排序：</p>
+
+<pre><code>function compare($a, $b) {
+    if ($a == $b) {
+        return 0;
+    }
+    return ($a &lt; $b) ? -1 : 1;
+}
+$array = ['ee' =&gt; 1, 'g' =&gt; -3, '4' =&gt; 5, 'k' =&gt; 3, 'oo' =&gt; -5];
+uksort($array, 'compare');
+print_r($array);
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array
+(
+    [ee] =&gt; 1
+    [g] =&gt; -3
+    [k] =&gt; 3
+    [oo] =&gt; -5
+    [4] =&gt; 5
+)
+</code></pre>
+
+<h3 id="只有指定数组key有效">只有指定数组key有效</h3>
+
+<p>当你只想要数组中某些键的值，特别是这个数组的值来着请求的参数时，你可以使用<a href="https://php.net/manual/zh/function.array-intersect-key.php">array_intersect_key</a>和<a href="https://php.net/manual/zh/function.array-flip.php">array_flip</a>。</p>
+
+<pre><code>$parameters = ['foo' =&gt; 'bar', 'bar' =&gt; 'baz', 'boo' =&gt; 'bam'];
+$allowedKeys = ['foo', 'bar'];
+$filteredParameters = array_intersect_key($parameters, array_flip($allowedKeys));
+// $filteredParameters contains ['foo' =&gt; 'bar', 'bar' =&gt; 'baz]
+</code></pre>
+
+<p>如果<code>$parameters</code>没有包含许可的键，这个数组<code>$filteredParameters</code>将会是空数组。</p>
+
+<p>从PHP5.6开始，你可以使用<code>array_filter</code>来实现这个功能，提供了第三个参数<code>ARRAY_FILTER_USE_KEY</code>来完成：</p>
+
+<pre><code>$parameters  = ['foo' =&gt; 1, 'hello' =&gt; 'world'];
+$allowedKeys = ['foo', 'bar'];
+$filteredParameters = array_filter(
+    $parameters,
+    function ($key) use ($allowedKeys) {
+        return in_array($key, $allowedKeys);
+    },
+    ARRAY_FILTER_USE_KEY
+);
+</code></pre>
+
+<p>使用<code>array_filter</code>来处理任何key就更加灵活，<code>$allowedKeys</code>可以包含正则表达式而不是字符串。它相对于使用<code>array_intersect_key</code>和<code>array_flip</code>来说更明确说明了代码的意图。</p>
+
+<h3 id="在数组开头添加元素">在数组开头添加元素</h3>
+
+<p>有时候你想在数组的开头添加一些元素，又不想修改数组元素的顺序，你可以使用<a href="https://php.net/array_unshift">array_unshift</a>。</p>
+
+<blockquote>
+<p><code>array_unshift</code>将传入的元素添加到数组的开头。注意元素的列表被整个添加到数组开头，所以这些添加的元素将会保持原来的顺序。所有数字开始的键值将会重新开始，字符串键值不变。</p>
+</blockquote>
+
+<p>如果你不清楚这个，查看下面的例子：</p>
+
+<pre><code>$myArray = array(1, 2, 3);
+array_unshift($myArray, 4);
+</code></pre>
+
+<p>这将会把4加入到数组的开头，你可以验证：</p>
+
+<pre><code>print_r($myArray);   //4, 1, 2, 3.
+</code></pre>
+
+<p>因为<code>array_unshift</code>强制强制数组充值键值索引，并且后面的数字索引加1，所以会自动创建新的数组，然后把已经存在的数组放到新建数组的后面。例如：</p>
+
+<pre><code>$myArray = array('apples', 'bananas', 'pears');
+$myElement = array('oranges');
+$joinedArray = $myElement;
+foreach ($myArray as $i) {
+  $joinedArray[] = $i;
+}
+</code></pre>
+
+<p>这将会输出：</p>
+
+<pre><code>Array ( [0] =&gt; oranges [1] =&gt; apples [2] =&gt; bananas [3] =&gt; pears )
+</code></pre>
+
+<h3 id="交换键值">交换键值</h3>
+
+<p><code>array_flip</code>将会交互数组所有元素的键值：</p>
+
+<pre><code>$colors = array(
+    'one' =&gt; 'red',
+    'two' =&gt; 'blue',
+    'three' =&gt; 'yellow',
+);
+array_flip($colors); //will output
+array(
+    'red' =&gt; 'one',
+    'blue' =&gt; 'two',
+    'yellow' =&gt; 'three'
+)
+</code></pre>
+
+<h3 id="合并数组到一个数组">合并数组到一个数组</h3>
+
+<pre><code>$a1 = array(&quot;red&quot;,&quot;green&quot;);
+$a2 = array(&quot;blue&quot;,&quot;yellow&quot;);
+print_r(array_merge($a1,$a2));
+/*
+    Array ( [0] =&gt; red [1] =&gt; green [2] =&gt; blue [3] =&gt; yellow )
+*/
+</code></pre>
+
+<p>关联数组：</p>
+
+<pre><code>$a1=array(&quot;a&quot;=&gt;&quot;red&quot;,&quot;b&quot;=&gt;&quot;green&quot;); 
+$a2=array(&quot;c&quot;=&gt;&quot;blue&quot;,&quot;b&quot;=&gt;&quot;yellow&quot;); 
+print_r(array_merge($a1,$a2));
+/*
+    Array ( [a] =&gt; red [b] =&gt; yellow [c] =&gt; blue )
+*/
+</code></pre>
+
+<ol>
+<li>合并一个或多个数组将会把后面数组的值添加到前面数组上面。然后返回合并后的数组。</li>
+<li>如果后面的数组和前面的数组拥有相同的键，后面的数组的值将会覆盖前面数组的值。如果是数字键的话，后面数组的值将会附加在前面数组内。</li>
+<li>输入数组的数字键值将会按照从0开始的顺序在结果数组中。</li>
+</ol>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/java-section-1.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（一）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-14.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十四）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
