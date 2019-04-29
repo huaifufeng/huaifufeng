@@ -6,10 +6,90 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 06 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(四十三)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-43.html</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-43.html</guid>
+      <description>管道 使用|&amp;amp; |&amp;amp;连接一命令的标准输出和标准错误到二命令，而|命令连接一命令的标准输出到二命令。
+在这个例子中，使用curl命令加下载这个页面，使用-v选项写一些内容到标准错误中，这个页面被输出到标准输出中。这个页面的标题在&amp;lt;title&amp;gt;和&amp;lt;/tilte&amp;gt;之间。
+curl -vs &#39;http://www.google.com/&#39; |&amp;amp; awk &#39;/Host:/{print} /&amp;lt;title&amp;gt;/{match($0,/&amp;lt;title&amp;gt;(.*)&amp;lt;\/title&amp;gt;/,a);print a[1]}&#39;  这将会输出：
+&amp;gt; Host: www.google.com Google  但是使用|的话，会输出更多的内容：即哪些被输出到标准错误中的信息，因为只有标准输出被管道到下一个命令。在这个例子中除了最后一行，其他的都是输出到标准错误中的：
+* Hostname was NOT found in DNS cache * Trying 172.217.20.228... * Connected to www.google.com (172.217.20.228) port 80 (#0) &amp;gt; GET / HTTP/1.1 &amp;gt; User-Agent: curl/7.35.0 &amp;gt; Host: www.google.com &amp;gt; Accept: */* &amp;gt; * HTTP 1.0, assume close after body &amp;lt; HTTP/1.0 200 OK &amp;lt; Date: Sun, 24 Jul 2016 19:04:59 GMT &amp;lt; Expires: -1 &amp;lt; Cache-Control: private, max-age=0 &amp;lt; Content-Type: text/html; charset=ISO-8859-1 &amp;lt; P3P: CP=&amp;quot;This is not a P3P policy!</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十二)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-42.html</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-42.html</guid>
+      <description>scp传输文件 scp传输文件 想要安全的传输一个文件到另一台机器上面：
+scp file1.txt tom@server2:$HOME  这个例子将会把file1.txt从我们的机器上面传输到server2的用户tom的家目录内。
+scp传输多个文件 scp也可以用来从一个服务器到一个服务器传输多个文件。下面的例子是从my_folder目录传输所有后缀为.txt的文件到server2。下面的例子所有的文件传输到用户的home目录：
+scp /my_folder/*.txt tom@server2:$HOME  使用scp下载文件 从远端机器下载文件到本地机器：
+scp tom@server2:$HOME/file.txt /local/machine/path/  这里例子展示了如果从tom的家目录下载文件file.txt到本地机器的当前目录。
+参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十一)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-41.html</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-41.html</guid>
+      <description>拆分文件 有时候把一个文件分成多个文件时很有用的。如果你有一个大文件，把它分成多个小块是很有用的。
+拆分一个文件 直接不带参数的运行spilt命令，将会把一个文件分为1个或多个文件，每个文件最多包含1000行。
+split file  这将会创建文件xaa xab xac …，每个文件最多1000行。这里你注意到，所有的文件都是x开头的。如果文件没有1000行，只有创建一个这样的文件。
+想要修改文件名前缀的话，在命令的后面添加你想要的文件前缀：
+split file customprefix  现在将会创建customprefixaa, customprefixab, customprefixac...这些文件。
+指定每个文件的行数，可以使用-l选项。下面的命令将会拆分文件，每个文件最多5000行。
+split -l5000 file  或者
+split --lines=5000 file  另外你可以指定文件的最大大小而不是行数。这可以通过使用-b或—bytes选项来实现。例如，每个文件最大1M：
+split --bytes=1MB file  参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-40.html</link>
+      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-40.html</guid>
+      <description>文件执行顺序 .bash_profile，.bash_login，.bashrc和.profile做这相同的事情：设置和定义函数，变量和排序。
+主要的不同是.bashrc在开启一个非登录的交互窗口是调用，.bash_profile和其他文件在登录的shell中执行。无论如何很多人都拥有.bash_profile和相似的.bashrc。
+.profile VS .bash_profile(和.bash_login) .profile在很多shell启动的时候读取，包括bash。然后.bash_profile是指定bash的配置。对于通用的初始化代码，放在.profile中，但是指定bash的代码，放到.bash_profile中。
+.profile并不是专门为bash设计的，但是.bash_profile是。(.profile是用于Bourne和其他类似的shell的，bash基于这个创作的。)如果找不到.bash_profile，就会去寻找.profile。
+如果找不到.bash_profile的话，就会寻找.bash_login，但是最好是使用.bash_profile或.profile。
+参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(三十九)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-39.html</link>
+      <pubDate>Thu, 07 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-39.html</guid>
+      <description>读取文件    参数 详情     IFS 内部字段分隔符   file 文件名或路径   -r 当使用read时，防止反斜杠解析   -t 从readarray读取的每一行中删除尾部换行符   -d DELIM 读取到DELIM的第一个字符中断，而不是换行符    一行一行循环 while IFS= read -r line; do echo &amp;quot;$line&amp;quot; done &amp;lt;file  如果没有包含新行符号的话：
+while IFS= read -r line || [ -n &amp;quot;$line&amp;quot; ]; do echo &amp;quot;$line&amp;quot; done &amp;lt;file  逐个字段循环 我们假设字段分隔符是:：
+while IFS= read -d : -r field || [ -n &amp;quot;$field&amp;quot; ];do echo &amp;quot;**$field**&amp;quot; done &amp;lt; &amp;lt;(ping google.</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（四十四）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-44.html</link>
+      <pubDate>Thu, 07 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-44.html</guid>
+      <description>git工作树    参数 详情     -f —force 默认情况下，当&amp;lt;branch&amp;gt;被另外的工作树使用，add拒绝添加新的工作树。这个选项将会强制创建。   -b  -B  当在添加或创建一个名字为&amp;lt; new-branch&amp;gt;的分支，将会在新的工作树上签出分支。如果忽略的话，默认是HEAD。默认-b当分支存在时，将不会创建新分支，但是-B会创建新的分支   &amp;ndash;detach 使用add，分类工作树中的HEAD   —[no-] checkout 默认add将会签出，然而—no-将会禁止签出，而使用自定义例如配置   -n —dry-run 使用prunce，这个选项将不会删除任何东西， 只是说明将会删除的内容。   &amp;ndash;porcelain 使用list，以易于解析的格式输出。无论用户怎么配置，都会在git中保持一致。   -v &amp;ndash;verbose 使用prune,的说明所有删除   —expire  使用prune，只会使早于的未使用的工作树过期。    使用工作树 你正在某个特性的开发工作中，这是你的老板来让你先修复一个问题。你通常会使用git stash来临时存储你的本地修改。然而，这时你的工作树处于混乱状态(新文件，移动文件，删除文件以及其他的一些文件)，你不想干扰你的进度。
+通过添加一个临时的工作树，你可以创建一个临时关联的工作树来保存这个紧急修改，然后在功能完成之后移出这个工作树，恢复之前的修改：
+$ git worktree add -b emergency-fix ../temp master $ pushd ../temp # .</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(三十八)</title>

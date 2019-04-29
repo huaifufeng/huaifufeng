@@ -6,10 +6,52 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 16 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 19 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（十九）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-19.html</link>
+      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-19.html</guid>
+      <description>控制结构 if else if语句允许当满足条件时，执行一段代码。当你想条件不满足时执行另外的代码可以使用if else。
+if ($a &amp;gt; $b) { echo &amp;quot;a is greater than b&amp;quot;; } else { echo &amp;quot;a is not greater than b&amp;quot;; }  查看PHP手册。
+三元运算符是if-else的短语法 三元预算符根据条件是true还是false来执行一些条件。这是一个比较预算符，通常用来将if-else语句变成简单的格式。这允许快速测试一个条件，然后通常用来替换多行的if语句，让你的代码更加紧凑。
+下面就是一个三元运算符的例子，这里$a=1,$b=2:
+echo ($a &amp;gt; $b) ? &amp;quot;a is greated than b&amp;quot; : &amp;quot;a is not greater than b&amp;quot;;  输出：a is not greater than b
+控制结构备用语法 PHP提供了控制结构备用的语法：if while for foreach switch。
+和普通的语法相比，不同的地方在于：这里使用:来代替开始花括号，使用endif; endwhile; endfor; endforeach; endswitch;来代替结束花括号。有关各个示例，请参阅有关控制结构的备用语法的主题。
+if ($a == 42): echo &amp;quot;The answer to life, the universe and everything is 42.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（十八）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-18.html</link>
+      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-18.html</guid>
+      <description>操作日期和时间 获取两个时间的差 最可行的方法是使用DateTime类。例如：
+&amp;lt;?php //创建一个指定时间的对象 2年前 $twoYearAgo = new DateTime(&#39;2017-04-29 22:00:00&#39;); //创建一个当前时间的对象 $now = new DateTime(&#39;2019-04-29 22:00:00&#39;) //计算差 $diff = $now-&amp;gt;diff($twoYearAgo); //获取diff结果中的数据 $yearsDiff = $diff-&amp;gt;y; $monthsDiff = $diff-&amp;gt;m; $daysDiff = $diff-&amp;gt;d; $hoursDiff = $diff-&amp;gt;h; $minsDiff = $diff-&amp;gt;i; $secondsDiff = $diff-&amp;gt;s; //差别的天数 $totalDaysDiff = $diff-&amp;gt;days; var_dump($diff);  另外比较两个日期也是很简单的，直接使用比较运算符：
+&amp;lt;?php // Create a date time object, which has the value of ~ two years ago $twoYearsAgo = new DateTime(&amp;quot;2014-01-18 20:05:56&amp;quot;); // Create a date time object, which has the value of ~ now $now = new DateTime(&amp;quot;2016-07-21 02:55:07&amp;quot;); var_dump($now &amp;gt; $twoYearsAgo); // prints bool(true) var_dump($twoYearsAgo &amp;gt; $now); // prints bool(false) var_dump($twoYearsAgo &amp;lt;= $twoYearsAgo); // prints bool(true) var_dump($now == $now); // prints bool(true)  转换日期格式 基本 最简单的转换日期的格式是联合使用strtotime和date。strtotime函数会把一个字符串时间转换为一个Unix时间戳。这个Unix的时间戳可以使用函数date转换为一个新的格式：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（十七）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-17.html</link>
+      <pubDate>Wed, 17 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-17.html</guid>
+      <description>Datetime类 可变到不可变 从PHP5.6之前的可变版本到现在的不可变版本。
+在PHP5.6之后创建一个\DateTimeImmutable类：
+\DateTimeImmutable::createFromMutable($concrete);  在PHP5.6之前：
+\DateTimeImmutable::createFromFormat(\DateTime::ISO8601, $mutable-&amp;gt;format(\DateTime::ISO8601), $mutable-&amp;gt;getTimezone());  加减日期间隔 我们可以使用DateInterval在DateTime对象上增加或减少一定时间间隔。
+下面的例子，我们在对象上增加7天，然后打印输出到屏幕上面：
+$now = new DateTime();// empty argument returns the current date $interval = new DateInterval(&#39;P7D&#39;);//this objet represents a 7 days interval $lastDay = $now-&amp;gt;add($interval); //this will return a DateTime object $formatedLastDay = $lastDay-&amp;gt;format(&#39;Y-m-d&#39;);//this method format the DateTime object and returns a String echo &amp;quot;Samara says: Seven Days. You&#39;ll be happy on $formatedLastDay.&amp;quot;;  这将会输出(在2019-04-29时运行)：
+  Samara says: Seven Days.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（十六）</title>

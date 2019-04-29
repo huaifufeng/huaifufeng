@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="case语句">
+    <meta name="description" content="管道">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(三十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(四十三)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-38.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-43.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -146,9 +146,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(三十八)</h1>
+                    <h1>Bash专业笔记(四十三)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, March 6, 2019
+                    <span  class="meta">Posted by 怀府风 on Monday, March 11, 2019
                         
                     </span>
                 </div>
@@ -178,11 +178,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#case语句">case语句</a>
+<li><a href="#管道">管道</a>
 <ul>
-<li><a href="#简单语句">简单语句</a></li>
-<li><a href="#贯穿语句">贯穿语句</a></li>
-<li><a href="#子模式匹配贯穿">子模式匹配贯穿</a></li>
+<li><a href="#使用">使用|&amp;</a></li>
+<li><a href="#分页展示进程">分页展示进程</a></li>
+<li><a href="#修改命令的连续输出">修改命令的连续输出</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,88 +190,86 @@
         		
         		
 
-<h2 id="case语句">case语句</h2>
+<h2 id="管道">管道</h2>
 
-<h3 id="简单语句">简单语句</h3>
+<h3 id="使用">使用|&amp;</h3>
 
-<p>在所有bash版本支持的最简单格式中，case语句执行与模式匹配的case。如果有的话，<code>;;</code>在第一次匹配后中断。</p>
+<p><code>|&amp;</code>连接一命令的标准输出和标准错误到二命令，而<code>|</code>命令连接一命令的标准输出到二命令。</p>
 
-<pre><code>#!/bin/bash
-var=1
-case $var in 
-1)
-    echo &quot;Antartica&quot; 
-    ;;
-2)
-    echo &quot;Brazil&quot;
-    ;;
-3)
-    echo &quot;Cat&quot;
-    ;; 
-esac
+<p>在这个例子中，使用curl命令加下载这个页面，使用<code>-v</code>选项写一些内容到标准错误中，这个页面被输出到标准输出中。这个页面的标题在<code>&lt;title&gt;</code>和<code>&lt;/tilte&gt;</code>之间。</p>
+
+<pre><code>curl -vs 'http://www.google.com/' |&amp; awk '/Host:/{print} /&lt;title&gt;/{match($0,/&lt;title&gt;(.*)&lt;\/title&gt;/,a);print a[1]}'
 </code></pre>
 
-<p>输出：</p>
+<p>这将会输出：</p>
 
-<pre><code>Antartica
+<pre><code>&gt; Host: www.google.com 
+Google
 </code></pre>
 
-<h3 id="贯穿语句">贯穿语句</h3>
+<p>但是使用<code>|</code>的话，会输出更多的内容：即哪些被输出到标准错误中的信息，因为只有标准输出被管道到下一个命令。在这个例子中除了最后一行，其他的都是输出到标准错误中的：</p>
 
-<p>Version&gt;=4.0</p>
-
-<p>从4.0开始，引入了新的操作符<code>;&amp;</code>，支持<a href="https://en.wikipedia.org/wiki/Switch_statement#Fallthrough">贯穿</a>操作。</p>
-
-<pre><code>#!/bin/bash
-var=1
-case $var in 
-1)
-    echo &quot;Antartica&quot;
-    ;&amp; 
-2)
-    echo &quot;Brazil&quot;
-    ;&amp; 
-3)
-    echo &quot;Cat&quot;
-    ;&amp; 
-esac
+<pre><code>* Hostname was NOT found in DNS cache
+*   Trying 172.217.20.228...
+* Connected to www.google.com (172.217.20.228) port 80 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.35.0
+&gt; Host: www.google.com
+&gt; Accept: */*
+&gt;
+* HTTP 1.0, assume close after body
+&lt; HTTP/1.0 200 OK
+&lt; Date: Sun, 24 Jul 2016 19:04:59 GMT
+&lt; Expires: -1
+&lt; Cache-Control: private, max-age=0
+&lt; Content-Type: text/html; charset=ISO-8859-1
+&lt; P3P: CP=&quot;This is not a P3P policy! See
+https://www.google.com/support/accounts/answer/151657?hl=en for more info.&quot;
+&lt; Server: gws
+&lt; X-XSS-Protection: 1; mode=block
+&lt; X-Frame-Options: SAMEORIGIN
+&lt; Set-Cookie: NID=82=jX0yZLPPUE7u13kKNevUCDg8yG9Ze_C03o0IM-
+EopOSKL0mMITEagIE816G55L2wrTlQwgXkhq4ApFvvYEoaWF-
+oEoq2T0sBTuQVdsIFULj9b2O8X35O0sAgUnc3a3JnTRBqelMcuS9QkQA; expires=Mon, 23-Jan-2017 19:04:59 GMT;
+path=/; domain=.google.com; HttpOnly
+&lt; Accept-Ranges: none
+&lt; Vary: Accept-Encoding
+&lt; X-Cache: MISS from jetsib_appliance
+&lt; X-Loop-Control: 5.202.190.157 81E4F9836653D5812995BA53992F8065
+&lt; Connection: close
+&lt;
+{ [data not shown]
+* Closing connection 0
+Google
 </code></pre>
 
-<p>输出：</p>
+<h3 id="分页展示进程">分页展示进程</h3>
 
-<pre><code>Antartica
-Brazil
-Cat
+<pre><code>ps -e | less
 </code></pre>
 
-<h3 id="子模式匹配贯穿">子模式匹配贯穿</h3>
+<p><code>ps -e</code>显示所有的输出，它的输出被通过<code>|</code>连接给<code>less</code>命令，用来分页显示结果。</p>
 
-<p>Version&gt;=4.0</p>
+<h3 id="修改命令的连续输出">修改命令的连续输出</h3>
 
-<p>4.0开始，另一个操作符<code>;;&amp;</code>，只有子语句匹配才<a href="https://en.wikipedia.org/wiki/Switch_statement#Fallthrough">贯穿</a>的操作。</p>
-
-<pre><code>#!/bin/bash
-var=abc
-case $var in 
-a*)
-    echo &quot;Antartica&quot;
-    ;;&amp;
-xyz)
-    echo &quot;Brazil&quot; 
-    ;;&amp;
-*b*)
-    echo &quot;Cat&quot; 
-    ;;&amp;
-esac
+<pre><code>~$ ping -c 1 google.com # unmodified output
+PING google.com (16.58.209.174) 56(84) bytes of data.
+64 bytes from wk-in-f100.1e100.net (16.58.209.174): icmp_seq=1 ttl=53 time=47.4 ms 
+~$ ping google.com | grep -o '^[0-9]\+[^()]\+' # modified output
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+64 bytes from wk-in-f100.1e100.net
+...
 </code></pre>
 
-<p>输出：</p>
-
-<pre><code>Antartica
-Cat
-</code></pre>
-
-<p>在下面这个例子中，<code>abc</code>匹配了第一个和第三个case，没有匹配第二个case。所有第二个语句没有执行。</p>
+<p><code>|</code>连接<code>ping</code>的标准输出作为<code>grep</code>的标准输入，它将立刻进行处理。其他的像<code>sed</code>这样的命令，会缓存输入的信息，这意味着在命令开始处理之前，必须接受足够的信息，可能导致进一步处理的延迟。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -282,12 +280,12 @@ Cat
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/git-section-44.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十四）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/php-section-1.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-43.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十三）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-42.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十二)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

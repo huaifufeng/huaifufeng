@@ -6,10 +6,21 @@
     <description>Recent content in Git on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 06 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 07 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（四十四）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-44.html</link>
+      <pubDate>Thu, 07 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-44.html</guid>
+      <description>git工作树    参数 详情     -f —force 默认情况下，当&amp;lt;branch&amp;gt;被另外的工作树使用，add拒绝添加新的工作树。这个选项将会强制创建。   -b  -B  当在添加或创建一个名字为&amp;lt; new-branch&amp;gt;的分支，将会在新的工作树上签出分支。如果忽略的话，默认是HEAD。默认-b当分支存在时，将不会创建新分支，但是-B会创建新的分支   &amp;ndash;detach 使用add，分类工作树中的HEAD   —[no-] checkout 默认add将会签出，然而—no-将会禁止签出，而使用自定义例如配置   -n —dry-run 使用prunce，这个选项将不会删除任何东西， 只是说明将会删除的内容。   &amp;ndash;porcelain 使用list，以易于解析的格式输出。无论用户怎么配置，都会在git中保持一致。   -v &amp;ndash;verbose 使用prune,的说明所有删除   —expire  使用prune，只会使早于的未使用的工作树过期。    使用工作树 你正在某个特性的开发工作中，这是你的老板来让你先修复一个问题。你通常会使用git stash来临时存储你的本地修改。然而，这时你的工作树处于混乱状态(新文件，移动文件，删除文件以及其他的一些文件)，你不想干扰你的进度。
+通过添加一个临时的工作树，你可以创建一个临时关联的工作树来保存这个紧急修改，然后在功能完成之后移出这个工作树，恢复之前的修改：
+$ git worktree add -b emergency-fix ../temp master $ pushd ../temp # .</description>
+    </item>
     
     <item>
       <title>Git专业笔记（四十三）</title>

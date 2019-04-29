@@ -8,6 +8,21 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/php-section-19.html</loc>
+    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/php-section-18.html</loc>
+    <lastmod>2019-04-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/php-section-17.html</loc>
+    <lastmod>2019-04-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/php-section-16.html</loc>
     <lastmod>2019-04-16T00:00:00+00:00</lastmod>
   </url>
@@ -85,6 +100,36 @@
   <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/php-section-1.html</loc>
     <lastmod>2019-04-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/03/post/bash-section-43.html</loc>
+    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/03/post/bash-section-42.html</loc>
+    <lastmod>2019-03-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/03/post/bash-section-41.html</loc>
+    <lastmod>2019-03-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/03/post/bash-section-40.html</loc>
+    <lastmod>2019-03-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/03/post/bash-section-39.html</loc>
+    <lastmod>2019-03-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/03/post/git-section-44.html</loc>
+    <lastmod>2019-03-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -514,7 +559,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/bash/</loc>
-    <lastmod>2019-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -525,7 +570,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/git/</loc>
-    <lastmod>2019-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -561,13 +606,13 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/php/</loc>
-    <lastmod>2019-04-16T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.huaifufeng.com/categories/php/</loc>
-    <lastmod>2019-04-16T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -579,13 +624,13 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/</loc>
-    <lastmod>2019-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2019-03-06T00:00:00+00:00</lastmod>
+    <lastmod>2019-03-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

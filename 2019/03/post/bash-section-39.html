@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="case语句">
+    <meta name="description" content="读取文件">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(三十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(三十九)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-38.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-39.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -146,9 +146,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(三十八)</h1>
+                    <h1>Bash专业笔记(三十九)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, March 6, 2019
+                    <span  class="meta">Posted by 怀府风 on Thursday, March 7, 2019
                         
                     </span>
                 </div>
@@ -178,11 +178,27 @@
 <ul>
 <li>
 <ul>
-<li><a href="#case语句">case语句</a>
+<li><a href="#读取文件">读取文件</a>
 <ul>
-<li><a href="#简单语句">简单语句</a></li>
-<li><a href="#贯穿语句">贯穿语句</a></li>
-<li><a href="#子模式匹配贯穿">子模式匹配贯穿</a></li>
+<li><a href="#一行一行循环">一行一行循环</a></li>
+<li><a href="#逐个字段循环">逐个字段循环</a></li>
+<li><a href="#读取文件行到数组">读取文件行到数组</a></li>
+<li><a href="#读取字符串行到数组">读取字符串行到数组</a></li>
+<li><a href="#一行行循环字符串">一行行循环字符串</a>
+<ul>
+<li><a href="#命令的一行行输出">命令的一行行输出</a></li>
+</ul></li>
+<li><a href="#逐个字段读取文件">逐个字段读取文件</a></li>
+<li><a href="#逐个字段读取字符串">逐个字段读取字符串</a></li>
+<li><a href="#读取文件字段到数组">读取文件字段到数组</a></li>
+<li><a href="#读取字符串字段到数组">读取字符串字段到数组</a></li>
+<li><a href="#逐行和逐字段读取文件-etc-passwd">逐行和逐字段读取文件/etc/passwd</a>
+<ul>
+<li><a href="#例子输入">例子输入</a></li>
+<li><a href="#例子输出">例子输出</a></li>
+<li><a href="#例子输入-1">例子输入</a></li>
+<li><a href="#例子输出-1">例子输出</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,88 +206,267 @@
         		
         		
 
-<h2 id="case语句">case语句</h2>
+<h2 id="读取文件">读取文件</h2>
 
-<h3 id="简单语句">简单语句</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
 
-<p>在所有bash版本支持的最简单格式中，case语句执行与模式匹配的case。如果有的话，<code>;;</code>在第一次匹配后中断。</p>
+<tbody>
+<tr>
+<td>IFS</td>
+<td>内部字段分隔符</td>
+</tr>
 
-<pre><code>#!/bin/bash
-var=1
-case $var in 
-1)
-    echo &quot;Antartica&quot; 
-    ;;
-2)
-    echo &quot;Brazil&quot;
-    ;;
-3)
-    echo &quot;Cat&quot;
-    ;; 
-esac
+<tr>
+<td>file</td>
+<td>文件名或路径</td>
+</tr>
+
+<tr>
+<td>-r</td>
+<td>当使用read时，防止反斜杠解析</td>
+</tr>
+
+<tr>
+<td>-t</td>
+<td>从readarray读取的每一行中删除尾部换行符</td>
+</tr>
+
+<tr>
+<td>-d DELIM</td>
+<td>读取到DELIM的第一个字符中断，而不是换行符</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="一行一行循环">一行一行循环</h3>
+
+<pre><code>while IFS= read -r line; do 
+    echo &quot;$line&quot;
+done &lt;file
+</code></pre>
+
+<p>如果没有包含新行符号的话：</p>
+
+<pre><code>while IFS= read -r line || [ -n &quot;$line&quot; ]; do 
+    echo &quot;$line&quot;
+done &lt;file
+</code></pre>
+
+<h3 id="逐个字段循环">逐个字段循环</h3>
+
+<p>我们假设字段分隔符是<code>:</code>：</p>
+
+<pre><code>while IFS= read -d : -r field || [ -n &quot;$field&quot; ];do 
+    echo &quot;**$field**&quot;
+done &lt; &lt;(ping google.com)
+</code></pre>
+
+<p>或者使用管道：</p>
+
+<pre><code>ping google.com | while IFS= read -d : -r field || [ -n &quot;$field&quot; ];do 
+    echo &quot;**$field**&quot;
+done
+</code></pre>
+
+<h3 id="读取文件行到数组">读取文件行到数组</h3>
+
+<pre><code>readarray -t arr &lt;file
+</code></pre>
+
+<p>或者循环：</p>
+
+<pre><code>arr=()
+while IFS= read -r line; do
+    arr+=(&quot;$line&quot;) 
+done &lt;file
+</code></pre>
+
+<h3 id="读取字符串行到数组">读取字符串行到数组</h3>
+
+<pre><code>var='line 1
+line 2
+line3'
+readarray -t arr &lt;&lt;&lt; &quot;$var&quot;
+</code></pre>
+
+<p>或使用循环</p>
+
+<pre><code>arr=()
+while IFS= read -r line; do
+    arr+=(&quot;$line&quot;) 
+done &lt;&lt;&lt; &quot;$var&quot;
+</code></pre>
+
+<h3 id="一行行循环字符串">一行行循环字符串</h3>
+
+<pre><code>var='line 1
+line 2
+line3'
+while IFS= read -r line; do
+    echo &quot;-$line-&quot; 
+done &lt;&lt;&lt; &quot;$var&quot;
+</code></pre>
+
+<p>或者：</p>
+
+<pre><code>readarray -t arr &lt;&lt;&lt; &quot;$var&quot;
+for i in &quot;${arr[@]}&quot;;do
+    echo &quot;-$i-&quot; 
+done
+</code></pre>
+
+<h4 id="命令的一行行输出">命令的一行行输出</h4>
+
+<pre><code>while IFS= read -r line;do 
+    echo &quot;**$line**&quot;
+done &lt; &lt;(ping google.com)
+</code></pre>
+
+<p>或者使用管道：</p>
+
+<pre><code>ping google.com |
+while IFS= read -r line;do
+    echo &quot;**$line**&quot; 
+done
+</code></pre>
+
+<h3 id="逐个字段读取文件">逐个字段读取文件</h3>
+
+<p>假设文件的分隔符是<code>:</code>：</p>
+
+<pre><code>while IFS= read -d : -r field || [ -n &quot;$field&quot; ]; do 
+    echo &quot;$field&quot;
+done &lt;file
+</code></pre>
+
+<p>将会输出：</p>
+
+<pre><code>first : se
+con
+d:
+    Thi rd:
+    Fourth
+
+The output is:
+
+**first ** ** se
+con
+d**
+**
+    Thi rd**
+**
+    Fourth
+**
+</code></pre>
+
+<h3 id="逐个字段读取字符串">逐个字段读取字符串</h3>
+
+<p>假设分隔符是<code>:</code>：</p>
+
+<pre><code>var='line: 1
+line: 2
+line3'
+while IFS= read -d : -r field || [ -n &quot;$field&quot; ]; do
+    echo &quot;-$field-&quot;
+done &lt;&lt;&lt; &quot;$var&quot;
 </code></pre>
 
 <p>输出：</p>
 
-<pre><code>Antartica
+<pre><code>-line- 
+-1 
+line- 
+-2 
+line3 
+-
 </code></pre>
 
-<h3 id="贯穿语句">贯穿语句</h3>
+<h3 id="读取文件字段到数组">读取文件字段到数组</h3>
 
-<p>Version&gt;=4.0</p>
+<p>假设分隔符是<code>:</code>：</p>
 
-<p>从4.0开始，引入了新的操作符<code>;&amp;</code>，支持<a href="https://en.wikipedia.org/wiki/Switch_statement#Fallthrough">贯穿</a>操作。</p>
+<pre><code>arr=()
+while IFS= read -d : -r field || [ -n &quot;$field&quot; ]; do
+    arr+=(&quot;$field&quot;) 
+done &lt;file
+</code></pre>
+
+<h3 id="读取字符串字段到数组">读取字符串字段到数组</h3>
+
+<p>假设分隔符是<code>:</code>：</p>
+
+<pre><code>var='1:2:3:4:
+newline'
+arr=()
+while IFS= read -d : -r field || [ -n &quot;$field&quot; ]; do
+    arr+=(&quot;$field&quot;) 
+done &lt;&lt;&lt; &quot;$var&quot;
+echo &quot;${arr[4]}&quot;
+
+//输出 newline
+</code></pre>
+
+<h3 id="逐行和逐字段读取文件-etc-passwd">逐行和逐字段读取文件/etc/passwd</h3>
 
 <pre><code>#!/bin/bash
-var=1
-case $var in 
-1)
-    echo &quot;Antartica&quot;
-    ;&amp; 
-2)
-    echo &quot;Brazil&quot;
-    ;&amp; 
-3)
-    echo &quot;Cat&quot;
-    ;&amp; 
-esac
+FILENAME=&quot;/etc/passwd&quot;
+while IFS=: read -r username password userid groupid comment homedir cmdshell 
+do
+    echo &quot;$username, $userid, $comment $homedir&quot; 
+done &lt; $FILENAME
 </code></pre>
 
-<p>输出：</p>
+<p>在Unix的密码文件中，用户信息是逐行存储的，每一行包含一个用户用<code>:</code>分隔的信息。这个例子是逐行读取的，该行也使用冒号字符作为分隔符分割为字段，该分隔符由为IFS指定的值指示。</p>
 
-<pre><code>Antartica
-Brazil
-Cat
+<h4 id="例子输入">例子输入</h4>
+
+<pre><code>mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/bash 
+pulse:x:497:495:PulseAudio System Daemon:/var/run/pulse:/sbin/nologin 
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin 
+tomcat:x:91:91:Apache Tomcat:/usr/share/tomcat6:/sbin/nologin 
+webalizer:x:67:67:Webalizer:/var/www/usage:/sbin/nologin
 </code></pre>
 
-<h3 id="子模式匹配贯穿">子模式匹配贯穿</h3>
+<h4 id="例子输出">例子输出</h4>
 
-<p>Version&gt;=4.0</p>
+<pre><code>mysql, 27, MySQL Server /var/lib/mysql
+pulse, 497, PulseAudio System Daemon /var/run/pulse 
+sshd, 74, Privilege-separated SSH /var/empty/sshd 
+tomcat, 91, Apache Tomcat /usr/share/tomcat6 
+webalizer, 67, Webalizer /var/www/usage
+</code></pre>
 
-<p>4.0开始，另一个操作符<code>;;&amp;</code>，只有子语句匹配才<a href="https://en.wikipedia.org/wiki/Switch_statement#Fallthrough">贯穿</a>的操作。</p>
+<p>逐行读取，然后把行赋值给一个变量，下面是修改之后的例子。注意这里我们只有一个变量名称。</p>
 
 <pre><code>#!/bin/bash
-var=abc
-case $var in 
-a*)
-    echo &quot;Antartica&quot;
-    ;;&amp;
-xyz)
-    echo &quot;Brazil&quot; 
-    ;;&amp;
-*b*)
-    echo &quot;Cat&quot; 
-    ;;&amp;
-esac
+FILENAME=&quot;/etc/passwd&quot; while IFS= read -r line do
+    echo &quot;$line&quot; 
+done &lt; $FILENAME
 </code></pre>
 
-<p>输出：</p>
+<h4 id="例子输入-1">例子输入</h4>
 
-<pre><code>Antartica
-Cat
+<pre><code>mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/bash 
+pulse:x:497:495:PulseAudio System Daemon:/var/run/pulse:/sbin/nologin 
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin 
+tomcat:x:91:91:Apache Tomcat:/usr/share/tomcat6:/sbin/nologin 
+webalizer:x:67:67:Webalizer:/var/www/usage:/sbin/nologin
 </code></pre>
 
-<p>在下面这个例子中，<code>abc</code>匹配了第一个和第三个case，没有匹配第二个case。所有第二个语句没有执行。</p>
+<h4 id="例子输出-1">例子输出</h4>
+
+<pre><code>mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/bash 
+pulse:x:497:495:PulseAudio System Daemon:/var/run/pulse:/sbin/nologin 
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin 
+tomcat:x:91:91:Apache Tomcat:/usr/share/tomcat6:/sbin/nologin 
+webalizer:x:67:67:Webalizer:/var/www/usage:/sbin/nologin
+</code></pre>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -282,12 +477,12 @@ Cat
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/git-section-44.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十四）">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-40.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-43.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十三）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/git-section-44.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十四）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

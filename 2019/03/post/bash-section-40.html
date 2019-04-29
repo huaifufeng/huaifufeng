@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="case语句">
+    <meta name="description" content="文件执行顺序">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(三十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(四十)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-38.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-40.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -146,9 +146,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(三十八)</h1>
+                    <h1>Bash专业笔记(四十)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, March 6, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, March 8, 2019
                         
                     </span>
                 </div>
@@ -178,11 +178,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#case语句">case语句</a>
+<li><a href="#文件执行顺序">文件执行顺序</a>
 <ul>
-<li><a href="#简单语句">简单语句</a></li>
-<li><a href="#贯穿语句">贯穿语句</a></li>
-<li><a href="#子模式匹配贯穿">子模式匹配贯穿</a></li>
+<li><a href="#profile-vs-bash-profile-和-bash-login">.profile VS .bash_profile(和.bash_login)</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,88 +188,19 @@
         		
         		
 
-<h2 id="case语句">case语句</h2>
+<h2 id="文件执行顺序">文件执行顺序</h2>
 
-<h3 id="简单语句">简单语句</h3>
+<p><code>.bash_profile</code>，<code>.bash_login</code>，<code>.bashrc</code>和<code>.profile</code>做这相同的事情：设置和定义函数，变量和排序。</p>
 
-<p>在所有bash版本支持的最简单格式中，case语句执行与模式匹配的case。如果有的话，<code>;;</code>在第一次匹配后中断。</p>
+<p>主要的不同是<code>.bashrc</code>在开启一个非登录的交互窗口是调用，<code>.bash_profile</code>和其他文件在登录的shell中执行。无论如何很多人都拥有<code>.bash_profile</code>和相似的<code>.bashrc</code>。</p>
 
-<pre><code>#!/bin/bash
-var=1
-case $var in 
-1)
-    echo &quot;Antartica&quot; 
-    ;;
-2)
-    echo &quot;Brazil&quot;
-    ;;
-3)
-    echo &quot;Cat&quot;
-    ;; 
-esac
-</code></pre>
+<h3 id="profile-vs-bash-profile-和-bash-login">.profile VS .bash_profile(和.bash_login)</h3>
 
-<p>输出：</p>
+<p><code>.profile</code>在很多shell启动的时候读取，包括bash。然后<code>.bash_profile</code>是指定bash的配置。对于通用的初始化代码，放在<code>.profile</code>中，但是指定bash的代码，放到<code>.bash_profile</code>中。</p>
 
-<pre><code>Antartica
-</code></pre>
+<p><code>.profile</code>并不是专门为bash设计的，但是<code>.bash_profile</code>是。(<code>.profile</code>是用于Bourne和其他类似的shell的，bash基于这个创作的。)如果找不到<code>.bash_profile</code>，就会去寻找<code>.profile</code>。</p>
 
-<h3 id="贯穿语句">贯穿语句</h3>
-
-<p>Version&gt;=4.0</p>
-
-<p>从4.0开始，引入了新的操作符<code>;&amp;</code>，支持<a href="https://en.wikipedia.org/wiki/Switch_statement#Fallthrough">贯穿</a>操作。</p>
-
-<pre><code>#!/bin/bash
-var=1
-case $var in 
-1)
-    echo &quot;Antartica&quot;
-    ;&amp; 
-2)
-    echo &quot;Brazil&quot;
-    ;&amp; 
-3)
-    echo &quot;Cat&quot;
-    ;&amp; 
-esac
-</code></pre>
-
-<p>输出：</p>
-
-<pre><code>Antartica
-Brazil
-Cat
-</code></pre>
-
-<h3 id="子模式匹配贯穿">子模式匹配贯穿</h3>
-
-<p>Version&gt;=4.0</p>
-
-<p>4.0开始，另一个操作符<code>;;&amp;</code>，只有子语句匹配才<a href="https://en.wikipedia.org/wiki/Switch_statement#Fallthrough">贯穿</a>的操作。</p>
-
-<pre><code>#!/bin/bash
-var=abc
-case $var in 
-a*)
-    echo &quot;Antartica&quot;
-    ;;&amp;
-xyz)
-    echo &quot;Brazil&quot; 
-    ;;&amp;
-*b*)
-    echo &quot;Cat&quot; 
-    ;;&amp;
-esac
-</code></pre>
-
-<p>输出：</p>
-
-<pre><code>Antartica
-Cat
-</code></pre>
-
-<p>在下面这个例子中，<code>abc</code>匹配了第一个和第三个case，没有匹配第二个case。所有第二个语句没有执行。</p>
+<p>如果找不到<code>.bash_profile</code>的话，就会寻找<code>.bash_login</code>，但是最好是使用<code>.bash_profile</code>或<code>.profile</code>。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -282,12 +211,12 @@ Cat
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/git-section-44.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十四）">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-41.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十一)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-43.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十三）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-39.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十九)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

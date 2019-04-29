@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="操作日期和时间">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（十八）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/php-section-18.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（十八）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, April 18, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#操作日期和时间">操作日期和时间</a>
+<ul>
+<li><a href="#获取两个时间的差">获取两个时间的差</a></li>
+<li><a href="#转换日期格式">转换日期格式</a>
+<ul>
+<li><a href="#基本">基本</a></li>
+<li><a href="#使用datetime">使用DateTime</a></li>
+<li><a href="#使用unix时间戳">使用Unix时间戳</a></li>
+<li><a href="#非标准和模糊的日期格式">非标准和模糊的日期格式</a></li>
+</ul></li>
+<li><a href="#解析英文日期描述">解析英文日期描述</a></li>
+<li><a href="#使用预定义日期格式常量">使用预定义日期格式常量</a>
+<ul>
+<li><a href="#预定义日期常量">预定义日期常量</a></li>
+<li><a href="#使用">使用</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="操作日期和时间">操作日期和时间</h2>
+
+<h3 id="获取两个时间的差">获取两个时间的差</h3>
+
+<p>最可行的方法是使用<code>DateTime</code>类。例如：</p>
+
+<pre><code>&lt;?php
+//创建一个指定时间的对象 2年前
+$twoYearAgo = new DateTime('2017-04-29 22:00:00');
+//创建一个当前时间的对象
+$now = new DateTime('2019-04-29 22:00:00')
+
+//计算差
+$diff = $now-&gt;diff($twoYearAgo);
+
+//获取diff结果中的数据
+$yearsDiff = $diff-&gt;y;
+$monthsDiff = $diff-&gt;m;
+$daysDiff = $diff-&gt;d;
+$hoursDiff = $diff-&gt;h;
+$minsDiff = $diff-&gt;i;
+$secondsDiff = $diff-&gt;s;
+
+//差别的天数
+$totalDaysDiff = $diff-&gt;days;
+
+var_dump($diff);
+</code></pre>
+
+<p>另外比较两个日期也是很简单的，直接使用比较运算符：</p>
+
+<pre><code>&lt;?php
+// Create a date time object, which has the value of ~ two years ago
+$twoYearsAgo = new DateTime(&quot;2014-01-18 20:05:56&quot;);
+// Create a date time object, which has the value of ~ now 
+$now = new DateTime(&quot;2016-07-21 02:55:07&quot;);
+var_dump($now &gt; $twoYearsAgo); // prints bool(true) 
+var_dump($twoYearsAgo &gt; $now); // prints bool(false) 
+var_dump($twoYearsAgo &lt;= $twoYearsAgo); // prints bool(true) 
+var_dump($now == $now); // prints bool(true)
+</code></pre>
+
+<h3 id="转换日期格式">转换日期格式</h3>
+
+<h4 id="基本">基本</h4>
+
+<p>最简单的转换日期的格式是联合使用<a href="https://www.php.net/manual/zh/function.strtotime.php">strtotime</a>和<a href="https://www.php.net/manual/zh/function.date.php">date</a>。<code>strtotime</code>函数会把一个字符串时间转换为一个<a href="https://en.wikipedia.org/wiki/Unix_time">Unix时间戳</a>。这个Unix的时间戳可以使用函数<code>date</code>转换为一个新的格式：</p>
+
+<pre><code>$timestamp = strtotime('2008-07-01T22:35:17.02');
+$new_date_format = date('Y-m-d H:i:s', $timestamp);
+</code></pre>
+
+<p>或者直接使用一行</p>
+
+<pre><code>$new_date_format = date('Y-m-d H:i:s', strtotime('2008-07-01T22:35:17.02'));
+</code></pre>
+
+<p>注意<code>strtotime</code>函数要求日期必须是一个<a href="https://www.php.net/manual/zh/datetime.formats.php">有效的格式</a>。提供一个无效的格式，将会导致<code>strtotime</code>返回false。这将会最后返回<code>1970-01-01</code>。</p>
+
+<h4 id="使用datetime">使用DateTime</h4>
+
+<p>在PHP5.2提供了功能强大的时间操作工具<code>DateTime</code>类。我们可以使用<code>DateTime</code>类来改写上面的内容。</p>
+
+<pre><code> $date = new DateTime('2008-07-01T22:35:17.02'); 
+ $new_date_format = $date-&gt;format('Y-m-d H:i:s');
+</code></pre>
+
+<h4 id="使用unix时间戳">使用Unix时间戳</h4>
+
+<p><code>date</code>函数支持第二个参数，指明要转换的日期时间，这个参数是Unix时间戳。</p>
+
+<pre><code>$new_date_format = date('Y-m-d H:i:s', '1234567890');
+</code></pre>
+
+<p><code>DateTime</code>使用时间戳的话，就需要在时间戳前面添加<code>@</code>。</p>
+
+<pre><code> $date = new DateTime('@1234567890'); $new_date_format = $date-&gt;format('Y-m-d H:i:s');
+</code></pre>
+
+<p>如果你的时间戳是13个字符长的，这时候时间戳是毫秒级别的，你在转换之前就需要转换成秒级别的时间戳。下面是两种转换方式：</p>
+
+<ul>
+<li>使用substr移除时间戳右边的3位。</li>
+</ul>
+
+<p>移除字符串右边的3位有多种方法，<code>substr</code>是最简单的。</p>
+
+<pre><code>  $timestamp = substr('1234567899000', 0, -3);
+</code></pre>
+
+<ul>
+<li>除以1000</li>
+</ul>
+
+<p>你也可以除以1000来转换秒级别的时间戳。因为这个时间戳在32位系统上面太长了，你需要使用<a href="https://www.php.net/manual/zh/book.bc.php">BCMath</a>来进行运算：</p>
+
+<pre><code>  $timestamp = bcdiv('1234567899000', '1000');
+</code></pre>
+
+<p>你可以使用<code>strtotime</code>从一个日期字符串获取一个时间戳：</p>
+
+<pre><code>$timestamp = strtotime('1973-04-18');
+</code></pre>
+
+<p>使用<code>DateTime</code>类的话，你可以使用<a href="https://php.net/manual/en/datetime.gettimestamp.php">DateTime::getTimestamp</a>函数。</p>
+
+<pre><code>$date = new DateTime('2008-07-01T22:35:17.02'); 
+$timestamp = $date-&gt;getTimestamp();
+</code></pre>
+
+<p>如果是PHP5.2，可以在<code>format</code>方法中使用<code>U</code>选项：</p>
+
+<pre><code> $date = new DateTime('2008-07-01T22:35:17.02'); 
+ $timestamp = $date-&gt;format('U');
+</code></pre>
+
+<h4 id="非标准和模糊的日期格式">非标准和模糊的日期格式</h4>
+
+<p>不幸运的是不是所有开发者使用的时间格式都是标准的格式。但是从PHP5.3开始，给我们提供了一个解决办法。<a href="http://docs.php.net/manual/en/datetime.createfromformat.php">DateTime::createFromFormat()</a>允许我们告诉PHP这个日期字符串是什么格式的，编译正确的解析出一个DateTime的对象。</p>
+
+<pre><code>$date = DateTime::createFromFormat('F-d-Y h:i A', 'April-18-1973 9:48 AM');
+$new_date_format = $date-&gt;format('Y-m-d H:i:s');
+</code></pre>
+
+<p>从PHP5.4我们可以在类new之后直接访问方法：</p>
+
+<pre><code>$new_date_format = (new DateTime('2008-07-01T22:35:17.02'))-&gt;format('Y-m-d H:i:s');
+</code></pre>
+
+<p>但是这个对<code>createFromFormat</code>是无效的。</p>
+
+<h3 id="解析英文日期描述">解析英文日期描述</h3>
+
+<p>使用<code>strtotime</code>和<code>date</code>函数，我们可以解析出不同的英文日期文本到具体的日期：</p>
+
+<pre><code>// Gets the current date
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;now&quot;)), &quot;\n&quot;; // prints the current date
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;10 September 2000&quot;)), &quot;\n&quot;; // prints September 10, 2000 in the m/d/Y format
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;-1 day&quot;)), &quot;\n&quot;; // prints yesterday's date
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;+1 week&quot;)), &quot;\n&quot;; // prints the result of the current date 
++ a week 
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;+1 week 2 days 4 hours 2 seconds&quot;)), &quot;\n&quot;; // same as the last example but with extra days, hours, and seconds added to it
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;next Thursday&quot;)), &quot;\n&quot;; // prints next Thursday's date
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;last Monday&quot;)), &quot;\n&quot;; // prints last Monday's date
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;First day of next month&quot;)), &quot;\n&quot;; // prints date of first day of next month
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;Last day of next month&quot;)), &quot;\n&quot;; // prints date of last day of next month
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;First day of last month&quot;)), &quot;\n&quot;; // prints date of first day of last month
+
+echo date(&quot;m/d/Y&quot;, strtotime(&quot;Last day of last month&quot;)), &quot;\n&quot;; // prints date of last day of last month
+</code></pre>
+
+<h3 id="使用预定义日期格式常量">使用预定义日期格式常量</h3>
+
+<p>从PHP5.1开始，我们可以使用<code>date</code>方法预定义的日期常量来代替格式字符串。</p>
+
+<h4 id="预定义日期常量">预定义日期常量</h4>
+
+<p>DATE_ATOM - Atom (2016-07-22T14:50:01+00:00)</p>
+
+<p>DATE_COOKIE - HTTP Cookies (Friday, 22-Jul-16 14:50:01 UTC)</p>
+
+<p>DATE_RSS - RSS (Fri, 22 Jul 2016 14:50:01 +0000)</p>
+
+<p>DATE_W3C - World Wide Web Consortium (2016-07-22T14:50:01+00:00)</p>
+
+<p>DATE_ISO8601 - ISO-8601 (2016-07-22T14:50:01+0000)</p>
+
+<p>DATE_RFC822 - RFC 822 (Fri, 22 Jul 16 14:50:01 +0000)</p>
+
+<p>DATE_RFC850 - RFC 850 (Friday, 22-Jul-16 14:50:01 UTC)</p>
+
+<p>DATE_RFC1036 - RFC 1036 (Fri, 22 Jul 16 14:50:01 +0000)</p>
+
+<p>DATE_RFC1123 - RFC 1123 (Fri, 22 Jul 2016 14:50:01 +0000)</p>
+
+<p>DATE_RFC2822 - RFC 2822 (Fri, 22 Jul 2016 14:50:01 +0000)</p>
+
+<p>DATE_RFC3339 - Same as DATE_ATOM (2016-07-22T14:50:01+00:00)</p>
+
+<h4 id="使用">使用</h4>
+
+<pre><code>echo date(DATE_RFC822);
+</code></pre>
+
+<blockquote>
+<p>这将会输出：Fri, 22 Jul 16 14:50:01 +0000</p>
+</blockquote>
+
+<pre><code>echo date(DATE_ATOM,mktime(0,0,0,8,15,1947));
+</code></pre>
+
+<blockquote>
+<p>这将会输出：1947-08-15T00:00:00+05:30</p>
+</blockquote>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/php-section-19.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十九）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-17.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十七）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
