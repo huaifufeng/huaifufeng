@@ -6,10 +6,24 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 20 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（二十一）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-21.html</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-21.html</guid>
+      <description>函数 可变长度参数 Version&amp;gt;=5.6
+PHP5.6提供了可变长度的参数列表。在变量名前添加…运算符表示这个变量是可变参数。这个变量将会包含这个位置之后所有参数的一个数组。
+function variadic_func($nonVariadic, ...$variadic) { echo json_encode($variadic); } variadic_func(1, 2, 3, 4); // prints [2,3,4]  可以在...符号前面添加类型名称：
+function foo(Bar ...$bars) {}  &amp;amp;可以添加在…之前，变量名称之后，就像下面这个例子：
+class Foo{} function a(Foo &amp;amp;...$foos){ $i = 0; foreach($foos as &amp;amp;$foo){ // note the &amp;amp; $foo = $i++; } } $a = new Foo; $c = new Foo; $b =&amp;amp; $c; a($a, $b); var_dump($a, $b, $c);  这将会输出：
+int(0) int(1) int(1)  另一方面，可以解压缩数组（或Traversable）以便以参数列表的形式传递给函数：</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（二十）</title>

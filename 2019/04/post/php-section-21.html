@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="循环处理">
+    <meta name="description" content="函数">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（二十）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（二十一）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/php-section-20.html">
+    <link rel="canonical" href="/2019/04/post/php-section-21.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -146,9 +146,9 @@
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（二十）</h1>
+                    <h1>PHP专业笔记（二十一）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Saturday, April 20, 2019
+                    <span  class="meta">Posted by 怀府风 on Sunday, April 21, 2019
                         
                     </span>
                 </div>
@@ -178,14 +178,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#循环">循环</a>
+<li><a href="#函数">函数</a>
 <ul>
-<li><a href="#continue">continue</a></li>
-<li><a href="#break">break</a></li>
-<li><a href="#foreach">foreach</a></li>
-<li><a href="#do-while">do…while</a></li>
-<li><a href="#for">for</a></li>
-<li><a href="#while">while</a></li>
+<li><a href="#可变长度参数">可变长度参数</a></li>
+<li><a href="#可选变量">可选变量</a></li>
+<li><a href="#引用传参">引用传参</a></li>
+<li><a href="#简单函数使用">简单函数使用</a></li>
+<li><a href="#函数作用域">函数作用域</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,250 +192,213 @@
         		
         		
 
-<h2 id="循环">循环</h2>
+<h2 id="函数">函数</h2>
 
-<p>循环是编程语言非常重要的部分。这允许程序员创作循环执行几次的代码片段或者迭代处理。循环的次数可以是显示的(例如6次)，或者循环直到遇到了某个条件。</p>
+<h3 id="可变长度参数">可变长度参数</h3>
 
-<p>这个主题包括不同类型的循环结构，他们关联的控制结构，他们潜在的应用。</p>
+<p>Version&gt;=5.6</p>
 
-<h3 id="continue">continue</h3>
+<p>PHP5.6提供了可变长度的参数列表。在变量名前添加<code>…</code>运算符表示这个变量是可变参数。这个变量将会包含这个位置之后所有参数的一个数组。</p>
 
-<blockquote>
-<p><code>continue</code>中断一个循环中当前的迭代，但是不会中断这个循环。</p>
-</blockquote>
-
-<p>就像<code>break</code>语句一样，<code>continu</code>语句是在循环体内部的。当执行了<code>continu</code>语句，将会立即跳到循环条件判断语句。</p>
-
-<p>在下面的例子中，循环根据数组的值输出指定的信息，但是跳过指定的值。</p>
-
-<pre><code>$list = ['apple', 'banana', 'cherry'];
-
-foreach ($list as $value) {
-    if ($value == 'banana') {
-        continue;
-    }
-    
-    echo &quot;I love to eat {$value} pie.&quot; . PHP_EOL;
+<pre><code>function variadic_func($nonVariadic, ...$variadic) { 
+    echo json_encode($variadic);
 }
+variadic_func(1, 2, 3, 4); // prints [2,3,4]
+</code></pre>
+
+<p>可以在<code>...</code>符号前面添加类型名称：</p>
+
+<pre><code>function foo(Bar ...$bars) {}
+</code></pre>
+
+<p><code>&amp;</code>可以添加在<code>…</code>之前，变量名称之后，就像下面这个例子：</p>
+
+<pre><code>class Foo{}
+function a(Foo &amp;...$foos){
+    $i = 0;
+    foreach($foos as &amp;$foo){ // note the &amp;
+        $foo = $i++; 
+    }
+}
+$a = new Foo;
+$c = new Foo;
+$b =&amp; $c;
+a($a, $b); 
+var_dump($a, $b, $c);
 </code></pre>
 
 <p>这将会输出：</p>
 
-<pre><code>I love to eat apple pie.
-I love to eat cherry pie;
+<pre><code>int(0)
+int(1)
+int(1)
 </code></pre>
 
-<p><code>continue</code>也可以用来中断外部循环通过为continue提供中断循环的级数。例如，data的数据向下面一样，为了找到花费小于5的水果派：</p>
+<p>另一方面，可以解压缩数组（或Traversable）以便以参数列表的形式传递给函数：</p>
 
-<pre><code>$data = [
-    ['Fruit' =&gt; 'Apple', 'Color' =&gt; 'Red', 'Cost' =&gt; 1],
-    ['Fruit' =&gt; 'Banana', 'Color' =&gt; 'Yellow', 'Cost' =&gt; 7],
-    ['Fruit' =&gt; 'Cherry', 'Color' =&gt; 'Red', 'Cost' =&gt; 2],
-    ['Fruit' =&gt; 'Grape', 'Color' =&gt; 'Green', 'Cost' =&gt; 4]
-];
+<pre><code>var_dump(...hash_algos());
+</code></pre>
 
-foreach($data as $fruit) {
-    foreach($fruit as $key =&gt; $value) {
-        if ($key == 'Cost' &amp;&amp; $value &gt;= 5) {
-            continue 2;
-        }
+<p>输出：</p>
+
+<pre><code>string(3) &quot;md2&quot;
+string(3) &quot;md4&quot;
+string(3) &quot;md5&quot;
+...
+</code></pre>
+
+<p>和没有使用<code>…</code>比较一下：</p>
+
+<pre><code>var_dump(hash_algos());
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>array(46) {
+  [0]=&gt;
+  string(3) &quot;md2&quot;
+  [1]=&gt;
+  string(3) &quot;md4&quot;
+  ...
+}
+</code></pre>
+
+<p>因此可以轻松的重定向可变函数：</p>
+
+<pre><code>public function formatQuery($query, ...$args){
+    return sprintf($query, ...array_map([$mysqli, &quot;real_escape_string&quot;], $args));
+}
+</code></pre>
+
+<p>不仅是数组，<code>Traversables</code>标准库中迭代器的子类也可以这么使用。例如：</p>
+
+<pre><code>$iterator = new LimitIterator(new ArrayIterator([0, 1, 2, 3, 4, 5, 6]), 2, 3);
+echo bin2hex(pack(&quot;c*&quot;, ...$it)); // Output: 020304
+</code></pre>
+
+<p>如果迭代器无限迭代的话，</p>
+
+<pre><code>$iterator = new InfiniteIterator(new ArrayIterator([0, 1, 2, 3, 4])); 
+var_dump(...$iterator);
+</code></pre>
+
+<p>不同版本的PHP会有不同的行为：</p>
+
+<ul>
+<li>从PHP7.0.0到PHP7.1.0
+
+<ul>
+<li>将会发生分段错误</li>
+<li>PHP进程会以139错误码退出</li>
+</ul></li>
+<li>在PHP5.6
+
+<ul>
+<li>一个内存泄露的致命错误将会出现：Allowed memory size of %d bytes exhausted</li>
+<li>PHP进程会议255错误码退出</li>
+</ul></li>
+</ul>
+
+<blockquote>
+<p>注意：HVVM(3.10-3.12将不支持解压<code>Traversables</code>)，将会出现一个警告信息:Only containers may be unpacked</p>
+</blockquote>
+
+<h3 id="可选变量">可选变量</h3>
+
+<p>函数可以有可选变量：</p>
+
+<pre><code>function hello($name, $style = 'Formal') {
+    switch ($style) {
+        case 'Formal':
+            print &quot;Good Day $name&quot;;
+            break;
+        case 'Informal':
+            print &quot;Hi $name&quot;;
+            break;
+        case 'Australian':
+            print &quot;G'day $name&quot;;
+            break;
+        default:
+            print &quot;Hello $name&quot;;
+            break;
     }
-    var_dump($fruit);
 }
+hello('Alice');
+    // Good Day Alice
+hello('Alice', 'Australian'); 
+// G'day Alice
 </code></pre>
 
-<p>当<code>continue 2;</code>执行的时候，程序立即跳转到<code>$data as $fruit</code>，然后开始执行下一个外部循环，调过了其他的代码(包括内部循环的条件语句)。</p>
+<h3 id="引用传参">引用传参</h3>
 
-<h3 id="break">break</h3>
+<p>函数可以应用传参，这样函数就可以修改函数之外的变量：</p>
 
-<blockquote>
-<p><code>break</code>立即中断当前循环的执行。</p>
-</blockquote>
-
-<p>和<code>continue</code>语句相似，<code>break</code>语句立即中断循环的执行。但是和<code>continue</code>语句不通的是，<code>break</code>立即中断循环的执行，并且不会再执行条件语句。</p>
-
-<pre><code>$i = 5;
-while(true) {
-    echo 120 / $i . PHP_EOL;
-    $i -= 1;
-    if ($i == 0) {
-        break;
-    }
-}
-</code></pre>
-
-<p>这将会输出：</p>
-
-<pre><code>24
-30
-40
-60
-120
-</code></pre>
-
-<p>但是在<code>$i</code>为0的时候就不在执行了，这样就避免了除0引发的致命错误。</p>
-
-<p><code>break</code>语句也可以用来中断多级的循环。这在执行嵌套循环的时候很有用。例如循环处理一个字符串的数组，并拼接成一个字符串，移除其中的<code>#</code>，直到达到160个字符。</p>
-
-<pre><code>$output = &quot;&quot;;
-$inputs = array(
-    &quot;#soblessed #throwbackthursday&quot;, 
-    &quot;happy tuesday&quot;,
-    &quot;#nofilter&quot;,
-    /* more inputs */
-);
-foreach($inputs as $input) {
-    for($i = 0; $i &lt; strlen($input); $i += 1) {
-        if ($input[$i] == '#') {
-            continue;
-        }
-        $output .= $input[$i];
-        if (strlen($output) == 160) {
-            break 2;
-        }
-    }
-    $output .= ' ';
-}
-</code></pre>
-
-<p><code>break 2</code>将会立即中断内层和外层的循环。</p>
-
-<h3 id="foreach">foreach</h3>
-
-<blockquote>
-<p><code>foreach</code>语句用来循环遍历数组。</p>
-</blockquote>
-
-<p><code>foreach</code>语句迭代处理当前的数组元素，并把这个元素放入变量<code>$value</code>中，然后数组的指针指向下一个将要被处理的元素。</p>
-
-<p>下面是显示数组中所有元素的例子：</p>
-
-<pre><code>$list = ['apple', 'banana', 'cherry'];
-
-foreach ($list as $value) {
-    echo &quot;I love to eat {$value}. &quot;;
-}
-</code></pre>
-
-<p>这将会输出下面的内容：</p>
-
-<pre><code>I love to eat apple. I love to eat banana. I love to eat cherry.
-</code></pre>
-
-<p>你也可以使用<code>foreach</code>语句来处理key/value：</p>
-
-<pre><code>foreach ($list as $key =&gt; $value) {
-    echo $key . &quot;:&quot; . $value . &quot; &quot;;
-}
-//Outputs - 0:apple 1:banana 2:cherry
-</code></pre>
-
-<p>默认情况下<code>$value</code>的值是<code>$list</code>的一个副本，修改这个变量的值，不会影响<code>$list</code>变量的值。</p>
-
-<pre><code>foreach ($list as $value) {
-    $value = $value . &quot; pie&quot;;
-}
-echo $list[0]; // Outputs &quot;apple&quot;
-</code></pre>
-
-<p>想要在<code>foreach</code>循环中处理数组的值，可以使用<code>&amp;</code>操作符获取变量<code>$value</code>的引用。在循环处理之后，<code>unset</code>掉数组的值，避免在之后修改变量的值影响到数组。</p>
-
-<pre><code>foreach ($list as &amp;$value) { // Or foreach ($list as $key =&gt; &amp;$value) { 
-    $value = $value . &quot; pie&quot;;
-}
-unset($value);
-echo $list[0]; // Outputs &quot;apple pie&quot;
-</code></pre>
-
-<p>你也可以在数组循环中通过数组的key来修改数组的值：</p>
-
-<pre><code>foreach ($list as $key =&gt; $value) {
-    $list[$key] = $value . &quot; pie&quot;;
-}
-echo $list[0]; // Outputs &quot;apple pie&quot;
-</code></pre>
-
-<h3 id="do-while">do…while</h3>
-
-<blockquote>
-<p><code>do…while</code>语句至少执行代码一次，然后只要条件是true就会一直执行。</p>
-</blockquote>
-
-<p>下面的例子将会至少增加<code>$i</code>一次，并且当<code>$i</code>小于25时，会一直增加这个变量的值。</p>
-
-<pre><code>$i = 0; do {
-    $i++;
-} while($i &lt; 25);
-echo 'The final value of i is: ', $i;
-</code></pre>
-
-<p>这将会输出下面的结果：</p>
-
-<pre><code>The final value of i is: 25
-</code></pre>
-
-<h3 id="for">for</h3>
-
-<blockquote>
-<p><code>for</code>语句当你知道要执行一段代码多少次的时候非常有用。</p>
-</blockquote>
-
-<p>这个初始化语句将会初始化循环处理的开始值。这里通常会声明一个名为<code>$i</code>的变量。</p>
-
-<p>下面这个例子会声明一个循环10次的数组，并且输出0-9的值：</p>
-
-<pre><code>for ($i = 0; $i &lt;= 9; $i++) {
-    echo $i, ',';
-}
-# Example 2
-for ($i = 0; ; $i++) {
-   if ($i &gt; 9) {
-       break; 
-   }
-   echo $i, ',';
-}
-# Example 3
-$i = 0;
-for (; ; ) {
-    if ($i &gt; 9) {
-        break;
-    }
-    echo $i, ',';
-    $i++;
-}
-# Example 4
-for ($i = 0, $j = 0; $i &lt;= 9; $j += $i, print $i. ',', $i++);
-</code></pre>
-
-<p>这将会输出：</p>
-
-<pre><code>0,1,2,3,4,5,6,7,8,9,
-</code></pre>
-
-<h3 id="while">while</h3>
-
-<blockquote>
-<p><code>while</code>语句在条件为真时，将会执行一段代码。</p>
-</blockquote>
-
-<p>如果条件表达式为真，将会执行一段代码。当代码执行完毕之后，将会重新进行条件表达式的判断，代码将会再次执行，直到条件表达式为false。</p>
-
-<p>下面的例子将会一直执行，知道计算的he达到了100：</p>
-
-<pre><code>$i = true; $sum = 0;
-while ($i) {
-    if ($sum === 100) {
-        $i = false; 
+<pre><code>function pluralize(&amp;$word) {
+    if (substr($word, -1) == 'y') {
+        $word = substr($word, 0, -1) . 'ies';
     } else {
-        $sum += 10; 
-    }
+      $word .= 's';
+    } 
 }
-echo 'The sum is: ', $sum;
+$word = 'Bannana';
+pluralize($word);
+print $word; // Bannanas
 </code></pre>
 
-<p>这将会输出：</p>
+<p>对象作为参数的话，就是按照引用传递的：</p>
 
-<pre><code> The sum is: 100
+<pre><code>function addOneDay($date) {
+    $date-&gt;modify('+1 day');
+}
+$date = new DateTime('2014-02-28'); 
+addOneDay($date);
+print $date-&gt;format('Y-m-d'); // 2014-03-01
+</code></pre>
+
+<p>为了避免隐式传递一个对象参数，你可以<code>clone</code>一个对象。</p>
+
+<p>引用传递一种可选的返回参数的方式。例如<code>socket_getpeername</code>这个函数：</p>
+
+<pre><code>bool socket_getpeername ( resource $socket , string &amp;$address [, int &amp;$port ] )
+</code></pre>
+
+<p>这个函数想要返回对应的地址和端口，因为有两个值要返回，所以这里使用了引用。它是这么调用的：</p>
+
+<pre><code>if(!socket_getpeername($socket, $address, $port)) { 
+    throw new RuntimeException(socket_last_error());
+}
+echo &quot;Peer: $address:$port\n&quot;;
+</code></pre>
+
+<p>变量<code>$address</code>和<code>$port</code>不用再之前定义过，他们将会：</p>
+
+<ul>
+<li>首先定义为<code>null</code></li>
+<li>然后把预定义的<code>null</code>传递给函数</li>
+<li>然后在函数内部修改这两个变量</li>
+<li>然后在调用环境中定义这两变量</li>
+</ul>
+
+<h3 id="简单函数使用">简单函数使用</h3>
+
+<p>一个简单的函数可以像下面这样定义和使用：</p>
+
+<pre><code>function hello($name) {
+    print &quot;Hello $name&quot;; 
+}
+hello(&quot;Alice&quot;);
+</code></pre>
+
+<h3 id="函数作用域">函数作用域</h3>
+
+<p>定义在函数中的变量像下面这样在本地作用域内：</p>
+
+<pre><code>$number = 5 
+function foo(){
+    $number = 10
+    return $number
+}
+foo(); //Will print 10 because text defined inside function is a local variable
 </code></pre>
 
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
@@ -448,12 +410,12 @@ echo 'The sum is: ', $sum;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/php-section-21.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十一）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/java-section-1.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（一）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/php-section-19.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十九）">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-20.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十）">Next Post &rarr;</a>
                   </li>
                   
               </ul>
