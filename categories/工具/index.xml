@@ -6,10 +6,38 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 11 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(四十五)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-45.html</link>
+      <pubDate>Wed, 13 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-45.html</guid>
+      <description>单词拆分    参数 详情     IFS 内部的字段分隔符   -x 打印执行的命令和他们的参数    what，when和why 当shell执行参数扩展，命令替换，变量或算术扩展时，它会扫描结果中的字边界。如果找到了字符边界，就会在这个位置把结果分成多个单词。这个单词的边界是被IFS定义的。如果没有显示指明的话，IFS的默认值是空白，tab和新行。当遇到这三个字符的时候，会进行单词的拆分。
+set -x var=&#39;I am a multiline string&#39; fun() { echo &amp;quot;-$1-&amp;quot; echo &amp;quot;*$2*&amp;quot; echo &amp;quot;.$3.&amp;quot; } fun $var  在上面的例子中线上了fun是怎么执行的
+fun I am a multiline string   $var被分成5个单词，但是只有I，am，a被输出。
+ 单词拆分的坏处 $ a=&#39;I am a string with spaces&#39; $ [ $a = $a ] || echo &amp;quot;didn&#39;t match&amp;quot; bash: [: too many arguments didn&#39;t match   [ $a = $a ]被解析为[ I am a string with spaces = I am a string with spaces ]。[是一个test命令，然而I am a string with spaces是6个参数不是一个参数。</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十四)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-44.html</link>
+      <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-44.html</guid>
+      <description>管理PATH环境变量 添加一个path到PATH环境变量 PATH环境变量通常定义在.bashrc或者.bash_profile或者/etc/profile或者.profile或者/etc/bash.bashrc(不同的bash配置文件)。
+$ echo $PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin: /usr/lib/jvm/jdk1.8.0_92/bin:/usr/lib/jvm/jdk1.8.0_92/db/bin:/usr/lib/jvm/jdk1.8.0_92/jre/bin  现在，如果我们想在PATH中添加一个路径(例如~/bin):
+PATH=~/bin:$PATH # or PATH=$PATH:~/bin  但是这只会在当前的shell(或它的子shell中生效)。一旦你退出了这个shell，这个修改就会失效。
+想要让修改永久话的话，我们需要在~/.bashrc中添加这些代码，并重新加载这个文件。
+如果你在终端中运行下面的命令，将会把~/bin添加到PATH中：
+echo &#39;PATH=~/bin:$PATH&#39; &amp;gt;&amp;gt; ~/.bashrc &amp;amp;&amp;amp; source ~/.bashrc  命令解释：
+ echo &#39;PATH=~/bin:$PATH&#39; &amp;gt;&amp;gt; ~/.bashrc在文件~/.bashrc的末尾添加PATH=~/bin:$PATH这行代码，你也可以在编辑器中添加 source ~/.bashrc重新加载~/.bashrc文件  下面这个代码将会检查路径是否存在，只有在不存在的时候才会添加：
+path=~/bin # path to be included bashrc=~/.bashrc # bash file to be written and reloaded # run the following code unmodified echo $PATH | grep -q &amp;quot;\(^\|:\)$path\(:\|/\{0,1\}$\)&amp;quot; || echo &amp;quot;PATH=\$PATH:$path&amp;quot; &amp;gt;&amp;gt; &amp;quot;$bashrc&amp;quot;; source &amp;quot;$bashrc&amp;quot;  从PATH环境变量移除路径 要从PATH中移除一个路径，需要编辑~/.</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(四十三)</title>

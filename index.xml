@@ -21,6 +21,22 @@
     </item>
     
     <item>
+      <title>PHP专业笔记（二十）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-20.html</link>
+      <pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-20.html</guid>
+      <description>循环 循环是编程语言非常重要的部分。这允许程序员创作循环执行几次的代码片段或者迭代处理。循环的次数可以是显示的(例如6次)，或者循环直到遇到了某个条件。
+这个主题包括不同类型的循环结构，他们关联的控制结构，他们潜在的应用。
+continue  continue中断一个循环中当前的迭代，但是不会中断这个循环。
+ 就像break语句一样，continu语句是在循环体内部的。当执行了continu语句，将会立即跳到循环条件判断语句。
+在下面的例子中，循环根据数组的值输出指定的信息，但是跳过指定的值。
+$list = [&#39;apple&#39;, &#39;banana&#39;, &#39;cherry&#39;]; foreach ($list as $value) { if ($value == &#39;banana&#39;) { continue; } echo &amp;quot;I love to eat {$value} pie.&amp;quot; . PHP_EOL; }  这将会输出：
+I love to eat apple pie. I love to eat cherry pie;  continue也可以用来中断外部循环通过为continue提供中断循环的级数。例如，data的数据向下面一样，为了找到花费小于5的水果派：
+$data = [ [&#39;Fruit&#39; =&amp;gt; &#39;Apple&#39;, &#39;Color&#39; =&amp;gt; &#39;Red&#39;, &#39;Cost&#39; =&amp;gt; 1], [&#39;Fruit&#39; =&amp;gt; &#39;Banana&#39;, &#39;Color&#39; =&amp;gt; &#39;Yellow&#39;, &#39;Cost&#39; =&amp;gt; 7], [&#39;Fruit&#39; =&amp;gt; &#39;Cherry&#39;, &#39;Color&#39; =&amp;gt; &#39;Red&#39;, &#39;Cost&#39; =&amp;gt; 2], [&#39;Fruit&#39; =&amp;gt; &#39;Grape&#39;, &#39;Color&#39; =&amp;gt; &#39;Green&#39;, &#39;Cost&#39; =&amp;gt; 4] ]; foreach($data as $fruit) { foreach($fruit as $key =&amp;gt; $value) { if ($key == &#39;Cost&#39; &amp;amp;&amp;amp; $value &amp;gt;= 5) { continue 2; } } var_dump($fruit); }  当continue 2;执行的时候，程序立即跳转到$data as $fruit，然后开始执行下一个外部循环，调过了其他的代码(包括内部循环的条件语句)。</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（十九）</title>
       <link>http://blog.huaifufeng.com/2019/04/post/php-section-19.html</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
@@ -280,6 +296,34 @@ class myClass { public function __construct() { $functionName = &#39;doSomething
       <description>开始使用PHP PHP 7.x
    版本 支持截止时间 发版时间     7.1 2019-12-01 2016-12-01   7.0 2018-12-03 2015-12-03    PHP 5.x
    版本 支持截止时间 发版时间     5.6 2018-12-31 2014-08-28   5.5 2016-07-21 2013-06-20   5.4 2015-09-03 2012-03-01   5.3 2014-08-14 2009-06-30   5.2 2011-01-06 2006-11-02   5.1 2006-08-24 2005-11-24   5.0 2005-09-05 2004-07-13    PHP 4.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十五)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-45.html</link>
+      <pubDate>Wed, 13 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-45.html</guid>
+      <description>单词拆分    参数 详情     IFS 内部的字段分隔符   -x 打印执行的命令和他们的参数    what，when和why 当shell执行参数扩展，命令替换，变量或算术扩展时，它会扫描结果中的字边界。如果找到了字符边界，就会在这个位置把结果分成多个单词。这个单词的边界是被IFS定义的。如果没有显示指明的话，IFS的默认值是空白，tab和新行。当遇到这三个字符的时候，会进行单词的拆分。
+set -x var=&#39;I am a multiline string&#39; fun() { echo &amp;quot;-$1-&amp;quot; echo &amp;quot;*$2*&amp;quot; echo &amp;quot;.$3.&amp;quot; } fun $var  在上面的例子中线上了fun是怎么执行的
+fun I am a multiline string   $var被分成5个单词，但是只有I，am，a被输出。
+ 单词拆分的坏处 $ a=&#39;I am a string with spaces&#39; $ [ $a = $a ] || echo &amp;quot;didn&#39;t match&amp;quot; bash: [: too many arguments didn&#39;t match   [ $a = $a ]被解析为[ I am a string with spaces = I am a string with spaces ]。[是一个test命令，然而I am a string with spaces是6个参数不是一个参数。</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十四)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-44.html</link>
+      <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-44.html</guid>
+      <description>管理PATH环境变量 添加一个path到PATH环境变量 PATH环境变量通常定义在.bashrc或者.bash_profile或者/etc/profile或者.profile或者/etc/bash.bashrc(不同的bash配置文件)。
+$ echo $PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin: /usr/lib/jvm/jdk1.8.0_92/bin:/usr/lib/jvm/jdk1.8.0_92/db/bin:/usr/lib/jvm/jdk1.8.0_92/jre/bin  现在，如果我们想在PATH中添加一个路径(例如~/bin):
+PATH=~/bin:$PATH # or PATH=$PATH:~/bin  但是这只会在当前的shell(或它的子shell中生效)。一旦你退出了这个shell，这个修改就会失效。
+想要让修改永久话的话，我们需要在~/.bashrc中添加这些代码，并重新加载这个文件。
+如果你在终端中运行下面的命令，将会把~/bin添加到PATH中：
+echo &#39;PATH=~/bin:$PATH&#39; &amp;gt;&amp;gt; ~/.bashrc &amp;amp;&amp;amp; source ~/.bashrc  命令解释：
+ echo &#39;PATH=~/bin:$PATH&#39; &amp;gt;&amp;gt; ~/.bashrc在文件~/.bashrc的末尾添加PATH=~/bin:$PATH这行代码，你也可以在编辑器中添加 source ~/.bashrc重新加载~/.bashrc文件  下面这个代码将会检查路径是否存在，只有在不存在的时候才会添加：
+path=~/bin # path to be included bashrc=~/.bashrc # bash file to be written and reloaded # run the following code unmodified echo $PATH | grep -q &amp;quot;\(^\|:\)$path\(:\|/\{0,1\}$\)&amp;quot; || echo &amp;quot;PATH=\$PATH:$path&amp;quot; &amp;gt;&amp;gt; &amp;quot;$bashrc&amp;quot;; source &amp;quot;$bashrc&amp;quot;  从PATH环境变量移除路径 要从PATH中移除一个路径，需要编辑~/.</description>
     </item>
     
     <item>

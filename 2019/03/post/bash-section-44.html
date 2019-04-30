@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="管道">
+    <meta name="description" content="管理PATH环境变量">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(四十三)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(四十四)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-43.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-44.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -146,9 +146,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(四十三)</h1>
+                    <h1>Bash专业笔记(四十四)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, March 11, 2019
+                    <span  class="meta">Posted by 怀府风 on Tuesday, March 12, 2019
                         
                     </span>
                 </div>
@@ -178,11 +178,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#管道">管道</a>
+<li><a href="#管理path环境变量">管理PATH环境变量</a>
 <ul>
-<li><a href="#使用">使用|&amp;</a></li>
-<li><a href="#分页展示进程">分页展示进程</a></li>
-<li><a href="#修改命令的连续输出">修改命令的连续输出</a></li>
+<li><a href="#添加一个path到path环境变量">添加一个path到PATH环境变量</a></li>
+<li><a href="#从path环境变量移除路径">从PATH环境变量移除路径</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,86 +189,76 @@
         		
         		
 
-<h2 id="管道">管道</h2>
+<h2 id="管理path环境变量">管理PATH环境变量</h2>
 
-<h3 id="使用">使用|&amp;</h3>
+<h3 id="添加一个path到path环境变量">添加一个path到PATH环境变量</h3>
 
-<p><code>|&amp;</code>连接一命令的标准输出和标准错误到二命令，而<code>|</code>命令连接一命令的标准输出到二命令。</p>
+<p>PATH环境变量通常定义在<code>.bashrc</code>或者<code>.bash_profile</code>或者<code>/etc/profile</code>或者<code>.profile</code>或者<code>/etc/bash.bashrc</code>(不同的bash配置文件)。</p>
 
-<p>在这个例子中，使用curl命令加下载这个页面，使用<code>-v</code>选项写一些内容到标准错误中，这个页面被输出到标准输出中。这个页面的标题在<code>&lt;title&gt;</code>和<code>&lt;/tilte&gt;</code>之间。</p>
-
-<pre><code>curl -vs 'http://www.google.com/' |&amp; awk '/Host:/{print} /&lt;title&gt;/{match($0,/&lt;title&gt;(.*)&lt;\/title&gt;/,a);print a[1]}'
+<pre><code>$ echo $PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin: /usr/lib/jvm/jdk1.8.0_92/bin:/usr/lib/jvm/jdk1.8.0_92/db/bin:/usr/lib/jvm/jdk1.8.0_92/jre/bin
 </code></pre>
 
-<p>这将会输出：</p>
+<p>现在，如果我们想在PATH中添加一个路径(例如<code>~/bin</code>):</p>
 
-<pre><code>&gt; Host: www.google.com 
-Google
+<pre><code>PATH=~/bin:$PATH 
+# or 
+PATH=$PATH:~/bin
 </code></pre>
 
-<p>但是使用<code>|</code>的话，会输出更多的内容：即哪些被输出到标准错误中的信息，因为只有标准输出被管道到下一个命令。在这个例子中除了最后一行，其他的都是输出到标准错误中的：</p>
+<p>但是这只会在当前的shell(或它的子shell中生效)。一旦你退出了这个shell，这个修改就会失效。</p>
 
-<pre><code>* Hostname was NOT found in DNS cache
-*   Trying 172.217.20.228...
-* Connected to www.google.com (172.217.20.228) port 80 (#0)
-&gt; GET / HTTP/1.1
-&gt; User-Agent: curl/7.35.0
-&gt; Host: www.google.com
-&gt; Accept: */*
-&gt;
-* HTTP 1.0, assume close after body
-&lt; HTTP/1.0 200 OK
-&lt; Date: Sun, 24 Jul 2016 19:04:59 GMT
-&lt; Expires: -1
-&lt; Cache-Control: private, max-age=0
-&lt; Content-Type: text/html; charset=ISO-8859-1
-&lt; P3P: CP=&quot;This is not a P3P policy! See
-https://www.google.com/support/accounts/answer/151657?hl=en for more info.&quot;
-&lt; Server: gws
-&lt; X-XSS-Protection: 1; mode=block
-&lt; X-Frame-Options: SAMEORIGIN
-&lt; Set-Cookie: NID=82=jX0yZLPPUE7u13kKNevUCDg8yG9Ze_C03o0IM-
-EopOSKL0mMITEagIE816G55L2wrTlQwgXkhq4ApFvvYEoaWF-
-oEoq2T0sBTuQVdsIFULj9b2O8X35O0sAgUnc3a3JnTRBqelMcuS9QkQA; expires=Mon, 23-Jan-2017 19:04:59 GMT;
-path=/; domain=.google.com; HttpOnly
-&lt; Accept-Ranges: none
-&lt; Vary: Accept-Encoding
-&lt; X-Cache: MISS from jetsib_appliance
-&lt; X-Loop-Control: 5.202.190.157 81E4F9836653D5812995BA53992F8065
-&lt; Connection: close
-&lt;
-{ [data not shown]
-* Closing connection 0
-Google
+<p>想要让修改永久话的话，我们需要在<code>~/.bashrc</code>中添加这些代码，并重新加载这个文件。</p>
+
+<p>如果你在终端中运行下面的命令，将会把<code>~/bin</code>添加到PATH中：</p>
+
+<pre><code>echo 'PATH=~/bin:$PATH' &gt;&gt; ~/.bashrc &amp;&amp; source ~/.bashrc
 </code></pre>
 
-<h3 id="分页展示进程">分页展示进程</h3>
+<p>命令解释：</p>
 
-<pre><code>ps -e | less
+<ul>
+<li><code>echo 'PATH=~/bin:$PATH' &gt;&gt; ~/.bashrc</code>在文件<code>~/.bashrc</code>的末尾添加<code>PATH=~/bin:$PATH</code>这行代码，你也可以在编辑器中添加</li>
+<li><code>source ~/.bashrc</code>重新加载<code>~/.bashrc</code>文件</li>
+</ul>
+
+<p>下面这个代码将会检查路径是否存在，只有在不存在的时候才会添加：</p>
+
+<pre><code>path=~/bin # path to be included
+bashrc=~/.bashrc # bash file to be written and reloaded
+# run the following code unmodified
+echo $PATH | grep -q &quot;\(^\|:\)$path\(:\|/\{0,1\}$\)&quot; || echo &quot;PATH=\$PATH:$path&quot; &gt;&gt; &quot;$bashrc&quot;;
+source &quot;$bashrc&quot;
 </code></pre>
 
-<p><code>ps -e</code>显示所有的输出，它的输出被通过<code>|</code>连接给<code>less</code>命令，用来分页显示结果。</p>
+<h3 id="从path环境变量移除路径">从PATH环境变量移除路径</h3>
 
-<h3 id="修改命令的连续输出">修改命令的连续输出</h3>
+<p>要从PATH中移除一个路径，需要编辑<code>~/.bashrc</code>或者<code>~/.bash_profile</code>或者<code>/etc/profile</code>或者<code>~/.profile</code>或者<code>/etc/bash/bashrc</code>(不同的bash配置文件)，并从中移除指定路径的添加语句。</p>
 
-<pre><code>~$ ping -c 1 google.com # unmodified output
-PING google.com (16.58.209.174) 56(84) bytes of data.
-64 bytes from wk-in-f100.1e100.net (16.58.209.174): icmp_seq=1 ttl=53 time=47.4 ms 
-~$ ping google.com | grep -o '^[0-9]\+[^()]\+' # modified output
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-64 bytes from wk-in-f100.1e100.net
-...
+<pre><code>path=~/bin
+PATH=&quot;$(echo &quot;$PATH&quot; |sed -e &quot;s#\(^\|:\)$(echo &quot;$path&quot; |sed -e 's/[^^]/[&amp;]/g' -e 's/\^/\\^/g')\(:\|/\{0,1\}$\)#\1\2#&quot; -e 's#:\+#:#g' -e 's#^:\|:$##g')&quot;
 </code></pre>
 
-<p><code>|</code>连接<code>ping</code>的标准输出作为<code>grep</code>的标准输入，它将立刻进行处理。其他的像<code>sed</code>这样的命令，会缓存输入的信息，这意味着在命令开始处理之前，必须接受足够的信息，可能导致进一步处理的延迟。</p>
+<p>想要永久有效的话，就需要把地址添加到文件的末尾。</p>
+
+<p>你可以使用下面的命令达成：</p>
+
+<pre><code>rpath(){
+    for path in &quot;$@&quot;;do
+        PATH=&quot;$(echo &quot;$PATH&quot; |sed -e &quot;s#\(^\|:\)$(echo &quot;$path&quot; |sed -e 's/[^^]/[&amp;]/g' -e  's/\^/\\^/g')\(:\|/\{0,1\}$\)#\1\2#&quot; -e 's#:\+#:#g' -e 's#^:\|:$##g')&quot;
+    done
+    echo &quot;$PATH&quot;
+}
+PATH=&quot;$(rpath ~/bin /usr/local/sbin /usr/local/bin)&quot; 
+PATH=&quot;$(rpath /usr/games)&quot;
+# etc ...
+</code></pre>
+
+<p>这处理多个路径很方便。</p>
+
+<ul>
+<li>你需要把这些代码添加到bash的配置文件中(<code>.bashrc</code>或者其他)</li>
+<li>运行<code>source ~/.bashrc</code>来加载bash的配置文件<code>~/.bashrc</code>。</li>
+</ul>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -280,12 +269,12 @@ PING google.com (16.58.209.174) 56(84) bytes of data.
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/bash-section-44.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十四)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-45.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十五)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/bash-section-42.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十二)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-43.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十三)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
