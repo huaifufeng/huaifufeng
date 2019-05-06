@@ -84,6 +84,23 @@ split --bytes=1MB file  参考：Bash Notes for Professionals book</description>
     </item>
     
     <item>
+      <title>Git专业笔记（四十六）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-46.html</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-46.html</guid>
+      <description>git大文件存储 声明额外存储的文件类型 一个通常使用Git LFS的方式是声明一个使用系统规则处理指定文件，就像.gitingnore这个文件一样。
+很多时候，通配符用于选择某些文件类型以覆盖跟踪。
+git lfs track &amp;quot;*.psd&amp;quot;  当一个匹配上面规则的文件被添加到提交中，当被推送到远端的时候，它将会被单独上次，使用一个指针替换远端仓库中的文件。
+使用LFS追踪文件之后，你的.gitattributes文件也会被更新。Github建议你提交自己仓库本地的.gitattributes文件，而不是修改全局的.gitattributes文件，这样就不会再处理多个仓库时出现问题。
+为所有的副本设置LFS配置 想要设置在所有仓库副本都有效的LFS配置选项，要在仓库的根目录添加并提交一个.lfsconfig的文件。这个文件用来指定和.git/config中一样的配置文件。
+例如：要从LFS中排查某个文件，请创建并提交.lfsconfig文件，并添加下面的内容提交：
+[lfs] fetchexclude = ReallyBigFile.wav  按照LFS 下载和安装LFS，既可以使用Homebrew，也可以从这个网址。
+homebrew  brew install git-lfs git lfs install  通常你需要对托管的远端服务器进行一些设置，用来允许它和LFS一起使用。这对于每个主机是不同的，但很可能只是勾选了一个框，说明你想要使用git lfs。
+参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(四十)</title>
       <link>http://blog.huaifufeng.com/2019/03/post/bash-section-40.html</link>
       <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
@@ -95,6 +112,15 @@ split --bytes=1MB file  参考：Bash Notes for Professionals book</description>
 .profile并不是专门为bash设计的，但是.bash_profile是。(.profile是用于Bourne和其他类似的shell的，bash基于这个创作的。)如果找不到.bash_profile，就会去寻找.profile。
 如果找不到.bash_profile的话，就会寻找.bash_login，但是最好是使用.bash_profile或.profile。
 参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（四十五）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-45.html</link>
+      <pubDate>Fri, 08 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-45.html</guid>
+      <description>git远端    参数 详情     -v, —verbos 冗长模式运行   -m  设置远端分支的头   —mirror=fetch 引用将不会保存在efs/remotes，而是保存在本地仓库内   —mirror=push git push表现的像--mirror被设置了   —no-tags git fetch &amp;lt;name&amp;gt;不会从远端仓库导入tag   -t  指定远端只追踪   -f 远端设置之后立即执行git fetch &amp;lt;name&amp;gt;   &amp;ndash;tags git fetch &amp;lt;name&amp;gt;从远端仓库导入每个tag   -a, —auto 符号引用的HEAD设置为远端HEAD的相同的分支。   -d, —delete 所有列出的引用都会从远端仓库删除   &amp;ndash;add 将添加到当前跟踪的分支列表（设置分支）   &amp;ndash;add 不是修改某些URL，而是添加一些URL(设置URL)   &amp;ndash;all 推送所有的分支。   &amp;ndash;delete 所有匹配的将会被删除。   —push 推送URL而不是拉取URL   -n 远端HEAD不是首先使用git ls-remote &amp;lt;name&amp;gt;，而是使用缓存信息   —dry-run 报告将修剪哪些分支，但不要实际修剪它们   —prune 删除没有本地对应的远端分支    显示远端仓库 使用git remote列出所有配置的远端仓库。</description>
     </item>
     
     <item>

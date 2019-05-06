@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="文件执行顺序">
+    <meta name="description" content="git大文件存储">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(四十)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（四十六）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-40.html">
+    <link rel="canonical" href="/2019/03/post/git-section-46.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -141,14 +141,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(四十)</h1>
+                    <h1>Git专业笔记（四十六）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, March 8, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, March 9, 2019
                         
                     </span>
                 </div>
@@ -178,9 +178,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#文件执行顺序">文件执行顺序</a>
+<li><a href="#git大文件存储">git大文件存储</a>
 <ul>
-<li><a href="#profile-vs-bash-profile-和-bash-login">.profile VS .bash_profile(和.bash_login)</a></li>
+<li><a href="#声明额外存储的文件类型">声明额外存储的文件类型</a></li>
+<li><a href="#为所有的副本设置lfs配置">为所有的副本设置LFS配置</a></li>
+<li><a href="#按照lfs">按照LFS</a>
+<ul>
+<li><a href="#homebrew">homebrew</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -188,21 +193,44 @@
         		
         		
 
-<h2 id="文件执行顺序">文件执行顺序</h2>
+<h2 id="git大文件存储">git大文件存储</h2>
 
-<p><code>.bash_profile</code>，<code>.bash_login</code>，<code>.bashrc</code>和<code>.profile</code>做这相同的事情：设置和定义函数，变量和排序。</p>
+<h3 id="声明额外存储的文件类型">声明额外存储的文件类型</h3>
 
-<p>主要的不同是<code>.bashrc</code>在开启一个非登录的交互窗口是调用，<code>.bash_profile</code>和其他文件在登录的shell中执行。无论如何很多人都拥有<code>.bash_profile</code>和相似的<code>.bashrc</code>。</p>
+<p>一个通常使用Git LFS的方式是声明一个使用系统规则处理指定文件，就像<code>.gitingnore</code>这个文件一样。</p>
 
-<h3 id="profile-vs-bash-profile-和-bash-login">.profile VS .bash_profile(和.bash_login)</h3>
+<p>很多时候，通配符用于选择某些文件类型以覆盖跟踪。</p>
 
-<p><code>.profile</code>在很多shell启动的时候读取，包括bash。然后<code>.bash_profile</code>是指定bash的配置。对于通用的初始化代码，放在<code>.profile</code>中，但是指定bash的代码，放到<code>.bash_profile</code>中。</p>
+<pre><code>git lfs track &quot;*.psd&quot;
+</code></pre>
 
-<p><code>.profile</code>并不是专门为bash设计的，但是<code>.bash_profile</code>是。(<code>.profile</code>是用于Bourne和其他类似的shell的，bash基于这个创作的。)如果找不到<code>.bash_profile</code>，就会去寻找<code>.profile</code>。</p>
+<p>当一个匹配上面规则的文件被添加到提交中，当被推送到远端的时候，它将会被单独上次，使用一个指针替换远端仓库中的文件。</p>
 
-<p>如果找不到<code>.bash_profile</code>的话，就会寻找<code>.bash_login</code>，但是最好是使用<code>.bash_profile</code>或<code>.profile</code>。</p>
+<p>使用LFS追踪文件之后，你的<code>.gitattributes</code>文件也会被更新。Github建议你提交自己仓库本地的<code>.gitattributes</code>文件，而不是修改全局的<code>.gitattributes</code>文件，这样就不会再处理多个仓库时出现问题。</p>
 
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<h3 id="为所有的副本设置lfs配置">为所有的副本设置LFS配置</h3>
+
+<p>想要设置在所有仓库副本都有效的LFS配置选项，要在仓库的根目录添加并提交一个<code>.lfsconfig</code>的文件。这个文件用来指定和<code>.git/config</code>中一样的配置文件。</p>
+
+<p>例如：要从LFS中排查某个文件，请创建并提交<code>.lfsconfig</code>文件，并添加下面的内容提交：</p>
+
+<pre><code>[lfs]
+    fetchexclude = ReallyBigFile.wav
+</code></pre>
+
+<h3 id="按照lfs">按照LFS</h3>
+
+<p>下载和安装LFS，既可以使用Homebrew，也可以从<a href="https://git-lfs.github.com/">这个网址</a>。</p>
+
+<h4 id="homebrew">homebrew</h4>
+
+<pre><code> brew install git-lfs
+ git lfs install
+</code></pre>
+
+<p>通常你需要对托管的远端服务器进行一些设置，用来允许它和LFS一起使用。这对于每个主机是不同的，但很可能只是勾选了一个框，说明你想要使用<code>git lfs</code>。</p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -211,12 +239,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/git-section-46.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十六）">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-41.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十一)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-45.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十五）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-40.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="文件执行顺序">
+    <meta name="description" content="git远端">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(四十)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Git专业笔记（四十五）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-40.html">
+    <link rel="canonical" href="/2019/03/post/git-section-45.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -141,12 +141,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/bash" title="Bash">
-                           Bash
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(四十)</h1>
+                    <h1>Git专业笔记（四十五）</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Friday, March 8, 2019
                         
@@ -178,9 +178,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#文件执行顺序">文件执行顺序</a>
+<li><a href="#git远端">git远端</a>
 <ul>
-<li><a href="#profile-vs-bash-profile-和-bash-login">.profile VS .bash_profile(和.bash_login)</a></li>
+<li><a href="#显示远端仓库">显示远端仓库</a></li>
+<li><a href="#修改仓库的远端地址">修改仓库的远端地址</a></li>
+<li><a href="#移除远端仓库">移除远端仓库</a></li>
+<li><a href="#添加远端仓库">添加远端仓库</a></li>
+<li><a href="#显示远端仓库的详细信息">显示远端仓库的详细信息</a></li>
+<li><a href="#重命名远端仓库">重命名远端仓库</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -188,21 +193,211 @@
         		
         		
 
-<h2 id="文件执行顺序">文件执行顺序</h2>
+<h2 id="git远端">git远端</h2>
 
-<p><code>.bash_profile</code>，<code>.bash_login</code>，<code>.bashrc</code>和<code>.profile</code>做这相同的事情：设置和定义函数，变量和排序。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
 
-<p>主要的不同是<code>.bashrc</code>在开启一个非登录的交互窗口是调用，<code>.bash_profile</code>和其他文件在登录的shell中执行。无论如何很多人都拥有<code>.bash_profile</code>和相似的<code>.bashrc</code>。</p>
+<tbody>
+<tr>
+<td>-v, —verbos</td>
+<td>冗长模式运行</td>
+</tr>
 
-<h3 id="profile-vs-bash-profile-和-bash-login">.profile VS .bash_profile(和.bash_login)</h3>
+<tr>
+<td>-m <master></td>
+<td>设置远端<master>分支的头</td>
+</tr>
 
-<p><code>.profile</code>在很多shell启动的时候读取，包括bash。然后<code>.bash_profile</code>是指定bash的配置。对于通用的初始化代码，放在<code>.profile</code>中，但是指定bash的代码，放到<code>.bash_profile</code>中。</p>
+<tr>
+<td>—mirror=fetch</td>
+<td>引用将不会保存在<code>efs/remotes</code>，而是保存在本地仓库内</td>
+</tr>
 
-<p><code>.profile</code>并不是专门为bash设计的，但是<code>.bash_profile</code>是。(<code>.profile</code>是用于Bourne和其他类似的shell的，bash基于这个创作的。)如果找不到<code>.bash_profile</code>，就会去寻找<code>.profile</code>。</p>
+<tr>
+<td>—mirror=push</td>
+<td><code>git push</code>表现的像<code>--mirror</code>被设置了</td>
+</tr>
 
-<p>如果找不到<code>.bash_profile</code>的话，就会寻找<code>.bash_login</code>，但是最好是使用<code>.bash_profile</code>或<code>.profile</code>。</p>
+<tr>
+<td>—no-tags</td>
+<td><code>git fetch &lt;name&gt;</code>不会从远端仓库导入tag</td>
+</tr>
 
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+<tr>
+<td>-t <branch></td>
+<td>指定远端只追踪<branch></td>
+</tr>
+
+<tr>
+<td>-f</td>
+<td>远端设置之后立即执行<code>git fetch &lt;name&gt;</code></td>
+</tr>
+
+<tr>
+<td>&ndash;tags</td>
+<td><code>git fetch &lt;name&gt;</code>从远端仓库导入每个tag</td>
+</tr>
+
+<tr>
+<td>-a, —auto</td>
+<td>符号引用的HEAD设置为远端HEAD的相同的分支。</td>
+</tr>
+
+<tr>
+<td>-d, —delete</td>
+<td>所有列出的引用都会从远端仓库删除</td>
+</tr>
+
+<tr>
+<td>&ndash;add</td>
+<td>将<name>添加到当前跟踪的分支列表（设置分支）</td>
+</tr>
+
+<tr>
+<td>&ndash;add</td>
+<td>不是修改某些URL，而是添加一些URL(设置URL)</td>
+</tr>
+
+<tr>
+<td>&ndash;all</td>
+<td>推送所有的分支。</td>
+</tr>
+
+<tr>
+<td>&ndash;delete</td>
+<td>所有匹配的<url>将会被删除。</td>
+</tr>
+
+<tr>
+<td>—push</td>
+<td>推送URL而不是拉取URL</td>
+</tr>
+
+<tr>
+<td>-n</td>
+<td>远端HEAD不是首先使用<code>git ls-remote &lt;name&gt;</code>，而是使用缓存信息</td>
+</tr>
+
+<tr>
+<td>—dry-run</td>
+<td>报告将修剪哪些分支，但不要实际修剪它们</td>
+</tr>
+
+<tr>
+<td>—prune</td>
+<td>删除没有本地对应的远端分支</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="显示远端仓库">显示远端仓库</h3>
+
+<p>使用<code>git remote</code>列出所有配置的远端仓库。</p>
+
+<p>显示你配置的每一个远端仓库的简单别名。</p>
+
+<pre><code>$ git remote 
+premium 
+premiumPro 
+origin
+</code></pre>
+
+<p>想要显示更加详细的信息的话，使用<code>—verbose</code>或<code>-v</code>分支中。这将会包括URL和远端的类型(<code>push</code>和<code>pull</code>)。</p>
+
+<pre><code>$ git remote -v
+premiumPro    https://github.com/user/CatClickerPro.git (fetch)
+premiumPro    https://github.com/user/CatClickerPro.git (push)
+premium       https://github.com/user/CatClicker.git (fetch) 
+premium       https://github.com/user/CatClicker.git (push)
+origin        https://github.com/ud/starter.git (fetch) 
+origin        https://github.com/ud/starter.git (push)
+</code></pre>
+
+<h3 id="修改仓库的远端地址">修改仓库的远端地址</h3>
+
+<p>如果迁移了远端的仓库，你可能就想要做这个了。修改远端仓库的命令是：</p>
+
+<pre><code>git remote set-url
+</code></pre>
+
+<p>这个命令需要两个参考：一个存在的远端名称(origin，upstream)和url。</p>
+
+<p>查看本地当前的远端url：</p>
+
+<pre><code>git remote -v
+origin https://bitbucket.com/develop/myrepo.git (fetch) 
+origin https://bitbucket.com/develop/myrepo.git (push)
+</code></pre>
+
+<p>修改你的远端url：</p>
+
+<pre><code>git remote set-url origin https://localserver/develop/myrepo.git
+</code></pre>
+
+<p>然后再次检测你的本地远端url：</p>
+
+<pre><code>git remote -v
+origin https://localserver/develop/myrepo.git (fetch) 
+origin https://localserver/develop/myrepo.git (push)
+</code></pre>
+
+<h3 id="移除远端仓库">移除远端仓库</h3>
+
+<p>删除名为<code>&lt;name&gt;</code>的远端仓库。所有远端仓库追踪的分支和配置选项都将被删除。</p>
+
+<p>删除远端分支<code>dev</code>：</p>
+
+<pre><code>git remote rm dev
+</code></pre>
+
+<h3 id="添加远端仓库">添加远端仓库</h3>
+
+<p>在你本地仓库的根目录，使用<code>git remote add</code>来添加一个远端仓库。</p>
+
+<pre><code>git remote add &lt;name&gt; &lt;url&gt;
+</code></pre>
+
+<p>添加远端仓库的话使用一个简短名字<code>&lt;name&gt;</code>和git仓库的url。</p>
+
+<p><code>git fetch &lt;name&gt;</code>这个命令可以用来创建和更新远端追踪的分支<code>&lt;name&gt;/&lt;branch&gt;</code>。</p>
+
+<h3 id="显示远端仓库的详细信息">显示远端仓库的详细信息</h3>
+
+<p>你可以使用<code>git remote show &lt;remote repository alias&gt;</code>来显示远端仓库的详细信息。</p>
+
+<pre><code>git remote show origin
+</code></pre>
+
+<p>将会输出：</p>
+
+<pre><code>remote origin
+Fetch URL: https://localserver/develop/myrepo.git 
+Push  URL: https://localserver/develop/myrepo.git 
+HEAD branch: master
+Remote branches:
+    master      tracked
+Local branches configured for 'git pull':
+    master      merges with remote master
+Local refs configured for 'git push':
+master pushes to master (up to date)
+</code></pre>
+
+<h3 id="重命名远端仓库">重命名远端仓库</h3>
+
+<p>可以重命名远端仓库，从<code>&lt;old&gt;</code>到<code>&lt;new&gt;</code>。所有远端仓库追踪的分支和配置项都会被更新。</p>
+
+<p>远端仓库命名为<code>dev</code>修改为<code>dev1</code>。</p>
+
+<pre><code>git remote rename dev dev1
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -211,12 +406,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/git-section-46.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十六）">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-40.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-45.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（四十五）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-39.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十九)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
