@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="函数">
+    <meta name="description" content="类和对象">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（二十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（二十六）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/php-section-21.html">
+    <link rel="canonical" href="/2019/04/post/php-section-26.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -146,9 +146,9 @@
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（二十一）</h1>
+                    <h1>PHP专业笔记（二十六）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, April 21, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, April 26, 2019
                         
                     </span>
                 </div>
@@ -178,228 +178,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#函数">函数</a>
-<ul>
-<li><a href="#可变长度参数">可变长度参数</a></li>
-<li><a href="#可选变量">可选变量</a></li>
-<li><a href="#引用传参">引用传参</a></li>
-<li><a href="#简单函数使用">简单函数使用</a></li>
-<li><a href="#函数作用域">函数作用域</a></li>
-</ul></li>
+<li><a href="#类和对象">类和对象</a></li>
 </ul></li>
 </ul>
 </nav>
         		
         		
 
-<h2 id="函数">函数</h2>
-
-<h3 id="可变长度参数">可变长度参数</h3>
-
-<p>Version&gt;=5.6</p>
-
-<p>PHP5.6提供了可变长度的参数列表。在变量名前添加<code>…</code>运算符表示这个变量是可变参数。这个变量将会包含这个位置之后所有参数的一个数组。</p>
-
-<pre><code>function variadic_func($nonVariadic, ...$variadic) { 
-    echo json_encode($variadic);
-}
-variadic_func(1, 2, 3, 4); // prints [2,3,4]
-</code></pre>
-
-<p>可以在<code>...</code>符号前面添加类型名称：</p>
-
-<pre><code>function foo(Bar ...$bars) {}
-</code></pre>
-
-<p><code>&amp;</code>可以添加在<code>…</code>之前，变量名称之后，就像下面这个例子：</p>
-
-<pre><code>class Foo{}
-function a(Foo &amp;...$foos){
-    $i = 0;
-    foreach($foos as &amp;$foo){ // note the &amp;
-        $foo = $i++; 
-    }
-}
-$a = new Foo;
-$c = new Foo;
-$b =&amp; $c;
-a($a, $b); 
-var_dump($a, $b, $c);
-</code></pre>
-
-<p>这将会输出：</p>
-
-<pre><code>int(0)
-int(1)
-int(1)
-</code></pre>
-
-<p>另一方面，可以解压缩数组（或Traversable）以便以参数列表的形式传递给函数：</p>
-
-<pre><code>var_dump(...hash_algos());
-</code></pre>
-
-<p>输出：</p>
-
-<pre><code>string(3) &quot;md2&quot;
-string(3) &quot;md4&quot;
-string(3) &quot;md5&quot;
-...
-</code></pre>
-
-<p>和没有使用<code>…</code>比较一下：</p>
-
-<pre><code>var_dump(hash_algos());
-</code></pre>
-
-<p>输出：</p>
-
-<pre><code>array(46) {
-  [0]=&gt;
-  string(3) &quot;md2&quot;
-  [1]=&gt;
-  string(3) &quot;md4&quot;
-  ...
-}
-</code></pre>
-
-<p>因此可以轻松的重定向可变函数：</p>
-
-<pre><code>public function formatQuery($query, ...$args){
-    return sprintf($query, ...array_map([$mysqli, &quot;real_escape_string&quot;], $args));
-}
-</code></pre>
-
-<p>不仅是数组，<code>Traversables</code>标准库中迭代器的子类也可以这么使用。例如：</p>
-
-<pre><code>$iterator = new LimitIterator(new ArrayIterator([0, 1, 2, 3, 4, 5, 6]), 2, 3);
-echo bin2hex(pack(&quot;c*&quot;, ...$it)); // Output: 020304
-</code></pre>
-
-<p>如果迭代器无限迭代的话，</p>
-
-<pre><code>$iterator = new InfiniteIterator(new ArrayIterator([0, 1, 2, 3, 4])); 
-var_dump(...$iterator);
-</code></pre>
-
-<p>不同版本的PHP会有不同的行为：</p>
-
-<ul>
-<li>从PHP7.0.0到PHP7.1.0
-
-<ul>
-<li>将会发生分段错误</li>
-<li>PHP进程会以139错误码退出</li>
-</ul></li>
-<li>在PHP5.6
-
-<ul>
-<li>一个内存泄露的致命错误将会出现：Allowed memory size of %d bytes exhausted</li>
-<li>PHP进程会议255错误码退出</li>
-</ul></li>
-</ul>
-
-<blockquote>
-<p>注意：HVVM(3.10-3.12将不支持解压<code>Traversables</code>)，将会出现一个警告信息:Only containers may be unpacked</p>
-</blockquote>
-
-<h3 id="可选变量">可选变量</h3>
-
-<p>函数可以有可选变量：</p>
-
-<pre><code>function hello($name, $style = 'Formal') {
-    switch ($style) {
-        case 'Formal':
-            print &quot;Good Day $name&quot;;
-            break;
-        case 'Informal':
-            print &quot;Hi $name&quot;;
-            break;
-        case 'Australian':
-            print &quot;G'day $name&quot;;
-            break;
-        default:
-            print &quot;Hello $name&quot;;
-            break;
-    }
-}
-hello('Alice');
-    // Good Day Alice
-hello('Alice', 'Australian'); 
-// G'day Alice
-</code></pre>
-
-<h3 id="引用传参">引用传参</h3>
-
-<p>函数可以应用传参，这样函数就可以修改函数之外的变量：</p>
-
-<pre><code>function pluralize(&amp;$word) {
-    if (substr($word, -1) == 'y') {
-        $word = substr($word, 0, -1) . 'ies';
-    } else {
-      $word .= 's';
-    } 
-}
-$word = 'Bannana';
-pluralize($word);
-print $word; // Bannanas
-</code></pre>
-
-<p>对象作为参数的话，就是按照引用传递的：</p>
-
-<pre><code>function addOneDay($date) {
-    $date-&gt;modify('+1 day');
-}
-$date = new DateTime('2014-02-28'); 
-addOneDay($date);
-print $date-&gt;format('Y-m-d'); // 2014-03-01
-</code></pre>
-
-<p>为了避免隐式传递一个对象参数，你可以<code>clone</code>一个对象。</p>
-
-<p>引用传递一种可选的返回参数的方式。例如<code>socket_getpeername</code>这个函数：</p>
-
-<pre><code>bool socket_getpeername ( resource $socket , string &amp;$address [, int &amp;$port ] )
-</code></pre>
-
-<p>这个函数想要返回对应的地址和端口，因为有两个值要返回，所以这里使用了引用。它是这么调用的：</p>
-
-<pre><code>if(!socket_getpeername($socket, $address, $port)) { 
-    throw new RuntimeException(socket_last_error());
-}
-echo &quot;Peer: $address:$port\n&quot;;
-</code></pre>
-
-<p>变量<code>$address</code>和<code>$port</code>不用再之前定义过，他们将会：</p>
-
-<ul>
-<li>首先定义为<code>null</code></li>
-<li>然后把预定义的<code>null</code>传递给函数</li>
-<li>然后在函数内部修改这两个变量</li>
-<li>然后在调用环境中定义这两变量</li>
-</ul>
-
-<h3 id="简单函数使用">简单函数使用</h3>
-
-<p>一个简单的函数可以像下面这样定义和使用：</p>
-
-<pre><code>function hello($name) {
-    print &quot;Hello $name&quot;; 
-}
-hello(&quot;Alice&quot;);
-</code></pre>
-
-<h3 id="函数作用域">函数作用域</h3>
-
-<p>定义在函数中的变量像下面这样在本地作用域内：</p>
-
-<pre><code>$number = 5 
-function foo(){
-    $number = 10
-    return $number
-}
-foo(); //Will print 10 because text defined inside function is a local variable
-</code></pre>
+<h2 id="类和对象">类和对象</h2>
 
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
@@ -409,13 +195,9 @@ foo(); //Will print 10 because text defined inside function is a local variable
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/04/post/php-section-22.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十二）">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/04/post/php-section-20.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十）">Next Post &rarr;</a>
+                      <a href="/2019/04/post/java-section-1.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（一）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

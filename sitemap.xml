@@ -3,8 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/php-section-26.html</loc>
+    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/java-section-1.html</loc>
     <lastmod>2019-04-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/php-section-25.html</loc>
+    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/php-section-24.html</loc>
+    <lastmod>2019-04-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/php-section-23.html</loc>
+    <lastmod>2019-04-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/php-section-22.html</loc>
+    <lastmod>2019-04-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -636,19 +661,19 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/php/</loc>
-    <lastmod>2019-04-21T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.huaifufeng.com/categories/php/</loc>
-    <lastmod>2019-04-21T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.huaifufeng.com/post/</loc>
-    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -666,7 +691,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/</loc>
-    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

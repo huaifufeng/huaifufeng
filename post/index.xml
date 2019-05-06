@@ -6,10 +6,19 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 25 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（二十六）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-26.html</link>
+      <pubDate>Fri, 26 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-26.html</guid>
+      <description>类和对象 参考：PHP® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Java专业笔记（一）</title>
@@ -18,6 +27,63 @@
       
       <guid>http://blog.huaifufeng.com/2019/04/post/java-section-1.html</guid>
       <description>开始学习java    Java SE 版本 代码名称 结束时间 发布日期     Java SE 10 None future 2018-03-20   Java SE 9 None future 2017-07-27   Java SE 8 Spider future 2014-03-18   Java SE 7 Dophin 2015-04-14 2011-07-28   Java SE 6 Mustang 2013-04-16 2006-12-23   Java SE 5 Tiger 2009-11-04 2004-10-04   Java SE 1.4 Merlin prior to 2009-11-04 2002-02-06   Java SE 1.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（二十五）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-25.html</link>
+      <pubDate>Thu, 25 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-25.html</guid>
+      <description>字符串解析 分割字符串 explode和strstr是用来是用分隔符获取字符串子串的方法。
+一个字符串包含使用相同分隔符分割的几部分，可以使用explode将字符串分成几部分：
+$fruits = &amp;quot;apple,pear,grapefruit,cherry&amp;quot;; print_r(explode(&#39;,&#39;, $fruits)); // [&#39;apple&#39;, &#39;pear&#39;, &#39;grapefruit&#39;, &#39;cherry&#39;]  这个方法支持一个参数，用来限制分割的子串数量：
+$fruits = &#39;apple,pear,grapefruit,cherry&#39;; print_r(explode(&#39;,&#39;,$fruits,0)); // [&#39;apple,pear,grapefruit,cherry&#39;]  如果这个参数是0，将会按照1处理。
+如果这个限制参数是大于0的值，将会返回最多包含这个值的子串，其中最后一个子串包含所有剩余的部分。
+print_r(explode(&#39;,&#39;,$fruits,2)); // [&#39;apple&#39;, &#39;pear,grapefruit,cherry&#39;]  如果这个参数为负数，将会返回处理最后这几个子串之外的其他子串：
+print_r(explode(&#39;,&#39;,$fruits,-1)); // [&#39;apple&#39;, &#39;pear&#39;, &#39;grapefruit&#39;]  explode可以使用list来把子串放入不同的变量中：
+$email = &amp;quot;user@example.com&amp;quot;; list($name, $domain) = explode(&amp;quot;@&amp;quot;, $email);  但是要保证explode返回足够的值，否则将会参数index未定义的错误。
+strstr将会把字符串分为两部分，然后根据第二个参数确定返回哪部分，默认返回后面的部分：
+$string = &amp;quot;1:23:456&amp;quot;; echo json_encode(explode(&amp;quot;:&amp;quot;, $string)); // [&amp;quot;1&amp;quot;,&amp;quot;23&amp;quot;,&amp;quot;456&amp;quot;] var_dump(strstr($string, &amp;quot;:&amp;quot;)); // string(7) &amp;quot;:23:456&amp;quot; var_dump(strstr($string, &amp;quot;:&amp;quot;, true)); // string(1) &amp;quot;1&amp;quot;  子串 substr返回字符串指定开始位置和指定长度的子字符串。</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（二十四）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-24.html</link>
+      <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-24.html</guid>
+      <description>字符串格式 字符串插值 你可以使用字符串插值在字符串中插入一个变量。字符串插值只在双引号字符串和heredoc表达式中有效。
+$name = &#39;Joel&#39;; //$name会解析为Joel echo &amp;quot;&amp;lt;p&amp;gt;Hello $name, Nice to see you.&amp;lt;/p&amp;gt;&amp;quot;; //将会输出&amp;lt;p&amp;gt;Hello Joel, Nice to see you.&amp;lt;/p&amp;gt; //单引号，变量不会解析 echo &#39;Hello $name, Nice to see you.&#39;; //输出：Hello $name, Nice to see you.  复杂（花括号）语法提供了另一种在字符串中插入变量的语法，就是在变量的周围加上{}。这在变量和文本在一起时是很有用的，避免可能存在的变量和文本引起的歧义。
+$name = &#39;Joel&#39;; // Example using the curly brace syntax for the variable $name echo &amp;quot;&amp;lt;p&amp;gt;We need more {$name}s to help us!&amp;lt;/p&amp;gt;&amp;quot;; #&amp;gt; &amp;quot;&amp;lt;p&amp;gt;We need more Joels to help us!&amp;lt;/p&amp;gt;&amp;quot; // This line will throw an error (as `$names` is not defined) echo &amp;quot;&amp;lt;p&amp;gt;We need more $names to help us!</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（二十三）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-23.html</link>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-23.html</guid>
+      <description>控制结构备用语法 if/else语句 &amp;lt;?php if ($condition): do_something(); elseif ($another_condition): do_something_else(); else: do_something_different(); endif; ?&amp;gt; &amp;lt;?php if ($condition): ?&amp;gt; &amp;lt;p&amp;gt;Do something in HTML &amp;lt;/p&amp;gt; &amp;lt;?php elseif ($another_condition): ?&amp;gt; &amp;lt;p&amp;gt;Do something else in HTML&amp;lt;/p&amp;gt; &amp;lt;?php else: ?&amp;gt; &amp;lt;p&amp;gt;Do something different in HTML &amp;lt;/p&amp;gt; &amp;lt;?php endif; ?&amp;gt;  for &amp;lt;?php for ($i = 0; $i &amp;lt; 10; $i++): do_something($i); endfor; ?&amp;gt; &amp;lt;?php for ($i=0; $i &amp;lt; 10; $i++): ?&amp;gt; &amp;lt;p&amp;gt;Do something in HTML with &amp;lt;?</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（二十二）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-22.html</link>
+      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-22.html</guid>
+      <description>函数式编程 PHP的函数式编程依赖于函数。PHP中的函数提供了组织和重用代码段的功能。函数简化了编码过程，防止冗余的代码，并使代码编译维护。这个主题描述了PHP中函数、形参，实参，返回语句和作用域的声明和使用。
+闭包 闭包就是一个不能外部访问的匿名函数。
+当声明一个匿名函数，你也就创建了这个函数的&amp;rdquo;命名空间&amp;rdquo;。它现在只有在这个命名空间可以访问。
+$externalVariable = &amp;quot;Hello&amp;quot;; $secondExternalVariable = &amp;quot;Foo&amp;quot;; $myFunction = function() { var_dump($externalVariable, $secondExternalVariable); //返回错误，因为变量没有定义 };  这个函数没有访问外部变量的权限。想要使用外部的变量，你可以使用use()来将外部变量放入闭包函数内部：
+$myFunction = function() use($externalVariable, $secondExternalVariable) { var_dump($externalVariable, $secondExternalVariable); };  这主要由于PHP严格变量范围：如果一个变量没有在命名空间中定义，并且没有使用global引入进来，这个变量就没有定义。
+也要注意：
+ 从父命名空间继承变量和使用全局变量是不一样的。全局变量在全局命名空间中，不论函数在哪里执行。闭包函数的父命名空间是闭包定义的地方(而不是函数实际调用的地方)。
+ 查看PHP手册。
+在PHP中，闭包使用早期绑定方法。这意味着使用use关键字传递给闭包命名空间的变量的值是闭包定义时的值。
+想要修改这种行为的话，可以使用引用传值：
+$rate = .05; $calculateTax = function($value) use ($rate) { return $value * $rate; } $rate = .1; print $calculateTax(100); //5 $rate = .05; $calculateTax = function($value) use (&amp;amp;$rate) { return $value * $rate; } $rate = .</description>
     </item>
     
     <item>
