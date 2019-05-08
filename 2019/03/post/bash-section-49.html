@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="单词拆分">
+    <meta name="description" content="shell类型">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(四十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(四十九)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-45.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-49.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -146,9 +146,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(四十五)</h1>
+                    <h1>Bash专业笔记(四十九)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, March 13, 2019
+                    <span  class="meta">Posted by 怀府风 on Sunday, March 17, 2019
                         
                     </span>
                 </div>
@@ -178,24 +178,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#单词拆分">单词拆分</a>
+<li><a href="#shell类型">shell类型</a>
 <ul>
-<li><a href="#what-when和why">what，when和why</a></li>
-<li><a href="#单词拆分的坏处">单词拆分的坏处</a></li>
-<li><a href="#单词拆分的好处">单词拆分的好处</a></li>
-<li><a href="#分隔符修改">分隔符修改</a></li>
-<li><a href="#ifs分隔">IFS分隔</a></li>
-<li><a href="#ifs-单词拆分">IFS &amp; 单词拆分</a>
-<ul>
-<li><a href="#设置ifs为空格">设置IFS为空格</a></li>
-<li><a href="#设置ifs为换行">设置IFS为换行</a></li>
-<li><a href="#ifs设置为null">IFS设置为null</a></li>
-</ul></li>
-<li><a href="#避免printf打印日期">避免printf打印日期</a>
-<ul>
-<li><a href="#获取当前时间">获取当前时间</a></li>
-<li><a href="#设置当前时间变量">设置当前时间变量</a></li>
-</ul></li>
+<li><a href="#开启一个交互shell">开启一个交互shell</a></li>
+<li><a href="#检查shell类型">检查shell类型</a></li>
+<li><a href="#点文件">点文件</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -203,267 +190,27 @@
         		
         		
 
-<h2 id="单词拆分">单词拆分</h2>
+<h2 id="shell类型">shell类型</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>详情</th>
-</tr>
-</thead>
+<h3 id="开启一个交互shell">开启一个交互shell</h3>
 
-<tbody>
-<tr>
-<td>IFS</td>
-<td>内部的字段分隔符</td>
-</tr>
-
-<tr>
-<td>-x</td>
-<td>打印执行的命令和他们的参数</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="what-when和why">what，when和why</h3>
-
-<p>当shell执行参数扩展，命令替换，变量或算术扩展时，它会扫描结果中的字边界。如果找到了字符边界，就会在这个位置把结果分成多个单词。这个单词的边界是被<code>IFS</code>定义的。如果没有显示指明的话，<code>IFS</code>的默认值是空白，tab和新行。当遇到这三个字符的时候，会进行单词的拆分。</p>
-
-<pre><code>set -x
-var='I am
-a
-multiline string' fun() {
-echo &quot;-$1-&quot; echo &quot;*$2*&quot; echo &quot;.$3.&quot;
-}
-fun $var
+<pre><code>bash
 </code></pre>
 
-<p>在上面的例子中线上了<code>fun</code>是怎么执行的</p>
+<h3 id="检查shell类型">检查shell类型</h3>
 
-<pre><code>fun I am a multiline string
+<pre><code>shopt -q login_shell &amp;&amp; echo 'login' || echo 'not-login'
 </code></pre>
 
-<blockquote>
-<p><code>$var</code>被分成5个单词，但是只有<code>I</code>，<code>am</code>，<code>a</code>被输出。</p>
-</blockquote>
+<h3 id="点文件">点文件</h3>
 
-<h3 id="单词拆分的坏处">单词拆分的坏处</h3>
+<p>在Unix中，以<code>.</code>开头的文件或目录包含了指定程序或一系列程序的配置选项。点文件通常对用户是隐藏的，所以你需要使用<code>ls -a</code>来查看这些文件。</p>
 
-<pre><code>$ a='I am a string with spaces'
-$ [ $a = $a ] || echo &quot;didn't match&quot; 
-bash: [: too many arguments
-didn't match
-</code></pre>
+<p>一个点文件的例子是<a href="http://unix.stackexchange.com/a/145254">.bash_history</a>，假设用户使用Bash，包含了最近执行的命令。</p>
 
-<blockquote>
-<p><code>[ $a = $a ]</code>被解析为<code>[ I am a string with spaces = I am a string with spaces ]</code>。<code>[</code>是一个<code>test</code>命令，然而<code>I am a string with spaces</code>是6个参数不是一个参数。</p>
-</blockquote>
+<p>当你在Bash中时，有各种文件是<a href="https://superuser.com/questions/46139/what-does-source-do/46146#46146">被source</a>的。下面的图片来自<a href="http://www.solipsys.co.uk/new/BashInitialisationFiles.html">这个站点</a>，显示了在启动时选择要源文件的决策过程。</p>
 
-<pre><code>$ [ $a = something ] || echo &quot;didn't match&quot;
-bash: [: too many arguments
-didn't match
-</code></pre>
-
-<blockquote>
-<p><code>[ $a = I am a string with spaces ]</code>被解析为<code>[ I am a string with spaces = something ]</code></p>
-</blockquote>
-
-<pre><code>$ [ $(grep . file) = 'something' ]
-bash: [: too many arguments
-</code></pre>
-
-<blockquote>
-<p><code>grep</code>返回一个空格分隔的多个字符串，所以你可以想象这里有多少个参数。</p>
-</blockquote>
-
-<h3 id="单词拆分的好处">单词拆分的好处</h3>
-
-<p>在一些情况下单词拆分是很有用的。</p>
-
-<p>*分入一个数组*：</p>
-
-<pre><code>arr=($(grep -o '[0-9]\+' file))
-</code></pre>
-
-<blockquote>
-<p>这将会把<code>file</code>中所有的数字放入到<code>arr</code>中</p>
-</blockquote>
-
-<p>*循环处理空格分隔的单词*：</p>
-
-<pre><code>words='foo bar baz' 
-for w in $words;do
-    echo &quot;W: $w&quot; 
-done
-</code></pre>
-
-<p>输出：</p>
-
-<pre><code>W: foo
-W: bar
-W: baz
-</code></pre>
-
-<p><em>传入空格分隔的参数</em>:</p>
-
-<pre><code> packs='apache2 php php-mbstring php-mysql' 
- sudo apt-get install $packs
-</code></pre>
-
-<p>或者下面这样：</p>
-
-<pre><code>packs='
-apache2
-php
-php-mbstring
-php-mysql
-'
-sudo apt-get install $packs
-</code></pre>
-
-<blockquote>
-<p>这将会按照这些包，但是如果你使用&rdquo;&ldquo;的话，就会抛出错误。</p>
-
-<p>不引号包围的<code>$packs</code>将会发送空格分隔的参数给<code>apt-get</code>命令，引号包围的<code>$packs</code>将会发送一个包含空格的字符串给<code>apt-get</code>，这样将会按照一个明显不存在的包&rdquo;apache2 php php-mbstring php-mysql&rdquo;</p>
-</blockquote>
-
-<h3 id="分隔符修改">分隔符修改</h3>
-
-<p>下面的例子中，我们可以简单的把空格换成换行：</p>
-
-<pre><code>echo $sentence | tr &quot; &quot; &quot;\n&quot;
-</code></pre>
-
-<p>这将会把<code>sentence</code>的值进行分隔，然后一行行显示。</p>
-
-<h3 id="ifs分隔">IFS分隔</h3>
-
-<p>为了更加清晰的说名，我们创建一个叫做<code>showarg</code>的脚本：</p>
-
-<pre><code>#!/usr/bin/env bash
-printf &quot;%d args:&quot; $# 
-printf &quot; &lt;%s&gt;&quot; &quot;$@&quot; 
-echo
-</code></pre>
-
-<p>现在我们观察一下不同之处：</p>
-
-<pre><code>$ var=&quot;This is an example&quot;
-$ showarg $var
-4 args: &lt;This&gt; &lt;is&gt; &lt;an&gt; &lt;example&gt;
-</code></pre>
-
-<blockquote>
-<p><code>$var</code>被分割到4个变量中。<code>IFS</code>是空格字符，所以被空格进行了分割。</p>
-</blockquote>
-
-<pre><code>$ var=&quot;This/is/an/example&quot;
-$ showarg $var
-1 args: &lt;This/is/an/example&gt;
-</code></pre>
-
-<blockquote>
-<p>上面的变量没有被分割，因为没有找到<code>IFS</code>分割符。</p>
-</blockquote>
-
-<p>现在我们设置<code>IFS=/</code></p>
-
-<pre><code>$ IFS=/
-$ var=&quot;This/is/an/example&quot;
-$ showarg $var
-4 args: &lt;This&gt; &lt;is&gt; &lt;an&gt; &lt;example&gt;
-</code></pre>
-
-<blockquote>
-<p>变量<code>$var</code>被分割到4个变量中</p>
-</blockquote>
-
-<h3 id="ifs-单词拆分">IFS &amp; 单词拆分</h3>
-
-<h4 id="设置ifs为空格">设置IFS为空格</h4>
-
-<pre><code>set -x
-var='I am
-a
-multiline string'
-IFS=' '
-fun() {
-    echo &quot;-$1-&quot;
-    echo &quot;*$2*&quot;
-    echo &quot;.$3.&quot;
-}
-fun $var
-</code></pre>
-
-<p>这时，变量只会被空格分隔。这个函数将会输出下面的内容：</p>
-
-<pre><code>fun I 'am
-a
-multiline' string
-</code></pre>
-
-<blockquote>
-<p><code>$var</code>被分割为3个变量。<code>I</code>,<code>am\na\nmultiline</code>和<code>string</code>将会被打印。</p>
-</blockquote>
-
-<h4 id="设置ifs为换行">设置IFS为换行</h4>
-
-<pre><code>IFS=$'\n'
-...
-</code></pre>
-
-<p>现在<code>fun</code>会输出下面的内容：</p>
-
-<pre><code>fun 'I am' a 'multiline string'
-</code></pre>
-
-<blockquote>
-<p><code>$var</code>将会被分割为3个变量。<code>I am</code>，<code>a</code>,<code>multiline string</code>将会被打印</p>
-</blockquote>
-
-<h4 id="ifs设置为null">IFS设置为null</h4>
-
-<pre><code>IFS=
-...
-</code></pre>
-
-<p>这时将会输出：</p>
-
-<pre><code>fun 'I am
-a
-multiline string'
-</code></pre>
-
-<blockquote>
-<p>变量<code>$var</code>将不会被分割</p>
-</blockquote>
-
-<p><strong>你可以通过把IFS设置为null来避免单词拆分。</strong></p>
-
-<p>一个更加常用的避免单词拆分的方法是使用双引号包含变量：</p>
-
-<pre><code>func &quot;$var&quot;
-</code></pre>
-
-<p>可以避免上述的单词拆分问题。<code>fun</code>函数执行只有一个参数。</p>
-
-<h3 id="避免printf打印日期">避免printf打印日期</h3>
-
-<p>在Bash4.2，shell内建的<code>printf</code>这样定义：通过<code>%(datefmt)T</code>来输出指定格式<code>datefmt</code>的时间字符串。这个格式需要<a href="http://man7.org/linux/man-pages/man3/strftime.3.html">strftime</a>能够识别。</p>
-
-<h4 id="获取当前时间">获取当前时间</h4>
-
-<pre><code>$ printf '%(%F)T\n'
-2019-03-01
-</code></pre>
-
-<h4 id="设置当前时间变量">设置当前时间变量</h4>
-
-<pre><code>$ printf -v now '%(%T)T'
-$ echo $now
-12:42:45
-</code></pre>
+<p><img src="/img/bash/ihulP.png" alt="source加载图" /></p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -474,12 +221,12 @@ $ echo $now
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/bash-section-46.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十六)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-50.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/bash-section-44.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十四)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-48.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十八)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -17,7 +17,15 @@
       <pubDate>Fri, 26 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/04/post/php-section-26.html</guid>
-      <description>类和对象 参考：PHP® Notes for Professionals book</description>
+      <description>类和对象 类和对象通过将相同功能代码组合起来来提高代码的效率和减少代码的重复。
+一个类用来定义一组生成对象的数据结构和行为。然后通过这个结构生成多个对象。
+类常量 类常量提供了在程序中保存固定值的方式。也就是，他们提供了一种将名称(以及相关的编译时检查)赋予类似3.14和apple这样值的方法。类常量只能使用const关键字定义，不能使用define这个方法。
+例如下面这个例子，定义了π在程序中的简短表示。在类中使用const来将这些值保存下来：
+class MathValues { const PI = M_PI; const PHI = 1.61803; } $area = MathValues::PI * $radius * $radius;  类常量使用双冒号运算符(所谓的作用域解析运算符)来访问，很像静态变量。但是和静态变量不同的是，类常量是在编译时确定的，不能进行赋值操作(例如MathValues::PI = 7将会产生致命错误)。
+类常量可以用来定义类内部的内容，这些内容稍后可能需要更改(但更改频率不足以保存到数据库)。我们可以在内部使用self域名解析器来处理它(在实例和静态实现中都有效)。
+class Labor { const LABOR_UNITS = 0.26; // const LABOR_COST = 12.75; public function getLaborConst($number_units) { return (self::LABOR_UNITS * self::LABOR_COST) * $number_units; } }  在PHP5.6之前，类常量只需要包含标量值。
+在PHP5.6我们可以在常量定义使用表达式，这包括：数学运算，字符串拼接。
+class Labor { const LABOR_COSTS = 12.75 * 0.26; public function getLaborCost($number_units) { return self::LABOR_COSTS * $number_units; } }  在PHP7，我们可以使用define定义常量的值为数组。</description>
     </item>
     
     <item>
@@ -376,6 +384,100 @@ class myClass { public function __construct() { $functionName = &#39;doSomething
       <description>开始使用PHP PHP 7.x
    版本 支持截止时间 发版时间     7.1 2019-12-01 2016-12-01   7.0 2018-12-03 2015-12-03    PHP 5.x
    版本 支持截止时间 发版时间     5.6 2018-12-31 2014-08-28   5.5 2016-07-21 2013-06-20   5.4 2015-09-03 2012-03-01   5.3 2014-08-14 2009-06-30   5.2 2011-01-06 2006-11-02   5.1 2006-08-24 2005-11-24   5.0 2005-09-05 2004-07-13    PHP 4.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(五十三)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-53.html</link>
+      <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-53.html</guid>
+      <description>特定时间的工作 参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(五十二)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-52.html</link>
+      <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-52.html</guid>
+      <description>变量类型 声明弱类型变量 declare是bash的内部变量。经常用来显示和定义变量或显示函数体。
+语法：`declare [options] [name[=value]]&amp;hellip;
+# options are used to define # an integer declare -i myInteger declare -i anotherInt=10 # an array with values declare -a anArray=( one two three) # an assoc Array declare -A assocArray=( [element1]=&amp;quot;something&amp;quot; [second]=anotherthing ) # note that bash recognizes the string context within [] # some modifiers exist # uppercase content declare -u big=&#39;this will be uppercase&#39; # same for lower case declare -l small=&#39;THIS WILL BE LOWERCASE&#39; # readonly array declare -ra constarray=( eternal true and unchangeable ) # export integer to environment declare -xi importantInt=42  也可以使用+来移除给定的属性。基本没有用处，只是为了完整性。</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(五十一)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-51.html</link>
+      <pubDate>Tue, 19 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-51.html</guid>
+      <description>协同进程 Hello World # create the co-process coproc bash # send a command to it (echo a) echo &#39;echo Hello World&#39; &amp;gt;&amp;amp;&amp;quot;${COPROC[1]}&amp;quot; # read a line from its output read line &amp;lt;&amp;amp;&amp;quot;${COPROC[0]}&amp;quot; # show the line echo &amp;quot;$line&amp;quot;  输出&amp;rdquo;Hello World&amp;rdquo;
+参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(五十)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-50.html</link>
+      <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-50.html</guid>
+      <description>脚本输出修改格式 color-output.sh 在bash脚本的开头部分，可以定义一些变量，这些变量在脚本运行期间充电帮助器来对终端的输出进行着色或格式化。
+不同的平台使用不同的字符序列来表示颜色。然而有一个叫做tput的工具：在任何类Unix的系统上面，返回指定系统的终端颜色字符串通过一个跨平台的API。
+例如，获取终端文本红色或绿色的字符串序列到变量中：
+ red=$(tput setaf 1) green=$(tput setaf 2)  或者，要存储将文本重置为默认外观的字符序列：
+reset=$(tput sgr0)  然后，当BASH脚本想要显示不同的颜色和输出是，可以像下面这样：
+echo &amp;quot;${green}Success!${reset}&amp;quot; echo &amp;quot;${red}Failure.${reset}&amp;quot;  参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十九)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-49.html</link>
+      <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-49.html</guid>
+      <description>shell类型 开启一个交互shell bash  检查shell类型 shopt -q login_shell &amp;amp;&amp;amp; echo &#39;login&#39; || echo &#39;not-login&#39;  点文件 在Unix中，以.开头的文件或目录包含了指定程序或一系列程序的配置选项。点文件通常对用户是隐藏的，所以你需要使用ls -a来查看这些文件。
+一个点文件的例子是.bash_history，假设用户使用Bash，包含了最近执行的命令。
+当你在Bash中时，有各种文件是被source的。下面的图片来自这个站点，显示了在启动时选择要源文件的决策过程。
+参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十八)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-48.html</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-48.html</guid>
+      <description>命令和操作链 有多种方法比命令连接在一起使用。简单的就像;，复杂的像逻辑链(根据条件使用不同的命令)。第三种就是管道命令：在链条中，下一个命令处理上一个命令的输出结果。
+统计字符串出现次数 使用管道把上一个命令的输出结果作为下个命令的输入值：
+ls -l | grep -c &amp;quot;.conf&amp;quot;  这个例子中，ls命令的输出结果作为grep命令的输入。结果是文件名中包含.conf的文件的数量。
+这个可以用组织尽量长的命令队列：
+ls -1 | grep &amp;quot;.conf&amp;quot; | grep -c .  传输root命令输出到用户文件 有时候想要把root命令的执行结果给其他的用户。tee命令很简单的以用户的权限把root命令的输出结果放入一个文件中。
+su -c ifconfig | tee ~/results-of-ifconfig.txt  只有ifconfig是以root的身份运行的。
+逻辑命令链 &amp;amp;&amp;amp; || &amp;amp;&amp;amp;连接两个命令，第二个命令只有在第一个命令执行成功的情况下才会执行。||的两个命令只有第一个命令失败的情况下第二个命令才会执行。
+[ a = b ] &amp;amp;&amp;amp; echo &amp;quot;yes&amp;quot; || echo &amp;quot;no&amp;quot; # if you want to run more commands within a logical chain, use curly braces # which designate a block of commands # They do need a ; before closing bracket so bash can diffentiate from other uses # of curly braces [ a = b ] &amp;amp;&amp;amp; { echo &amp;quot;let me see.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十七)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-47.html</link>
+      <pubDate>Fri, 15 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-47.html</guid>
+      <description>使用trap响应信号和系统事件    参数 详情     -p 列出当前按照的traps   -l 列出信号的名称和相应编号    清理临时文件 你可以使用trap命令来&amp;rdquo;trap&amp;rdquo;信号：这是shell中等同于C中调用signal()或sigaction()，或者其他的编程语言中捕捉信号的方法。
+trap的一个常用的地方是清理希望或不希望存在的临时文件。
+不幸的是没有足够的脚本实现这个功能：
+#!/bin/sh #定义清理函数 cleanup() { rm --force -- &amp;quot;${tmp}&amp;quot; } # 捕捉特殊的EXIT组， shell存在时会一直运行 trap cleanup EXIT #创建临时文件 tmp=&amp;quot;$(mktemp -p /tmp tmpfileXXXXX)&amp;quot; echo &amp;quot;Hello World!&amp;quot; &amp;gt;&amp;gt; &amp;quot;${tmp}&amp;quot; # No rm -f &amp;quot;$tmp&amp;quot; needed. The advantage of using EXIT is that it still works # even if there was an error or if you used exit.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(四十六)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-46.html</link>
+      <pubDate>Thu, 14 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-46.html</guid>
+      <description>printf输出日期 在Bash4.2，提供了printf内建的时间规则：%(datefmt)T可以让printf输出datefmt指定格式的时间字符串。其中datefmt需要是strftime识别的格式。
+获取当前时间 $ printf &#39;%(%F)T\n&#39; 2019-03-14  设置当前时间变量 $ printf -v now &#39;%(%T)T&#39; $ echo &amp;quot;$now&amp;quot; 21:00:04  参考：Bash Notes for Professionals book</description>
     </item>
     
     <item>

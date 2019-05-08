@@ -178,7 +178,45 @@
 <ul>
 <li>
 <ul>
-<li><a href="#类和对象">类和对象</a></li>
+<li><a href="#类和对象">类和对象</a>
+<ul>
+<li><a href="#类常量">类常量</a>
+<ul>
+<li><a href="#define-vs-类常量">define VS 类常量</a></li>
+<li><a href="#使用-class来获取类名">使用::class来获取类名</a></li>
+</ul></li>
+<li><a href="#抽象类">抽象类</a></li>
+<li><a href="#延迟静态绑定">延迟静态绑定</a></li>
+<li><a href="#命名空间和自动加载">命名空间和自动加载</a></li>
+<li><a href="#方法和属性的可见性">方法和属性的可见性</a>
+<ul>
+<li><a href="#public">public</a></li>
+<li><a href="#protected">protected</a></li>
+<li><a href="#private">private</a></li>
+</ul></li>
+<li><a href="#接口">接口</a>
+<ul>
+<li><a href="#简介">简介</a></li>
+<li><a href="#实现">实现</a></li>
+<li><a href="#继承">继承</a></li>
+<li><a href="#例子">例子</a></li>
+</ul></li>
+<li><a href="#final关键字">Final关键字</a>
+<ul>
+<li><a href="#final方法">Final方法</a></li>
+<li><a href="#final类">Final类</a></li>
+<li><a href="#为什么使用final">为什么使用final</a></li>
+<li><a href="#什么时候避免final">什么时候避免final</a></li>
+</ul></li>
+<li><a href="#自动加载">自动加载</a>
+<ul>
+<li><a href="#什么是自动加载">什么是自动加载</a></li>
+<li><a href="#如果不使用第三方使用这个功能">如果不使用第三方使用这个功能</a></li>
+<li><a href="#例子-1">例子</a></li>
+</ul></li>
+<li><a href="#调用父构造函数">调用父构造函数</a></li>
+<li><a href="#动态绑定">动态绑定</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -186,6 +224,809 @@
         		
 
 <h2 id="类和对象">类和对象</h2>
+
+<p>类和对象通过将相同功能代码组合起来来提高代码的效率和减少代码的重复。</p>
+
+<p>一个类用来定义一组生成对象的数据结构和行为。然后通过这个结构生成多个对象。</p>
+
+<h3 id="类常量">类常量</h3>
+
+<p>类常量提供了在程序中保存固定值的方式。也就是，他们提供了一种将名称(以及相关的编译时检查)赋予类似<code>3.14</code>和<code>apple</code>这样值的方法。类常量只能使用<code>const</code>关键字定义，不能使用<code>define</code>这个方法。</p>
+
+<p>例如下面这个例子，定义了<code>π</code>在程序中的简短表示。在类中使用<code>const</code>来将这些值保存下来：</p>
+
+<pre><code>class MathValues {
+    const PI = M_PI; 
+    const PHI = 1.61803;
+}
+$area = MathValues::PI * $radius * $radius;
+</code></pre>
+
+<p>类常量使用双冒号运算符(所谓的作用域解析运算符)来访问，很像静态变量。但是和静态变量不同的是，类常量是在编译时确定的，不能进行赋值操作(例如<code>MathValues::PI = 7</code>将会产生致命错误)。</p>
+
+<p>类常量可以用来定义类内部的内容，这些内容稍后可能需要更改(但更改频率不足以保存到数据库)。我们可以在内部使用<code>self</code>域名解析器来处理它(在实例和静态实现中都有效)。</p>
+
+<pre><code>class Labor {
+    const LABOR_UNITS = 0.26; //
+    const LABOR_COST = 12.75;
+    
+    public function getLaborConst($number_units) {
+        return (self::LABOR_UNITS * self::LABOR_COST) * $number_units;
+    }
+}
+</code></pre>
+
+<p>在PHP5.6之前，类常量只需要包含标量值。</p>
+
+<p>在PHP5.6我们可以在常量定义使用表达式，这包括：数学运算，字符串拼接。</p>
+
+<pre><code>class Labor {
+    const LABOR_COSTS = 12.75 * 0.26;
+    
+    public function getLaborCost($number_units) {
+        return self::LABOR_COSTS * $number_units;
+    }
+}
+</code></pre>
+
+<p>在PHP7，我们可以使用<code>define</code>定义常量的值为数组。</p>
+
+<p>类常量不仅仅用来存储数学概念。例如，如果要准备一个pie，那么一个可以处理多种水果的单独的Pie类是非常便捷的。</p>
+
+<pre><code>class Pie {
+    protected $fruit;
+    
+    public function __construct($fruit) {
+        $this-&gt;fruit = $fruit;
+    }
+}
+</code></pre>
+
+<p>我们现在可以像下面这样使用Pie类：</p>
+
+<pre><code>$pie = new Pie('strawberry');
+</code></pre>
+
+<p>现在问题出现了，当实例化Pie类时，没有任何说明接收的参数是什么类型的值。例如，当制作<code>boysenberry</code>派时，这可能是拼错的<code>boisenberry</code>。更进一步说，我们不能支持梅子派。最好是有一个可接收水果类型的列表，我们可以查看这个列表，确定是否有效。下面就是Fruit类：</p>
+
+<pre><code>class Fruit {
+    const APPLE = 'apple';
+    const STRAWBERRY = 'strawberry';
+    const BOYSENBERRY = 'boysenberry';
+}
+
+$pie = new Pie(Fruit::APPLE);
+</code></pre>
+
+<p>将可接受值作为类常量列出来提供了一个关于方法可接受值的展示。这也确保拼写错误不会出现。<code>new Pie('aple')</code>和<code>new Pie('apple')</code>在编译时都是可以通过的，但是<code>new Pie(Fruit::APLE)</code>将会产生编译错误。</p>
+
+<p>另外，使用类常量保证只有一个地方可以修改这个值，任何使用类常量的地方都会自动获取修改后的结果。</p>
+
+<p>当然最常见的访问类常量的方法是<code>MyClass::CONSTANT_NAME</code>，也可以像下面这样访问：</p>
+
+<pre><code>echo MyClass::CONSTANT;
+
+$classname = 'MyClass';
+echo $classname::CONSTANT;  //PHP5.3之后
+</code></pre>
+
+<p>尽管任何有效的标识名都可以作为类常量名，但是按照约定通常使用下划线分割的单词的大写名称表示。</p>
+
+<p>在PHP7.1，类常量可以定义不同的可见性，而不是现在这样默认的public。这个意思是可以定义protected和private的常量，减少不必要的作用域访问。例如：</p>
+
+<pre><code>class Something {
+    const PUBLIC_CONST_A = 1;
+    public const PUBLIC_CONST_B = 2;
+    protected const PROTECTED_CONST = 3;
+    private const PRIVATE_CONST = 4;
+}
+</code></pre>
+
+<h4 id="define-vs-类常量">define VS 类常量</h4>
+
+<p>尽管下面是有效的结构：</p>
+
+<pre><code>function bar() { return 2;}
+define(&quot;BAR&quot;, bar());
+</code></pre>
+
+<p>如果你想要定义相同的类常量，你将会获得一个错误：</p>
+
+<pre><code>function bar() { return 2; }
+
+class Foo {
+    const BAR = bar();
+}
+</code></pre>
+
+<p>但是你可以这样做：</p>
+
+<pre><code>function bar() { return 2;}
+
+define('BAR', bar());
+
+class FOO {
+    const BAR = BAR; //ok
+}
+</code></pre>
+
+<p>详细的信息，可以查看<a href="https://php.net/manual/en/language.constants.php">PHP手册</a>。</p>
+
+<h4 id="使用-class来获取类名">使用::class来获取类名</h4>
+
+<p>PHP5.5提供了<code>::class</code>语法来获取完整的类名，使用命名空间和<code>use</code>语句。</p>
+
+<pre><code>namespace foo;
+use bar\Bar;
+echo json_encode(Bar::class); //bar\\BAR
+echo json_encode(Foo::class); //foo\\FOO
+echo json_encode(\FOO::class);  //FOO
+</code></pre>
+
+<p>即使上面的类没有定义，上面也可以正常使用。</p>
+
+<p>这个语法在需要类名的时候非常有用。例如，可以用在方法<a href="https://www.php.net/manual/zh/function.method-exists.php">class_exists</a>中，检查指定的类是否存在。无论代码中的返回值是什么都不会产生错误：</p>
+
+<pre><code>class_exists(ThisClass\Will\NeverBe\Loaded::class, false);
+</code></pre>
+
+<h3 id="抽象类">抽象类</h3>
+
+<p>一个抽象类就是一个不能被实例化的类。抽象类可以定义抽象方法，也就是那些只有定义，没有方法体的方法。</p>
+
+<pre><code>abstract class MyAbstractClass {
+    abstract public function doSomething($a, $b);
+}
+</code></pre>
+
+<p>抽象类可以被一个子类继承，这个子类可以实现这些抽象方法的内容。</p>
+
+<p>这种类的主要目的是提供一种模板，允许继承这个类的子类，&rdquo;强制&rdquo;拥有这种结构。下面举个例子查看一下。</p>
+
+<p>在下面这个例子中，我们实现了一个<code>Worker</code>接口，首先定义这个接口：</p>
+
+<pre><code>interface Worker {
+    public function run();
+}
+</code></pre>
+
+<p>为了简化进一步Worker的实现开发，我们创建了一个抽象的Worker类，这个类已经提供了<code>run</code>方法的实现，但指定了另外一些需要子类试下你的抽象方法：</p>
+
+<pre><code class="language-php">abstract class AbstractWorker implents Worker {
+    protected $pdo;
+    protected $logger;
+    
+    public function __construct(PDO $pod, Logger $logger) {
+        $this-&gt;pdo = $pod;
+        $this-&gt;logger = $logger;
+    }
+    
+    public function run() {
+        try {
+            $this-&gt;setMemoryLimit($this-&gt;getMemoryLimit());
+            $this-&gt;logger-&gt;log(&quot;Preparing main&quot;);
+            $this-&gt;prepareMain();
+            $this-&gt;loggger-&gt;log(&quot;Executing main&quot;);
+            $this-&gt;main();
+        } catch (Throwable $e) {
+            $this-&gt;logger-&gt;log(&quot;Worker failed with exception:{$e-&gt;getMessage()}&quot;);
+            throw $e;
+        }
+    }
+    
+    private function setMemoryLimit($memoryLimit) {
+        ini_set('memory_limit', $memoryLimit);
+        $this-&gt;logger-&gt;log(&quot;Set memory limit to $memoryLimit&quot;);
+    }
+    
+    abstract protected function getMemoryLimit();
+    abstract protected function prepareMain();
+    abstract protected function main();
+}
+</code></pre>
+
+<p>首先我们定义了一个抽象方法<code>getMemoryLimit</code>。任何继承这个抽象类<code>AbstractWorker</code>的方法都需要提供这个方法，返回它的内存限制。<code>AbstractWorker</code>设置内存限制并且记录日志。</p>
+
+<p>第二步，<code>AbstractWorker</code>调用了<code>prepareMain()</code>和<code>main</code>方法，在打印了他们被调用的日志。</p>
+
+<p>最后，所有的方法调用都被包含在一个<code>try-catch</code>代码块中。这样任何子类实现的方法抛出了一个异常，我们就会捕捉这个异常，打印异常日志并且再次抛出这个异常。这就不用每个子类都实现这样的方法了。</p>
+
+<p>现在我们实现一个基础<code>AbstractWorker</code>的子类：</p>
+
+<pre><code class="language-php">class TranscactionProcessorWorker extends AbstractWorker {
+    private $transaction;
+  
+    protected function getMemoryLimit() {
+        return &quot;512M&quot;;
+    }
+  
+    protected function prepareMain() {
+        $stmt = $this-&gt;pdo-&gt;query(&quot;SELECT * FROM transactions WHERE processed=0 LIMIT 500&quot;);
+        $stmt-&gt;execute();
+        $this-&gt;transactions = $stmt-&gt;fetchAll();
+    }
+  
+    protected function main() {
+        foreach($this-&gt;transactions as $transaction) {
+            $stmt = $this-&gt;pdo-&gt;query(&quot;UPDATE transactions SET processed=1 WHERE id={$transaction['id']} LIMIT 1&quot;);
+            $stmt-&gt;execute();
+        }
+    }
+}
+</code></pre>
+
+<p>正如你看到的，这个<code>TransactionProcessorWorker</code>类是非常容易实现的，我们只需要指定内存限制和关系实际执行的活动就可以了。不需要在<code>TransactionProcessorWorker</code>中处理错误，因为错误已经在<code>AbstractWorker</code>中处理了。</p>
+
+<p><strong>注意事项：</strong></p>
+
+<blockquote>
+<p>当继承一个抽象类的时候，所有父类的抽象方法子类都需要提供定义(或者子类也标记为抽象类)。另外，这些方法在子类中拥有和父类相同(或更宽松的)可见性。例如，一个抽象方法被定义为protected，那么子类实现的方法只能被定义为protected或public，不能定义为private。</p>
+</blockquote>
+
+<p>详细可以查看<a href="https://www.php.net/manual/zh/language.oop5.abstract.php">PHP手册</a>。</p>
+
+<p>如果你没有在子类中定义父类的抽象方法，你将会抛出一个类似下面的错误：</p>
+
+<blockquote>
+<p>Fatal error: Class X contains 1 abstract method and must therefore be declared abstract or implement
+the remaining methods (X::x) in</p>
+</blockquote>
+
+<h3 id="延迟静态绑定">延迟静态绑定</h3>
+
+<p>在PHP5.3之后，你可以使用<a href="https://www.php.net/manual/zh/language.oop5.late-static-bindings.php">延迟静态绑定</a>来控制类的静态属性和方法是从哪里调用的。这用来解决<code>self::</code>运算符的固有问题添加的。查看下面的代码：</p>
+
+<pre><code class="language-php">class Horse {
+    public static function whatToSay() {
+        echo &quot;Neigh!&quot;;
+    }
+    
+    public static function speak() {
+        self::whatToSay();
+    }
+}
+
+class MrEd extends Horse {
+    public static function whatToSay() {
+        echo &quot;Hello Wilbur!&quot;;
+    }
+}
+</code></pre>
+
+<p>你可能希望<code>MrEd</code>将会覆盖父类的<code>whatToSay</code>方法，但是当我们运行这个方法的时候将会获得下面的结果：</p>
+
+<pre><code class="language-php">Horse::speak(); //Neigh!
+MrEd::speak(); //Neigh!
+</code></pre>
+
+<p>这个问题是因为<code>self::whatToSay</code>将会引用<code>Horse</code>类，不会使用<code>MrEd</code>这个类。如果我们使用<code>static::</code>这个运算符，就不会有这个问题。这个新方法告诉类去使用调用这个方法的实例。因此我们获得我们希望的结果：</p>
+
+<pre><code>class Horse {
+    public static function whatToSay() {
+        echo &quot;Neigh!&quot;;
+    }
+    
+    public static function speak() {
+        static::whatToSay();
+    }
+}
+
+Horse::speak(); //Neigh!
+MrEd::speak(); //Hello Wilbur
+</code></pre>
+
+<h3 id="命名空间和自动加载">命名空间和自动加载</h3>
+
+<p>从技术上讲，当需要的PHP类找不到时，自动加载就会执行回调。这些回调就会用来家长这些类。</p>
+
+<p>通常，自动加载可以理解为当需要类的时候，根据类的完全限定名(FQN)，尝试从何时的路径家长PHP文件(尤其是PHP的类文件，其中PHP源码专用于特定的类)。</p>
+
+<p>假设我们有下面这些类：</p>
+
+<p><code>application\controllers\Base</code>的类文件：</p>
+
+<pre><code class="language-php">&lt;?php
+namespace application\controllers { class Base {...} }
+</code></pre>
+
+<p><code>application\constrollers\Control</code>的类文件：</p>
+
+<pre><code class="language-php">&lt;?php
+namespace application\controllers { class Control {...} }
+</code></pre>
+
+<p><code>application\models\Page</code>的类文件：</p>
+
+<pre><code class="language-php">&lt;?php
+namespace application\models { class Page {...} }
+</code></pre>
+
+<p>在下面的源码目录中，类文件按照FQN的规则存放在相应的位置：</p>
+
+<ul>
+<li>源码目录
+
+<ul>
+<li>applications</li>
+<li>controllers
+
+<ul>
+<li>Base.php</li>
+<li>Control.php</li>
+</ul></li>
+<li>models
+
+<ul>
+<li>Page.php</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>这种方法可以根据FQN，使用下面的函数以变成方式获取类文件的路径：</p>
+
+<pre><code class="language-php">function getClassPath(string $sourceFolder, string $className, string $extension = '.php') {
+    return $sourceFolder . '/' . str_replace('\\', '/', $className) . $extension;  //注意/是目录分隔符，哪怕在windows
+}
+</code></pre>
+
+<p>这个方法可以用作加载的回调方法：</p>
+
+<pre><code class="language-php">const SOURCE_FOLDERS = [__DIR__ . &quot;/src&quot;, &quot;/root/src&quot;];
+spl_autoload_register(function(string $className) {
+    foreach(SOURCE_FOLDERS as $folder) {
+        $extensions = [
+          '.php' . PHP_MAJOR_VERSION . &quot;_int&quot; . (PHP_INT_SIZE * 8),
+          '.php' . PHP_MAJOR_VERSION,
+          '.php' . '_int' . (PHP_INT_SIZE * 8),
+          '.phps',
+          '.php'
+        ];
+      
+        foreach($extensions as $extension) {
+            $path = getClassPath($folder, $className, $extension)
+            if (is_readable($path)) {
+                return $path;
+            }
+        }
+    }
+});
+</code></pre>
+
+<p>注意当问及包含的类已经被加载时，PHP将不会试着去加载这个类文件。它可能在脚本的中间加载或者在一个shutdown函数中。这就是开发者(特别是使用自动加载的开发者)使用自动加载的一个原因。应该避免在执行过程中加载源码文件，特别是在phar文件中。</p>
+
+<h3 id="方法和属性的可见性">方法和属性的可见性</h3>
+
+<p>在一个类里面有三种类型的可见性你可以应用到方法(类或对象方法)和属性(累活对象属性)。这将提供对这些方法和属性访问的控制。</p>
+
+<p>你可以查看PHP手册的<a href="https://www.php.net/manual/zh/language.oop5.visibility.php">详细信息</a>。</p>
+
+<h4 id="public">public</h4>
+
+<p>声明一个<code>public</code>的方法或属性，允许这个方法或属性可以被访问：</p>
+
+<ul>
+<li>声明这个方法或属性的类</li>
+<li>继承声明这个方法或属性的类的子类</li>
+<li>类层次结构之外的任何外部对象、类或代码。</li>
+</ul>
+
+<p>下面是<code>public</code>访问的一个例子：</p>
+
+<pre><code class="language-php">class MyClass {
+    public $myProperty = 'test';
+    
+    public function myMethod() {
+        return $this-&gt;myProperty;
+    }
+}
+
+$obj = new MyClass();
+echo $obj-&gt;myMethod(); //test
+
+echo $obj-&gt;myProperty;  //test
+</code></pre>
+
+<h4 id="protected">protected</h4>
+
+<p>声明一个<code>protected</code>的方法或属性，允许这个方法或属性可以被访问：</p>
+
+<ul>
+<li>声明这个方法或属性的类</li>
+<li>声明这个方法或属性的类的子类</li>
+</ul>
+
+<p>类层次结构之外的任何外部对象、类或代码不允许访问这些方法和属性。当没有访问权限的代码访问这些方法或属性的时候，将会抛出一个错误。只有这个类(或子类)可以访问。</p>
+
+<p>下面是<code>protected</code>的一个例子：</p>
+
+<pre><code class="language-php">class MyClass {
+    protected $myProperty = 'test';
+    
+    protected function myMethod() {
+        return $this-&gt;myProperty;
+    }
+}
+
+class MySubClass extends  MyClass {
+    public function run() {
+        echo $this-&gt;myMethod();
+    }
+}
+
+$obj = new MySubClass();
+$obj-&gt;run();  //test
+$obj-&gt;myMethod();  //错误
+</code></pre>
+
+<p>上面的例子显示你只可以在它自己的作用域内访问protected的元素。也就是：房子里面的东西只可以在房子里面访问。</p>
+
+<h4 id="private">private</h4>
+
+<p>声明一个<code>private</code>的方法或属性，允许这个方法或属性可以被访问：</p>
+
+<ul>
+<li>只有声明这个方法或属性的类</li>
+</ul>
+
+<p>一个<code>private</code>的方法或属性只可以被创建这个方法或属性的类访问。</p>
+
+<pre><code class="language-php">class MyClass {
+    private $myProperty = 'test';
+    private function myPrivateMethod() { 
+        return $this-&gt;myProperty;
+    }
+    public function myPublicMethod() { 
+        return $this-&gt;myPrivateMethod();
+    }
+    public function modifyPrivatePropertyOf(MyClass $anotherInstance) {    
+        $anotherInstance-&gt;myProperty = &quot;new value&quot;;
+    }
+}
+class MySubClass extends MyClass { 
+    public function run() {
+        echo $this-&gt;myPublicMethod();
+    }
+    public function runWithPrivate() { 
+        echo $this-&gt;myPrivateMethod();
+    }
+}
+
+$obj = new MySubClass();
+
+$newObj = new MySubClass();
+// This will call MyClass::myPublicMethod(), which will then call // MyClass::myPrivateMethod();
+$obj-&gt;run();
+// Out: test
+$obj-&gt;modifyPrivatePropertyOf($newObj);
+$newObj-&gt;run();
+// Out: new value
+echo $obj-&gt;myPrivateMethod(); // This will fail.
+// Out: Fatal error: Call to private method MyClass::myPrivateMethod() from context ''
+echo $obj-&gt;runWithPrivate(); // This will also fail.
+// Out: Fatal error: Call to private method MyClass::myPrivateMethod() from context 'MySubClass'
+</code></pre>
+
+<h3 id="接口">接口</h3>
+
+<h4 id="简介">简介</h4>
+
+<p>接口是一批public的API集合的定义，定义了实现这个接口的类需要定义的方法。这就像&rdquo;结构&rdquo;：指明子类应该做的事情，而不是子类如何做。</p>
+
+<p>接口定义就像类定义一样，只是使用<code>interface</code>关键字替换<code>class</code>关键字：</p>
+
+<pre><code class="language-php">interface Foo {}
+</code></pre>
+
+<p>接口可以包含方法和常量，但是没有属性。接口常量和类常量是相同的使用规则。接口的方法都是隐式抽象方法：</p>
+
+<pre><code class="language-php">interface Foo {
+    const BAR = 'BAR';
+    
+    public function doSomething($param1, $param2);
+}
+</code></pre>
+
+<p><strong>注意：</strong>接口不能声明构造函数和析构函数，因为他们是在lei级别实现详情的。</p>
+
+<h4 id="实现">实现</h4>
+
+<p>任何类要实现一个接口，使用<code>implements</code>这个关键字。实现一个接口的时候，这个类需要提供接口定义的每个方法的实现，保持相同的签名。</p>
+
+<p>一个类可以一次实现多个接口：</p>
+
+<pre><code class="language-php">interface Foo {
+    public function doSomething($param1, $param2);
+}
+
+interface Bar {
+    public function doAnotherThing($param1);
+}
+
+class Baz implements Foo, Bar {
+    public function doSomething($param1, $param2) {
+        //...
+    }
+  
+    public function doAnotherThing($param1) {
+        //...
+    }
+}
+</code></pre>
+
+<p>当抽象类实现了接口，他们不需要实现所有的方法。任何基类中没有实现的方法在继承这个类的子类中都需要实现：</p>
+
+<pre><code class="language-php">abstract class AbstractBaz implements Foo, Bar {
+    public function doSomething($param1, $param2) {
+        //...
+    }    
+}
+
+class Baz extends AbstractBaz {
+    public function doAnotherThing($param1) {
+        //...
+    }
+}
+</code></pre>
+
+<p>注意：接口实现是继承的特性。当你继承了一个实现了接口的父类，你就不需要再实现这个接口了，因为已经隐式实现了。</p>
+
+<blockquote>
+<p><strong>注意：</strong>在PHP5.3.9之前，一个类不能实现两个包含相同名称方法的接口，这会导致歧义。最新版本的PHP允许这么做，只要相同的方法具有相同签名。</p>
+</blockquote>
+
+<h4 id="继承">继承</h4>
+
+<p>像类一样，可以在接口之间通过<code>extends</code>关键字建立继承关系。不同之处在于，接口支持多继承。</p>
+
+<pre><code>interface Foo {}
+
+interface Bar {}
+
+interface Baz extends Foo, Bar {}
+</code></pre>
+
+<h4 id="例子">例子</h4>
+
+<p>下面的例子中我们实现了一个交通工具的简单接口。交通工具可以向前也可以向后。</p>
+
+<pre><code class="language-php">interface VehicleInterface {
+    public function forward();
+    
+    public function reverse();
+}
+
+class Bike implements VehicleInterface {
+    public function forward() {
+        $this-&gt;pedal();
+    }
+  
+    public function reverse() {
+        $this-&gt;backwardSteps();
+    }
+  
+    protected function pedal() {
+        //...
+    }
+  
+    protected function backwardSteps() {
+        //...
+    }
+}
+
+class Car implements VehicleInterface() {
+    protected $gear = 'N';
+  
+    public function forward() {
+        $this-&gt;setGear(1);
+        $this-&gt;pushPedal();
+    }
+  
+    public function reverse() {
+        $this-&gt;setGear('R');
+        $this-&gt;pushPedal();
+    }
+  
+    protected function setGear($gear) {
+        $this-&gt;gear = $gear;
+    }
+  
+    protected function pushPedal() {
+        //...
+    }
+}
+</code></pre>
+
+<p>我们创建了两个实现这个接口的类：Bike和Car。Bike和Car内部是不同的，但是都是交通工具，都实现了VehicleInterface接口的提供的相同公共方法。</p>
+
+<p>类型提示允许函数和方法要求一个接口参数。假设我们有一个停车场类型，包含了所有的交通工具类型：</p>
+
+<pre><code class="language-php">class ParkingGarge {
+    protected $vehicles = [];
+  
+    public function addVehicle(VehicleInterface $vehicle) {
+        $this-&gt;vehicles[] = $vehicle;
+    }
+}
+</code></pre>
+
+<p>因为这里要求的是<code>VehicleInterface</code>类型的变量<code>$vehicle</code>，而不是具体的实现，所以我们可以使用Bike和Car，这些ParkingGarage可以管理使用的。</p>
+
+<h3 id="final关键字">Final关键字</h3>
+
+<p>Final关键字避免之类修改带有final关键字的方法。如果一个类前面有final关键字，这个类不能被继承。</p>
+
+<h4 id="final方法">Final方法</h4>
+
+<pre><code class="language-php">class BaseClass {
+    public function test() {
+        echo &quot;BaseClass::test() called\n&quot;;
+    }   
+  
+    final public function moreTesting() {
+        echo &quot;BaseClass::moreTesting() called\n&quot;;
+    }
+}
+
+class ChildClass extends BaseClass {
+    public function moreTesting() {
+        echo &quot;ChildClass::moreTesting() called\n&quot;;
+    }
+}
+
+//致命错误：Cannot override final method BaseClass::moreTesting()
+</code></pre>
+
+<h4 id="final类">Final类</h4>
+
+<pre><code class="language-php">final class BaseClass {
+    public function test() {
+        echo &quot;BaseClass::test() called\n&quot;;
+    }
+    
+    final public function moreTesting() {
+        echo &quot;BaseClass::moreTesting() called\n&quot;;
+    }
+}
+
+class ChildClass extends BaseClass {
+}
+
+//Fatal error: Class ChildClass may not inherit from final class (BaseClass)
+</code></pre>
+
+<p>Final常量：不像Java，PHP中不使用final定义类常量，使用const。</p>
+
+<h4 id="为什么使用final">为什么使用final</h4>
+
+<ol>
+<li>避免大规模继承的灾难</li>
+<li>鼓励使用组合</li>
+<li>强制开发者考虑用户公共API</li>
+<li>强制开发者减少对象的公共API</li>
+<li>一个final类总是可以被扩展的</li>
+<li>extends破坏封装性</li>
+<li>你不需要这样的灵活性</li>
+<li>你可以随意的更改代码</li>
+</ol>
+
+<h4 id="什么时候避免final">什么时候避免final</h4>
+
+<p>Final类应该只在下面的场景使用：</p>
+
+<ol>
+<li>final类实现了一个抽象或者接口</li>
+<li>所有final类的公共API是接口的一部分</li>
+</ol>
+
+<h3 id="自动加载">自动加载</h3>
+
+<p>没有人想要在每次类或继承使用的时候进行<code>require</code>或<code>include</code>。因为这危害大，又容易忘掉，所有PHP提供了自动加载功能。如果你已经使用了Composer，查看Composer的自动加载。</p>
+
+<h4 id="什么是自动加载">什么是自动加载</h4>
+
+<p>这个名字就说明了所有的问题。你不需要关系这个类的文件存放的位置，PHP会自动的家长这个类。</p>
+
+<h4 id="如果不使用第三方使用这个功能">如果不使用第三方使用这个功能</h4>
+
+<p>有一个方法<a href="https://www.php.net/manual/zh/function.autoload.php">__autoload</a>，但是更好的方法是使用<a href="https://www.php.net/manual/zh/function.spl-autoload-register.php">spl_autoload_register</a>。每次在给定作用域内没有定义类时，PHP就会考虑这些函数。所以在项目中添加一个自动加载方法是没有问题的，已经定义的类(使用require等)将和之前一样。为了精确起见，下面的离职将会使用匿名函数，如果你是PHP5.3之前的版本，你可以定义函数，然后把函数名称换地给<code>spl_autoload_register</code>。</p>
+
+<h4 id="例子-1">例子</h4>
+
+<pre><code class="language-php">spl_autoload_register(function($className) {
+    $path = sprintf('%s.php', $className);
+    if (file_exists($path)) {
+        include $path;
+    } else {
+        //
+    }
+});
+</code></pre>
+
+<p>上面的代码只是简单的试着去加载一个文件，文件的名称是使用<code>sprintf</code>函数给类名追加上<code>.php</code>扩展之后的名称。如果<code>FooBar</code>需要被加载，这将会去寻找<code>FooBar.php</code>文件，如果存在就会加载这个文件。</p>
+
+<p>当然，根据项目的需要可以修改加载的方法。如果在类名中使用<code>_</code>来进行分组，例如User_Post和User_Image都是在User目录下面，例如：</p>
+
+<pre><code>spl_autoload_register(function ($className) {
+    // replace _ by / or \ (depending on OS)
+    $path = sprintf('%s.php', str_replace('_', DIRECTORY_SEPARATOR, $className) ); 
+    if   (file_exists($path)) {
+        include $path;
+    } else {
+        // file not found
+    } 
+});
+</code></pre>
+
+<p>类<code>User_Post</code>试着去加载<code>User/Post.php</code>这个文件。</p>
+
+<p><code>spl_autoload_register</code>根据需要可以定制不同的规则。如果所有的文件都是<code>class.CLASSNAME.php</code>这样命名的？没有问题。是嵌套的(User_Post_Content =&gt; &lsquo;User/Post/Content.php&rsquo;)？也没有问题。</p>
+
+<p>如果你想要更加复杂的加载规则(但不想包括Composer)，可以在不添加第三方的情况下实现：</p>
+
+<pre><code class="language-php">spl_autoload_register(function ($className) { 
+   $path = sprintf('%1$s%2$s%3$s.php',
+        // %1$s: get absolute path
+       realpath(dirname(__FILE__)),
+       // %2$s: / or \ (depending on OS)
+       DIRECTORY_SEPARATOR,
+       // %3$s: don't wory about caps or not when creating the files 
+       strtolower(
+            // replace _ by / or \ (depending on OS)
+            str_replace('_', DIRECTORY_SEPARATOR, $className) 
+       )
+    );
+    if (file_exists($path)) {
+        include $path;
+    } else {
+        throw new Exception(
+            sprintf('Class with name %1$s not found. Looked in %2$s.',
+                $className,
+                $path
+            ) 
+        );
+    } 
+});
+</code></pre>
+
+<p>使用了上面这样的自动加载，我们可以实现下面的代码：</p>
+
+<pre><code class="language-php">require_once './autoload.php';
+
+$foo = new FooBar(new Hello_World());
+</code></pre>
+
+<p>使用的类：</p>
+
+<pre><code class="language-php">class Foo_Bar extends Foo {}
+class Hello_World implements Demo_Classes {}
+</code></pre>
+
+<p>这个例子试着去加载<code>foo/bar.php, foo.php, hello/world.php and demo/classes.php</code>。</p>
+
+<h3 id="调用父构造函数">调用父构造函数</h3>
+
+<p>子类的一个场常见困扰是：如果你的父类和子类都包含构造函数<code>__construct</code>方法，只有子类的方法会运行。一些情况下，你想要在子类的中调用父类的<code>__construct</code>方法。如果你要实现这个功能可以使用<code>parent::</code>运算符。</p>
+
+<pre><code>parent::__construct();
+</code></pre>
+
+<p>在实际的使用中，像下面这样：</p>
+
+<pre><code class="language-php">class Foo {
+    function __construct($args) { 
+        echo 'parent';
+    }
+}
+class Bar extends Foo {
+    function __construct($args) { 
+        parent::__construct($args);
+    } 
+}
+</code></pre>
+
+<p>上面的代码将会运行父类的<code>__construct</code>方法，并且执行<code>echo</code>。</p>
+
+<h3 id="动态绑定">动态绑定</h3>
 
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 

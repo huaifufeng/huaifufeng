@@ -17,7 +17,15 @@
       <pubDate>Fri, 26 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/04/post/php-section-26.html</guid>
-      <description>类和对象 参考：PHP® Notes for Professionals book</description>
+      <description>类和对象 类和对象通过将相同功能代码组合起来来提高代码的效率和减少代码的重复。
+一个类用来定义一组生成对象的数据结构和行为。然后通过这个结构生成多个对象。
+类常量 类常量提供了在程序中保存固定值的方式。也就是，他们提供了一种将名称(以及相关的编译时检查)赋予类似3.14和apple这样值的方法。类常量只能使用const关键字定义，不能使用define这个方法。
+例如下面这个例子，定义了π在程序中的简短表示。在类中使用const来将这些值保存下来：
+class MathValues { const PI = M_PI; const PHI = 1.61803; } $area = MathValues::PI * $radius * $radius;  类常量使用双冒号运算符(所谓的作用域解析运算符)来访问，很像静态变量。但是和静态变量不同的是，类常量是在编译时确定的，不能进行赋值操作(例如MathValues::PI = 7将会产生致命错误)。
+类常量可以用来定义类内部的内容，这些内容稍后可能需要更改(但更改频率不足以保存到数据库)。我们可以在内部使用self域名解析器来处理它(在实例和静态实现中都有效)。
+class Labor { const LABOR_UNITS = 0.26; // const LABOR_COST = 12.75; public function getLaborConst($number_units) { return (self::LABOR_UNITS * self::LABOR_COST) * $number_units; } }  在PHP5.6之前，类常量只需要包含标量值。
+在PHP5.6我们可以在常量定义使用表达式，这包括：数学运算，字符串拼接。
+class Labor { const LABOR_COSTS = 12.75 * 0.26; public function getLaborCost($number_units) { return self::LABOR_COSTS * $number_units; } }  在PHP7，我们可以使用define定义常量的值为数组。</description>
     </item>
     
     <item>
