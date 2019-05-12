@@ -216,6 +216,16 @@
 </ul></li>
 <li><a href="#调用父构造函数">调用父构造函数</a></li>
 <li><a href="#动态绑定">动态绑定</a></li>
+<li><a href="#this-self-static-单例">$this self static 单例</a>
+<ul>
+<li><a href="#单例">单例</a></li>
+</ul></li>
+<li><a href="#定义基本类">定义基本类</a>
+<ul>
+<li><a href="#构造函数">构造函数</a></li>
+<li><a href="#继承-1">继承</a></li>
+</ul></li>
+<li><a href="#匿名类">匿名类</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -1028,6 +1038,328 @@ class Bar extends Foo {
 
 <h3 id="动态绑定">动态绑定</h3>
 
+<p>动态绑定(也叫方法重写)是运行时多态的一个例子，当多个类包含同一个方法的不同实现时会出现这种情况。但是在运行时之前，调用改方法的对象是未知的。</p>
+
+<p>这是一个使用的条件，如果某一类的条件将被用来执行一个行动，在这两个类别中，行动被称为相同的行动。</p>
+
+<pre><code class="language-php">interface Animal {
+    public function makeNoise();   
+}
+
+class Cat implements Animl {
+    public function makeNoise() {
+        $this-&gt;meow();
+    }
+    ...
+}
+
+class Dog implements Animal {
+    public function makeNoise() {
+        $this-&gt;bark();
+    }
+    ...
+}
+
+class Person {
+    const CAT = 'cat';
+    const DOG = 'dog';
+  
+    private $petPreference;
+    private $pet;
+  
+    public function isCatLover(): bool {
+        return $this-&gt;petPreference == self::CAT;
+    }
+  
+    public function isDogLover(): bool {
+        return $this-&gt;petPreference == self::DOG;
+    }
+  
+    public function setPet(Animal $pet) {
+        $this-&gt;pet = $pet;
+    }
+  
+    public function getPet(): Animal {
+        return $this-&gt;pet;
+    }
+}
+
+$person = new Person();
+if($person-&gt;isCatLover()) {
+    $person-&gt;setPet(new Cat());
+} else if($person-&gt;isDogLover()) {
+    $person-&gt;setPet(new Dog());
+}
+
+$person-&gt;getPet()-&gt;makeNoise();
+</code></pre>
+
+<p>在上面的例子中，<code>Animal</code>类(Dog|Cat)哪个类或执行<code>makeNoise</code>是不知道的，直到用户的喜爱宠物决定。</p>
+
+<h3 id="this-self-static-单例">$this self static 单例</h3>
+
+<blockquote>
+<p><code>$this</code>引用当前的对象。<code>self</code>引用当前的类。换句话说，<code>$this-&gt;member</code>引用非静态对象。<code>self::$member</code>引用静态对象。</p>
+</blockquote>
+
+<p>在下面的例子中<code>sayHello()</code>和<code>sayGoodbye</code>分别使用<code>self</code>和<code>$this</code>。</p>
+
+<pre><code class="language-php">class Person {
+    private $name;
+    
+    public function __construct($name) {
+        $this-&gt;name = $name;
+    }
+   
+    public function getName() {
+        return $this-&gt;name;
+    }
+  
+    public function getTitle() {
+        return $this-&gt;getName() . &quot; the person&quot;;
+    }
+  
+    public function sayHello() {
+        echo &quot;Hello, I'm &quot; . $this-&gt;getTitle() . &quot;&lt;br&gt;&quot;;
+    }
+  
+    public function sayGoodbye() {
+        echo &quot;Goodbye from&quot; . self::getTitle() . &quot;&lt;br&gt;&quot;;
+    }
+}
+
+class Geek extends Person {
+    public function __construct($name) {
+        parent::__construct($name);
+    }
+  
+    public function getTitle() {
+        return $this-&gt;getName() . &quot; the geek&quot;;
+    }
+}
+
+$geekObj = new Geek(&quot;Ludwig&quot;);
+$geekObj-&gt;sayHello();
+$geekObj-&gt;sayGoodbye();
+</code></pre>
+
+<p><code>static</code>引用你调用方法适合的类。这允许类继承的时候，更好的重用静态类属性。看下下面的例子：</p>
+
+<pre><code class="language-php">class Car {
+    protected static $brand = 'unknown';
+    public static function brand() { 
+        return self::$brand.&quot;\n&quot;;
+    }
+}
+class Mercedes extends Car {
+    protected static $brand = 'Mercedes';
+}
+class BMW extends Car {
+    protected static $brand = 'BMW';
+}
+echo (new Car)-&gt;brand();
+echo (new BMW)-&gt;brand();
+echo (new Mercedes)-&gt;brand();
+</code></pre>
+
+<p>这并不会输出你希望的结果：</p>
+
+<blockquote>
+<p>unknown</p>
+
+<p>unknown</p>
+
+<p>unknown</p>
+</blockquote>
+
+<p>这是因为无论什么事实<code>brand</code>方法调用的时候，<code>self</code>指向的都是<code>Car</code>这个类。</p>
+
+<p>想要引用正确的类，你需要使用<code>static</code>来代替<code>self</code>。</p>
+
+<pre><code class="language-php">class Car {
+    protected static $brand = 'unknown';
+    public static function brand() { 
+        return static::$brand.&quot;\n&quot;;
+    }
+}
+class Mercedes extends Car {
+    protected static $brand = 'Mercedes';
+}
+class BMW extends Car {
+    protected static $brand = 'BMW';
+}
+
+echo (new Car)-&gt;brand();
+echo (new BMW)-&gt;brand();
+echo (new Mercedes)-&gt;brand();
+</code></pre>
+
+<p>这将会输出希望的结果：</p>
+
+<blockquote>
+<p>unknown</p>
+
+<p>BMW</p>
+
+<p>Mercedes</p>
+</blockquote>
+
+<h4 id="单例">单例</h4>
+
+<p>如果你有一个创建成本高，并且对象包含你想要重用的外部资源(如数据库连接：没有连接池或者到其他机器的一个socket)，你可以使用<code>self</code>和<code>static</code>关键字来创建一个单例。人们对是否应该使用单例模式有着强烈的看法，但它确实有其用途。</p>
+
+<pre><code class="language-php">class Singleton {
+    private static $instance = null;
+    public static function getInstance(){ 
+        if(!isset(self::$instance)){
+            self::$instance = new self(); 
+        }
+        return self::$instance; 
+    }
+    private function __construct() { 
+      // Do constructor stuff
+    }
+}
+</code></pre>
+
+<p>正如你看到的，我们在类中定义了一个静态属性<code>$instance</code>来存储对象的引用。因为这是静态的，所以该引用在该类型的所有对象之间共享。</p>
+
+<p><code>getInstance()</code>方法是用延迟实例化的方法，尽可能晚的延迟创建一个对象，因为你不希望在内存中存放没有使用于的对象。这在页面加载的时候也会只加载必要的对象，这会减少加载时间和CPU使用。这个方法会检查对象是否存在，不存在就创建一个新的对象，然后返回。这就会确保只有一个这类对象被创建。</p>
+
+<p>我们把构造函数设置为<code>private</code>，这样可以避免在类外边使用<code>new</code>来创建一个对象。如果你想要继承这个类的话，只需要把构造函数的<code>private</code>修改为<code>protected</code>。</p>
+
+<p>想要使用这个类的对象，使用下面的代码：</p>
+
+<pre><code>$singleton = Singleton::getInstance();
+</code></pre>
+
+<p>我更建议你在可以的地方使用依赖注入，并且目标是松散耦合的对象，但是有时候这不行，就可以使用单例模式。</p>
+
+<h3 id="定义基本类">定义基本类</h3>
+
+<p>PHP中的对象包含属性和方法。对象属于一个类，这个类定义了这个类对象包含的属性和方法。</p>
+
+<p>定义类的语法：</p>
+
+<pre><code class="language-php">class Shape {
+    public $sides = 0;
+    
+    public function description() {
+        return &quot;A shape with $this-&gt;sides sides.&quot;;
+    }
+}
+</code></pre>
+
+<p>一旦定义了一个类，你就可以使用这个类来创建对象：</p>
+
+<pre><code class="language-php">$myShape = new Shape();
+</code></pre>
+
+<p>可以像下面这样访问对象的属性和方法：</p>
+
+<pre><code class="language-php">$myShape = new Shape();
+$myShape-&gt;sides = 6;
+
+print $myShape-&gt;description();  //A shape with 6 sides.
+</code></pre>
+
+<h4 id="构造函数">构造函数</h4>
+
+<p>类可以定义一个特别的方法<code>__construct</code>，这会在创建对象的时候执行。这通常用来指定对象的初始化值：</p>
+
+<pre><code class="language-php">class Shape {
+    public $sides = 0;
+    
+    public function __construct($sides) {
+        $this-&gt;sides = $sides;
+    }
+    
+    public function description() {
+        return &quot;A shape with $this-&gt;sides sides.&quot;;
+    }
+}
+
+$myShape = new Shape(6);
+print $myShape-&gt;description();  //A shape with 6 sides.
+</code></pre>
+
+<h4 id="继承-1">继承</h4>
+
+<p>类定义的时候可以继承已经存在的类，然后通过增加新的属性和方法来修改父类的内容。</p>
+
+<p>下面这个类继承上面的那个例子中的类：</p>
+
+<pre><code class="language-php">class Square extends Shape {
+    public $sideLength = 0;
+  
+    public function __construct($sideLength) {
+        parent::__construct(4);
+      
+        $this-&gt;sideLength = $sideLength;
+    }
+  
+    public function perimeter() {
+        return $this-&gt;sides * $this-&gt;sideLength;
+    }
+  
+    public function area() {
+        return $this-&gt;sideLength * $this-&gt;sideLength;
+    }
+}
+</code></pre>
+
+<p><code>Square</code>包含<code>Shape</code>和<code>Square</code>两个雷的属性和方法：</p>
+
+<pre><code class="language-php">$mySquare = new Square(10);
+print $mySquare-&gt;description();  //A Shape with 4 sides
+print $mySquare-&gt;perimeter(); //40
+print $mySquare-&gt;area();   //100
+</code></pre>
+
+<h3 id="匿名类">匿名类</h3>
+
+<p>匿名类是PHP7新加入的特性，用来创建一次性的对象。他们可以像普通的类一样，使用构造函数参数、继承其他类、实现接口。</p>
+
+<p>大多数情况下，匿名类像下面这样：</p>
+
+<pre><code class="language-php">new class(&quot;constructor argument&quot;) {
+    public function __construct($param) {
+        var_dump($param);
+    }
+}; //string(20) &quot;constructor argument&quot;
+</code></pre>
+
+<p>在类内部定义的匿名类，这些匿名类不能访问外部类的private和protected限制的属性和方法。想要访问外部类的protected属性和方法，需要继承外部类。想要访问外部类的private属性，需要把这个属性传入匿名类的构造函数。</p>
+
+<pre><code class="language-php">class Outer {
+    private $prop = 1;
+    protected $prop2 = 2;
+    
+    protected function func1() {
+        return 3;
+    }
+    
+    public function func2() {
+        return new class($this-&gt;prop) extends Outer {
+            private $prop3;
+            
+            public function __construct($prop) {
+                $this-&gt;prop3 = $prop;
+            }
+            
+            public function func3() {
+                // accessing the protected property Outer::$prop2
+                // accessing the protected method Outer::func1()
+                // accessing the local property self::$prop3 that was private from Outer::$prop
+                return $this-&gt;prop2 + $this-&gt;func1() + $this-&gt;prop3;
+            }
+        };
+    }
+}
+
+echo (new Outer())-&gt;func2()-&gt;func3();
+</code></pre>
+
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -1035,6 +1367,10 @@ class Bar extends Foo {
         
               <hr>
               <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/php-section-27.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十七）">&larr; Previous Post</a>
+                  </li>
                   
                   
                   <li class="next">

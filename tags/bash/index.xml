@@ -17,7 +17,14 @@
       <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-53.html</guid>
-      <description>特定时间的工作 参考：Bash Notes for Professionals book</description>
+      <description>特定时间的任务 在特定时间执行一次任务 注意：at默认没有在大多数的发行版中安装。
+想要只当前时间之外的某个时间执行一些任务，在例子中是下午5点，你可以向下面这样：
+echo &amp;quot;somecommand &amp;amp;&amp;quot; | at 5pm  如果你想要获取命令的输出，你可以像往常一样：
+echo &amp;quot;somecommand &amp;gt; out.txt 2&amp;gt;err.txt &amp;amp;&amp;quot; | at 5pm  at理解非常多的时间格式，所以你也可以像下面这样：
+echo &amp;quot;somecommand &amp;amp;&amp;quot; | at now + 2 minutes echo &amp;quot;somecommand &amp;amp;&amp;quot; | at 17:00 echo &amp;quot;somecommand &amp;amp;&amp;quot; | at 17:00 Jul 7 echo &amp;quot;somecommand &amp;amp;&amp;quot; | at 4pm 12.03.17  如果没有指定年月日的话，这将会在下次遇到这个时间的时候执行。所以如果你提供了一个之前的时间，将会在明天执行。如果你提供了之前的月份，那将会在下一年才会执行。
+这也会和nohup联合使用，想你期望的一样：
+echo &amp;quot;nohup somecommand &amp;gt; out.txt 2&amp;gt;err.txt &amp;amp;&amp;quot; | at 5pm  有更多的控制命令执行时间的命令:
+ atq列出所有的时间任务 atrm移除一个时间任务 batch像at命令一样，但是只在系统的负载在0.</description>
     </item>
     
     <item>

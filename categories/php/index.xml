@@ -6,10 +6,76 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 26 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 01 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（三十一）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-31.html</link>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-31.html</guid>
+      <description>JSON json_encode
+   参数 详情     value 进行编码的值。除了资源类型外其他都可以。所有字符串数据必须是UTF-8的格式。   options 二进制位标识符，包括JSON_HEX_QUOT,JSON_HET_TAG,JSON_HEX_AMP,JSON_HEX_APOS,JSON_NUMERIC_CHECK,JSON_PRETTY_PRINT,JSON_UNESCAPED_SLASHES,JSON_FORCE_OBJECT,JSON_PRESERVE_ZERO_FRACTION,JSON_UNESCAPED_UNICODE,JSON_PARTIAL_OUTPUT_ON_ERROR.这些常量的行为在jSON常量页有详细描述。   depth 设置最大的深度。必须是一个大于0的数    json_decode
+   参数 详情     json 需要被解码的json字符串。这个函数只能处理UTF-8编码的字符串。   assoc 函数返回关联数组而不是对象   options JSON解码的二进制标识选项。当前只支持JSON_BIGINT_AS_STRING(默认会把大数字处理为浮点数)    JSON(JavaScript对象表示法)是一个平台和语言无关的将对象序列化到一个字符串的方法。因为这经常被用到web中，所以PHP中上线了一个JSON的基本扩展。
+解码JSON字符串 json_decode()函数获取一个JSON编码的字符串作为第一个参数，将这个值解码到一个PHP变量中。
+通常，json_decode()函数根据参数的不同会返回不同的结果，如果JSON对象的顶层元素是一个字典，将会返回一个\stdClass的对象；如果是一个数组，将会返回一个索引数组。对于某些标量值，像一些简单字符串&amp;rdquo;true&amp;rdquo;, &amp;ldquo;false&amp;rdquo;,&amp;ldquo;null&amp;rdquo;，将会返回标量值或NULL。在错误的时候将会返回Null。
+$json_string = &#39;{&amp;quot;name&amp;quot;:&amp;quot;Jeff&amp;quot;, &amp;quot;age&amp;quot;:20, &amp;quot;active&amp;quot;:true, &amp;quot;colors&amp;quot;:[&amp;quot;red&amp;quot;, &amp;quot;blue&amp;quot;]}&#39;; $object = json_decode($json_string); //返回一个对象 printf(&amp;quot;Hello %s, You are %s years old.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（三十）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-30.html</link>
+      <pubDate>Tue, 30 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-30.html</guid>
+      <description>输出缓存    方法 详细说明     ob_start() 开启输出缓存，任何这个位置之后的输出（处理http头）都会被捕获不会直接显示   ob_get_contents() 返回ob_start()捕获的内容   ob_end_clean() 清空输出缓冲区并为当前嵌套级别关闭它   ob_get_clean() 执行ob_get_contents()和ob_end_clean()两个操作   ob_get_level() 返回输出缓冲区的当前嵌套级别   ob_flush() 在不结束缓存的情况下，输出缓存的内容并发送给浏览器   ob_implict_flush() 开启隐式刷新，在每次输出之后都会刷新   ob_end_flush() 刷新内容缓冲区并将其发送到浏览器，同时结束缓冲区    获取内容并清空 输出缓存允许你把一些文本内容(text，html)存储到一个变量中，然后在脚本结束之后一次性发送给浏览器。默认情况下，PHP解析内容之后会直接发送给浏览器：
+&amp;lt;?php //开启缓存 ob_start(); //输出内容 print &amp;quot;Hello&amp;quot;; //可以跳出php ?&amp;gt; &amp;lt;em&amp;gt;World&amp;lt;/em&amp;gt; &amp;lt;?php //获取缓存内容并情况缓存 $content = ob_get_clean(); # $content = ob_get_contents(); # $did_clear_buffer = ob_end_clean(); print($content); //Hello &amp;lt;em&amp;gt;World&amp;lt;/em&amp;gt;  在ob_start()和ob_get_clean()之间的内容输出会被放到变量$content中。调用ob_get_clean()相当于同时调用了ob_get_contents()和ob_end_clean()。</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（二十九）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-29.html</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-29.html</guid>
+      <description>Cookie    参数 详细说明     name cookie的名称。这个也是你可以从$_COOKIE中获取值的名称。这个是唯一必须的参数   value cookie中存储的值。这个数据可以从浏览器中访问，所以不要在这放敏感信息·   expire 一个代表cookie过期时间的Unix的时间戳。如果过期时间设置为0，cookie将会在session失效时同时失效。如果设置一个比当前时间早的时间戳，cookie会立即失效。   path cookie的范围。如果设置为/这个cookie会在整个域名下有效。如果设置为/somePath/cookie将会只在这个路径和这个路径的子路径中有效。默认cookie会设置为当前问文件的路径   domain cookie有效的域名和子域名。如果设置为一级域名stackoverflow.com，这个cookie会在这个域名和子域名中有效。如果设置为sub.stackoverflow.com，这个cookie只会在这个子域名和子域名的子域名下面有效。   secure 如果设置为true，这个cookie只有当客户端和服务端为https时才会设置。   httponly 指明这个cookie只能通过http/s协议进行设置，不能使用JavaScript这样的客户端语音设置。只在PHP5.2之后有效    一个HTTP的cookie就是：当用户浏览器浏览的时候，一些从服务器发送到用户端，并存储在用户电脑浏览器下面的数据。
+修改cookie 可以使用setcookie来修改cookie中存储的值：
+setcookie(&#39;user&#39;, &#39;John&#39;, time()+86400, &#39;/&#39;);   cookie是HTTP头的一部分，所有setcookie()方法需要在发送数据到浏览器之前调用。当修改cookie的时候，需要保证path和domain的参数和原来cookie的值一致，否则将会创建一个新的cookie。当你发送cookie的时候，cookie的值部分会被自动的进行urlencode操作。当接收cookie的时候，会被自动的decode并且赋值给cookie名称相同的变量中。
+ 设置cookie 使用setcookie方法来设置一个cookie。因为cookie是HTTP头的一部分，所以你必须在发送数据到浏览器之前设置cookie。例如：
+setcookie(&#39;user&#39;, &#39;Tom&#39;, time( + 86400), &#39;/&#39;);  参数说明：
+ 创建一个名称为user的cookie (可选)为这个cookie设置值Tom (可选)这个cookie将会在1天之后过期 (可选)这个cookie在整个站点/中都有效 (可选)cookie只能使用HTTPS传输 (可选)cookie不能被类似JavaScript的脚本语言访问   创建或修改一个cookie只能在(path和domain指定的)子请求生效，在$_COOKIE也不是立即生效的。</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（二十八）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-28.html</link>
+      <pubDate>Sun, 28 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-28.html</guid>
+      <description>Session session_start() 开启PHP的session，我们可以给session_start函数传一个session的选项数组。例如：
+&amp;lt;?php if(version_compare(PHP_VERSION, &#39;7.0.0&#39;) &amp;gt;= 0) { session_start([ &#39;cache_limiter&#39; =&amp;gt; &#39;private&#39;, &#39;read_and_close&#39; =&amp;gt; true, ]); } else { session_start(); }  这个功能在php.ini提供了新的配置项session.lazy_write，这个值默认是true，当session修改的时候session的数据将会被重写。
+查看手册。
+Session锁 正如我们知道的PHP会把session数据希尔服务器的一个文件中。当一个使用session_start启动session的脚本接收到一个请求的时候，PHP将会锁定这个session文件，从而阻止/等待同一session_id的其他请求。因此其他请求将会在session_start的位置阻塞，直到这个session文件释放锁定。
+这个session文件将会被锁定，直到脚本执行完毕或者session手动关闭了。为了避免这种情况(避免多个请求被阻塞)。我们开启一个session并且当操作完毕之后关闭这个session，这样就会释放文件锁，其他的请求就可以继续进行。
+// php &amp;lt; 7.0 // start session session_start(); // write data to session $_SESSION[&#39;id&#39;] = 123; // session file is locked, so other requests are blocked // close the session, release lock session_write_close();  现在有些人会想，如果session关闭，我们如何读取到session值。在session关闭后，session仍然是可用的。所以，我们仍然可以读取session数据。
+echo $_SESSION[&#39;id&#39;]; //123  在PHP7.0之后，我们可以使用只读session，读写session，延迟写session，这样我们就没有必要使用session_write_close()。
+操作session数据 $_SESSION就是一个数组，所以你可以像普通数组一样检索和操作它。</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（二十七）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/php-section-27.html</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/php-section-27.html</guid>
+      <description>命名空间 声明命名空间 一个命名空间可以像下面这样：
+ namespace MyProject 声明一个命名空间MyProject namespace MyProject\Security\Cryptography 声明一个嵌套的命名空间 namespace MyProject {…} 声明一个花括号包围的命名空间  虽然你可以在一个文件中声明多个命名空间，但是强烈建议一个文件只声明一个命名空间：
+namespace First { class A { ... }; // Define class A in the namespace First. } namespace Second { class B { ... }; // Define class B in the namespace Second. } namespace { class C { ... }; // Define class C in the root namespace. }  每当你声明了一个命名空间，你在之后定义的类都在这个命名空间里面：
+namespace MyProject\Shapes; class Rectangle { .</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（二十六）</title>
