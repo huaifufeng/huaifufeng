@@ -6,10 +6,22 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 01 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（三十二）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-32.html</link>
+      <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-32.html</guid>
+      <description>SOAP客户端    参数 详情     $wsdl WSDL的URI，如果不是 WSDL模式的化，是Null   options Soap客户端的选项数组，非WSDL模式要设置location和uri，其他的选项是可选的。查看下面的值    WSDL模式 首先，创建一个新的SoapClient对象，传入一个WSDL文件的URL和选项的数组。
+$soap = new SoapClient(&#39;https://example.com/soap.wsdl&#39;, [ &#39;soap_version&#39; =&amp;gt; SOAP_1_2, &#39;compression&#39; =&amp;gt; SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GIZP, &#39;cache_wsdl&#39; =&amp;gt; WSDL_CACHE_BOTH, &#39;trace&#39; =&amp;gt; TRUE, &#39;exceptions&#39; =&amp;gt; TRUE ]);  然后使用$soap对象调用SOAP的方法：
+$result = $soap-&amp;gt;requestData([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);  非WSDL模式 这个和WSDL模式相似的，传入WSDL文件的地址为NULL，必须传下location和uri选项。
+$soap = new SoapClient(NULL, [ &#39;location&#39; =&amp;gt; &#39;https://example.com/soap/endpoint&#39;, &#39;uri&#39; =&amp;gt; &#39;namespace&#39; ]);  类图 当在PHP中创建SOAP客户端的时候，你可以使用classmap键的配置数组。classmap定义了WSDL实际使用的类型，而不是默认的stdClass。使用这个的原因是因为你可以获取这些类自实现的字段和方法调用，而不是猜测stdClass有什么字段。</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（三十一）</title>
