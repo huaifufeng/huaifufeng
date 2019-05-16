@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="diff-tree">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（六十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/03/post/git-section-61.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（六十一）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, March 24, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#diff-tree">diff-tree</a>
+<ul>
+<li><a href="#获取指定提交的文件修改">获取指定提交的文件修改</a></li>
+<li><a href="#使用">使用</a></li>
+<li><a href="#选项">选项</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="diff-tree">diff-tree</h2>
+
+<p>比较通过两个树对象找到的blob的内容和模式。</p>
+
+<h3 id="获取指定提交的文件修改">获取指定提交的文件修改</h3>
+
+<pre><code>git diff-tree --no-commit-id --name-only -r COMMIT_ID
+</code></pre>
+
+<h3 id="使用">使用</h3>
+
+<pre><code>git diff-tree [--stdin] [-m] [-c] [--cc] [-s] [-v] [--pretty] [-t] [-r] [--root] [&lt;common-diff- options&gt;] &lt;tree-ish&gt; [&lt;tree-ish&gt;] [&lt;path&gt;...]
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>含义</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>-r</td>
+<td>递归的进行diff</td>
+</tr>
+
+<tr>
+<td>&ndash;root</td>
+<td>包括初始提交作为/dev/null的diff</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="选项">选项</h3>
+
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>-z</td>
+<td>输出diff-raw，以NUL结尾</td>
+</tr>
+
+<tr>
+<td>-p</td>
+<td>输出补丁格式</td>
+</tr>
+
+<tr>
+<td>-u</td>
+<td>-p的别名</td>
+</tr>
+
+<tr>
+<td>—patch-with-raw</td>
+<td>输出补丁和diff-raw格式</td>
+</tr>
+
+<tr>
+<td>&ndash;stat</td>
+<td>显示diffstat而不是patch。</td>
+</tr>
+
+<tr>
+<td>&ndash;numstat</td>
+<td>显示数字diffstat而不是patch。</td>
+</tr>
+
+<tr>
+<td>—patch-with-stat</td>
+<td>输出一个补丁并预先准备其diffstat。</td>
+</tr>
+
+<tr>
+<td>—name-only</td>
+<td>显示修改文件的名称</td>
+</tr>
+
+<tr>
+<td>—name-status</td>
+<td>显示修改文件的名称和状态</td>
+</tr>
+
+<tr>
+<td>—full-index</td>
+<td>在索引行显示完整的对象名称</td>
+</tr>
+
+<tr>
+<td>—abbrev=<n></td>
+<td>在对象名称的缩写版本的树和区分RAW头。</td>
+</tr>
+
+<tr>
+<td>-R</td>
+<td>交换输入文件对。</td>
+</tr>
+
+<tr>
+<td>-B</td>
+<td>检测完全重写。</td>
+</tr>
+
+<tr>
+<td>-M</td>
+<td>检查重命名</td>
+</tr>
+
+<tr>
+<td>-C</td>
+<td>检查复制</td>
+</tr>
+
+<tr>
+<td>—find-copies-harder</td>
+<td>尝试将未更改的文件作为副本检测的候选文件。</td>
+</tr>
+
+<tr>
+<td>-l<n></td>
+<td>将重命名尝试限制为最多个路径。</td>
+</tr>
+
+<tr>
+<td>-O</td>
+<td>根据重新排序差异。</td>
+</tr>
+
+<tr>
+<td>-S</td>
+<td>查找仅一侧包含字符串的文件对。</td>
+</tr>
+
+<tr>
+<td>—pickaxe-all</td>
+<td>使用-s并找到hit时显示所有文件diff。</td>
+</tr>
+
+<tr>
+<td>-a —text</td>
+<td>把所有的文件当做字符串</td>
+</tr>
+</tbody>
+</table>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/php-section-1.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/03/post/git-section-60.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（六十）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

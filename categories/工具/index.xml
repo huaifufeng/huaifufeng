@@ -6,10 +6,58 @@
     <description>Recent content in 工具 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 21 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 24 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git专业笔记（六十一）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-61.html</link>
+      <pubDate>Sun, 24 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-61.html</guid>
+      <description>diff-tree 比较通过两个树对象找到的blob的内容和模式。
+获取指定提交的文件修改 git diff-tree --no-commit-id --name-only -r COMMIT_ID  使用 git diff-tree [--stdin] [-m] [-c] [--cc] [-s] [-v] [--pretty] [-t] [-r] [--root] [&amp;lt;common-diff- options&amp;gt;] &amp;lt;tree-ish&amp;gt; [&amp;lt;tree-ish&amp;gt;] [&amp;lt;path&amp;gt;...]     选项 含义     -r 递归的进行diff   &amp;ndash;root 包括初始提交作为/dev/null的diff    选项    选项 详情     -z 输出diff-raw，以NUL结尾   -p 输出补丁格式   -u -p的别名   —patch-with-raw 输出补丁和diff-raw格式   &amp;ndash;stat 显示diffstat而不是patch。   &amp;ndash;numstat 显示数字diffstat而不是patch。   —patch-with-stat 输出一个补丁并预先准备其diffstat。   —name-only 显示修改文件的名称   —name-status 显示修改文件的名称和状态   —full-index 在索引行显示完整的对象名称   —abbrev= 在对象名称的缩写版本的树和区分RAW头。   -R 交换输入文件对。   -B 检测完全重写。   -M 检查重命名   -C 检查复制   —find-copies-harder 尝试将未更改的文件作为副本检测的候选文件。   -l 将重命名尝试限制为最多个路径。   -O 根据重新排序差异。   -S 查找仅一侧包含字符串的文件对。   —pickaxe-all 使用-s并找到hit时显示所有文件diff。   -a —text 把所有的文件当做字符串    参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（六十）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-60.html</link>
+      <pubDate>Sat, 23 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-60.html</guid>
+      <description>整理本地和远程存储库 删除远端已删除的分支 要在本地和已删除的远程分支之间进行远程跟踪，请使用
+git fetch -p  然后你可以使用
+git branch -vv  来查看哪些分支没有被追踪。
+那些还没有被追踪的分支将会向下面这样，包含&amp;rsquo;gone&amp;rsquo;：
+branch 12345e6 [origin/branch: gone] Fixed bug  你可以组合使用上面的命令，查找git branch -vv中返回的gone的分支，并使用-d删除这些分支：
+git fetch -p &amp;amp;&amp;amp; git branch -vv | awk &#39;/: gone]/{print $1}&#39; | xargs git branch -d  参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(五十四)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-54.html</link>
+      <pubDate>Fri, 22 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-54.html</guid>
+      <description>处理系统提示 参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（五十九）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-59.html</link>
+      <pubDate>Fri, 22 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-59.html</guid>
+      <description>git标签 像大多数的版本控制工具，git可以把历史中某个提交定义为重要的。特别是用户使用这个功能来标记发版点(v1.0等)。
+列出所有的tag 使用git tag可以列出所有有效的tag：
+$ git tag &amp;lt;output follows&amp;gt; v0.1 v1.3   注意：这里tag是按照字符顺序输出的。
+ 也可以搜索指定的tag：
+$ git tag -l &amp;quot;v1.8.5*&amp;quot; &amp;lt;output follows&amp;gt; v1.8.5 v1.8.5-rc0 v1.8.5-rc1 v1.8.5-rc2 v1.8.5-rc3 v1.8.5.1 v1.8.5.2 v1.8.5.3 v1.8.5.4 v1.8.5.5  创建并push标签 创建标签  在当前分支创建tag   git tag &amp;lt;tagname&amp;gt;  这将在当前分支的当前状态创建一个tag
+ 在某些提交上创建tag   git tag tag-name commit-identifier  这将在commit-identifier的提交上创建tag。
+push tag  push单独的标签   git push origin tag-name   一次push所有的tag   git push origin --tags  参考：Git® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(五十三)</title>
@@ -28,6 +76,17 @@ echo &amp;quot;nohup somecommand &amp;gt; out.txt 2&amp;gt;err.txt &amp;amp;&amp
     </item>
     
     <item>
+      <title>Git专业笔记（五十八）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-58.html</link>
+      <pubDate>Thu, 21 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-58.html</guid>
+      <description>修改git仓库名称 如果你在远端修改了仓库的名称，就像在github或bitbucket。当你推送已经存在的代码时，将会出现错误：Fatal error, repository not found**.
+修改本地仓库 在终端中：
+cd projectFolder git remote -v (it will show previous git url) git remote set-url origin https://username@bitbucket.org/username/newName.git git remote -v (double check, it will show new git url) git push (do whatever you want.)  参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(五十二)</title>
       <link>http://blog.huaifufeng.com/2019/03/post/bash-section-52.html</link>
       <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
@@ -39,6 +98,18 @@ echo &amp;quot;nohup somecommand &amp;gt; out.txt 2&amp;gt;err.txt &amp;amp;&amp
     </item>
     
     <item>
+      <title>Git专业笔记（五十七）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-57.html</link>
+      <pubDate>Wed, 20 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-57.html</guid>
+      <description>git重排 rerere(重复使用记录解决方案)允许你告诉git记住你是如何解决一个大块冲突的。这允许当下次遇到同样的冲突是可以自动的解决这个冲动。
+启用rerere 可以使用下面的命令启用rerere:
+$ git config --global rerere.enabled true  这个可以在指定仓库中运行，也可以在全局配置中。
+参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(五十一)</title>
       <link>http://blog.huaifufeng.com/2019/03/post/bash-section-51.html</link>
       <pubDate>Tue, 19 Mar 2019 00:00:00 +0000</pubDate>
@@ -46,6 +117,21 @@ echo &amp;quot;nohup somecommand &amp;gt; out.txt 2&amp;gt;err.txt &amp;amp;&amp
       <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-51.html</guid>
       <description>协同进程 Hello World # create the co-process coproc bash # send a command to it (echo a) echo &#39;echo Hello World&#39; &amp;gt;&amp;amp;&amp;quot;${COPROC[1]}&amp;quot; # read a line from its output read line &amp;lt;&amp;amp;&amp;quot;${COPROC[0]}&amp;quot; # show the line echo &amp;quot;$line&amp;quot;  输出&amp;rdquo;Hello World&amp;rdquo;
 参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（五十六）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-56.html</link>
+      <pubDate>Tue, 19 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-56.html</guid>
+      <description>git客户端的hooks 和很多其他的版本控制系统一样，Git有一种当某些重要行为发生的时候执行自定义脚本的功能。有两种这样的hooks：客户端的和服务器端的。客户端的hook通常当提交和合并的时候触发执行，而服务器端的hook通常当遇到网络操作(如接收到push的提交)触发。你可以出于各种原因使用这些钩子。
+pre-push hook pre-push脚本会在git push调用并且检查远端状态之后执行，但是在任何东西push之前。如果脚本存在，并且返回了一个非零的值，那么什么都不会push。
+这个hook使用下面的参数被调用：
+$1 -- Name of the remote to which the push is being done (Ex: origin) $2 -- URL to which the push is being done (Ex: https://://.git)  有关正在推送的提交的信息以行的形式提供给表单中的标准输入：
+ &amp;lt;local_ref&amp;gt; &amp;lt;local_sha1&amp;gt; &amp;lt;remote_ref&amp;gt; &amp;lt;remote_sha1&amp;gt;  例子：
+local_ref = refs/heads/master local_sha1 = 68a07ee4f6af8271dc40caae6cc23f283122ed11 remote_ref = refs/heads/master remote_sha1 = efd4d512f34b11e3cf5c12433bbedd4b1532716f  下面的示例是从默认的pre-push.sample中获取的pre-push脚本，该脚本是在使用git init初始化新存储库时自动创建的。
+# This sample shows how to prevent push of commits where the log message starts # with &amp;quot;WIP&amp;quot; (work in progress).</description>
     </item>
     
     <item>
@@ -63,6 +149,19 @@ echo &amp;quot;${green}Success!${reset}&amp;quot; echo &amp;quot;${red}Failure.$
     </item>
     
     <item>
+      <title>Git专业笔记（五十五）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-55.html</link>
+      <pubDate>Mon, 18 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-55.html</guid>
+      <description>Bash显示分支名 这个文档解决git的分支名称在Bash终端显示的问题。开发者经常需要查看当前的分支名称。我们可以显示当前目录中的git分支名称。
+终端的分支名 什么是PS1 PS1表示提示字符串1(Prompt String 1)。这是Linux/UNIX中shell的一个提示字符串。当你打开终端的时候，将会在你的bash提示中显示PS1中的内容。为了在bash提示中增加分支名称，我们需要修改PS1变量(在~/.bash_profile中设置PS1的值)。
+显示分支名 在~/.bash_profile中添加下面的内容：
+git_branch() { git branch 2&amp;gt; /dev/null | sed -e &#39;/^[^*]/d&#39; -e &#39;s/* \(.*\)/ (\1)/&#39; } export PS1=&amp;quot;\u@\h \[\033[32m\]\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ &amp;quot;  这个git_branch方法或拿到我们当前的分支名称。一但我们做了这个修改，我们切换到一个git仓库，我们就可以看到仓库当前的分支名称。
+参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(四十九)</title>
       <link>http://blog.huaifufeng.com/2019/03/post/bash-section-49.html</link>
       <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
@@ -72,6 +171,24 @@ echo &amp;quot;${green}Success!${reset}&amp;quot; echo &amp;quot;${red}Failure.$
 一个点文件的例子是.bash_history，假设用户使用Bash，包含了最近执行的命令。
 当你在Bash中时，有各种文件是被source的。下面的图片来自这个站点，显示了在启动时选择要源文件的决策过程。
 参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（五十四）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-54.html</link>
+      <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-54.html</guid>
+      <description>修改引用中对象名称 修改引用中对象名称 使用 修改引用中的对象名称
+语法 git update-ref [-m &amp;lt;reason&amp;gt;] (-d &amp;lt;ref&amp;gt; [&amp;lt;oldvalue&amp;gt;] | [--no-deref] [--create-reflog] &amp;lt;ref&amp;gt; &amp;lt;newvalue&amp;gt; [&amp;lt;oldvalue&amp;gt;] | --stdin [-z])  普通语法  取消符合引用，修改分支头到新的对象   git update-ref HEAD &amp;lt;newvalue&amp;gt;   验证引用中当前只和oldvalue匹配后，修改newvalue到引用中   git update-ref refs/head/master &amp;lt;newvalue&amp;gt; &amp;lt;oldvalue&amp;gt;  上面的语法只有咱当前的值是oldvalue的时候，修改master分支的头到newvalue。
+在验证引用还包含&amp;lt;oldvalue&amp;gt;之后，使用-d标识删除到命名的引用&amp;lt;ref&amp;gt;。
+使用—create-reflog之后，更新引用将会为每个引用创建一个reflog，即使通常不会创建reflog。
+使用-z标志以nul终止格式指定，该格式具有更新、创建、删除、验证等值。
+update 如果提供了，在验证&amp;lt;oldvalue&amp;gt;之后，修改引用&amp;lt;ref&amp;gt;的值为&amp;lt;newvalue&amp;gt;。指定零值&amp;lt;newvalue&amp;gt;确保引用更新之后不存在，或者一个零值&amp;lt;oldvalue&amp;gt;确保引用更新之前不存在。
+create 验证不存在之后使用&amp;lt;newvalue&amp;gt;创建&amp;lt;ref&amp;gt;。这个&amp;lt;newvalue&amp;gt;不能为0
+delete 如果提供，验证&amp;lt;oldvalue&amp;gt;存在之后，删除&amp;lt;ref&amp;gt;。这时，&amp;lt;oldvalue&amp;gt;不能是0
+verify 使用&amp;lt;oldvalue&amp;gt;验证&amp;lt;ref&amp;gt;中存在，但是不做修改。如果&amp;lt;oldvalue&amp;gt;为0或缺失，引用必须不存在。
+参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -91,6 +208,17 @@ su -c ifconfig | tee ~/results-of-ifconfig.txt  只有ifconfig是以root的身�
     </item>
     
     <item>
+      <title>Git专业笔记（五十三）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-53.html</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-53.html</guid>
+      <description>外部合并和diff工具 设置KDiff3作为合并工具 下面的配置添加到.gitconfig文件中：
+[merge] tool = kdiff3 [mergetool &amp;quot;kdiff3&amp;quot;] path = D:/Program Files (x86)/KDiff3/kdiff3.exe keepBackup = false keepbackup = false trustExitCode = false  注意设置path属性为你安装KDiff3的目录。
+设置KDiff3为diff工具 [diff] tool = kdiff3 guitool = kdiff3 [difftool &amp;quot;kdiff3&amp;quot;] path = D:/Program Files (x86)/KDiff3/kdiff3.exe cmd = \&amp;quot;D:/Program Files (x86)/KDiff3/kdiff3.exe\&amp;quot; \&amp;quot;$LOCAL\&amp;quot; \&amp;quot;$REMOTE\&amp;quot;  设置IntelliJ IDE为合并工具(Windows) [merge] tool = intellij [mergetool &amp;quot;intellij&amp;quot;] cmd = cmd \&amp;quot;/C D:\\workspace\\tools\\symlink\\idea\\bin\\idea.bat merge $(cd $(dirname &amp;quot;$LOCAL&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$LOCAL&amp;quot;) $(cd $(dirname &amp;quot;$REMOTE&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$REMOTE&amp;quot;) $(cd $(dirname &amp;quot;$BASE&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$BASE&amp;quot;) $(cd $(dirname &amp;quot;$MERGED&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$MERGED&amp;quot;)\&amp;quot; keepBackup = false keepbackup = false trustExitCode = true  这里需要注意的一点是，这个cmd属性不接受路径中任何奇怪的字符。如果您的IDE安装位置中有奇怪的字符（例如，它安装在Program Files (x86)中），则必须创建一个软连。</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(四十七)</title>
       <link>http://blog.huaifufeng.com/2019/03/post/bash-section-47.html</link>
       <pubDate>Fri, 15 Mar 2019 00:00:00 +0000</pubDate>
@@ -100,6 +228,21 @@ su -c ifconfig | tee ~/results-of-ifconfig.txt  只有ifconfig是以root的身�
 trap的一个常用的地方是清理希望或不希望存在的临时文件。
 不幸的是没有足够的脚本实现这个功能：
 #!/bin/sh #定义清理函数 cleanup() { rm --force -- &amp;quot;${tmp}&amp;quot; } # 捕捉特殊的EXIT组， shell存在时会一直运行 trap cleanup EXIT #创建临时文件 tmp=&amp;quot;$(mktemp -p /tmp tmpfileXXXXX)&amp;quot; echo &amp;quot;Hello World!&amp;quot; &amp;gt;&amp;gt; &amp;quot;${tmp}&amp;quot; # No rm -f &amp;quot;$tmp&amp;quot; needed. The advantage of using EXIT is that it still works # even if there was an error or if you used exit.</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（五十二）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-52.html</link>
+      <pubDate>Fri, 15 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-52.html</guid>
+      <description>TortoiseGit 合并提交 简单方法 这将不会有效，当你选择的分支包含合并的分支时：
+高级方法 开启rebase：
+假设不变 如果一个文件修改了，但是你不想提交这个文件，把这个文件设置为&amp;rdquo;假设不变&amp;rdquo;：
+恢复假设不变 忽略文件和目录 使用TortioseGit UI 可以在文件或目录上面使用鼠标右键，想要忽略文件TortoiseGit -&amp;gt; Delete and add to ignore list，这里你可以选择忽略所有的某个类型的文件或者指定的文件，然后在弹窗中选择ok就可以了。
+分支 使用UI来选择分支，在仓库上面鼠标右键，然后Tortoise Git -&amp;gt; Create Branch…
+新的窗口会打开open -&amp;gt; Give branch a name -&amp;gt; Tick the box Switch to new branch(可能你希望在分支之后使用它)。点击&amp;rdquo;确定&amp;rdquo;，就可以完成操作。
+参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -113,6 +256,19 @@ trap的一个常用的地方是清理希望或不希望存在的临时文件。
     </item>
     
     <item>
+      <title>Git专业笔记（五十一）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-51.html</link>
+      <pubDate>Thu, 14 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-51.html</guid>
+      <description>git reflog 从坏rebase修复 假设你开启了一个交互rebase：
+git rebase --interactive HEAD~20  但是你犯了错误，你合并或丢掉了一些你不想要失去的提交。然后完成了rebase操作。想要修复的话，使用git reflog，你可以看到类似下面的内容：
+aaaaaaa HEAD@{0} rebase -i (finish): returning to refs/head/master bbbbbbb HEAD@{1} rebase -i (squash): Fix parse error ... ccccccc HEAD@{n} rebase -i (start): checkout HEAD~20 ddddddd HEAD@{n+1} ... ...  在这个例子里面，上个提交dddddd或(HEAD@{n+1})是你开始rebase的分支。因此想要恢复这个提交(和所有的父提交，包括那些合并或丢失的)：
+$ git checkout HEAD@{n+1}  然后你可以使用下面的命令git checkout -b [branch]来创建一个新分支。
+参考：Git® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(四十五)</title>
       <link>http://blog.huaifufeng.com/2019/03/post/bash-section-45.html</link>
       <pubDate>Wed, 13 Mar 2019 00:00:00 +0000</pubDate>
@@ -122,6 +278,47 @@ trap的一个常用的地方是清理希望或不希望存在的临时文件。
 set -x var=&#39;I am a multiline string&#39; fun() { echo &amp;quot;-$1-&amp;quot; echo &amp;quot;*$2*&amp;quot; echo &amp;quot;.$3.&amp;quot; } fun $var  在上面的例子中线上了fun是怎么执行的
 fun I am a multiline string   $var被分成5个单词，但是只有I，am，a被输出。
  单词拆分的坏处 $ a=&#39;I am a string with spaces&#39; $ [ $a = $a ] || echo &amp;quot;didn&#39;t match&amp;quot; bash: [: too many arguments didn&#39;t match   [ $a = $a ]被解析为[ I am a string with spaces = I am a string with spaces ]。[是一个test命令，然而I am a string with spaces是6个参数不是一个参数。</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（五十）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-50.html</link>
+      <pubDate>Wed, 13 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-50.html</guid>
+      <description>git可视客户端 gitk和git-gui 当你按照git的时候，也可以按照可视化的工具：gitk和git-gui。
+gitk是一个图形历史查看工具。把它想象成git log和git grep的强大GUI工具。这在你想要查看仓库历史发送的修改，或者查看仓库的历史很有用。
+Gitk很容易从命令行启动。只要cd到仓库的目录，然后输入：
+$ gitk [git log options]  Gitk接收很多的命令行选项，启动大部分是传给底层git log操作的。可能其中最有用的：—all标识，通知gitk显示所有引用的提交，不仅仅是HEAD。Gitk的界面可能想下面这样：
+上面图像中上部分就像是使用git log —graph的输出。每个点代表一个提交，每条线代表父关系，引用显示在带颜色的块内。黄点标识HEAD，红点表示还没有提交的修改。下部分就是显示指定提交的展示，注释和补丁在左边，右边是摘要视图。中间是一系列用来搜索历史的。
+你可以在分支名或提交信息上右键，可以使用很多git的方法。例如签出不同的分支或cherry pick一个提交，只要一个点击。
+git-gui主要是用于构建提交的工具，它也很容易从命令行启动：
+$ git gui  它的界面就像下面这样：
+左边是索引，上边是未暂存的修改，暂存的修改在下吧。你可以点击文件的标识来交互文件的状态，或者选择一个文件点击查看它的名称。
+右上角是文件的diff，用来显示选择文件的修改。你可以在这个区域使用右键来暂存单独的块或者行。
+右下角是提交信息和操作的地方。在文本框中输入提交信息，然后点击Commit按键做和git commit一样的事情。你也可以使用Amend来提交，将会把暂存的修改提交到上次提交。然后，你可以暂存或取消暂存修改，添加提交信息，然后提交Commit来重新提交。
+gitk和git-gui是面向任务的例子。它们中的每一个都是为特定目的而定制的（分别查看历史和创建提交），并且省略了该任务不需要的特性。
+查看介绍。
+Github桌面 站点：https://git-scm.com/book/en/v2/Git-in-Other-Environments-Graphical-Interfaces
+价格：免费
+平台：OS X和Windows
+开发者：https://github.com/
+Git Kraken 站点：https://www.gitkraken.com/
+价格：$60/每年(免费为开源、教育、非营利、初创企业或个人使用)
+平台：Linux, OS X, Windows
+开发者：Axosoft
+SourceTree 站点：https://www.sourcetreeapp.com/
+价格：免费(需要账户)
+平台：OS X 和 Windows
+开发者：Atlassian
+Git扩展 站点：https://gitextensions.github.io
+价格：免费
+平台：Windows
+SmartGit 站点：https://www.syntevo.com/smartgit/
+价格：免费仅限非商业用途。永久许可费99美元
+平台：Linux，OS X 和Windows
+开发者：syntevo
+参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -141,6 +338,21 @@ path=~/bin # path to be included bashrc=~/.bashrc # bash file to be written and 
     </item>
     
     <item>
+      <title>Git专业笔记（四十九）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-49.html</link>
+      <pubDate>Tue, 12 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-49.html</guid>
+      <description>git发送邮件 使用Gmail 背景：如果你工作在像Linux内核这样的项目上面，你不是使用pull reques，而是要提交你到提交到服务器上等待review。这里介绍怎么使用git发送Gmail邮件。
+在.gitconfig中添加下面的配置：
+[sendemail] smtpserver = smtp.googlemail.com smtpencryption = tls smtpserverport = 587 smtpuser = name@gmail.com  然后在网页上面：Go to Google -&amp;gt; My Account -&amp;gt; Connected Apps &amp;amp; Sites -&amp;gt; Allow less secure apps -&amp;gt; Switch ON
+创建一个补丁集合：
+git format-patch HEAD~~~~ --subject-prefix=&amp;quot;PATCH &amp;lt;project-name&amp;gt;&amp;quot;  发送补丁到listserv:
+git send-email --annotate --to project-developers-list@listserve.example.com 00*.patch  创建并发送补丁已经更新的版本：
+git format-patch -v 2 HEAD~~~~ ...... git send-email --to project-developers-list@listserve.example.com v2-00*.patch  组合 --from * Email From: --[no-]to * Email To: --[no-]cc * Email Cc: --[no-]bcc * Email Bcc: --subject * Email &amp;quot;Subject:&amp;quot; --in-reply-to * Email &amp;quot;In-Reply-To:&amp;quot; --[no-]xmailer * Add &amp;quot;X-Mailer:&amp;quot; header (default).</description>
+    </item>
+    
+    <item>
       <title>Bash专业笔记(四十三)</title>
       <link>http://blog.huaifufeng.com/2019/03/post/bash-section-43.html</link>
       <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
@@ -151,6 +363,15 @@ path=~/bin # path to be included bashrc=~/.bashrc # bash file to be written and 
 curl -vs &#39;http://www.google.com/&#39; |&amp;amp; awk &#39;/Host:/{print} /&amp;lt;title&amp;gt;/{match($0,/&amp;lt;title&amp;gt;(.*)&amp;lt;\/title&amp;gt;/,a);print a[1]}&#39;  这将会输出：
 &amp;gt; Host: www.google.com Google  但是使用|的话，会输出更多的内容：即哪些被输出到标准错误中的信息，因为只有标准输出被管道到下一个命令。在这个例子中除了最后一行，其他的都是输出到标准错误中的：
 * Hostname was NOT found in DNS cache * Trying 172.217.20.228... * Connected to www.google.com (172.217.20.228) port 80 (#0) &amp;gt; GET / HTTP/1.1 &amp;gt; User-Agent: curl/7.35.0 &amp;gt; Host: www.google.com &amp;gt; Accept: */* &amp;gt; * HTTP 1.0, assume close after body &amp;lt; HTTP/1.0 200 OK &amp;lt; Date: Sun, 24 Jul 2016 19:04:59 GMT &amp;lt; Expires: -1 &amp;lt; Cache-Control: private, max-age=0 &amp;lt; Content-Type: text/html; charset=ISO-8859-1 &amp;lt; P3P: CP=&amp;quot;This is not a P3P policy!</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（四十八）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-48.html</link>
+      <pubDate>Mon, 11 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-48.html</guid>
+      <description>git统计    参数 详情     -n, —numbered 按照作者的提交数量排序而不是按照字母顺序排序   -s, --summary 仅提供提交计数摘要   -e, --email 线上每个作者的邮件地址   --format[=&amp;lt;format&amp;gt;] 不使用提交对象，使用其他的信息来描述提交。&amp;lt;format&amp;gt;是git log的—format选项使用的字符   -w[&amp;lt;width&amp;gt;[,&amp;lt;indent1&amp;gt;[,&amp;lt;indent2&amp;gt;]]] 通过以宽度包装每一行来对输出进行换行。每个条目的第一行缩进1个空格，后续行缩进1个空格。   &amp;lt;revision range&amp;gt; 显示指定版本范围内的提交。默认是直到当前的提交的所有历史   [—] &amp;lt;path&amp;gt; 只显示说明文件匹配路径的提交。路径可能需要以“-”作为前缀，以将其与选项或修订范围分开。    每个开发者的行 git ls-tree -r HEAD | sed -Ee &#39;s/^.{53}//&#39; | \ while read filename; do file &amp;quot;$filename&amp;quot;; done | \ grep -E &#39;: .*text&#39; | sed -E -e &#39;s/: .</description>
     </item>
     
     <item>
@@ -165,6 +386,15 @@ scp传输多个文件 scp也可以用来从一个服务器到一个服务器传�
 scp /my_folder/*.txt tom@server2:$HOME  使用scp下载文件 从远端机器下载文件到本地机器：
 scp tom@server2:$HOME/file.txt /local/machine/path/  这里例子展示了如果从tom的家目录下载文件file.txt到本地机器的当前目录。
 参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Git专业笔记（四十七）</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/git-section-47.html</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/git-section-47.html</guid>
+      <description>git补丁    参数 详情     `( )`&amp;hellip;   -s, —signoff 使用自己的提交者标识，在提交消息中添加一个签名人   -q, —quiet 安静模式。值打印错误信息   -u, -utf8 git mailinfo使用-u标识。这表明从邮箱获取的提交日志信息使用UTF-8重新编码(如果不是UTF-8的话，i18n.commitencoding可以用来指定项目的编码)。你可以使用—no-utf8来覆盖这个选项   —no-utf8 git mailinfo使用-n标识。   -3, —3way 如果补丁不干净地应用，那么如果补丁记录了它应该应用到的blob的标识，并且我们在本地有这些blob可用，那么返回到3路合并。   —ingore-date, —ignore-space-change, —ignore-whitespace, —whitespace=&amp;lt;option&amp;gt;, -C&amp;lt;n&amp;gt;, -p&amp;lt;n&amp;gt;, —directory=&amp;lt;dir&amp;gt;, —exclude=&amp;lt;path&amp;gt;, —include=&amp;lt;path&amp;gt;, —reject 这些标识传递给git apply来应用补丁   —patch-format 默认命令会试着自动进行补丁格式的解析。这个选项允许用户跳过自动解析，指定补丁的格式。有效的格式包括mbox, stgit stgit-series hg   -i, —interactive 运行交互模式   —committer-date-is-author-date 默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和作者日期一样的值来假装提交者日期。   —ignore-date 默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和提交者日期一样的值来假装作者日期。   —skip 跳过当前补丁。这只在重启一个终端的补丁时有意义。   -S[&amp;lt;keyid&amp;gt;], —gpg-sign[=&amp;lt;keyid&amp;gt;] GPG签名提交   —continue, -r, —resolved 修补程序失败后（例如尝试应用冲突的修补程序），用户已手动应用该修补程序，索引文件存储应用程序的结果。使用从电子邮件和当前索引文件中提取的作者身份和提交日志进行提交，然后继续。   —resolvemsg=&amp;lt;msg&amp;gt; 当补丁失败的时候，在退出之前，&amp;lt;msg&amp;gt;将会被输出到屏幕。这将会覆盖你使用—continue或—skip的时候的标准信息。这只限于git rebase和git am之间使用   —abort 终端补丁操作，返回原本的分支。    创建补丁 创建一个补丁，有两个步骤：</description>
     </item>
     
     <item>

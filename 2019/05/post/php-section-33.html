@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="cURL扩展">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（三十三）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/php-section-33.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（三十三）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, May 3, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#curl扩展">cURL扩展</a>
+<ul>
+<li><a href="#基本用法-get请求">基本用法(GET请求)</a></li>
+<li><a href="#post请求">POST请求</a></li>
+<li><a href="#使用cookie">使用cookie</a></li>
+<li><a href="#multi-curl发起多个post请求">multi_curl发起多个post请求</a></li>
+<li><a href="#一次请求发送多维数据和多个文件">一次请求发送多维数据和多个文件</a></li>
+<li><a href="#使用自定义方法创建并发送请求">使用自定义方法创建并发送请求</a></li>
+<li><a href="#在php中获取和设置http头">在php中获取和设置http头</a>
+<ul>
+<li><a href="#发送请求头">发送请求头</a></li>
+<li><a href="#读取自定义头">读取自定义头</a></li>
+<li><a href="#输出">输出</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="curl扩展">cURL扩展</h2>
+
+<p>curl_init 初始化一个cURL</p>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>url</td>
+<td>应用cURL请求的url网址</td>
+</tr>
+</tbody>
+</table>
+
+<p>curl_setopt  设置cURL传输的选项</p>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>ch</td>
+<td>cURL处理的对象(curl_inti()返回的值)</td>
+</tr>
+
+<tr>
+<td>option</td>
+<td>CURLOPT_XXX将用来设置选项，查看<a href="https://www.php.net/manual/zh/function.curl-setopt.php">PHP手册</a>查看选项和接受值的列表</td>
+</tr>
+
+<tr>
+<td>value</td>
+<td>设置cURL选项的值</td>
+</tr>
+</tbody>
+</table>
+
+<p>curl_exec 执行以cURL请求</p>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>ch</td>
+<td>cURL处理的对象(curl_init()返回的值)</td>
+</tr>
+</tbody>
+</table>
+
+<p>curl_close 结束一个cURL请求</p>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>ch</td>
+<td>cURL处理的对象(curl_init()返回的值)</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="基本用法-get请求">基本用法(GET请求)</h3>
+
+<p>cURL是一个使用URL语法传输数据的工具。支持HTTP，FTP，SCP和其他的类型(curl&gt;=7.19.4)。记住在使用之前需要首先<a href="https://php.net/manual/zh/curl.installation.php">安装和启用cURL扩展</a>。</p>
+
+<pre><code class="language-php">// a little script check is the cURL extension loaded or not
+if(!extension_loaded(&quot;curl&quot;)) {
+    die(&quot;cURL extension not loaded! Quit Now.&quot;);
+}
+
+// Actual script start
+
+// create a new cURL resource
+// $curl is the handle of the resource 
+$curl = curl_init();
+
+// set the URL and other options
+curl_setopt($curl, CURLOPT_URL, &quot;http://www.example.com&quot;);
+
+// execute and pass the result to browser
+curl_exec($curl);
+
+// close the cURL resource
+curl_close($curl);
+</code></pre>
+
+<h3 id="post请求">POST请求</h3>
+
+<p>如果你想要魔方HTML表格的POST请求，你可以使用cURL</p>
+
+<pre><code class="language-php">// POST data in array
+$post = [
+    'a' =&gt; 'apple',
+    'b' =&gt; 'banana'
+];
+// Create a new cURL resource with URL to POST
+$ch = curl_init('http://www.example.com');
+
+// We set parameter CURLOPT_RETURNTRANSFER to read output
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+// Let's pass POST data
+curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+
+// We execute our request, and get output in a $response variable
+$response = curl_exec($ch);
+
+// Close the connection
+curl_close($ch);
+</code></pre>
+
+<h3 id="使用cookie">使用cookie</h3>
+
+<p>cURL可以保存响应中获取的cookie，并且在之后的请求中使用。对于简单的内存中处理session和cookie，使用下面的一行代码：</p>
+
+<pre><code class="language-php">curl_setopt($ch, CURLOPT_COOKIEFILE, '');
+</code></pre>
+
+<p>如果在销毁curl句柄之后响应保留cookie，可以把cookie保存到文件中：</p>
+
+<pre><code class="language-php">curl_setopt($ch, CURLOPT_COOKIEJAR, &quot;/tmp/cookies.txt&quot;);
+</code></pre>
+
+<p>当你想要再次使用的时候，把这些数据存放到cookie文件中：</p>
+
+<pre><code>curl_setopt($ch, CURLOPT_COOKIEFILE, &quot;/tmp/cookies.txt&quot;);
+</code></pre>
+
+<p>记住，这两步不是必须的，触发你想要在不同的cURL句柄中处理这些cookie。在大多数情况下，你只需要把<code>CURLOPT_COOKIEFILE</code>设置为空字符串。</p>
+
+<p>例如，cookie处理被使用了，当从网站获取数据需要首先登陆。这就是一个常见的两步操作。首先，POST到登陆页面：</p>
+
+<pre><code class="language-php">&lt;?php
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, 'https://www.example.com/login.php');
+
+curl_setopt($ch, CURLOPT_POST, true);
+
+curl_setopt($ch, CURLOPT_COOKIEFILE, &quot;&quot;);
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, [
+    'username' =&gt; 'jos_bloggs',
+    'password' =&gt; '$up34_$3cr3t',
+]);
+
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$result = curl_exec($ch);
+</code></pre>
+
+<p>第二步(在标准错误处理之后的)通常是一个GET请求。这里最重要的事是在第二个请求中重用已经存在的cURL句柄。这确保第二个请求自动从第一个响应中获取cookie：</p>
+
+<pre><code class="language-php">curl_setopt($ch, CURLOPT_URL, 'https://www.example.com/show_me_the_foo.php');
+
+curl_setopt($ch, CURLOPT_HTTPGET, true);
+
+$result = curl_exec($ch);
+
+curl_close($ch);
+</code></pre>
+
+<p>这里是cookie处理的一个例子。在真实场景，这将会更加复杂。通常你必须在登录页面中初始化GET，并将登录令牌放入POST。其他站点可能会阻止cURL客户端，要求你修改这个值。</p>
+
+<h3 id="multi-curl发起多个post请求">multi_curl发起多个post请求</h3>
+
+<p>有时候我们需要对一个或多个终端发送很多的post请求。为了解决这个问题，我们可以使用<code>multi_curl</code>。</p>
+
+<p>首先像之前一样，我们创建很多请求的对象，并把他们放到一个数组里面。</p>
+
+<p>我们使用curl_multi_init让后增加每一个句柄。例如，我们有两个需要请求的终端：</p>
+
+<pre><code class="language-php">//array of data to POST
+$request_contents = array(); 
+
+//array of URLs
+$urls = array();
+
+//array of cURL handles
+$chs = array();
+
+//first POST content
+$request_contents[] = [
+    'a' =&gt; 'apple',
+    'b' =&gt; 'banana'
+];
+
+//second POST content
+$request_contents[] = [
+    'a' =&gt; 'fish',
+    'b' =&gt; 'shrimp'
+];
+
+//set the urls
+$urls[] = 'http://www.example.com';
+$urls[] = 'http://www.example2.com';
+
+//create the array of cURL handles and add to a multi_curl
+$mh = curl_multi_init();
+foreach ($urls as $key =&gt; $url) {
+    $chs[$key] = curl_init($url);
+    curl_setopt($chs[$key], CURLOPT_RETURNTRANSFER, true); curl_setopt($chs[$key], CURLOPT_POST, true);
+    curl_setopt($chs[$key], CURLOPT_POSTFIELDS, $request_contents[$key]);
+    curl_multi_add_handle($mh, $chs[$key]);
+}
+</code></pre>
+
+<p>然后我们使用curl_multi_exec来发送请求：</p>
+
+<pre><code class="language-php">//running the requests
+$running = null; 
+do {
+  curl_multi_exec($mh, $running);
+} while ($running);
+
+//getting the responses
+foreach(array_keys($chs) as $key){
+    $error = curl_error($chs[$key]);
+    $last_effective_URL = curl_getinfo($chs[$key], CURLINFO_EFFECTIVE_URL); 
+    $time = curl_getinfo($chs[$key], CURLINFO_TOTAL_TIME);
+    $response = curl_multi_getcontent($chs[$key]); // get results
+    if (!empty($error)) {
+        echo &quot;The request $key return a error: $error&quot; . &quot;\n&quot;; 
+    } else {
+        echo &quot;The request to '$last_effective_URL' returned '$response' in $time seconds.&quot; . &quot;\n&quot;;
+    }
+    curl_multi_remove_handle($mh, $chs[$key]);
+}
+// close current handler
+curl_multi_close($mh);
+</code></pre>
+
+<p>可能有下面的输出：</p>
+
+<blockquote>
+<p>对<a href="http://www.example.com/">http://www.example.com/</a>请求可能返回<code>fruits</code>在2秒内</p>
+
+<p>对<a href="http://www.example2.com/">http://www.example2.com/</a>的请求可能返回<code>seafood</code>在5秒内</p>
+</blockquote>
+
+<h3 id="一次请求发送多维数据和多个文件">一次请求发送多维数据和多个文件</h3>
+
+<p>我们有一个下面这样的表格，我们想要使用Ajax发送数据到我们的服务器上面，其上有一个在外部机器运行的脚本。</p>
+
+<p><img src="/img/php/55fQ6.png" alt="表格" /></p>
+
+<p>我们有普通的输入，多选字段，可以上传多个文件的上传区域。</p>
+
+<p>假设AJAX的POST请求成功了，我们也获得了数据：</p>
+
+<pre><code>// print_r($_POST)
+Array
+(
+    [first_name] =&gt; John
+    [last_name] =&gt; Doe
+    [activities] =&gt; Array
+        (
+            [0] =&gt; soccer,
+            [1] =&gt; hiking
+        )
+)
+</code></pre>
+
+<p>文件像下面这样：</p>
+
+<pre><code>// print_r($_FILES)
+Array
+(
+    [upload] =&gt; Array
+        (
+            [name] =&gt; Array
+                (
+                    [0] =&gt; my_photo.jpg
+                    [1] =&gt; my_life.pdf
+                )
+            [type] =&gt; Array
+                (
+                    [0] =&gt; image/jpg
+                    [1] =&gt; application/pdf
+                )
+            [tmp_name] =&gt; Array
+                (
+                    [0] =&gt; /tmp/phpW5spji
+                    [1] =&gt; /tmp/phpWgnUeY
+                )
+            [error] =&gt; Array
+                (
+                    [0] =&gt; 0
+                    [1] =&gt; 0 
+                )
+            [size] =&gt; Array
+                (
+                    [0] =&gt; 647548
+                    [1] =&gt; 643223
+                )
+        )
+)          
+</code></pre>
+
+<p>到现在为止，一切都正常。现在我们想要把这些数据和文件使用cURL发送到外部的服务器上面。</p>
+
+<p>因为cURL值接收一个简单的数组，不能接收多维数组，我们首先处理$_POST数组。</p>
+
+<p>这么做，我们使用<a href="http://codereview.stackexchange.com/a/14685">示例方法</a>获取下面的返回值：</p>
+
+<pre><code>// print_r($new_post_array)
+Array
+(
+    [first_name] =&gt; John
+    [last_name] =&gt; Doe
+    [activities[0]] =&gt; soccer
+    [activities[1]] =&gt; hiking
+)
+</code></pre>
+
+<p>下面就是创建上传文件的CurlFile的对象，可以像下面循环处理：</p>
+
+<pre><code>$files = array();
+foreach ($_FILES[&quot;upload&quot;][&quot;error&quot;] as $key =&gt; $error) {
+    if ($error == UPLOAD_ERR_OK) {
+      $files[&quot;upload[$key]&quot;] = curl_file_create( $_FILES['upload']['tmp_name'][$key], $_FILES['upload']['type'][$key], $_FILES['upload']['name'][$key]); 
+    }
+}
+</code></pre>
+
+<p>curl_file_create是CurlFile类创建CurlFile对象的帮助方法。我们把对象放到$files数组中，键名分别是&rdquo;upload[0]&ldquo;和&rdquo;upload[1]&ldquo;。</p>
+
+<p>现在还需要把数据数组和文件数组组合起来放到$data数组中：</p>
+
+<pre><code>$data = $new_post_array + $files;
+</code></pre>
+
+<p>最后就是发生curl请求了。</p>
+
+<pre><code class="language-php">$ch = curl_init();
+curl_setopt_array($ch, array(
+    CURLOPT_POST =&gt; 1,
+    CURLOPT_URL =&gt; &quot;https://api.externalserver.com/upload.php&quot;,
+    CURLOPT_RETURNTRANSFER =&gt; 1,
+    CURLINFO_HEADER_OUT =&gt; 1,
+    CURLOPT_POSTFIELDS =&gt; $data
+));
+$result = curl_exec($ch);
+curl_close ($ch);
+</code></pre>
+
+<p>因为现在$data是一个简单数组，cURL可以使用<code>Content Type: multipart/form-data</code>来发送POST请求。</p>
+
+<p>在另外一台服务器上面的upload.php文件中，你可以使用<code>$_POST</code>和<code>$_GET</code>来获取数据。</p>
+
+<h3 id="使用自定义方法创建并发送请求">使用自定义方法创建并发送请求</h3>
+
+<p>默认，PHP的CURL使用GET和POST发送请求。也可以发送自定义的请求，像DELETE，PUT或者PATCH(甚至非标准方法)使用CURLOPT_CUSTOMREQUEST参数。</p>
+
+<pre><code class="language-php">$method = 'DELETE'; // Create a DELETE request
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+$content = curl_exec($ch);
+curl_close($ch);
+</code></pre>
+
+<h3 id="在php中获取和设置http头">在php中获取和设置http头</h3>
+
+<h4 id="发送请求头">发送请求头</h4>
+
+<pre><code class="language-php">$uri = 'http://localhost/http.php';
+$ch = curl_init($uri);
+curl_setopt_array($ch, array(
+    CURLOPT_HTTPHEADER =&gt; array('X-User: admin', 'X-Authorization: 123456'), 
+    CURLOPT_RETURNTRANSFER =&gt;true,
+    CURLOPT_VERBOSE
+));
+$out = curl_exec($ch); 
+curl_close($ch);
+// echo response output echo $out;
+</code></pre>
+
+<h4 id="读取自定义头">读取自定义头</h4>
+
+<pre><code>print_r(apache_request_headers());
+</code></pre>
+
+<h4 id="输出">输出</h4>
+
+<pre><code>Array
+(
+    [Host] =&gt; localhost
+    [Accept] =&gt; */*
+    [X-User] =&gt; admin
+    [X-Authorization] =&gt; 123456
+    [Content-Length] =&gt; 9
+    [Content-Type] =&gt; application/x-www-form-urlencoded
+)
+</code></pre>
+
+<p>也可以使用下面的语法发送头：</p>
+
+<pre><code>curl --header &quot;X-MyHeader: 123&quot; www.google.com
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-34.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十四）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-32.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

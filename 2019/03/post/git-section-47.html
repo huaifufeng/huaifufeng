@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="git补丁">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（四十七）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/03/post/git-section-47.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（四十七）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, March 10, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#git补丁">git补丁</a>
+<ul>
+<li><a href="#创建补丁">创建补丁</a></li>
+<li><a href="#应用补丁">应用补丁</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="git补丁">git补丁</h2>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>`(<mbox></td>
+<td><Maildir>)`&hellip;</td>
+</tr>
+
+<tr>
+<td><code>-s, —signoff</code></td>
+<td>使用自己的提交者标识，在提交消息中添加一个签名人</td>
+</tr>
+
+<tr>
+<td><code>-q, —quiet</code></td>
+<td>安静模式。值打印错误信息</td>
+</tr>
+
+<tr>
+<td><code>-u, -utf8</code></td>
+<td><code>git mailinfo</code>使用<code>-u</code>标识。这表明从邮箱获取的提交日志信息使用UTF-8重新编码(如果不是UTF-8的话，<code>i18n.commitencoding</code>可以用来指定项目的编码)。你可以使用<code>—no-utf8</code>来覆盖这个选项</td>
+</tr>
+
+<tr>
+<td><code>—no-utf8</code></td>
+<td><code>git mailinfo</code>使用<code>-n</code>标识。</td>
+</tr>
+
+<tr>
+<td><code>-3, —3way</code></td>
+<td>如果补丁不干净地应用，那么如果补丁记录了它应该应用到的blob的标识，并且我们在本地有这些blob可用，那么返回到3路合并。</td>
+</tr>
+
+<tr>
+<td><code>—ingore-date, —ignore-space-change, —ignore-whitespace, —whitespace=&lt;option&gt;, -C&lt;n&gt;, -p&lt;n&gt;, —directory=&lt;dir&gt;, —exclude=&lt;path&gt;, —include=&lt;path&gt;, —reject</code></td>
+<td>这些标识传递给<code>git apply</code>来应用补丁</td>
+</tr>
+
+<tr>
+<td><code>—patch-format</code></td>
+<td>默认命令会试着自动进行补丁格式的解析。这个选项允许用户跳过自动解析，指定补丁的格式。有效的格式包括<code>mbox, stgit stgit-series hg</code></td>
+</tr>
+
+<tr>
+<td><code>-i, —interactive</code></td>
+<td>运行交互模式</td>
+</tr>
+
+<tr>
+<td><code>—committer-date-is-author-date</code></td>
+<td>默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和作者日期一样的值来假装提交者日期。</td>
+</tr>
+
+<tr>
+<td><code>—ignore-date</code></td>
+<td>默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和提交者日期一样的值来假装作者日期。</td>
+</tr>
+
+<tr>
+<td><code>—skip</code></td>
+<td>跳过当前补丁。这只在重启一个终端的补丁时有意义。</td>
+</tr>
+
+<tr>
+<td><code>-S[&lt;keyid&gt;], —gpg-sign[=&lt;keyid&gt;]</code></td>
+<td>GPG签名提交</td>
+</tr>
+
+<tr>
+<td><code>—continue, -r, —resolved</code></td>
+<td>修补程序失败后（例如尝试应用冲突的修补程序），用户已手动应用该修补程序，索引文件存储应用程序的结果。使用从电子邮件和当前索引文件中提取的作者身份和提交日志进行提交，然后继续。</td>
+</tr>
+
+<tr>
+<td><code>—resolvemsg=&lt;msg&gt;</code></td>
+<td>当补丁失败的时候，在退出之前，<code>&lt;msg&gt;</code>将会被输出到屏幕。这将会覆盖你使用<code>—continue</code>或<code>—skip</code>的时候的标准信息。这只限于<code>git rebase</code>和<code>git am</code>之间使用</td>
+</tr>
+
+<tr>
+<td><code>—abort</code></td>
+<td>终端补丁操作，返回原本的分支。</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="创建补丁">创建补丁</h3>
+
+<p>创建一个补丁，有两个步骤：</p>
+
+<ol>
+<li>修改并提交</li>
+<li>使用<code>git format-patch &lt;commit-reference&gt;</code>转换<code>&lt;commit-reference&gt;</code>之后（不包括）的提交到补丁文件中。</li>
+</ol>
+
+<p>例如，如果一个补丁从上两次提交中产生：</p>
+
+<pre><code class="language-shell">git format-patch HEAD~~
+</code></pre>
+
+<p>这将会产生两个文件，从<code>HEAD~~</code>之后的每个提交一个文件，像下面这样：</p>
+
+<pre><code>0001-hello_world.patch
+0002-beginning.patch
+</code></pre>
+
+<h3 id="应用补丁">应用补丁</h3>
+
+<p>我们可以使用<code>git apply some.patch</code>把<code>.patch</code>文件的修改应用到当前的工作目录中。</p>
+
+<p>想要像提交一样应用一个补丁(带提交信息)，</p>
+
+<pre><code>git am some.patch
+</code></pre>
+
+<p>应用所有的提交文件的话：</p>
+
+<pre><code>git am *.patch
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/03/post/bash-section-42.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十二)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/03/post/bash-section-41.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十一)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

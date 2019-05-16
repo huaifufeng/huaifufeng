@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="git发送邮件">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Git专业笔记（四十九）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/03/post/git-section-49.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/git" title="Git">
+                           Git
+                        </a>
+                       
+                    </div>
+                    <h1>Git专业笔记（四十九）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Tuesday, March 12, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#git发送邮件">git发送邮件</a>
+<ul>
+<li><a href="#使用gmail">使用Gmail</a></li>
+<li><a href="#组合">组合</a></li>
+<li><a href="#邮件发送补丁">邮件发送补丁</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="git发送邮件">git发送邮件</h2>
+
+<h3 id="使用gmail">使用Gmail</h3>
+
+<p>背景：如果你工作在像<code>Linux内核</code>这样的项目上面，你不是使用pull reques，而是要提交你到提交到服务器上等待review。这里介绍怎么使用git发送Gmail邮件。</p>
+
+<p>在<code>.gitconfig</code>中添加下面的配置：</p>
+
+<pre><code>[sendemail]
+		smtpserver = smtp.googlemail.com 
+		smtpencryption = tls 
+		smtpserverport = 587
+		smtpuser = name@gmail.com
+</code></pre>
+
+<p>然后在网页上面：<code>Go to Google -&gt; My Account -&gt; Connected Apps &amp; Sites -&gt; Allow less secure apps -&gt; Switch ON</code></p>
+
+<p>创建一个补丁集合：</p>
+
+<pre><code>git format-patch HEAD~~~~ --subject-prefix=&quot;PATCH &lt;project-name&gt;&quot;
+</code></pre>
+
+<p>发送补丁到listserv:</p>
+
+<pre><code>git send-email --annotate --to project-developers-list@listserve.example.com 00*.patch
+</code></pre>
+
+<p>创建并发送补丁已经更新的版本：</p>
+
+<pre><code>git format-patch -v 2 HEAD~~~~ ......
+git send-email --to project-developers-list@listserve.example.com v2-00*.patch
+</code></pre>
+
+<h3 id="组合">组合</h3>
+
+<pre><code>--from               * Email From:
+--[no-]to            * Email To:
+--[no-]cc            * Email Cc:
+--[no-]bcc           * Email Bcc:
+--subject            * Email &quot;Subject:&quot;
+--in-reply-to        * Email &quot;In-Reply-To:&quot;
+--[no-]xmailer              * Add &quot;X-Mailer:&quot; header (default).
+--[no-]annotate             * Review each patch that will be sent in an editor.
+--compose                   * Open an editor for introduction.
+--compose-encoding   * Encoding to assume for introduction.
+--8bit-encoding      * Encoding to assume 8bit mails if undeclared
+--transfer-encoding  * Transfer encoding to use (quoted-printable, 8bit, base64)
+</code></pre>
+
+<h3 id="邮件发送补丁">邮件发送补丁</h3>
+
+<p>假设你有一个项目的很多提交(这里是ulogd2，官方分支是git-svn)，你想要把你的补丁集合发送到<code>devel@netfilter.org</code>邮件列表。只需要在git仓库的根目录执行下面的代码：</p>
+
+<pre><code>git format-patch --stat -p --raw --signoff --subject-prefix=&quot;ULOGD PATCH&quot; -o /tmp/ulogd2/ -n git- svn
+git send-email --compose --no-chain-reply-to --to devel@netfilter.org /tmp/ulogd2/
+</code></pre>
+
+<p>第一个命令创建<code>/tmp/ulogd2/</code>下分支的邮件列表，第二个命令开启编辑器来为补丁集合添加简介信息。为了避免糟糕的邮件系列，可以使用：</p>
+
+<pre><code>git config sendemail.chainreplyto false
+</code></pre>
+
+<p><a href="https://home.regit.org/technical-articles/git-for-the-newbie/">资源</a></p>
+
+<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/03/post/bash-section-44.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十四)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/03/post/bash-section-43.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十三)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
