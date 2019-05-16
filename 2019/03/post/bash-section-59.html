@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="处理系统提示">
+    <meta name="description" content="CGI脚本">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Bash专业笔记(五十四)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(五十九)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/bash-section-54.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-59.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -146,9 +146,9 @@
                         </a>
                        
                     </div>
-                    <h1>Bash专业笔记(五十四)</h1>
+                    <h1>Bash专业笔记(五十九)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, March 22, 2019
+                    <span  class="meta">Posted by 怀府风 on Wednesday, March 27, 2019
                         
                     </span>
                 </div>
@@ -178,13 +178,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#处理系统提示">处理系统提示</a>
+<li><a href="#cgi脚本">CGI脚本</a>
 <ul>
-<li><a href="#prompt-command">PROMPT_COMMAND</a></li>
-<li><a href="#ps2">PS2</a></li>
-<li><a href="#ps3">PS3</a></li>
-<li><a href="#ps4">PS4</a></li>
-<li><a href="#使用ps1">使用PS1</a></li>
+<li><a href="#请求方法-get">请求方法：GET</a>
+<ul>
+<li><a href="#请求方法-post-w-json">请求方法：POST /w JSON</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -192,238 +191,212 @@
         		
         		
 
-<h2 id="处理系统提示">处理系统提示</h2>
+<h2 id="cgi脚本">CGI脚本</h2>
 
-<table>
-<thead>
-<tr>
-<th>转义符</th>
-<th>含义</th>
-</tr>
-</thead>
+<h3 id="请求方法-get">请求方法：GET</h3>
 
-<tbody>
-<tr>
-<td>\a</td>
-<td>响铃字符</td>
-</tr>
+<p>使用GET请求一个CGI脚本是非常方便的。</p>
 
-<tr>
-<td>\d</td>
-<td>日期，&rdquo;Weekday Month Date&rdquo;这种格式的(像&rdquo;Tue May 26&rdquo;)</td>
-</tr>
+<p>首先你需要脚本的<code>encoded url</code>。然后你在变量后面添加<code>?</code>。</p>
 
-<tr>
-<td>\D{FORMAT}</td>
-<td>这个FORMAT是传给<code>strftime</code>(3)，并且结果插入提示字符串。一个空的FORMAT导致特定于区域设置的时间表示。花括号是必须的</td>
-</tr>
+<ul>
+<li><p>每个变量有<code>=</code>分割的两个部分。第一部分是对每个变量唯一的值，第二部分是变量的值</p></li>
 
-<tr>
-<td>\e</td>
-<td>转义符。\ 033当然也可以。</td>
-</tr>
+<li><p>变量使用&amp;分隔</p></li>
 
-<tr>
-<td>\h</td>
-<td>主机名，知道第一个<code>.</code>(就是没有域的部分)</td>
-</tr>
+<li><p>字符串的总长度不要超过255个字符</p></li>
 
-<tr>
-<td>\H</td>
-<td>带有域部分的主机名称</td>
-</tr>
+<li><p>变量的名称和值需要是html编码的(替换<code>&lt;/ /?:@&amp;=+$</code>)</p></li>
+</ul>
 
-<tr>
-<td>\j</td>
-<td>这个shell当前关联的任务数量</td>
-</tr>
+<p><strong>注意：</strong>当使用html表格时，请求方法可以自己产生。使用Ajax你可以使用<strong>encodeURI</strong>和<strong>encodeURIComponent</strong>来编码信息</p>
 
-<tr>
-<td>\l</td>
-<td>shell的终端设备名称的根目录</td>
-</tr>
+<p>例子：</p>
 
-<tr>
-<td>\n</td>
-<td>新行</td>
-</tr>
+<pre><code>http://www.example.com/cgi-bin/script.sh?var1=Hello%20World!&amp;var2=This%20is%20a%20Test.&amp;
+</code></pre>
 
-<tr>
-<td>\r</td>
-<td>回车符</td>
-</tr>
+<p>服务器只能通过跨源资源共享(CORS)来进行请求，这样请求更加安全。在这个例子中，我们使用CORS来确定使用的数据类型。</p>
 
-<tr>
-<td>\s</td>
-<td>shell的名称，基名是&rdquo;$0&rdquo;(最后一个斜杠后面的部分)</td>
-</tr>
+<p>有多中数据类型我们可以选择，通常是：</p>
 
-<tr>
-<td>\t</td>
-<td>24小时格式的时间，HH:MM:SS</td>
-</tr>
+<ul>
+<li>text/html</li>
+<li>text/plain</li>
+<li>application/json</li>
+</ul>
 
-<tr>
-<td>\T</td>
-<td>12小时格式的时间，HH:MM:SS</td>
-</tr>
+<p>当发生一个请求，服务器会创建很多环境变量。现在最重要的环境变量是<code>$REQUEST_METHOD</code>和<code>$QUERY_STRING</code></p>
 
-<tr>
-<td>@</td>
-<td>12小时格式的时间， am/pm</td>
-</tr>
+<p>这里<code>REQUEST_METHOD必须是GET。这个</code>QUERY_STRING`包含所有html编码的数据。</p>
 
-<tr>
-<td>\A</td>
-<td>24小时的时间，HH:MM</td>
-</tr>
+<pre><code>#!/bin/bash
 
-<tr>
-<td>\u</td>
-<td>当前用户的用户名</td>
-</tr>
+# CORS is the way to communicate, so lets response to the server first 
+echo &quot;Content-type: text/html&quot; # set the data-type we want to use 
+echo &quot;&quot; # we don't need more rules, the empty line initiate this.
 
-<tr>
-<td>\v</td>
-<td>Bash的版本(2.00)</td>
-</tr>
+# CORS are set in stone and any communication from now on will be like reading a html-document.
+# Therefor we need to create any stdout in html format!
 
-<tr>
-<td>\V</td>
-<td>Bash的发布版本， 版本+补丁级别(2.00.0)</td>
-</tr>
+# create html scructure and send it to stdout
+echo &quot;&lt;!DOCTYPE html&gt;&quot; 
+echo &quot;&lt;html&gt;&lt;head&gt;&quot;
 
-<tr>
-<td>\w</td>
-<td>当前的工作目录，使用tilde缩写<code>$HOME</code>(<code>$PROMPT_DIRTRIM</code>变量)</td>
-</tr>
+# The content will be created depending on the Request Method
+if [ &quot;$REQUEST_METHOD&quot; = &quot;GET&quot; ]; then
+    # Note that the environment variables $REQUEST_METHOD and $QUERY_STRING can be processed by the shell directly.
+    # One must filter the input to avoid cross site scripting.
+    
+    Var1=$(echo &quot;$QUERY_STRING&quot; | sed -n 's/^.*var1=\([^&amp;]*\).*$/\1/p') 
+    Var1_Dec=$(echo -e $(echo &quot;$Var1&quot; | sed 's/+/ /g;s/%\(..\)/\\x\1/g;'))
 
-<tr>
-<td>\W</td>
-<td><code>$PWD</code>的基目录，</td>
-</tr>
+    Var2=$(echo &quot;$QUERY_STRING&quot; | sed -n 's/^.*var2=\([^&amp;]*\).*$/\1/p') 
+    Var2_Dec=$(echo -e $(echo &quot;$Var2&quot; | sed 's/+/ /g;s/%\(..\)/\\x\1/g;'))
+    
+    # create content for stdout
+    echo &quot;&lt;title&gt;Bash-CGI Example 1&lt;/title&gt;&quot;
+    echo &quot;&lt;/head&gt;&lt;body&gt;&quot;
+    echo &quot;&lt;h1&gt;Bash-CGI Example 1&lt;/h1&gt;&quot;
+    echo &quot;&lt;p&gt;QUERY_STRING: ${QUERY_STRING}&lt;br&gt;var1=${Var1_Dec}&lt;br&gt;var2=${Var2_Dec}&lt;/p&gt;&quot; # print the values to stdout
+else
+    echo &quot;&lt;title&gt;456 Wrong Request Method&lt;/title&gt;&quot;
+    echo &quot;&lt;/head&gt;&lt;body&gt;&quot;
+    echo &quot;&lt;h1&gt;456&lt;/h1&gt;&quot;
+    echo &quot;&lt;p&gt;Requesting data went wrong.&lt;br&gt;The Request method has to be \&quot;GET\&quot; only!&lt;/p&gt;&quot;
+fi
 
-<tr>
-<td>！</td>
-<td>这个命令的历史数量</td>
-</tr>
+echo &quot;&lt;hr&gt;&quot;
+echo &quot;$SERVER_SIGNATURE&quot; # an other environment variable 
+echo &quot;&lt;/body&gt;&lt;/html&gt;&quot; # close html
 
-<tr>
-<td>#</td>
-<td>这个命令的命令数量</td>
-</tr>
+exit 0
+</code></pre>
 
-<tr>
-<td>$</td>
-<td>如果有效用户id是0 # 否则是 $</td>
-</tr>
+<p>这个html文档像：</p>
 
-<tr>
-<td>\NNN</td>
-<td>ASCII码是八进制数NNN的字符</td>
-</tr>
+<pre><code>&lt;html&gt;&lt;head&gt;
+&lt;title&gt;Bash-CGI Example 1&lt;/title&gt;
+&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;Bash-CGI Example 1&lt;/h1&gt;
+&lt;p&gt;QUERY_STRING: var1=Hello%20World!&amp;amp;var2=This%20is%20a%20Test.&amp;amp;&lt;br&gt;var1=Hello World!&lt;br&gt;var2=This is a Test.&lt;/p&gt;
+&lt;hr&gt;
+&lt;address&gt;Apache/2.4.10 (Debian) Server at example.com Port 80&lt;/address&gt;
 
-<tr>
-<td></td>
-<td>反斜杠</td>
-</tr>
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
 
-<tr>
-<td>[</td>
-<td>一列非打印字符的开始。这可以用来吧终端控制队列放入提示中</td>
-</tr>
+<p>变量的输出像下面这样：</p>
 
-<tr>
-<td>]</td>
-<td>非打印字符的结尾</td>
-</tr>
-</tbody>
-</table>
+<pre><code>var1=Hello%20World!&amp;var2=This%20is%20a%20Test.&amp;
+Hello World!
+This is a Test.
+Apache/2.4.10 (Debian) Server at example.com Port 80
+</code></pre>
 
-<h3 id="prompt-command">PROMPT_COMMAND</h3>
+<p>副作用：</p>
 
-<p>当交互bash实例中上一个命令执行完毕了，PS1将会显示。在实际显示PS1之前，bash会首先检查PROMPT_COMMAND是否设置了。这个变量的值必须是可调用的程序或脚本。如果这个变量设置了，这个程序或脚本会在PS1提示输出之前调用。</p>
+<ul>
+<li>所有编码和解码的过期不友好，但是是必须的</li>
+<li>请求是公开可读的，并留有一个后台</li>
+<li>请求大小是限制的</li>
+<li>需要避免XSS攻击</li>
+</ul>
 
-<pre><code>#只是一个简单方法。我们用来检查是否小时是12，分钟小于59
-lunchbreak() {
-    if (( $(date +%H) == 12 &amp;&amp; $(date +%M) &lt; 59)); then
-        #输出颜色\033[ 
-        printf &quot;\033[5;1;31mmind the lunch break\033[0m\n&quot;;
-    else 
-        printf &quot;\033[33mstill working...\033[0m\n&quot;;
-    fi
+<h4 id="请求方法-post-w-json">请求方法：POST /w JSON</h4>
+
+<p>使用SSL的POST请求，让数据传输更加安全。</p>
+
+<p>另外：</p>
+
+<ul>
+<li>大部分的编码和解码工作是不需要的</li>
+<li>URL是任何人都可见的，并且需要编码。数据是单独传输的，应该通过SSL传输。</li>
+<li>数据的大小是不限制的</li>
+<li>还是需要考虑XSS攻击</li>
+</ul>
+
+<p>为了让例子简单，我们接受JSON数据。通信需要跨源资源安共享。</p>
+
+<p>下面的脚本演示两种不同的数据类型：</p>
+
+<pre><code>#!/bin/bash
+
+exec 2&gt;/dev/null # We don't want any error messages be printed to stdout
+trap &quot;response_with_html &amp;&amp; exit 0&quot; ERR # response with an html message when an error occurred and close the script
+
+function response_with_html(){ 
+    echo &quot;Content-type: text/html&quot; 
+    echo &quot;&quot;
+    echo &quot;&lt;!DOCTYPE html&gt;&quot;
+    echo &quot;&lt;html&gt;&lt;head&gt;&quot;
+    echo &quot;&lt;title&gt;456&lt;/title&gt;&quot;
+    echo &quot;&lt;/head&gt;&lt;body&gt;&quot;
+    echo &quot;&lt;h1&gt;456&lt;/h1&gt;&quot;
+    echo &quot;&lt;p&gt;Attempt to communicate with the server went wrong.&lt;/p&gt;&quot; echo &quot;&lt;hr&gt;&quot;
+    echo &quot;$SERVER_SIGNATURE&quot;
+    echo &quot;&lt;/body&gt;&lt;/html&gt;&quot;
 }
 
-export PROMPT_COMMAND=lunchbreak
-</code></pre>
-
-<h3 id="ps2">PS2</h3>
-
-<p>当命令扩展到多行，并且bash等待更多的击键时，将显示PS2。当输入注入<code>while…do…done</code>等复合命令时，也会显示这个命令。</p>
-
-<pre><code>export PS2=&quot;would you please complete this command?\n&quot;
-</code></pre>
-
-<h3 id="ps3">PS3</h3>
-
-<p>当一个select语句执行时，将会显示元素前面加上数字，然后显示PS3提示：</p>
-
-<pre><code>export PS3=&quot; To choose your language type the preceding number :&quot;
-select lang in EN CA FR DE; do
-    #检查输入直到有效
-    break
-done
-</code></pre>
-
-<h3 id="ps4">PS4</h3>
-
-<p>当bash在debug模式时，显示PS4：</p>
-
-<pre><code>#!/usr/bin/env bash
-
-# switch on debugging
-set -x
-
-# define a stupid_func
-stupid_func(){
-    echo I am line 1 of stupid_func 
-    echo I am line 2 of stupid_func
+function response_with_json(){
+		echo &quot;Content-type: application/json&quot; 
+		echo &quot;&quot;
+		echo &quot;{\&quot;message\&quot;: \&quot;Hello World!\&quot;}&quot;
 }
 
-# setting the PS4 &quot;DEBUG&quot; prompt
-export PS4='\nDEBUG level:$SHLVL subshell-level: $BASH_SUBSHELL \nsource-file:${BASH_SOURCE} line#:${LINENO} function:${FUNCNAME[0]:+${FUNCNAME[0]}(): }\nstatement: '
+if [ &quot;$REQUEST_METHOD&quot; = &quot;POST&quot; ]; then
+   
+    # The environment variabe $CONTENT_TYPE describes the data-type received
+    case &quot;$CONTENT_TYPE&quot; in 
+    application/json)
+				# The environment variabe $CONTENT_LENGTH describes the size of the data 
+				read -n &quot;$CONTENT_LENGTH&quot; QUERY_STRING_POST # read datastream
 
-# a normal statement
-echo something 
+        # The following lines will prevent XSS and check for valide JSON-Data.
+				# But these Symbols need to be encoded somehow before sending to this script 				 
+				QUERY_STRING_POST=$(echo &quot;$QUERY_STRING_POST&quot; | sed &quot;s/'//g&quot; | sed
+'s/\$//g;s/`//g;s/\*//g;s/\\//g' ) # removes some symbols (like \ * ` $ ') to prevent XSS with Bash and SQL.
+				QUERY_STRING_POST=$(echo &quot;$QUERY_STRING_POST&quot; | sed -e :a -e 's/&lt;[^&gt;]*&gt;//g;/&lt;/N;//ba') # removes most html declarations to prevent XSS within documents
+				JSON=$(echo &quot;$QUERY_STRING_POST&quot; | jq .) # json encode - This is a pretty save wayto check for valide json code
+		;; 
+		*)
+				response_with_html
+				exit 0 
+		;;
+		esac
 
-# function call
-stupid_func
+else
+    response_with_html
+		exit 0 
+fi
 
-# a pipeline of commands running in a subshell
-( ls -l | grep 'x' )
+# Some Commands ...
+
+response_with_json
+
+exit 0
 </code></pre>
 
-<h3 id="使用ps1">使用PS1</h3>
+<p>你将会获得<code>{&quot;message&quot;:&quot;Hello World!&quot;}</code>最为响应，但你通过POST发送JSON数据到这个脚本的时候。html文档的信息也会被获取。</p>
 
-<p>PS1是正常的系统提示，只是bash等待输入命令。它理解一些转移序列，并能执行函数和程序。因为bash必须在显示提示之后定位光标，它需要知道怎么去计算提示字符串的长度。为了指示PS1中字符的非打印序列，使用了转义大括号：<code>\[字符的非打印序列]</code>。这里说的对所有的PS*都是有效的。</p>
+<p>重要的事变量<code>$JSON</code>。这个变量没有XSS，但仍然可能包含错误的值，需要先进行验证。请记住这一点。</p>
 
-<pre><code>#everything not being an escape sequence will be literally printed export PS1=&quot;literal sequence &quot; # Prompt is now:
-literal sequence ▉
+<p>这个代码和没有使用JSON是相似的。你可以通过这种方式获取数据。你只需要修改<code>Content-Type</code>的值。</p>
 
-# \u == user \h == host \w == actual working directory
-# mind the single quotes avoiding interpretation by shell
-export PS1='\u@\h:\w &gt; ' # \u == user, \h == host, \w actual working dir looser@host:/some/path &gt; ▉
+<p>例子：</p>
 
-# executing some commands within PS1
-# following line will set foreground color to red, if user==root,
-# else it resets attributes to default
-# $( (($EUID == 0)) &amp;&amp; tput setaf 1)
-# later we do reset attributes to default with
-# $( tput sgr0 )
-# assuming being root:
-PS1=&quot;\[$( (($EUID == 0)) &amp;&amp; tput setaf 1 \]\u\[$(tput sgr0)\]@\w:\w \$ &quot; 
-looser@host:/some/path &gt; ▉ # if not root else &lt;red&gt;root&lt;default&gt;@host....
+<pre><code>if [ &quot;$REQUEST_METHOD&quot; == &quot;POST&quot; ]; then
+    case &quot;$CONTENT_TYPE&quot; in
+    application/x-www-form-urlencode)
+        read -n &quot;$CONTENT_LENGTH&quot; QUERY_STRING_POST
+    text/plain)
+        read -n &quot;$CONTENT_LENGTH&quot; QUERY_STRING_POST
+    ;;
+    esac
+fi
 </code></pre>
+
+<p>最后但不是最终的，不要忘记想要所有的请求，否则第三部分的程序不知道他们是不是成功了。</p>
 
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
@@ -434,12 +407,12 @@ looser@host:/some/path &gt; ▉ # if not root else &lt;red&gt;root&lt;default&gt
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/git-section-60.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（六十）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/php-section-1.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/git-section-59.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（五十九）">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-58.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十八)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

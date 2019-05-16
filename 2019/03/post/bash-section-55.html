@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="diff-tree">
+    <meta name="description" content="cut命令">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（六十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(五十五)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/git-section-61.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-55.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -141,14 +141,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/git" title="Git">
-                           Git
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（六十一）</h1>
+                    <h1>Bash专业笔记(五十五)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, March 24, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, March 23, 2019
                         
                     </span>
                 </div>
@@ -178,11 +178,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#diff-tree">diff-tree</a>
+<li><a href="#cut命令">cut命令</a>
 <ul>
-<li><a href="#获取指定提交的文件修改">获取指定提交的文件修改</a></li>
-<li><a href="#使用">使用</a></li>
-<li><a href="#选项">选项</a></li>
+<li><a href="#只有一个分隔符">只有一个分隔符</a></li>
+<li><a href="#重复分隔符任务是空字符">重复分隔符任务是空字符</a></li>
+<li><a href="#无引用">无引用</a></li>
+<li><a href="#提取而不是操作">提取而不是操作</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,160 +191,93 @@
         		
         		
 
-<h2 id="diff-tree">diff-tree</h2>
-
-<p>比较通过两个树对象找到的blob的内容和模式。</p>
-
-<h3 id="获取指定提交的文件修改">获取指定提交的文件修改</h3>
-
-<pre><code>git diff-tree --no-commit-id --name-only -r COMMIT_ID
-</code></pre>
-
-<h3 id="使用">使用</h3>
-
-<pre><code>git diff-tree [--stdin] [-m] [-c] [--cc] [-s] [-v] [--pretty] [-t] [-r] [--root] [&lt;common-diff- options&gt;] &lt;tree-ish&gt; [&lt;tree-ish&gt;] [&lt;path&gt;...]
-</code></pre>
+<h2 id="cut命令">cut命令</h2>
 
 <table>
 <thead>
 <tr>
-<th>选项</th>
+<th>转义符</th>
 <th>含义</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td>-r</td>
-<td>递归的进行diff</td>
+<td>-f, —fields</td>
+<td>基于字段的选择</td>
 </tr>
 
 <tr>
-<td>&ndash;root</td>
-<td>包括初始提交作为/dev/null的diff</td>
+<td>-d, —delimiter</td>
+<td>基于字段选择的分隔符</td>
+</tr>
+
+<tr>
+<td>-c, —characters</td>
+<td>基于字符选择，分隔符忽略或者错误</td>
+</tr>
+
+<tr>
+<td>-s, —only-delimited</td>
+<td>禁止使用不带分隔符的行（按其他方式打印）</td>
+</tr>
+
+<tr>
+<td>—complemment</td>
+<td>反向选择（提取除指定字段/字符之外的所有字段/字符</td>
+</tr>
+
+<tr>
+<td>—output-delimiter</td>
+<td>指定它必须与输入分隔符不同的时间</td>
 </tr>
 </tbody>
 </table>
 
-<h3 id="选项">选项</h3>
+<p><code>cut</code>命令是快速提前文本文件行的部分的方法。这是最老的Unix命令之一。它最流行的实现是Linux上的GUN版本，MacOS的FreeBSD版本。但是Unix的每种风格都有自己的特色。查看下面的不同。输入的行或者从标准输入读取，或者从命令行的参数列出的文件的读取。</p>
 
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>详情</th>
-</tr>
-</thead>
+<h3 id="只有一个分隔符">只有一个分隔符</h3>
 
-<tbody>
-<tr>
-<td>-z</td>
-<td>输出diff-raw，以NUL结尾</td>
-</tr>
+<p>你不能拥有大于一个的的分隔符。如果你指定了像<code>-d &quot;,;:&quot;</code>，一些实现中只会使用第一个字符作为分隔符(这里，是逗号)。其他的一些实现(像GNU cut)会出现错误信息。</p>
 
-<tr>
-<td>-p</td>
-<td>输出补丁格式</td>
-</tr>
+<pre><code>$ cut -d &quot;,;:&quot; -f2 &lt;&lt;&lt;&quot;J.Smith,1 Main Road,cell:1234567890;land:4081234567&quot; 
+cut: the delimiter must be a single character
+Try `cut --help' for more information.
+</code></pre>
 
-<tr>
-<td>-u</td>
-<td>-p的别名</td>
-</tr>
+<h3 id="重复分隔符任务是空字符">重复分隔符任务是空字符</h3>
 
-<tr>
-<td>—patch-with-raw</td>
-<td>输出补丁和diff-raw格式</td>
-</tr>
+<pre><code>$ cut -d, -f1,3 &lt;&lt;&lt;&quot;a,,b,c,d,e&quot;
+a,b		
+</code></pre>
 
-<tr>
-<td>&ndash;stat</td>
-<td>显示diffstat而不是patch。</td>
-</tr>
+<p>是相当明显的，但是使用空格分隔符，对某些人来说可能不太明显。</p>
 
-<tr>
-<td>&ndash;numstat</td>
-<td>显示数字diffstat而不是patch。</td>
-</tr>
+<pre><code>$ cut -d ' ' -f1,3 &lt;&lt;&quot;a  b c d e&quot;
+a b
+</code></pre>
 
-<tr>
-<td>—patch-with-stat</td>
-<td>输出一个补丁并预先准备其diffstat。</td>
-</tr>
+<p><code>cut</code>不能用来像shell和其他程序语言解析参数。</p>
 
-<tr>
-<td>—name-only</td>
-<td>显示修改文件的名称</td>
-</tr>
+<h3 id="无引用">无引用</h3>
 
-<tr>
-<td>—name-status</td>
-<td>显示修改文件的名称和状态</td>
-</tr>
+<p>没有办法保护分隔符。电子表格和相似的CSV处理软件可以识别文本引用字符，从而可以定义包含分隔符的字符串。但是<code>cut</code>就不行</p>
 
-<tr>
-<td>—full-index</td>
-<td>在索引行显示完整的对象名称</td>
-</tr>
+<pre><code>cut -d, -f3 &lt;&lt;&lt;'John,Smith,&quot;1, Main Street&quot;'
+&quot;1
+</code></pre>
 
-<tr>
-<td>—abbrev=<n></td>
-<td>在对象名称的缩写版本的树和区分RAW头。</td>
-</tr>
+<h3 id="提取而不是操作">提取而不是操作</h3>
 
-<tr>
-<td>-R</td>
-<td>交换输入文件对。</td>
-</tr>
+<p>你只能提取行的部分，而不是重新拍下或重复字符。</p>
 
-<tr>
-<td>-B</td>
-<td>检测完全重写。</td>
-</tr>
+<pre><code>$ cut -d, -f2,1 &lt;&lt;&lt;'John,Smith,USA' ##像 -f1,2
+John,Smith
+$ cut -d, -f2,2 &lt;&lt;&lt;'John,Smith,USA'  # 像-f2
+Smith
+</code></pre>
 
-<tr>
-<td>-M</td>
-<td>检查重命名</td>
-</tr>
-
-<tr>
-<td>-C</td>
-<td>检查复制</td>
-</tr>
-
-<tr>
-<td>—find-copies-harder</td>
-<td>尝试将未更改的文件作为副本检测的候选文件。</td>
-</tr>
-
-<tr>
-<td>-l<n></td>
-<td>将重命名尝试限制为最多个路径。</td>
-</tr>
-
-<tr>
-<td>-O</td>
-<td>根据重新排序差异。</td>
-</tr>
-
-<tr>
-<td>-S</td>
-<td>查找仅一侧包含字符串的文件对。</td>
-</tr>
-
-<tr>
-<td>—pickaxe-all</td>
-<td>使用-s并找到hit时显示所有文件diff。</td>
-</tr>
-
-<tr>
-<td>-a —text</td>
-<td>把所有的文件当做字符串</td>
-</tr>
-</tbody>
-</table>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -352,12 +286,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/bash-section-56.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十六)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/git-section-61.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（六十一）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/bash-section-55.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十五)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/git-section-60.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（六十）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

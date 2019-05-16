@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="diff-tree">
+    <meta name="description" content="cut命令">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（六十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(五十七)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/git-section-61.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-57.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -141,14 +141,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/git" title="Git">
-                           Git
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（六十一）</h1>
+                    <h1>Bash专业笔记(五十七)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, March 24, 2019
+                    <span  class="meta">Posted by 怀府风 on Monday, March 25, 2019
                         
                     </span>
                 </div>
@@ -178,11 +178,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#diff-tree">diff-tree</a>
+<li><a href="#cut命令">cut命令</a>
 <ul>
-<li><a href="#获取指定提交的文件修改">获取指定提交的文件修改</a></li>
-<li><a href="#使用">使用</a></li>
-<li><a href="#选项">选项</a></li>
+<li><a href="#显示文件第一列">显示文件第一列</a></li>
+<li><a href="#显示文件x-y的列表">显示文件x-y的列表</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,42 +189,7 @@
         		
         		
 
-<h2 id="diff-tree">diff-tree</h2>
-
-<p>比较通过两个树对象找到的blob的内容和模式。</p>
-
-<h3 id="获取指定提交的文件修改">获取指定提交的文件修改</h3>
-
-<pre><code>git diff-tree --no-commit-id --name-only -r COMMIT_ID
-</code></pre>
-
-<h3 id="使用">使用</h3>
-
-<pre><code>git diff-tree [--stdin] [-m] [-c] [--cc] [-s] [-v] [--pretty] [-t] [-r] [--root] [&lt;common-diff- options&gt;] &lt;tree-ish&gt; [&lt;tree-ish&gt;] [&lt;path&gt;...]
-</code></pre>
-
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>含义</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>-r</td>
-<td>递归的进行diff</td>
-</tr>
-
-<tr>
-<td>&ndash;root</td>
-<td>包括初始提交作为/dev/null的diff</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="选项">选项</h3>
+<h2 id="cut命令">cut命令</h2>
 
 <table>
 <thead>
@@ -237,113 +201,70 @@
 
 <tbody>
 <tr>
-<td>-z</td>
-<td>输出diff-raw，以NUL结尾</td>
+<td><code>-b LIST, —bytes=LIST</code></td>
+<td>打印LIST参数中的字节列表</td>
 </tr>
 
 <tr>
-<td>-p</td>
-<td>输出补丁格式</td>
+<td><code>-c LIST, —characters=LIST</code></td>
+<td>打印参数LIST中指定位置的字符</td>
 </tr>
 
 <tr>
-<td>-u</td>
-<td>-p的别名</td>
+<td><code>-f LIST, —fields=LIST</code></td>
+<td>打印字段或者列</td>
 </tr>
 
 <tr>
-<td>—patch-with-raw</td>
-<td>输出补丁和diff-raw格式</td>
-</tr>
-
-<tr>
-<td>&ndash;stat</td>
-<td>显示diffstat而不是patch。</td>
-</tr>
-
-<tr>
-<td>&ndash;numstat</td>
-<td>显示数字diffstat而不是patch。</td>
-</tr>
-
-<tr>
-<td>—patch-with-stat</td>
-<td>输出一个补丁并预先准备其diffstat。</td>
-</tr>
-
-<tr>
-<td>—name-only</td>
-<td>显示修改文件的名称</td>
-</tr>
-
-<tr>
-<td>—name-status</td>
-<td>显示修改文件的名称和状态</td>
-</tr>
-
-<tr>
-<td>—full-index</td>
-<td>在索引行显示完整的对象名称</td>
-</tr>
-
-<tr>
-<td>—abbrev=<n></td>
-<td>在对象名称的缩写版本的树和区分RAW头。</td>
-</tr>
-
-<tr>
-<td>-R</td>
-<td>交换输入文件对。</td>
-</tr>
-
-<tr>
-<td>-B</td>
-<td>检测完全重写。</td>
-</tr>
-
-<tr>
-<td>-M</td>
-<td>检查重命名</td>
-</tr>
-
-<tr>
-<td>-C</td>
-<td>检查复制</td>
-</tr>
-
-<tr>
-<td>—find-copies-harder</td>
-<td>尝试将未更改的文件作为副本检测的候选文件。</td>
-</tr>
-
-<tr>
-<td>-l<n></td>
-<td>将重命名尝试限制为最多个路径。</td>
-</tr>
-
-<tr>
-<td>-O</td>
-<td>根据重新排序差异。</td>
-</tr>
-
-<tr>
-<td>-S</td>
-<td>查找仅一侧包含字符串的文件对。</td>
-</tr>
-
-<tr>
-<td>—pickaxe-all</td>
-<td>使用-s并找到hit时显示所有文件diff。</td>
-</tr>
-
-<tr>
-<td>-a —text</td>
-<td>把所有的文件当做字符串</td>
+<td><code>-d DELIMITER</code></td>
+<td>用来分割字段或列</td>
 </tr>
 </tbody>
 </table>
 
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+<p>在Bash，<code>cut</code>命令用来把文件分割到小的部分。</p>
+
+<h3 id="显示文件第一列">显示文件第一列</h3>
+
+<p>假设你有像下面的文件</p>
+
+<pre><code>John Smith 31
+Robert Jones 27
+...
+</code></pre>
+
+<p>这个文件有空格分割的3列。值选择第一列使用下面的命令：</p>
+
+<pre><code>cut -d ' ' -f1 filename
+</code></pre>
+
+<p>这里<code>-d</code>标识指定了分隔符，或者什么分割了结果。<code>f</code>标识指定获取的列或自动的数。这将会输出下面的结果：</p>
+
+<pre><code>John
+Robert
+...
+</code></pre>
+
+<h3 id="显示文件x-y的列表">显示文件x-y的列表</h3>
+
+<p>有时候，需要显示一个文件的指定范围的列。假设你有</p>
+
+<pre><code>Apple California 2017 1.00 47
+Mango Oregon 2015 2.30 33
+</code></pre>
+
+<p>选择前3列表：</p>
+
+<pre><code>cut -d ' ' -f1-3 filename
+</code></pre>
+
+<p>这将显示下面的输出</p>
+
+<pre><code>Apple California 2017
+Mango Oregon 2015
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -352,12 +273,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/bash-section-56.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十六)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-58.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十八)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/bash-section-55.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十五)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-56.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十六)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

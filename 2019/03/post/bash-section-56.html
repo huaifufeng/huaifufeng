@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="diff-tree">
+    <meta name="description" content="Windows 10的bash">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Git专业笔记（六十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(五十六)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/03/post/git-section-61.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-56.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -141,12 +141,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/git" title="Git">
-                           Git
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>Git专业笔记（六十一）</h1>
+                    <h1>Bash专业笔记(五十六)</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Sunday, March 24, 2019
                         
@@ -178,11 +178,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#diff-tree">diff-tree</a>
+<li><a href="#windows-10的bash">Windows 10的bash</a>
 <ul>
-<li><a href="#获取指定提交的文件修改">获取指定提交的文件修改</a></li>
-<li><a href="#使用">使用</a></li>
-<li><a href="#选项">选项</a></li>
+<li><a href="#readme">readme</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,160 +188,19 @@
         		
         		
 
-<h2 id="diff-tree">diff-tree</h2>
+<h2 id="windows-10的bash">Windows 10的bash</h2>
 
-<p>比较通过两个树对象找到的blob的内容和模式。</p>
+<h3 id="readme">readme</h3>
 
-<h3 id="获取指定提交的文件修改">获取指定提交的文件修改</h3>
+<p>最简单的在Windows上使用Bash的方式是按照Windows版本的Git。这带有Git Bash，这是一个真正的Bash。你可以使用下面的顺序打开</p>
 
-<pre><code>git diff-tree --no-commit-id --name-only -r COMMIT_ID
-</code></pre>
+<p><code>Start &gt; All Programs &gt; Git &gt; Git Bash</code></p>
 
-<h3 id="使用">使用</h3>
+<p>命令像<code>grep ls find sed vi</code>等等都是可以使用的</p>
 
-<pre><code>git diff-tree [--stdin] [-m] [-c] [--cc] [-s] [-v] [--pretty] [-t] [-r] [--root] [&lt;common-diff- options&gt;] &lt;tree-ish&gt; [&lt;tree-ish&gt;] [&lt;path&gt;...]
-</code></pre>
+<p><img src="/img/bash/tuCWt.png" alt="bash" /></p>
 
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>含义</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>-r</td>
-<td>递归的进行diff</td>
-</tr>
-
-<tr>
-<td>&ndash;root</td>
-<td>包括初始提交作为/dev/null的diff</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="选项">选项</h3>
-
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>详情</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>-z</td>
-<td>输出diff-raw，以NUL结尾</td>
-</tr>
-
-<tr>
-<td>-p</td>
-<td>输出补丁格式</td>
-</tr>
-
-<tr>
-<td>-u</td>
-<td>-p的别名</td>
-</tr>
-
-<tr>
-<td>—patch-with-raw</td>
-<td>输出补丁和diff-raw格式</td>
-</tr>
-
-<tr>
-<td>&ndash;stat</td>
-<td>显示diffstat而不是patch。</td>
-</tr>
-
-<tr>
-<td>&ndash;numstat</td>
-<td>显示数字diffstat而不是patch。</td>
-</tr>
-
-<tr>
-<td>—patch-with-stat</td>
-<td>输出一个补丁并预先准备其diffstat。</td>
-</tr>
-
-<tr>
-<td>—name-only</td>
-<td>显示修改文件的名称</td>
-</tr>
-
-<tr>
-<td>—name-status</td>
-<td>显示修改文件的名称和状态</td>
-</tr>
-
-<tr>
-<td>—full-index</td>
-<td>在索引行显示完整的对象名称</td>
-</tr>
-
-<tr>
-<td>—abbrev=<n></td>
-<td>在对象名称的缩写版本的树和区分RAW头。</td>
-</tr>
-
-<tr>
-<td>-R</td>
-<td>交换输入文件对。</td>
-</tr>
-
-<tr>
-<td>-B</td>
-<td>检测完全重写。</td>
-</tr>
-
-<tr>
-<td>-M</td>
-<td>检查重命名</td>
-</tr>
-
-<tr>
-<td>-C</td>
-<td>检查复制</td>
-</tr>
-
-<tr>
-<td>—find-copies-harder</td>
-<td>尝试将未更改的文件作为副本检测的候选文件。</td>
-</tr>
-
-<tr>
-<td>-l<n></td>
-<td>将重命名尝试限制为最多个路径。</td>
-</tr>
-
-<tr>
-<td>-O</td>
-<td>根据重新排序差异。</td>
-</tr>
-
-<tr>
-<td>-S</td>
-<td>查找仅一侧包含字符串的文件对。</td>
-</tr>
-
-<tr>
-<td>—pickaxe-all</td>
-<td>使用-s并找到hit时显示所有文件diff。</td>
-</tr>
-
-<tr>
-<td>-a —text</td>
-<td>把所有的文件当做字符串</td>
-</tr>
-</tbody>
-</table>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -352,12 +209,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/bash-section-56.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十六)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-57.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十七)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/bash-section-55.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五十五)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/git-section-61.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（六十一）">Next Post &rarr;</a>
                   </li>
                   
               </ul>
