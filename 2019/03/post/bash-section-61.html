@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="PHP的变量作用域">
+    <meta name="description" content="eval命令">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（三）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(六十一)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/php-section-3.html">
+    <link rel="canonical" href="/2019/03/post/bash-section-61.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -141,14 +141,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/php" title="PHP">
-                           PHP
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（三）</h1>
+                    <h1>Bash专业笔记(六十一)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, April 3, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, March 29, 2019
                         
                     </span>
                 </div>
@@ -178,11 +178,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#变量作用域">变量作用域</a>
+<li><a href="#eval命令">eval命令</a>
 <ul>
-<li><a href="#超全局变量">超全局变量</a></li>
-<li><a href="#静态属性和变量">静态属性和变量</a></li>
-<li><a href="#用户定义的全局变量">用户定义的全局变量</a></li>
+<li><a href="#使用eval">使用eval</a></li>
+<li><a href="#使用getopt">使用getopt</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,112 +189,121 @@
         		
         		
 
-<h2 id="变量作用域">变量作用域</h2>
+<h2 id="eval命令">eval命令</h2>
 
-<p>变量作用域表示变量可以被访问到的代码范围。这也经常被称为<code>可见性</code>。PHP的块作用域是函数，类定义的。一个全局作用域变量在整个应用都是有效的。</p>
+<p>首先最重要的是：知道你正在做什么。第二，虽然你应该避免使用eval，但是它的使用让代码更加干净，那就继续使用。</p>
 
-<h3 id="超全局变量">超全局变量</h3>
+<h3 id="使用eval">使用eval</h3>
 
-<p>超全局变量是PHP定义的，可以在任何地方使用而不需要使用<code>global</code>关键字。</p>
+<p>例如，考虑将<code>$@</code>的内容设置为给定变量的内容：</p>
 
-<pre><code>&lt;?php
-function getPostValue($key, $default = NULL) {
-    // $_POST is a superglobal and can be used without 
-    // having to specify 'global $_POST;'
-    if (isset($_POST[$key])) {
-        return $_POST[$key];
-    }
-    return $default;
-}
-
-// retrieves $_POST['username']
-echo getPostValue('username');
-// retrieves $_POST['email'] and defaults to empty string
-echo getPostValue('email', '');
+<pre><code>a=(1 2 3)
+eval set -- &quot;${a[@]}&quot;
 </code></pre>
 
-<h3 id="静态属性和变量">静态属性和变量</h3>
+<p>这个代码通常伴随着<code>getopt</code>或<code>getopts</code>将<code>$@</code>设置为上述选项分析器的输出。但是你也可以用这个创建一个简单的pop函数，这个函数可以简单的直接操作变量，而不用将变量存储在原始变量中：</p>
 
-<p>定义为public的静态类属性和全局变量的功能类似。在任何类定义的地方都可以访问他们。</p>
-
-<pre><code>class SomeClass {
-    public static int $counter = 0;
-}
-// The static $counter variable can be read/written from anywhere 
-// and doesn't require an instantiation of the class 
-SomeClass::$counter += 1;
-</code></pre>
-
-<p>可以在函数内部定义静态变量。这些静态变量可以在多次调用之间保持存在，这个定义在函数中的普通变量不同。这可以非常简单的实现单例模式。</p>
-
-<pre><code>class Singleton {
-    public static function getInstance() {
-        // Static variable $instance is not deleted when the function ends
-        static $instance;
-        // Second call to this function will not get into the if-statement, 
-        // Because an instance of Singleton is now stored in the $instance 
-        // variable and is persisted through multiple calls
-        if (!$instance) {
-            // First call to this function will reach this line,
-            // because the $instance has only been declared, not initialized 
-            $instance = new Singleton();
-        }
-        
-        return $instance;
-    }
+<pre><code class="language-shell">isnum() {
+    # is argument an integer?
+		local re='^[0-9]+$'
+    if [[ -n $1 ]]; then
+				[[ $1 =~ $re ]] &amp;&amp; return 0
+				return 1 
+		else
+				return 2 
+		fi
 }
 
-$instance1 = Singleton::getInstance();
-$instance2 = Singleton::getInstance();
-// Comparing objects with the '===' operator checks whether they are
-// the same instance. Will print 'true', because the static $instance
-// variable in the getInstance() method is persisted through multiple calls var_dump($instance1 === $instance2);
-</code></pre>
-
-<h3 id="用户定义的全局变量">用户定义的全局变量</h3>
-
-<p>在任何函数或类之外的作用域是全局作用域。当一个PHP脚本包含（使用include或require）另外的文件，两者的作用域是相同的。如果一个文件被包含在任何函数或类之外，全局变量将会被包含到相同的全局变量作用域内，但是如果被包含在一个函数里面，这个被包含文件的变量是函数作用域。</p>
-
-<p>在函数或者类方法的作用域内，<code>global</code>关键字可能被用来创建一个用户访问的全局变量。</p>
-
-<pre><code>&lt;?php
-$amount_of_log_calls = 0;
-
-function log_message($message) {
-    // Accessing global variable from function scope // requires this explicit statement
-    global $amount_of_log_calls;
-    // This change to the global variable is permanent
-    $amount_of_log_calls += 1;
-    echo $message;
+isvar() {
+		if isnum &quot;$1&quot;; then 
+				return 1
+		fi
+		local arr=&quot;$(eval eval -- echo -n &quot;\$$1&quot;)&quot; 
+		if [[ -n ${arr[@]} ]]; then	
+				return 0 
+		fi
+		return 1 
 }
-// When in the global scope, regular global variables can be used 
-// without explicitly stating 'global $variable;'
-echo $amount_of_log_calls; // 0
 
-log_message(&quot;First log message!&quot;); 
-echo $amount_of_log_calls; // 1
-log_message(&quot;Second log message!&quot;);
-echo $amount_of_log_calls; // 2
-</code></pre>
+pop() {
+		if [[ -z $@ ]]; then 
+				return 1
+		fi
 
-<p>第二种访问全局变量的方法是使用超全局变量<code>$GLOBALS</code>数组。</p>
+		local var= 
+		local isvar=0 
+		local arr=()
+		
+		if isvar &quot;$1&quot;; then # let's check to see if this is a variable or just a bare array 
+				var=&quot;$1&quot;
+				isvar=1
+				arr=($(eval eval -- echo -n &quot;\${$1[@]}&quot;)) # if it is a var, get its contents 
+		else
+				arr=($@) 
+		fi
+		
+		# we need to reverse the contents of $@ so that we can shift
+    # the last element into nothingness
+		arr=($(awk &lt;&lt;&lt;&quot;${arr[@]}&quot; '{ for (i=NF; i&gt;1; --i) printf(&quot;%s &quot;,$i); print $1; }' 
+		
+		# set $@ to ${arr[@]} so that we can run shift against it.
+		eval set -- &quot;${arr[@]}&quot;
 
-<p><code>$GLOBALS</code>数组是一个关联数组，全局变量的名字作为key，变量的内容作为数组的值。注意<code>$GLOBALS</code>在任何地方都是有效的，因为这是一个超全局变量。</p>
-
-<p>这意味着<code>log_message</code>函数可以被重写：</p>
-
-<pre><code>function log_message($message) {
-    // Access the global $amount_of_log_calls variable via the
-    // $GLOBALS array. No need for     'global $GLOBALS;', since it
-    // is a superglobal variable.
-    $GLOBALS['amount_of_log_calls'] += 1;
-    echo $messsage;
+		shift # remove the last element
+    
+    # put the array back to its original order
+		arr=($(awk &lt;&lt;&lt;&quot;$@&quot; '{ for (i=NF; i&gt;1; --i) printf(&quot;%s &quot;,$i); print $1; }' 
+		
+		# echo the contents for the benefit of users and for bare arrays
+		echo &quot;${arr[@]}&quot;
+		
+		if ((isvar)); then
+		# set the contents of the original var to the new modified array 
+		eval -- &quot;$var=(${arr[@]})&quot;
+		fi
 }
 </code></pre>
 
-<p>有人可能要问了，可以使用<code>$GLOBALS</code>来获取全局变量，为什么还有一个<code>global</code>关键字？主要原因是使用<code>global</code>可以把变量引入当前作用域。你不能本地作用域使用相同的名称。</p>
+<h3 id="使用getopt">使用getopt</h3>
 
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<p>虽然pop方法可能不需要eval，但是无论何时使用getopt，都需要eval。</p>
+
+<p>注意下面的方法，接收一个<code>-h</code>的选项：</p>
+
+<pre><code class="language-shell">f() {
+		local __me__=&quot;${FUNCNAME[0]}&quot;
+		local argv=&quot;$(getopt -o 'h' -n $__me__ -- &quot;$@&quot;)&quot;
+
+		eval set -- &quot;$argv&quot;
+
+		while :; do
+				case &quot;$1&quot; in
+						-h)
+						echo &quot;LOLOLOLOL&quot; 
+						return 0
+						;;
+						--) 
+						shift
+						break
+						;; 
+		done
+		echo &quot;$@&quot; 
+}
+</code></pre>
+
+<p>没有<code>eval set — &quot;$argv&quot;</code>生成：</p>
+
+<pre><code>-h --
+</code></pre>
+
+<p>而不是期望的<code>-h —</code>。然后进入一个无限循环，因为</p>
+
+<pre><code>-h --
+</code></pre>
+
+<p>匹配不了<code>—</code>或<code>-h</code>。</p>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -304,12 +312,12 @@ echo $amount_of_log_calls; // 2
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/bash-section-66.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十六)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-62.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十二)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/bash-section-65.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十五)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-60.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

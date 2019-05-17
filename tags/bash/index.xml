@@ -6,10 +6,110 @@
     <description>Recent content in Bash on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 27 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 03 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Bash专业笔记(六十六)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-66.html</link>
+      <pubDate>Wed, 03 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-66.html</guid>
+      <description>陷阱 赋值时空格 赋值时出现空格：
+foo = &#39;bar&#39; # incorrect foo= &#39;bar&#39; # incorrect foo=&#39;bar&#39; # correct  前两个会出现语法错误(或者执行一个错误的命令)。最后一个会正确的为变量foo设置值bar。
+失败的命令不停止脚本执行 在大多数的脚本语言中，如果一个函数错了，将会抛出一个异常并且终止程序的执行。Bash没有异常，但是有退出码。一个非零的退出码代表出现了错误，但是这并不会终止程序的执行。
+这可能会导致危险（尽管诚然是人为的）情况，如：
+#!/bin/bash cd ~/non/existent/directory rm -rf *  如果cd命令失败了，Bash会忽略失败，并且继续执行下面的命令。将会清除你运行命令文件夹的所有文件。
+最好的方法是使用set命令：
+#!/bin/bash set -e cd ~/non/existent/directory rm -rf *  set -e告诉Bash如果遇到一个非零的返回值，直接终端执行。
+缺少文件中的最后一行 C标准规定文件要以新行结束，所以如果EOF出现在行尾，那么某些命令可能不会遗漏这行。例如：
+$ echo &#39;one\ntwo\nthree\c&#39; &amp;gt; file.txt $ cat file.txt one two three $ while read line ; do echo &amp;quot;line $line&amp;quot; ; done &amp;lt; file.txt one two  想要修复这个问题的话，就测试最后一行是否为空，不为空继续执行：</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(六十五)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-65.html</link>
+      <pubDate>Tue, 02 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-65.html</guid>
+      <description>设计模式 在bash中完成一些常见的设计模式。
+发布订阅模式 当项目变为一个库时，添加新功能会变得很困难。函数名、变量和参数通常需要在使用它们的脚本中进行更改。在这样的场景中，分离代码并使用事件驱动的设计模式是很有帮助的。在所述模式中，外部脚本可以订阅事件。当触发（发布）该事件时，脚本可以执行它在该事件中注册的代码。
+pubsub.sh #!/usr/bin/env bash # # Save the path to this script&#39;s directory in a global env variable # DIR=&amp;quot;$( cd &amp;quot;$( dirname &amp;quot;${BASH_SOURCE[0]}&amp;quot; )&amp;quot; &amp;amp;&amp;amp; pwd )&amp;quot; # # Array that will contain all registered events # EVENTS=() function action1() { echo &amp;quot;Action #1 was performed ${2}&amp;quot; } function action2() { echo &amp;quot;Action #2 was performed&amp;quot; } # # @desc :: Registers an event # @param :: string $1 - The name of the event.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(六十四)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-64.html</link>
+      <pubDate>Mon, 01 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-64.html</guid>
+      <description>解码URL 简单例子 编码URL
+ http%3A%2F%2Fwww.foo.com%2Findex.php%3Fid%3Dqwerty
+ 使用命令解码URL
+echo &amp;quot;http%3A%2F%2Fwww.foo.com%2Findex.php%3Fid%3Dqwerty&amp;quot; | sed -e &amp;quot;s/%\([0-9A-F][0-9A- F]\)/\\\\\x\1/g&amp;quot; | xargs -0 echo -e  输出：
+ http://www.foo.com/index.php?id=qwerty
+ 使用printf解码字符串 #!bin/bash $ string=&#39;Question%20- %20%22how%20do%20I%20decode%20a%20percent%20encoded%20string%3F%22%0AAnswer%20%20%20- %20Use%20printf%20%3A)&#39; $ printf &#39;%b\n&#39; &amp;quot;${string//%/\\x}&amp;quot; # the result Question - &amp;quot;how do I decode a percent encoded string?&amp;quot; Answer - Use printf :)  参考：Bash Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(六十三)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-63.html</link>
+      <pubDate>Sun, 31 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-63.html</guid>
+      <description>Parallel    选项 详情     -j n 同时运行n个任务   -k 保持相同的顺序   -X 上下文替换的多个参数   —colsep regexp 在regexp上拆分输入以进行位置替换   {} {.} {/} {/.} {#} 替换字符串   {3} {3.} {3/} {3/.} 位置替换字符串   -S sshlogin 例如 foo@server.example.com   —trc {} .bar —transfer —return {}.bar —cleanup的简短格式   &amp;ndash;onall 在所有sshlogins上运行带有参数的给定命令   &amp;ndash;nonall 在所有sshlogins上运行没有带参数的给定命令   &amp;ndash;pipe 将stdin（标准输入）拆分为多个任务   —recend str 记录&amp;ndash;pipe的结束分隔符。   —recstart str 记录—pipe的开始分隔符。    GUN Linux上面的任务可以使用GNU parallel并行执行。一个任务可以是一个命令或需要运行输入每行的小脚本。特别的输入就是一列文件，一列host，一列用户，一列URL，一列表等。一个任务也可以是从管道中读取的命令。</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(六十二)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-62.html</link>
+      <pubDate>Sat, 30 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-62.html</guid>
+      <description>bash网络操作 Bash通常用于服务器和集群的管理和维护工作。与网络操作使用的典型命令有关的信息，何时使用哪个命令用于哪个目的，以及应包括其独特和/或有趣应用程序的示例/示例。
+网络命令 ifconfig  上面的命令会显示机器所有活动的接口，提供下面的信息：
+ 接口的IP地址 接口的MAC地址 广播地址 发送和接收字节  一些例子：
+ifconfig -a  上面的例子也会显示无效的接口。
+ifconfig eth0  上面的命令将会只显示eth0接口。
+ifconfig etho0 192.168.1.100 netmask 255.255.255.0  上面的命令将会把静态ip地址赋值给eth0接口。
+ifup ehth0  上面的命令会开启eth0
+ifdown eth0  上面的命令会禁止eth0接口
+ping  上面的命令(Packet Internet Grouper)用于测试两个节点之间的链接。
+ping -c2 8.8.8.8  上面的命令将ping或测试与谷歌服务器的连接2秒
+traceroute  以上命令用于故障排除，以找出到达目的地所花费的跳数。
+netstat  上面的命令将会获取连接信息和他们的状态
+dig www.baidu.com  上面的命令(域信息分组器)查询DNS相关信息
+nslookup www.baidu.com  上面的命令查询DNS信息，并找出网站名称对应的IP地址。
+route  上面的命令用来检测网络路由信息。只是显示你的路由表。
+router add default gw 192.168.1.1 eth0  上面的命令会将eth0接口的默认网络路由添加到路由表192.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(六十一)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-61.html</link>
+      <pubDate>Fri, 29 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-61.html</guid>
+      <description>eval命令 首先最重要的是：知道你正在做什么。第二，虽然你应该避免使用eval，但是它的使用让代码更加干净，那就继续使用。
+使用eval 例如，考虑将$@的内容设置为给定变量的内容：
+a=(1 2 3) eval set -- &amp;quot;${a[@]}&amp;quot;  这个代码通常伴随着getopt或getopts将$@设置为上述选项分析器的输出。但是你也可以用这个创建一个简单的pop函数，这个函数可以简单的直接操作变量，而不用将变量存储在原始变量中：
+isnum() { # is argument an integer? local re=&#39;^[0-9]+$&#39; if [[ -n $1 ]]; then [[ $1 =~ $re ]] &amp;amp;&amp;amp; return 0 return 1 else return 2 fi } isvar() { if isnum &amp;quot;$1&amp;quot;; then return 1 fi local arr=&amp;quot;$(eval eval -- echo -n &amp;quot;\$$1&amp;quot;)&amp;quot; if [[ -n ${arr[@]} ]]; then	return 0 fi return 1 } pop() { if [[ -z $@ ]]; then return 1 fi local var= local isvar=0 local arr=() if isvar &amp;quot;$1&amp;quot;; then # let&#39;s check to see if this is a variable or just a bare array var=&amp;quot;$1&amp;quot; isvar=1 arr=($(eval eval -- echo -n &amp;quot;\${$1[@]}&amp;quot;)) # if it is a var, get its contents else arr=($@) fi # we need to reverse the contents of $@ so that we can shift # the last element into nothingness arr=($(awk &amp;lt;&amp;lt;&amp;lt;&amp;quot;${arr[@]}&amp;quot; &#39;{ for (i=NF; i&amp;gt;1; --i) printf(&amp;quot;%s &amp;quot;,$i); print $1; }&#39; # set $@ to ${arr[@]} so that we can run shift against it.</description>
+    </item>
+    
+    <item>
+      <title>Bash专业笔记(六十)</title>
+      <link>http://blog.huaifufeng.com/2019/03/post/bash-section-60.html</link>
+      <pubDate>Thu, 28 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/03/post/bash-section-60.html</guid>
+      <description>select关键字 select关键字可以用来在菜单格式中获取输入参数。
+获取参数 假设你想要用户选择菜单的关键字，你可以创建下面类似的脚本：
+#! /usr/bin/env bash select os in &amp;quot;linux&amp;quot; &amp;quot;windows&amp;quot; &amp;quot;mac&amp;quot; do echo &amp;quot;{$os}&amp;quot; break done  解析：这里select关键字循环元素列表，在命令行的提示中显示这些元素，以供用户选择。注意break关键字将会中断循环，一旦用户做了选择。否则循环将不会结束。
+结果：一旦开始运行脚本，菜单的选项将会显示，用户将被提示进行一个选择，一旦选择了，这个值将会显示，并且返回命令提示。
+&amp;gt;bash select_menu.sh 1) linux 2) windows 3) mac #? 3 mac &amp;gt;  参考：Bash Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>Bash专业笔记(五十九)</title>

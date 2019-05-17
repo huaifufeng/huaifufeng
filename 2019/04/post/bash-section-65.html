@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="PHP的变量作用域">
+    <meta name="description" content="设计模式">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（三）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Bash专业笔记(六十五)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/php-section-3.html">
+    <link rel="canonical" href="/2019/04/post/bash-section-65.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -141,14 +141,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/php" title="PHP">
-                           PHP
+                       <a class="tag" href="/tags/bash" title="Bash">
+                           Bash
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（三）</h1>
+                    <h1>Bash专业笔记(六十五)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, April 3, 2019
+                    <span  class="meta">Posted by 怀府风 on Tuesday, April 2, 2019
                         
                     </span>
                 </div>
@@ -178,11 +178,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#变量作用域">变量作用域</a>
+<li><a href="#设计模式">设计模式</a>
 <ul>
-<li><a href="#超全局变量">超全局变量</a></li>
-<li><a href="#静态属性和变量">静态属性和变量</a></li>
-<li><a href="#用户定义的全局变量">用户定义的全局变量</a></li>
+<li><a href="#发布订阅模式">发布订阅模式</a>
+<ul>
+<li><a href="#pubsub-sh">pubsub.sh</a></li>
+<li><a href="#运行">运行</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -190,112 +192,79 @@
         		
         		
 
-<h2 id="变量作用域">变量作用域</h2>
+<h2 id="设计模式">设计模式</h2>
 
-<p>变量作用域表示变量可以被访问到的代码范围。这也经常被称为<code>可见性</code>。PHP的块作用域是函数，类定义的。一个全局作用域变量在整个应用都是有效的。</p>
+<p>在bash中完成一些常见的设计模式。</p>
 
-<h3 id="超全局变量">超全局变量</h3>
+<h3 id="发布订阅模式">发布订阅模式</h3>
 
-<p>超全局变量是PHP定义的，可以在任何地方使用而不需要使用<code>global</code>关键字。</p>
+<p>当项目变为一个库时，添加新功能会变得很困难。函数名、变量和参数通常需要在使用它们的脚本中进行更改。在这样的场景中，分离代码并使用事件驱动的设计模式是很有帮助的。在所述模式中，外部脚本可以订阅事件。当触发（发布）该事件时，脚本可以执行它在该事件中注册的代码。</p>
 
-<pre><code>&lt;?php
-function getPostValue($key, $default = NULL) {
-    // $_POST is a superglobal and can be used without 
-    // having to specify 'global $_POST;'
-    if (isset($_POST[$key])) {
-        return $_POST[$key];
-    }
-    return $default;
+<h4 id="pubsub-sh">pubsub.sh</h4>
+
+<pre><code>#!/usr/bin/env bash
+#
+# Save the path to this script's directory in a global env variable 
+#
+DIR=&quot;$( cd &quot;$( dirname &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&amp; pwd )&quot;
+
+#
+# Array that will contain all registered events
+#
+EVENTS=()
+
+function action1() {
+		echo &quot;Action #1 was performed ${2}&quot;
 }
 
-// retrieves $_POST['username']
-echo getPostValue('username');
-// retrieves $_POST['email'] and defaults to empty string
-echo getPostValue('email', '');
-</code></pre>
-
-<h3 id="静态属性和变量">静态属性和变量</h3>
-
-<p>定义为public的静态类属性和全局变量的功能类似。在任何类定义的地方都可以访问他们。</p>
-
-<pre><code>class SomeClass {
-    public static int $counter = 0;
-}
-// The static $counter variable can be read/written from anywhere 
-// and doesn't require an instantiation of the class 
-SomeClass::$counter += 1;
-</code></pre>
-
-<p>可以在函数内部定义静态变量。这些静态变量可以在多次调用之间保持存在，这个定义在函数中的普通变量不同。这可以非常简单的实现单例模式。</p>
-
-<pre><code>class Singleton {
-    public static function getInstance() {
-        // Static variable $instance is not deleted when the function ends
-        static $instance;
-        // Second call to this function will not get into the if-statement, 
-        // Because an instance of Singleton is now stored in the $instance 
-        // variable and is persisted through multiple calls
-        if (!$instance) {
-            // First call to this function will reach this line,
-            // because the $instance has only been declared, not initialized 
-            $instance = new Singleton();
-        }
-        
-        return $instance;
-    }
+function action2() {
+		echo &quot;Action #2 was performed&quot;
 }
 
-$instance1 = Singleton::getInstance();
-$instance2 = Singleton::getInstance();
-// Comparing objects with the '===' operator checks whether they are
-// the same instance. Will print 'true', because the static $instance
-// variable in the getInstance() method is persisted through multiple calls var_dump($instance1 === $instance2);
-</code></pre>
-
-<h3 id="用户定义的全局变量">用户定义的全局变量</h3>
-
-<p>在任何函数或类之外的作用域是全局作用域。当一个PHP脚本包含（使用include或require）另外的文件，两者的作用域是相同的。如果一个文件被包含在任何函数或类之外，全局变量将会被包含到相同的全局变量作用域内，但是如果被包含在一个函数里面，这个被包含文件的变量是函数作用域。</p>
-
-<p>在函数或者类方法的作用域内，<code>global</code>关键字可能被用来创建一个用户访问的全局变量。</p>
-
-<pre><code>&lt;?php
-$amount_of_log_calls = 0;
-
-function log_message($message) {
-    // Accessing global variable from function scope // requires this explicit statement
-    global $amount_of_log_calls;
-    // This change to the global variable is permanent
-    $amount_of_log_calls += 1;
-    echo $message;
+#
+# @desc :: Registers an event
+# @param :: string $1 - The name of the event. Basically an alias for a function name 
+# @param :: string $2 - The name of the function to be called
+# @param :: string $3 - Full path to script that includes the function being called
+#
+function subscribe() {
+		EVENTS+=(&quot;${1};${2};${3}&quot;) 
 }
-// When in the global scope, regular global variables can be used 
-// without explicitly stating 'global $variable;'
-echo $amount_of_log_calls; // 0
 
-log_message(&quot;First log message!&quot;); 
-echo $amount_of_log_calls; // 1
-log_message(&quot;Second log message!&quot;);
-echo $amount_of_log_calls; // 2
-</code></pre>
-
-<p>第二种访问全局变量的方法是使用超全局变量<code>$GLOBALS</code>数组。</p>
-
-<p><code>$GLOBALS</code>数组是一个关联数组，全局变量的名字作为key，变量的内容作为数组的值。注意<code>$GLOBALS</code>在任何地方都是有效的，因为这是一个超全局变量。</p>
-
-<p>这意味着<code>log_message</code>函数可以被重写：</p>
-
-<pre><code>function log_message($message) {
-    // Access the global $amount_of_log_calls variable via the
-    // $GLOBALS array. No need for     'global $GLOBALS;', since it
-    // is a superglobal variable.
-    $GLOBALS['amount_of_log_calls'] += 1;
-    echo $messsage;
+#
+# @desc :: Public an event
+# @param :: string $1 - The name of the event being published #
+function publish() {
+		for event in ${EVENTS[@]}; do 
+				local IFS=&quot;;&quot;
+				read -r -a event &lt;&lt;&lt; &quot;$event&quot;
+				if [[ &quot;${event[0]}&quot; == &quot;${1}&quot; ]]; then
+						${event[1]} &quot;$@&quot; 
+				fi
+		done
 }
+
+#
+# Register our events and the functions that handle them
+#
+subscribe &quot;/do/work&quot;           &quot;action1&quot; &quot;${DIR}&quot;
+subscribe &quot;/do/more/work&quot;      &quot;action2&quot; &quot;${DIR}&quot;
+subscribe &quot;/do/even/more/work&quot; &quot;action1&quot; &quot;${DIR}&quot;
+#
+# Execute our events
+#
+publish &quot;/do/work&quot;
+publish &quot;/do/more/work&quot;
+publish &quot;/do/even/more/work&quot; &quot;again&quot;
 </code></pre>
 
-<p>有人可能要问了，可以使用<code>$GLOBALS</code>来获取全局变量，为什么还有一个<code>global</code>关键字？主要原因是使用<code>global</code>可以把变量引入当前作用域。你不能本地作用域使用相同的名称。</p>
+<h4 id="运行">运行</h4>
 
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<pre><code>chmod +x pubsub.sh 
+./pubsub.sh
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -304,12 +273,12 @@ echo $amount_of_log_calls; // 2
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/bash-section-66.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十六)">&larr; Previous Post</a>
+                      <a href="/2019/04/post/php-section-3.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/bash-section-65.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十五)">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-2.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二）">Next Post &rarr;</a>
                   </li>
                   
               </ul>
