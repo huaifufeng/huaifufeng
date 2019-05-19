@@ -6,10 +6,34 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 05 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 07 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（三十七）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-37.html</link>
+      <pubDate>Tue, 07 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-37.html</guid>
+      <description>SimpleXML SimpleXML读取数据 字符串 使用simplexml_load_string从字符串创建一个SimpleXMLElement。
+$xmlString = &amp;quot;&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&amp;gt;&amp;quot;; $xml = simplexml_load_string($xmlString) or die(&amp;quot;Error: Cannot create object&amp;quot;);  注意这里使用or而不是||,因为or的优先级比=低。or后面的代码只有在$xml解析为false时才会执行。
+文件 使用simplexml_load_file从一个文件地址加载数据：
+$xml = simplexml_load_string(&amp;quot;filePath.xml&amp;quot;); $xml = simplexml_load_string(&amp;quot;https://example.com/doc.xml&amp;quot;);  这个URL可以是任何PHP支持的格式，或者自定义的流封装。
+参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（三十六）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-36.html</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-36.html</guid>
+      <description>XML 使用DomDocument创建XML 使用DomDocument创建XML，我们需要使用createElement()和createAttribute()来创建所有的标签和属性。然后会用appendChild()来创建XML的结构。
+下面的例子包含标签，属性，CDATA部分和第二个标签的不同命名空间：
+$dom = new DOMDocument(&#39;1.0&#39;, &#39;utf-8&#39;); $dom-&amp;gt;preserveWhiteSpace = false; $dom-&amp;gt;formatOutput = true; //创建没有值的主标签 $books = $dom-&amp;gt;createElement(&#39;books&#39;); $book_1 = $dom-&amp;gt;createElement(&#39;book&#39;); //创建带值的标签 $name_1 = $dom-&amp;gt;createElement(&#39;name&#39;, &#39;PHP - An Introduction&#39;); $price_1 = $dom-&amp;gt;createElement(&#39;price&#39;, &#39;$5.95&#39;); $id_1 = $dom-&amp;gt;createElement(&#39;id&#39;, &#39;1&#39;); //创建并添加属性 $attr_1 = $dom-&amp;gt;createAttribute(&#39;version&#39;); $attr_1 -&amp;gt; value = &#39;1.0&#39;; $id_1-&amp;gt;appendChild($attr_1); //创建第二个不同命名空间的标签 $namespace = &#39;www.example.com/libraryns/1.0&#39;; //在books标签前面添加命名空间 $books-&amp;gt;setAttributeNS(&#39;http://www.w3.org/2000/xmlns/&#39;, &#39;xmlns:ns&#39;, $namespace); $book_2 = $dom-&amp;gt;createElementNS($namespace, &#39;ns:book&#39;); $name_2 = $dom-&amp;gt;createElementNS($namespace, &#39;ns:name&#39;); //创建CDATA部分，并放入name标签 $name_cdata = $dom-&amp;gt;createCDATASection(&#39;PHP - Advanced&#39;); $name_2 -&amp;gt; appendChild($name_cdata); $price_2 = $dom-&amp;gt;createElementNS($namespace, &#39;ns:price&#39;, &#39;$25.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（三十五）</title>
@@ -19,7 +43,12 @@
       <guid>http://blog.huaifufeng.com/2019/05/post/php-section-35.html</guid>
       <description>依赖注入 依赖注入(DI)是&amp;rdquo;传入&amp;rdquo;的一种花哨说法。这实际含义就是对一个对象的依赖通过构造函数或set方法来传入，而不是在对象内部创建这些依赖对象。依赖注入也可能指的是自动构造和注入的依赖注入容器。
 构造函数注入 对象通常依赖于另外的对象。相对于在构造函数中创建依赖对象，应该把依赖对象作为参数传入构造函数。这样可以确保对象之间没有紧密耦合，并且可以更改对类实例化的依赖性。这有许多好处，包括通过使依赖关系显式化使代码更容易阅读，以及使测试更简单，因为依赖关系可以更容易地被切换和模拟。
-参考：PHP® Notes for Professionals book</description>
+在下面的例子中，Component依赖一个Logger实例，但是它不创建这个实例。而是在构造函数中通过参数传入。
+interface Logger { public function log(string $message); } class Component { private $logger; public function __construct(Logger $logger) { $this-&amp;gt;logger = $logger; } }  没有依赖注入的话，代码就像下面这样：
+class Component { private $logger; public function __construct() { $this-&amp;gt;logger = new FooLogger(); } }  在构造函数中使用new来创建新对象表明没有使用依赖注入(或者使用不完全)，这里代码是高度绑定的。这也说明代码没有完全测试，或者可能有一些脆弱的测试，这些测试对程序状态做出错误的假设。
+在上面的例子中，我们使用依赖注入，如果需要的话，我们可以很方便的修改使用不同的Logger对象。例如，我们可能需要使用不同的Logger实现来把日志存放到不同的位置，或者使用不同的日志格式，或者把日志存入数据库而不是文件。
+Setter注入 依赖也可以使用setter方法进行注入：
+interface Logger { public function log($message); } class Component { private $logger; private $databaseConnection; public function __construct(DatabaseConnection $databaseConnection) { $this-&amp;gt;databaseConnection = $databaseConnection; } public function setLogger(Logger $logger) { $this-&amp;gt;logger = $logger; } public function core() { $this-&amp;gt;logSave(); return $this-&amp;gt;databaseConnection-&amp;gt;save($this); } public function logSave() { if ($this-&amp;gt;logger) { $this-&amp;gt;logger-&amp;gt;log(&#39;saving&#39;); } } }  当类的core方法不依赖于依赖项的话，这是很有意思的。</description>
     </item>
     
     <item>

@@ -84,6 +84,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
                     </li>
                     
@@ -181,6 +185,8 @@
 <li><a href="#依赖注入">依赖注入</a>
 <ul>
 <li><a href="#构造函数注入">构造函数注入</a></li>
+<li><a href="#setter注入">Setter注入</a></li>
+<li><a href="#容器注入">容器注入</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -196,6 +202,150 @@
 
 <p>对象通常依赖于另外的对象。相对于在构造函数中创建依赖对象，应该把依赖对象作为参数传入构造函数。这样可以确保对象之间没有紧密耦合，并且可以更改对类实例化的依赖性。这有许多好处，包括通过使依赖关系显式化使代码更容易阅读，以及使测试更简单，因为依赖关系可以更容易地被切换和模拟。</p>
 
+<p>在下面的例子中，<code>Component</code>依赖一个<code>Logger</code>实例，但是它不创建这个实例。而是在构造函数中通过参数传入。</p>
+
+<pre><code class="language-php">interface Logger {
+    public function log(string $message);
+}
+
+class Component {
+    private $logger;
+    
+    public function __construct(Logger $logger) {
+        $this-&gt;logger = $logger;
+    }
+}
+</code></pre>
+
+<p>没有依赖注入的话，代码就像下面这样：</p>
+
+<pre><code class="language-php">class Component {
+    private $logger;
+    
+    public function __construct() {
+        $this-&gt;logger = new FooLogger();
+    }
+}
+</code></pre>
+
+<p>在构造函数中使用<code>new</code>来创建新对象表明没有使用依赖注入(或者使用不完全)，这里代码是高度绑定的。这也说明代码没有完全测试，或者可能有一些脆弱的测试，这些测试对程序状态做出错误的假设。</p>
+
+<p>在上面的例子中，我们使用依赖注入，如果需要的话，我们可以很方便的修改使用不同的Logger对象。例如，我们可能需要使用不同的Logger实现来把日志存放到不同的位置，或者使用不同的日志格式，或者把日志存入数据库而不是文件。</p>
+
+<h3 id="setter注入">Setter注入</h3>
+
+<p>依赖也可以使用setter方法进行注入：</p>
+
+<pre><code class="language-php">interface Logger {
+    public function log($message);
+}
+
+class Component {
+    private $logger;
+    private $databaseConnection;
+  
+    public function __construct(DatabaseConnection $databaseConnection) {
+        $this-&gt;databaseConnection = $databaseConnection;
+    }
+  
+    public function setLogger(Logger $logger) {
+        $this-&gt;logger = $logger;
+    }
+  
+    public function core() {
+        $this-&gt;logSave();
+        return $this-&gt;databaseConnection-&gt;save($this);
+    }
+  
+    public function logSave() {
+        if ($this-&gt;logger) {
+            $this-&gt;logger-&gt;log('saving');
+        }
+    }
+}
+</code></pre>
+
+<p>当类的core方法不依赖于依赖项的话，这是很有意思的。</p>
+
+<p>这里唯一需要依赖的是<code>DatabaseConnection</code>，所以它是在构造函数注入的。<code>Logger</code>依赖是可以选的，因此没有必要作为构造函数的一部分，让这个类更加容易使用。</p>
+
+<p>注意当使用setter注入时，最好扩展功能而不是替换这个方法。在设置依赖项时，没有任何东西可以确定依赖项在某一点不会改变，这可能导致意外的结果。例如，我们首先设置了一个<code>FileLogger</code>，然后设置了一个<code>MailLogger</code>。这破坏了封装性，让日志很难被找到，因为我们替换了依赖项。</p>
+
+<p>为了避免这种情况，我们使用setter来<strong>添加</strong>依赖项，就像：</p>
+
+<pre><code class="language-php">interface Logger {
+    public function log($message);
+}
+
+class Component {
+    private $loggers = [];
+    private $databaseConnection;
+  
+    public function __construct(DatabaseConnection $databaseConnection) {
+        $this-&gt;databaseConnection = $databaseConnection;
+    }
+  
+    public function addLogger(Logger $logger) {
+        $this-&gt;loggers[] = $logger;
+    }
+  
+    public function core() {
+        $this-&gt;logSave();
+        return $this-&gt;databaseConnection-&gt;save($this);
+    }
+  
+    public function logSave() {
+        foreach ($this-&gt;loggers as $logger) {
+            $logger-&gt;log(&quot;saving&quot;);
+        }
+    }
+}
+</code></pre>
+
+<p>像这样，无论我们什么时候使用<code>core</code>方法，即使没有添加Logger依赖也不会终端执行。任何依赖都会被执行，即使添加了其他的logger依赖。我们<strong>扩展</strong>了功能而不是<strong>替换</strong>功能。</p>
+
+<h3 id="容器注入">容器注入</h3>
+
+<p>使用依赖注入容器的依赖注入可以被看着是构造函数注入的超集。一个依赖容器注入会分析构造函数的类型提示，并且提供相应的值，有效的在实例运行时注入相应的依赖。</p>
+
+<p>确切的说容器的实现远远超出了本文的范围，但在其核心，依赖注入容器依赖于使用类的签名：</p>
+
+<pre><code>namespace Documentation;
+
+class Example
+{
+    private $meaning;
+    
+    public function __construct(Meaning $meaning) {
+        $this-&gt;meaning = $meaning;
+    }
+}
+</code></pre>
+
+<p>自动实例化，大部分时间依赖于自动加载系统。</p>
+
+<pre><code class="language-php">//老PHP版本
+$container-&gt;make('Documentation\Example');
+//PHP5.6之后
+$container-&gt;make(\Documentation\Example::class);
+</code></pre>
+
+<p>如果你在至少PHP5.5中使用PHP，并且希望像上面那样获取类的名称，正确的方法就是第二种。这样，您可以使用现代的IDE快速找到类的用法，这将极大地帮助您进行潜在的重构。您不希望依赖常规字符串。</p>
+
+<p>在这个例子中，<code>Documentation\Example</code>知道它需要<code>Meaning</code>，一个依赖注入容器会实例化一个<code>Meanging</code>。具体的实现不需要依赖于消费实例。</p>
+
+<p>相反，我们在创建对象之前在容器中设置了规则，它指定在需要时如何实例化特定的类型。</p>
+
+<p>使用依赖注入容器有一些优点：</p>
+
+<ul>
+<li>分享通用实例</li>
+<li>提供工厂以解析类型签名</li>
+<li>解析接口签名</li>
+</ul>
+
+<p>如果我们定义了关于特定类型需要如何管理的规则，我们就可以对哪些类型是从工厂共享、实例化或创建的进行精细控制。</p>
+
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -203,6 +353,10 @@
         
               <hr>
               <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-36.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十六）">&larr; Previous Post</a>
+                  </li>
                   
                   
                   <li class="next">
@@ -258,6 +412,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
                         </a>
                         
                         

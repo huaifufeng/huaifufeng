@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据库 on 怀府小阁</title>
+    <link>http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <description>Recent content in 数据库 on 怀府小阁</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 16 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MySQL专业笔记(二)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-02.html</link>
+      <pubDate>Tue, 16 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-02.html</guid>
+      <description>数据格式 CHAR(n) CHAR(n)是包含固定长度的n个字符的字符串。如果CHARACTER SET utf8mb4，这意味着它完全占用4个字节，不管里面包含什么文本。
+大多数使用情况下CHAR(n)处理包含英文字符的字符串，因此应该设置ascii字符集(latin1也可以)。
+country_code CHAR(2) CHARACTER SET ascii, postal_code CHAR(6) CHARACTER SET ascii, uuid CHAR(39) CHARACTER SET ascii, -- more discussion elsewhere  DATE DATETIME TIMESTAMP YEAR TIME DATE处理日期不包含时间部分。格式是&#39;YYYY-MM-DD&#39;，范围是1000-01-01到9999-12-31。
+DATETIME是包含时间的日期格式&#39;YYYY-MM-DD HH:MM:SS&#39;。范围是1000-01-01 00:00:00到9999-12-31 23:59:59。
+TIMESTAMP是整数类型的时间格式，包括日期和时间两部分。使用的范围是1970-01-01 00:00:01到2038-01-19 03:14:07 UTC (使用4个字节)
+YEAR表示年份，范围从1901到2155(使用1个字节)
+TIME表示一个&amp;rsquo;HH:MM:SS&amp;rsquo;格式的时间。范围从-838:59:59到838:59:59。
+存储大小：
+   数据类型 MySQL5.6.4之前 MySQL5.6.4及之后     YEAR 1字节 1字节   DATE 3字节 3字节   TIME 3字节 3字节+分数秒存储   DATETIME 8字节 5字节+分数秒存储   TIMESTAMP 4字节 4字节+分数秒存储    分数秒(5.</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(一)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-01.html</link>
+      <pubDate>Mon, 15 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-01.html</guid>
+      <description>开始学习MySQL 版本历史
+   1.0 1995-05-23     3.19 1996-12-01   3.20 1997-01-01   3.21 1998-10-01   3.22 1999-10-01   3.23 2001-01-22   4.0 2003-03-01   4.1 2004-10-01   5.0 2005-10-01   5.1 2008-11-27   5.5 2010-11-01   5.6 2013-02-01   5.7 2015-10-01    开始 创建MySQL数据库 CREATE DATABASE mydb;  返回：
+ Query OK, 1 row affected (0.</description>
+    </item>
+    
+  </channel>
+</rss>
