@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="SELECT语句">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(三)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/bash-section-03.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(三)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, April 17, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#select">SELECT</a>
+<ul>
+<li><a href="#distinct">DISTINCT</a></li>
+<li><a href="#select-1">SELECT *</a></li>
+<li><a href="#select-列名">SELECT 列名</a></li>
+<li><a href="#like语句">LIKE语句</a></li>
+<li><a href="#case或if">CASE或IF</a></li>
+<li><a href="#as别名">AS别名</a></li>
+<li><a href="#limit语句">LIMIT语句</a></li>
+<li><a href="#between">BETWEEN</a></li>
+<li><a href="#where语句">WHERE语句</a></li>
+<li><a href="#like">LIKE(_)</a></li>
+<li><a href="#日期范围">日期范围</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="select">SELECT</h2>
+
+<p><code>SELECT</code>语句用来从一个或多个表中获取搜索到的行。</p>
+
+<h3 id="distinct">DISTINCT</h3>
+
+<p>在<code>SELECT</code>后面添加<code>DISTINCT</code>表示删除重复的行。</p>
+
+<pre><code class="language-mysql">CREATE TABLE `car`
+( 
+`car_id` INT UNSIGNED NOT NULL PRIMARY KEY,
+`name` VARCHAR(20),
+`price` DECIMAL(8,2) 
+);
+
+INSERT INTO CAR (`car_id`, `name`, `price`) VALUES (1, 'Audi A1', '20000'); 
+INSERT INTO CAR (`car_id`, `name`, `price`) VALUES (2, 'Audi A1', '15000'); 
+INSERT INTO CAR (`car_id`, `name`, `price`) VALUES (3, 'Audi A2', '40000'); 
+INSERT INTO CAR (`car_id`, `name`, `price`) VALUES (4, 'Audi A2', '40000');
+
+SELECT DISTINCT `name`, `price` FROM CAR;
+
+-----------------
+name    |  price
+Audi A1 | 20000.00 
+Audi A1 | 15000.00
+Audi A1 | 40000.00
+</code></pre>
+
+<p><code>DISTINCT</code>应用到所有返回的列上面，而不是单独的某个列。这个关键字常是新SQL开发人员误解的关键字。简短的说，这个关键字是应用到返回结果行的不同的，而不是应用到列不同的。想要查看这点，就看上面<code>Audi A1</code>这个结果。</p>
+
+<p>在MySQL的较新版本中，<code>DISTINCT</code>和<code>ORDER BY</code>一起使用会产生影响。<code>ONLY_FULL_GROUP_BY</code>像<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html">手册</a>中设置。</p>
+
+<h3 id="select-1">SELECT *</h3>
+
+<p><strong>语句</strong></p>
+
+<pre><code class="language-mysql">SELECT * FROM stack;
+</code></pre>
+
+<p><strong>结果</strong></p>
+
+<pre><code>+------+----------+----------+
+| id   | username | password |
++------+----------+----------+
+|    1 | admin    | admin    |
+|    2 | stack    | stack    |
++------+----------+----------+
+2 rows in set (0.00 sec)
+</code></pre>
+
+<p>你可以在Join语句中搜索到一个表的所有的列：</p>
+
+<pre><code class="language-mysql">SELECT stack.* FROM stack JOIN Overflow ON stack.id = Overflow.id;
+</code></pre>
+
+<p><strong>最佳实践</strong></p>
+
+<p>不要使用<code>*</code>除非你正在调试或者想把数据提取到关联数组中，否则表结构的修改(ADD/DROP/重排列)将会导致严重的程序错误。另外，如果你在结果集中给出需要的列的列表，MYSQL的查询优化器可以进行查询的优化工作。</p>
+
+<p><strong>优点</strong></p>
+
+<ol>
+<li>当你增加/删除列的时候，你不需要修改使用<code>SELECT *</code>的语句</li>
+<li>这样的SQL更短</li>
+<li>你也可以看到答案。所以使用<code>SELECT *</code>是否更加合理。</li>
+</ol>
+
+<p><strong>缺点</strong></p>
+
+<ol>
+<li>你返回了比需要的数据更多的数据。假设你添加了一个每行包含200k数据的<code>VARBINARY</code>的列。对个这个数据，你只需要在一个地方使用这个值，但是使用<code>SELECT *</code>将会在不需要的地方也返回这个字段，10行将会多返回2MB的数据。</li>
+<li>没有明确使用了什么字段。</li>
+<li>指明列的时候，当列被删除的时候你会出现错误。</li>
+<li>查询处理器需要做更多的工作：检查表中存在哪些列</li>
+<li>你可以更简单的找到哪里使用了这个列</li>
+<li>如果你在JOIN语句中使用<code>SELECT *</code>，你讲获取所有的列</li>
+<li>不能安全地使用序数引用（尽管对列使用序数引用本身就是一种不好的做法）</li>
+<li>在具有<code>TEXT</code>字段的复杂查询中，通过不太理想的临时表处理，查询速度可能会减慢。</li>
+</ol>
+
+<h3 id="select-列名">SELECT 列名</h3>
+
+<pre><code class="language-mysql">CREATE TABLE stack (
+    id INT,
+    username VARCHAR(30) NOT NULL,
+    password VARCHAR(30) NOT NULL
+);
+
+INSERT INTO stack(`id`, `username`, `password`) VALUES (1, 'Foo', 'hiddenGem');
+INSERT INTO stack(`id`, `username`, `password`) VALUES (2, 'Baa', 'verySecret');
+</code></pre>
+
+<p>查询：</p>
+
+<pre><code class="language-mysql">SELECT id FROM stack;
+</code></pre>
+
+<p>返回值：</p>
+
+<pre><code>+------+
+|   id |
++------+
+|    1 |
+|    2 |
++------+
+</code></pre>
+
+<h3 id="like语句">LIKE语句</h3>
+
+<pre><code class="language-mysql">CREATE TABLE stack(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) NOT NULL
+);
+
+INSERT INTO stack(username) VALUES ('admin'), ('k admin'), ('adm'), ('a adm b'), ('b XadmY c'), ('adm now'), ('not here');
+</code></pre>
+
+<p>查找username中包含<code>adm</code>的记录：</p>
+
+<pre><code class="language-mysql">SELECT * FROM stack WHERE username LIKE &quot;%adm%&quot;;
+
+ +----+-----------+
+ | id | username  |
+ +----+-----------+
+ |  1 | admin     |
+ |  2 | k admin   |
+ |  3 | adm       |
+ |  4 | a adm b   |
+ |  5 | b XadmY c |
+ |  6 | adm now   |
+ +----+-----------+
+</code></pre>
+
+<p>username列以<code>adm</code>开头的记录：</p>
+
+<pre><code class="language-mysql">SELECT * FROM stack WHERE username LIKE &quot;adm%&quot;;
+ +----+----------+
+ | id | username |
+ +----+----------+
+ |  1 | admin    |
+ |  3 | adm      |
+ |  6 | adm now  |
+ +----+----------+
+</code></pre>
+
+<p>username列以<code>adm</code>结尾的记录：</p>
+
+<pre><code class="language-mysql">SELECT * FROM stack WHERE username LIKE &quot;adm%&quot;;
+
+ +----+----------+
+ | id | username |
+ +----+----------+
+ |  3 | adm      |
+ +----+----------+
+</code></pre>
+
+<p>像<code>%</code>字符在LIKE语句中匹配任意数量的字符，<code>_</code>字符只匹配一个字符，例如：</p>
+
+<pre><code class="language-mysql">SELECT * FROM stach WHERE username LIKE &quot;adm_n&quot;;
+
+ +----+----------+
+ | id | username |
+ +----+----------+
+ |  1 | admin    |
+ +----+----------+
+</code></pre>
+
+<p><strong>建议</strong>：如果在<code>username</code>上面有一个索引，</p>
+
+<ul>
+<li><code>LIKE 'adm'</code>和<code>= 'adm'</code>的效果是一样的</li>
+<li><code>LIKE 'adm%'</code>是一个&rdquo;范围&rdquo;，和<code>BETWEEN..AND..</code>是相似的，可以很好的利用这列上面的索引</li>
+<li><code>LIKE '%adm'</code>(或者带有前导通配符的任何变体)都用不上索引。因此这会很慢。在有很多行记录的表上面，这可能会很慢甚至没有用处。</li>
+<li><code>RLIKE(REGEXP)</code>往往比LIKE更慢，但是又更多的功能</li>
+<li>尽管MySQL支持在许多类型的表和列上进行<code>FULLTEXT</code>，但是这样<code>FULLTEXT</code>不用与使用<code>LIKE</code>来进行查询。</li>
+</ul>
+
+<h3 id="case或if">CASE或IF</h3>
+
+<p>查询：</p>
+
+<pre><code class="language-mysql">SELECT st.name,
+       st.percentage,
+       CASE WHEN st.percentage &gt;= 35 THEN 'Pass' ELSE 'Fail' END AS `Remark`
+FROM student AS st;
+</code></pre>
+
+<p>输出值：</p>
+
+<pre><code>+--------------------------------+ 
+| name | percentage | Remark |
++--------------------------------+ 
+| Isha |         67 |   Pass | 
+| Rucha|         28 |   Fail |
+| Het  |         35 |   Pass | 
+| Ansh |         92 |   Pass | 
++--------------------------------+
+</code></pre>
+
+<p>或者使用IF：</p>
+
+<pre><code class="language-mysql">SELECT st.name
+       st.percentage
+       IF(st.percentage &gt;= 35, 'Pass', 'Fail') AS `Remark`
+FROM student AS st;
+-- IF(st.percentage &gt;= 35, 'Pass', 'Fail')
+-- 这意味着：如果st.percentage &gt;= 35为TRUE，那么就返回'Pass'，否则返回'Fail'
+</code></pre>
+
+<h3 id="as别名">AS别名</h3>
+
+<p>SQL别名用来临时重命名表名或列名。这个主要用来提高可读性。</p>
+
+<p>查询：</p>
+
+<pre><code class="language-mysql">SELECT username AS val FROM stack;
+SELECT username val FROM stack;
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>+-------+
+| val   |
++-------+
+| admin |
+| stack |
++-------+
+2 rows in set (0.00 sec)
+</code></pre>
+
+<h3 id="limit语句">LIMIT语句</h3>
+
+<p>查询：</p>
+
+<pre><code class="language-mysql">SELECT * FROM Customers ORDER BY CustomerID LIMIT 3;
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>+------------+--------------+-------------+---------+------+------------+---------+
+| CustomerID | CustomerName | ContactName | Address | City | PostalCode | Country |
++------------+--------------+-------------+---------+------+------------+---------+
+|          1 |      张三     |      张三   | 王府井12号| 北京 | 100000     | 中国     |
+|          2 |      李四     |      李四   | 天坛1号院 | 北京 | 100000     | 中国     |
+|          3 |      王五     |      王五   | 国贸七号  | 郑州 | 450000     | 中国     |
++------------+--------------+-------------+---------+------+------------+---------+
+3 rows in set (0.00 sec)
+</code></pre>
+
+<p><strong>最佳实践：</strong>在使用<code>LIMIT</code>的时候需要一直使用<code>ORDER BY</code>。否则你获取的行是不可以预期的。</p>
+
+<p>查询：</p>
+
+<pre><code class="language-mysql">SELECT * FROM Customers ORDER BY CustomerID LIMIT 2,1;
+</code></pre>
+
+<p>解析：</p>
+
+<p>当<code>LIMIT</code>包含两个数字的时候，将会被解析为<code>LIMIT offset, count</code>。上面的例子就是提过两个结果，返回一个结果。</p>
+
+<p>结果：</p>
+
+<table>
+<thead>
+<tr>
+<th>CustomerID</th>
+<th>CustomerName</th>
+<th>ContactName</th>
+<th>Address</th>
+<th>City</th>
+<th>PostalCode</th>
+<th>Country</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>3</td>
+<td>王五</td>
+<td>王五</td>
+<td>国贸七号</td>
+<td>郑州</td>
+<td>450000</td>
+<td>中国</td>
+</tr>
+</tbody>
+</table>
+
+<p>注意：<code>LIMIT</code>的值必须是一个常量值，不能是列值。</p>
+
+<h3 id="between">BETWEEN</h3>
+
+<p>你可以使用<code>BETWEEN</code>语句来代替<code>大于等于和小于等于</code>条件。</p>
+
+<p><strong>数据</strong></p>
+
+<pre><code>+----+-----------+
+| id | username  |
++----+-----------+
+|  1 | admin     |
+| 2 | root |
+|  3 | toor      |
+|  4 | mysql     |
+|  5 | thanks    |
+|  6 | java      |
++----+-----------+
+</code></pre>
+
+<p><strong>表达式查询</strong></p>
+
+<pre><code class="language-mysql">SELECT * FROM stack WHERE id &gt;= 2 AND id &lt;= 5;
+</code></pre>
+
+<p><strong>BETWEEN查询</strong></p>
+
+<pre><code class="language-mysql">SELECT * FROM stack WHERE id BETWEEN 2 AND 5;
+</code></pre>
+
+<p><strong>结果</strong></p>
+
+<pre><code>+----+-----------+
+| id | username  |
++----+-----------+
+|  2 | root      |
+|  3 | toor      |
+|  4 | mysql     |
+|  5 | thanks    |
++----+-----------+
+4 rows in set (0.00 sec)
+</code></pre>
+
+<p><strong>注意：</strong></p>
+
+<blockquote>
+<p>BETWEEN等价于 &gt;= and &lt;= ，而不是&gt; and &lt;</p>
+</blockquote>
+
+<p><strong>NOT BETWEEN</strong></p>
+
+<p>如果想要获取相反的结果，使用<code>NOT</code>关键字。例如：</p>
+
+<pre><code class="language-mysql">SELECT * FROM stack WHERE id NOT BETWEEN 2 AND 5;
+</code></pre>
+
+<p><strong>结果：</strong></p>
+
+<pre><code>+----+-----------+
+| id | username  |
++----+-----------+
+|  1 | admin     |
+|  6 | java      |
++----+-----------+
+2 rows in set (0.00 sec)
+</code></pre>
+
+<p><strong>注意：</strong></p>
+
+<blockquote>
+<p>NOT BETWEEN 使用的是<code>&lt; and &gt;</code>，而不是 <code>&lt;= and &gt;=</code>。也就是<code>WHERE id NOT BETWEEN 2 AND 5</code>和<code>WHERE (id &lt; 2 OR id &gt; 5)</code>是相同的。</p>
+</blockquote>
+
+<p>如果你在<code>BETWEEN</code>的列上面有索引，MySQL将会在索引上面使用范围的查询。</p>
+
+<h3 id="where语句">WHERE语句</h3>
+
+<p><strong>查询：</strong></p>
+
+<pre><code class="language-mysql">SELECT * FROM stack WHERE username='admin' AND password='admin';
+</code></pre>
+
+<p><strong>结果：</strong></p>
+
+<pre><code>+------+----------+----------+
+| id   | username | password |
++------+----------+----------+
+|    1 | admin    | admin    |
++------+----------+----------+
+1 row in set (0.00 sec)
+</code></pre>
+
+<p><strong>WHERE中子查询：</strong></p>
+
+<p><code>WHERE</code>语句中可以包含任何有效的<code>SELECT</code>语句，这样就可以实现赋值的查询语句。这就是&rdquo;嵌套&rdquo;查询。</p>
+
+<p><strong>查询</strong></p>
+
+<p>嵌套查询通常用来返回一个单独的元素值来和父查询的进行比较。</p>
+
+<pre><code class="language-mysql">SELECT title FROM books WHERE author_id=(SELECT id FROM authors WHERE last_name='Bar' AND first_name='Foo');
+</code></pre>
+
+<p>查询所有没有邮件地址的用户名称：</p>
+
+<pre><code class="language-mysql">SELECT * FROM stack WHERE username IN (SELET username FROM signups WHERE email IS NULL);
+</code></pre>
+
+<p>免责声明：在比较整个结果集时，考虑使用<a href="http://stackoverflow.com/questions/17946221/sql-join-and-different-types-of-joins">JOIN</a>来提升性能。</p>
+
+<h3 id="like">LIKE(_)</h3>
+
+<p>LIKE语句中的<code>_</code>表示匹配一个单独的字符。</p>
+
+<p><strong>查询</strong></p>
+
+<pre><code class="language-mysql">SELECT username FROM users WHERE users LIKE 'admin_';
+</code></pre>
+
+<p><strong>结果</strong></p>
+
+<pre><code>+----------+
+| username |
++----------+
+| admin1   |
+| admin2   |
+| admin-   |
+| adminA   |
++----------+
+</code></pre>
+
+<h3 id="日期范围">日期范围</h3>
+
+<pre><code class="language-mysql">SELECT ... WHERE dt&gt;='2019-02-01' AND dt&lt;='2017-02-01' + INTERVAL 1 MONTH
+</code></pre>
+
+<p>当然，这可以使用<code>BETWEEN</code>和<code>23:59:59</code>这样的方式实现，但是，这种方式有一些优点：</p>
+
+<ul>
+<li>你没有预先计算结束时间(通常是开始时间之后的某个时间)</li>
+<li>你不用输入两个时间点(像BETWEEN这样)，不用输入&rsquo;23:59:59&rsquo;这样的信息</li>
+<li>这对<code>DATE DATEATIME TIMESTAMP</code>有效，甚至对包含微妙部分的<code>DATETIME(6)</code></li>
+<li>这包括闰日，年底等等</li>
+<li>这对索引友好的(像BETWEEN)</li>
+</ul>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/php-section-18.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十八）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-17.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十七）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="Datetime类">
+    <meta name="description" content="MySQL的注释">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（十七）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(九)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/php-section-17.html">
+    <link rel="canonical" href="/2019/04/post/bash-section-09.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/php" title="PHP">
-                           PHP
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（十七）</h1>
+                    <h1>MySQL专业笔记(九)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, April 17, 2019
+                    <span  class="meta">Posted by 怀府风 on Tuesday, April 23, 2019
                         
                     </span>
                 </div>
@@ -182,24 +182,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#datetime类">Datetime类</a>
+<li><a href="#mysql的注释">MySQL的注释</a>
 <ul>
-<li><a href="#可变到不可变">可变到不可变</a></li>
-<li><a href="#加减日期间隔">加减日期间隔</a></li>
-<li><a href="#gettimestamp">getTimestamp</a></li>
-<li><a href="#setdate">setDate</a></li>
-<li><a href="#从自定义格式创建datetime">从自定义格式创建DateTime</a>
-<ul>
-<li><a href="#面向对象">面向对象</a></li>
-<li><a href="#函数形式">函数形式</a></li>
-</ul></li>
-<li><a href="#输出datetime">输出DateTime</a>
-<ul>
-<li><a href="#格式">格式</a></li>
-<li><a href="#使用">使用</a></li>
-<li><a href="#函数方式">函数方式</a></li>
-<li><a href="#面向对象方法">面向对象方法</a></li>
-</ul></li>
+<li><a href="#增加注释">增加注释</a></li>
+<li><a href="#表定义注释">表定义注释</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -207,150 +193,53 @@
         		
         		
 
-<h2 id="datetime类">Datetime类</h2>
+<h2 id="mysql的注释">MySQL的注释</h2>
 
-<h3 id="可变到不可变">可变到不可变</h3>
+<h3 id="增加注释">增加注释</h3>
 
-<p>从PHP5.6之前的可变版本到现在的不可变版本。</p>
+<p>有多种类型的注释：</p>
 
-<p>在PHP5.6之后创建一个<code>\DateTimeImmutable</code>类：</p>
-
-<pre><code>\DateTimeImmutable::createFromMutable($concrete);
+<pre><code class="language-mysql"># 注释到行尾
+-- 注释到行尾
+/* 注释符号内部 */
+/*
+多行注释
+*/
 </code></pre>
 
-<p>在PHP5.6之前：</p>
+<p>例子：</p>
 
-<pre><code>\DateTimeImmutable::createFromFormat(\DateTime::ISO8601, $mutable-&gt;format(\DateTime::ISO8601), $mutable-&gt;getTimezone());
+<pre><code class="language-mysql">SELECT * FROM t1;  --这是一个注释
+CREATE TABLE stack (
+    /*
+    username varchar(30),
+    */
+    id int
+);
 </code></pre>
 
-<h3 id="加减日期间隔">加减日期间隔</h3>
+<p><code>—</code>符号要求在符号后面，注释前面有一个空格，否则将认为是一个命令，并且引发一个错误。</p>
 
-<p>我们可以使用<a href="https://php.net/manual/pt_BR/class.dateinterval.php">DateInterval</a>在DateTime对象上增加或减少一定时间间隔。</p>
-
-<p>下面的例子，我们在对象上增加7天，然后打印输出到屏幕上面：</p>
-
-<pre><code>$now = new DateTime();// empty argument returns the current date
-$interval = new DateInterval('P7D');//this objet represents a 7 days interval
-$lastDay = $now-&gt;add($interval); //this will return a DateTime object
-$formatedLastDay = $lastDay-&gt;format('Y-m-d');//this method format the DateTime object and returns a String
-echo &quot;Samara says: Seven Days. You'll be happy on $formatedLastDay.&quot;;
+<pre><code class="language-mysql">#注释正常
+/*注释正常*/
+--注释错误
 </code></pre>
 
-<p>这将会输出(在2019-04-29时运行)：</p>
+<h3 id="表定义注释">表定义注释</h3>
 
-<blockquote>
-<p> Samara says: Seven Days. You&rsquo;ll be happy on 2019-05-06.</p>
-</blockquote>
-
-<p>我们可以使用sub方法来减少日期：</p>
-
-<pre><code>$now-&gt;sub($interval);
-echo &quot;Samara says: Seven Days. You were happy last on $formatedLastDay.&quot;;
+<pre><code>CREATE TABLE menagerie.bird(
+    bird_id INT NOT NULL AUTO_INCREMENT,
+    species VARCHAR(300) DEFAULT NULL COMMENT '字段注释',
+    INDEX idx_species(species) COMMENT '索引'，
+    PRIMARY KEY (bird_id)
+) ENGINE=InnoDB COMMENT &quot;表注释&quot;;
 </code></pre>
 
-<p>这将会输出(在2019-04-29时运行)：</p>
+<p>在<code>COMMENT</code>后面添加一个<code>=</code>是可选的。查看<a href="https://dev.mysql.com/doc/refman/5.7/en/create-table.html">手册</a>。</p>
 
-<blockquote>
-<p>Samara says: Seven Days. You&rsquo;ll be happy on 2019-04-22.</p>
-</blockquote>
+<p>这些注释不像其他的注释，保存在schema中，可以使用<code>SHOW CREATE TABLE</code>或从<code>information_schema</code>中获取。</p>
 
-<h3 id="gettimestamp">getTimestamp</h3>
-
-<p><a href="https://www.php.net/manual/zh/datetime.gettimestamp.php">getTimestamp</a>获取DateTime对象的unix时间戳格式：</p>
-
-<pre><code> $date = new DateTime(); 
- echo $date-&gt;getTimestamp();
-</code></pre>
-
-<p>这将会输出从00:00:00 UTC, Thursday, 1 January 1970到现在的以秒为单位的整数时间戳。</p>
-
-<h3 id="setdate">setDate</h3>
-
-<p>setDate设置DateTime对象的date时间。</p>
-
-<pre><code>$date = new DateTime(); 
-$date-&gt;setDate(2016, 7, 25);
-</code></pre>
-
-<p>上面的例子将日期设置为2016-07-25，这将会输出：</p>
-
-<pre><code>2016-07-25 17:52:15.819442
-</code></pre>
-
-<h3 id="从自定义格式创建datetime">从自定义格式创建DateTime</h3>
-
-<p>PHP可以解析一些<a href="https://secure.php.net/manual/en/datetime.formats.php">时间格式</a>。如果你想要解析非标准的格式，或者你想要显示使用某种格式，你可以使用静态方法<a href="https://php.net/manual/en/datetime.createfromformat.php">DateTime::createFromFormat</a>：</p>
-
-<h4 id="面向对象">面向对象</h4>
-
-<pre><code>$format = &quot;Y,m,d&quot;;
-$time = &quot;2009,2,26&quot;;
-$date = DateTime::createFromFormat($format, $time);
-</code></pre>
-
-<h4 id="函数形式">函数形式</h4>
-
-<pre><code>$format = &quot;Y,m,d&quot;;
-$time = &quot;2009,2,26&quot;;
-$date = date_create_from_format($format, $time);
-</code></pre>
-
-<h3 id="输出datetime">输出DateTime</h3>
-
-<p>PHP4提供了一个格式化输出DateTime内容的方法。如手册所说，下面是面向对象的方法：</p>
-
-<pre><code>public string DateTime::format ( string $format )
-</code></pre>
-
-<p>方法<a href="https://www.php.net/manual/zh/datetime.format.php">format()</a>有一个字符串格式的参数format：</p>
-
-<h4 id="格式">格式</h4>
-
-<p>format参数是一个字符串，使用单个字符来定义格式：</p>
-
-<ul>
-<li>Y：四位数字表示的年份(2019)</li>
-<li>y：两位数字表示的年份(19)</li>
-<li>m：数字格式的月份(01-12)</li>
-<li>M：三位字符串格式的月份(Jan，Feb&hellip;)</li>
-<li>j：月的天数，不带前导零(1-31)</li>
-<li>D：星期的字符串，3个字符(Mon,Tue&hellip;)</li>
-<li>h：12进制小时(01-12)</li>
-<li>H：24进制小时(00-23)</li>
-<li>A：AM或PM</li>
-<li>i：带有前导零的分钟(00-59)</li>
-<li>s：带有前导零的秒(00-59)</li>
-<li>完整的列表查看<a href="https://www.php.net/manual/zh/function.date.php">这里</a></li>
-</ul>
-
-<h4 id="使用">使用</h4>
-
-<p>上面的字符可以用来显示任何格式的时间下面是一些例子：</p>
-
-<pre><code>$date = new DateTime('2000-05-26T13:30:20'); /* Friday, May 26, 2000 at 1:30:20 PM */ 
-
-$date-&gt;format(&quot;H:i&quot;);
-/* Returns 13:30 */
-$date-&gt;format(&quot;H i s&quot;); /* Returns 13 30 20 */
-$date-&gt;format(&quot;h:i:s A&quot;); /* Returns 01:30:20 PM */
-$date-&gt;format(&quot;j/m/Y&quot;); /* Returns 26/05/2000 */
-$date-&gt;format(&quot;D, M j 'y - h:i A&quot;);
-/* Returns Fri, May 26 '00 - 01:30 PM */
-</code></pre>
-
-<h4 id="函数方式">函数方式</h4>
-
-<pre><code>date_format($date, $format)
-</code></pre>
-
-<h4 id="面向对象方法">面向对象方法</h4>
-
-<pre><code>$date-&gt;format($format)
-</code></pre>
-
-<p>这两种方式是等价的。</p>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -359,12 +248,12 @@ $date-&gt;format(&quot;D, M j 'y - h:i A&quot;);
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/bash-section-03.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三)">&larr; Previous Post</a>
+                      <a href="/2019/04/post/php-section-24.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十四）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/bash-section-02.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(二)">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-23.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十三）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

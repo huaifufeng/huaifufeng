@@ -197,6 +197,23 @@ $string = &amp;quot;1:23:456&amp;quot;; echo json_encode(explode(&amp;quot;:&amp
     </item>
     
     <item>
+      <title>MySQL专业笔记(十)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-10.html</link>
+      <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-10.html</guid>
+      <description>INSERT ON DUPLICATE KEY UPDATE INSERT INTO `table_name` (`index_field`, `other_field_1`, `other_filed_2`) VALUES (`index_value`, `insert_value`, `other_value`) ON DUPLICATE KEY UPDATE `other_field_1` = &#39;update_value&#39;, `other_field_2` = VALUES(`other_field_2`);  这将会在table_name中插入指定的值，但是当唯一键存在的时候，将会更新other_field_1的值为一个新值。
+有时候，但重复主键时使用VALUES()来获取原本的值，而不是更新为一个新值。这种方式下，你可以使用INSERT和UPDATE设置不同的值。在上面的例子中，other_field_1在INSERT的时候设置为insert_value或者在UPDATE的时候设置为update_value。但是other_field_2将一直设置为other_value。
+对于插入重复Key更新(IODKU)工作的至关重要的一样就是表 包含唯一的键，这将会是造成重复的原因。这个唯一的键可以是主键，也可以不是。它可以是单列的唯一键，也可以是多了的组合键。
+插入多个行 INSERT INTO `my_table` (`field_1`, `field_2`) VALUES (&#39;data_1&#39;, &#39;data_2&#39;), (&#39;data_1&#39;, &#39;data_3&#39;), (&#39;data_4&#39;, &#39;data_5&#39;);  这是一次性添加多条记录的INSERT语句。
+这种匹配插入数据的操作比一条一条的插入数据快的多。特别是一次插入100条数据是单条数据插入的10倍。
+忽略已存在的行
+在插入大行数据集时，在某些情况下，最好跳过通常由于列限制(如重复主键)而导致插入失败的情况。这可以通过INSERT IGNORE来实现这个功能。
+假设有下面这样的数据：
+SELECT * FROM `people`; --- Produces: +----+------+ | id | name | +----+------+ | 1 | john | | 2 | anna | +----+------+ INSERT IGNORE INTO `people` (`id`, `name`) VALUES (&#39;2&#39;, &#39;anna&#39;), -- 没有IGNORE的话，这行将会产生错误 (&#39;3&#39;， &#39;mike&#39;); SELECT * FROM `people`; --- Produces: +----+--------+ | id | name | +----+--------+ | 1 | john | | 2 | anna | | 3 | mike | +----+--------+  最重要的事是记住INSERT IGNORE也会静静的跳过那些错误，下面是MySQL文档的说明：</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（二十四）</title>
       <link>http://blog.huaifufeng.com/2019/04/post/php-section-24.html</link>
       <pubDate>Wed, 24 Apr 2019 00:00:00 +0000</pubDate>
@@ -208,12 +225,37 @@ $name = &#39;Joel&#39;; // Example using the curly brace syntax for the variable
     </item>
     
     <item>
+      <title>MySQL专业笔记(九)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-09.html</link>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-09.html</guid>
+      <description>MySQL的注释 增加注释 有多种类型的注释：
+# 注释到行尾 -- 注释到行尾 /* 注释符号内部 */ /* 多行注释 */  例子：
+SELECT * FROM t1; --这是一个注释 CREATE TABLE stack ( /* username varchar(30), */ id int );  —符号要求在符号后面，注释前面有一个空格，否则将认为是一个命令，并且引发一个错误。
+#注释正常 /*注释正常*/ --注释错误  表定义注释 CREATE TABLE menagerie.bird( bird_id INT NOT NULL AUTO_INCREMENT, species VARCHAR(300) DEFAULT NULL COMMENT &#39;字段注释&#39;, INDEX idx_species(species) COMMENT &#39;索引&#39;， PRIMARY KEY (bird_id) ) ENGINE=InnoDB COMMENT &amp;quot;表注释&amp;quot;;  在COMMENT后面添加一个=是可选的。查看手册。
+这些注释不像其他的注释，保存在schema中，可以使用SHOW CREATE TABLE或从information_schema中获取。
+参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（二十三）</title>
       <link>http://blog.huaifufeng.com/2019/04/post/php-section-23.html</link>
       <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/04/post/php-section-23.html</guid>
       <description>控制结构备用语法 if/else语句 &amp;lt;?php if ($condition): do_something(); elseif ($another_condition): do_something_else(); else: do_something_different(); endif; ?&amp;gt; &amp;lt;?php if ($condition): ?&amp;gt; &amp;lt;p&amp;gt;Do something in HTML &amp;lt;/p&amp;gt; &amp;lt;?php elseif ($another_condition): ?&amp;gt; &amp;lt;p&amp;gt;Do something else in HTML&amp;lt;/p&amp;gt; &amp;lt;?php else: ?&amp;gt; &amp;lt;p&amp;gt;Do something different in HTML &amp;lt;/p&amp;gt; &amp;lt;?php endif; ?&amp;gt;  for &amp;lt;?php for ($i = 0; $i &amp;lt; 10; $i++): do_something($i); endfor; ?&amp;gt; &amp;lt;?php for ($i=0; $i &amp;lt; 10; $i++): ?&amp;gt; &amp;lt;p&amp;gt;Do something in HTML with &amp;lt;?</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(八)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-08.html</link>
+      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-08.html</guid>
+      <description>变量 设置变量 有一些方法来设置变量：
+ 可以使用SET将变量设置为特定的、字符串、数字和日期  SET @var_string = &amp;quot;my_var&amp;quot;; SET @var_num = &#39;2&#39;; SET @var_date = &#39;2015-07-20&#39;;   你可以使用下面的方法设置变量为select语句的结果：  Select @var := &#39;123&#39;; (注意：当你没有使用SET设置变量的时候，你需要使用:=，因为在其他的语句(select, update)中，&amp;quot;=&amp;quot;是用来比较的，所以当你在等号前面增加一个冒号的时候，这表明这不是一个比较语句，而是一个SET语句)   你可以使用INTO设置一个变量作为select语句的返回值  (当我需要动态选择要查询的分区时，这是特别有用的)
+SET @start_date = &#39;2015-07-20&#39;; SET @end_date = &#39;2016-01-31&#39;; #这获取年月来确定使用的分区 SET @start_yearmonth = (SELECT EXTRACT(YEAR_MONTH FROM @start_date)); SET @end_yearmonth = (SELECT EXTRACT(YEAR_MONTH FROM @end_date)); #把分区放入变量 SELECT GROUP_CONCAT(partition_name) FROME information_schema.partitions p WHERE table_name=&#39;partitioned_table&#39; AND SUBSTRING_INDEX(partition_name, &#39;P&#39;, -1) BETWEEN @start_yearmonth AND @end_yearmonth INTO @partitions; #把查询放入变量。因为MySQL不会把我们的变量任务是一个变量，所有我们需要拼接语句并执行这个语句 SET @query = CONCAT(&#39;CREATE TABLE part_of_partitioned_table(PRIMARY KEY(id)) SELECT partitioned_table.</description>
     </item>
     
     <item>
@@ -236,6 +278,20 @@ $rate = .05; $calculateTax = function($value) use ($rate) { return $value * $rat
     </item>
     
     <item>
+      <title>MySQL专业笔记(七)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-07.html</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-07.html</guid>
+      <description>创建数据库    参数 详情     CREATE DATABASE 创建一个指定名称的数据库   CREATE SHEMA CREATE DATABASE 的别名   IF NOT EXISTS 如果指定的数据库存在的话，使用这个语句避免出现错误   create_specification create_specification指定的数据库的特征：像CHARACTER SET和COLLATE(数据库排序特征)    创建数据库，用户和授权 创建数据库。注意可以使用别名SCHEMA。
+CREATE DATABASE Baseball; --创建名称为Baseball的数据库  如果数据库已经存在了，将会返回错误1007。想要避免这个错误，使用：
+CREATE DATABASE IF NOT EXISTS Baseball;  相似的：
+DROP DATABASE IF EXISTS Baseball; --当数据库存在时删除数据库 DROP DATABASE xyzl; --数据库如果不存在，返回1008错误  因为可以存在上面的错误，所以DDL语句通常和IF EXISTS一起使用。
+用户创建数据库时，可以同时设置默认的字符集和排序规则，例如：
+CREATE DATABASE Baseball CHARACTER SET utf8 COLLATE utf8_general_ci; SHOW CREATE TABLE Baseball; +----------+-------------------------------------------------------------------+ | Database | Create Database | +----------+-------------------------------------------------------------------+ | Baseball | CREATE DATABASE `Baseball` /*!</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（二十一）</title>
       <link>http://blog.huaifufeng.com/2019/04/post/php-section-21.html</link>
       <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
@@ -247,6 +303,24 @@ function variadic_func($nonVariadic, ...$variadic) { echo json_encode($variadic)
 function foo(Bar ...$bars) {}  &amp;amp;可以添加在…之前，变量名称之后，就像下面这个例子：
 class Foo{} function a(Foo &amp;amp;...$foos){ $i = 0; foreach($foos as &amp;amp;$foo){ // note the &amp;amp; $foo = $i++; } } $a = new Foo; $c = new Foo; $b =&amp;amp; $c; a($a, $b); var_dump($a, $b, $c);  这将会输出：
 int(0) int(1) int(1)  另一方面，可以解压缩数组（或Traversable）以便以参数列表的形式传递给函数：</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(六)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-06.html</link>
+      <pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-06.html</guid>
+      <description>Limit和Offset Limit和Offset的关系 假设有下面这样的users表：
+   id username     1 User1   2 User2   3 User3   4 User4   5 User5    为了限制SELECT查询中返回的结果集数量，可以使用LIMIT语句加上一个或两个整数作为参数(0也可以)。
+LIMIT语句一个参数
+当只提供了一个参数，这将只会限制返回的行数：
+SELECT * FROM users ORDER BY id ASC LIMIT 2; id username 1 User1 2 User2  如果参数是0的话，将会返回0个值。
+还需要注意，这里ORDER BY语句是很重要的，用来指定第一行的结果(当按照另一列排序时)。
+LIMIT使用两个参数
+当LIMIT语句使用两个参数时：
+ 第一个参数表示从结果集中显示的行-这个值通常是offset，因为这个值表示受约束结果集的开始之前的行。这个值允许是0，表示非约束结果集的第一行。 第二个参数表示结果集要显示的最大结果数量。  查看下面的查询：
+SELECT * FROM users ORDER BY id ASC LIMIT 2,3; id username 3 User3 4 User4 5 User5  注意当第一个参数为0时，这个结果集等价于只传入了一个参数。这意味着下面两个语句由相同的结果：</description>
     </item>
     
     <item>
@@ -266,6 +340,16 @@ $data = [ [&#39;Fruit&#39; =&amp;gt; &#39;Apple&#39;, &#39;Color&#39; =&amp;gt; 
     </item>
     
     <item>
+      <title>MySQL专业笔记(五)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-05.html</link>
+      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-05.html</guid>
+      <description>NULL NULL的使用  不知道的数据：像end_date，rating 可选的数据：像middle_initial(尽管空字符是更加合适的) 0/0：某些运算的结果，像0除以0 NULL不等于空字符&amp;rdquo;&amp;ldquo;或者0 其他？  验证NULL  IS NULL或IS NOT NULL：= NULL将不会像你预期的一样 x &amp;lt;=&amp;gt; y是一种&amp;rdquo;null安全&amp;rdquo;的比较  在LEFT JOIN语句中检查a中的行在b中没有合适的行对应。
+SELECT ... FROM a LEFT JOIN b ON ... WHERE b.id IS NULL:  参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（十九）</title>
       <link>http://blog.huaifufeng.com/2019/04/post/php-section-19.html</link>
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
@@ -282,6 +366,25 @@ if ($a == 42): echo &amp;quot;The answer to life, the universe and everything is
     </item>
     
     <item>
+      <title>MySQL专业笔记(四)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-04.html</link>
+      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-04.html</guid>
+      <description>倒引号 倒引号用法 有很多例子在查询中使用倒引号，但是还是有很多人不清楚在什么时候或什么地方使用倒引号`。
+倒引号主要用于防止一个调用&amp;rdquo;MySQL保留字&amp;rdquo;的错误。当你使用PHPmyAdmin创建一个表的时候，可能会遇到一个警告或提示：你正在使用MySQL的保留字。
+例如，你创建一个包含字段&amp;rdquo;group&amp;rdquo;的表，你会遇到这个警告。这是因为你可能会使用下面的查询：
+SELECT student_name, AVG(test_score) FROM student GROUP BY group;  为了确保你的查询不会出现错误，你可以在关键字上面增加倒引号：
+SELECT student_name, AVG(test_score) FROM student GROUP BY `group`;  表
+不仅仅列名需要添加倒引号，表名也需要添加倒引号。例如，当你需要JOIN多个表的时候：
+SELECT `users`.`username`, `groups`.`group` FROM `users`;  易于阅读
+正如你看到的，在表名或列表两边添加倒引号，也让查询更加容易阅读。
+例如当你在书写全是小写时的查询时：
+select student_name, AVG(test_score) from student group by group select `student_name`, AVG(`test_score`) from `student` group by `group`  查看MySQL关键字和保留字的手册。带有(R)标识的是保留字。其他的都是关键字。保留字需要特别小心。
+参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（十八）</title>
       <link>http://blog.huaifufeng.com/2019/04/post/php-section-18.html</link>
       <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
@@ -290,6 +393,17 @@ if ($a == 42): echo &amp;quot;The answer to life, the universe and everything is
       <description>操作日期和时间 获取两个时间的差 最可行的方法是使用DateTime类。例如：
 &amp;lt;?php //创建一个指定时间的对象 2年前 $twoYearAgo = new DateTime(&#39;2017-04-29 22:00:00&#39;); //创建一个当前时间的对象 $now = new DateTime(&#39;2019-04-29 22:00:00&#39;) //计算差 $diff = $now-&amp;gt;diff($twoYearAgo); //获取diff结果中的数据 $yearsDiff = $diff-&amp;gt;y; $monthsDiff = $diff-&amp;gt;m; $daysDiff = $diff-&amp;gt;d; $hoursDiff = $diff-&amp;gt;h; $minsDiff = $diff-&amp;gt;i; $secondsDiff = $diff-&amp;gt;s; //差别的天数 $totalDaysDiff = $diff-&amp;gt;days; var_dump($diff);  另外比较两个日期也是很简单的，直接使用比较运算符：
 &amp;lt;?php // Create a date time object, which has the value of ~ two years ago $twoYearsAgo = new DateTime(&amp;quot;2014-01-18 20:05:56&amp;quot;); // Create a date time object, which has the value of ~ now $now = new DateTime(&amp;quot;2016-07-21 02:55:07&amp;quot;); var_dump($now &amp;gt; $twoYearsAgo); // prints bool(true) var_dump($twoYearsAgo &amp;gt; $now); // prints bool(false) var_dump($twoYearsAgo &amp;lt;= $twoYearsAgo); // prints bool(true) var_dump($now == $now); // prints bool(true)  转换日期格式 基本 最简单的转换日期的格式是联合使用strtotime和date。strtotime函数会把一个字符串时间转换为一个Unix时间戳。这个Unix的时间戳可以使用函数date转换为一个新的格式：</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(三)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-03.html</link>
+      <pubDate>Wed, 17 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-03.html</guid>
+      <description>SELECT SELECT语句用来从一个或多个表中获取搜索到的行。
+DISTINCT 在SELECT后面添加DISTINCT表示删除重复的行。
+CREATE TABLE `car` ( `car_id` INT UNSIGNED NOT NULL PRIMARY KEY, `name` VARCHAR(20), `price` DECIMAL(8,2) ); INSERT INTO CAR (`car_id`, `name`, `price`) VALUES (1, &#39;Audi A1&#39;, &#39;20000&#39;); INSERT INTO CAR (`car_id`, `name`, `price`) VALUES (2, &#39;Audi A1&#39;, &#39;15000&#39;); INSERT INTO CAR (`car_id`, `name`, `price`) VALUES (3, &#39;Audi A2&#39;, &#39;40000&#39;); INSERT INTO CAR (`car_id`, `name`, `price`) VALUES (4, &#39;Audi A2&#39;, &#39;40000&#39;); SELECT DISTINCT `name`, `price` FROM CAR; ----------------- name | price Audi A1 | 20000.</description>
     </item>
     
     <item>
