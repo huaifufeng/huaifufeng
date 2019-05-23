@@ -6,10 +6,34 @@
     <description>Recent content in 数据库 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 26 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 28 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(十四)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-14.html</link>
+      <pubDate>Sun, 28 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-14.html</guid>
+      <description>GROUP BY    参数 详情     expression1, expression2,&amp;hellip;expression_n 没有包含在聚合函数中的表达式必须是GROUP BY中的表达式   aggregate_function 像SUM COUNT MIN MAX 或者 AVG这样的函数   tables 你希望获取数据的表。在FROM语句中至少包含一个表   WHERE condition 可选的。要选择的记录必须满足的条件。    HAVING SELECT department, COUNT(*) AS &amp;quot;Man_Power&amp;quot; FROM employees GROUP BY department HAVING COUNT(*) &amp;gt;= 10;  使用GROUP BY … HAVING来过滤聚合记录类似于使用SELECT … WHERE过滤单个记录。
+你也可以使用HAVING Man_Power &amp;gt;= 10因为在HAVING已经能够理解这些别名。
+GROUP_CONCAT GROUP_CONCAT用来拼接表达式的值，而不是每个列一个结果。这意味着选择的多列会把作为一列返回&amp;rdquo;Name(1):Score(*)&amp;ldquo;。
+Name Score Adam A+ Adam A- Adam B Adam C+ Bill D- John A- SELECT Name, GROUP_CONCAT(Score ORDER BY Score DESC SEPERATOR &amp;quot; &amp;quot;) AS Grades FROM Grade GROUP BY Name  结果</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(十三)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-13.html</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-13.html</guid>
+      <description>ORDER BY 语境 下面的SELECT语句包含指定的顺序：
+SELECT ... FROM ... WHERE ... GROUP by ... HAVING ... ORDER BY ... LIMIT ... OFFSET ...; (SELECT ... )UNION ( SELECT ... ) ORDER BY ... --排序union之后的结果 SELECT ... GROUP_CONCAT(DISTINCT x ORDER BY ... SEPARATOR ... ) ... ALTER TABLE ... ORDER BY ... -- 对MyISAM可能有用，对InnoDB无  基础用法 ORDER BY x
+x可以是任何数据类型
+ NULL比非NULL值优先 默认是ASC，升序 字符串(VARCHAR等)按照定义时的COLLATION来排序 ENUM按照定义时的顺序排序  升序/降序 ORDER BY x ASC -- 和默认行为一样 ORDER BY x DESC --降序 ORDER BY lastname,firstname --两列排序 ORDER BY submit_date DESC --最新的 ORDER BY submit_date DESC, id ASC -   ASC = Ascending DESC=Descending NULL首先出现，即使是降序 在上面的例子中，增加索引 INDEX(x) INDEX(lastname, firstname) INDEX(submit_date)可以提升性能  一些技巧 ORDER BY FIND_IN_SET(card_type, &amp;quot;MASTER-CARD, VISA, DISCOVER&amp;quot;) -- MASTER-CARD先 ORDER x IS NULL, x -- 按照x排序，NULL放最后  自定义排序</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(十二)</title>

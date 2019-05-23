@@ -63,8 +63,18 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/bash-section-14.html</loc>
+    <lastmod>2019-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/php-section-28.html</loc>
     <lastmod>2019-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/bash-section-13.html</loc>
+    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -971,7 +981,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/mysql/</loc>
-    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -1013,7 +1023,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
+    <lastmod>2019-04-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="Cookie">
+    <meta name="description" content="ORDER BY">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（二十九）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(十三)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/php-section-29.html">
+    <link rel="canonical" href="/2019/04/post/bash-section-13.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/php" title="PHP">
-                           PHP
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（二十九）</h1>
+                    <h1>MySQL专业笔记(十三)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, April 29, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, April 27, 2019
                         
                     </span>
                 </div>
@@ -182,13 +182,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#cookie">Cookie</a>
+<li><a href="#order-by">ORDER BY</a>
 <ul>
-<li><a href="#修改cookie">修改cookie</a></li>
-<li><a href="#设置cookie">设置cookie</a></li>
-<li><a href="#检查cookie是否设置">检查cookie是否设置</a></li>
-<li><a href="#移除cookie">移除cookie</a></li>
-<li><a href="#获取cookie">获取cookie</a></li>
+<li><a href="#语境">语境</a></li>
+<li><a href="#基础用法">基础用法</a></li>
+<li><a href="#升序-降序">升序/降序</a></li>
+<li><a href="#一些技巧">一些技巧</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -196,130 +195,72 @@
         		
         		
 
-<h2 id="cookie">Cookie</h2>
+<h2 id="order-by">ORDER BY</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>详细说明</th>
-</tr>
-</thead>
+<h3 id="语境">语境</h3>
 
-<tbody>
-<tr>
-<td>name</td>
-<td>cookie的名称。这个也是你可以从<code>$_COOKIE</code>中获取值的名称。这个是唯一必须的参数</td>
-</tr>
+<p>下面的<code>SELECT</code>语句包含指定的顺序：</p>
 
-<tr>
-<td>value</td>
-<td>cookie中存储的值。这个数据可以从浏览器中访问，所以不要在这放敏感信息·</td>
-</tr>
+<pre><code class="language-mysql">SELECT ... FROM ... WHERE ... GROUP by ... HAVING ... ORDER BY ... LIMIT ... OFFSET ...;
+(SELECT ... )UNION ( SELECT ... ) ORDER BY ... --排序union之后的结果
+SELECT ... GROUP_CONCAT(DISTINCT x ORDER BY ... SEPARATOR ... ) ...
 
-<tr>
-<td>expire</td>
-<td>一个代表cookie过期时间的Unix的时间戳。如果过期时间设置为0，cookie将会在session失效时同时失效。如果设置一个比当前时间早的时间戳，cookie会立即失效。</td>
-</tr>
-
-<tr>
-<td>path</td>
-<td>cookie的范围。如果设置为<code>/</code>这个cookie会在整个域名下有效。如果设置为<code>/somePath/</code>cookie将会只在这个路径和这个路径的子路径中有效。默认cookie会设置为当前问文件的路径</td>
-</tr>
-
-<tr>
-<td>domain</td>
-<td>cookie有效的域名和子域名。如果设置为一级域名<code>stackoverflow.com</code>，这个cookie会在这个域名和子域名中有效。如果设置为<code>sub.stackoverflow.com</code>，这个cookie只会在这个子域名和子域名的子域名下面有效。</td>
-</tr>
-
-<tr>
-<td>secure</td>
-<td>如果设置为<code>true</code>，这个cookie只有当客户端和服务端为https时才会设置。</td>
-</tr>
-
-<tr>
-<td>httponly</td>
-<td>指明这个cookie只能通过http/s协议进行设置，不能使用JavaScript这样的客户端语音设置。只在PHP5.2之后有效</td>
-</tr>
-</tbody>
-</table>
-
-<p>一个HTTP的cookie就是：当用户浏览器浏览的时候，一些从服务器发送到用户端，并存储在用户电脑浏览器下面的数据。</p>
-
-<h3 id="修改cookie">修改cookie</h3>
-
-<p>可以使用<a href="https://www.php.net/manual/en/function.setcookie.php">setcookie</a>来修改cookie中存储的值：</p>
-
-<pre><code class="language-php">setcookie('user', 'John', time()+86400, '/');  
+ALTER TABLE ... ORDER BY ... -- 对MyISAM可能有用，对InnoDB无
 </code></pre>
 
-<blockquote>
-<p>cookie是HTTP头的一部分，所有<code>setcookie()</code>方法需要在发送数据到浏览器之前调用。当修改cookie的时候，需要保证<code>path</code>和<code>domain</code>的参数和原来cookie的值一致，否则将会创建一个新的cookie。当你发送cookie的时候，cookie的值部分会被自动的进行urlencode操作。当接收cookie的时候，会被自动的decode并且赋值给cookie名称相同的变量中。</p>
-</blockquote>
+<h3 id="基础用法">基础用法</h3>
 
-<h3 id="设置cookie">设置cookie</h3>
+<p>ORDER BY x</p>
 
-<p>使用<code>setcookie</code>方法来设置一个cookie。因为cookie是HTTP头的一部分，所以你必须在发送数据到浏览器之前设置cookie。例如：</p>
-
-<pre><code class="language-php">setcookie('user', 'Tom', time( + 86400), '/');
-</code></pre>
-
-<p>参数说明：</p>
+<p>x可以是任何数据类型</p>
 
 <ul>
-<li>创建一个名称为<code>user</code>的cookie</li>
-<li>(可选)为这个cookie设置值<code>Tom</code></li>
-<li>(可选)这个cookie将会在1天之后过期</li>
-<li>(可选)这个cookie在整个站点<code>/</code>中都有效</li>
-<li>(可选)cookie只能使用HTTPS传输</li>
-<li>(可选)cookie不能被类似JavaScript的脚本语言访问</li>
+<li>NULL比非NULL值优先</li>
+<li>默认是<code>ASC</code>，升序</li>
+<li>字符串(VARCHAR等)按照定义时的<code>COLLATION</code>来排序</li>
+<li><code>ENUM</code>按照定义时的顺序排序</li>
 </ul>
 
-<blockquote>
-<p>创建或修改一个cookie只能在(<code>path</code>和<code>domain</code>指定的)子请求生效，在<code>$_COOKIE</code>也不是立即生效的。</p>
-</blockquote>
+<h3 id="升序-降序">升序/降序</h3>
 
-<h3 id="检查cookie是否设置">检查cookie是否设置</h3>
-
-<p>对<code>$_COOKIE</code>使用<code>isset</code>函数，来检查cookie是否设置。例子：</p>
-
-<pre><code class="language-php">//PHP &lt; 7.0
-if (isset($_COOKIE['user'])) {
-    //true  cookie设置了
-    echo 'User is' . $_COOKIE['user'];
-} else {
-    //false cookie没有设置
-    echo 'User is not logged in';
-}
-
-//PHP7.0+
-echo 'User is ' . $_COOKIE['user'] ?? 'User is not logged in';
+<pre><code class="language-mysql">ORDER BY x ASC -- 和默认行为一样
+ORDER BY x DESC --降序
+ORDER BY lastname,firstname --两列排序
+ORDER BY submit_date DESC --最新的
+ORDER BY submit_date DESC, id ASC -
 </code></pre>
 
-<h3 id="移除cookie">移除cookie</h3>
+<ul>
+<li><code>ASC</code> = Ascending <code>DESC</code>=Descending</li>
+<li>NULL首先出现，即使是降序</li>
+<li>在上面的例子中，增加索引 <code>INDEX(x)</code> <code>INDEX(lastname, firstname)</code> <code>INDEX(submit_date)</code>可以提升性能</li>
+</ul>
 
-<p>想要删除一个cookie，设置一个过去的时间戳。这将会触发浏览器的删除操作：</p>
+<h3 id="一些技巧">一些技巧</h3>
 
-<pre><code class="language-php">setcookie('user', '', time() - 3600, '/');
+<pre><code class="language-mysql">ORDER BY FIND_IN_SET(card_type, &quot;MASTER-CARD, VISA, DISCOVER&quot;)  -- MASTER-CARD先
+ORDER x IS NULL, x  -- 按照x排序，NULL放最后
 </code></pre>
 
-<blockquote>
-<p>当删除cookie的时候，你需要确保<code>path</code>和<code>domain</code>和之前cookie的值一致，否则将会创建一个立即过去的新cookie。</p>
-</blockquote>
+<p><strong>自定义排序</strong></p>
 
-<p>在当前页面中使用unset方法删除<code>$_COOKIE</code>的值也是一个方法。</p>
-
-<pre><code class="language-php">unset($_COOKIE['user']);
+<pre><code class="language-mysq;">SELECT * FROM some_table WHERE id IN (118, 17, 113, 23, 72)
+ORDER BY FIELD(id, 118, 17, 113, 23, 72);
 </code></pre>
 
-<h3 id="获取cookie">获取cookie</h3>
+<p>将会返回下面的结果：</p>
 
-<p>可以使用$_COOKIE获取cookie的值。例如我们有一个名为<code>user</code>的cookie，我们可以像下面这样获取cookie的值：</p>
-
-<pre><code class="language-php">echo $_COOKIE['user'];
+<pre><code>id ...
+118 ...
+17 ... 
+113 ... 
+23 ...
+72 ...
 </code></pre>
 
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<p>如果id已经排序了，并且你只需要检索行，则非常有用。</p>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -328,12 +269,12 @@ echo 'User is ' . $_COOKIE['user'] ?? 'User is not logged in';
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/php-section-30.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/php-section-28.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十八）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/bash-section-14.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(十四)">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-27.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十七）">Next Post &rarr;</a>
                   </li>
                   
               </ul>
