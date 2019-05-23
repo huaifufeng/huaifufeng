@@ -6,10 +6,60 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 07 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 10 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-40.html</link>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-40.html</guid>
+      <description>Trait 什么是Trait PHP只允许单继承。换句话说，一个类只可以继承一个类。但是当你想要包含不在父类中的功能怎么办？在PHP5.4之前你必须要有创造性，但是在PHP5.4中，引入了Trait。Trait允许你&amp;rdquo;复制并粘贴&amp;rdquo;一个类的一部分到你的类中。
+trait Talk { /** @var string */ public $phrase = &#39;Well Wilbur...&#39;; public function speak() { echo $this-&amp;gt;phrase; } } class MrEd extends Horse { use Talk; public function __construct() { $this-&amp;gt;speak(); } public function setPhrase($phrase) { $this-&amp;gt;phrase = $phrase; } }  现在我们有一个继承了Horse的MrEd类。但是不是所有的Horse类都具备Talk的功能，所以我们使用了Trait。注意这里我们是怎么做的。
+首先，我们定义了我们的Trait。我们可以使用自动加载和命名空间。然后我们在MrEd中使用use关键字引入。
+你注意到MrEd使用Talk的方法和变量但是没有定义他们。还记得我们之前说的&amp;rdquo;复制和粘贴&amp;rdquo;吗？这些方法和变量在类中定义了，就像这个类已经定义了这写方法和变量。
+Trait和抽象类很像，定义了变量和方法。你不可以直接实现一个Trait(new Trait())。Trait不能像抽象类和接口那样，让一个类隐式定义一个方法。Trait只用于显示定义(因为你可以实现任意多个接口)。
+什么时候应该使用Trait？
+讨论Trait时，首先需要考虑的问题就是这个问题。
+ 我可以通过重构我的代码来避免使用Trait吗？
+ 答案往往是肯定的。Trait是有单一继承引起的边缘情况。滥用或过度使用Trait的可能性很高。但是考虑到Trait为代码引入了另外的源，这意味着还有另一层复杂性。在这个例子中，我们处理了3个类。但是Trait意味着你不止处理这些。对于每一个特性，您的类都变得更加难以处理，因为您现在必须参考每个特性来找出它定义了什么（并且可能在发生冲突的地方，请参见冲突解决）。理想情况下，代码中的特征应该尽可能少。
+促进水平代码重用 假设我们有一个Log的接口：
+interface Logger { function log($message); }  现在我们有两个Logger接口的实现类：FileLogger和ConsoleLogger：
+class FileLogger implements Logger { public function log($message) { //添加代码实现 } } class ConsoleLogger implements Logger { public function log($message) { //添加实现 } }  现在如果你定义了一个Foo类，你想要实现一些日志任务，你可以像下面一样：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（三十九）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-39.html</link>
+      <pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-39.html</guid>
+      <description>正则表达式    参数 详情     $pattern 一个正则表达式的字符串(PCRE)    全局正则表达式匹配 一个全局正则表达式匹配可以使用preg_match_all。preg_match_all返回目标字符串中所有匹配的结果(与只返回第一个匹配结果的preg_match不同)。
+preg_match_all返回匹配的数量。$matches包含所有匹配到的结果，并且有第四个参数控制格式。
+如果提供一个数组，$matches包含和preg_match返回相同的格式，除了preg_match在第一个匹配之后就终止，但是preg_match_all会迭代整个字符串，直到字符串处理完毕，返回一个包含匹配结果的多维数组，这个数组的格式有第四个参数控制。
+第四个参数$flag控制$matches的格式。默认的值是PREG_PATTERN_ORDER，可能的其他值PREG_SET_ORDER和PREG_PATTERN_ORDER。
+下面的代码展示栏preg_match_all的用法：
+$subject = &#39;a1b c2d3e f4g&#39;; $pattern = &#39;/[a-z]([0-9])[a-z]/&#39;; var_dump(preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER)); //int(3) var_dump($matches); preg_match_all($pattern, $subject, $matches); //默认使用PREG_PATTERN_ORDER var_dump($matches); preg_match($pattern, $subject, $matches); var_dump($matches);  第一个var_dump将会使用PREG_SET_ORDER作为第四个参数：
+array(3) { [0]=&amp;gt; array(2) { [0]=&amp;gt; string(3) &amp;quot;a1b&amp;quot; [1]=&amp;gt; string(1) &amp;quot;1&amp;quot; } [1]=&amp;gt; array(2) { [0]=&amp;gt; string(3) &amp;quot;c2d&amp;quot; [1]=&amp;gt; string(1) &amp;quot;2&amp;quot; } [2]=&amp;gt; array(2) { [0]=&amp;gt; string(3) &amp;quot;f4g&amp;quot; [1]=&amp;gt; string(1) &amp;quot;4&amp;quot; } }  $matchs有3个子数组，每个数组代表一个匹配结果，有着和preg_match相同的格式。</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（三十八）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-38.html</link>
+      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-38.html</guid>
+      <description>解析HTML 从字符串解析HTML PHP实现了一个DOM Level 2的解析器，允许你使用getElementById()和appendChild()这样的方法来处理HTMl。
+$html = &#39;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&amp;lt;span id=&amp;quot;text&amp;quot;&amp;gt;Hello World!&amp;lt;/span&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&#39;; $doc = new DOMDocument(); libxm_use_internal_errors(true); $doc-&amp;gt;loadHTML($html); echo $doc-&amp;gt;getElementById(&#39;text&#39;)-&amp;gt;textContent;  输出：
+Hello World!  注意对应HTML的问题，PHP都会发出警告，特别是在导入文档片段的时候。为了避免这些警告，通过libxml_use_internal_errors()来通知DOM库(libxml)处理自己的错误。如果需要的话，可以使用libxml_get_errors()来处理错误。
+XPath $html = &#39;&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;&amp;lt;span class=&amp;quot;text&amp;quot;&amp;gt;Hello, World!&amp;lt;/span&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&#39;; $doc = new DOMDocument(); $doc-&amp;gt;loadHTML($html); $xpath = new DOMXPath($doc); $span = $xpath-&amp;gt;query(&amp;quot;//span[@class=&#39;text&#39;]&amp;quot;)-&amp;gt;item(0); echo $span-&amp;gt;textContent;  输出：
+Hello, World!  SimpleXML 介绍
+ SimpleXML是一个提供了便捷处理XML文档的PHP库(特别是读取和迭代XML数据) 唯一的限制就是XML文档必须是格式良好的。  过程方法
+// Load an XML string $xmlstr = file_get_contents(&#39;library.xml&#39;); $library = simplexml_load_string($xmlstr); // Load an XML file $library = simplexml_load_file(&#39;library.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（三十七）</title>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="Trait">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（四十）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/php-section-40.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（四十）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, May 10, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#trait">Trait</a>
+<ul>
+<li><a href="#什么是trait">什么是Trait</a></li>
+<li><a href="#促进水平代码重用">促进水平代码重用</a></li>
+<li><a href="#冲突解决">冲突解决</a></li>
+<li><a href="#使用trait实现单例">使用Trait实现单例</a></li>
+<li><a href="#trait保持类干净">trait保持类干净</a></li>
+<li><a href="#多个trait">多个Trait</a></li>
+<li><a href="#修改方法可见性">修改方法可见性</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="trait">Trait</h2>
+
+<h3 id="什么是trait">什么是Trait</h3>
+
+<p>PHP只允许单继承。换句话说，一个类只可以继承一个类。但是当你想要包含不在父类中的功能怎么办？在PHP5.4之前你必须要有创造性，但是在PHP5.4中，引入了Trait。Trait允许你&rdquo;复制并粘贴&rdquo;一个类的一部分到你的类中。</p>
+
+<pre><code class="language-php">trait Talk {
+		/** @var string */
+		public $phrase = 'Well Wilbur...';
+    public function speak() {
+         echo $this-&gt;phrase;
+    }
+}
+
+class MrEd extends Horse { 
+    use Talk;
+		public function __construct() { 
+        $this-&gt;speak();
+		}
+		public function setPhrase($phrase) { 
+        $this-&gt;phrase = $phrase;
+		} 
+}
+</code></pre>
+
+<p>现在我们有一个继承了<code>Horse</code>的<code>MrEd</code>类。但是不是所有的<code>Horse</code>类都具备Talk的功能，所以我们使用了Trait。注意这里我们是怎么做的。</p>
+
+<p>首先，我们定义了我们的Trait。我们可以使用自动加载和命名空间。然后我们在<code>MrEd</code>中使用<code>use</code>关键字引入。</p>
+
+<p>你注意到<code>MrEd</code>使用<code>Talk</code>的方法和变量但是没有定义他们。还记得我们之前说的&rdquo;复制和粘贴&rdquo;吗？这些方法和变量在类中定义了，就像这个类已经定义了这写方法和变量。</p>
+
+<p>Trait和抽象类很像，定义了变量和方法。你不可以直接实现一个Trait(new Trait())。Trait不能像抽象类和接口那样，让一个类隐式定义一个方法。Trait只用于显示定义(因为你可以实现任意多个接口)。</p>
+
+<p><strong>什么时候应该使用Trait？</strong></p>
+
+<p>讨论Trait时，首先需要考虑的问题就是这个问题。</p>
+
+<blockquote>
+<p>我可以通过重构我的代码来避免使用Trait吗？</p>
+</blockquote>
+
+<p>答案往往是肯定的。Trait是有单一继承引起的边缘情况。滥用或过度使用Trait的可能性很高。但是考虑到Trait为代码引入了另外的源，这意味着还有另一层复杂性。在这个例子中，我们处理了3个类。但是Trait意味着你不止处理这些。对于每一个特性，您的类都变得更加难以处理，因为您现在必须参考每个特性来找出它定义了什么（并且可能在发生冲突的地方，请参见冲突解决）。理想情况下，代码中的特征应该尽可能少。</p>
+
+<h3 id="促进水平代码重用">促进水平代码重用</h3>
+
+<p>假设我们有一个Log的接口：</p>
+
+<pre><code class="language-php">interface Logger {
+    function log($message);
+}
+</code></pre>
+
+<p>现在我们有两个<code>Logger</code>接口的实现类：<code>FileLogger</code>和<code>ConsoleLogger</code>：</p>
+
+<pre><code class="language-php">class FileLogger implements Logger {
+    public function log($message) {
+        //添加代码实现
+    }
+}
+
+class ConsoleLogger implements Logger {
+    public function log($message) {
+        //添加实现
+    }
+}
+</code></pre>
+
+<p>现在如果你定义了一个<code>Foo</code>类，你想要实现一些日志任务，你可以像下面一样：</p>
+
+<pre><code class="language-php">class Foo implements Logger {
+    private $logger;
+    
+    public function setLogger(Logger $logger) {
+        $this-&gt;logger = $logger;
+    }
+  
+    public function log($message) {
+        if ($this-&gt;logger) {
+            $this-&gt;logger-&gt;log($message);
+        }
+    }
+}
+</code></pre>
+
+<p><code>Foo</code>目前也是一个<code>Logger</code>了，但是它的功能时依赖于其他的<code>Logger</code>的实现类，通过<code>setLogger</code>传入。如果我们想给<code>Bar</code>类增加上面同样的功能，我们就需要像上面一样重新做一遍。</p>
+
+<p>为了避免重复的代码，我们可以实现一个Trait。</p>
+
+<pre><code class="language-php">trait LoggableTrait {
+    protected $logger;
+    
+    public function setLogger(Logger $logger) {
+        $this-&gt;logger = $logger;
+    }
+    
+    public function log($message) {
+        if ($this-&gt;logger) {
+            $this-&gt;logger-&gt;log($message);
+        }
+    }
+}
+</code></pre>
+
+<p>现在我们定义了一个实现日志功能的Trait，现在我们把这个功能添加到<code>Foo</code>和<code>Bar</code>类。</p>
+
+<pre><code class="language-php">class Foo {
+    use LoggableTrait;
+}
+
+class Bar {
+    user LoggableTrait;
+}
+</code></pre>
+
+<p>现在，我们可以像下面这样使用<code>Foo</code>类：</p>
+
+<pre><code class="language-php">$foo = new Foo();
+$foo-&gt;setLogger(new FileLogger());
+
+$foo-&gt;log('My beautiful message');
+</code></pre>
+
+<h3 id="冲突解决">冲突解决</h3>
+
+<p>在一个类中包括多个trait的时候，可能会遇到冲突的情况。这就需要你手动解决这些冲突了。</p>
+
+<p>例如，我们创建下面的层次关系：</p>
+
+<pre><code class="language-php">trait MeowTrait {
+    public function say() {
+        print &quot;Meow \n&quot;;
+    }
+}
+
+trait WoofTrait {
+    public function say() {
+        print &quot;Woof \n&quot;;
+    }
+}
+
+abstract class UnMuteAnimals {
+    abstract function say();
+}
+
+class Dog extends UnMuteAnimals {
+    use WoofTrait;
+}
+
+class Cat extends UnMuteAnimals {
+    use MeowTrait;
+}
+</code></pre>
+
+<p>现在，我们试着创建下面的类：</p>
+
+<pre><code class="language-php">class TalkingParrot extends unMuteAnimals {
+    use MeowTrait, WoofTrait;
+}
+</code></pre>
+
+<p>这时解析器将会返回一个致命错误:</p>
+
+<blockquote>
+<p><strong>致命错误：</strong>Trait的方法<code>say</code>没有被应用，因为在TalkingParrot中，有和其他Trait中方法冲突的方法。</p>
+</blockquote>
+
+<p>要解决这个问题，有下面的方法：</p>
+
+<ul>
+<li>使用关键字<code>insteadof</code>来使用一个Trait的方法，而不是使用另外的方法</li>
+<li>创建方法名称的别名，<code>WoofTrait::say as sayAsDog</code></li>
+</ul>
+
+<pre><code class="language-php">class TalkingParrotV2 extends UnMuteAnimals {
+    use MeowTrait, WoofTrait {
+        MeowTrait::say insteadof WoofTrait;
+        WoofTrait::say as sayAsDog;
+    }
+}
+
+$talkingParrot = new TalkingParrotV2();
+$talkingParrot-&gt;say();
+$talkingParrot-&gt;sayAsDog();
+</code></pre>
+
+<p>代码将会输出下面的内容：</p>
+
+<pre><code>Meow
+Woof
+</code></pre>
+
+<h3 id="使用trait实现单例">使用Trait实现单例</h3>
+
+<p><strong>免责声明：</strong>这个例子不是主张要使用单例。单例使用的时候要特别小心。</p>
+
+<p>在PHP中有一个实现单例的标准方式：</p>
+
+<pre><code class="language-php">public class Singleton {
+    private $instance;
+    
+    private function __construct(){};
+    
+    public function getInstance() {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        
+        return self::$instance;
+    }
+    
+    //避免clone一个对象
+    protected funtion __clone(){}
+    
+    //避免序列话
+    protected function __sleep() {}
+    
+    //避免反序列化一个对象
+    protected function __wakeup() {}
+}
+</code></pre>
+
+<p>为了避免代码的重复，使用trait是一个好主意。</p>
+
+<pre><code class="language-php">trait SingletonTrait {
+    private $instance;
+    
+    protected function __construct() {}
+    
+    public function getInstance() {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        
+        return self::$instance;
+    }
+    
+    protected function __clone(){}
+    protected function __sleep(){}
+    protected function __wakeup(){}
+}
+</code></pre>
+
+<p>现在任何想要实现单例的类都可以使用这个trait：</p>
+
+<pre><code class="language-php">class MyClass {
+    use SingletonTrait;
+}
+
+//错误
+$myClass = new MyClass();
+
+$myClass = MyClass::getInstance();
+
+//下面的方法都会失败
+$myClassCopy = clone $myClass;
+$serializedMyClass = serialize($myClass);
+$myClass = deserialize($serializedMyClass);
+</code></pre>
+
+<p>尽管现在无法序列化一个单例，但也可以禁用反序列化方法。</p>
+
+<h3 id="trait保持类干净">trait保持类干净</h3>
+
+<p>随着时间推移，我们的类会实现越来越多的接口。当这样接口有很多方法的时候，我们这个类中的方法总数会变的很大。</p>
+
+<p>例如，有下面两个接口，然后一个类实现了这个接口。</p>
+
+<pre><code class="language-php">interface Printable {
+    public function print();
+    //其他的接口方法
+}
+
+interface Cacheable {
+    //接口方法
+}
+
+class Article implements Cacheable, Printable {
+    //实现接口的方法
+    public function print() {
+       //代码
+    }
+}
+</code></pre>
+
+<p>我们可以不再<code>Article</code>类中实现所有接口的方法，我们可以使用单独的Trait来实现这些接口，保证类是小的，并且把接口的实现方法从类中分离出去。</p>
+
+<p>例如，实现Printable这个接口，我们可以实现下面这个trait：</p>
+
+<pre><code class="language-php">trait PrintableArticle {
+    public function print() {
+        //代码
+    }
+}
+</code></pre>
+
+<p>在类中使用trait：</p>
+
+<pre><code class="language-php">class trait implements Cacheable, Printable {
+    use PrintableArticle;
+    use CacheableArticle;
+}
+</code></pre>
+
+<p>主要好处是，我们的接口实现方法将与类的其余部分分离，并存储在一个特性中，该特性具有为特定类型的对象实现接口的唯一责任。</p>
+
+<h3 id="多个trait">多个Trait</h3>
+
+<pre><code class="language-php">trait Hello {
+    public function sayHello() {
+        echo &quot;Hello&quot;;
+    }
+}
+
+trait World {
+    public function sayWorld() {
+        echo &quot;World&quot;;
+    }
+}
+
+class MyHelloWorld {
+    use Hello, World;
+    public function sayExclamationMark() {
+        echo &quot;|&quot;;
+    }
+}
+
+$o = new MyHelloWorld();
+$o-&gt;sayHello();
+$o-&gt;sayWorld();
+$o-&gt;sayExclamationMark();
+</code></pre>
+
+<p>输出下面的内容：</p>
+
+<pre><code class="language-p">Hello World!
+</code></pre>
+
+<h3 id="修改方法可见性">修改方法可见性</h3>
+
+<pre><code class="language-php">trait HelloWorld {
+    public function sayHello() {
+        echo &quot;Hello World!&quot;;
+    }
+}
+
+class MyClass1 {
+    use HelloWorld {sayHello as protected; }
+}
+
+class MyClass2 {
+    use HelloWorld {sayHello as private myPrivateHello; }
+}
+</code></pre>
+
+<p>运行这个例子：</p>
+
+<pre><code class="language-php">(new MyClass1())-&gt;sayHello();
+// Fatal error: Uncaught Error: Call to protected method MyClass1::sayHello()
+
+(new MyClass2())-&gt;myPrivateHello();
+// Fatal error: Uncaught Error: Call to private method MyClass2::myPrivateHello()
+
+(new MyClass2())-&gt;sayHello(); // Hello World!
+</code></pre>
+
+<p>因此需要注意，在最后一个例子中，MyClass2中的<code>sayHello</code>还保持原本的访问可见性。</p>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-39.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十九）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

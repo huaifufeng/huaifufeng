@@ -6,10 +6,39 @@
     <description>Recent content in 数据库 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 24 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(十二)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-12.html</link>
+      <pubDate>Fri, 26 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-12.html</guid>
+      <description>UPDATE JOIN语句更新 考虑有一个生存表叫做questions_mysql和一个表示批量导入CSV数据的最后一个记录iwtQuestions使用LOAD_DATA_INFILE。工作表在导入前被截断，数据被导入，并且这个过程在这里不显示。
+更新生产表数据使用一个和导入数据表的join语句。
+UPDATE questions_mysql q JOIN iwtQuestions i ON i.qId = q.qId SET q.closeVotes = i.closeVotes, q.votes = i.votes, q.answers = i.answers, q.views = i.views;  这里别名q和i是变量使用表名的简写。这简化开发和可读性。
+主键qId代表题目id。这里join匹配的四个列会被更新。
+基本更新 更新一行
+UPDATE customers SET email=&#39;luke_smith@email.com&#39; WHERE id=1;  这个查询语句更新customers表中id为1的记录的email字段的内容，这里修改为luke_smith@email.com。数据表中老内容和新内容在下面显示了：
+更新所有行
+UPDATE customers SET lastname=&#39;smith&#39;;  这个查询更新customers表中所有记录的lastname字段为smith。下面是老内容和新内容的对比：
+注意：在UPDATE语句中使用WHERE是很必要的。如果你没有使用条件语句的话，表中所有记录都会被更新。在上面例子中customers表中所有记录的lastname都更新为smith。
+批量更新 使用不同的值更新多行时，可以使用批量更新：
+UPDATE people SET name = (CASE id WHEN 1 THEN &#39;Karl&#39; WHEN 2 THEN &#39;Tom&#39; WHEN 3 THEN &#39;Mary&#39; END) WHERE id IN (1, 2, 3);  这里使用一条查询更新多条记录而不是每行使用一条查询。这个CASE语句需要包含WHERE语句中的所有制。</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(十一)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-11.html</link>
+      <pubDate>Thu, 25 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-11.html</guid>
+      <description>DELETE    参数 详情     LOW_PRIORITY 如果提供了LOW_PRIORITY，删除操作只有在没有其他进程从数据表上读取数据的时候才会执行   IGNORE 如果提供了IGNORE，任何删除时遇到的错误都将忽略   table 你想要删除记录的表   WHERE conditions 指定要删除数据的条件表达式。如果没有指定条件的话，所有的表记录都会被删除。   ORDER BY expression 如果提供了ORDER BY，将会按照顺序删除记录   LIMIT 控制删除的最大记录数量。提供的number_rows将会被删除。    多表删除 MySQL的DELETE语句可以用于JOIN语句，允许指定需要删除的表。这用来避免嵌套语句很有用。下面是一个表：
+create table people ( id int primary key, name varchar(100) not null, gender char(1) not null ); insert into people(id, name, gender) values (1, &#39;Kathy&#39;, &#39;f&#39;),(2, &#39;John&#39;, &#39;m&#39;),(3,&#39;Paul&#39;,&#39;m&#39;),(4,&#39;Kim&#39;,&#39;f&#39;); create table pets ( id int auto_increment primary key, ownerId int not null, name varchar(100) not null, color varchar(100) not null ); insert into pets(ownerId, name, color) values (1, &#39;Rover&#39;, &#39;beige&#39;), (2, &#39;Bubbles&#39;, &#39;purple&#39;), (3, &#39;Spot&#39;, &#39;black and white&#39;), (1, &#39;Rover2&#39;, &#39;white&#39;); id name gender 1 Kathy f 2 John m 3 Paul m 4 Kim f id ownerId name color 1 1 Rover beige 2 2 Bubbles purple 3 3 black and white 4 1 Rover2 white  如果你想要删除Paul的宠物：</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(十)</title>
