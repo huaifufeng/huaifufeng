@@ -161,6 +161,25 @@ $json_string = &#39;{&amp;quot;name&amp;quot;:&amp;quot;Jeff&amp;quot;, &amp;quo
     </item>
     
     <item>
+      <title>MySQL专业笔记(十五)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-15.html</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-15.html</guid>
+      <description>ERROR 1055 最新版本的MySQL开始为之前的一些查询产生1055的错误。这个主题就是来介绍一下这样的错误。MySQL团队一直在努力让GROUP BY的扩展失效，或者至少让开发人员便于编写这样的查询。
+无用GROUP BY返回不可预测的结果：墨菲定律 SELECT item.item_id, users.category, COUNT(*) number_of_uses FROM item JOIN uses ON item.item_id = uses.item_id GROUP item.item_id  将会显示 item表的行，并且显示表uses中关联的行数。也会显示uses.category中的值。
+这个查询在(ONLY_FULL_GROUP_BY标识出现之前)MySQL中可以执行。这里使用了非标准的GROUP BY。
+但是这有个问题：如果在JOIN语句的ON条件中匹配到了多个uses记录，那么MySQL将会从这些记录中返回一行的category字段值。哪一条？查询优化器，应用的用户都不能提前知道。准确的说：结果是不可预期的。MySQL将会返回任何想要返回的值。
+*不可预期就是随机的*，有一个显著的区别。有人希望每次都有一个随机的选择。因此，如果一个选择的随机的，你可以在调试或测试中观察到这个情况。不可预期的结果是坏的：MySQL每次返回相同的结果，知道不相同了。有时候在新版本的MySQL中会有不同的结果。有时候这是导致问题的增长的表。什么会出问题，什么将会出问题，什么时候出问题你不知道。这叫做墨菲定律。
+MySQL团队在努力让开发者更难犯这个错误。新版本的MySQL有一个叫做ONLY_GROUP_BY的sql_mod标签。当这个标识设置了，MySQL将会返回一个1055错误， 拒绝运行这个查询。
+无用SELECT * ，如果修复 有时候有一个像下面这样的查询，在SELECT中使用*：
+SELECT item.*, COUNT(*) number_of_uses FROM item JOIN uses ON item.item_id = uses.item_id GROUP BY item.item_id  当设置了ONLY_FULL_GROUP_BY，这样的查询就需要优化了。
+要做优化的话，需要使用一个带有GROUP BY子句的子查询，让这个子查询返回每个item_id对应的number_of_uses字段。这个子查询很短也很简洁，因为它只需要查询uses表。
+SELECT item_id, COUNT(*) number_of_uses FROM uses GROUP BY item_id;  然后我们和item表一起使用这个子查询：
+SELECT item.*,usecount.number_of_uses FROM item JOIN ( SELECT item_id, COUNT(*) number_of_uses FROM uses GROUP BY item_id ) usecount ON item_item_id = usecount.</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（二十九）</title>
       <link>http://blog.huaifufeng.com/2019/04/post/php-section-29.html</link>
       <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
