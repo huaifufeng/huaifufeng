@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="SOAP客户端">
+    <meta name="description" content="JOIN：join3个带有相同名字id的表">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（三十二）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(十七)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/php-section-32.html">
+    <link rel="canonical" href="/2019/05/post/bash-section-17.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/php" title="PHP">
-                           PHP
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（三十二）</h1>
+                    <h1>MySQL专业笔记(十七)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Thursday, May 2, 2019
+                    <span  class="meta">Posted by 怀府风 on Wednesday, May 1, 2019
                         
                     </span>
                 </div>
@@ -182,12 +182,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#soap客户端">SOAP客户端</a>
+<li><a href="#join表带有相同列">JOIN表带有相同列</a>
 <ul>
-<li><a href="#wsdl模式">WSDL模式</a></li>
-<li><a href="#非wsdl模式">非WSDL模式</a></li>
-<li><a href="#类图">类图</a></li>
-<li><a href="#追踪soap的请求和响应">追踪SOAP的请求和响应</a></li>
+<li><a href="#join-3个带有相同列的表">join 3个带有相同列的表</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,134 +192,39 @@
         		
         		
 
-<h2 id="soap客户端">SOAP客户端</h2>
+<h2 id="join表带有相同列">JOIN表带有相同列</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>详情</th>
-</tr>
-</thead>
+<h3 id="join-3个带有相同列的表">join 3个带有相同列的表</h3>
 
-<tbody>
-<tr>
-<td>$wsdl</td>
-<td>WSDL的URI，如果不是 WSDL模式的化，是Null</td>
-</tr>
-
-<tr>
-<td>options</td>
-<td>Soap客户端的选项数组，非WSDL模式要设置<code>location</code>和<code>uri</code>，其他的选项是可选的。查看下面的值</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="wsdl模式">WSDL模式</h3>
-
-<p>首先，创建一个新的<code>SoapClient</code>对象，传入一个WSDL文件的URL和选项的数组。</p>
-
-<pre><code class="language-php">$soap = new SoapClient('https://example.com/soap.wsdl', [
-    'soap_version' =&gt; SOAP_1_2,
-    'compression' =&gt; SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GIZP,
-    'cache_wsdl' =&gt; WSDL_CACHE_BOTH,
-    'trace' =&gt; TRUE,
-    'exceptions' =&gt; TRUE
-]);
+<pre><code class="language-mysql">CREATE TABLE Table1 (
+    id INT UNSIGNED NOT NULL, 
+    created_on DATE NOT NULL, 
+    PRIMARY KEY (id)
+)
+CREATE TABLE Table2 (
+    id INT UNSIGNED NOT NULL,
+    personName VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+)
+CREATE TABLE Table3 (
+    id INT UNSIGNED NOT NULL,
+    accountName VARCHAR(255) NOT NULL, 
+    PRIMARY KEY (id)
+)
 </code></pre>
 
-<p>然后使用<code>$soap</code>对象调用SOAP的方法：</p>
+<p>在建表之后，你就可以使用一个查询语句从三个表中寻找具有相同名称的id：</p>
 
-<pre><code class="language-php">$result = $soap-&gt;requestData(['a', 'b', 'c']);
+<pre><code class="language-mysql">SELECT
+    t1.id AS table1Id, 
+    t2.id AS table2Id, 
+    t3.id AS table3Id
+FROM Table1 t1
+LEFT JOIN Table2 t2 ON t2.id = t1.id 
+LEFT JOIN Table3 t3 ON t3.id = t1.id
 </code></pre>
 
-<h3 id="非wsdl模式">非WSDL模式</h3>
-
-<p>这个和WSDL模式相似的，传入WSDL文件的地址为NULL，必须传下<code>location</code>和<code>uri</code>选项。</p>
-
-<pre><code>$soap = new SoapClient(NULL, [
-    'location' =&gt; 'https://example.com/soap/endpoint',
-    'uri' =&gt; 'namespace'
-]);
-</code></pre>
-
-<h3 id="类图">类图</h3>
-
-<p>当在PHP中创建SOAP客户端的时候，你可以使用<code>classmap</code>键的配置数组。<code>classmap</code>定义了WSDL实际使用的类型，而不是默认的<code>stdClass</code>。使用这个的原因是因为你可以获取这些类自实现的字段和方法调用，而不是猜测<code>stdClass</code>有什么字段。</p>
-
-<pre><code class="language-php">class MyAddress {
-    public $country;
-    public $city;
-    public $full_name;
-    public $postal_code; // or zip_code public $house_number;
-}
-
-class MyBook {
-    public $name;
-    public $author;
-    
-    public function getShortDescription() {
-        return &quot;{this-&gt;name}, written by {$this-&gt;author}&quot;;
-    }
-}
-
-$soap_client = new SoapClient($link_to_wsdl, [
-    'classmap' =&gt; [
-        'Address' =&gt; MyAddress::class,
-        'Book' =&gt; MyBook::class
-    ]
-]);
-</code></pre>
-
-<p>在配置了classmap之后，无论你什么时候获得一个<code>Address</code>或<code>Book</code>时，SoapClient将会实例化这个类，并且使用数据填充相应的字段，从操作返回他们。</p>
-
-<pre><code class="language-php">// Lets assume 'getAddress(1234)' returns an Address by ID in the database
-$address = $soap_client-&gt;getAddress(1234);
-
-// $address is now of type MyAddress due to the classmap
-echo $address-&gt;country;
-
-// Lets assume the same for 'getBook(1234)'
-$book = $soap_client-&gt;getBook(124);
-
-// We can not use other functions defined on the MyBook class
-echo $book-&gt;getShortDescription();
-
-// Any type defined in the WSDL that is not defined in the classmap // will become a regular StdClass object
-$author = $soap_client-&gt;getAuthor(1234);
-
-// No classmap for Author type, $author is regular StdClass.
-// We can still access fields, but no auto-completion and no custom functions // to define for the objects.
-echo $author-&gt;name;
-</code></pre>
-
-<h3 id="追踪soap的请求和响应">追踪SOAP的请求和响应</h3>
-
-<p>有时候你想要获取SOAP请求中发送和获取的数据。下面的方法将会反复请求和响应中的XML：</p>
-
-<pre><code class="language-php">SoapClient::__getLastRequest()
-SoapClient::__getLastRequestHeaders()
-SoapClient::__getLastResponse()
-SoapClient::__getLastResponseHeaders()
-</code></pre>
-
-<p>例如，假设我们有一个<code>ENVIRONMENT</code>常量，当这个常量设置为<code>DEVELOPMENT</code>，当调用<code>getAddress</code>时抛出错误，我们想要获取详细的信息。一个方法是：</p>
-
-<pre><code class="language-php">try {
-    $address = $soap_client-&gt;getAddress(1234);
-} catch(SoapFault $e) {
-    if (ENVIRONMENT === 'DEVELOPMENT') {
-        var_dump(
-            $soap_client-&gt;__getLastRequestHeaders()
-            $soap_client-&gt;__getLastRequest(),
-            $soap_client-&gt;__getLastResponseHeaders(),
-            $soap_client-&gt;__getLastResponse()
-        );
-    }
-}
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -331,12 +233,12 @@ SoapClient::__getLastResponseHeaders()
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/php-section-33.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十三）">&larr; Previous Post</a>
+                      <a href="/2019/05/post/php-section-32.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十二）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/bash-section-17.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(十七)">Next Post &rarr;</a>
+                      <a href="/2019/05/post/php-section-31.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十一）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

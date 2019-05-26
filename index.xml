@@ -137,6 +137,16 @@ $soap = new SoapClient(NULL, [ &#39;location&#39; =&amp;gt; &#39;https://example
     </item>
     
     <item>
+      <title>MySQL专业笔记(十七)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-17.html</link>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-17.html</guid>
+      <description>JOIN表带有相同列 join 3个带有相同列的表 CREATE TABLE Table1 ( id INT UNSIGNED NOT NULL, created_on DATE NOT NULL, PRIMARY KEY (id) ) CREATE TABLE Table2 ( id INT UNSIGNED NOT NULL, personName VARCHAR(255) NOT NULL, PRIMARY KEY (id) ) CREATE TABLE Table3 ( id INT UNSIGNED NOT NULL, accountName VARCHAR(255) NOT NULL, PRIMARY KEY (id) )  在建表之后，你就可以使用一个查询语句从三个表中寻找具有相同名称的id：
+SELECT t1.id AS table1Id, t2.id AS table2Id, t3.id AS table3Id FROM Table1 t1 LEFT JOIN Table2 t2 ON t2.</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（三十一）</title>
       <link>http://blog.huaifufeng.com/2019/05/post/php-section-31.html</link>
       <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
