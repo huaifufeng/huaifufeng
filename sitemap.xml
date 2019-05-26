@@ -43,6 +43,11 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/05/post/bash-section-18.html</loc>
+    <lastmod>2019-05-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/05/post/php-section-32.html</loc>
     <lastmod>2019-05-02T00:00:00+00:00</lastmod>
   </url>
@@ -965,13 +970,13 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/go/</loc>
+    <loc>http://blog.huaifufeng.com/categories/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/go/</loc>
+    <loc>http://blog.huaifufeng.com/tags/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -983,31 +988,31 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/java/</loc>
-    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://blog.huaifufeng.com/categories/java/</loc>
     <lastmod>2019-04-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/mysql/</loc>
-    <lastmod>2019-05-01T00:00:00+00:00</lastmod>
+    <loc>http://blog.huaifufeng.com/tags/java/</loc>
+    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/php/</loc>
-    <lastmod>2019-05-10T00:00:00+00:00</lastmod>
+    <loc>http://blog.huaifufeng.com/tags/mysql/</loc>
+    <lastmod>2019-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.huaifufeng.com/categories/php/</loc>
+    <lastmod>2019-05-10T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/php/</loc>
     <lastmod>2019-05-10T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -1038,7 +1043,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-    <lastmod>2019-05-01T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

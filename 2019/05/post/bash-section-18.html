@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="SOAP客户端">
+    <meta name="description" content="UNION">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（三十二）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(十八)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/php-section-32.html">
+    <link rel="canonical" href="/2019/05/post/bash-section-18.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,12 +145,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/php" title="PHP">
-                           PHP
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（三十二）</h1>
+                    <h1>MySQL专业笔记(十八)</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Thursday, May 2, 2019
                         
@@ -182,12 +182,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#soap客户端">SOAP客户端</a>
+<li><a href="#union">UNION</a>
 <ul>
-<li><a href="#wsdl模式">WSDL模式</a></li>
-<li><a href="#非wsdl模式">非WSDL模式</a></li>
-<li><a href="#类图">类图</a></li>
-<li><a href="#追踪soap的请求和响应">追踪SOAP的请求和响应</a></li>
+<li><a href="#使用union组合select语句">使用UNION组合SELECT语句</a></li>
+<li><a href="#组合不同列的数据">组合不同列的数据</a></li>
+<li><a href="#order-by">ORDER BY</a></li>
+<li><a href="#offset分页">OFFSET分页</a></li>
+<li><a href="#将具有相同列的不同mysql表上的数据合并到唯一行中并运行查询">将具有相同列的不同MySQL表上的数据合并到唯一行中并运行查询</a></li>
+<li><a href="#union-all和union">Union All和Union</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,134 +197,96 @@
         		
         		
 
-<h2 id="soap客户端">SOAP客户端</h2>
+<h2 id="union">UNION</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>详情</th>
-</tr>
-</thead>
+<h3 id="使用union组合select语句">使用UNION组合SELECT语句</h3>
 
-<tbody>
-<tr>
-<td>$wsdl</td>
-<td>WSDL的URI，如果不是 WSDL模式的化，是Null</td>
-</tr>
+<p>你可以使用<code>UNION</code>来组合两个结果相同的查询的结果。</p>
 
-<tr>
-<td>options</td>
-<td>Soap客户端的选项数组，非WSDL模式要设置<code>location</code>和<code>uri</code>，其他的选项是可选的。查看下面的值</td>
-</tr>
-</tbody>
-</table>
+<p>例如，你想要两个独立表的所有联系信息，<code>authors</code>和<code>editors</code>，你可以使用<code>UNION</code>关键字：</p>
 
-<h3 id="wsdl模式">WSDL模式</h3>
+<pre><code class="language-mysql">SELECT name, email, phone_number
+FROM authors
 
-<p>首先，创建一个新的<code>SoapClient</code>对象，传入一个WSDL文件的URL和选项的数组。</p>
+UNION
 
-<pre><code class="language-php">$soap = new SoapClient('https://example.com/soap.wsdl', [
-    'soap_version' =&gt; SOAP_1_2,
-    'compression' =&gt; SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GIZP,
-    'cache_wsdl' =&gt; WSDL_CACHE_BOTH,
-    'trace' =&gt; TRUE,
-    'exceptions' =&gt; TRUE
-]);
+SELECT name, email, phone_number
+FROM editors;
 </code></pre>
 
-<p>然后使用<code>$soap</code>对象调用SOAP的方法：</p>
+<p>使用<code>UNION</code>将会自动过滤重复信息。如果你想要保留重复信息，你可以使用<code>UNION ALL</code>。</p>
 
-<pre><code class="language-php">$result = $soap-&gt;requestData(['a', 'b', 'c']);
+<h3 id="组合不同列的数据">组合不同列的数据</h3>
+
+<pre><code class="language-mysql">SELECT name. caption as title, year, pages FROM books
+UNION
+SELECT name. title, year, 0 as pages FROM movies;
 </code></pre>
 
-<h3 id="非wsdl模式">非WSDL模式</h3>
+<p>将两个不同列的记录集组合时，使用默认值模拟确实的列。</p>
 
-<p>这个和WSDL模式相似的，传入WSDL文件的地址为NULL，必须传下<code>location</code>和<code>uri</code>选项。</p>
+<h3 id="order-by">ORDER BY</h3>
 
-<pre><code>$soap = new SoapClient(NULL, [
-    'location' =&gt; 'https://example.com/soap/endpoint',
-    'uri' =&gt; 'namespace'
-]);
+<p>如果你需要排序UNION之后的结果集，使用下面的语法：</p>
+
+<pre><code class="language-mysql">( SELECT ... )
+UNION
+( SELECT ... )
+ORDER BY
 </code></pre>
 
-<h3 id="类图">类图</h3>
+<p>如果没有添加括号的话，ORDER BY语句将会添加到最后的SELECT语句上面。</p>
 
-<p>当在PHP中创建SOAP客户端的时候，你可以使用<code>classmap</code>键的配置数组。<code>classmap</code>定义了WSDL实际使用的类型，而不是默认的<code>stdClass</code>。使用这个的原因是因为你可以获取这些类自实现的字段和方法调用，而不是猜测<code>stdClass</code>有什么字段。</p>
+<h3 id="offset分页">OFFSET分页</h3>
 
-<pre><code class="language-php">class MyAddress {
-    public $country;
-    public $city;
-    public $full_name;
-    public $postal_code; // or zip_code public $house_number;
-}
+<p>当在UNION上添加LIMIT的时候，下面这个语法可以使用:</p>
 
-class MyBook {
-    public $name;
-    public $author;
-    
-    public function getShortDescription() {
-        return &quot;{this-&gt;name}, written by {$this-&gt;author}&quot;;
-    }
-}
-
-$soap_client = new SoapClient($link_to_wsdl, [
-    'classmap' =&gt; [
-        'Address' =&gt; MyAddress::class,
-        'Book' =&gt; MyBook::class
-    ]
-]);
+<pre><code class="language-mysql">( SELECT ... ORDER BY x LIMIT 10 )
+UNION 
+( SELECT ... ORDER BY x LIMIT 10 )
+ORDER BY x LIMIT 10;
 </code></pre>
 
-<p>在配置了classmap之后，无论你什么时候获得一个<code>Address</code>或<code>Book</code>时，SoapClient将会实例化这个类，并且使用数据填充相应的字段，从操作返回他们。</p>
+<p>因为你不知道这&rdquo;10&rdquo;个来自哪里，所以每个都要获取10个，然后进一步减少列表的数量，这里需要重复使用<code>ORDER BY</code>和<code>LIMIT</code>。</p>
 
-<pre><code class="language-php">// Lets assume 'getAddress(1234)' returns an Address by ID in the database
-$address = $soap_client-&gt;getAddress(1234);
+<p>对于第四页的内容：</p>
 
-// $address is now of type MyAddress due to the classmap
-echo $address-&gt;country;
-
-// Lets assume the same for 'getBook(1234)'
-$book = $soap_client-&gt;getBook(124);
-
-// We can not use other functions defined on the MyBook class
-echo $book-&gt;getShortDescription();
-
-// Any type defined in the WSDL that is not defined in the classmap // will become a regular StdClass object
-$author = $soap_client-&gt;getAuthor(1234);
-
-// No classmap for Author type, $author is regular StdClass.
-// We can still access fields, but no auto-completion and no custom functions // to define for the objects.
-echo $author-&gt;name;
+<pre><code class="language-mysql">( SELECT ... ORDER BY x LIMIT 40 )
+UNION 
+( SELECT ... ORDER BY x LIMIT 40 )
+ORDER BY x LIMIT 30,10;
 </code></pre>
 
-<h3 id="追踪soap的请求和响应">追踪SOAP的请求和响应</h3>
+<p>这是每个查询获取40个数据，然后汇总之后在回去指定位置的数据。</p>
 
-<p>有时候你想要获取SOAP请求中发送和获取的数据。下面的方法将会反复请求和响应中的XML：</p>
+<h3 id="将具有相同列的不同mysql表上的数据合并到唯一行中并运行查询">将具有相同列的不同MySQL表上的数据合并到唯一行中并运行查询</h3>
 
-<pre><code class="language-php">SoapClient::__getLastRequest()
-SoapClient::__getLastRequestHeaders()
-SoapClient::__getLastResponse()
-SoapClient::__getLastResponseHeaders()
+<pre><code class="language-mysql">SELECT YEAR(date_time_column), MONTH(date_time_column), MIN(DATE(date_time_column)), MAX(DATE(date_time_column)), COUNT(DISTINCT (ip)), COUNT(ip), (COUNT(ip) / COUNT(DISTINCT (ip))) AS Ratio
+FROM (
+(SELECT date_time_column, ip FROM server_log_1 WHERE state = 'action' AND log_id = 150) UNION ALL
+(SELECT date_time_column, ip FROM server_log_2 WHERE state = 'action' AND log_id = 150) UNION ALL
+(SELECT date_time_column, ip FROM server_log_3 WHERE state = 'action' AND log_id = 150) UNION ALL
+(SELECT date_time_column, ip FROM server_log WHERE state = 'action' AND log_id = 150) ) AS table_all
+GROUP BY YEAR(date_time_column), MONTH(date_time_column);
 </code></pre>
 
-<p>例如，假设我们有一个<code>ENVIRONMENT</code>常量，当这个常量设置为<code>DEVELOPMENT</code>，当调用<code>getAddress</code>时抛出错误，我们想要获取详细的信息。一个方法是：</p>
+<h3 id="union-all和union">Union All和Union</h3>
 
-<pre><code class="language-php">try {
-    $address = $soap_client-&gt;getAddress(1234);
-} catch(SoapFault $e) {
-    if (ENVIRONMENT === 'DEVELOPMENT') {
-        var_dump(
-            $soap_client-&gt;__getLastRequestHeaders()
-            $soap_client-&gt;__getLastRequest(),
-            $soap_client-&gt;__getLastResponseHeaders(),
-            $soap_client-&gt;__getLastResponse()
-        );
-    }
-}
-</code></pre>
+<p><code>SELECT 1,22,44 UNION SELECT 2,33,55</code></p>
 
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<p><img src="/img/mysql/rF9SA.png" alt="union " /></p>
+
+<p><code>SELECT 1,22,44 UNION SELECT 2,33,55 UNION SELECT 2,33,55</code></p>
+
+<p>这个和上面的结果一样。</p>
+
+<p>使用Union All</p>
+
+<p><code>SELECT 1,22,44 UNION SELECT 2,33,55 UNION ALL SELECT 2,33,55</code></p>
+
+<p><img src="/img/mysql/tD1Rz.png" alt="union all" /></p>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -331,12 +295,12 @@ SoapClient::__getLastResponseHeaders()
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/bash-section-18.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(十八)">&larr; Previous Post</a>
+                      <a href="/2019/05/post/php-section-33.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十三）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/bash-section-17.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(十七)">Next Post &rarr;</a>
+                      <a href="/2019/05/post/php-section-32.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十二）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -6,10 +6,26 @@
     <description>Recent content in 数据库 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 01 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(十八)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-18.html</link>
+      <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-18.html</guid>
+      <description>UNION 使用UNION组合SELECT语句 你可以使用UNION来组合两个结果相同的查询的结果。
+例如，你想要两个独立表的所有联系信息，authors和editors，你可以使用UNION关键字：
+SELECT name, email, phone_number FROM authors UNION SELECT name, email, phone_number FROM editors;  使用UNION将会自动过滤重复信息。如果你想要保留重复信息，你可以使用UNION ALL。
+组合不同列的数据 SELECT name. caption as title, year, pages FROM books UNION SELECT name. title, year, 0 as pages FROM movies;  将两个不同列的记录集组合时，使用默认值模拟确实的列。
+ORDER BY 如果你需要排序UNION之后的结果集，使用下面的语法：
+( SELECT ... ) UNION ( SELECT ... ) ORDER BY  如果没有添加括号的话，ORDER BY语句将会添加到最后的SELECT语句上面。
+OFFSET分页 当在UNION上添加LIMIT的时候，下面这个语法可以使用:
+( SELECT ... ORDER BY x LIMIT 10 ) UNION ( SELECT .</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(十七)</title>
