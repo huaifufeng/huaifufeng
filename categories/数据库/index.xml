@@ -6,10 +6,24 @@
     <description>Recent content in 数据库 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 29 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 30 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(十六)</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/bash-section-16.html</link>
+      <pubDate>Tue, 30 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/bash-section-16.html</guid>
+      <description>JOIN JOIN可视化效果 如果您是一个面向视觉的人，这个venn图可以帮助您理解MySQL中存在的不同类型的连接。
+与子查询join(&amp;ldquo;派生&amp;rdquo;表) SELECT x,... FROM ( SELECT y, ... FROM ...) AS a JOIN tbl ON tbl.x = a.y WHERE ...  这将会执行一个子查询放入一个临时表，然后join这个临时tbl。
+在5.6之前，临时表上面不能有索引，因此这可能是非常低效：
+SELECT ... FROM ( SELECT y, ... FROM ... ) AS a JOIN ( SELECT x, ... FROM ... ) AS b WHERE ...  在5.6，优化器可以计算出最好的索引然后在运行中创建它(这会有一些开销，所以仍然不是&amp;rdquo;完美的&amp;rdquo;)。
+另外通用的方式是在子查询中创建一些东西：
+SELECT @n := @n + 1, ... FROM ( SELECT @n:=0 ) AS initialize JOIn the_real_table ORDER BY .</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(十五)</title>
