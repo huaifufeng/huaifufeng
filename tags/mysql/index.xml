@@ -6,10 +6,29 @@
     <description>Recent content in Mysql on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 02 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 04 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(二十)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-20.html</link>
+      <pubDate>Sat, 04 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-20.html</guid>
+      <description>字符串运算符    名称 描述     ASCII() 返回最左侧字符的数值   BIN() 返回包含数字的二进制表示的字符串   BIT_LENGTH() 返回以位为单位的参数长度   CHAR() 返回整数参数对应的字符   CHAR_LENGTH() 返回参数中的字符数量   CONCAT() 返回拼接的字符串   CONCAT_WS() 返回指定分隔符拼接的字符串   ELT() 返回指定索引位置的字符串   EXPORT_SET() 返回一个字符串，使得对于值位中设置的每个位，您获得一个on字符串，并且对于每个未设置的位，您将获得一个off字符串   FIELD() 返回第一个参数在随后参数中的索引位置        参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(十九)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-19.html</link>
+      <pubDate>Fri, 03 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-19.html</guid>
+      <description>算术 算术运算符 MySQL提供了下面的算术运算符。
+   运算符 名称 例子     + 加法 SELECT 3+5; -&amp;gt; 8 SELECT 3.5+5.5 -&amp;gt; 9.0 SELECT 3.5 + 2 -&amp;gt; 5.5   - 减法 SELECT 3 - 5; -&amp;gt; -2   * 乘法 SELECT 3 * 5; -&amp;gt; 15   / 除法 SELECT 20 / 4; -&amp;gt; 5 SELECT 355 / 133; -&amp;gt; 3.1416 SELECT 10.0 / 0; -&amp;gt; NULL   DIV 整除 SELECT 5 DIV 2; -&amp;gt; 2   % 或者 MOD 取余 SELECT 7 % 3; -&amp;gt; 1 SELECT 15 MOD 4; -&amp;gt; 3 SELECT 15 MOD -4; -&amp;gt; 3 SELECT -15 MOD 4; -&amp;gt; -3 SELECT -15 MOD -4; -&amp;gt; -3 SELECT 3 MOD 2.</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(十八)</title>

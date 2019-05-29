@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="算术">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(十九)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/bash-section-19.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(十九)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, May 3, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#算术">算术</a>
+<ul>
+<li><a href="#算术运算符">算术运算符</a></li>
+<li><a href="#数学常量">数学常量</a></li>
+<li><a href="#三角学-sin-cos">三角学(SIN,  COS)</a></li>
+<li><a href="#四舍五入-round-floor-ceil">四舍五入(ROUND FLOOR CEIL)</a></li>
+<li><a href="#幂">幂</a></li>
+<li><a href="#平方根">平方根</a></li>
+<li><a href="#随机数">随机数</a></li>
+<li><a href="#绝对值和符合">绝对值和符合</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="算术">算术</h2>
+
+<h3 id="算术运算符">算术运算符</h3>
+
+<p>MySQL提供了下面的算术运算符。</p>
+
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>名称</th>
+<th>例子</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>+</td>
+<td>加法</td>
+<td><code>SELECT 3+5;</code> -&gt; 8   <code>SELECT 3.5+5.5</code> -&gt; 9.0 <code>SELECT 3.5 + 2</code> -&gt; 5.5</td>
+</tr>
+
+<tr>
+<td>-</td>
+<td>减法</td>
+<td><code>SELECT 3 - 5;</code> -&gt; -2</td>
+</tr>
+
+<tr>
+<td>*</td>
+<td>乘法</td>
+<td><code>SELECT 3 * 5;</code> -&gt; 15</td>
+</tr>
+
+<tr>
+<td>/</td>
+<td>除法</td>
+<td><code>SELECT 20 / 4;</code> -&gt; 5  <code>SELECT 355 / 133;</code> -&gt; 3.1416  <code>SELECT 10.0 / 0;</code> -&gt; NULL</td>
+</tr>
+
+<tr>
+<td>DIV</td>
+<td>整除</td>
+<td><code>SELECT 5 DIV 2;</code> -&gt; 2</td>
+</tr>
+
+<tr>
+<td>% 或者 MOD</td>
+<td>取余</td>
+<td><code>SELECT 7 % 3;</code> -&gt; 1  <code>SELECT 15 MOD 4;</code> -&gt; 3  <code>SELECT 15 MOD -4;</code> -&gt; 3  <code>SELECT -15 MOD 4;</code> -&gt; -3  <code>SELECT -15 MOD -4;</code>   -&gt; -3  <code>SELECT 3 MOD 2.5;</code> -&gt; 0.5</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>BIGINT</strong></p>
+
+<p>如果运算的元素都是整数那么MySQL使用BigInt数据类型来处理。例如：</p>
+
+<pre><code class="language-mysql">select (1024 * 1024 * 1024 * 1024 *1024 * 1024) + 1 -&gt; 1,152,921,504,606,846,977
+
+select (1024 * 1024 * 1024 * 1024 *1024 * 1024 * 1024 -&gt; BIGINT out of range error
+</code></pre>
+
+<p><strong>DOUBLE</strong></p>
+
+<p>当运算中任何一个数是浮点数时，MySQL使用<a href="https://en.wikipedia.org/wiki/IEEE_754">64-bit IEEE 754 浮点数</a>来处理。当使用浮点数运算的时候，你要特别小心，因为浮点数本质上是<a href="https://dev.mysql.com/doc/refman/5.7/en/problems-with-float.html">近似值而不是准确值</a>。</p>
+
+<h3 id="数学常量">数学常量</h3>
+
+<p><strong>Pi</strong></p>
+
+<p>下面的将会返回转换为6位小数的Pi值。实际值对<code>DOUBLE</code>是很好的。</p>
+
+<pre><code class="language-mysql">SELECT PI();  -&gt; 3.141593
+</code></pre>
+
+<h3 id="三角学-sin-cos">三角学(SIN,  COS)</h3>
+
+<p>角度是弧度，不是度数。所有的计算都是在<a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">IEEE 754 64位浮点数</a>。所有浮点数计算都会有小的误差，即机器ε误差。所以避免对他们进行相等比较。没有办法避免这种情况，因为这是技术实现决定的。</p>
+
+<p>如果你在三角运算中使用DECIMAL，然后会被转换为浮点数，之后在转换位DECIMAL。</p>
+
+<p><strong>SIN</strong></p>
+
+<p>返回一弧度表示的数字X的正弦值。</p>
+
+<pre><code class="language-mysql">SELECT SIN(PI());  -&gt; 1.2246063538224e-16
+</code></pre>
+
+<p><strong>COS</strong></p>
+
+<p>当X以弧度值表示时，返回X的余弦值。</p>
+
+<pre><code class="language-mysql">SELECT COS(PI()); -&gt; -1
+</code></pre>
+
+<p><strong>TAN</strong></p>
+
+<p>返回以弧度表示的数值X的正切值。注意这个结果非常接近零，但不完全是零。这是机器ε的一个例子。</p>
+
+<pre><code class="language-mysql">SELECT TAN(PI()); -&gt; -1.2246063538224e-16
+</code></pre>
+
+<p><strong>ACOS</strong></p>
+
+<p>如果X在-1到1之间，返回X的反余弦值。</p>
+
+<pre><code class="language-mysql">SELECT ACOS(1); -&gt; 0 
+SELECT ACOS(1.01); -&gt; NULL
+</code></pre>
+
+<p><strong>ASIN</strong></p>
+
+<p>如果X在-1到1之间，返回X的反正弦值。</p>
+
+<pre><code class="language-mysql">SELECT ASIN(0.2); -&gt; 0.20135792079033
+</code></pre>
+
+<p><strong>ATAN</strong></p>
+
+<p><code>ATAN(X)</code>返回当数字的反正切值。</p>
+
+<pre><code class="language-mysql">SELECT ATAN(2); -&gt; 1.1071487177941
+</code></pre>
+
+<p><code>ATAN2(X, Y)</code>返回两个表里X和Y的反正切值。这个<code>Y / X</code>的反正切值相似。但是它在数值上更加强大：当X接近零时，函数是正常的并且两个参数的符号决定结果的象限。</p>
+
+<p>最佳实践建议尽可能编写使用<code>ATAN2</code>而不是<code>ATAN</code>的公式。</p>
+
+<pre><code class="language-mysql">ATAN2(1,1); -&gt; 0.7853981633974483 (45 degrees)
+ATAN2(1,-1); -&gt; 2.356194490192345 (135 degrees)
+ATAN2(0, -1); -&gt; PI (180 degrees) don't try ATAN(-1 / 0)... it won't work
+</code></pre>
+
+<p><strong>COT</strong></p>
+
+<p>返回X的余切值。</p>
+
+<pre><code class="language-mysql">SELECT COT(12); -&gt; -1.5726734063977
+</code></pre>
+
+<p><strong>转换</strong></p>
+
+<pre><code class="language-mysql">SELECT RADIANS(90) -&gt; 1.5707963267948966
+SELECT SIN(RADIANS(90)) -&gt; 1
+SELECT DEGREES(1), DEGREES(PI()) -&gt; 57.29577951308232, 180
+</code></pre>
+
+<h3 id="四舍五入-round-floor-ceil">四舍五入(ROUND FLOOR CEIL)</h3>
+
+<p><strong>小数转换为整数</strong></p>
+
+<p>对于一个实数：如果这个数字第一个小数位是5或比5大的值，这个数就会转换为比这个数大的下个整数；如果第一位是小于5的数，将会把这个数转换为比这个数小的最大整数。</p>
+
+<pre><code class="language-mysql">SELECT ROUND(4.51) -&gt; 5 
+SELECT ROUND(4.49) -&gt; 4 
+SELECT ROUND(-4.51) -&gt; -5
+</code></pre>
+
+<p>对于近似数值(像DOUBLE)，ROUND()结果的值依赖于C库；在许多系统中，这意味着ROUND()使用最接近偶数规则：</p>
+
+<pre><code class="language-mysql"> SELECT ROUND(45e-1) -&gt; 4 -- The nearest even value is 4 
+ SELECT ROUND(55e-1) -&gt; 6 -- The nearest even value is 6
+</code></pre>
+
+<p><strong>向上取整</strong></p>
+
+<p>想要对一个数向上取整，可以使用<code>CEIL()</code>或<code>CEILING()</code>：</p>
+
+<pre><code class="language-mysql">SELECT CEIL(1.23) -&gt; 2 
+SELECT CEILING(4.83) -&gt; 5
+</code></pre>
+
+<p><strong>向下取整</strong></p>
+
+<p>向下对一个数取整，可以使用<code>FLOOR()</code>函数：</p>
+
+<pre><code class="language-mysql">SELECT FLOOR(1.99) -&gt; 1
+</code></pre>
+
+<p><code>FLOOR</code>和<code>CEIL</code>趋向于/偏离于负无穷大。</p>
+
+<pre><code class="language-mysql"> SELECT FLOOR(-1.01), CEIL(-1.01) -&gt; -2 and -1 
+ SELECT FLOOR(-1.99), CEIL(-1.99) -&gt; -2 and -1
+</code></pre>
+
+<p>四舍五入一个数到指定位数：</p>
+
+<pre><code class="language-mysql">SELECT ROUND(1234.987, 2) -&gt; 1234.99 
+SELECT ROUND(1234.987, -2) -&gt; 1200
+</code></pre>
+
+<p>上下和“5”的讨论同样适用。</p>
+
+<h3 id="幂">幂</h3>
+
+<p>将数x提升到幂y，可以使用<code>POW()</code>或<code>POWER()</code>函数</p>
+
+<pre><code class="language-mysql"> SELECT POW(2,2); =&gt; 4 
+ SELECT POW(4,2); =&gt; 16
+</code></pre>
+
+<h3 id="平方根">平方根</h3>
+
+<p>使用<code>SORT()</code>获取一个数的平方根，如果是负数将会返回NULL</p>
+
+<pre><code class="language-mysql">SELECT SQRT(16); -&gt; 4 
+SELECT SQRT(-3); -&gt; NULL
+</code></pre>
+
+<h3 id="随机数">随机数</h3>
+
+<p><strong>产生随机数</strong></p>
+
+<p>想要产生0到1之间的随机浮点数，使用<code>RAND()</code>。</p>
+
+<p>假设你有下面的查询：</p>
+
+<pre><code class="language-mysql">SELECT i, RAND() FROM t;
+
+将会产生下面的结果：
+i RAND()
+1 0.6191438870682
+2 0.93845168309142
+3 0.83482678498591
+</code></pre>
+
+<p><strong>指定范围的随机数</strong></p>
+
+<p>想要产生 a&lt;= n &lt;=b 这个范围内的随机数，使用下面的语法：</p>
+
+<pre><code class="language-mysql">FLOOR(a + RAND() * (b - a + 1))
+</code></pre>
+
+<p>例如，想要产生7到12之间的随机数使用：</p>
+
+<pre><code class="language-mysql">SELECT FLOOR(7 + (RAND() * 6));
+</code></pre>
+
+<p>一个简单的方法返回表中随机的行：</p>
+
+<pre><code class="language-mysql">SELECT * FROM tbl ORDER BY RAND();
+</code></pre>
+
+<p>这是一个伪随机数。</p>
+
+<p>MySQL中的伪随机数生成器在密码学上是不安全的。那就是说，如果你使用MySQL产生的随机数做密码的话，那一个知道你使用MySQL产生随机数的人可以很容易的获取你的密码。</p>
+
+<h3 id="绝对值和符合">绝对值和符合</h3>
+
+<p>返回一个数的绝对值：</p>
+
+<pre><code class="language-mysql">SELECT ABS(2); -&gt; 2 
+SELECT ABS(-46); -&gt; 46
+</code></pre>
+
+<p>数字的符号将其与0进行比较。</p>
+
+<table>
+<thead>
+<tr>
+<th>Sign</th>
+<th>结果</th>
+<th>例子</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>-1</td>
+<td>n &lt; 0</td>
+<td>SELECT SIGN(42);  -&gt; 1</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>n = 0</td>
+<td>SELECT SIGN(0)  -&gt; 0</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>n &gt; 0</td>
+<td>SELECT SIGN(0) -&gt; -1</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="language-mysql">SELECT SIGN(-423421); -&gt; -1
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-34.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十四）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-33.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十三）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

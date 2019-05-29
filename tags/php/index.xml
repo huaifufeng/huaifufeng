@@ -6,10 +6,26 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 10 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 11 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十一）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-41.html</link>
+      <pubDate>Sat, 11 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-41.html</guid>
+      <description>Composer依赖关联    参数 详情     license 定义项目想要使用什么类型的证书   authors 定义项目的作者，包括作者的详细信息   support 定义支持邮寄，irc通道，其他的任何连接   require 定义实际依赖的包和包的版本信息   require-dev 定义开发这个项目必须的包   sugget 定义包的建议信息，包括这个包可以有什么作用   autoload 定义项目的自动加载逻辑   autoload-dev 定义开发这个项目的自动加载逻辑    Composer是PHP最常用的依赖管理工具。它就像是Node的npm，Python的pip，.NET的NuGet。
+Composer是什么？ Composer是PHP的依赖/包管理工具。这可以用于安装，追踪，更新你的项目依赖。Composer也负责自动加载应用程序所依赖的依赖项，让你可以轻松的在项目中使用依赖项，而不必担心将他们包含在任何文件的顶部。
+你项目的依赖信息都放在项目更目录中的composer.json文件中。这个文件包含生产环境和开发环境依赖的包的版本信息。
+可以在Composer网站上看到一个composer.json的完整格式信息。
+这个文件可以通过编辑器手动编辑，也可以通过composer require &amp;lt;package&amp;gt;或者composer require-dev &amp;lt;package&amp;gt;自动的进行添加。
+想要在你的项目中使用composer，你需要在项目中创建composer.json文件。你可以手动创建这个文件，或者通过composer init这个命令创建。在你在终端中运行composer init之后，这将会让你提供项目的一些信息：项目名(vendor/package 例如 laravel/laravel)，描述(可选的)，作者和其他的一些信息，像最低稳定版本，许可证和依赖的包信息等等。
+composer.json中的require关键字指明你项目依赖的包名。require关键字使用一个对象来存储包名(monolog/monolog)和相应的版本号。
+{ &amp;quot;require&amp;quot;: { &amp;quot;composer/composer&amp;quot;: &amp;quot;1.2.*&amp;quot; } }  想要按照这里定义的依赖包的话，你需要使用composer install命令，这将会下载定义的指定版本的包，并把这个包下载到vendor目录。这非常方便的把第三方的代码放到vendor目录中。</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十）</title>

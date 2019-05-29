@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="Composer依赖关联">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（四十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/php-section-41.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（四十一）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Saturday, May 11, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#composer依赖关联">Composer依赖关联</a>
+<ul>
+<li><a href="#composer是什么">Composer是什么？</a></li>
+<li><a href="#自动加载">自动加载</a></li>
+<li><a href="#composer-install和update-的不同">composer install和update 的不同</a></li>
+<li><a href="#命令">命令</a></li>
+<li><a href="#最佳实践">最佳实践</a></li>
+<li><a href="#安装">安装</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="composer依赖关联">Composer依赖关联</h2>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>license</td>
+<td>定义项目想要使用什么类型的证书</td>
+</tr>
+
+<tr>
+<td>authors</td>
+<td>定义项目的作者，包括作者的详细信息</td>
+</tr>
+
+<tr>
+<td>support</td>
+<td>定义支持邮寄，irc通道，其他的任何连接</td>
+</tr>
+
+<tr>
+<td>require</td>
+<td>定义实际依赖的包和包的版本信息</td>
+</tr>
+
+<tr>
+<td>require-dev</td>
+<td>定义开发这个项目必须的包</td>
+</tr>
+
+<tr>
+<td>sugget</td>
+<td>定义包的建议信息，包括这个包可以有什么作用</td>
+</tr>
+
+<tr>
+<td>autoload</td>
+<td>定义项目的自动加载逻辑</td>
+</tr>
+
+<tr>
+<td>autoload-dev</td>
+<td>定义开发这个项目的自动加载逻辑</td>
+</tr>
+</tbody>
+</table>
+
+<p><a href="https://getcomposer.org/">Composer</a>是PHP最常用的依赖管理工具。它就像是Node的<code>npm</code>，Python的<code>pip</code>，<code>.NET</code>的<code>NuGet</code>。</p>
+
+<h3 id="composer是什么">Composer是什么？</h3>
+
+<p>Composer是PHP的依赖/包管理工具。这可以用于安装，追踪，更新你的项目依赖。Composer也负责自动加载应用程序所依赖的依赖项，让你可以轻松的在项目中使用依赖项，而不必担心将他们包含在任何文件的顶部。</p>
+
+<p>你项目的依赖信息都放在项目更目录中的<code>composer.json</code>文件中。这个文件包含生产环境和开发环境依赖的包的版本信息。</p>
+
+<p>可以在<a href="https://getcomposer.org/doc/04-schema.md">Composer网站</a>上看到一个<code>composer.json</code>的完整格式信息。</p>
+
+<p>这个文件可以通过编辑器手动编辑，也可以通过<code>composer require &lt;package&gt;</code>或者<code>composer require-dev &lt;package&gt;</code>自动的进行添加。</p>
+
+<p>想要在你的项目中使用composer，你需要在项目中创建<code>composer.json</code>文件。你可以手动创建这个文件，或者通过<code>composer init</code>这个命令创建。在你在终端中运行<code>composer init</code>之后，这将会让你提供项目的一些信息：项目名(vendor/package  例如 laravel/laravel)，描述(可选的)，作者和其他的一些信息，像最低稳定版本，许可证和依赖的包信息等等。</p>
+
+<p><code>composer.json</code>中的<code>require</code>关键字指明你项目依赖的包名。<code>require</code>关键字使用一个对象来存储包名(monolog/monolog)和相应的版本号。</p>
+
+<pre><code class="language-php">{
+    &quot;require&quot;: {
+        &quot;composer/composer&quot;: &quot;1.2.*&quot;
+    }
+}
+</code></pre>
+
+<p>想要按照这里定义的依赖包的话，你需要使用<code>composer install</code>命令，这将会下载定义的指定版本的包，并把这个包下载到<code>vendor</code>目录。这非常方便的把第三方的代码放到<code>vendor</code>目录中。</p>
+
+<p>你注意到<code>install</code>命令将会创建<code>composer.lock</code>文件。这个文件时Composer自动产生的。这个文件用来维护项目当前按照的依赖的版本。使用<code>composer install</code>将会按照lock文件中指定的依赖版本。</p>
+
+<h3 id="自动加载">自动加载</h3>
+
+<p>composer提供了管理PHP项目依赖的功能，同时也提供了自动加载器，用来寻找指定命名空间的位置和包含普通方法的文件。</p>
+
+<p>这在<code>composer.json</code>中下面这样定义的：</p>
+
+<pre><code class="language-php">{
+// ...
+    &quot;autoload&quot;: {
+        &quot;psr-4&quot;: {
+						&quot;MyVendorName\\MyProject&quot;: &quot;src/&quot; 
+        },
+        &quot;files&quot;: [
+            &quot;src/functions.php&quot;
+				] 
+    },
+    &quot;autoload-dev&quot;: {
+        &quot;psr-4&quot;: {
+						&quot;MyVendorName\\MyProject\\Tests&quot;: &quot;tests/&quot; 
+       	}
+		} 
+}
+</code></pre>
+
+<p>这个配置文件代码定义了<code>MyVendorName\MyProject</code>在<code>src</code>目录中，所有<code>MyVendorName\MyProject\Tests</code>中的类在<code>tests</code>目录中(相对于你的根目录)。这也会自动加载<code>functions.php</code>文件。</p>
+
+<p>在<code>composer.json</code>中添加这些内容之后，可以在终端使用<code>composer update</code>来更新我们的依赖，lock文件和<code>autoload.php</code>文件。当我们在生产环境的时候，我们就可以使用<code>composer install —no-dev</code>。可以在<code>composer.json</code>边上的<code>vendor</code>目录中找到这个<code>autoload.php</code>文件。</p>
+
+<p>你可以在应用的开始时尽早的使用下面的命令<code>require</code>这个文件：</p>
+
+<pre><code class="language-php">require_once __DIR__ . '/vendor/autoload.php';
+</code></pre>
+
+<p>一旦包含了，这个<code>autoload.php</code>就负责包含你在<code>composer.json</code>中定义的所有依赖。</p>
+
+<p>下面是一些类对应关系的例子：</p>
+
+<ul>
+<li><code>MyVendorName\MyProject\Shapes\Square</code> -&gt; <code>src/Shapes/Square.php</code></li>
+<li><code>MyVendorName\MyProject\Tests\Shapes\Square</code> -&gt; <code>tests/Shapes/Square.php</code></li>
+</ul>
+
+<h3 id="composer-install和update-的不同">composer install和update 的不同</h3>
+
+<p><strong>composer update</strong></p>
+
+<p><code>composer update</code>将会更新<code>composer.json</code>中定义的所以依赖。</p>
+
+<p>例如，如果我们的项目中有下面的配置：</p>
+
+<pre><code class="language-php">&quot;require&quot;: {
+    &quot;laravelcollective/html&quot;: &quot;2.0.*&quot;
+}
+</code></pre>
+
+<p>假设我们已经安装了<code>2.0.1</code>版本，运行了<code>composer update</code>命令只会，将会升级这个包(如果2.0.2发不了，就将会是2.0.2)。</p>
+
+<p><code>composer update</code>详细执行的命令：</p>
+
+<ul>
+<li>读取<code>composer.json</code></li>
+<li>移除<code>composer.json</code>中不在需要的包</li>
+<li>检查我们依赖包的最新有效版本</li>
+<li>安装依赖包的最新版本</li>
+<li>更新<code>composer.lock</code>文件，存入最新的包版本</li>
+</ul>
+
+<p><strong>composer install</strong></p>
+
+<p><code>composer install</code>将会按照<code>composer.lock</code>文件中指定的所有依赖，不更新任何内容。</p>
+
+<p>详细的执行：</p>
+
+<ul>
+<li>读取<code>composer.lock</code></li>
+<li>按照<code>composer.lock</code>中指定的包</li>
+</ul>
+
+<p><strong>什么时候install 什么时候update</strong></p>
+
+<ul>
+<li><code>composer update</code>通常在我们开发的时候使用，用来升级我们的包</li>
+<li><code>composer install</code>主要用在测试或生产环境获取<code>composer.lock</code>中指定的包的版本。</li>
+</ul>
+
+<h3 id="命令">命令</h3>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>用法</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>about</td>
+<td>显示composer的简短介绍信息</td>
+</tr>
+
+<tr>
+<td>archive</td>
+<td>创建这个composer包的归档文件</td>
+</tr>
+
+<tr>
+<td>browse</td>
+<td>在你的浏览器中打开这个包的仓库地址和首页</td>
+</tr>
+
+<tr>
+<td>clear-cache</td>
+<td>清理composer内部的包缓存</td>
+</tr>
+
+<tr>
+<td>clearcache</td>
+<td>清理composer内部的包缓存</td>
+</tr>
+
+<tr>
+<td>config</td>
+<td>设置配置选项</td>
+</tr>
+
+<tr>
+<td>create-project</td>
+<td>从一个包在指定目录创建新的项目</td>
+</tr>
+
+<tr>
+<td>depends</td>
+<td>显示导致这个包被安装的指定的包</td>
+</tr>
+
+<tr>
+<td>diagnose</td>
+<td>诊断系统以识别常见的错误</td>
+</tr>
+
+<tr>
+<td>dump-autoload</td>
+<td>更新自动加载器</td>
+</tr>
+
+<tr>
+<td>dumpautoload</td>
+<td>更新自动加载器</td>
+</tr>
+
+<tr>
+<td>exec</td>
+<td>执行一个第三方的二进制/脚本</td>
+</tr>
+
+<tr>
+<td>global</td>
+<td>允许在全局的composer目录执行命令($COMPOSER_HOME)</td>
+</tr>
+
+<tr>
+<td>help</td>
+<td>显示一个命令的帮助信息</td>
+</tr>
+
+<tr>
+<td>home</td>
+<td>在浏览器中显示仓库的url或首页</td>
+</tr>
+
+<tr>
+<td>info</td>
+<td>显示包的信息</td>
+</tr>
+
+<tr>
+<td>init</td>
+<td>在当前目录创建一个基础的composer.json文件</td>
+</tr>
+
+<tr>
+<td>install</td>
+<td>如果存在composer.lock，就按照这里面的依赖信息，没有就使用composer.json中的信息</td>
+</tr>
+
+<tr>
+<td>Licenses</td>
+<td>显示依赖的证书信息</td>
+</tr>
+
+<tr>
+<td>list</td>
+<td>列出所有的命令</td>
+</tr>
+
+<tr>
+<td>outdated</td>
+<td>显示已安装包中有可用更新(包括最新版本)的包列表</td>
+</tr>
+
+<tr>
+<td>prohibits</td>
+<td>显示阻止安装指定包的包</td>
+</tr>
+
+<tr>
+<td>remove</td>
+<td>从require或require-dev中移除指定的包</td>
+</tr>
+
+<tr>
+<td>require</td>
+<td>在composer.json中添加指定包，并安装</td>
+</tr>
+
+<tr>
+<td>run-script</td>
+<td>运行composer.json中定义的脚本</td>
+</tr>
+
+<tr>
+<td>search</td>
+<td>搜索指定的包</td>
+</tr>
+
+<tr>
+<td>self-update</td>
+<td>更新composer.phar到最新的版本</td>
+</tr>
+
+<tr>
+<td>selfupdate</td>
+<td>更新composer.phar到最新的版本</td>
+</tr>
+
+<tr>
+<td>show</td>
+<td>显示关于包的信息</td>
+</tr>
+
+<tr>
+<td>status</td>
+<td>显示本地修改包的列表</td>
+</tr>
+
+<tr>
+<td>suggest</td>
+<td>显示包的建议信息</td>
+</tr>
+
+<tr>
+<td>update</td>
+<td>根据composer.json中的配置更新依赖到最新的版本，并更新composer.lock中的信息</td>
+</tr>
+
+<tr>
+<td>validate</td>
+<td>验证composer.json和composer.lock</td>
+</tr>
+
+<tr>
+<td>why</td>
+<td>显示哪个包导致指定包被安装了</td>
+</tr>
+
+<tr>
+<td>why-not</td>
+<td>显示哪个包导致指定包没有被安装</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="最佳实践">最佳实践</h3>
+
+<p>composer追踪项目使用的以来的版本，这些信息定义在composer.lock文件中，这个文件应该被提交的版本管理系统中，这样当在将来克隆这个项目的时候，只需要运行<code>composer install</code>命令就可以下载安装项目的所有依赖了。</p>
+
+<p>composer以项目为基础来关联PHP的依赖，这样在一个机器上面，不同的项目使用相同包的不同版本是很方便的。</p>
+
+<p>composer追踪开发环境依赖的包，使用下面的命令：</p>
+
+<pre><code>composer require --dev phpunit/phpunit
+</code></pre>
+
+<p>composer提供了一个自动加载器，这样加载任何的包都很容易。例如，在使用<code>composer install fabpot/goutte</code>安装了Goutte之后，只需要添加下面的代码就可以使用Goutte这个包了：</p>
+
+<pre><code class="language-php">&lt;?php
+require __DIR__ . '/vendor/autoload.php'; 
+$client = new Goutte\Client();
+// Start using Goutte
+</code></pre>
+
+<p>composer允许你定义<code>composer.json</code>中包的新版本，然后很容易就可以更新:<code>composer update fabpot/goutte</code>,或者使用<code>composer update</code>更新所有的依赖。</p>
+
+<h3 id="安装">安装</h3>
+
+<p>你可以在本地安装composer，作为项目的一部分或者作为系统全局使用的命令。</p>
+
+<p><strong>本地</strong></p>
+
+<p>在你的终端中运行下面的命令：</p>
+
+<pre><code>php -r &quot;copy('https://getcomposer.org/installer', 'composer-setup.php');&quot;
+# to check the validity of the downloaded installer, check here against the SHA-384:
+# https://composer.github.io/pubkeys.html
+php composer-setup.php
+php -r &quot;unlink('composer-setup.php');&quot;
+</code></pre>
+
+<p>这将会在当前目录下下载<code>composer.phar</code>，然后你就可以在当前目录运行<code>composer</code>了：</p>
+
+<pre><code>php composer.phar install
+</code></pre>
+
+<p><strong>全局</strong></p>
+
+<p>想要全局使用的话，就把<code>composer.phar</code>放到PATH指定的一个目录中：</p>
+
+<pre><code>mv composer.phar /usr/local/bin/composer
+</code></pre>
+
+<p>现在你可以使用<code>composer</code>而不是<code>composer.phar</code>来进行安装了：</p>
+
+<pre><code>composer install
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-40.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
