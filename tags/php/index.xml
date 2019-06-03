@@ -6,10 +6,34 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 11 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十三）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-43.html</link>
+      <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-43.html</guid>
+      <description>文件处理    参数 描述     filename 要读取的文件名称   use_include_path 如果你想要在include_path中搜索这个文件，可以选择可选的第二个参数，并且把这个参数设置为TRUE。   context 一个环境流资源    1. 便捷方法 1.1 原始直接IO file_get_contents和file_put_contents提供了在一次请求中便捷的从一个文件读取内容到字符串或者将字符串写入一个文件中。
+file_put_contents也可以使用FILE_APPEND位标识符来像文件中追加内容，而不是截断或覆盖文件的内容。也可以使用LOCK_EX位标识符来为写文件操作增加一个额外的锁。位标识符可以使用|二进制或来添加。
+$path = &#39;file.txt&#39;; //从文件中读取内容 $contents = file_get_contents($file); //做一些修改，比如讲CRLF替换为LF $contents = str_replace(&amp;quot;\r\n&amp;quot;, &amp;quot;\n&amp;quot;, $contents); //将修改后的内容写入文件 file_put_contents($path, $contents);  FILE_APPEND用来像日志文件追加内容，LOCK_FILE用来解决多个进程同时写内容的竞争冲突。例如，将当期session的内容写入文件中：
+file_put_contents(&#39;logins.log&#39;, &amp;quot;{$_SESSION[&amp;quot;username&amp;quot;]} logged in&amp;quot;, FILE_APPEND | LOCK_EX);  1.2 CSV IO fgetcsv($file, $length, $separator)  fgetcsv解析读入的行并找出 CSV 格式的字段，成功返回一个包含这些字段的数组，失败的时候返回FALSE。
+默认情况下，将只会读取CSV文件中的一行：
+$file = fopen(&#39;contacts.csv&#39;, &amp;quot;r&amp;quot;); print_r(fgetcsv($file)); print_r(fgetcsv($file, 5, &amp;quot; &amp;quot;)); fclose($file);  contacts.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（四十二）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-42.html</link>
+      <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-42.html</guid>
+      <description>魔术方法 __call()和__callStatic() __call()和__callStatic()将会在某些人调用不存在的对象方法或者静态方法的时候调用。
+class Foo { /** * 这个方法将会在某些人调用对象不存在的方法时调用，像 * $foo-&amp;gt;method($arg, $arg1); * * 第一个参数是方法名称 就像上面的method * 第二个参数是由$arg和$arg1组成的数组 */ public function __call($method, $arguments) { $snakeName = CaseHelper::camelToSnake($method); $subMethod = substr($snakeName, 0, 3); $propertyName = substr($snakeName, 4); switch($subMethod) { case &#39;get&#39;: return $this-&amp;gt;data[$propertyName]; case &#39;set&#39;: $this-&amp;gt;data[$propertyName] = $arguments[0]; break; case &#39;has&#39;: return isset($this-&amp;gt;data[$propertyName]); default: throw new BadMethodCallException(&amp;quot;Undefined method $method&amp;quot;); } } public static function __callStatic($method, $arguments) { print_r(func_get_args()); } }  例子</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十一）</title>

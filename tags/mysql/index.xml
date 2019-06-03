@@ -6,10 +6,49 @@
     <description>Recent content in Mysql on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 05 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 08 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(二十四)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-24.html</link>
+      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-24.html</guid>
+      <description>视图    参数 详情     view_name 视图名称   SELECT 语句 要打包到视图中的SQL语句。它可以是一条SELECT语句，用于从一个或多个表中提取数据。    创建视图 特权
+参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(二十三)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-23.html</link>
+      <pubDate>Tue, 07 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-23.html</guid>
+      <description>正则表达式 正则表达式是为复杂搜索指定模式的一种强大方法。
+REGEXP / RLIKE REGEXP或者别名RLIKE运算符允许基于正则表达式的模式匹配。
+假设有下面的employee的表：
++-------------+-------------+-------------+--------------+----------+ | EMPLOYEE_ID | FIRST_NAME | LAST_NAME | PHONE_NUMBER | SALARY | +-------------+-------------+-------------+--------------+----------+ | 100 | Steven | King | 515.123.4567 | 24000.00 | | 101 | Neena | Kochhar | 515.123.4568 | 17000.00 | | 102 | Lex | De Haan | 515.123.4569 | 17000.00 | | 103 | Alexander | Hunold | 590.423.4567 | 9000.00 | | 104 | Bruce | Ernst | 590.</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(二十二)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-22.html</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-22.html</guid>
+      <description>处理时区 获取指定时区的当前日期和时间 获取本地时区的NOW()值，获取印度时区的值，获取UTC的值。
+SELECT NOW(); SET time_zone=&#39;Asia/Kolkata&#39;; SELECT NOW(); SET time_zone=&#39;UTC&#39;; SELECT NOW();  转换存储的DATE或DATETIME值到另外的时区 如果你在表中的某个列中存储了DATE或DATETIME格式的时间值，这是相对于某个时区的值，但是在MySQL中，时区是没有和值存储在一起的。如果你想要把这个时间转换为另外时区的时间，你可以做，但是你必须知道原本的时区值。然后使用CONVERT_TZ()来实现这个转换过程。下面的例子显示把UTC的时区的时间转换为California的时区时间。
+SELECT CONVERT_TZ(date_sold, &#39;UTC&#39;, &#39;America/Los_Angeles&#39;) date_sold_local FROM sales WHERE state_sold=&#39;CA&#39;;  获取TIMESTAMP值的指定时区值 这非常简单。所有TIMESTAMP的值都是世界时间值，只需要设置你想要显示的time_zone时区值，就可以了。
+SET SESSION time_zone=&#39;America/Los_Angeles&#39;; SELECT timestamp_sold FROM sales WHERE state_sold=&#39;CA&#39;;  为什么是这样？TIMESTAMP的值是基于UNIX time_t数据格式的。这些UNIX的时间戳存的是从1970:01:01 00:00:00 UTC到现在的秒数。
+注意：TIMESTAMP存储的是世界时间。DATE和DATETIME存储是依赖存储时的时区。
+本地时区配置 每个服务器都有一个默认的全局时区配置，由服务器的拥有者设置。你可以使用下面的命令查看当前的时区配置：
+SELECT @@time_zone  不幸的是，这将会返回SYSTEM，这表示MySQL的时区使用服务器系统的时区配置。
+下面的查询队列(是的，这有些hack)，会在几分钟内返回服务器时区配置和UTC的偏移量。
+CREATE TEMPORARY TABLE times (dt DATETIME, ts TIMESTAMP); SET time_zone = &#39;+0:00&#39;; INSERT INTO times VALUES(NOW(), NOW()); SET time_zone = &#39;SYSTEM&#39;; SELECT dt, ts, TIMESTAMPDIFF(MINUTE, dt, ts)offset FROM times; DROP TEMPORARY TABLE times;  这是怎么实现的呢？临时表里面的两列有不同的时间格式。DATETIME存储当地时间到表里面，TIMESTAMP存储UTC时间到表里面。所以当时区设置为UTC的时候，INSERT语句插入列个完全相同的日期/时间值。</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(二十一)</title>

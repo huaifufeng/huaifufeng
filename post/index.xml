@@ -6,10 +6,34 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 11 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十三）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-43.html</link>
+      <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-43.html</guid>
+      <description>文件处理    参数 描述     filename 要读取的文件名称   use_include_path 如果你想要在include_path中搜索这个文件，可以选择可选的第二个参数，并且把这个参数设置为TRUE。   context 一个环境流资源    1. 便捷方法 1.1 原始直接IO file_get_contents和file_put_contents提供了在一次请求中便捷的从一个文件读取内容到字符串或者将字符串写入一个文件中。
+file_put_contents也可以使用FILE_APPEND位标识符来像文件中追加内容，而不是截断或覆盖文件的内容。也可以使用LOCK_EX位标识符来为写文件操作增加一个额外的锁。位标识符可以使用|二进制或来添加。
+$path = &#39;file.txt&#39;; //从文件中读取内容 $contents = file_get_contents($file); //做一些修改，比如讲CRLF替换为LF $contents = str_replace(&amp;quot;\r\n&amp;quot;, &amp;quot;\n&amp;quot;, $contents); //将修改后的内容写入文件 file_put_contents($path, $contents);  FILE_APPEND用来像日志文件追加内容，LOCK_FILE用来解决多个进程同时写内容的竞争冲突。例如，将当期session的内容写入文件中：
+file_put_contents(&#39;logins.log&#39;, &amp;quot;{$_SESSION[&amp;quot;username&amp;quot;]} logged in&amp;quot;, FILE_APPEND | LOCK_EX);  1.2 CSV IO fgetcsv($file, $length, $separator)  fgetcsv解析读入的行并找出 CSV 格式的字段，成功返回一个包含这些字段的数组，失败的时候返回FALSE。
+默认情况下，将只会读取CSV文件中的一行：
+$file = fopen(&#39;contacts.csv&#39;, &amp;quot;r&amp;quot;); print_r(fgetcsv($file)); print_r(fgetcsv($file, 5, &amp;quot; &amp;quot;)); fclose($file);  contacts.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（四十二）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-42.html</link>
+      <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-42.html</guid>
+      <description>魔术方法 __call()和__callStatic() __call()和__callStatic()将会在某些人调用不存在的对象方法或者静态方法的时候调用。
+class Foo { /** * 这个方法将会在某些人调用对象不存在的方法时调用，像 * $foo-&amp;gt;method($arg, $arg1); * * 第一个参数是方法名称 就像上面的method * 第二个参数是由$arg和$arg1组成的数组 */ public function __call($method, $arguments) { $snakeName = CaseHelper::camelToSnake($method); $subMethod = substr($snakeName, 0, 3); $propertyName = substr($snakeName, 4); switch($subMethod) { case &#39;get&#39;: return $this-&amp;gt;data[$propertyName]; case &#39;set&#39;: $this-&amp;gt;data[$propertyName] = $arguments[0]; break; case &#39;has&#39;: return isset($this-&amp;gt;data[$propertyName]); default: throw new BadMethodCallException(&amp;quot;Undefined method $method&amp;quot;); } } public static function __callStatic($method, $arguments) { print_r(func_get_args()); } }  例子</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十一）</title>
@@ -63,6 +87,16 @@ array(3) { [0]=&amp;gt; array(2) { [0]=&amp;gt; string(3) &amp;quot;a1b&amp;quot
     </item>
     
     <item>
+      <title>MySQL专业笔记(二十四)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-24.html</link>
+      <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-24.html</guid>
+      <description>视图    参数 详情     view_name 视图名称   SELECT 语句 要打包到视图中的SQL语句。它可以是一条SELECT语句，用于从一个或多个表中提取数据。    创建视图 特权
+参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（三十八）</title>
       <link>http://blog.huaifufeng.com/2019/05/post/php-section-38.html</link>
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
@@ -78,6 +112,18 @@ Hello, World!  SimpleXML 介绍
     </item>
     
     <item>
+      <title>MySQL专业笔记(二十三)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-23.html</link>
+      <pubDate>Tue, 07 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-23.html</guid>
+      <description>正则表达式 正则表达式是为复杂搜索指定模式的一种强大方法。
+REGEXP / RLIKE REGEXP或者别名RLIKE运算符允许基于正则表达式的模式匹配。
+假设有下面的employee的表：
++-------------+-------------+-------------+--------------+----------+ | EMPLOYEE_ID | FIRST_NAME | LAST_NAME | PHONE_NUMBER | SALARY | +-------------+-------------+-------------+--------------+----------+ | 100 | Steven | King | 515.123.4567 | 24000.00 | | 101 | Neena | Kochhar | 515.123.4568 | 17000.00 | | 102 | Lex | De Haan | 515.123.4569 | 17000.00 | | 103 | Alexander | Hunold | 590.423.4567 | 9000.00 | | 104 | Bruce | Ernst | 590.</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（三十七）</title>
       <link>http://blog.huaifufeng.com/2019/05/post/php-section-37.html</link>
       <pubDate>Tue, 07 May 2019 00:00:00 +0000</pubDate>
@@ -88,6 +134,23 @@ $xmlString = &amp;quot;&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#3
 文件 使用simplexml_load_file从一个文件地址加载数据：
 $xml = simplexml_load_string(&amp;quot;filePath.xml&amp;quot;); $xml = simplexml_load_string(&amp;quot;https://example.com/doc.xml&amp;quot;);  这个URL可以是任何PHP支持的格式，或者自定义的流封装。
 参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(二十二)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-22.html</link>
+      <pubDate>Mon, 06 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-22.html</guid>
+      <description>处理时区 获取指定时区的当前日期和时间 获取本地时区的NOW()值，获取印度时区的值，获取UTC的值。
+SELECT NOW(); SET time_zone=&#39;Asia/Kolkata&#39;; SELECT NOW(); SET time_zone=&#39;UTC&#39;; SELECT NOW();  转换存储的DATE或DATETIME值到另外的时区 如果你在表中的某个列中存储了DATE或DATETIME格式的时间值，这是相对于某个时区的值，但是在MySQL中，时区是没有和值存储在一起的。如果你想要把这个时间转换为另外时区的时间，你可以做，但是你必须知道原本的时区值。然后使用CONVERT_TZ()来实现这个转换过程。下面的例子显示把UTC的时区的时间转换为California的时区时间。
+SELECT CONVERT_TZ(date_sold, &#39;UTC&#39;, &#39;America/Los_Angeles&#39;) date_sold_local FROM sales WHERE state_sold=&#39;CA&#39;;  获取TIMESTAMP值的指定时区值 这非常简单。所有TIMESTAMP的值都是世界时间值，只需要设置你想要显示的time_zone时区值，就可以了。
+SET SESSION time_zone=&#39;America/Los_Angeles&#39;; SELECT timestamp_sold FROM sales WHERE state_sold=&#39;CA&#39;;  为什么是这样？TIMESTAMP的值是基于UNIX time_t数据格式的。这些UNIX的时间戳存的是从1970:01:01 00:00:00 UTC到现在的秒数。
+注意：TIMESTAMP存储的是世界时间。DATE和DATETIME存储是依赖存储时的时区。
+本地时区配置 每个服务器都有一个默认的全局时区配置，由服务器的拥有者设置。你可以使用下面的命令查看当前的时区配置：
+SELECT @@time_zone  不幸的是，这将会返回SYSTEM，这表示MySQL的时区使用服务器系统的时区配置。
+下面的查询队列(是的，这有些hack)，会在几分钟内返回服务器时区配置和UTC的偏移量。
+CREATE TEMPORARY TABLE times (dt DATETIME, ts TIMESTAMP); SET time_zone = &#39;+0:00&#39;; INSERT INTO times VALUES(NOW(), NOW()); SET time_zone = &#39;SYSTEM&#39;; SELECT dt, ts, TIMESTAMPDIFF(MINUTE, dt, ts)offset FROM times; DROP TEMPORARY TABLE times;  这是怎么实现的呢？临时表里面的两列有不同的时间格式。DATETIME存储当地时间到表里面，TIMESTAMP存储UTC时间到表里面。所以当时区设置为UTC的时候，INSERT语句插入列个完全相同的日期/时间值。</description>
     </item>
     
     <item>
