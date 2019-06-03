@@ -6,10 +6,21 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 13 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十四）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-44.html</link>
+      <pubDate>Tue, 14 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-44.html</guid>
+      <description>流    参数名字 描述     流资源 由&amp;lt;schema&amp;gt;://&amp;lt;target&amp;gt;语法组成的数据提供程序    1. 注册流包装器 流包装器可以为一个或多个特定方案提供处理程序。
+下面的例子显示了一个简单的流包装器，当流关闭的的时候发送一个PATCH的HTTP请求。
+//注册FooWrapper类作为 foo://URL stream_wrapper_register(&amp;quot;foo&amp;quot;, FooWrapper::class, STREAM_IS_URL) or die(&amp;quot;Duplicate stream wrwapper registered&amp;quot;); class FooWrapper { public $context; private $url; public function stream_open(string $path, string $mode, int $options, string &amp;amp;$openedPath) : bool { $url = parse_url($path); if ($url === false) { return false; } $this-&amp;gt;url = $url[&#39;host&#39;] . &#39;/&#39; . $url[&#39;path&#39;]; return true; } public function stream_write(string $data) : int { $this-&amp;gt;buffer .</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十三）</title>

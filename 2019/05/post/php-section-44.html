@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="怀府风，程序员, | 这里是怀府风的博客，与你一起发现更大的世界。">
+    <meta name="description" content="流">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Php-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（四十四）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/tags/php/">
+    <link rel="canonical" href="/2019/05/post/php-section-44.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -132,14 +132,29 @@
 
 
 
-<header class="intro-header" style="background-image: url('/img/head_bg.jpg')">
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>怀府小阁 </h1>
-                    
-		    <span class="subheading">积跬步 至远方</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（四十四）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Tuesday, May 14, 2019
+                        
+                    </span>
                 </div>
             </div>
         </div>
@@ -148,204 +163,193 @@
 
 
 
-  
-<div class="container">
-    <div class="row">
-        
-        
-   	    <div class="
-            col-lg-8 col-lg-offset-1
-            col-md-8 col-md-offset-1
-            col-sm-12
-            col-xs-12
-            post-container
-        ">
-            
 
-<div class="post-preview">
-    <a href="http://blog.huaifufeng.com/2019/04/post/php-section-4.html">
-        <h2 class="post-title">
-            PHP专业笔记（四）
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            PHP的超全局变量
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by 怀府风 Thursday, April 4, 2019
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://blog.huaifufeng.com/2019/04/post/php-section-3.html">
-        <h2 class="post-title">
-            PHP专业笔记（三）
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            PHP的变量作用域
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by 怀府风 Wednesday, April 3, 2019
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://blog.huaifufeng.com/2019/04/post/php-section-2.html">
-        <h2 class="post-title">
-            PHP专业笔记（二）
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            PHP的变量
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by 怀府风 Tuesday, April 2, 2019
-    </p>
-</div>
-<hr>
-
-<div class="post-preview">
-    <a href="http://blog.huaifufeng.com/2019/04/post/php-section-1.html">
-        <h2 class="post-title">
-            PHP专业笔记（一）
-        </h2>
-	
-        <div class="post-content-preview">
-	
-            开始使用PHP
-        
-        </div>
-    </a>
-    <p class="post-meta">
-    Posted by 怀府风 Monday, April 1, 2019
-    </p>
-</div>
-<hr>
-
+<article>
+    <div class="container">
+        <div class="row">
 
             
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-
-<ul class="pager">
-    
-    <li class="previous">
-        <a href="/tags/php/page/4/">&larr; Newer Posts</a>
-    </li>
-    
-    
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#流">流</a>
+<ul>
+<li><a href="#1-注册流包装器">1. 注册流包装器</a></li>
+</ul></li>
+</ul></li>
 </ul>
+</nav>
+        		
+        		
 
+<h2 id="流">流</h2>
 
-       	</div>
+<table>
+<thead>
+<tr>
+<th>参数名字</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>流资源</td>
+<td>由<code>&lt;schema&gt;://&lt;target&gt;</code>语法组成的数据提供程序</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="1-注册流包装器">1. 注册流包装器</h3>
+
+<p>流包装器可以为一个或多个特定方案提供处理程序。</p>
+
+<p>下面的例子显示了一个简单的流包装器，当流关闭的的时候发送一个<code>PATCH</code>的HTTP请求。</p>
+
+<pre><code class="language-php">//注册FooWrapper类作为 foo://URL
+stream_wrapper_register(&quot;foo&quot;, FooWrapper::class, STREAM_IS_URL) or die(&quot;Duplicate stream wrwapper registered&quot;);
+
+class FooWrapper {
+    public $context;
+    private $url;
+  
+    public function stream_open(string $path, string $mode, int $options, string &amp;$openedPath) : bool {
+        $url = parse_url($path);
+        if ($url === false) {
+            return false;
+        }
         
+        $this-&gt;url = $url['host'] . '/' . $url['path'];
+        return true;
+    }
+  
+    public function stream_write(string $data) : int {
+        $this-&gt;buffer .= $data;
+        return strlen($data);
+    }
+  
+    public function stream_close() {
+        $curl = curl_init(&quot;http://&quot; . $this-&gt;url);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $this-&gt;buffer);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, &quot;PATCH&quot;);
+        curl_exec($curl);
+        curl_close($curl);
+        $this-&gt;buffer = '';
+    }
+  
+    public function __call($name, $args) {
+        throw new \RuntimeException(&quot;This wrapper does not support $name&quot;);
+    }
+  
+    public function unlink(string $path) {
+        $url = parse_url($path);
+        $curl = curl_init(&quot;http://&quot; . $url['host'] . &quot;/&quot; . $url['path']);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        curl_exec($curl);
+        curl_close($curl);
+    }
+}
+</code></pre>
 
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
-    col-xs-12
-    sidebar-container
-">
-    
-    
-    <section>
-        <hr class="hidden-sm hidden-xs">
-        <h5>特色标签</h5>
-        <div class="tags">
-             
-            
-                
-                    <a href="/tags/bash" title="bash">
-                        bash
-                    </a>
-                
-            
-                
-                    <a href="/tags/git" title="git">
-                        git
-                    </a>
-                
-            
-                
-                    <a href="/tags/go" title="go">
-                        go
-                    </a>
-                
-            
-                
-                    <a href="/tags/hugo" title="hugo">
-                        hugo
-                    </a>
-                
-            
-                
-                    <a href="/tags/java" title="java">
-                        java
-                    </a>
-                
-            
-                
-                    <a href="/tags/mysql" title="mysql">
-                        mysql
-                    </a>
-                
-            
-                
-                    <a href="/tags/php" title="php">
-                        php
-                    </a>
-                
-            
-        </div>
-    </section>
-    
+<p>这个例子只是展示了一个普通的流包装器包含的内容。这并不是所有的有效的方法。一个完整的方法列表在<a href="https://php.net/streamWrapper">PHP的手册</a>。</p>
 
-    
-    <section class="visible-md visible-lg">
-        <hr><h5><a href="">ABOUT ME</a></h5>
-        <div class="short-about">
-            
-            <img src="/img/avatar-lufu.jpg" />
-            
-            
-                <p>慢慢前行，不断前进，向着远方前行...</p>
-            
-           
-           <ul class="list-inline"> 
-               
-               
-               
-               
-               
-               
-               
-               
-               
-                </ul>
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-43.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十三）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
             </div>
-    </section>
-    
-    
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
-    
-    
-</div>
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
 
-	</div>
-</div>
-
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
 
 
 
