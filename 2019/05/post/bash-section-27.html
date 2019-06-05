@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="视图">
+    <meta name="description" content="删除表">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(二十四)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(二十七)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/bash-section-24.html">
+    <link rel="canonical" href="/2019/05/post/bash-section-27.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(二十四)</h1>
+                    <h1>MySQL专业笔记(二十七)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, May 8, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, May 11, 2019
                         
                     </span>
                 </div>
@@ -182,12 +182,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#视图">视图</a>
+<li><a href="#删除表">删除表</a>
 <ul>
-<li><a href="#1-创建视图">1. 创建视图</a></li>
-<li><a href="#2-两个表创建视图">2. 两个表创建视图</a></li>
-<li><a href="#3-删除视图">3. 删除视图</a></li>
-<li><a href="#4-通过视图更新表">4. 通过视图更新表</a></li>
+<li><a href="#1-删除表">1. 删除表</a></li>
+<li><a href="#2-从数据库删除表">2. 从数据库删除表</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,7 +193,7 @@
         		
         		
 
-<h2 id="视图">视图</h2>
+<h2 id="删除表">删除表</h2>
 
 <table>
 <thead>
@@ -207,107 +205,49 @@
 
 <tbody>
 <tr>
-<td>view_name</td>
-<td>视图名称</td>
+<td>TEMPORARY</td>
+<td>可选。如果指定的话，只能使用DROP TABLE语句删除临时表</td>
 </tr>
 
 <tr>
-<td>SELECT 语句</td>
-<td>要打包到视图中的SQL语句。它可以是一条SELECT语句，用于从一个或多个表中提取数据。</td>
+<td>IF EXISTS</td>
+<td>可选。如果指定，如果表不存在的话，<code>DROP TABLE</code>语句将不会报一个错误</td>
 </tr>
 </tbody>
 </table>
 
-<h3 id="1-创建视图">1. 创建视图</h3>
+<h3 id="1-删除表">1. 删除表</h3>
 
-<p><strong>特权</strong></p>
+<p><code>DROP TABLE</code>可以用来删除数据库中的一个表。</p>
 
-<p><code>CREATE VIEW</code>语句需要视图的<code>CREATE VIEW</code>权限，以及SELECT语句选择的每一列的权限。对于SELECT语句中其他地方使用的列，必须具备SELECT权限。如果使用了<code>OR REPLACE</code>语句，你必须具有视图的<code>DROP</code>权限。依赖于<code>DEFINER</code>值，<code>CREATE VIEW</code>也需要<code>SUPER</code>权限，这在后面会说明。</p>
+<p><strong>创建表</strong></p>
 
-<p>当引用视图的时候，将会进行权限的检查。</p>
+<p>创建一个名字为tbl的表，然后删除这个表。</p>
 
-<p>一个视图是依赖于一个数据库的。默认情况下，一个新视图是在默认数据库上面创建的。想要显示在一个数据库上面创建视图，需要使用完整的数据库名。</p>
-
-<p>例如：</p>
-
-<p>db_name.view_name</p>
-
-<pre><code class="language-php">mysql&gt; CREATE VIEW test.v AS SELECT * FROM t;
+<pre><code class="language-m">CREATE TABLE tbl(
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    author VARCHAR(40) NOT NULL,
+    submission_date DATE,
+    PRIMARYY KEY (id)
+);
 </code></pre>
 
-<p><strong>注意：在一个数据库里面，基本的表和视图使用同一个命名空间，所以表和视图不能有相同的名字。</strong></p>
+<p><strong>删除表</strong></p>
 
-<p>一个视图可以：</p>
-
-<ul>
-<li>可以从多种SELECT语句中创建</li>
-<li>引用一个基本表或其他视图</li>
-<li>使用join，union和子查询</li>
-<li>SELECT甚至不需要引用任何表</li>
-</ul>
-
-<p><strong>另外的例子</strong></p>
-
-<p>下面的例子定义了一个视图，从另外的表中查询两个列表，和这两个列的计算表达式。</p>
-
-<pre><code class="language-php">mysql&gt; CREATE TABLE t(qty INT, price INT);
-mysql&gt; INSERT INTO t VALUES(3, 50);
-mysql&gt; CREATE VIEW v AS SELECT qty, price, qty * price AS value FROM t;
-mysql&gt; SELECT * FROM v;
-
- +------+-------+-------+
- | qty  | price | value |
- +------+-------+-------+
- |    3 |    50 |   150 |
- +------+-------+-------+
+<pre><code>DROP TABLE tbl;
 </code></pre>
 
-<p><strong>限制</strong></p>
+<blockquote>
+<p><strong>注意</strong></p>
 
-<ul>
-<li>在MySQL5.7.7之前，SELECT语句不能在FROM语句中包含子查询语句</li>
-<li>SELECT语句不能包含系统变量或用户自定义的变量</li>
-<li>在一个存储程序中，SELECT语句不能引用程序的变量和本地变量</li>
-<li>一个SELECT语句中不能引用预定义语句的参数</li>
-<li>定义中引用的任何表或视图都必须存在。在视图定义之后，可能删除定义时引用的表或视图。在这种情况下，对视图的使用会出现错误。想要检查这种视图定义的问题，使用<code>CHECK TABLE</code>语句。</li>
-<li>定义不能引用临时表，你不能创建一个临时的视图</li>
-<li>不能是视图上面关联触发器</li>
-<li>选择语句中列名称的别名将根据最大列长度64个字符（而不是最大别名长度256个字符）进行检查。</li>
-</ul>
+<p>删除表将会从数据库中删除表的全部信息，包括所有的信息，所以这个操作没法恢复。</p>
+</blockquote>
 
-<h3 id="2-两个表创建视图">2. 两个表创建视图</h3>
+<h3 id="2-从数据库删除表">2. 从数据库删除表</h3>
 
-<p>一个视图常用来从一个以上的表中获取数据。</p>
-
-<pre><code class="language-mysql">CREATE VIEW myview AS 
-SELECT a.*, b.extra_data FROM main_table a
-LEFT OUTER JOIN other_table b
-ON a.id = b.id;
+<pre><code class="language-mysql">DROP TABLE Database.table_name
 </code></pre>
-
-<p>在mysql中，视图没有具体化。如果你执行简单的<code>SELECT * FROM myview</code>，mysql将会在背后执行<code>LEFT JOIN</code>语句。</p>
-
-<p>一旦一个视图创建了，可以和其他的视图和表进行join操作。</p>
-
-<h3 id="3-删除视图">3. 删除视图</h3>
-
-<p>— 创建和删除当前数据库的一个视图</p>
-
-<pre><code class="language-mysql">CREATE VIEW few_rows_from_t1 AS SELECT * FROM t1 LIMIT 10;
-DROP VIEW few_rows_from_t1;
-</code></pre>
-
-<p>— 创建和删除引用另外数据库表的视图</p>
-
-<pre><code class="language-mysql">CREATE VIEW table_from_other_db AS SELECT x FROM db1.foo WHERE x IS NOT NULL;
-DORP VIEW table_from_other_db;
-</code></pre>
-
-<h3 id="4-通过视图更新表">4. 通过视图更新表</h3>
-
-<p>一个<code>VIEW</code>就像一个表一样。如果你可以更新一个表，你可以或不可以更细一个视图到表里面。通常，如果视图中的SELECT足够复杂，需要一个临时表，但是更新不允许。</p>
-
-<p>像<code>GROUP BY</code>， <code>UNION</code>， <code>HAVING</code>， <code>DISTINCT</code>和其他的一些操作会阻止更新。详情可以查看<a href="https://dev.mysql.com/doc/refman/5.7/en/view-updatability.html">手册</a>。</p>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -318,12 +258,12 @@ DORP VIEW table_from_other_db;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/php-section-39.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十九）">&larr; Previous Post</a>
+                      <a href="/2019/05/post/php-section-42.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十二）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/php-section-38.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十八）">Next Post &rarr;</a>
+                      <a href="/2019/05/post/php-section-41.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十一）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

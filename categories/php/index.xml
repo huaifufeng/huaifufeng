@@ -6,10 +6,24 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 14 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十五）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-45.html</link>
+      <pubDate>Wed, 15 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-45.html</guid>
+      <description>类型提示 1. 类和接口提示 在PHP5的时候，增加了类和接口的提示。
+类提示
+&amp;lt;?php class Student { public $name = &#39;Chris&#39;; } class School { public $name = &#39;University of Edinburgh&#39;; } function enroll(Student $student, School $school) { echo $student-&amp;gt;name . &#39; is being enrolled at &#39; . $school-&amp;gt;name; } $student = new Student(); $school = new School(); enroll($student, $school);  上面的例子将会输出：
+ Chris is being enrolled at University of Edinburgh
+ 接口提示
+&amp;lt;?php interface Enrollable {}; interface Attendable {}; class Chris implements Enrollable { public $name = &#39;Chris&#39;; } class UniversityOfEdinburgh implements Attendable { public $name = &#39;University of Edinburgh&#39;; } function enroll(Enrollable $enrollee, Attendable $premises) { echo $enrollee-&amp;gt;name .</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十四）</title>

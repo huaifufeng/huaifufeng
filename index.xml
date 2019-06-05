@@ -6,10 +6,24 @@
     <description>Recent content on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 14 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十五）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-45.html</link>
+      <pubDate>Wed, 15 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-45.html</guid>
+      <description>类型提示 1. 类和接口提示 在PHP5的时候，增加了类和接口的提示。
+类提示
+&amp;lt;?php class Student { public $name = &#39;Chris&#39;; } class School { public $name = &#39;University of Edinburgh&#39;; } function enroll(Student $student, School $school) { echo $student-&amp;gt;name . &#39; is being enrolled at &#39; . $school-&amp;gt;name; } $student = new Student(); $school = new School(); enroll($student, $school);  上面的例子将会输出：
+ Chris is being enrolled at University of Edinburgh
+ 接口提示
+&amp;lt;?php interface Enrollable {}; interface Attendable {}; class Chris implements Enrollable { public $name = &#39;Chris&#39;; } class UniversityOfEdinburgh implements Attendable { public $name = &#39;University of Edinburgh&#39;; } function enroll(Enrollable $enrollee, Attendable $premises) { echo $enrollee-&amp;gt;name .</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十四）</title>
@@ -20,6 +34,26 @@
       <description>流    参数名字 描述     流资源 由&amp;lt;schema&amp;gt;://&amp;lt;target&amp;gt;语法组成的数据提供程序    1. 注册流包装器 流包装器可以为一个或多个特定方案提供处理程序。
 下面的例子显示了一个简单的流包装器，当流关闭的的时候发送一个PATCH的HTTP请求。
 //注册FooWrapper类作为 foo://URL stream_wrapper_register(&amp;quot;foo&amp;quot;, FooWrapper::class, STREAM_IS_URL) or die(&amp;quot;Duplicate stream wrwapper registered&amp;quot;); class FooWrapper { public $context; private $url; public function stream_open(string $path, string $mode, int $options, string &amp;amp;$openedPath) : bool { $url = parse_url($path); if ($url === false) { return false; } $this-&amp;gt;url = $url[&#39;host&#39;] . &#39;/&#39; . $url[&#39;path&#39;]; return true; } public function stream_write(string $data) : int { $this-&amp;gt;buffer .</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(二十九)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-29.html</link>
+      <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-29.html</guid>
+      <description>错误码 1. 1064：语法错误 SELECT LastName, FirstName, FROM Person;  返回信息：
+ Error Code: 1064. You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &amp;lsquo;from Person&amp;rsquo; at line 2.
+ 从MySQL获取&amp;rdquo;1064 error&amp;rdquo;的错误信息意味着查询有语法错误。换句话说，MySQL不能有效解析查询语句。
+错误信息中引号包围的信息时MySQL指出的自己不知道如何解析的查询的最开始的位置。在这个例子中，MySQL在上下文中无法理解&amp;rdquo;from Person&amp;rdquo;。在这个例子中，是在from Person中有一个额外的逗号。这个逗号告诉MySQL在SELECT语句中需要另外的一个列。
+一个语法错误通常是这样的结构… near &#39;…&#39;。引号包围的部分是离错误最近的地方。想要定位一个错误，查看引号包围部分的最开始部分和引号前面的最后的部分。
+有时候，你会遇到… near &#39;&#39;，这时候，引号中没有任何东西。这意味着MySQL不能指出错误在语句的开始还是结束位置。这通常意味着查询语句包含不完整的引号(&amp;lsquo;或者&amp;rdquo;)，或者不完整的括号，或者之前没有正确终止该语句。
+对于存储例程，你可能忘记使用DELIMITER。
+所以，当你遇到了一个1064错误，查看查询语句，查看错误信息中指明的位置。检查错误信息说明位置周围的查询语句。
+如果你寻找某些人来帮助你解决一个1064错误，最好提供完整的查询语句和错误信息内容。
+2. 1175：安全更新 这个错误通常出现在你更新或删除表中的记录，但是没有包含一个条件WHERE语句。
+想要不出现这个错误，可以修改下面的配置项：
+SET SQL_SAFE_UPDATES = 0;  重新启用的话，输入下面的内容：</description>
     </item>
     
     <item>
@@ -37,6 +71,24 @@ $file = fopen(&#39;contacts.csv&#39;, &amp;quot;r&amp;quot;); print_r(fgetcsv($f
     </item>
     
     <item>
+      <title>MySQL专业笔记(二十八)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-28.html</link>
+      <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-28.html</guid>
+      <description>MySQL表的锁 1. 行级锁 如果一个表是InnoDB引擎的，MySQL会自动使用行级锁，便于多个事务可以同时对一个表进行读写，而不用彼此等待。
+如果两个事务视图修改同一个行并且两个事务都是用行级锁，那么一个事务需要等待另一个事务执行完毕。
+也可以同通多对预期要修改的每一行使用SELECT … FRO UPDATE语句来获得。
+假设有两个连接来详细介绍行级锁：
+连接1
+START TRANSACTION; SELECT ledgerAmount FROM accDetails WHERE id=1 FOR UPDATE:  在连接1中使用SELECT … FOR UPDATE来获取行级锁。
+连接2
+UPDATE accDetails SET ledgerAmount = ledgerAmount + 500 WHERE id=1;  但某些人在连接2中其他更新相同的行，将需要等待连接1事务执行完毕，或者达到innodb_lock_wait_timeout配置(默认的时间是50秒)的超时时间，出现一个错误。
+ Error Code: 1205. Lock wait timeout exceeded; try restarting transaction  想要查看这个锁的详细信息，使用SHOW ENGINE INNODB STATUS。
+---TRANSACTION 1973004, ACTIVE 7 sec updating mysql tables in use 1, locked 1 LOCK WAIT 2 lock struct(s), heap size 360, 1 row lock(s) MySQL thread id 4, OS thread handle 0x7f996beac700, query id 30 localhost root update UPDATE accDetails SET ledgerAmount = ledgerAmount + 500 WHERE id=1 ------- TRX HAS BEEN WAITING 7 SEC FOR THIS LOCK TO BE GRANTED:  连接2</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（四十二）</title>
       <link>http://blog.huaifufeng.com/2019/05/post/php-section-42.html</link>
       <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
@@ -44,6 +96,21 @@ $file = fopen(&#39;contacts.csv&#39;, &amp;quot;r&amp;quot;); print_r(fgetcsv($f
       <guid>http://blog.huaifufeng.com/2019/05/post/php-section-42.html</guid>
       <description>魔术方法 __call()和__callStatic() __call()和__callStatic()将会在某些人调用不存在的对象方法或者静态方法的时候调用。
 class Foo { /** * 这个方法将会在某些人调用对象不存在的方法时调用，像 * $foo-&amp;gt;method($arg, $arg1); * * 第一个参数是方法名称 就像上面的method * 第二个参数是由$arg和$arg1组成的数组 */ public function __call($method, $arguments) { $snakeName = CaseHelper::camelToSnake($method); $subMethod = substr($snakeName, 0, 3); $propertyName = substr($snakeName, 4); switch($subMethod) { case &#39;get&#39;: return $this-&amp;gt;data[$propertyName]; case &#39;set&#39;: $this-&amp;gt;data[$propertyName] = $arguments[0]; break; case &#39;has&#39;: return isset($this-&amp;gt;data[$propertyName]); default: throw new BadMethodCallException(&amp;quot;Undefined method $method&amp;quot;); } } public static function __callStatic($method, $arguments) { print_r(func_get_args()); } }  例子</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(二十七)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-27.html</link>
+      <pubDate>Sat, 11 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-27.html</guid>
+      <description>删除表    参数 详情     TEMPORARY 可选。如果指定的话，只能使用DROP TABLE语句删除临时表   IF EXISTS 可选。如果指定，如果表不存在的话，DROP TABLE语句将不会报一个错误    1. 删除表 DROP TABLE可以用来删除数据库中的一个表。
+创建表
+创建一个名字为tbl的表，然后删除这个表。
+CREATE TABLE tbl( id INT NOT NULL AUTO_INCREMENT, title VARCHAR(100) NOT NULL, author VARCHAR(40) NOT NULL, submission_date DATE, PRIMARYY KEY (id) );  删除表
+DROP TABLE tbl;   注意
+删除表将会从数据库中删除表的全部信息，包括所有的信息，所以这个操作没法恢复。
+ 2. 从数据库删除表 DROP TABLE Database.table_name  参考：MySQL Notes for Professionals book</description>
     </item>
     
     <item>
@@ -60,6 +127,18 @@ Composer是什么？ Composer是PHP的依赖/包管理工具。这可以用于�
 想要在你的项目中使用composer，你需要在项目中创建composer.json文件。你可以手动创建这个文件，或者通过composer init这个命令创建。在你在终端中运行composer init之后，这将会让你提供项目的一些信息：项目名(vendor/package 例如 laravel/laravel)，描述(可选的)，作者和其他的一些信息，像最低稳定版本，许可证和依赖的包信息等等。
 composer.json中的require关键字指明你项目依赖的包名。require关键字使用一个对象来存储包名(monolog/monolog)和相应的版本号。
 { &amp;quot;require&amp;quot;: { &amp;quot;composer/composer&amp;quot;: &amp;quot;1.2.*&amp;quot; } }  想要按照这里定义的依赖包的话，你需要使用composer install命令，这将会下载定义的指定版本的包，并把这个包下载到vendor目录。这非常方便的把第三方的代码放到vendor目录中。</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(二十六)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-26.html</link>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-26.html</guid>
+      <description>更改表 1. 修改存储引擎;重建表;修改file_per_table 例如，如果一个表t1当前不是InnoDB表，下面的语句将会修改这个表的存储引擎为InnoDB：
+ALTER TABLE t1 ENGINE=InnoDB;  如果这个表已经是InnoDB存储引擎了，这个语句将会重建表和索引，并且和OPTIMIZE TABLE的操作效果相同。你可能获取一些硬盘空间的改进。
+如果innodb_file_per_table的值和t1构建时的值不同，就会将这个值转换为(或从)file_per_table。
+2. 修改表的列 CREATE TABLE stackoverflow; USE stackoverflow; CREATE TABLE stack( id_user INT NOT NULL, usernaem VARCHAR(30) NOT NULL, password VARCHAR(30) NOT NULL ); ALTER TABLE stack ADD COLUMN submit date NOT NULL; -- 增加新列 ALTER TABLE stack DROP COLUMN submit; -- 删除列 ALTER TABLE stack MODIFY submit DATETIME NOT NULL; -- 修改列类型 ALTER TABLE stack CHANGE submit submit_date DATETIME NOT NULL; -- 修改列类型和名称 ALTER TABLE stachk ADD COLUMN mod_id INT NOT NULL AFTER id_user; -- 增加新列在存在的列之后  3.</description>
     </item>
     
     <item>
@@ -83,6 +162,25 @@ class FileLogger implements Logger { public function log($message) { //添加代
     </item>
     
     <item>
+      <title>MySQL专业笔记(二十五)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-25.html</link>
+      <pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-25.html</guid>
+      <description>创建表 1. 创建表带有主键 CREATE TABLE Person ( PersonID INT UNSIGNED NOT NULL, LastName VARCHAR(66) NOT NULL, FirstName VARCHAR(66), Address VARCHAR(255), City VARCHAR(66), PRIMARY KEY (PersonID) );  一个主键就是一个NOT NULL的单独或者多列的标识符，这个标识符可以表示表中唯一的行。创建了一个索引，但是没有显示声明为非空的话，MySQL将会以静默和隐式的方式声明他们。
+一个表只可以有一个PRIMARY KEY，并且每个表都推荐有一个。InnoDB将会在不存在的情况下创建一个(像MySQL文档中说明的)，尽管这是不可取的。
+通常，一个AUTO_INCREMENT INT被认为是&amp;rdquo;代理键&amp;rdquo;，用于索引优化和其他表的关系。当添加新纪录的时候，这个列的值(通常)会从默认值1开始加1。
+然而，尽管它的名字是这个，但是目的不是为了保证值是递增的，而是保证值是连续的和唯一的。
+一个递增的INT并不会恢复默认的初始值，当这个表的行都被删除的时候。除非这个表被truncate处理了，使用TRUNCATE TABLE语句。
+定义一列为主键(行内定义)
+如果主键只是一个单独的列的话，可以在列定义的行中添加PRIMARY KEY：
+CREATE TABLE Person ( PersonID INT UNSIGNED NOT NULL PRIMARY KEY, LastName VARCHAR(66) NOT NULL, FirstName Varchar(66), Address Varchar(255), City VARCHAR(66) );  这个命令的格式是简单并且易读的。
+定义多列为主键
+定义主键包含多个列也是可能的。可能会在关联外键关系的子表中这么做。多列主键是通过在单独的主键子句中列出参与列来定义的。这里行内定义就不行了，行内主键定义只能用于当个列。例如：
+CREATE TABLE invoice_line_items( LineNum SMALLINT UNSIGNED NOT NULL, InvoiceNum INT UNSIGNED NOT NULL, --- 其他列 PRIMARY KEY (InvoiceNum, LineNum), FOREIGN KEY (InvoiceNum) REFERENCES -- 一个表属性的引用 );  注意：主键的列应该按照逻辑顺序指定，这可能和列的定义顺序不一样，就像上面的例子一样。</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（三十九）</title>
       <link>http://blog.huaifufeng.com/2019/05/post/php-section-39.html</link>
       <pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate>
@@ -103,8 +201,17 @@ array(3) { [0]=&amp;gt; array(2) { [0]=&amp;gt; string(3) &amp;quot;a1b&amp;quot
       <pubDate>Wed, 08 May 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-24.html</guid>
-      <description>视图    参数 详情     view_name 视图名称   SELECT 语句 要打包到视图中的SQL语句。它可以是一条SELECT语句，用于从一个或多个表中提取数据。    创建视图 特权
-参考：MySQL Notes for Professionals book</description>
+      <description>视图    参数 详情     view_name 视图名称   SELECT 语句 要打包到视图中的SQL语句。它可以是一条SELECT语句，用于从一个或多个表中提取数据。    1. 创建视图 特权
+CREATE VIEW语句需要视图的CREATE VIEW权限，以及SELECT语句选择的每一列的权限。对于SELECT语句中其他地方使用的列，必须具备SELECT权限。如果使用了OR REPLACE语句，你必须具有视图的DROP权限。依赖于DEFINER值，CREATE VIEW也需要SUPER权限，这在后面会说明。
+当引用视图的时候，将会进行权限的检查。
+一个视图是依赖于一个数据库的。默认情况下，一个新视图是在默认数据库上面创建的。想要显示在一个数据库上面创建视图，需要使用完整的数据库名。
+例如：
+db_name.view_name
+mysql&amp;gt; CREATE VIEW test.v AS SELECT * FROM t;  注意：在一个数据库里面，基本的表和视图使用同一个命名空间，所以表和视图不能有相同的名字。
+一个视图可以：
+ 可以从多种SELECT语句中创建 引用一个基本表或其他视图 使用join，union和子查询 SELECT甚至不需要引用任何表  另外的例子
+下面的例子定义了一个视图，从另外的表中查询两个列表，和这两个列的计算表达式。
+mysql&amp;gt; CREATE TABLE t(qty INT, price INT); mysql&amp;gt; INSERT INTO t VALUES(3, 50); mysql&amp;gt; CREATE VIEW v AS SELECT qty, price, qty * price AS value FROM t; mysql&amp;gt; SELECT * FROM v; +------+-------+-------+ | qty | price | value | +------+-------+-------+ | 3 | 50 | 150 | +------+-------+-------+  限制</description>
     </item>
     
     <item>
