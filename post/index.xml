@@ -6,10 +6,20 @@
     <description>Recent content in Posts on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 15 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 16 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十六）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-46.html</link>
+      <pubDate>Thu, 16 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-46.html</guid>
+      <description>过滤和过滤函数    参数 详情     variable 要进行筛选的值。注意标量的值在进行筛选之前，在筛选之前内部会将标量值转换为字符串。   filter 将要应用的筛选的ID。手册中列出了有效的变量筛选类型。如果忽略的话，默认会使用FILTER_DEFAULT，这等价于FILTER_UNSAFE_RAW。这将导致默认情况下不进行过滤。   options 选项的关联数组或者标志位的二进制表示。如果筛选器接受选项，标志位可以在数组的&amp;rdquo;flags&amp;rdquo;字段中添加。对于&amp;rdquo;回调&amp;rdquo;筛选器，应该传入可调用类型。这个回调方法必须接受一个参数，就是要筛选的值，并在筛选/清理后返回这个值。    这个扩展通过验证或清理数据来筛选数据。当数据源中包含未知(或外部)的数据(如用户输入的数据)时，是非常有用的。例如，这些数据来自HTML的表格。
+1. 验证布尔值 var_dump(filter_var(true, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); //true var_dump(filter_var(false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); //false var_dump(filter_var(1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // true var_dump(filter_var(0, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false var_dump(filter_var(&#39;1&#39;, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // true var_dump(filter_var(&#39;0&#39;, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false var_dump(filter_var(&#39;&#39;, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false var_dump(filter_var(&#39; &#39;, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false var_dump(filter_var(&#39;true&#39;, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // true var_dump(filter_var(&#39;false&#39;, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false var_dump(filter_var([], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // NULL var_dump(filter_var(null, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false  2.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十五）</title>

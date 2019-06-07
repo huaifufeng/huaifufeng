@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/05/post/php-section-46.html</loc>
+    <lastmod>2019-05-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/05/post/php-section-45.html</loc>
     <lastmod>2019-05-15T00:00:00+00:00</lastmod>
   </url>
@@ -1050,13 +1055,13 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/go/</loc>
+    <loc>http://blog.huaifufeng.com/tags/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/go/</loc>
+    <loc>http://blog.huaifufeng.com/categories/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -1068,13 +1073,13 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/java/</loc>
+    <loc>http://blog.huaifufeng.com/tags/java/</loc>
     <lastmod>2019-04-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/java/</loc>
+    <loc>http://blog.huaifufeng.com/categories/java/</loc>
     <lastmod>2019-04-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -1086,20 +1091,20 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/php/</loc>
-    <lastmod>2019-05-15T00:00:00+00:00</lastmod>
+    <loc>http://blog.huaifufeng.com/tags/php/</loc>
+    <lastmod>2019-05-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/php/</loc>
-    <lastmod>2019-05-15T00:00:00+00:00</lastmod>
+    <loc>http://blog.huaifufeng.com/categories/php/</loc>
+    <lastmod>2019-05-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.huaifufeng.com/post/</loc>
-    <lastmod>2019-05-15T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -1117,7 +1122,7 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/</loc>
-    <lastmod>2019-05-15T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-16T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

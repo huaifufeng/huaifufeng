@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="过滤和过滤函数">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（四十六）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/php-section-46.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（四十六）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, May 16, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#过滤和过滤函数">过滤和过滤函数</a>
+<ul>
+<li><a href="#1-验证布尔值">1. 验证布尔值</a></li>
+<li><a href="#2-验证数字是浮点数">2. 验证数字是浮点数</a></li>
+<li><a href="#3-验证mac地址">3. 验证MAC地址</a></li>
+<li><a href="#4-清理电子邮件地址">4. 清理电子邮件地址</a></li>
+<li><a href="#5-清理整数">5. 清理整数</a></li>
+<li><a href="#6-清理url">6. 清理URL</a></li>
+<li><a href="#7-验证邮件地址">7. 验证邮件地址</a></li>
+<li><a href="#8-验证值是不是整数">8. 验证值是不是整数</a></li>
+<li><a href="#9-验证整数在某个范围">9. 验证整数在某个范围</a></li>
+<li><a href="#10-验证url">10. 验证URL</a></li>
+<li><a href="#11-清理浮点数">11. 清理浮点数</a></li>
+<li><a href="#12-验证ip地址">12. 验证IP地址</a></li>
+<li><a href="#13-清理筛选">13. 清理筛选</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="过滤和过滤函数">过滤和过滤函数</h2>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>variable</td>
+<td>要进行筛选的值。注意标量的值在进行筛选之前，在筛选之前内部会将标量值转换为字符串。</td>
+</tr>
+
+<tr>
+<td>filter</td>
+<td>将要应用的筛选的ID。手册中列出了有效的变量筛选类型。如果忽略的话，默认会使用FILTER_DEFAULT，这等价于FILTER_UNSAFE_RAW。这将导致默认情况下不进行过滤。</td>
+</tr>
+
+<tr>
+<td>options</td>
+<td>选项的关联数组或者标志位的二进制表示。如果筛选器接受选项，标志位可以在数组的&rdquo;flags&rdquo;字段中添加。对于&rdquo;回调&rdquo;筛选器，应该传入可调用类型。这个回调方法必须接受一个参数，就是要筛选的值，并在筛选/清理后返回这个值。</td>
+</tr>
+</tbody>
+</table>
+
+<p>这个扩展通过验证或清理数据来筛选数据。当数据源中包含未知(或外部)的数据(如用户输入的数据)时，是非常有用的。例如，这些数据来自HTML的表格。</p>
+
+<h3 id="1-验证布尔值">1. 验证布尔值</h3>
+
+<pre><code class="language-php">var_dump(filter_var(true, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE));  //true
+var_dump(filter_var(false, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE));  //false
+var_dump(filter_var(1, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // true 
+var_dump(filter_var(0, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false 
+var_dump(filter_var('1', FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // true 
+var_dump(filter_var('0', FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false 
+var_dump(filter_var('', FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false 
+var_dump(filter_var(' ', FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false 
+var_dump(filter_var('true', FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // true 
+var_dump(filter_var('false', FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false 
+var_dump(filter_var([], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // NULL 
+var_dump(filter_var(null, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)); // false
+</code></pre>
+
+<h3 id="2-验证数字是浮点数">2. 验证数字是浮点数</h3>
+
+<p>验证值是不是一个浮点数，如果成功了转换为浮点数。</p>
+
+<pre><code class="language-php">var_dump(filter_var(1, FILTER_VALIDATE_FLOAT));
+var_dump(filter_var(1.0, FILTER_VALIDATE_FLOAT));
+var_dump(filter_var(1.0000, FILTER_VALIDATE_FLOAT));
+var_dump(filter_var(1.00001, FILTER_VALIDATE_FLOAT));
+var_dump(filter_var('1', FILTER_VALIDATE_FLOAT));
+var_dump(filter_var('1.0', FILTER_VALIDATE_FLOAT));
+var_dump(filter_var('1.0000', FILTER_VALIDATE_FLOAT));
+var_dump(filter_var('1.00001', FILTER_VALIDATE_FLOAT));
+var_dump(filter_var('1,000', FILTER_VALIDATE_FLOAT));
+var_dump(filter_var('1,000.0', FILTER_VALIDATE_FLOAT));
+var_dump(filter_var('1,000.0000', FILTER_VALIDATE_FLOAT));
+var_dump(filter_var('1,000.00001', FILTER_VALIDATE_FLOAT));
+
+var_dump(filter_var(1, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var(1.0, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var(1.0000, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var(1.00001, FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1.0', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1.0000', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1.00001', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND));
+var_dump(filter_var('1,000', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1,000.0', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1,000.0000', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1,000.00001', FILTER_VALIDATE_FLOAT, FILTER_FLAG_ALLOW_THOUSAND));
+</code></pre>
+
+<p>这将会输出下面的结果：</p>
+
+<pre><code>float(1) 
+float(1)
+float(1) 
+float(1.00001) 
+float(1) 
+float(1) 
+float(1)
+float(1.00001) 
+bool(false)
+bool(false) 
+bool(false)
+bool(false)
+
+float(1)
+float(1)
+float(1)
+float(1.00001)
+float(1)
+float(1)
+float(1)
+float(1.00001)
+float(1000)
+float(1000)
+float(1000)
+float(1000.00001)
+</code></pre>
+
+<h3 id="3-验证mac地址">3. 验证MAC地址</h3>
+
+<p>验证一个值是不是一个有效的MAC地址。</p>
+
+<pre><code class="language-php">var_dump(filter_var('FA-F9-DD-B2-5E-0D', FILTER_VALIDATE_MAC));
+var_dump(filter_var('DC-BB-17-9A-CE-81', FILTER_VALIDATE_MAC));
+var_dump(filter_var('96-D5-9E-67-40-AB', FILTER_VALIDATE_MAC));
+var_dump(filter_var('96-D5-9E-67-40', FILTER_VALIDATE_MAC));
+var_dump(filter_var('', FILTER_VALIDATE_MAC));
+</code></pre>
+
+<p>结果是：</p>
+
+<pre><code>string(17) &quot;FA-F9-DD-B2-5E-0D&quot;
+string(17) &quot;DC-BB-17-9A-CE-81&quot; 
+string(17) &quot;96-D5-9E-67-40-AB&quot; 
+bool(false)
+bool(false)
+</code></pre>
+
+<h3 id="4-清理电子邮件地址">4. 清理电子邮件地址</h3>
+
+<p>移除字母，数字和 <strong>!#$%&amp;&rsquo;*+-=?^_`{|}~@.[]</strong>之外的字符。</p>
+
+<pre><code class="language-php">var_dump(filter_var('john@example.com', FILTER_SANITIZE_EMAIL)); 
+var_dump(filter_var(&quot;!#$%&amp;'*+-=?^_`{|}~.[]@example.com&quot;, FILTER_SANITIZE_EMAIL)); 
+var_dump(filter_var('john/@example.com', FILTER_SANITIZE_EMAIL));
+var_dump(filter_var('john\@example.com', FILTER_SANITIZE_EMAIL));
+var_dump(filter_var('joh n@example.com', FILTER_SANITIZE_EMAIL));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(16) &quot;john@example.com&quot;
+string(33) &quot;!#$%&amp;'*+-=?^_`{|}~.[]@example.com&quot;
+string(16) &quot;john@example.com&quot;
+string(16) &quot;john@example.com&quot;
+string(16) &quot;john@example.com&quot;
+</code></pre>
+
+<h3 id="5-清理整数">5. 清理整数</h3>
+
+<p>移除数字，加号，减号之外的所有字符。</p>
+
+<pre><code class="language-php">var_dump(filter_var(1, FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var(-1, FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var(+1, FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var(1.00, FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var(+1.00, FILTER_SANITIZE_NUMBER_INT)); 
+var_dump(filter_var(-1.00, FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var('1', FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var('-1', FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var('+1', FILTER_SANITIZE_NUMBER_INT)); 
+var_dump(filter_var('1.00', FILTER_SANITIZE_NUMBER_INT)); 
+var_dump(filter_var('+1.00', FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var('-1.00', FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var('1 unicorn', FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var('-1 unicorn', FILTER_SANITIZE_NUMBER_INT));
+var_dump(filter_var('+1 unicorn', FILTER_SANITIZE_NUMBER_INT)); var_dump(filter_var(&quot;!#$%&amp;'*+-=?^_`{|}~@.[]0123456789abcdefghijklmnopqrstuvwxyz&quot;, FILTER_SANITIZE_NUMBER_INT));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(1) &quot;1&quot;
+string(2) &quot;-1&quot;
+string(1) &quot;1&quot;
+string(1) &quot;1&quot;
+string(1) &quot;1&quot;
+string(2) &quot;-1&quot;
+string(1) &quot;1&quot;
+string(2) &quot;-1&quot;
+string(2) &quot;+1&quot;
+string(3) &quot;100&quot;
+string(4) &quot;+100&quot;
+string(4) &quot;-100&quot;
+string(1) &quot;1&quot;
+string(2) &quot;-1&quot;
+string(2) &quot;+1&quot;
+string(12) &quot;+-0123456789&quot;
+</code></pre>
+
+<h3 id="6-清理url">6. 清理URL</h3>
+
+<p>移除字母，数字，<strong>$-_.+!*&lsquo;(),{}|\^~[]`&lt;&gt;#%&ldquo;;/?:@&amp;=</strong>之外的所有字符。</p>
+
+<pre><code class="language-php">var_dump(filter_var('http://www.example.com/path/to/dir/index.php?test=y', FILTER_SANITIZE_URL));
+var_dump(filter_var(&quot;http://www.example.com/path/to/dir/index.php?test=y!#$%&amp;'*+-=?^_`{|}~.[]&quot;, FILTER_SANITIZE_URL));
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php?test=a b c', FILTER_SANITIZE_URL));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(51) &quot;http://www.example.com/path/to/dir/index.php?test=y&quot;
+string(72) &quot;http://www.example.com/path/to/dir/index.php?test=y!#$%&amp;'*+-=?^_`{|}~.[]&quot; 
+string(53) &quot;http://www.example.com/path/to/dir/index.php?test=abc&quot;
+</code></pre>
+
+<h3 id="7-验证邮件地址">7. 验证邮件地址</h3>
+
+<p>使用<code>filter_var()</code>方法来筛选邮件地址，将会返回筛选之后的数据，在这种情况下成功返回邮件地址，没有知道邮件地址就会返回false。</p>
+
+<pre><code class="language-php">var_dump(filter_var('john@example.com', FILTER_VALIDATE_EMAIL));
+var_dump(filter_var('notValidEmail', FILTER_VALIDATE_EMAIL));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(16) &quot;john@example.com&quot; 
+bool(false)
+</code></pre>
+
+<p>这个方法不会验证非拉丁字符。国际化域名可以使用<code>xn—</code>格式进行验证。</p>
+
+<p>请注意，在实际发生电子邮件之前，你不知道电子邮件地址是否正确。你可以做一些额外的检查，例如检查MX记录，但是这不是必须的。如果你发生确认电子邮件的话，不要忘记删除在短时间内未使用的账号。</p>
+
+<h3 id="8-验证值是不是整数">8. 验证值是不是整数</h3>
+
+<p>想要使用<code>filter_var()</code>方法验证一个值是不是整数，如果这个值是整数将会返回整数值，否知返回false。<strong>浮点数不是整数</strong>。</p>
+
+<pre><code class="language-php">var_dump(filter_var('10', FILTER_VALIDATE_INT));
+var_dump(filter_var('a10', FILTER_VALIDATE_INT));
+var_dump(filter_var('10a', FILTER_VALIDATE_INT));
+var_dump(filter_var(' ', FILTER_VALIDATE_INT));
+var_dump(filter_var('10.00', FILTER_VALIDATE_INT));
+var_dump(filter_var('10,000', FILTER_VALIDATE_INT));
+var_dump(filter_var('-5', FILTER_VALIDATE_INT));
+var_dump(filter_var('+7', FILTER_VALIDATE_INT));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>int(10) 
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+bool(false)
+int(-5)
+int(7)
+</code></pre>
+
+<p>如果你希望只是数字的话，可以使用正则表达式：</p>
+
+<pre><code class="language-php">if(is_string($_GET['entry']) &amp;&amp; preg_match('#^[0-9]+$#', $_GET['entry'])) 
+  // this is a digit (positive) integer
+else
+    // entry is incorrect
+</code></pre>
+
+<p>如果你把这个值转换为整数的话，就不必这样执行检查，可以使用<code>filter_var()</code>方法。</p>
+
+<h3 id="9-验证整数在某个范围">9. 验证整数在某个范围</h3>
+
+<p>但要验证一个整数是否在某个最小值和最大值之间的话：</p>
+
+<pre><code class="language-php">$options = array(
+    'options' =&gt; array(
+        'min_range' =&gt; 5,
+        'max_range' =&gt; 10,
+    )
+);
+var_dump(filter_var('5', FILTER_VALIDATE_INT, $options));
+var_dump(filter_var('10', FILTER_VALIDATE_INT, $options));
+var_dump(filter_var('8', FILTER_VALIDATE_INT, $options));
+var_dump(filter_var('4', FILTER_VALIDATE_INT, $options));
+var_dump(filter_var('11', FILTER_VALIDATE_INT, $options));
+var_dump(filter_var('-6', FILTER_VALIDATE_INT, $options));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>int(5) 
+int(10)
+int(8) 
+bool(false)
+bool(false) 
+bool(false)
+</code></pre>
+
+<h3 id="10-验证url">10. 验证URL</h3>
+
+<p>当使用<code>filter_var()</code>方法验证一个URL的时候，如果是URL将会返回URL，否则会返回一个false。</p>
+
+<p>例如:<code>example.com</code></p>
+
+<pre><code class="language-php">var_dump(filter_var('example.com', FILTER_VALIDATE_URL)); 
+var_dump(filter_var('example.com', FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)); 
+var_dump(filter_var('example.com', FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)); 
+var_dump(filter_var('example.com', FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)); 
+var_dump(filter_var('example.com', FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>bool(false) 
+bool(false) 
+bool(false) 
+bool(false) 
+bool(false)
+</code></pre>
+
+<p>例如：<code>http://example.com</code></p>
+
+<pre><code class="language-php">var_dump(filter_var('http://example.com', FILTER_VALIDATE_URL)); 
+var_dump(filter_var('http://example.com', FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)); 
+var_dump(filter_var('http://example.com', FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)); 
+var_dump(filter_var('http://example.com', FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)); 
+var_dump(filter_var('http://example.com', FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(18) &quot;http://example.com&quot; 
+string(18) &quot;http://example.com&quot; 
+string(18) &quot;http://example.com&quot; 
+bool(false)
+bool(false)
+</code></pre>
+
+<p>例如：<code>http://www.example.com</code></p>
+
+<pre><code class="language-php">var_dump(filter_var('http://www.example.com', FILTER_VALIDATE_URL)); 
+var_dump(filter_var('http://www.example.com', FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)); 
+var_dump(filter_var('http://www.example.com', FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)); 
+var_dump(filter_var('http://www.example.com', FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)); 
+var_dump(filter_var('http://www.example.com', FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(22) &quot;http://www.example.com&quot; 
+string(22) &quot;http://www.example.com&quot;
+string(22) &quot;http://www.example.com&quot; 
+bool(false)
+bool(false)
+</code></pre>
+
+<p>例如：<code>http://www.example.com/path/to/dir</code></p>
+
+<pre><code class="language-php">var_dump(filter_var('http://www.example.com/path/to/dir/', FILTER_VALIDATE_URL)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/', FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/', FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/', FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/', FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(35) &quot;http://www.example.com/path/to/dir/&quot; 
+string(35) &quot;http://www.example.com/path/to/dir/&quot; 
+string(35) &quot;http://www.example.com/path/to/dir/&quot;
+string(35) &quot;http://www.example.com/path/to/dir/&quot; 
+bool(false)
+</code></pre>
+
+<p>例如：<code>http://www.example.com/path/to/dir/index.php</code></p>
+
+<pre><code class="language-php">var_dump(filter_var('http://www.example.com/path/to/dir/index.php', FILTER_VALIDATE_URL)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php', FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php', FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php', FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php', FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(44) &quot;http://www.example.com/path/to/dir/index.php&quot;
+string(44) &quot;http://www.example.com/path/to/dir/index.php&quot; 
+string(44) &quot;http://www.example.com/path/to/dir/index.php&quot; 
+string(44) &quot;http://www.example.com/path/to/dir/index.php&quot; 
+bool(false)
+</code></pre>
+
+<p>例如：<code>http://www.example.com/path/to/dir/index.php?test=y</code></p>
+
+<pre><code class="language-php">var_dump(filter_var('http://www.example.com/path/to/dir/index.php?test=y', FILTER_VALIDATE_URL)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php?test=y', FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php?test=y', FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php?test=y', FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)); 
+var_dump(filter_var('http://www.example.com/path/to/dir/index.php?test=y', FILTER_VALIDATE_URL, FILTER_FLAG_QUERY_REQUIRED));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(51) &quot;http://www.example.com/path/to/dir/index.php?test=y&quot;
+string(51) &quot;http://www.example.com/path/to/dir/index.php?test=y&quot;
+string(51) &quot;http://www.example.com/path/to/dir/index.php?test=y&quot;
+string(51) &quot;http://www.example.com/path/to/dir/index.php?test=y&quot;
+string(51) &quot;http://www.example.com/path/to/dir/index.php?test=y&quot;
+</code></pre>
+
+<p><strong>警告：</strong>你必须要检查网址的协议来避免XSS攻击：</p>
+
+<pre><code>var_dump(filter_var('javascript://comment%0Aalert(1)', FILTER_VALIDATE_URL)); 
+// string(31) &quot;javascript://comment%0Aalert(1)&quot;
+</code></pre>
+
+<h3 id="11-清理浮点数">11. 清理浮点数</h3>
+
+<p>移除数字，加号，减号和可选的.,eE之外的其他字符。</p>
+
+<pre><code class="language-php">var_dump(filter_var(1, FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var(1.0, FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var(1.0000, FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var(1.00001, FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1', FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1.0', FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1.0000', FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1.00001', FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1,000', FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1,000.0', FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1,000.0000', FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1,000.00001', FILTER_SANITIZE_NUMBER_FLOAT));
+var_dump(filter_var('1.8281e-009', FILTER_SANITIZE_NUMBER_FLOAT));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(1) &quot;1&quot;
+string(1) &quot;1&quot;
+string(1) &quot;1&quot;
+string(6) &quot;100001&quot;
+string(1) &quot;1&quot;
+string(2) &quot;10&quot;
+string(5) &quot;10000&quot;
+string(6) &quot;100001&quot;
+string(4) &quot;1000&quot;
+string(5) &quot;10000&quot;
+string(8) &quot;10000000&quot;
+string(9) &quot;100000001&quot;
+string(9) &quot;18281-009&quot;
+</code></pre>
+
+<p>当使用<code>FILTER_FLAG_ALLOW_THOUSAND</code>选项的时候：</p>
+
+<pre><code class="language-php">var_dump(filter_var(1, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND));
+var_dump(filter_var(1.0, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var(1.0000, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var(1.00001, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1.0', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1.0000', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1.00001', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1,000', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1,000.0', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1,000.0000', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1,000.00001', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND)); 
+var_dump(filter_var('1.8281e-009', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_THOUSAND));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(1) &quot;1&quot;
+string(1) &quot;1&quot;
+string(6) &quot;100001&quot;
+string(1) &quot;1&quot;
+string(2) &quot;10&quot;
+string(5) &quot;10000&quot;
+string(6) &quot;100001&quot;
+string(5) &quot;1,000&quot;
+string(6) &quot;1,0000&quot;
+string(9) &quot;1,0000000&quot;
+string(10) &quot;1,00000001&quot;
+string(9) &quot;18281-009&quot;
+</code></pre>
+
+<p>使用<code>FILTER_FLAG_ALLOW_SCIENTIFIC</code>选项：</p>
+
+<pre><code class="language-php">var_dump(filter_var(1, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var(1.0, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var(1.0000, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var(1.00001, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var('1', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var('1.0', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var('1.0000', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var('1.00001', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var('1,000', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var('1,000.0', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var('1,000.0000', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC)); 
+var_dump(filter_var('1,000.00001', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC));
+var_dump(filter_var('1.8281e-009', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_SCIENTIFIC));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(1) &quot;1&quot;
+string(1) &quot;1&quot;
+string(1) &quot;1&quot;
+string(6) &quot;100001&quot;
+string(1) &quot;1&quot;
+string(2) &quot;10&quot;
+string(5) &quot;10000&quot;
+string(6) &quot;100001&quot;
+string(4) &quot;1000&quot;
+string(5) &quot;10000&quot;
+string(8) &quot;10000000&quot;
+string(9) &quot;100000001&quot;
+string(10) &quot;18281e-009&quot;
+</code></pre>
+
+<h3 id="12-验证ip地址">12. 验证IP地址</h3>
+
+<p>验证一个IP地址是不是一个有效的IP地址：</p>
+
+<pre><code class="language-mysql">var_dump(filter_var('185.158.24.24', FILTER_VALIDATE_IP)); 
+var_dump(filter_var('2001:0db8:0a0b:12f0:0000:0000:0000:0001', FILTER_VALIDATE_IP)); 
+var_dump(filter_var('192.168.0.1', FILTER_VALIDATE_IP)); 
+var_dump(filter_var('127.0.0.1', FILTER_VALIDATE_IP));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(13) &quot;185.158.24.24&quot;
+string(39) &quot;2001:0db8:0a0b:12f0:0000:0000:0000:0001&quot;
+string(11) &quot;192.168.0.1&quot;
+string(9) &quot;127.0.0.1&quot;
+</code></pre>
+
+<p>验证一个值是不是有效的IPv4的IP地址：</p>
+
+<pre><code class="language-php">var_dump(filter_var('185.158.24.24', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)); 
+var_dump(filter_var('2001:0db8:0a0b:12f0:0000:0000:0000:0001', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4));
+var_dump(filter_var('192.168.0.1', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)); 
+var_dump(filter_var('127.0.0.1', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(13) &quot;185.158.24.24&quot; 
+bool(false)
+string(11) &quot;192.168.0.1&quot; 
+string(9) &quot;127.0.0.1&quot;
+</code></pre>
+
+<p>验证一个值是不是有效的IPv6的IP地址：</p>
+
+<pre><code class="language-php">var_dump(filter_var('185.158.24.24', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)); 
+var_dump(filter_var('2001:0db8:0a0b:12f0:0000:0000:0000:0001', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6));
+var_dump(filter_var('192.168.0.1', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)); 
+var_dump(filter_var('127.0.0.1', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>bool(false)
+string(39) &quot;2001:0db8:0a0b:12f0:0000:0000:0000:0001&quot;
+bool(false)
+bool(false)
+</code></pre>
+
+<p>验证一个IP地址是不是在一个私有范围内：</p>
+
+<pre><code class="language-php">var_dump(filter_var('185.158.24.24', FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)); 
+var_dump(filter_var('2001:0db8:0a0b:12f0:0000:0000:0000:0001', FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE));
+var_dump(filter_var('192.168.0.1', FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)); 
+var_dump(filter_var('127.0.0.1', FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(13) &quot;185.158.24.24&quot;
+string(39) &quot;2001:0db8:0a0b:12f0:0000:0000:0000:0001&quot; 
+bool(false)
+string(9) &quot;127.0.0.1&quot;
+</code></pre>
+
+<p>验证IP地址在不在保留的地址范围内：</p>
+
+<pre><code class="language-php">var_dump(filter_var('185.158.24.24', FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE)); 
+var_dump(filter_var('2001:0db8:0a0b:12f0:0000:0000:0000:0001', FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE));
+var_dump(filter_var('192.168.0.1', FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE)); 
+var_dump(filter_var('127.0.0.1', FILTER_VALIDATE_IP, FILTER_FLAG_NO_RES_RANGE));
+</code></pre>
+
+<p>结果：</p>
+
+<pre><code>string(13) &quot;185.158.24.24&quot; 
+bool(false)
+string(11) &quot;192.168.0.1&quot;
+bool(false)
+</code></pre>
+
+<h3 id="13-清理筛选">13. 清理筛选</h3>
+
+<p>我们想要使用筛选器来清理变量到我们需要的范围。</p>
+
+<p><strong>例子</strong></p>
+
+<pre><code>$string = &quot;&lt;p&gt;Example&lt;/p&gt;&quot;;
+$newstring = filter_var($string, FILTER_SANITIZE_STRING); 
+var_dump($newstring); // string(7) &quot;Example&quot;
+</code></pre>
+
+<p>上面的例子删除<code>$string</code>变量中的html标签。</p>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-45.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十五）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
