@@ -6,10 +6,23 @@
     <description>Recent content in Mysql on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 14 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 15 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(三十一)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-31.html</link>
+      <pubDate>Wed, 15 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-31.html</guid>
+      <description>索引和键 1. 创建索引 -- 创建my_table中name列的索引 CREATE INDEX idx_name ON my_table(name);  2. 创建唯一索引 一个唯一索引用来避免在表中插入重复的数据。一个唯一索引的列可以插入多个NULL值(因为，默认情况下NULL是和其他值都不相同的，包括其他的NULL)。
+-- 创建my_table表中name列的唯一索引 CREATE UNIQUE INDEX idex_name ON my_table(name);  3. AUTO_INCREMENT键 CREATE TABLE ( id INT UNSIGNED NOT NULL AUTO_INCREMENT, ... PRIMARY KEY(id), ... );  主要注意点：
+ 从1开始并且自动增加1当你没有在INSERT语句中指定值，或者指定这个值为NULL 这个id一直都是和其他的不一样的，但是 不要对id进行假设(如没有间隙、连续生产、不重用等)，除了在任何时候都是唯一的。  细微注意点：
+ 当重启服务器的时候，&amp;rdquo;下一个&amp;rdquo;值就是MAX(id)+1这么计算的 如果在系统关闭或崩溃之前的最后一个操作是删除最大的id值，这个id可能被重用(这根据引擎决定)。所以，不要详细自增量永久是唯一的，它们只是在任何时刻是唯一的。 对弈多主机或集群解决方案，查看auto_increment_offset和auto_increment_increment 有些时候简单的使用INDEX(id)而不是PRIMARY KEY也是可以的。(这在某些情况下是有中性能提升) 使用AUTO_INCREMENT作为PARTITION key是很少有好处的，所以不要这么做 各种操作都可能&amp;rdquo;毁坏&amp;rdquo;值。这发送在当他们预分配的值，不要这么使用：INSERT IGNORE(使用重复键)，REPLACE(这等价于DELETE加上INSERT)，和其他的操作。ROLLBACK是另外造成id间隙的操作。 在主从复制过程中，不能信任ID以升序到达从服务器。尽管ID是按照练习顺序分配的，但是InnoDB是按照提交顺序发送到从系统的。  4. 创建组合索引 这将会在两个键上面创建联合索引，mystring和mydatetime，提升在这两个键上面的WHERE查询的速度。
+CREATE INDEX idx_mmycol_myothercol ON my_table(mycol, myothercol);  注意：这个顺序是很重要的！如果在查下语句的WHERE条件中没有包含这两个列，那将会用到最左的索引。在这样的情况下，当查询的WHERE语句中包括mycol将会使用这个索引，一个查询包含myothercol将不会使用索引。详细信息查看这个blog。</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(三十)</title>
