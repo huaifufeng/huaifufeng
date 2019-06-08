@@ -6,10 +6,19 @@
     <description>Recent content in 数据库 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 13 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 14 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(三十)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-30.html</link>
+      <pubDate>Tue, 14 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-30.html</guid>
+      <description>存储例程(程序和函数)    参数 详情     RETURNS 指定从函数返回的值的数据类型   RETURN RETURN后面实际的变量或值是调用函数返回的值    1. 带有IN OUT INOUT参数的存储过程 DELIMITER $$ DROP PROCEDURE IF EXISTS sp_nested_loop$$ CREATE PROCEDURE sp_nested_loop(IN i INT, IN j INT, OUT x INT, OUT y INT, INOUT z INT) BEGIN DECLARE a INTEGER DEFAULT 0; DECLARE b INTEGER DEFAULT 0; DECLARE c INTEGER DEFAULT 0; WHILE a &amp;lt; i DO WHILE b &amp;lt; j DO SET c = c + 1; SET b = b + 1; END WHILE; SET a = a + 1; SET b = 0; END WHILE; SET x = a, y = c; SET z = x + y + z; END $$ DELIMITER ;  调用这个存储过程：</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(二十九)</title>
