@@ -6,10 +6,28 @@
     <description>Recent content in Mysql on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 25 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 26 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(四十二)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-42.html</link>
+      <pubDate>Sun, 26 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-42.html</guid>
+      <description>字符集和排序 1. 什么是字符集和排序？ 有几十种字符集和数百种排序规则。(一种排序规则只属于一种字符串)。查看SHOW COLLATION;的输出。
+通常只有4中字符集比较重要：
+ascii -- 基础的7位编码 latin1 -- ascii, 加上大多数西欧语言需要的字符 utf8 -- the 1-, 2-, and 3-byte subset of utf8. 不包括 Emoji and 一些中文. utf8mb4 -- UTF8字符的全集合，包含当前所有的语言  全部包括英文字符，编码相同。utf8是utf8mb4的子集。
+最好用法：
+ 将utf8mb4用于包含多种语言的TEXT和VARCHAR列 对于十六进制字符串（UUID、MD5等）和简单代码（国家/地区代码、邮政编码等），使用ASCII（Latin1是OK）。  在MySQL5.3.3之前是没有utf8mb4这个字符集的，所以在之前的版本中utf8是最有效的。
+在MySQL之外的环境中，&amp;rdquo;UTF8&amp;rdquo;表示的是和MySQL中utf8mb4是想同的，而不是utf8。
+排序规则以字符集开头，以_ci结尾表示&amp;rdquo;大小写和重音区分&amp;rdquo;，以&amp;rdquo;_bin&amp;rdquo;结尾表示已二进制比较。
+最新的uttf8mb4排序规则是utf8mb4_unicode_520_ci，是基于Unicode 5.20。如果你基于一个语言，那么你可能用到&amp;rdquo;utf8mb4_polish_ci&amp;rdquo;，它将根据波兰语惯例稍微重新排列字母。
+2. 设置表和字段的字符集 你可以为每个表和每个单独的字段设置字符集，使用CHARACTER SET和charset语句。
+CREATE TABLE Address ( `AddressID` INTEGER NOT NULL PRIMARY KEY, `Street` VARCHAR(80) CHARACTER SET ASCII, `City` VARCHAR(80), `Country` VARCHAR(80) DEFAULT &amp;quot;United States&amp;quot;, `Active` BOOLEAN DEFAULT 1, ) Engine=InnoDB default charset=UTF8;  City和Country将会使用UTF8编码，这个是这个表的默认字符集。Street使用ASCII编码，我们专门指定的。</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(四十一)</title>
