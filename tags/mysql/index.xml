@@ -6,10 +6,40 @@
     <description>Recent content in Mysql on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 23 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(四十一)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-41.html</link>
+      <pubDate>Sat, 25 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-41.html</guid>
+      <description>使用Docker-Compose安装MySQL容器 1. 简单的Docker-Compose例子 下面是使用Docker创建MySQL服务器的简单例子。
+创建docker-compose.yml文件：
+注意：如果你想为你所有的项目使用相同的容器，需要在你的HOME_PATH中创建一个PATH。如果你想要在你的每个项目中创建这个文件，你需要在项目中创建一个docker目录。
+version: &#39;2&#39; services: cabin_db: image: mysql:latest volumes: - &amp;quot;./.mysql-data/db:/var/lib/mysql&amp;quot; restart: always ports: - 3306:3306 environment: MYSQL_ROOT_PASSWORD: rootpw MYSQL_DATABASE: cabin MYSQL_USER: cabin MYSQL_PASSWORD: cabinpw  运行
+cd PATH_TO_DOCKER-COMPOSE.YML docker-compose up -d  连接到服务器
+mysql -h 127.0.0.1 -u root -P 3306 -p rootpw -- 成功了  终止服务器
+ docker-compose stop  参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(四十)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-40.html</link>
+      <pubDate>Fri, 24 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-40.html</guid>
+      <description>ENUM 1. 什么是ENUM？ ENUM提供了一个为一行数据增加属性的功能。具有少量非数字选项的属性效果最好。例子：
+reply ENUM(&#39;yes&#39;, &#39;no&#39;) gender ENUM(&#39;male&#39;, &#39;female&#39;, &#39;other&#39;, &#39;decline-to-state&#39;)  它们的值是字符串：
+INSERT ... VALUES (&#39;yes&#39;, &#39;female&#39;) SELECT ... --&amp;gt; yes female  2. VARCHAR是一种可选方案 假设我们有下面的内容：
+type ENUM(&#39;fish&#39;, &#39;mammal&#39;, &#39;bird&#39;); -- 下面是另一种方案 type VARCHAR(20) COMENT &#39;fish,mammal,bird等等&#39;  这是相当开放的，因为新的类型是很容易添加的。
+比较，以及是否比枚举更好或更差：
+ (相同) INSERT:简单的提供相同的字符串 (更糟？) INSERT：拼写错误可能注意不到 (相同) SELECT：返回实际的字符串 (更坏) 需要更多的存储空间。  3. 添加一个选项 ALTER TABLE tbl MODIFY COLUMN type ENUM(&#39;fish&#39;,&#39;mammal&#39;,&#39;bird&#39;,&#39;insect&#39;);  注意：
+ 和其他的MODIFY COLUMN一样，你需要包含NOT NULL，以及任何其他之前拥有的限定符，不然会丢失一些东西 如果添加在列表的末尾，并且列表的数量小于256个，ALTER操作将会正常执行修改表结构的操作。也就是说，不会有冗长的表副本。（旧版本的MySQL没有这种优化。）  4. NULL VS NOT NULL 下面是当NULL和&amp;rsquo;错误值&amp;rsquo;存储到NULLable和非NULL时什么将会发生的例子。也展示了通过+0来转换为数字的操作。</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(三十九)</title>
