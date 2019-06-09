@@ -6,10 +6,113 @@
     <description>Recent content in Mysql on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 15 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(三十八)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-38.html</link>
+      <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-38.html</guid>
+      <description>配置和调整 1. InnoDB性能 在my.cnf中有几百个配置项。对于MySQL的&amp;rdquo;普通&amp;rdquo;用户来说，他们并不关心这个。
+一旦你的数据库变得重要了，非常建议设置下面的参数：
+innodb_buffer_pool_size  这应该被设置为有效RAM的70%(如果你至少有4GB的内存；如果你的内存较小或机器比较老，这个值还有更小一些。)这个配置控制这InnoDB引擎使用的缓存数量。因此这个配置对于InnoDB的性能是非常重要的。
+2. 允许大数据插入的参数 如果我们需要在一个列中存储图片或视频这种大文件，我们需要修改下面的配置项，用来满足我们应用的需要：
+max_allowed_packet = 10M M is Mb, G in Gb, K in Kb  3. 增加group_concat的字符串限制 group_concat用来将一个分组的非NULL的值的拼接组合。这个的结果字符串的最大长度可以使用group_concat_max_len选项来控制：
+SET [GLOBAL | SESSION] group_concat_max_len = val;  设置变量的GLOBAL模式，将会设置一个永久的值，而设置SESSION模式，将会只在这个这个会话下有效果。
+4. 最小InnoDB配置项 这是使用InnoDB表的MySQL服务器的最低配置。使用InnoDB使用查询缓存。删除表或数据时收回硬盘空间。当使用SSD时，刷新是一个冗余的操作(SSD不是连续的)。
+default_storage_engine = InnoDB query_cache_type = 0 innodb_file_per_table = 1 innodb_flush_neighbors = 0  并发
+通过将innodb_thread_concurrency设置为0，确保我们可以创建超过默认4个线程。这使用InnoDB可以根据最佳执行情况进行设置。
+innodb_thread_concurrency = 0 innodb_read_io_threads = 64 innodb_write_io_threads = 64  硬盘利用率
+设置MySQL的IOPS的容量(平均负载)和最大容量(最大负载)。对于HDD，默认200是可以的。但是现在，对于SSD可以达到数千的IOPS，你可能需要设置这个值。可以运行很多的测试来确定IOPS。如果您运行的是一个专用的mysql服务器，上面的值应该接近这个限制。如果您在同一台机器上运行任何其他服务，则应根据需要进行分配。
+innodb_io_capacity = 2500 innodb_io_capacity_max = 3000  RAM利用率</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(三十七)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-37.html</link>
+      <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-37.html</guid>
+      <description>触发器 1. 基础触发器 创建表
+mysql&amp;gt; CREATE TABLE account(acct_num INT, amount DECIMAL(10, 2)); Query OK, 0 rows affected (0.03 sec)  创建触发器
+mysql&amp;gt; CREATE TRIGGER ins_sum BEFORE INSERT ON account -&amp;gt;FOR EACH ROW SET @sun = @sum + NEW.amount; Query OK, 0 rows affected (0.06 sec)  这个CREATE TRIGGER语句创建一个名为ins_sum的触发器，并且关联到account表上面。它也包含指明触发器时间，触发器时间和触发器执行什么操作的语句。
+插入数据
+想要使用触发器，将累加变量(@sum)设置为0，执行一个INSERT语句，然后查看这个变量的值：
+mysql&amp;gt; SET @sum = 0; mysql&amp;gt; INSERT INTO account VALUES(137,14.98),(141,1937.50),(97,-100.00); mysql&amp;gt; SELECT @sum AS &#39;Total amount inserted&#39;; +-----------------------+ | Total amount inserted | +-----------------------+ | 1852.</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(三十六)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-36.html</link>
+      <pubDate>Mon, 20 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-36.html</guid>
+      <description>MySQL管理员 1. 原子重命名和表格重新加载 RENAME TABLE t TO t_old, t_copy TO t;  当执行RENAME TABLE操作期间，没有其他请求可以访问这个表，这样重命名操作没有并发的问题。
+原子重命名特别适用于在不等待删除和加载完成的情况下重新加载表：
+CREATE TABLE new LIKE real; load `new` by whatever means - LOAD DATA, INSERT, whatever RENAME TABLE real TO old, new TO real; DROP TABLE old;  2. 修改root密码 mysaladmin -u root -p&#39;old-password&#39; password &#39;new-password&#39;  3. 删除数据库 用来删除数据库和所有表的脚本：
+mysqladmin -u[username] -p[password] drop [database]  使用时要格外小心。
+想要使用SQL语句删除数据库(你需要在这个数据库上面拥有DROP权限)：
+DROP TABLE database_name  或者：
+DROP SCHEMA database_name  参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(三十五)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-35.html</link>
+      <pubDate>Sun, 19 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-35.html</guid>
+      <description>从JSON类型提取数据    参数 描述     json_doc 有效的JSON数据   path 成员路径    MySQL5.7.8支持原生的JSON类型。因为你有不同的方法来创建json对象，你也可以访问和读取元素使用不同的方法。
+主要的方法是JSON_EXTRACT，因此-&amp;gt;和-&amp;gt;&amp;gt;运算符更加友好。
+1. 读取JSON数组值 创建JSON类型的@myjson变量：
+SET @myjson = CAST(&#39;[&amp;quot;A&amp;quot;, &amp;quot;B&amp;quot;, {&amp;quot;id&amp;quot;:1, &amp;quot;label&amp;quot;:&amp;quot;C&amp;quot;}]&#39; as JSON);  SELECT查询其中的元素：
+SELECT JSON_EXTRACT( @myjson , &#39;$[1]&#39; ) , JSON_EXTRACT( @myjson , &#39;$[*].label&#39;) , JSON_EXTRACT( @myjson , &#39;$[1].*&#39; ) , JSON_EXTRACT( @myjson , &#39;$[2].*&#39;) ; -- result values: &#39;\&amp;quot;B\&amp;quot;&#39;, &#39;[\&amp;quot;C\&amp;quot;]&#39;, NULL, &#39;[1, \&amp;quot;C\&amp;quot;]&#39; -- visually: &amp;quot;B&amp;quot;, [&amp;quot;C&amp;quot;], NULL, [1, &amp;quot;C&amp;quot;]  2.</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(三十四)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-34.html</link>
+      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-34.html</guid>
+      <description>JSON MySQL5.7.8开始支持元素的JSON数据类型，允许方便的访问JSON数据。https://dev.mysql.com/doc/refman/5.7/en/json.html
+1. 创建带有主键和JSON字段的表 CREATE TABLE table_name ( id INT NOT NULL AUTO_INCREMENT, json_col JSON, PRIMARY KEY (id) );  2. 插入一个简单的JSON INSERT INTO table_name(json_col) VALUES (&#39;{&amp;quot;City&amp;quot;:&amp;quot;Galle&amp;quot;, &amp;quot;Description&amp;quot;: &amp;quot;Best damn city in the world&amp;quot;}&#39;);  这个是很容易的，但是注意因为JSON的键必须包围在双引号内，所以整个JSON字符串必须包围在单引号内。如果查询成功了，这个数据将会存储为二进制格式。
+3. 更新JSON字段 在前面的例子中，我们查看了组合类型数据怎么存储到一个JSON字段中。如果我们想要更新这个字段怎么办？我们想在之前的数据中数据一个键为variations，值为scheveningen的内容：
+UPDATE myjson SET dict=JSON_ARRAY_APPEND(dict, &#39;$.variations&#39;, &#39;scheveningen&#39;) WHERE id = 2;  注意：
+ 在我们json字典中的$.variations数组。$符合表示json文档。有关mysql识别的JSON路径的完整解释，请参阅https://dev.mysql.com/doc/refman/5.7/en/json-path-syntax.html 因为我们没有使用JSON进行查询的例子，所以这个例子使用主键。  现在，如果我们执行SELECT * FROM myjson，我们将看到：
++----+--------------------------------------------------------------------------------+ | id | dict | +---+---------------------------------------------------------------------------------+ | 2 | {&amp;quot;opening&amp;quot;: &amp;quot;Sicilian&amp;quot;, &amp;quot;variations&amp;quot;: [&amp;quot;pelikan&amp;quot;, &amp;quot;dragon&amp;quot;, &amp;quot;najdorf&amp;quot;, &amp;quot;scheveningen&amp;quot;]} | +----+--------------------------------------------------------------------------------+ 1 row in set (0.</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(三十三)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-33.html</link>
+      <pubDate>Fri, 17 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-33.html</guid>
+      <description>PREPARE语句 1. PREPARE, EXECUTE和DEALLOCATE PREPARE语句 PREPARE准备一个将要执行的语句。
+EXECUTE执行一个准备好的语句。
+DEALLOCATE PREPARE释放一个准备好的语句。
+SET @s = &#39;SELECT SQRT(POW(?,2) + POW(?, 2)) AS hypotenuse&#39;; PREPARE stmt2 FROM @s; SET @a = 6; SET @b = 8; EXECUTE stmt2 USING @a, @b;  结果：
++------------+ | hypotenuse | +------------+ | 10 | +------------+  最后：
+DEALLOCATE PREPARE stmt2;  注意：
+ 你必须使用@variable，而不是声明的变量，对于FROM @s语句 PREPARE的主要用途是构造一种情况的查询（绑定但是还不能工作的），然后插入表名之后就可以执行  2. 修改表增加列 SET v_column_definition := CONCAT( v_column_name , &amp;quot; &amp;quot;, v_column_type , &#39; &#39;, v_column_options ); SET @stmt := CONCAT(&#39;ALTER TABLE ADD COLUMN &#39;, v_column_definition); PREPARE stmt FROM @stmt; EXECUTE stmt; DEALLOCATE PREPARE stmt;  参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(三十二)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-32.html</link>
+      <pubDate>Thu, 16 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-32.html</guid>
+      <description>全文搜索 MySQL提供有全文搜索。它在包含文本的列的表中搜索单词和短语的最佳匹配项。
+1. 简单的全文搜索 SET @searchTerm = &#39;Database Programming&#39;; SELECT MATCH (Title) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) SCORE, ISBN, Author, Title FROM book WHERE MATCH (TITLE) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) ORDER BY MATCH (Titile) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) DESC;  有一个名叫book的表，这个表里面有ISBN, TITLE, Author这几个列。这个语句搜索匹配到Database Programming的记录。这首先显示匹配最好的记录。
+想要这个正常工作的话，一个Title列的全文索引必须是有效的：
+ALTER TABLE book ADD FULLTEXT INDEX Fulltext_title_index(Title);  2. 简单的布尔值搜索 SET @searchTerm = &#39;Database Programming =Java&#39;; SELECT MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE) Score, ISBN, Author, Title FROM book WHERE MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE) ORDER BY MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE) DESC;  表名为book的表有ISBN, Title, Author，这将会搜索数据标题中有Database和Programming但是不包含Java的书籍。</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(三十一)</title>

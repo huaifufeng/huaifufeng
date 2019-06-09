@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="全文搜索">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(三十二)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/bash-section-32.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(三十二)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, May 16, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#全文搜索">全文搜索</a>
+<ul>
+<li><a href="#1-简单的全文搜索">1. 简单的全文搜索</a></li>
+<li><a href="#2-简单的布尔值搜索">2. 简单的布尔值搜索</a></li>
+<li><a href="#3-多列全文搜索">3. 多列全文搜索</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="全文搜索">全文搜索</h2>
+
+<p>MySQL提供有全文搜索。它在包含文本的列的表中搜索单词和短语的最佳匹配项。</p>
+
+<h3 id="1-简单的全文搜索">1. 简单的全文搜索</h3>
+
+<pre><code class="language-mysql">SET @searchTerm = 'Database Programming';
+SELECT MATCH (Title) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) SCORE,
+    ISBN, Author, Title
+FROM book
+WHERE MATCH (TITLE) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE)
+ORDER BY MATCH (Titile) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) DESC;
+</code></pre>
+
+<p>有一个名叫<code>book</code>的表，这个表里面有<code>ISBN</code>, <code>TITLE</code>, <code>Author</code>这几个列。这个语句搜索匹配到<code>Database Programming</code>的记录。这首先显示匹配最好的记录。</p>
+
+<p>想要这个正常工作的话，一个<code>Title</code>列的全文索引必须是有效的：</p>
+
+<pre><code class="language-mysql">ALTER TABLE book ADD FULLTEXT INDEX Fulltext_title_index(Title);
+</code></pre>
+
+<h3 id="2-简单的布尔值搜索">2. 简单的布尔值搜索</h3>
+
+<pre><code class="language-mysql">SET  @searchTerm = 'Database Programming =Java';
+SELECT MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE) Score,
+    ISBN, Author, Title
+FROM book
+WHERE MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE)
+ORDER BY MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE) DESC;
+</code></pre>
+
+<p>表名为<code>book</code>的表有<code>ISBN</code>, <code>Title</code>, <code>Author</code>，这将会搜索数据标题中有<code>Database</code>和<code>Programming</code>但是不包含<code>Java</code>的书籍。</p>
+
+<p>想要这个可以工作的话，Title列上面必须有有一个全文索引：</p>
+
+<pre><code class="language-mysql">ALTER TABLE book ADD FULLTEXT INDEX Fulltext_title_index (Title);
+</code></pre>
+
+<h3 id="3-多列全文搜索">3. 多列全文搜索</h3>
+
+<pre><code class="language-mysql">SET  @searchTerm = 'Date Database Programming';
+SELECT MATCH (Title, Author) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) Score,
+    ISBN, Author, Title
+FROM book
+WHERE MATCH (Title, Author) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE)
+ORDER BY MATCH (Title, Author) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) DESC;
+</code></pre>
+
+<p>名字为book的表有<code>ISBN</code>, <code>Title</code>和<code>Author</code>这三个列，这将会查找匹配到<code>Date Database Programming</code>的书籍。这将会显示匹配到的最好的结果。最好匹配结果包括Prof. C.J. Date写的书。</p>
+
+<p>(但是，匹配到的其中的一个是<code>The Date Doctor's Guide to Dating : How to Get from First Date to Perfect Mate</code>。这展示了全文搜索的限制：它并不假装理解诸如词类或索引词的含义等事物。)</p>
+
+<p>想要正常执行的话，Title和Author列上的全文索引必须是有效的：</p>
+
+<pre><code class="language-mysql">ALTER TABLE book ADD FULLTEXT INDEX Fulltext_title_author_index (Title, Author);
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/bash-section-33.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十三)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-46.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十六）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

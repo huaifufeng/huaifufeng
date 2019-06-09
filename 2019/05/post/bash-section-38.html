@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="配置和调整">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(三十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/bash-section-38.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(三十八)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, May 22, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#配置和调整">配置和调整</a>
+<ul>
+<li><a href="#1-innodb性能">1. InnoDB性能</a></li>
+<li><a href="#2-允许大数据插入的参数">2. 允许大数据插入的参数</a></li>
+<li><a href="#3-增加group-concat的字符串限制">3. 增加group_concat的字符串限制</a></li>
+<li><a href="#4-最小innodb配置项">4. 最小InnoDB配置项</a></li>
+<li><a href="#5-mysql安全加密">5. MySQL安全加密</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="配置和调整">配置和调整</h2>
+
+<h3 id="1-innodb性能">1. InnoDB性能</h3>
+
+<p>在my.cnf中有几百个配置项。对于MySQL的&rdquo;普通&rdquo;用户来说，他们并不关心这个。</p>
+
+<p>一旦你的数据库变得重要了，非常建议设置下面的参数：</p>
+
+<pre><code class="language-mysql">innodb_buffer_pool_size
+</code></pre>
+
+<p>这应该被设置为有效RAM的70%(如果你至少有4GB的内存；如果你的内存较小或机器比较老，这个值还有更小一些。)这个配置控制这InnoDB引擎使用的缓存数量。因此这个配置对于InnoDB的性能是非常重要的。</p>
+
+<h3 id="2-允许大数据插入的参数">2. 允许大数据插入的参数</h3>
+
+<p>如果我们需要在一个列中存储图片或视频这种大文件，我们需要修改下面的配置项，用来满足我们应用的需要：</p>
+
+<pre><code class="language-mysql">max_allowed_packet = 10M
+
+M is Mb, G in Gb, K in Kb
+</code></pre>
+
+<h3 id="3-增加group-concat的字符串限制">3. 增加group_concat的字符串限制</h3>
+
+<p><code>group_concat</code>用来将一个分组的非NULL的值的拼接组合。这个的结果字符串的最大长度可以使用<code>group_concat_max_len</code>选项来控制：</p>
+
+<pre><code class="language-mysql">SET [GLOBAL | SESSION] group_concat_max_len = val;
+</code></pre>
+
+<p>设置变量的<code>GLOBAL</code>模式，将会设置一个永久的值，而设置<code>SESSION</code>模式，将会只在这个这个会话下有效果。</p>
+
+<h3 id="4-最小innodb配置项">4. 最小InnoDB配置项</h3>
+
+<p>这是使用InnoDB表的MySQL服务器的最低配置。使用InnoDB使用查询缓存。删除表或数据时收回硬盘空间。当使用SSD时，刷新是一个冗余的操作(SSD不是连续的)。</p>
+
+<pre><code class="language-mysql">default_storage_engine = InnoDB 
+query_cache_type = 0 
+innodb_file_per_table = 1 
+innodb_flush_neighbors = 0
+</code></pre>
+
+<p><strong>并发</strong></p>
+
+<p>通过将<code>innodb_thread_concurrency</code>设置为0，确保我们可以创建超过默认4个线程。这使用InnoDB可以根据最佳执行情况进行设置。</p>
+
+<pre><code class="language-mysql">innodb_thread_concurrency = 0
+innodb_read_io_threads = 64
+innodb_write_io_threads = 64
+</code></pre>
+
+<p><strong>硬盘利用率</strong></p>
+
+<p>设置MySQL的IOPS的容量(平均负载)和最大容量(最大负载)。对于HDD，默认200是可以的。但是现在，对于SSD可以达到数千的IOPS，你可能需要设置这个值。可以运行很多的测试来确定IOPS。如果您运行的是一个专用的mysql服务器，上面的值应该接近这个限制。如果您在同一台机器上运行任何其他服务，则应根据需要进行分配。</p>
+
+<pre><code class="language-mysql">innodb_io_capacity = 2500
+innodb_io_capacity_max = 3000
+</code></pre>
+
+<p><strong>RAM利用率</strong></p>
+
+<p>设置MySQL有效的RAM。虽然经验上决定是70%-80%，但是这个依赖于这个实例是否专门用于MySQL，并且有多少可用的RAM。如果你有很多可用的资源，不要浪费RAM（即资源）。</p>
+
+<pre><code class="language-mysql">innodb_buffer_pool_size = 10G
+</code></pre>
+
+<h3 id="5-mysql安全加密">5. MySQL安全加密</h3>
+
+<p>默认的加密<code>aes-128-ecb</code>使用的是ECB模式，这个不安全并且不应该在使用了。在配置文件中增加下面的选项：</p>
+
+<pre><code class="language-mysql"> block_encryption_mode = aes-256-cbc
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/bash-section-37.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十七)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
