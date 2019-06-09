@@ -6,10 +6,23 @@
     <description>Recent content in 数据库 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 22 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 23 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(三十九)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-39.html</link>
+      <pubDate>Thu, 23 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-39.html</guid>
+      <description>事件 1. 创建一个事件 MySQL有它的事件功能，可以避免复杂的cron交互，当您计划的大部分内容与SQL相关，而与文件关联较少时。查看事件手册。把事件想象为定时执行的存储过程。
+要节省调试事件相关问题的时间，请记住必须打开全局事件处理程序才能处理事件。
+SHOW VARIABLES WHERE variable_name = &#39;even_scheduler&#39;; +-----------------+-------+ | Variable_name | Value | +-----------------+-------+ | event_scheduler | OFF | +-----------------+-------+  当配置关闭的时候，什么都不会触发。使用下面的命令打开这个配置：
+SET GLOBAL event_scheduler = ON;  测试的表
+CREATE TABLE theMessage ( Id INT AUTO_INCREMENT PRIMARY KEY, userId INT NO NULL, message VARCHAR(255) NOTT NULL, updateDt DATETIME NOT NULL, KEY (updateDt) ); INSERT theMessages(userId,message,updateDt) VALUES (1,&#39;message 123&#39;,&#39;2015-08-24 11:10:09&#39;); INSERT theMessages(userId,message,updateDt) VALUES (7,&#39;message 124&#39;,&#39;2015-08-29&#39;); INSERT theMessages(userId,message,updateDt) VALUES (1,&#39;message 125&#39;,&#39;2015-09-03 12:00:00&#39;); INSERT theMessages(userId,message,updateDt) VALUES (1,&#39;message 126&#39;,&#39;2015-09-03 14:00:00&#39;);  上述插入件用于显示起点。请注意，下面创建的两个事件将清除行。</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(三十八)</title>

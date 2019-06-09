@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="配置和调整">
+    <meta name="description" content="事件">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(三十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(三十九)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/bash-section-38.html">
+    <link rel="canonical" href="/2019/05/post/bash-section-39.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(三十八)</h1>
+                    <h1>MySQL专业笔记(三十九)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Wednesday, May 22, 2019
+                    <span  class="meta">Posted by 怀府风 on Thursday, May 23, 2019
                         
                     </span>
                 </div>
@@ -182,13 +182,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#配置和调整">配置和调整</a>
+<li><a href="#事件">事件</a>
 <ul>
-<li><a href="#1-innodb性能">1. InnoDB性能</a></li>
-<li><a href="#2-允许大数据插入的参数">2. 允许大数据插入的参数</a></li>
-<li><a href="#3-增加group-concat的字符串限制">3. 增加group_concat的字符串限制</a></li>
-<li><a href="#4-最小innodb配置项">4. 最小InnoDB配置项</a></li>
-<li><a href="#5-mysql安全加密">5. MySQL安全加密</a></li>
+<li><a href="#1-创建一个事件">1. 创建一个事件</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -196,77 +192,142 @@
         		
         		
 
-<h2 id="配置和调整">配置和调整</h2>
+<h2 id="事件">事件</h2>
 
-<h3 id="1-innodb性能">1. InnoDB性能</h3>
+<h3 id="1-创建一个事件">1. 创建一个事件</h3>
 
-<p>在my.cnf中有几百个配置项。对于MySQL的&rdquo;普通&rdquo;用户来说，他们并不关心这个。</p>
+<p>MySQL有它的事件功能，可以避免复杂的cron交互，当您计划的大部分内容与SQL相关，而与文件关联较少时。查看<a href="https://dev.mysql.com/doc/refman/5.7/en/create-event.html">事件手册</a>。把事件想象为定时执行的存储过程。</p>
 
-<p>一旦你的数据库变得重要了，非常建议设置下面的参数：</p>
+<p>要节省调试事件相关问题的时间，请记住必须打开全局事件处理程序才能处理事件。</p>
 
-<pre><code class="language-mysql">innodb_buffer_pool_size
+<pre><code class="language-mysql">SHOW VARIABLES WHERE variable_name = 'even_scheduler';
+
++-----------------+-------+
+| Variable_name   | Value |
++-----------------+-------+
+| event_scheduler | OFF   |
++-----------------+-------+
 </code></pre>
 
-<p>这应该被设置为有效RAM的70%(如果你至少有4GB的内存；如果你的内存较小或机器比较老，这个值还有更小一些。)这个配置控制这InnoDB引擎使用的缓存数量。因此这个配置对于InnoDB的性能是非常重要的。</p>
+<p>当配置关闭的时候，什么都不会触发。使用下面的命令打开这个配置：</p>
 
-<h3 id="2-允许大数据插入的参数">2. 允许大数据插入的参数</h3>
-
-<p>如果我们需要在一个列中存储图片或视频这种大文件，我们需要修改下面的配置项，用来满足我们应用的需要：</p>
-
-<pre><code class="language-mysql">max_allowed_packet = 10M
-
-M is Mb, G in Gb, K in Kb
+<pre><code class="language-mysql">SET GLOBAL event_scheduler = ON;
 </code></pre>
 
-<h3 id="3-增加group-concat的字符串限制">3. 增加group_concat的字符串限制</h3>
+<p><strong>测试的表</strong></p>
 
-<p><code>group_concat</code>用来将一个分组的非NULL的值的拼接组合。这个的结果字符串的最大长度可以使用<code>group_concat_max_len</code>选项来控制：</p>
+<pre><code class="language-mysql">CREATE TABLE theMessage (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NO NULL,
+    message VARCHAR(255) NOTT NULL,
+    updateDt DATETIME NOT NULL,
+    KEY (updateDt)
+);
 
-<pre><code class="language-mysql">SET [GLOBAL | SESSION] group_concat_max_len = val;
+INSERT theMessages(userId,message,updateDt) VALUES (1,'message 123','2015-08-24 11:10:09'); 
+INSERT theMessages(userId,message,updateDt) VALUES (7,'message 124','2015-08-29');
+INSERT theMessages(userId,message,updateDt) VALUES (1,'message 125','2015-09-03 12:00:00'); 
+INSERT theMessages(userId,message,updateDt) VALUES (1,'message 126','2015-09-03 14:00:00');
 </code></pre>
 
-<p>设置变量的<code>GLOBAL</code>模式，将会设置一个永久的值，而设置<code>SESSION</code>模式，将会只在这个这个会话下有效果。</p>
+<p>上述插入件用于显示起点。请注意，下面创建的两个事件将清除行。</p>
 
-<h3 id="4-最小innodb配置项">4. 最小InnoDB配置项</h3>
+<p><strong>创建两个事件，一个每天运行，一个每10分钟运行</strong></p>
 
-<p>这是使用InnoDB表的MySQL服务器的最低配置。使用InnoDB使用查询缓存。删除表或数据时收回硬盘空间。当使用SSD时，刷新是一个冗余的操作(SSD不是连续的)。</p>
+<p>忽略他们实际在做什么（相互对抗）。关注在时间间隔和日程安排上。</p>
 
-<pre><code class="language-mysql">default_storage_engine = InnoDB 
-query_cache_type = 0 
-innodb_file_per_table = 1 
-innodb_flush_neighbors = 0
+<pre><code class="language-mysql">DROP EVENT IF EXISTS `delete7DayOldMessages`; 
+DELIMITER $$
+CREATE EVENT `delete7DayOldMessages`
+    ON SCHEDULE EVERY 1 DAY STARTS '2015-09-01 00:00:00'
+    ON COMPLETION PRESERVE 
+DO BEGIN
+    DELETE FROM theMessages
+    WHERE datediff(now(),updateDt)&gt;6; -- not terribly exact, yesterday but &lt;24hrs is still 1 day
+    -- Other code here
+    
+END$$
+
+DELIMITER ;
 </code></pre>
 
-<p><strong>并发</strong></p>
+<p>下一个:</p>
 
-<p>通过将<code>innodb_thread_concurrency</code>设置为0，确保我们可以创建超过默认4个线程。这使用InnoDB可以根据最佳执行情况进行设置。</p>
+<pre><code class="language-mysql">DROP EVENT IF EXISTS `Every_10_Minutes_Cleanup`; 
+DELIMITER $$
+CREATE EVENT `Every_10_Minutes_Cleanup`
+    ON SCHEDULE EVERY 10 MINUTE STARTS '2015-09-01 00:00:00'
+    ON COMPLETION PRESERVE 
+DO BEGIN
+    DELETE FROM theMessages
+    WHERE TIMESTAMPDIFF(HOUR, updateDt, now())&gt;168; -- messages over 1 week old (168 hours)
+   -- Other code here
 
-<pre><code class="language-mysql">innodb_thread_concurrency = 0
-innodb_read_io_threads = 64
-innodb_write_io_threads = 64
+END$$ 
+DELIMITER ;
 </code></pre>
 
-<p><strong>硬盘利用率</strong></p>
+<p><strong>不同的方法显示事件状态</strong></p>
 
-<p>设置MySQL的IOPS的容量(平均负载)和最大容量(最大负载)。对于HDD，默认200是可以的。但是现在，对于SSD可以达到数千的IOPS，你可能需要设置这个值。可以运行很多的测试来确定IOPS。如果您运行的是一个专用的mysql服务器，上面的值应该接近这个限制。如果您在同一台机器上运行任何其他服务，则应根据需要进行分配。</p>
+<pre><code class="language-mysql">SHOW EVENTS FROM my_db_name; -- List all events by schema name (db name) 
+SHOW EVENTS;
+SHOW EVENTS\G; -- &lt;--------- I like this one from mysql&gt; prompt
 
-<pre><code class="language-mysql">innodb_io_capacity = 2500
-innodb_io_capacity_max = 3000
+ *************************** 1. row ***************************
+ Db: my_db_name
+ Name: delete7DayOldMessages
+ Definer: root@localhost
+ Time zone: SYSTEM
+ Type: RECURRING
+ Execute at: NULL
+ Interval value: 1
+ Interval field: DAY
+ Starts: 2015-09-01 00:00:00
+ Ends: NULL
+ Status: ENABLED
+ Originator: 1
+ character_set_client: utf8
+ collation_connection: utf8_general_ci
+ Database Collation: utf8_general_ci
+ *************************** 2. row ***************************
+ Db: my_db_name
+ Name: Every_10_Minutes_Cleanup
+ Definer: root@localhost
+ Time zone: SYSTEM
+ Type: RECURRING
+ Execute at: NULL
+ Interval value: 10
+ Interval field: MINUTE
+ Starts: 2015-09-01 00:00:00
+ Ends: NULL
+ Status: ENABLED
+ Originator: 1
+ character_set_client: utf8
+ collation_connection: utf8_general_ci
+ Database Collation: utf8_general_ci
+ 2 rows in set (0.06 sec)
 </code></pre>
 
-<p><strong>RAM利用率</strong></p>
+<p><strong>随机考虑的东西</strong></p>
 
-<p>设置MySQL有效的RAM。虽然经验上决定是70%-80%，但是这个依赖于这个实例是否专门用于MySQL，并且有多少可用的RAM。如果你有很多可用的资源，不要浪费RAM（即资源）。</p>
-
-<pre><code class="language-mysql">innodb_buffer_pool_size = 10G
+<pre><code class="language-mysql">DROP EVENT someEventName;  -- 删除事件和代码
+ON COMPLETION PRESERVE; -- 当事件完成之后保留它，否则将会被删除
 </code></pre>
 
-<h3 id="5-mysql安全加密">5. MySQL安全加密</h3>
+<p>事件像触发器一样，不是被用户程序调用的。相反他们是安排好时间的，成功或者失败。</p>
 
-<p>默认的加密<code>aes-128-ecb</code>使用的是ECB模式，这个不安全并且不应该在使用了。在配置文件中增加下面的选项：</p>
+<p>手册中展示了灵活的间隔选择，下面列了出来：</p>
 
-<pre><code class="language-mysql"> block_encryption_mode = aes-256-cbc
+<blockquote>
+<p>间隔：</p>
+
+<pre><code>quantity {YEAR | QUARTER | MONTH | DAY | HOUR | MINUTE |
+          WEEK | SECOND | YEAR_MONTH | DAY_HOUR | DAY_MINUTE | DAY_SECOND | 
+          HOUR_MINUTE | HOUR_SECOND | MINUTE_SECOND}
 </code></pre>
+</blockquote>
+
+<p>事件是处理系统的重复任务和计划任务的强大机制。它们可能包含尽可能多的语句、DDL和DML例程，以及您可能合理希望的复杂连接。查看<a href="http://dev.mysql.com/doc/refman/5.7/en/stored-program-restrictions.html">详细的手册</a>。</p>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -276,13 +337,9 @@ innodb_io_capacity_max = 3000
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/05/post/bash-section-39.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十九)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/05/post/bash-section-37.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十七)">Next Post &rarr;</a>
+                      <a href="/2019/05/post/bash-section-38.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十八)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
