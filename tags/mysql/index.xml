@@ -6,10 +6,91 @@
     <description>Recent content in Mysql on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 26 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 01 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(四十八)</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/bash-section-48.html</link>
+      <pubDate>Sat, 01 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/bash-section-48.html</guid>
+      <description>分区 1. 范围分区 按照范围分区的表是指每个分区包含按照指定分区表达式在某个范围内的行。范围应该是连续但不重叠的，使用VALUES LESS THAN运算符获得。在下面的例子中，假设你创建了包含下面20加连锁视频店(从1到20)的人事记录。
+CREATE TABLE employees( id INT NOT NULL, fname VARCHAR(30), lname VARCHAR(30), hired DATE NOT NULL DEFAULT &#39;1970-01-01&#39;, separated DATE NOT NULL DEFAULT &#39;9999-12-31&#39;, job_code INT NOT NULL, store_id INT NOT NULL );  这个表可以根据你的需要，按照不同的范围分为几个区。一种方法是使用store_id列。例如，你可以把表分为4个部分，使用PARTITION BY RANGE语句：
+ALTER TABLE employees PARTITION BY RANGE (store_id) ( PARTITION p0 VALUES LESS THAN (6), PARTITION p1 VALUES LESS THAN (11), PARTITION p2 VALUES LESS THAN (16), PARTITION p3 VALUES LESS THAN MAXVALUE );   MAXVALUE表示一个始终大于最大可能整数值的整数值。(在数学中，用作最小上界。)</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(四十七)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-47.html</link>
+      <pubDate>Fri, 31 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-47.html</guid>
+      <description>集群 1. 消除歧义 &amp;ldquo;MySQL集群&amp;rdquo;消除歧义：
+ NDB集群：一种专用，主要是内存中引擎。没有广泛使用 Galera集群又叫Percona XtraDB集群又叫PXC又叫带有Galera的MariaDB：一个非常好的MySQL高可用性解决方案;它超越了Replication  查看单独的&amp;rdquo;集群&amp;rdquo;相关的页面。
+对于&amp;rdquo;聚簇索引&amp;rdquo;，查看主键相关。
+参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(四十六)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-46.html</link>
+      <pubDate>Thu, 30 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-46.html</guid>
+      <description>日志文件 1. 慢查询日志 慢查询日志包含查询话费时间在long_query_time秒之后才结束的查询记录。例如，话费了10秒才查询结束。要查看当前设置的慢查询时间值，可以使用下面的命令：
+SELECT @@long_query_time; +-------------------+ | @@long_query_time | +-------------------+ | 10.000000 | +-------------------+  可以在my.cnf或my.ini文件中配置一个全局的设置值。或者可以在一个会话中进行设置，虽然这个不太常用。这个值是从0到10(秒)之间的一个值。应该使用什么值呢？
+ 10秒太高了，一般不使用。 2秒是一个妥协的方案 0.5或者其他分数是可能的 0秒会捕获所有的内容；这可能会很快的把硬盘填满，但是很有用。  慢查询日志要么开启要么关闭。并且log文件也是可以指定的。下面的内容介绍了相关的变量：
+SELECT @@slow_query_log; -- 慢查询是否开启 SELECT @@slow_query_log_file; -- 慢查询日志文件 SELECT @@datadir; -- 日志文件的目录 SET GLOBAL slow_query_log=0; --关闭 SET GLOBAL slow_qeury_log=1; --开启  更详细的信息，查看MySQL的手册：慢查询日志。
+注意：上面例子中开启和关闭慢查询的方法是5.6之后新加的，在老版本中使用另外的语法。
+&amp;ldquo;最好&amp;rdquo;的查询你系统上面的慢日志：
+long_query_time=... turn on the slowlog run for a few hours turn off the slowlog (or raise the cutoff) run pt-query-digest to find the &#39;worst&#39; couple of queries.</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(四十五)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-45.html</link>
+      <pubDate>Wed, 29 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-45.html</guid>
+      <description>事务 1. 开启事务 一个事务就是一个SQL语句的序列分组，可以包括像select,insert,update或者delete这些超值，然后在一个工作单元中执行。
+换句话说，事务只有在分组中的每个操作执行成功的情况下才会完成执行。如果事务中任何一个操作失败了，事务就会失败。
+银行事务是用来解释这个的最好例子。假设有两个用户之间的转账操作。要实现这个功能你需要写下面的SQL语句：
+ 首先检查第一个账户请求的数量是不是有效。 从第一账户中删除请求的数量 在第二个账户中增加这个金额  如果上面的操作中任何一个操作失败了，就需要返回之前的状态。
+ACID：事务的属性
+事务有下面四个属性：
+ 原子性：确保工作单元内的所有操作都成功完成；否则事务的操作会在失败时终止，以前的操作都会回滚到以前的状态。 一致性：确保数据库在成功提交事务时正确更改状态。 隔离性：使事务能够独立运行并且彼此透明 持久性：确保提交事务的结果在系统故障时持续存在  事务使用START TRANSACTION或BEGIN WORK来开启，然后使用COMMIT或ROLLBACK语句结束。在这两个语句之间的SQL语句就是事务的代码块。
+START TRANSACTION; SET @transAmt = &#39;500&#39;; SELECT @availableAmt:=ledgerAmt FROM accTable WHERE customerId=1 FOR UPDATE; UPDATE accTable SET ledgerAmt=ledgerAmt-@transAmt WHERE customerId=1; UPDATE accTable SET ledgerAmt=ledgerAmt+@transAmt WHERE customerId=2; COMMIT;  在使用START TRANSACTION语句之后，自动提交操作将会被终止，知道事务结束使用COMMIT或ROLLBACK 操作才会提交这些修改。然后恢复自动提交操作之前单的状态。
+FOR UPDATE语句指示(并锁定)事务持续期间的行。
+事务没有提交之前，这个事务对其他用户就不是有效的。
+事务的一般过程
+ 通过START TRANSACTION或BEGIN WORK来开启一个事务。 运行事务中的SQL语句 检查事务中SQL是否安装你的要求执行了 如果时的话，执行COMMIT命令。否知执行ROLLBACK操作恢复之前的状态 即使在提交之后，如果您正在使用或可能最终使用galera/pxc，也要检查错误。  2. COMMIT，ROLLBACK，AUTOCOMMIT AUTOCOMMIT</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(四十四)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-44.html</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-44.html</guid>
+      <description>MyISAM转换为InnoDB 1. 基本转换 ALTER TABLE ENGINE=InnoDB;  这个操作转换了两个数据表的引擎，但是不关心这两种引擎之间的差异。大部分差别是没有影响的，特别是对小表来说。但是多于常用的表来说，还要考虑其他的因素。转换注意点。
+2. 转换一个数据库的所有表 使用下面的命令可以方便的吧一个数据库中所有的表进行转换。
+SET @DB_NAME = DATABASE(); SELECT CONCAT(&#39;ALTER TABLE `&#39;, table_name, &#39;` ENGINE=InnoDB;&#39;) AS sql_statements FROM information_schema.tables WHERE table_schema = @DB_NAME AND &#39;ENGINE&#39; = &#39;MyISAM&#39; AND &#39;TABLE_TYPE&#39; = &#39;BASE TABLE&#39;;   注意：你应该连接上数据让DATABASE()正常工作，否则这个方法将会返回NULL。这主要适用于随服务器提供的标准MySQL客户机，因为它允许在不指定数据库的情况下进行连接。
+ 运行这个表获取你数据库中所有的MyISAM表。
+最后，复制输出的SQL然后执行他们。
+参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(四十三)</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/bash-section-43.html</link>
+      <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/bash-section-43.html</guid>
+      <description>MyISAM引擎 1. ENGINE=MyISAM CREATE TABLE foo ( ... ) ENGINE=MyISAM;  参考：MySQL Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(四十二)</title>

@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="字符集和排序">
+    <meta name="description" content="数据表分区">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(四十二)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(四十八)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/bash-section-42.html">
+    <link rel="canonical" href="/2019/06/post/bash-section-48.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(四十二)</h1>
+                    <h1>MySQL专业笔记(四十八)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, May 26, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, June 1, 2019
                         
                     </span>
                 </div>
@@ -182,12 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#字符集和排序">字符集和排序</a>
+<li><a href="#分区">分区</a>
 <ul>
-<li><a href="#1-什么是字符集和排序">1. 什么是字符集和排序？</a></li>
-<li><a href="#2-设置表和字段的字符集">2. 设置表和字段的字符集</a></li>
-<li><a href="#3-声明">3. 声明</a></li>
-<li><a href="#4-连接">4. 连接</a></li>
+<li><a href="#1-范围分区">1. 范围分区</a></li>
+<li><a href="#2-列表分区">2. 列表分区</a></li>
+<li><a href="#3-hash分区">3. HASH分区</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,72 +194,125 @@
         		
         		
 
-<h2 id="字符集和排序">字符集和排序</h2>
+<h2 id="分区">分区</h2>
 
-<h3 id="1-什么是字符集和排序">1. 什么是字符集和排序？</h3>
+<h3 id="1-范围分区">1. 范围分区</h3>
 
-<p>有几十种字符集和数百种排序规则。(一种排序规则只属于一种字符串)。查看<code>SHOW COLLATION;</code>的输出。</p>
+<p>按照范围分区的表是指每个分区包含按照指定分区表达式在某个范围内的行。范围应该是连续但不重叠的，使用<code>VALUES LESS THAN</code>运算符获得。在下面的例子中，假设你创建了包含下面20加连锁视频店(从1到20)的人事记录。</p>
 
-<p>通常只有4中字符集比较重要：</p>
-
-<pre><code>ascii -- 基础的7位编码
-latin1 -- ascii, 加上大多数西欧语言需要的字符
-utf8 -- the 1-, 2-, and 3-byte subset of utf8. 不包括 Emoji and 一些中文.
-utf8mb4 -- UTF8字符的全集合，包含当前所有的语言
+<pre><code class="language-mysql">CREATE TABLE employees(
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE NOT NULL DEFAULT '9999-12-31',
+    job_code INT NOT NULL,
+    store_id INT NOT NULL
+);
 </code></pre>
 
-<p>全部包括英文字符，编码相同。utf8是utf8mb4的子集。</p>
+<p>这个表可以根据你的需要，按照不同的范围分为几个区。一种方法是使用<code>store_id</code>列。例如，你可以把表分为4个部分，使用<code>PARTITION BY RANGE</code>语句：</p>
 
-<p>最好用法：</p>
-
-<ul>
-<li>将utf8mb4用于包含多种语言的<code>TEXT</code>和<code>VARCHAR</code>列</li>
-<li>对于十六进制字符串（UUID、MD5等）和简单代码（国家/地区代码、邮政编码等），使用ASCII（Latin1是OK）。</li>
-</ul>
-
-<p>在MySQL5.3.3之前是没有utf8mb4这个字符集的，所以在之前的版本中utf8是最有效的。</p>
-
-<p>在MySQL之外的环境中，&rdquo;UTF8&rdquo;表示的是和MySQL中utf8mb4是想同的，而不是utf8。</p>
-
-<p>排序规则以字符集开头，以<code>_ci</code>结尾表示&rdquo;大小写和重音区分&rdquo;，以&rdquo;_bin&rdquo;结尾表示已二进制比较。</p>
-
-<p>最新的uttf8mb4排序规则是<code>utf8mb4_unicode_520_ci</code>，是基于Unicode 5.20。如果你基于一个语言，那么你可能用到&rdquo;utf8mb4_polish_ci&rdquo;，它将根据波兰语惯例稍微重新排列字母。</p>
-
-<h3 id="2-设置表和字段的字符集">2. 设置表和字段的字符集</h3>
-
-<p>你可以为每个表和每个单独的字段设置字符集，使用<code>CHARACTER SET</code>和<code>charset</code>语句。</p>
-
-<pre><code class="language-mysql">CREATE TABLE Address (
-`AddressID` INTEGER NOT NULL PRIMARY KEY,
-`Street`  VARCHAR(80) CHARACTER SET ASCII,
-`City`  VARCHAR(80),
-`Country` VARCHAR(80) DEFAULT &quot;United States&quot;,
-`Active` BOOLEAN DEFAULT 1,
-) Engine=InnoDB default charset=UTF8;
+<pre><code class="language-mysql">ALTER TABLE employees PARTITION BY RANGE (store_id) (
+    PARTITION p0 VALUES LESS THAN (6),
+    PARTITION p1 VALUES LESS THAN (11),
+    PARTITION p2 VALUES LESS THAN (16),
+    PARTITION p3 VALUES LESS THAN MAXVALUE
+);
 </code></pre>
 
-<p><code>City</code>和<code>Country</code>将会使用UTF8编码，这个是这个表的默认字符集。<code>Street</code>使用<code>ASCII</code>编码，我们专门指定的。</p>
+<blockquote>
+<p><code>MAXVALUE</code>表示一个始终大于最大可能整数值的整数值。(在数学中，用作最小上界。)</p>
+</blockquote>
 
-<p>设置正确的字符集高度依赖于数据集，但也可以极大地提高处理数据的系统之间的可移植性。</p>
+<p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html">手册</a>。</p>
 
-<h3 id="3-声明">3. 声明</h3>
+<h3 id="2-列表分区">2. 列表分区</h3>
 
-<pre><code class="language-mysql">CREATE TABLE foo ( ...
-    name CHARACTER SET utf8mb4
-    ...
-    );
+<p>列表分区和范围分区在很多地方都很相似。在范围分区中，每个分区都是显示定义的。两种分区类型之间的主要区别在于：在列表分区中，每个分区都是根据一组值列表中的某个列值的成员资格而不是一组连续值范围中的某个列值的成员资格来定义和选择的。这是通过<code>PARTITION BY LIST(expr)</code>来实现的，其中<code>expr</code>是一组列值或者是基于列值的返回整数的表达式，然后通过<code>VALUES IN (value_list)</code>来定义分区，其中<code>value_list</code>是逗号分隔的整数列表。</p>
+
+<p>像下面的例子，我们假设要分区的表就是想下面<code>CREAETE TABLE</code>语句显示的一样：</p>
+
+<pre><code class="language-mysql">CREATE TABLE employees (
+    id INT NOT NULL,
+    fname VARCHAR(30),
+    lname VARCHAR(30),
+    hired DATE NOT NULL DEFAULT '1970-01-01',
+    separated DATE NOT NULL DEFAULT '9999-12-31',
+    job_code INT,
+    store_id INT
+);
 </code></pre>
 
-<h3 id="4-连接">4. 连接</h3>
+<p>假设有20个视频商店分步在下面4个特许经营中，如下表所示：</p>
 
-<p>使用字符集的关键是告诉MySQL服务器客户机字节的编码是什么。这里有一种方法：</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>视频商店id列表</th>
+</tr>
+</thead>
 
-<pre><code class="language-mysql">SET NAMES utf8mb4;
+<tbody>
+<tr>
+<td>North</td>
+<td>3,5,6,9,7</td>
+</tr>
+
+<tr>
+<td>East</td>
+<td>1,2,10,11,19,20</td>
+</tr>
+
+<tr>
+<td>West</td>
+<td>4,12,13,14,18</td>
+</tr>
+
+<tr>
+<td>Central</td>
+<td>7,8,15,16</td>
+</tr>
+</tbody>
+</table>
+
+<p>对该表进行分区，使属于同一区域的存储的行存储在同一分区中。</p>
+
+<pre><code class="language-mysql">ALTER TABLE employees PARTITION BY LIST(store_id) ( 
+		PARTITION pNorth VALUES IN (3,5,6,9,17), 
+		PARTITION pEast VALUES IN (1,2,10,11,19,20), 
+		PARTITION pWest VALUES IN (4,12,13,14,18), 
+		PARTITION pCentral VALUES IN (7,8,15,16)
+);
 </code></pre>
 
-<p>每种语言（PHP、Python、Java、……）都有自己的方式，通常最好是<code>SET NAMES</code>。</p>
+<p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-list.html">MySQL的手册</a>。</p>
 
-<p>例如：<code>SET NAMES utf8mb4</code>，并且有一个列为<code>CHARACTER SET latin1</code>—这将会在Insert的时候从latin1到utf8mb4，在查询的时候反过来转换。</p>
+<h3 id="3-hash分区">3. HASH分区</h3>
+
+<p>哈希分区主要用于确保数据在预定数量的分区之间均匀分布。范围分区和列表分区，你需要明确指定某个分区哪些列和记录会存储在其中；对于HASH分区，MySQL完成这些工作，你只需要指定将要进行HASH操作的列或作用在列上的表达式和指明想要将表分区的数量。</p>
+
+<p>下面创建了一张表，使用hash分区根据store_id列来吧这个表分为4个区：</p>
+
+<pre><code class="language-mysql">CREATE TABLE employees (
+		id INT NOT NULL,
+		fname VARCHAR(30),
+		lname VARCHAR(30),
+		hired DATE NOT NULL DEFAULT '1970-01-01', 
+  	separated DATE NOT NULL DEFAULT '9999-12-31', 
+  	job_code INT,
+		store_id INT
+)
+PARTITION BY HASH(store_id)
+PARTITIONS 4;
+</code></pre>
+
+<blockquote>
+<p>如果你没有指定<code>PARTITIONS</code>，默认的分区数量是1</p>
+</blockquote>
+
+<p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-hash.html">MySQL手册</a>。</p>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -270,13 +322,9 @@ utf8mb4 -- UTF8字符的全集合，包含当前所有的语言
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/05/post/bash-section-43.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十三)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/05/post/bash-section-41.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十一)">Next Post &rarr;</a>
+                      <a href="/2019/05/post/bash-section-47.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十七)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
