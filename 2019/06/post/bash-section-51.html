@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="数据表分区">
+    <meta name="description" content="使用mysqlimport导入数据">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(四十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(五十一)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/bash-section-48.html">
+    <link rel="canonical" href="/2019/06/post/bash-section-51.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(四十八)</h1>
+                    <h1>MySQL专业笔记(五十一)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Saturday, June 1, 2019
+                    <span  class="meta">Posted by 怀府风 on Tuesday, June 4, 2019
                         
                     </span>
                 </div>
@@ -182,11 +182,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#分区">分区</a>
+<li><a href="#使用mysqlimport导入数据">使用mysqlimport导入数据</a>
 <ul>
-<li><a href="#1-范围分区">1. 范围分区</a></li>
-<li><a href="#2-列表分区">2. 列表分区</a></li>
-<li><a href="#3-hash分区">3. HASH分区</a></li>
+<li><a href="#1-基本用法">1. 基本用法</a></li>
+<li><a href="#2-使用自定义字段分隔符">2. 使用自定义字段分隔符</a></li>
+<li><a href="#3-使用自定义行分隔符">3. 使用自定义行分隔符</a></li>
+<li><a href="#5-按照条件导入">5. 按照条件导入</a></li>
+<li><a href="#6-导入标准csv文件">6. 导入标准csv文件</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -194,125 +196,151 @@
         		
         		
 
-<h2 id="分区">分区</h2>
-
-<h3 id="1-范围分区">1. 范围分区</h3>
-
-<p>按照范围分区的表是指每个分区包含按照指定分区表达式在某个范围内的行。范围应该是连续但不重叠的，使用<code>VALUES LESS THAN</code>运算符获得。在下面的例子中，假设你创建了包含下面20加连锁视频店(从1到20)的人事记录。</p>
-
-<pre><code class="language-mysql">CREATE TABLE employees(
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT NOT NULL,
-    store_id INT NOT NULL
-);
-</code></pre>
-
-<p>这个表可以根据你的需要，按照不同的范围分为几个区。一种方法是使用<code>store_id</code>列。例如，你可以把表分为4个部分，使用<code>PARTITION BY RANGE</code>语句：</p>
-
-<pre><code class="language-mysql">ALTER TABLE employees PARTITION BY RANGE (store_id) (
-    PARTITION p0 VALUES LESS THAN (6),
-    PARTITION p1 VALUES LESS THAN (11),
-    PARTITION p2 VALUES LESS THAN (16),
-    PARTITION p3 VALUES LESS THAN MAXVALUE
-);
-</code></pre>
-
-<blockquote>
-<p><code>MAXVALUE</code>表示一个始终大于最大可能整数值的整数值。(在数学中，用作最小上界。)</p>
-</blockquote>
-
-<p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html">手册</a>。</p>
-
-<h3 id="2-列表分区">2. 列表分区</h3>
-
-<p>列表分区和范围分区在很多地方都很相似。在范围分区中，每个分区都是显示定义的。两种分区类型之间的主要区别在于：在列表分区中，每个分区都是根据一组值列表中的某个列值的成员资格而不是一组连续值范围中的某个列值的成员资格来定义和选择的。这是通过<code>PARTITION BY LIST(expr)</code>来实现的，其中<code>expr</code>是一组列值或者是基于列值的返回整数的表达式，然后通过<code>VALUES IN (value_list)</code>来定义分区，其中<code>value_list</code>是逗号分隔的整数列表。</p>
-
-<p>像下面的例子，我们假设要分区的表就是想下面<code>CREAETE TABLE</code>语句显示的一样：</p>
-
-<pre><code class="language-mysql">CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT,
-    store_id INT
-);
-</code></pre>
-
-<p>假设有20个视频商店分步在下面4个特许经营中，如下表所示：</p>
+<h2 id="使用mysqlimport导入数据">使用mysqlimport导入数据</h2>
 
 <table>
 <thead>
 <tr>
-<th>区域</th>
-<th>视频商店id列表</th>
+<th>选项</th>
+<th>详情</th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td>North</td>
-<td>3,5,6,9,7</td>
+<td>—delete -D</td>
+<td>服务器登录选项</td>
 </tr>
 
 <tr>
-<td>East</td>
-<td>1,2,10,11,19,20</td>
+<td>—fields-optionally-enclosed-by</td>
+<td>定义引用字段的字符</td>
 </tr>
 
 <tr>
-<td>West</td>
-<td>4,12,13,14,18</td>
+<td>—fields-terminated-by</td>
+<td>字段终止符</td>
 </tr>
 
 <tr>
-<td>Central</td>
-<td>7,8,15,16</td>
+<td>—ignore -i</td>
+<td>如果key重复了，那就忽略已经插入的行</td>
+</tr>
+
+<tr>
+<td>—lines-terminated-by</td>
+<td>定义行终止符</td>
+</tr>
+
+<tr>
+<td>—password -p</td>
+<td>密码</td>
+</tr>
+
+<tr>
+<td>—port -P</td>
+<td>端口号</td>
+</tr>
+
+<tr>
+<td>—replace -r</td>
+<td>重复key时，覆盖原本的行</td>
+</tr>
+
+<tr>
+<td>—user -u</td>
+<td>用户名</td>
+</tr>
+
+<tr>
+<td>—where -w</td>
+<td>指定条件</td>
 </tr>
 </tbody>
 </table>
 
-<p>对该表进行分区，使属于同一区域的存储的行存储在同一分区中。</p>
+<h3 id="1-基本用法">1. 基本用法</h3>
 
-<pre><code class="language-mysql">ALTER TABLE employees PARTITION BY LIST(store_id) ( 
-		PARTITION pNorth VALUES IN (3,5,6,9,17), 
-		PARTITION pEast VALUES IN (1,2,10,11,19,20), 
-		PARTITION pWest VALUES IN (4,12,13,14,18), 
-		PARTITION pCentral VALUES IN (7,8,15,16)
-);
-</code></pre>
-
-<p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-list.html">MySQL的手册</a>。</p>
-
-<h3 id="3-hash分区">3. HASH分区</h3>
-
-<p>哈希分区主要用于确保数据在预定数量的分区之间均匀分布。范围分区和列表分区，你需要明确指定某个分区哪些列和记录会存储在其中；对于HASH分区，MySQL完成这些工作，你只需要指定将要进行HASH操作的列或作用在列上的表达式和指明想要将表分区的数量。</p>
-
-<p>下面创建了一张表，使用hash分区根据store_id列来吧这个表分为4个区：</p>
-
-<pre><code class="language-mysql">CREATE TABLE employees (
-		id INT NOT NULL,
-		fname VARCHAR(30),
-		lname VARCHAR(30),
-		hired DATE NOT NULL DEFAULT '1970-01-01', 
-  	separated DATE NOT NULL DEFAULT '9999-12-31', 
-  	job_code INT,
-		store_id INT
-)
-PARTITION BY HASH(store_id)
-PARTITIONS 4;
-</code></pre>
+<p>使用tab分隔符的<code>employee.txt</code>文件：</p>
 
 <blockquote>
-<p>如果你没有指定<code>PARTITIONS</code>，默认的分区数量是1</p>
+<p>1 \t Arthur Dent
+2 \t Marvin
+3 \t Zaphod Beeblebrox</p>
 </blockquote>
 
-<p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-hash.html">MySQL手册</a>。</p>
+<pre><code class="language-shell">$ mysql --user=user --password=password mycompany -e 'CREATE TABLE employee(id INT, name VARCHAR(100), PRIMARY KEY (id))'
+
+$ ysqlimport --user=user --password=password mycompany employee.txt
+</code></pre>
+
+<h3 id="2-使用自定义字段分隔符">2. 使用自定义字段分隔符</h3>
+
+<p>有下面内容的文件<code>employee.txt</code>:</p>
+
+<blockquote>
+<p>1|Arthur Dent</p>
+
+<p>2|Marvin</p>
+
+<p>3|Zaphod Beeblebrox</p>
+</blockquote>
+
+<pre><code class="language-mysql">$ mysqlimport --fields-terminated-by='|' mycompany empoyee.txt
+</code></pre>
+
+<h3 id="3-使用自定义行分隔符">3. 使用自定义行分隔符</h3>
+
+<p>有下面的表<code>Employee</code>：</p>
+
+<pre><code class="language-mysql">id     name
+3    Yooden Vranx
+</code></pre>
+
+<p>有下面这个文件<code>employee.txt</code>:</p>
+
+<blockquote>
+<p>1 \t Arthur Dent
+2 \t Marvin
+3 \t Zaphod Beeblebrox</p>
+</blockquote>
+
+<p>使用<code>—ignore</code>选项忽略重复的key：</p>
+
+<pre><code class="language-shell">$ mysqlimport --ignore mycompany employee.txt
+</code></pre>
+
+<p>表的数据现在是：</p>
+
+<pre><code>id   name
+1   Arthur Dent
+2   Marvin
+3   Yooden Vranx
+</code></pre>
+
+<p>使用<code>—replace</code>选项将会覆盖之前的数据：</p>
+
+<pre><code class="language-shell">$ mysqlimport --replace mycompany employee.txt
+
+id   name
+1   Arthur Dent
+2   Marvin
+3   Zaphod Beeblebrox
+</code></pre>
+
+<h3 id="5-按照条件导入">5. 按照条件导入</h3>
+
+<pre><code class="language-shell">$ mysqlimport --where=&quot;id&gt;2&quot; mycompany employee.txt
+</code></pre>
+
+<h3 id="6-导入标准csv文件">6. 导入标准csv文件</h3>
+
+<pre><code class="language-shell">$ mysqlimport
+    --fields-optionally-enclosed-by='&quot;'
+    --fields-terminated-by=,
+    --lines-terminated-by=&quot;\r\n&quot;
+    mycompany employee.csv
+</code></pre>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -323,12 +351,12 @@ PARTITIONS 4;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/bash-section-49.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十九)">&larr; Previous Post</a>
+                      <a href="/2019/06/post/bash-section-52.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十二)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/bash-section-47.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十七)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/bash-section-50.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

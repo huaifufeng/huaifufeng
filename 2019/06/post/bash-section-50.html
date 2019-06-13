@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="使用mysqldump导出备份">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(五十)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/bash-section-50.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(五十)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, June 3, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#使用mysqldump备份">使用mysqldump备份</a>
+<ul>
+<li><a href="#1-指定用户名和密码">1. 指定用户名和密码</a></li>
+<li><a href="#2-创建数据库或表的备份">2. 创建数据库或表的备份</a></li>
+<li><a href="#3-导入一个数据库或数据表的备份">3. 导入一个数据库或数据表的备份</a></li>
+<li><a href="#4-从一个数据库向另一个数据库传输数据">4. 从一个数据库向另一个数据库传输数据</a></li>
+<li><a href="#5-通过压缩从远程服务器进行mysqldump">5. 通过压缩从远程服务器进行mysqldump</a></li>
+<li><a href="#6-不解压从一个gizp文件导入数据">6. 不解压从一个gizp文件导入数据</a></li>
+<li><a href="#7-备份数据库存储过程和函数">7. 备份数据库存储过程和函数</a></li>
+<li><a href="#8-通过压缩直接备份到amazon-s3">8. 通过压缩直接备份到Amazon S3</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="使用mysqldump备份">使用mysqldump备份</h2>
+
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>—</td>
+<td>服务器登录选项</td>
+</tr>
+
+<tr>
+<td>-h (—host)</td>
+<td>要连接的服务器的主机(IP地址或主机名称)。默认是<code>localhost(127.0.0.1)</code>。例如<code>-h localhost</code></td>
+</tr>
+
+<tr>
+<td>-u (—user)</td>
+<td>MySQL的用户名</td>
+</tr>
+
+<tr>
+<td>-p (—password)</td>
+<td>MySQL的用户密码。<strong>重要</strong>：当使用这个选项的时候，在<code>-p</code>和密码之间没有空格。例如<code>-pMyPassword</code></td>
+</tr>
+
+<tr>
+<td>—</td>
+<td>导出选项</td>
+</tr>
+
+<tr>
+<td>—add-drop-database</td>
+<td>在每个<code>CREATE DATABASE</code>语句之前添加一个<code>DROP DATABASE</code>。如果你想要替换服务器上面的数据库，这个是很有用的</td>
+</tr>
+
+<tr>
+<td>—add-drop-table</td>
+<td>在每个<code>CREATE TABLE</code>语句前面增加<code>DROP TABLE</code>语句。当你想要替换服务器上面的表的话很有用。</td>
+</tr>
+
+<tr>
+<td>—no-create-db</td>
+<td>禁止在转存中使用<code>CREATE DATABASE</code>语句。当你确定要转存的数据库在目标数据库中已经存在时使用。</td>
+</tr>
+
+<tr>
+<td>-t (—no-create-info)</td>
+<td>禁止在转存中使用<code>CREATE TABLE</code>语句。这在你只想导出表的数据时有用，然后在另外的库中使用这个转存文件导入数据到相同的表中。</td>
+</tr>
+
+<tr>
+<td>-d (—no-data)</td>
+<td>不写表信息。值或导出<code>CREATE TABLE</code>语句。对应创建数据库的&rdquo;模板&rdquo;很有用</td>
+</tr>
+
+<tr>
+<td>-R (—routines)</td>
+<td>在导出中包含存储过程/函数</td>
+</tr>
+
+<tr>
+<td>-K (—disable-keys)</td>
+<td>在插入数据之前禁止每个表的key，数据导入之后允许key。这会增加MyISAM中没有唯一索引的表的导入速度。</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="1-指定用户名和密码">1. 指定用户名和密码</h3>
+
+<pre><code class="language-mysql">&gt;mysqldump -u username -p [other options]
+Enter password:
+</code></pre>
+
+<p>如果你需要在命令行中指定密码，你需要在<code>-p</code>后面输入密码，注意这里没有空格：</p>
+
+<pre><code class="language-mysql">&gt; mysqldump -u username -ppassword [other options]
+</code></pre>
+
+<p>如果你的密码中包括空格或者特殊字符，需要在你的shell或系统中使用转义字符：</p>
+
+<p>也可以选择下面的方式：</p>
+
+<pre><code class="language-mysql">&gt; mysqldump --user=username --password=password [other options]
+</code></pre>
+
+<p>(在命令行中显示的指定密码是不推荐的，因为这不安全。)</p>
+
+<h3 id="2-创建数据库或表的备份">2. 创建数据库或表的备份</h3>
+
+<p>创建整个数据库的备份：</p>
+
+<pre><code class="language-mysql">&gt; mysqldump [options] db_name &gt; filename.sql
+</code></pre>
+
+<p>创建多个数据库的备份：</p>
+
+<pre><code class="language-mysql">&gt; mysqldump [options] --databases db_name1 db_name2 ... &gt; filename.sql
+&gt; mysqldump [options] --all-databases &gt; filename.sql
+</code></pre>
+
+<p>创建一个或多个数据表的备份：</p>
+
+<pre><code class="language-mysql">msyqldump [options] db_name table_name ... &gt; filename.sql
+</code></pre>
+
+<p>创建除了指定数据表之外的数据表的备份：</p>
+
+<pre><code class="language-mysql">&gt; mysqldump [options] db_name --ignore-table=tb1 --ignore-table=tbl2 ... &gt;filename.sql
+</code></pre>
+
+<p>文件扩展名<code>.sql</code>完全是样式问题。任何扩展都是可以的。</p>
+
+<h3 id="3-导入一个数据库或数据表的备份">3. 导入一个数据库或数据表的备份</h3>
+
+<pre><code class="language-mysql">mysql [options] db_name &lt; filename.sql
+</code></pre>
+
+<p>注意：</p>
+
+<ul>
+<li><code>db_name</code>需要是一个已经存在的数据库</li>
+<li>你指定的用户需要具备<code>filename.sql</code>中所有命令的执行权限</li>
+<li>这个文件扩展<code>.sql</code>是样式问题，任何扩展都是可以的。</li>
+<li>即使可以指定要从存储转存的表名，也不能指定要加载的表名。这必须在<code>filename.sql</code>中完成。</li>
+</ul>
+
+<p>另外，当在<code>MySQL命令行工具</code>中时，你可以使用source命令或其他命令来导入数据：</p>
+
+<pre><code class="language-mysql">source filename.sql
+-- 或者
+\. filename.sql
+</code></pre>
+
+<h3 id="4-从一个数据库向另一个数据库传输数据">4. 从一个数据库向另一个数据库传输数据</h3>
+
+<p>如果你需要从一个数据库向另一个数据库传输数据，你有两种选择：</p>
+
+<p><strong>选择1</strong></p>
+
+<ol>
+<li>在原始服务器上面存储导出的文件</li>
+<li>将导出的文件复制到目标服务器上</li>
+<li>在目标服务器中导入文件的内容</li>
+</ol>
+
+<p>在原始服务器上面：</p>
+
+<pre><code class="language-mysql">mysqldump [options] &gt; dump.sql
+</code></pre>
+
+<p>在目标服务器上面，将导出文件复制到目标服务器并且执行：</p>
+
+<pre><code class="language-mysql">mysql [options] &lt; dump.sql
+</code></pre>
+
+<p><strong>选择2</strong></p>
+
+<p>当目标服务器可以连接到原始服务器时，可以通过管道从一个服务器向另个服务器复制内容。</p>
+
+<p>在目标服务器上面：</p>
+
+<pre><code class="language-mysql">mysqldump [options to connect to the source server] | mysql [options]
+</code></pre>
+
+<p>相似的是，可以在原始服务器上面执行这个命令，将数据推送到目标服务器上。在这两种情况下，它都可能比选项1快得多。</p>
+
+<h3 id="5-通过压缩从远程服务器进行mysqldump">5. 通过压缩从远程服务器进行mysqldump</h3>
+
+<p>想要使用压缩来更快的传输数据，在<code>mysqldump</code>命令下使用<code>—compress</code>选项。例如：</p>
+
+<pre><code class="language-mysql">mysqldump -h db.example.com -u username -p --compress dbname &gt; dbname.sql
+</code></pre>
+
+<p>重要：如果你不想把原始库锁住，你需要使用<code>—lock-tables=false</code>这个选项。但是这样的话可能无法保持主从一致。</p>
+
+<p>想要使用文件压缩，也可以使用<code>gzip</code>操作：</p>
+
+<pre><code class="language-mysql">mysqldump -h db.example.com -u username -p --compress dbname | gzip --stdout &gt; dbname.sql.gz
+</code></pre>
+
+<h3 id="6-不解压从一个gizp文件导入数据">6. 不解压从一个gizp文件导入数据</h3>
+
+<pre><code class="language-mysql">gunzip -c dbname.sql.gz | mysql dbname -u username -p 
+</code></pre>
+
+<p>注意：<code>-c</code>意味着将输出写入到标准输出。</p>
+
+<h3 id="7-备份数据库存储过程和函数">7. 备份数据库存储过程和函数</h3>
+
+<p>默认<code>mysqldump</code>不会产生存储过程和函数，你需要添加<code>—routines</code>或<code>-R</code>选项：</p>
+
+<pre><code class="language-mysql">mysqldump -u username -p -R db_name &gt; dump.sql
+</code></pre>
+
+<p>当使用<a href="https://dev.mysql.com/doc/refman/5.6/en/mysqldump.html#option_mysqldump_routines">—routines</a>，不维护创建和更新时间戳了，而是应该转储和重新加载<code>mysql.proc</code>的内容。</p>
+
+<h3 id="8-通过压缩直接备份到amazon-s3">8. 通过压缩直接备份到Amazon S3</h3>
+
+<p>如果你希望对一个大型MySQL安装进行完整的备份，但是没有足够的本地存储空间，你可以指定转储并压缩到Amazon S3存储中。在不将db密码作为命令的一部分的情况下执行此操作也是一个很好的实践：</p>
+
+<pre><code class="language-mysql">mysqldump -u root -p --host=localhost --opt --skip-lock-tables --single-transaction \ --verbose --hex-blob --routines --triggers --all-databases |
+    gzip -9 | s3cmd put - s3://s3-bucket/db-server-name.sql.gz
+</code></pre>
+
+<p>你被要求输入密码，然后就开始备份了。</p>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/bash-section-51.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十一)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/bash-section-49.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十九)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

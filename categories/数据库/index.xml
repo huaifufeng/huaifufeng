@@ -6,10 +6,73 @@
     <description>Recent content in 数据库 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 01 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>MySQL专业笔记(五十三)</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/bash-section-53.html</link>
+      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/bash-section-53.html</guid>
+      <description>Union 参考：MySQL Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(五十二)</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/bash-section-52.html</link>
+      <pubDate>Wed, 05 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/bash-section-52.html</guid>
+      <description>LOAD DATA INFILE 1. 使用LOAD DATA INFILE 导入大量数据到数据库 考虑下面的示例，假设您有一个以&amp;rdquo;;&amp;ldquo;分隔的csv加载到数据库中。
+1;max;male;manager;12-7-1985 2;jack;male;executive;21-8-1990 . . . 1000000;marta;female;accountant;15-6-1992  创建一个要导入数据的表：
+CREATE TABLE `employee` ( `id` INT NOT NULL , `name` VARCHAR NOT NULL, `sex` VARCHAR NOT NULL , `designation` VARCHAR NOT NULL , `dob` VARCHAR NOT NULL );  使用下面的语句来把数据导入的数据表中：
+LOAD DATA INFILE &#39;path of the file/file_name.txt&#39; INTO TABLE employee FIELDS TERMINATED BY &#39;;&#39; //指定字段分隔符 LINES TERMINATED BY &#39;\r\n&#39; (id, name, sex, designation, dob)  考虑其中日期格式不标准的情况：</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(五十一)</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/bash-section-51.html</link>
+      <pubDate>Tue, 04 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/bash-section-51.html</guid>
+      <description>使用mysqlimport导入数据    选项 详情     —delete -D 服务器登录选项   —fields-optionally-enclosed-by 定义引用字段的字符   —fields-terminated-by 字段终止符   —ignore -i 如果key重复了，那就忽略已经插入的行   —lines-terminated-by 定义行终止符   —password -p 密码   —port -P 端口号   —replace -r 重复key时，覆盖原本的行   —user -u 用户名   —where -w 指定条件    1. 基本用法 使用tab分隔符的employee.txt文件：
+ 1 \t Arthur Dent 2 \t Marvin 3 \t Zaphod Beeblebrox</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(五十)</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/bash-section-50.html</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/bash-section-50.html</guid>
+      <description>使用mysqldump备份    选项 详情     — 服务器登录选项   -h (—host) 要连接的服务器的主机(IP地址或主机名称)。默认是localhost(127.0.0.1)。例如-h localhost   -u (—user) MySQL的用户名   -p (—password) MySQL的用户密码。重要：当使用这个选项的时候，在-p和密码之间没有空格。例如-pMyPassword   — 导出选项   —add-drop-database 在每个CREATE DATABASE语句之前添加一个DROP DATABASE。如果你想要替换服务器上面的数据库，这个是很有用的   —add-drop-table 在每个CREATE TABLE语句前面增加DROP TABLE语句。当你想要替换服务器上面的表的话很有用。   —no-create-db 禁止在转存中使用CREATE DATABASE语句。当你确定要转存的数据库在目标数据库中已经存在时使用。   -t (—no-create-info) 禁止在转存中使用CREATE TABLE语句。这在你只想导出表的数据时有用，然后在另外的库中使用这个转存文件导入数据到相同的表中。   -d (—no-data) 不写表信息。值或导出CREATE TABLE语句。对应创建数据库的&amp;rdquo;模板&amp;rdquo;很有用   -R (—routines) 在导出中包含存储过程/函数   -K (—disable-keys) 在插入数据之前禁止每个表的key，数据导入之后允许key。这会增加MyISAM中没有唯一索引的表的导入速度。    1.</description>
+    </item>
+    
+    <item>
+      <title>MySQL专业笔记(四十九)</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/bash-section-49.html</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/bash-section-49.html</guid>
+      <description>复制 1. 主从配置复制 假设有两个MySQL服务器进行复制配置，其中一台是主库，一台是从库。
+我们需要配置主库记录在其上执行的每个操作的日志。我们需要配置从库监控主库的日志，一旦主库做了一些修改操作，从库就需要执行同样的操作。
+主库配置
+首先，我们需要为主库设置一个用户。这个用户用来给从库建立到主库的连接使用。
+CREATE USER &#39;user_name&#39;@&#39;%&#39; IDENTIFIED BY &#39;user_password&#39;; GRANT REPLICATION SLAVE ON *.* TO &#39;user_name&#39;@&#39;%&#39;; FLUSH PRIVILEGES;  修改上面代码中的user_name和user_password为你自己的用户名和密码。
+现在my.inf(Linux中是my.cnf)需要被修改了，在[mysqld]部分添加下面的内容：
+server-id = 1 log-bin = mysql-bin.log binlog-do-db = your_database  第一行用来为这个MySQL服务器设置一个ID。
+第二行告诉MySQL开始在指定的log文件中开始写入日志。在Linux机器上，这个需要被设置为log-bin=/home/mysql/logs/mysql-bin.log。如果您正在已使用复制的MySQL服务器中启动复制，请确保此目录中没有复制日志。
+第三行用来说明我们想要哪个数据库去写日志。你需要替换其中的your_database为你自己的数据库名。
+确保ship-networking没有开启，重启主库。
+从库配置
+从库的my.inf也需要修改。需要在[mysqld]部分包含下面的内容：
+server-id = 2 master-host = master_ip_address master-connect-retry = 60 master-user = user_name master-password = user_password replicate-do-db = your_database relay-log = slave-relay.log relay-log-index = slave-relay-log.index  第一行用来设置这个从库的ID，这个ID应该是唯一的。
+第二行是主库服务器的IP地址。修改这个值为你的主库服务器的IP。
+第三行以秒为单位，限制重试的次数。</description>
+    </item>
     
     <item>
       <title>MySQL专业笔记(四十八)</title>
