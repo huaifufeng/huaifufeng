@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="处理时区">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(二十二)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/mysql-section-22.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(二十二)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, May 6, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#处理时区">处理时区</a>
+<ul>
+<li><a href="#获取指定时区的当前日期和时间">获取指定时区的当前日期和时间</a></li>
+<li><a href="#转换存储的date或datetime值到另外的时区">转换存储的DATE或DATETIME值到另外的时区</a></li>
+<li><a href="#获取timestamp值的指定时区值">获取TIMESTAMP值的指定时区值</a></li>
+<li><a href="#本地时区配置">本地时区配置</a></li>
+<li><a href="#服务器有效的时区">服务器有效的时区</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="处理时区">处理时区</h2>
+
+<h3 id="获取指定时区的当前日期和时间">获取指定时区的当前日期和时间</h3>
+
+<p>获取本地时区的<code>NOW()</code>值，获取印度时区的值，获取UTC的值。</p>
+
+<pre><code class="language-mysql">SELECT NOW();
+SET time_zone='Asia/Kolkata';
+SELECT NOW();
+SET time_zone='UTC';
+SELECT NOW();
+</code></pre>
+
+<h3 id="转换存储的date或datetime值到另外的时区">转换存储的DATE或DATETIME值到另外的时区</h3>
+
+<p>如果你在表中的某个列中存储了DATE或DATETIME格式的时间值，这是相对于某个时区的值，但是在MySQL中，时区是没有和值存储在一起的。如果你想要把这个时间转换为另外时区的时间，你可以做，但是你必须知道原本的时区值。然后使用<code>CONVERT_TZ()</code>来实现这个转换过程。下面的例子显示把UTC的时区的时间转换为California的时区时间。</p>
+
+<pre><code class="language-mysql">SELECT CONVERT_TZ(date_sold, 'UTC', 'America/Los_Angeles') date_sold_local
+FROM sales
+WHERE state_sold='CA';
+</code></pre>
+
+<h3 id="获取timestamp值的指定时区值">获取TIMESTAMP值的指定时区值</h3>
+
+<p>这非常简单。所有<code>TIMESTAMP</code>的值都是世界时间值，只需要设置你想要显示的<code>time_zone</code>时区值，就可以了。</p>
+
+<pre><code class="language-mysql">SET SESSION time_zone='America/Los_Angeles';
+SELECT timestamp_sold
+FROM sales
+WHERE state_sold='CA';
+</code></pre>
+
+<p>为什么是这样？<code>TIMESTAMP</code>的值是基于<a href="https://en.wikipedia.org/wiki/Unix_time">UNIX time_t数据格式</a>的。这些UNIX的时间戳存的是从<code>1970:01:01 00:00:00 UTC</code>到现在的秒数。</p>
+
+<p><strong>注意：</strong><code>TIMESTAMP</code>存储的是世界时间。<code>DATE</code>和<code>DATETIME</code>存储是依赖存储时的时区。</p>
+
+<h3 id="本地时区配置">本地时区配置</h3>
+
+<p>每个服务器都有一个默认的全局时区配置，由服务器的拥有者设置。你可以使用下面的命令查看当前的时区配置：</p>
+
+<pre><code class="language-mysql">SELECT @@time_zone
+</code></pre>
+
+<p>不幸的是，这将会返回<code>SYSTEM</code>，这表示MySQL的时区使用服务器系统的时区配置。</p>
+
+<p>下面的查询队列(是的，这有些hack)，会在几分钟内返回服务器时区配置和UTC的偏移量。</p>
+
+<pre><code class="language-mysql">CREATE TEMPORARY TABLE times (dt DATETIME, ts TIMESTAMP);
+SET time_zone = '+0:00';
+INSERT INTO times VALUES(NOW(), NOW());
+SET time_zone = 'SYSTEM';
+SELECT dt, ts, TIMESTAMPDIFF(MINUTE, dt, ts)offset FROM times; 
+DROP TEMPORARY TABLE times;
+</code></pre>
+
+<p>这是怎么实现的呢？临时表里面的两列有不同的时间格式。<code>DATETIME</code>存储当地时间到表里面，TIMESTAMP存储UTC时间到表里面。所以当时区设置为UTC的时候，INSERT语句插入列个完全相同的日期/时间值。</p>
+
+<p>然后设置时区为本地时间，执行了SELECT语句。<code>TIMESTAMP</code>在SELECT将会把UTC时间转换为当地时间的值，但是DATETIME不会。所以使用`TIMESTAMPDIFF(MINUTE, …)操作来计算本地时间和UTC时间的不同。</p>
+
+<h3 id="服务器有效的时区">服务器有效的时区</h3>
+
+<p>使用下面的命令来获取MySQL服务器实例的有效时区列表：</p>
+
+<pre><code class="language-mysql">SELECT mysql.time_zone_name.name;
+</code></pre>
+
+<p>通常，这会显示由PaulEggert在Internet数字分配机构维护的时区信息列表。全世界大约有600个时区。</p>
+
+<p>类UNIX操作系统(像Linux发行版，BSD发行版，现代MAC OS发行版)接收例行跟新。在操作系统上安装这些更新可以让运行在那里的MySQL实例跟踪时区和夏令时/标准时间转换的变化。</p>
+
+<p>如果您得到的时区名称列表要短得多，那么您的服务器要么配置不完整，要么运行在Windows上。<a href="https://dev.mysql.com/doc/refman/5.7/en/time-zone-support.html">以下</a>是服务器管理员安装和维护ZoneInfo列表的说明。</p>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-37.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十七）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-36.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十六）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

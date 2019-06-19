@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="创建表">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(二十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/mysql-section-25.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(二十五)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, May 9, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#创建表">创建表</a>
+<ul>
+<li><a href="#1-创建表带有主键">1. 创建表带有主键</a></li>
+<li><a href="#2-基本表创建">2. 基本表创建</a></li>
+<li><a href="#3-创建表带外键">3. 创建表带外键</a></li>
+<li><a href="#4-显示数据表结构">4. 显示数据表结构</a></li>
+<li><a href="#5-克隆已存在的表">5. 克隆已存在的表</a></li>
+<li><a href="#6-使用时间戳列显示上次更新">6. 使用时间戳列显示上次更新</a></li>
+<li><a href="#7-从select创建表">7. 从SELECT创建表</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="创建表">创建表</h2>
+
+<h3 id="1-创建表带有主键">1. 创建表带有主键</h3>
+
+<pre><code class="language-mysql">CREATE TABLE Person (
+    PersonID  INT UNSIGNED NOT NULL,
+    LastName  VARCHAR(66) NOT NULL,
+    FirstName VARCHAR(66),
+    Address   VARCHAR(255),
+    City      VARCHAR(66),
+    PRIMARY KEY (PersonID)
+);
+</code></pre>
+
+<p>一个<strong>主键</strong>就是一个<code>NOT NULL</code>的单独或者多列的标识符，这个标识符可以表示表中唯一的行。创建了一个索引，但是没有显示声明为非空的话，MySQL将会以静默和隐式的方式声明他们。</p>
+
+<p>一个表只可以有一个<code>PRIMARY KEY</code>，并且每个表都推荐有一个。InnoDB将会在不存在的情况下创建一个(像<a href="https://dev.mysql.com/doc/refman/5.7/en/create-table.html">MySQL文档</a>中说明的)，尽管这是不可取的。</p>
+
+<p>通常，一个<code>AUTO_INCREMENT INT</code>被认为是&rdquo;代理键&rdquo;，用于索引优化和其他表的关系。当添加新纪录的时候，这个列的值(通常)会从默认值1开始加1。</p>
+
+<p>然而，尽管它的名字是这个，但是目的不是为了保证值是递增的，而是保证值是连续的和唯一的。</p>
+
+<p>一个递增的<code>INT</code>并不会恢复默认的初始值，当这个表的行都被删除的时候。除非这个表被truncate处理了，使用<code>TRUNCATE TABLE</code>语句。</p>
+
+<p><strong>定义一列为主键(行内定义)</strong></p>
+
+<p>如果主键只是一个单独的列的话，可以在列定义的行中添加<code>PRIMARY KEY</code>：</p>
+
+<pre><code class="language-mysql">CREATE TABLE Person (
+    PersonID  INT UNSIGNED NOT NULL PRIMARY KEY,
+    LastName  VARCHAR(66) NOT NULL,
+    FirstName Varchar(66),
+    Address   Varchar(255),
+    City      VARCHAR(66)
+);
+</code></pre>
+
+<p>这个命令的格式是简单并且易读的。</p>
+
+<p><strong>定义多列为主键</strong></p>
+
+<p>定义主键包含多个列也是可能的。可能会在关联外键关系的子表中这么做。多列主键是通过在单独的主键子句中列出参与列来定义的。这里行内定义就不行了，行内主键定义只能用于当个列。例如：</p>
+
+<pre><code class="language-mysql">CREATE TABLE invoice_line_items(
+    LineNum    SMALLINT UNSIGNED NOT NULL,
+    InvoiceNum INT UNSIGNED NOT NULL,
+    --- 其他列
+    PRIMARY KEY (InvoiceNum, LineNum),
+    FOREIGN KEY (InvoiceNum) REFERENCES  -- 一个表属性的引用
+);
+</code></pre>
+
+<p>注意：主键的列应该按照逻辑顺序指定，这可能和列的定义顺序不一样，就像上面的例子一样。</p>
+
+<p>越大的索引需要更大的硬盘空间，内存和IO。因此键应该尽可能小（特别是组合的键）。在InnoDB中，每个&rdquo;二级索引&rdquo;都包含<code>PRIMARY KEY</code>列的副本。</p>
+
+<h3 id="2-基本表创建">2. 基本表创建</h3>
+
+<p><code>CREATE TABLE</code>用来在MySQL数据库中创建一个表。</p>
+
+<pre><code class="language-mysql">CREATE TABLE Person (
+    `PersonID`    INTEGER NOT NULL PRIMARY KEY,
+    `LastName`    VARCHAR(80),
+    `FirstName`   VARCHAR(80),
+    `Address`     TEXT,
+    `City`        VARCHAR(100)
+)Engine=InnoDB;
+</code></pre>
+
+<p>每个字段的定义必须包含：</p>
+
+<ol>
+<li>字段名称：一个有效的字段名。确保每个名称都包含在`符号内，这样你就可以在字符名称中使用空格了。</li>
+<li>数据类型[长度]：如果字段是<code>CHAR</code>或<code>VARCHAR</code>的，必须制定字段的长度。</li>
+<li>属性 <code>NULL | NOT NULL</code>：如果指定了<code>NOT NULL</code>，任何像这个字段存入<code>NULL</code>的操作都会失败</li>
+<li>查看<a href="https://dev.mysql.com/doc/refman/5.7/en/data-types.html">手册</a>，了解更多的数据类型和属性。</li>
+</ol>
+
+<p><code>Engine=…</code>是可选的参数，用来指定表的存储引擎。如果没有指定存储引擎的话，将会使用服务器默认的存储引擎(通常是InnoDB或MyISAM)。</p>
+
+<p><strong>默认值</strong></p>
+
+<p>此外，你可以为每个字段设置一个默认的值，使用<code>DEFAULT</code>关键字：</p>
+
+<pre><code class="language-mysql">CREATE TABLE Address(
+    `AddressID`  INTEGER NOT NULL PRIMARY KEY,
+    `Street`     VARCHAR(80),
+    `City`       VARCHAR(80),
+    `Country`    VARCHAR(80) DEFAULT &quot;United States&quot;,
+    `Active`     BOOLEAN DEFAULT 1,
+) Engine=InnoDB;
+</code></pre>
+
+<p>如果在插入数据的时候，没有指定<code>Street</code>的值的话，那么这个字段将会是<code>NULL</code>。当<code>Country</code>没有指定的时候，它的默认值是<code>United States</code>。</p>
+
+<p>你可以为所有的类型指定默认值，<a href="https://dev.mysql.com/doc/refman/5.7/en/data-type-defaults.html">除了</a><code>BLOB TEXT GEOMETRY JSON</code>这些类型。</p>
+
+<h3 id="3-创建表带外键">3. 创建表带外键</h3>
+
+<pre><code class="language-mysql">CREATE TABLE Account(
+    AccountID  INT UNSIGNED NOT NULL,
+    AccountNo  INT UNSIGNED NOT NULL,
+    PersonID   INT UNSIGNED,
+    PRIMARY KEY (AccountID),
+    FOREIGN KEY (PersonID) REFERENCES Person (PersonID)
+)ENGINE=InnoDB;
+</code></pre>
+
+<p><strong>外键：</strong>一个外键要不是单独的列，要不是引用表的多列组合。这个外键要求在引用表中存在。强烈推荐引用表中作为外键的键是这个表的主键，但是这个不是强制的。它被用作快速查找引用的地方，它不需要是唯一的，实际上它可以是最左边的索引。</p>
+
+<p>外键涉及保存中心数据的父表，以及指向父表相同值的子表。<code>FOREIGN KEY</code>语句在子表中定义。父表和子表必须拥有相同的存储引擎，他们必须不是<a href="https://dev.mysql.com/doc/refman/5.7/en/create-table.html">TEMPORARY</a>表。</p>
+
+<p>外键和引用键中相应的列必须具有相似的数据类型。整数类型的大小和符合必须相同。字符串类型的长度不需要是相同的。对于非二进制(字符)字符串列，字符集和排序规则必须相同。</p>
+
+<p><strong>注意：</strong>InnoDB存储引擎(不是MyISAM或MEMORY)支持外键约束。使用其他引擎的数据库设置将接受这样的<code>CREATE TABLE</code>语句，但不会考虑外键约束。（虽然较新的MySQL版本默认为InnoDB，但明确的做法是好的。）</p>
+
+<h3 id="4-显示数据表结构">4. 显示数据表结构</h3>
+
+<p>如果你想要查看你表的架构信息，可以使用下面的语句：</p>
+
+<pre><code class="language-mysql">SHOW CREATE TABLE child;   -- 可选的方式1
+
+CREATE TABLE `child`(
+    `id`      INT(11) NOT NULL AUTO_INCREMENT,
+    `fullName` VARCHAR(100) NOT NULL,
+    `myParent` int(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `mommy_daddy` (`myParent`),
+    CONSTRAINT `mommy_daddy` FOREIGN KEY (`myParent`) REFERENCES `parent` (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+</code></pre>
+
+<p>如果在mysql命令行中使用，下面这种方式更加详细：</p>
+
+<pre><code class="language-mysql">SHOW CREATE TABLE child \G;
+</code></pre>
+
+<p>另外的可选查看表结构的方式：</p>
+
+<pre><code class="language-mysql">mysql&gt; CREATE TABLE Tab1(id int, name varchar(30)); 
+Query OK, 0 rows affected (0.03 sec)
+
+mysql&gt; DESCRIBE Tab1; -- Option 2
+
++-------+-------------+------+-----+---------+-------+ 
+| Field | Type        | Null | Key | Default | Extra | 
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | YES  |     | NULL    |       | 
+| name  | varchar(30) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+</code></pre>
+
+<blockquote>
+<p>Both DESCRIBE and DESC gives the same result.</p>
+</blockquote>
+
+<p>想要使用<code>DESCRIBE</code>一次性查看数据库所有表的结构，查看这个<a href="http://stackoverflow.com/a/38679580">例子</a>。</p>
+
+<h3 id="5-克隆已存在的表">5. 克隆已存在的表</h3>
+
+<p>表可以使用下面的命令进行复制：</p>
+
+<pre><code class="language-mysql">CREATE TABLE ClonedPersons LIKE Persons;
+</code></pre>
+
+<p>这个新表将会拥有和原表相同的结构，包括索引和列属性。</p>
+
+<p>除了手动创建表之外，还可以通过另外表中的选中数据来创建表：</p>
+
+<pre><code class="language-mysql">CREATE TABLE ClonedPersons SELECT * FROM Person;
+</code></pre>
+
+<p>你可以使用<code>SELECT</code>语句的任何普通特性来修改你想要的数据结构：</p>
+
+<pre><code class="language-mysql">CREATE TABLE ModifiedPersons
+SELECT PersonID, FirstName + LastName AS FullName FROM Persons
+WHERE LastName IS NOT NULL;
+</code></pre>
+
+<p>当使用<code>SELECT</code>语句创建表的时候，主键和索引将不会创建，你需要重新声明：</p>
+
+<pre><code class="language-mysql">CREATE TABLE ModifiedPersons (PRIMARY KEY (PersonID))
+SELECT PersonID, FirstName + LastName AS FullName FROM Persons 
+WHERE LastName IS NOT NULL;
+</code></pre>
+
+<h3 id="6-使用时间戳列显示上次更新">6. 使用时间戳列显示上次更新</h3>
+
+<p><code>TIMESTAMP</code>的列可以用来显示行上次的更新时间：</p>
+
+<pre><code class="language-mysql">CREATE TABLE `TestLastUpdate`(
+    `ID`    INT NULL,
+    `NAME`  VARCHAR(50) NULL,
+    `Address` VARCHAR(50) NULL,
+    `LastUpdate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) COMMENT='Last Update';
+</code></pre>
+
+<h3 id="7-从select创建表">7. 从SELECT创建表</h3>
+
+<p>你可以通过在<code>CREATE TABLE</code>语句后面增加一个<code>SELECT</code>语句来创建一个表：</p>
+
+<pre><code class="language-mysql">CREATE TABLE stack ( 
+    id_user INT,
+    username VARCHAR(30),
+    password VARCHAR(30) 
+);
+</code></pre>
+
+<p><strong>同一个数据库内建表</strong></p>
+
+<pre><code class="language-mysql">-- 创建和原表一样字段配置的表
+CREATE TABLE stack2 AS SELECT * FROM stack;
+
+-- 创建包含指定字段配置的表
+CREATE TABLE stack3 AS SELECT username, password FROM stack;
+</code></pre>
+
+<p><strong>不同数据库内建表</strong></p>
+
+<pre><code class="language-mysql">-- 创建和原表一样字段配置的表
+CREATE TABLE stack2 AS SELECT * FROM second_db.stack;
+
+-- 创建和原表一样字段配置的表
+CREATE TABLE stack3 AS SELECT username, password FROM second_db.stack;
+</code></pre>
+
+<p><strong>N.B</strong></p>
+
+<p>想要创建一个和其他数据库中存在的表的表名相同的表，你需要在表名前面指定数据库的名称：</p>
+
+<pre><code>FROM NAME_DATABASE.name_table
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-40.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-39.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十九）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

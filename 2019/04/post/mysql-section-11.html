@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="DELETE">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(十一)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/mysql-section-11.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(十一)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, April 25, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#delete">DELETE</a>
+<ul>
+<li><a href="#多表删除">多表删除</a>
+<ul>
+<li><a href="#外键">外键</a></li>
+</ul></li>
+<li><a href="#delete-vs-truncate">DELETE VS TRUNCATE</a></li>
+<li><a href="#多表delete">多表DELETE</a></li>
+<li><a href="#基本删除">基本删除</a></li>
+<li><a href="#where">WHERE</a></li>
+<li><a href="#删除所有行">删除所有行</a></li>
+<li><a href="#limit删除">LIMIT删除</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="delete">DELETE</h2>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>LOW_PRIORITY</td>
+<td>如果提供了<code>LOW_PRIORITY</code>，删除操作只有在没有其他进程从数据表上读取数据的时候才会执行</td>
+</tr>
+
+<tr>
+<td>IGNORE</td>
+<td>如果提供了<code>IGNORE</code>，任何删除时遇到的错误都将忽略</td>
+</tr>
+
+<tr>
+<td>table</td>
+<td>你想要删除记录的表</td>
+</tr>
+
+<tr>
+<td>WHERE conditions</td>
+<td>指定要删除数据的条件表达式。如果没有指定条件的话，所有的表记录都会被删除。</td>
+</tr>
+
+<tr>
+<td>ORDER BY expression</td>
+<td>如果提供了<code>ORDER BY</code>，将会按照顺序删除记录</td>
+</tr>
+
+<tr>
+<td>LIMIT</td>
+<td>控制删除的最大记录数量。提供的<code>number_rows</code>将会被删除。</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="多表删除">多表删除</h3>
+
+<p>MySQL的<code>DELETE</code>语句可以用于<code>JOIN</code>语句，允许指定需要删除的表。这用来避免嵌套语句很有用。下面是一个表：</p>
+
+<pre><code class="language-mysql">create table people
+(
+    id int primary key,
+    name varchar(100) not null,
+    gender char(1) not null
+);
+insert into people(id, name, gender) values 
+(1, 'Kathy', 'f'),(2, 'John', 'm'),(3,'Paul','m'),(4,'Kim','f');
+
+create table pets
+(
+    id int auto_increment primary key,
+    ownerId int not null,
+    name varchar(100) not null,
+    color varchar(100) not null
+);
+insert into pets(ownerId, name, color) values
+(1, 'Rover', 'beige'), (2, 'Bubbles', 'purple'), (3, 'Spot', 'black and white'),
+(1, 'Rover2', 'white');
+
+id name gender
+1  Kathy f
+2  John  m
+3  Paul  m
+4  Kim   f
+
+id  ownerId name   color
+1   1       Rover  beige
+2   2       Bubbles purple
+3   3       black and white
+4   1       Rover2 white
+</code></pre>
+
+<p>如果你想要删除Paul的宠物：</p>
+
+<pre><code class="language-mysql">DELETE p2 FROM pets p2 WHERE p2.ownerId in (
+    SELECT p1.id FROM people p1 WHERE p1.name='Paul'
+);
+</code></pre>
+
+<p>也可以使用JOIN语法：</p>
+
+<pre><code class="language-mysql">DELETE p2 FROM people p1 JOIN pets p2 ON p2.ownerId=p1.id WHERE p1.name='Paul';
+</code></pre>
+
+<p>1 row deleted</p>
+
+<p>从pets中删除了Spot这条记录。其中p1和p2是别名，对于长表名很有用也更加易读。</p>
+
+<p>删除人和宠物：</p>
+
+<pre><code class="language-mysql">DELETE p1, p2 FROM people p1 JOIN pets p2 ON p2.ownerId=p1.id WHERE p1.name='Paul';
+</code></pre>
+
+<p>2 rows deleted</p>
+
+<p>从pets中删除Spot。从people中删除Paul。</p>
+
+<h4 id="外键">外键</h4>
+
+<p>当DELETE语句使用<code>foreign key</code>来约束表时，优化器可以按照不遵循关系的顺序处理这些表。在pets表中增加一个外键：</p>
+
+<pre><code class="language-mysql">ALTER TABLE pets ADD CONSTRAINT `fk_pets_2_people` FOREIGN KEY(ownerId) references people(id) on DELETE  CASCADE;
+</code></pre>
+
+<p>这个引擎可能试着在pets操作之前先删除people表的记录，因此会造成下面的错误：</p>
+
+<pre><code>ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`test`.`pets`, CONSTRAINT `pets_ibfk_1` FOREIGN KEY (`ownerId`) REFERENCES `people` (`id`))
+</code></pre>
+
+<p>这个解决办法是从people表进行删除，然后依赖InnoDB的<code>ON DELETE</code>功能传递删除操作：</p>
+
+<pre><code class="language-mysql">DELETE FROM people WHERE name='Paul';
+</code></pre>
+
+<p>2 rows deleted</p>
+
+<p>从people中删除Paul。从pets关联删除Spot。</p>
+
+<p>第二个解决办法是临时删除外键检查：</p>
+
+<pre><code class="language-mysql">SET foreign_key_checks = 0;
+DELETE p1, p2 FROM people p1 JOIN pets p2 ON p2.ownerId=p1.id WHERE p1.name='Paul';
+SET foreign_key_checks = 1;
+</code></pre>
+
+<h3 id="delete-vs-truncate">DELETE VS TRUNCATE</h3>
+
+<pre><code class="language-mysql">TRUNCATE tablename;
+</code></pre>
+
+<p>这将会删除表的所有数据并且重置<code>AUTO_INCREMENT</code>索引值。在数据表的数据很大的时候，这个操作比<code>DELETE FROM tablename</code>更快。这在开发/测试的过程中很有用。</p>
+
+<p>当使用truncate操作一个表的时候，并不会删除相应的数据，这个操作删除表然后重建这个表，从而取消页面的分配，所以有机会在页面覆盖之前恢复截断的数据。(当innodb_file_per_table=OFF的时候，不会立即重新分配空间。)</p>
+
+<h3 id="多表delete">多表DELETE</h3>
+
+<p>MySQL允许指定哪个表匹配的行必须删除：</p>
+
+<pre><code class="language-mysql">-- 只删除employees记录
+DELETE e FROM Employees e JOIN Department d ON e.department_id = d.department_id
+WHERE d.name='Sales';
+
+--删除employees和department表
+DELETE e, d FROM Employees e JOIN Department d ON e.department_id = d.department_id
+WHERE d.name='Sales';
+
+--删除所有的表，和之前的一样
+DELETE FROM Employee e JOIN Department d ON e.department_id = d.department_id
+WHRE d.name = 'Sales';
+</code></pre>
+
+<h3 id="基本删除">基本删除</h3>
+
+<pre><code class="language-mysql">DELETE FROM `myTable` WHERE `someColumn`='something';
+</code></pre>
+
+<p>这里<code>WHERE</code>是可选的，但是没有的话会删除所有的行。</p>
+
+<h3 id="where">WHERE</h3>
+
+<pre><code class="language-mysql">DELETE FROM `table_name` WHERE `field_one`='value_one';
+</code></pre>
+
+<p>这将删除table_name表中所有<code>field_one</code>的值是<code>value_one</code>的记录。</p>
+
+<p>这里的<code>WHERE</code>语句和select中的事一样的，所以像<code>&gt; &lt; &lt;&gt; LIke</code>都是可以使用的。</p>
+
+<p><strong>注意：</strong>在DELETE中使用WHERE语句是必要的。如果你没有指定条件的话，表中的数据豆浆被删除。</p>
+
+<h3 id="删除所有行">删除所有行</h3>
+
+<pre><code class="language-mysql">DELETE FROM table_name;
+</code></pre>
+
+<p>这将删除表table_name中的所有记录。这是语法最基本的例子。这也展示了如果没有提供<code>WHERE</code>语句的话，<code>DELETE</code>将会清空这个表。</p>
+
+<h3 id="limit删除">LIMIT删除</h3>
+
+<pre><code class="language-mysql">DELETE FROM `table_name` WHERE `field_one`='value_one' LIMIT 1;
+</code></pre>
+
+<p>这个和WHERE中的例子是一样的，唯一的不同是这里删除指定数量的数据之后，就不会再继续删除了。</p>
+
+<p>如果这样限制删除的行数的话，它将会删除符合条件的第一行。但是它的返回值可能不是你希望的值，因为这里没有对结果进行显示的排序，所以结果可能是未排序的方式返回的。</p>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/java-section-1.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（一）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-25.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十五）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="主从复制">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(四十九)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/mysql-section-49.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(四十九)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, June 2, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#复制">复制</a>
+<ul>
+<li><a href="#1-主从配置复制">1. 主从配置复制</a></li>
+<li><a href="#2-复制错误">2. 复制错误</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="复制">复制</h2>
+
+<h3 id="1-主从配置复制">1. 主从配置复制</h3>
+
+<p>假设有两个MySQL服务器进行复制配置，其中一台是主库，一台是从库。</p>
+
+<p>我们需要配置主库记录在其上执行的每个操作的日志。我们需要配置从库监控主库的日志，一旦主库做了一些修改操作，从库就需要执行同样的操作。</p>
+
+<p><strong>主库配置</strong></p>
+
+<p>首先，我们需要为主库设置一个用户。这个用户用来给从库建立到主库的连接使用。</p>
+
+<pre><code class="language-mysql">CREATE USER 'user_name'@'%' IDENTIFIED BY 'user_password'; 
+GRANT REPLICATION SLAVE ON *.* TO 'user_name'@'%';
+FLUSH PRIVILEGES;
+</code></pre>
+
+<p>修改上面代码中的<code>user_name</code>和<code>user_password</code>为你自己的用户名和密码。</p>
+
+<p>现在<code>my.inf</code>(Linux中是my.cnf)需要被修改了，在<code>[mysqld]</code>部分添加下面的内容：</p>
+
+<pre><code class="language-mysql">server-id = 1
+log-bin = mysql-bin.log
+binlog-do-db = your_database
+</code></pre>
+
+<p>第一行用来为这个MySQL服务器设置一个ID。</p>
+
+<p>第二行告诉MySQL开始在指定的log文件中开始写入日志。在Linux机器上，这个需要被设置为<code>log-bin=/home/mysql/logs/mysql-bin.log</code>。如果您正在已使用复制的MySQL服务器中启动复制，请确保此目录中没有复制日志。</p>
+
+<p>第三行用来说明我们想要哪个数据库去写日志。你需要替换其中的<code>your_database</code>为你自己的数据库名。</p>
+
+<p>确保<code>ship-networking</code>没有开启，重启主库。</p>
+
+<p><strong>从库配置</strong></p>
+
+<p>从库的<code>my.inf</code>也需要修改。需要在<code>[mysqld]</code>部分包含下面的内容：</p>
+
+<pre><code class="language-mysql">server-id = 2
+master-host = master_ip_address
+master-connect-retry = 60
+
+master-user = user_name
+master-password = user_password
+replicate-do-db = your_database
+
+relay-log = slave-relay.log
+relay-log-index = slave-relay-log.index
+</code></pre>
+
+<p>第一行用来设置这个从库的ID，这个ID应该是唯一的。</p>
+
+<p>第二行是主库服务器的IP地址。修改这个值为你的主库服务器的IP。</p>
+
+<p>第三行以秒为单位，限制重试的次数。</p>
+
+<p>下面两行是从库的用户名和密码，用来连接主库。</p>
+
+<p>下面的一行设置要复制的数据库的名称。</p>
+
+<p>最后两行设置<code>relay-log</code>和<code>relay-log-index</code>两个文件的名称。</p>
+
+<p>确保<code>skip-networking</code>没有开启，重启从库服务器。</p>
+
+<p><strong>向从库复制数据</strong></p>
+
+<p>如果数据不断的被添加到主库，没有就必须要限制主库数据库的访问，避免任何东西添加到主库中。这可以通过在主库中执行下面的命令实现：</p>
+
+<pre><code class="language-mysql">FLUSH TABLES WITH READ LOCK;
+</code></pre>
+
+<p>如果没有数据添加到主库，你可以省略掉上面的操作。</p>
+
+<p>我们使用<code>mysqldump</code>来备份主库上面的数据。</p>
+
+<pre><code class="language-mysql">mysqldump your_database -u root -p &gt; D://Backup/backup.sql;
+</code></pre>
+
+<p>根据你的配置修改上面代码中的<code>your_database</code>和备份文件路径。你现在在指定的路径下有<code>backup.sql</code>的文件。如果从库中没有这个数据库，使用下面的命令创建这个数据库：</p>
+
+<pre><code class="language-mysql">CREATE DATABASE `your_database`;
+</code></pre>
+
+<p>现在我们需要把备份数据导入到从库中：</p>
+
+<pre><code class="language-mysql">mysql -u root -p your_database &lt;D://Backup/backup.sql
+---&gt;修改 `your_database` and 备份文件目录
+</code></pre>
+
+<p><strong>开始复制</strong></p>
+
+<p>要开启复制，我们需要找到主库中的log文件名称和位置。我们在主库执行下面的命令：</p>
+
+<pre><code>SHOW MASTER STATUS;
+</code></pre>
+
+<p>将会获得下面的输出内容：</p>
+
+<pre><code class="language-mysql">+---------------------+----------+-------------------------------+------------------+
+| File                | Position | Binlog_Do_DB                  | Binlog_Ignore_DB |
++---------------------+----------+-------------------------------+------------------+
+| mysql-bin.000001    | 130      | your_database                 |                  |
++---------------------+----------+-------------------------------+------------------+
+</code></pre>
+
+<p>在从库执行下面的命令：</p>
+
+<pre><code class="language-mysql">SLAVE STOP;
+CHANGE MASTER TO MASTER_HOST='master_ip_address', MASTER_USER='user_name', MASTER_PASSWORD='user_password', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=130; 
+SLAVE START;
+</code></pre>
+
+<p>首先我们停止从库。然后我们告诉从库从哪里寻找主库日志文件。对于<code>MASTER_LOG_FILE</code>和<code>MASTER_LOG_POS</code>的值，从我们在主库中执行<code>SHOW MASTER STATUS</code>的结果中查找。</p>
+
+<p>你按照自己的配置修改上面代码中的IP地址，用户名和密码。</p>
+
+<p>从库现在等待中。我们可以在从库中执行下面的命令查看从库的状态：</p>
+
+<pre><code class="language-mysql">SHOW SLAVE STATUS;
+</code></pre>
+
+<p>如果前面你在主库中执行了<code>FLUSH TABLES WITH READ LOCK</code>命令，现在执行下面的命令解锁：</p>
+
+<pre><code class="language-mysql">UNLOCK TABLES;
+</code></pre>
+
+<p>现在主库执行的每个操作都会写入到日志中，从库会监控主库的日志文件。一旦主库日志文件做了修改，从库将会同步修改操作。</p>
+
+<h3 id="2-复制错误">2. 复制错误</h3>
+
+<p>当在slave上运行查询时出现错误时，mysql会自动停止复制以识别问题并进行修复。这主要是因为事件导致了重复的键或找不到行，并且无法更新或删除。虽然不建议这样做，但你也可以跳过这些错误。</p>
+
+<p>要跳过从库中挂起的一个查询，使用下面的语法：</p>
+
+<pre><code class="language-mysql">SET GLOBAL sql_slave_skip_counter = N;
+</code></pre>
+
+<p>这个语句将会跳过主库下N次的操作。这个语句只有在从库线程没有执行的情况下才有效。否则，将会产生一个错误：</p>
+
+<pre><code class="language-mysql">STOP SLAVE;
+SET GLOBAL sql_slave_skip_counter=1; 
+START SLAVE;
+</code></pre>
+
+<p>在一些情况下，这是有用的。如果这个语句是事务中的一部分，这将会更加复杂，跳过产生错误的语句将会导致整个事务被跳过。</p>
+
+<p>如果你想跳过包含相同错误码的更多的查询，并且你确定跳过这些错误不会导致主从不一致的问题，你希望跳过所有这些错误，那么你可以在<code>my.cnf</code>中添加下面一行。</p>
+
+<p>假设你想要跳过重复错误：</p>
+
+<pre><code class="language-mysql">1062 | Error 'Duplicate entry 'xyz' for key 1' on query
+</code></pre>
+
+<p>就在<code>my.cnf</code>中添加下面一行：</p>
+
+<pre><code class="language-mysql">slave-skip-errors = 1062
+</code></pre>
+
+<p>你可以跳过其他类型或者所有类型的错误，但是需要确保跳过这些错误不会导致主从不一致。下面是语法和例子：</p>
+
+<pre><code class="language-mysql">slave-skip-errors=[err_code1,err_code2,...|all]
+
+slave-skip-errors=1062,1053 
+slave-skip-errors=all 
+slave-skip-errors=ddl_exist_errors
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/mysql-section-50.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/mysql-section-48.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十八)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

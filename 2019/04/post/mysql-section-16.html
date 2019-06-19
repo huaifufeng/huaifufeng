@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="JOIN">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(十六)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/mysql-section-16.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(十六)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Tuesday, April 30, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#join">JOIN</a>
+<ul>
+<li><a href="#join可视化效果">JOIN可视化效果</a></li>
+<li><a href="#与子查询join-派生-表">与子查询join(&ldquo;派生&rdquo;表)</a></li>
+<li><a href="#full-outer-join">Full Outer Join</a></li>
+<li><a href="#用订单检索客户-主题的变化">用订单检索客户——主题的变化</a></li>
+<li><a href="#join的例子">JOIN的例子</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="join">JOIN</h2>
+
+<h3 id="join可视化效果">JOIN可视化效果</h3>
+
+<p>如果您是一个面向视觉的人，这个venn图可以帮助您理解MySQL中存在的不同类型的连接。</p>
+
+<p><img src="/img/mysql/3bs7C.png" alt="join view" /></p>
+
+<h3 id="与子查询join-派生-表">与子查询join(&ldquo;派生&rdquo;表)</h3>
+
+<pre><code class="language-mysql">SELECT x,... 
+    FROM ( SELECT y, ... FROM ...) AS a
+    JOIN tbl ON tbl.x = a.y
+    WHERE ... 
+</code></pre>
+
+<p>这将会执行一个子查询放入一个临时表，然后join这个临时tbl。</p>
+
+<p>在5.6之前，临时表上面不能有索引，因此这可能是非常低效：</p>
+
+<pre><code class="language-mysql">SELECT ...
+    FROM ( SELECT y, ... FROM ... ) AS a
+    JOIN ( SELECT x, ... FROM ... ) AS b
+    WHERE ...
+</code></pre>
+
+<p>在5.6，优化器可以计算出最好的索引然后在运行中创建它(这会有一些开销，所以仍然不是&rdquo;完美的&rdquo;)。</p>
+
+<p>另外通用的方式是在子查询中创建一些东西：</p>
+
+<pre><code class="language-mysql">SELECT @n := @n + 1,
+    ...
+    FROM ( SELECT @n:=0 ) AS initialize
+    JOIn the_real_table
+    ORDER BY ...
+</code></pre>
+
+<p>(注意：从技术上将这是一个交叉连接(笛卡尔积)，入缺少ON所示。但是它是有效的，因为子查询只返回一行，必须与真实表匹配)。</p>
+
+<h3 id="full-outer-join">Full Outer Join</h3>
+
+<p>MySQL不支持<code>FULL OUTER JOIN</code>，但是有一些方法可以模拟：</p>
+
+<p><strong>创建表</strong></p>
+
+<pre><code class="language-mysql">-- 表owners
+DROP TABLE IF EXISTS `owners`;
+CREATE TABLE `owners` (
+`owner_id` int(11) NOT NULL AUTO_INCREMENT,
+`owner` varchar(30) DEFAULT NULL,
+PRIMARY KEY (`owner_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+-- 添加owners记录
+INSERT INTO `owners` VALUES ('1', 'Ben');
+INSERT INTO `owners` VALUES ('2', 'Jim');
+INSERT INTO `owners` VALUES ('3', 'Harry');
+INSERT INTO `owners` VALUES ('6', 'John');
+INSERT INTO `owners` VALUES ('9', 'Ellie');
+
+-- 表tools结构
+DROP TABLE IF EXISTS `tools`；
+CREATE TABLE `tools` (
+`tool_id` int(11) NOT NULL AUTO_INCREMENT,
+`tool` varchar(30) DEFAULT NULL,
+`owner_id` int(11) DEFAULT NUMM,
+PRIMARY KEY (`tool_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+-- 添加tools记录
+INSERT INTO `tools` VALUES ('1', 'Hammer', '9');
+INSERT INTO `tools` VALUES ('2', 'Pliers', '1');
+INSERT INTO `tools` VALUES ('3', 'Knife', '1');
+INSERT INTO `tools` VALUES ('4', 'Chisel', '2');
+INSERT INTO `tools` VALUES ('5', 'Hacksaw', '1');
+INSERT INTO `tools` VALUES ('6', 'Level', null);
+INSERT INTO `tools` VALUES ('7', 'Wrench', null);
+INSERT INTO `tools` VALUES ('8', 'Tape Measure', '9');
+INSERT INTO `tools` VALUES ('9', 'Screwdriver', null);
+INSERT INTO `tools` VALUES ('10', 'Clamp', null);
+</code></pre>
+
+<p><strong>我们想看什么</strong></p>
+
+<p>我们需要一个列表 ，可以查询谁拥有什么工具，什么工具没有拥有者。</p>
+
+<p><strong>查询</strong></p>
+
+<p>要实现这个，我们可以使用<code>UNION</code>来组合两个查询的数据。在第一个查询中，我们使用<code>LEFT JOIN</code>来为每个拥有者添加工具。这将会把所有的拥有者放到结果中，但是不确保每个人都有工具。</p>
+
+<p>在第二个查询中，我们使用<code>RIGHT JOIN</code>把工具添加到拥有者上。这样我们在结果集中会拥有所有的工具，如果这个工具没有拥有者，这一列就是NULL。通过添加WHERE语句，添加<code>owners.owner_id IS NULL</code>这个条件，我们将结果定义为第一个查询尚未返回的数据集，因为我们只在右联接表中查找数据。</p>
+
+<p>因为我们正在使用union，所以第二个查询的所有结果集都将附加到第一个查询结果集。</p>
+
+<pre><code class="language-mysql">SELECT `owners`.`owner`, tools.tool
+FROM `owners`
+LEFT JOIN `tools` ON `owners`.`owner_id` = `tools`.`owner_id` UNION ALL
+SELECT `owners`.`owner`, tools.tool
+FROM `owners`
+RIGHT JOIN `tools` ON `owners`.`owner_id` = `tools`.`owner_id` WHERE `owners`.`owner_id` IS NULL;
+
+ +-------+--------------+
+ | owner | tool         |
+ +-------+--------------+
+ | Ben   | Pliers       |
+ | Ben   | Knife        |
+ | Ben   | Hacksaw      |
+ | Jim   | Chisel       |
+ | Harry | NULL         |
+ | John  | NULL         |
+ | Ellie | Hammer       |
+ | Ellie | Tape Measure |
+ | NULL  | Level        |
+ | NULL  | Wrench       |
+ | NULL  | Screwdriver  |
+ | NULL  | Clamp        |
+ +-------+--------------+
+ 12 rows in set (0.00 sec)
+</code></pre>
+
+<h3 id="用订单检索客户-主题的变化">用订单检索客户——主题的变化</h3>
+
+<p>下面将会回去所有用户的所有订单：</p>
+
+<pre><code class="language-mysql">SELECT c.CustomerName, o.OrderID
+    FROM Customers AS c
+    INNER JOIN Orders AS o
+        ON c.CustomerID = o.CustomerID
+    ORDER BY c.CustomerID, c.OrderID;
+</code></pre>
+
+<p>这将会统计每个用户的订单数量：</p>
+
+<pre><code class="language-mysql">SELECT c.CustomerID, COUNT(*) AS 'Order Count'
+    FROM Customers AS c
+    INNER JOIN Orders AS o
+        ON c.CustomerID = o.CustomerID
+    GROUP BY c.CustomerID
+    ORDER BY c.CustomerName;
+</code></pre>
+
+<p>也是统计，但是更快：</p>
+
+<pre><code class="language-mysql">SELECT c.CustomerName, 
+    (SELECT COUNT(*) FROM Orders WHERE CustomerID = c.CustomerID) as 'Order Count'
+    FROM Customers AS c
+    ORDER BY c.CustomerName;
+</code></pre>
+
+<p>只列出拥有订单的用户：</p>
+
+<pre><code class="language-mysql">SELECT c.CustomerName,
+    FROM Customers AS c
+    WHERE EXISTS ( SELECT * FROM Orders WHERE CustomerID = c.CustomerID )
+    Order BY c.CustomerName;
+</code></pre>
+
+<h3 id="join的例子">JOIN的例子</h3>
+
+<p>创建表：</p>
+
+<pre><code class="language-mysql">CREATE TABLE `user` (
+`id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+`name` varchar(30) NOT NULL,
+`course` smallint(5) unsigned DEFAULT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `course` (
+`id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+`name` varchar(50) NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+</code></pre>
+
+<p>因为我们使用InnoDB引擎，并且知道user.course和course.id是关联的，所以我们可以定义外键关系：</p>
+
+<pre><code class="language-mysql">ALTER TABLE `user`
+ADD CONSTRAINT `FK_course`
+FOREIGN KEY (`course`) REFERENCES `course` (`id`)
+ON UPDATE CASCADE;
+</code></pre>
+
+<p>JOIN查询(Inner Join)</p>
+
+<pre><code class="language-mysql">SELECT user.name, course.name
+FROM `user`
+INNER JOIN `course` ON user.course = course.id;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-31.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十一）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-30.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

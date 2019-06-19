@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="变量">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(八)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/mysql-section-08.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(八)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, April 22, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#变量">变量</a>
+<ul>
+<li><a href="#设置变量">设置变量</a></li>
+<li><a href="#使用select语句中的变量进行行数和分组">使用SELECT语句中的变量进行行数和分组</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="变量">变量</h2>
+
+<h3 id="设置变量">设置变量</h3>
+
+<p>有一些方法来设置变量：</p>
+
+<ol>
+<li>可以使用SET将变量设置为特定的、字符串、数字和日期</li>
+</ol>
+
+<pre><code class="language-mysql">   SET @var_string = &quot;my_var&quot;;
+   SET @var_num = '2';
+   SET @var_date = '2015-07-20';
+</code></pre>
+
+<ol>
+<li>你可以使用下面的方法设置变量为select语句的结果：</li>
+</ol>
+
+<pre><code class="language-mysql">   Select @var := '123';
+   (注意：当你没有使用SET设置变量的时候，你需要使用:=，因为在其他的语句(select, update)中，&quot;=&quot;是用来比较的，所以当你在等号前面增加一个冒号的时候，这表明这不是一个比较语句，而是一个SET语句)
+</code></pre>
+
+<ol>
+<li>你可以使用INTO设置一个变量作为select语句的返回值</li>
+</ol>
+
+<p>(当我需要动态选择要查询的分区时，这是特别有用的)</p>
+
+<pre><code class="language-mysql">SET @start_date = '2015-07-20';
+SET @end_date = '2016-01-31';
+
+#这获取年月来确定使用的分区
+SET @start_yearmonth = (SELECT EXTRACT(YEAR_MONTH FROM @start_date));
+SET @end_yearmonth = (SELECT EXTRACT(YEAR_MONTH FROM @end_date));
+
+#把分区放入变量
+SELECT GROUP_CONCAT(partition_name) FROME information_schema.partitions p 
+WHERE table_name='partitioned_table' AND SUBSTRING_INDEX(partition_name, 'P', -1)
+BETWEEN @start_yearmonth AND @end_yearmonth INTO @partitions;
+
+#把查询放入变量。因为MySQL不会把我们的变量任务是一个变量，所有我们需要拼接语句并执行这个语句
+SET @query = CONCAT('CREATE TABLE part_of_partitioned_table(PRIMARY KEY(id))
+SELECT partitioned_table.* FROM partitioned_table PARTITION(', @partitions, ')
+JOIN users u USING(user_id)
+WHERE date(partitioned_table.date) BETWEEN ' , @start_date, ' AND ', @end_date);
+                    
+#prepare语句
+PREPARE stmt FROM @query;
+#删除表
+DROP TABLE IF EXISTS tech.part_of_partitioned_table;
+#创建表
+EXECUTE stmt;
+</code></pre>
+
+<h3 id="使用select语句中的变量进行行数和分组">使用SELECT语句中的变量进行行数和分组</h3>
+
+<p>假设我们有下面这张表：</p>
+
+<pre><code>+======+===========+
+| team |    person |
++======+===========+
+|   A  |      John |
++------+-----------+
+|   B  |     Smith |
++------+-----------+
+|   A  |    Walter |
++------+-----------+
+|   A  |     Louis |
++------+-----------+
+|   C  | Elizabeth |
++------+-----------+
+|   B  |     Wayne |
++------+-----------+
+
+CREATE TABLE team_person AS SELECT 'A' team, 'John' person
+UNION ALL SELECT 'B' team, 'Smith' person
+UNION ALL SELECT 'A' team, 'Walter' person
+UNION ALL SELECT 'A' team, 'Louis' person
+UNION ALL SELECT 'C' team, 'Elizabeth' person
+UNION ALL SELECT 'B' team, 'Wayne' person;
+</code></pre>
+
+<p>从<code>team_person</code>中查询数据，增加额外的<code>row_number</code>列：</p>
+
+<pre><code class="language-mysql">SELECT @row_no := @row_no + 1 AS row_number, team, person, FROM team_person, (SELECT @row_no := 0) t;
+</code></pre>
+
+<p>或者：</p>
+
+<pre><code class="language-mysql">SET @row_no := 0;
+SELECT @row_no := @row_no + 1 AS row_number, team, person FROM team_person;
+</code></pre>
+
+<p>这将会输出下面的内容：</p>
+
+<pre><code>+============+======+===========+
+| row_number | team |    person |
++============+======+===========+
+|          1 |   A  |      John |
++------------+------+-----------+
+|          2 |   B  |     Smith |
++------------+------+-----------+
+|          3 |   A  |    Walter |
++------------+------+-----------+
+|          4 |   A  |     Louis |
++------------+------+-----------+
+|          5 |   C  | Elizabeth |
++------------+------+-----------+
+|          6 |   B  |     Wayne |
++------------+------+-----------+
+</code></pre>
+
+<p>最后，如果我们在<code>team</code>上面进行Group By操作，我们获取<code>row_number</code>。</p>
+
+<pre><code class="language-mysql">SELECT @row_no := IF(@prev_val = t.team, @row_no + 1, 1) AS row_number, @prev_val := t.team AS team, t.person
+FROM team_person t,
+(SELECT @row_no := 0) x,
+(SELECT @prev_val := '') y
+ORDER BY t.team ASC, t.person DESC;
+
++============+======+===========+
+| row_number | team |    person |
++============+======+===========+
+|          1 |   A  |    Walter |
++------------+------+-----------+
+|          2 |   A  |     Louis |
++------------+------+-----------+
+|          3 |   A  |      John |
++------------+------+-----------+
+|          1 |   B  |     Wayne |
++------------+------+-----------+
+|          2 |   B  |     Smith |
++------------+------+-----------+
+|          1 |   C  | Elizabeth |
++------------+------+-----------+
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/php-section-23.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十三）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/04/post/php-section-22.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

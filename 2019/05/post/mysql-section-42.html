@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="字符集和排序">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(四十二)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/mysql-section-42.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(四十二)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, May 26, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#字符集和排序">字符集和排序</a>
+<ul>
+<li><a href="#1-什么是字符集和排序">1. 什么是字符集和排序？</a></li>
+<li><a href="#2-设置表和字段的字符集">2. 设置表和字段的字符集</a></li>
+<li><a href="#3-声明">3. 声明</a></li>
+<li><a href="#4-连接">4. 连接</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="字符集和排序">字符集和排序</h2>
+
+<h3 id="1-什么是字符集和排序">1. 什么是字符集和排序？</h3>
+
+<p>有几十种字符集和数百种排序规则。(一种排序规则只属于一种字符串)。查看<code>SHOW COLLATION;</code>的输出。</p>
+
+<p>通常只有4中字符集比较重要：</p>
+
+<pre><code>ascii -- 基础的7位编码
+latin1 -- ascii, 加上大多数西欧语言需要的字符
+utf8 -- the 1-, 2-, and 3-byte subset of utf8. 不包括 Emoji and 一些中文.
+utf8mb4 -- UTF8字符的全集合，包含当前所有的语言
+</code></pre>
+
+<p>全部包括英文字符，编码相同。utf8是utf8mb4的子集。</p>
+
+<p>最好用法：</p>
+
+<ul>
+<li>将utf8mb4用于包含多种语言的<code>TEXT</code>和<code>VARCHAR</code>列</li>
+<li>对于十六进制字符串（UUID、MD5等）和简单代码（国家/地区代码、邮政编码等），使用ASCII（Latin1是OK）。</li>
+</ul>
+
+<p>在MySQL5.3.3之前是没有utf8mb4这个字符集的，所以在之前的版本中utf8是最有效的。</p>
+
+<p>在MySQL之外的环境中，&rdquo;UTF8&rdquo;表示的是和MySQL中utf8mb4是想同的，而不是utf8。</p>
+
+<p>排序规则以字符集开头，以<code>_ci</code>结尾表示&rdquo;大小写和重音区分&rdquo;，以&rdquo;_bin&rdquo;结尾表示已二进制比较。</p>
+
+<p>最新的uttf8mb4排序规则是<code>utf8mb4_unicode_520_ci</code>，是基于Unicode 5.20。如果你基于一个语言，那么你可能用到&rdquo;utf8mb4_polish_ci&rdquo;，它将根据波兰语惯例稍微重新排列字母。</p>
+
+<h3 id="2-设置表和字段的字符集">2. 设置表和字段的字符集</h3>
+
+<p>你可以为每个表和每个单独的字段设置字符集，使用<code>CHARACTER SET</code>和<code>charset</code>语句。</p>
+
+<pre><code class="language-mysql">CREATE TABLE Address (
+`AddressID` INTEGER NOT NULL PRIMARY KEY,
+`Street`  VARCHAR(80) CHARACTER SET ASCII,
+`City`  VARCHAR(80),
+`Country` VARCHAR(80) DEFAULT &quot;United States&quot;,
+`Active` BOOLEAN DEFAULT 1,
+) Engine=InnoDB default charset=UTF8;
+</code></pre>
+
+<p><code>City</code>和<code>Country</code>将会使用UTF8编码，这个是这个表的默认字符集。<code>Street</code>使用<code>ASCII</code>编码，我们专门指定的。</p>
+
+<p>设置正确的字符集高度依赖于数据集，但也可以极大地提高处理数据的系统之间的可移植性。</p>
+
+<h3 id="3-声明">3. 声明</h3>
+
+<pre><code class="language-mysql">CREATE TABLE foo ( ...
+    name CHARACTER SET utf8mb4
+    ...
+    );
+</code></pre>
+
+<h3 id="4-连接">4. 连接</h3>
+
+<p>使用字符集的关键是告诉MySQL服务器客户机字节的编码是什么。这里有一种方法：</p>
+
+<pre><code class="language-mysql">SET NAMES utf8mb4;
+</code></pre>
+
+<p>每种语言（PHP、Python、Java、……）都有自己的方式，通常最好是<code>SET NAMES</code>。</p>
+
+<p>例如：<code>SET NAMES utf8mb4</code>，并且有一个列为<code>CHARACTER SET latin1</code>—这将会在Insert的时候从latin1到utf8mb4，在查询的时候反过来转换。</p>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/mysql-section-43.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十三)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/mysql-section-41.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十一)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

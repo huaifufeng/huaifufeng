@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="更改表">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(二十六)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/mysql-section-26.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(二十六)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, May 10, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#更改表">更改表</a>
+<ul>
+<li><a href="#1-修改存储引擎-重建表-修改file-per-table">1. 修改存储引擎;重建表;修改file_per_table</a></li>
+<li><a href="#2-修改表的列">2. 修改表的列</a></li>
+<li><a href="#3-修改auto-increment值">3. 修改auto_increment值</a></li>
+<li><a href="#4-重命名表">4. 重命名表</a></li>
+<li><a href="#5-增加索引">5. 增加索引</a></li>
+<li><a href="#6-修改主键列的类型">6. 修改主键列的类型</a></li>
+<li><a href="#7-修改列定义">7. 修改列定义</a></li>
+<li><a href="#8-重命名数据库">8. 重命名数据库</a></li>
+<li><a href="#9-交换两个数据库的名称">9. 交换两个数据库的名称</a></li>
+<li><a href="#10-重命名表的列">10. 重命名表的列</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="更改表">更改表</h2>
+
+<h3 id="1-修改存储引擎-重建表-修改file-per-table">1. 修改存储引擎;重建表;修改file_per_table</h3>
+
+<p>例如，如果一个表<code>t1</code>当前不是InnoDB表，下面的语句将会修改这个表的存储引擎为InnoDB：</p>
+
+<pre><code class="language-mysql">ALTER TABLE t1 ENGINE=InnoDB;
+</code></pre>
+
+<p>如果这个表已经是<code>InnoDB</code>存储引擎了，这个语句将会重建表和索引，并且和<code>OPTIMIZE TABLE</code>的操作效果相同。你可能获取一些硬盘空间的改进。</p>
+
+<p>如果<code>innodb_file_per_table</code>的值和<code>t1</code>构建时的值不同，就会将这个值转换为(或从)<code>file_per_table</code>。</p>
+
+<h3 id="2-修改表的列">2. 修改表的列</h3>
+
+<pre><code class="language-mysql">CREATE TABLE stackoverflow;
+
+USE stackoverflow;
+
+CREATE TABLE stack(
+    id_user    INT NOT NULL,
+    usernaem   VARCHAR(30) NOT NULL,
+    password   VARCHAR(30) NOT NULL
+);
+
+ALTER TABLE stack ADD COLUMN submit date NOT NULL; -- 增加新列
+ALTER TABLE stack DROP COLUMN submit;  -- 删除列
+ALTER TABLE stack MODIFY submit DATETIME NOT NULL; -- 修改列类型
+ALTER TABLE stack CHANGE submit submit_date DATETIME NOT NULL; -- 修改列类型和名称
+ALTER TABLE stachk ADD COLUMN mod_id INT NOT NULL AFTER id_user; -- 增加新列在存在的列之后
+</code></pre>
+
+<h3 id="3-修改auto-increment值">3. 修改auto_increment值</h3>
+
+<p>当你不想删除大量数据之后在自增列中出现缝隙，更改自动增量值是非常有用的。</p>
+
+<p>例如，你的表中有很多不想要(广告)的行，你删除了他们，并且希望修复自动增量值的间隙。假设自动增量值的最大值现在是100，你可以使用下面的命令修复自动增量值：</p>
+
+<pre><code class="language-mysql">ALTER TABLE your_table_name AUTO_INCREMENT=101;
+</code></pre>
+
+<h3 id="4-重命名表">4. 重命名表</h3>
+
+<p>重命名表可以使用下面的命令：</p>
+
+<pre><code class="language-mysql">RENAME TABLE `&lt;old name&gt;` TO `&lt;new name&gt;`;
+</code></pre>
+
+<p>下面的语法做了相同的事情：</p>
+
+<pre><code class="language-mysql">ALTER TABLE `&lt;old name&gt;` RENAME TO `&lt;new name&gt;`;
+</code></pre>
+
+<p>如果重命名一个临时表，必须使用<code>ALTER TABLE</code>语法：</p>
+
+<p><strong>步骤：</strong></p>
+
+<ol>
+<li>使用实际的值替换上面语句中的<code>&lt;old name&gt;</code>和<code>&lt;new name&gt;</code>。<strong>注意：如果表已经被移到了一个不同的数据库中，所以要使用<code>dbname.tablename</code>这样的语法。</strong></li>
+<li>在MySQL命令行或类似MySQL WorkBench这样的客户端中执行上面的命令。<strong>注意：这个用户需要在老表上面具备<code>ALTER</code>和<code>DROP</code>的权限，在新表上面具备<code>CREATE</code>和<code>INSERT</code>的权限。</strong></li>
+</ol>
+
+<h3 id="5-增加索引">5. 增加索引</h3>
+
+<p>为了提升性能，想要给列增加索引：</p>
+
+<pre><code class="language-mysql">ALTER TABLE TABLE_NAME ADD INDEX `index_name` (`column_name`)
+</code></pre>
+
+<p>修改表，为多个列增加联合索引：</p>
+
+<pre><code class="language-mysql">ALTER TABLE TABLE_NAME ADD INDEX `index_name` (`col1`, `col2`);
+</code></pre>
+
+<h3 id="6-修改主键列的类型">6. 修改主键列的类型</h3>
+
+<pre><code class="language-mysql">ALTER TABLE fish_data.fish DROP PRIMARY KEY;
+ALTER TABLE fish_data.fish MODIFY COLUMN fish_id DECIMAL(20, 0) NOT NULL PRIMARY KEY;
+</code></pre>
+
+<p>企图不首先删除表的主键，直接修改主键列的类型将会导致一个错误。</p>
+
+<h3 id="7-修改列定义">7. 修改列定义</h3>
+
+<p>想要修改一个db列的定义，下面的查询就是是一个例子，假设我们有下面的结构：</p>
+
+<pre><code class="language-mysql">users (
+    firstname varchar(20),
+    lastname  varchar(20),
+    age       char(2)
+)
+</code></pre>
+
+<p>想要把<code>age</code>列的类型从<code>char</code>修改为<code>int</code>，我们可以使用下面的语句：</p>
+
+<pre><code class="language-mysql">ALTER TABLE users CHANGE age age tinyint UNSIGNED NOT NULL;
+</code></pre>
+
+<p>这个语法的结构是：</p>
+
+<pre><code class="language-m">ALTER TABLE table_name CHANGE column_name new_column_definition;
+</code></pre>
+
+<h3 id="8-重命名数据库">8. 重命名数据库</h3>
+
+<p>没有一个命令可以重命名MySQL的数据库，但是可以通过备份和还原来使用一个简单的方法实现这个功能：</p>
+
+<pre><code class="language-mysql">mysqladmin -uroot -p&lt;password&gt; create &lt;new name&gt;
+mysqladmin -uroot -p&lt;password&gt; --routines &lt;old name&gt; | mysql -uroot -pmypassword &lt;new name&gt;
+mysqladmin -uroot -p&lt;password&gt; drop &lt;old name&gt;
+</code></pre>
+
+<p><strong>步骤：</strong></p>
+
+<ol>
+<li>复制上面的代码到一个文本编辑器中</li>
+<li>使用实际的值替换上面代码中的<code>&lt;old name&gt;</code>， <code>&lt;new name&gt;</code>， <code>&lt;password&gt;</code>(可以将<code>root</code>替换为其他不同的用户)</li>
+<li>在命令行中一行行的执行上面的代码(减少在MySQL的&rdquo;bin&rdquo;目录中，但询问的时候输入&rdquo;y&rdquo;)</li>
+</ol>
+
+<p><strong>可选的步骤</strong></p>
+
+<p>重命名(移动)一个表从一个数据库到另一个数据库中。在每个表中执行下面的命令：</p>
+
+<pre><code class="language-mysql">RENAME TABLE `&lt;old db&gt;`.`&lt;name&gt;` TO `&lt;new db&gt;`.`&lt;name&gt;`;
+</code></pre>
+
+<p>你可以使用下面的语句执行相同的工作：</p>
+
+<pre><code class="language-mysql">SELECT CONCAT('RENAME TABLE old_db.', table_name, ' TO ', 
+               'new_db.', table_name)
+   FROM information_schema.TABLES
+   WHERE table_schema = 'old_db';
+</code></pre>
+
+<p>警告：不要通过简单的移动文件系统上面的文件来尝试执行任何类型的表或数据库。这在以前的MyISAM中很有效，但是在新的InnoDB和表空间中就不起作用了。尤其是可能在下个主要版本中，可能将会把&rdquo;数据字典&rdquo;从文件系统移到系统InnoDB表中。移动（而不是直接删除）InnoDB表的分区需要使用“可传输表空间”。在不久的将来，甚至连一个文件都找不到。</p>
+
+<h3 id="9-交换两个数据库的名称">9. 交换两个数据库的名称</h3>
+
+<p>下面的命令用来交换两个数据库的名称(db1和db2)</p>
+
+<pre><code class="language-mysql">mysqladmin -uroot -p&lt;password&gt; create swaptemp
+mysqldump -uroot -p&lt;password&gt; --routines &lt;db1&gt; | mysql -uroot -p&lt;password&gt; swaptemp mysqladmin -uroot -p&lt;password&gt; drop &lt;db1&gt;
+mysqladmin -uroot -p&lt;password&gt; create &lt;db1&gt;
+mysqldump -uroot -p&lt;password&gt; --routines &lt;db2&gt; | mysql -uroot -p&lt;password&gt; &lt;db1&gt; mysqladmin -uroot -p&lt;password&gt; drop &lt;db2&gt;
+mysqladmin -uroot -p&lt;password&gt; create &lt;db2&gt;
+mysqldump -uroot -p&lt;password&gt; --routines swaptemp | mysql -uroot -p&lt;password&gt; &lt;db2&gt; mysqladmin -uroot -p&lt;password&gt; drop swaptemp
+</code></pre>
+
+<p><strong>步骤</strong></p>
+
+<ol>
+<li>将上面的命令复制到一个文本编辑器中</li>
+<li>替换上面命令中的<code>&lt;db1&gt;</code>， <code>&lt;db2&gt;</code>， <code>&lt;password&gt;</code>，(可以替换root为其他的用户)为实际的值</li>
+<li>在命令行中一行行的执行上面的代码(减少在MySQL的&rdquo;bin&rdquo;目录中，但询问的时候输入&rdquo;y&rdquo;)</li>
+</ol>
+
+<h3 id="10-重命名表的列">10. 重命名表的列</h3>
+
+<p>可以在单个语句中重命名列，但是必须指定新的名称、&rdquo;列定义&rdquo;(即其他的数据类型和其他的可选属性，如可空性，自动递增等)。</p>
+
+<pre><code>ALTER TABLE `&lt;table name&gt;` CHANGE `&lt;old name&gt;` `&lt;new name&gt;` &lt;column definition&gt;;
+</code></pre>
+
+<p><strong>步骤</strong></p>
+
+<ol>
+<li>打开一个MySQL的命令行或像MySQL Workbench一样的客户端</li>
+<li>执行下面的命令<code>SHOW CREATE TABLE &lt;table name&gt;;</code>(使用实际的值替换<code>&lt;table name&gt;</code>)</li>
+<li>记下要重命名的列的整个定义(即在列名称之后但在逗号将其与下一列名称分隔之前出现的所有内容)</li>
+<li>使用实际的值替换上面语句中的<code>&lt;old name&gt;</code>， <code>&lt;new name&gt;</code>， <code>&lt;column definition&gt;</code>，并且执行这个命令</li>
+</ol>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-41.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十一）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-40.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

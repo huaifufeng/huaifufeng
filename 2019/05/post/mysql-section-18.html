@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="UNION">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/mysql-section-18.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(十八)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, May 2, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#union">UNION</a>
+<ul>
+<li><a href="#使用union组合select语句">使用UNION组合SELECT语句</a></li>
+<li><a href="#组合不同列的数据">组合不同列的数据</a></li>
+<li><a href="#order-by">ORDER BY</a></li>
+<li><a href="#offset分页">OFFSET分页</a></li>
+<li><a href="#将具有相同列的不同mysql表上的数据合并到唯一行中并运行查询">将具有相同列的不同MySQL表上的数据合并到唯一行中并运行查询</a></li>
+<li><a href="#union-all和union">Union All和Union</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="union">UNION</h2>
+
+<h3 id="使用union组合select语句">使用UNION组合SELECT语句</h3>
+
+<p>你可以使用<code>UNION</code>来组合两个结果相同的查询的结果。</p>
+
+<p>例如，你想要两个独立表的所有联系信息，<code>authors</code>和<code>editors</code>，你可以使用<code>UNION</code>关键字：</p>
+
+<pre><code class="language-mysql">SELECT name, email, phone_number
+FROM authors
+
+UNION
+
+SELECT name, email, phone_number
+FROM editors;
+</code></pre>
+
+<p>使用<code>UNION</code>将会自动过滤重复信息。如果你想要保留重复信息，你可以使用<code>UNION ALL</code>。</p>
+
+<h3 id="组合不同列的数据">组合不同列的数据</h3>
+
+<pre><code class="language-mysql">SELECT name. caption as title, year, pages FROM books
+UNION
+SELECT name. title, year, 0 as pages FROM movies;
+</code></pre>
+
+<p>将两个不同列的记录集组合时，使用默认值模拟确实的列。</p>
+
+<h3 id="order-by">ORDER BY</h3>
+
+<p>如果你需要排序UNION之后的结果集，使用下面的语法：</p>
+
+<pre><code class="language-mysql">( SELECT ... )
+UNION
+( SELECT ... )
+ORDER BY
+</code></pre>
+
+<p>如果没有添加括号的话，ORDER BY语句将会添加到最后的SELECT语句上面。</p>
+
+<h3 id="offset分页">OFFSET分页</h3>
+
+<p>当在UNION上添加LIMIT的时候，下面这个语法可以使用:</p>
+
+<pre><code class="language-mysql">( SELECT ... ORDER BY x LIMIT 10 )
+UNION 
+( SELECT ... ORDER BY x LIMIT 10 )
+ORDER BY x LIMIT 10;
+</code></pre>
+
+<p>因为你不知道这&rdquo;10&rdquo;个来自哪里，所以每个都要获取10个，然后进一步减少列表的数量，这里需要重复使用<code>ORDER BY</code>和<code>LIMIT</code>。</p>
+
+<p>对于第四页的内容：</p>
+
+<pre><code class="language-mysql">( SELECT ... ORDER BY x LIMIT 40 )
+UNION 
+( SELECT ... ORDER BY x LIMIT 40 )
+ORDER BY x LIMIT 30,10;
+</code></pre>
+
+<p>这是每个查询获取40个数据，然后汇总之后在回去指定位置的数据。</p>
+
+<h3 id="将具有相同列的不同mysql表上的数据合并到唯一行中并运行查询">将具有相同列的不同MySQL表上的数据合并到唯一行中并运行查询</h3>
+
+<pre><code class="language-mysql">SELECT YEAR(date_time_column), MONTH(date_time_column), MIN(DATE(date_time_column)), MAX(DATE(date_time_column)), COUNT(DISTINCT (ip)), COUNT(ip), (COUNT(ip) / COUNT(DISTINCT (ip))) AS Ratio
+FROM (
+(SELECT date_time_column, ip FROM server_log_1 WHERE state = 'action' AND log_id = 150) UNION ALL
+(SELECT date_time_column, ip FROM server_log_2 WHERE state = 'action' AND log_id = 150) UNION ALL
+(SELECT date_time_column, ip FROM server_log_3 WHERE state = 'action' AND log_id = 150) UNION ALL
+(SELECT date_time_column, ip FROM server_log WHERE state = 'action' AND log_id = 150) ) AS table_all
+GROUP BY YEAR(date_time_column), MONTH(date_time_column);
+</code></pre>
+
+<h3 id="union-all和union">Union All和Union</h3>
+
+<p><code>SELECT 1,22,44 UNION SELECT 2,33,55</code></p>
+
+<p><img src="/img/mysql/rF9SA.png" alt="union " /></p>
+
+<p><code>SELECT 1,22,44 UNION SELECT 2,33,55 UNION SELECT 2,33,55</code></p>
+
+<p>这个和上面的结果一样。</p>
+
+<p>使用Union All</p>
+
+<p><code>SELECT 1,22,44 UNION SELECT 2,33,55 UNION ALL SELECT 2,33,55</code></p>
+
+<p><img src="/img/mysql/tD1Rz.png" alt="union all" /></p>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-33.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十三）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-32.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="日期和时间运算">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(二十一)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/mysql-section-21.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(二十一)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, May 5, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#日期和时间运算">日期和时间运算</a>
+<ul>
+<li><a href="#日期计算">日期计算</a></li>
+<li><a href="#sysdate-now-curdate">SYSDATE() NOW() CURDATE()</a></li>
+<li><a href="#时间区间">时间区间</a></li>
+<li><a href="#获取date或datetime表达式的日期">获取Date或DateTime表达式的日期</a></li>
+<li><a href="#使用索引查找日期和时间">使用索引查找日期和时间</a></li>
+<li><a href="#now">NOW()</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="日期和时间运算">日期和时间运算</h2>
+
+<h3 id="日期计算">日期计算</h3>
+
+<pre><code class="language-mysql">NOW() + INTERVAL 1 DAY --明天的这个时间
+CURDATE() - INTERVAL 4 DAY --4天之前的凌晨
+</code></pre>
+
+<p>线上3到10个小时之间（180分到600分之前）存储的mysql问题</p>
+
+<pre><code class="language-mysql">SELECT qId,askDate,minuteDiff
+FROM 
+(
+    SELECT qId,askDate
+    TIMESTAMPDIFF(MINUTE, askDate, now()) as minuteDiff
+    FROM questions_mysql
+) xDerived
+WHERE minuteDiff BETWEEN 180 AND 600
+ORDER BY qId DESC
+LIMIT 50;
+
++----------+---------------------+------------+
+| qId      | askDate             | minuteDiff |
++----------+---------------------+------------+
+| 38546828 | 2016-07-23 22:06:50 |        182 |
+| 38546733 | 2016-07-23 21:53:26 |        195 |
+| 38546707 | 2016-07-23 21:48:46 |        200 |
+| 38546687 | 2016-07-23 21:45:26 |        203 |
+| ...      |                     |            |
++----------+---------------------+------------+
+
+</code></pre>
+
+<p><a href="https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timestampdiff">TIMESTAMPDIFF</a>的mysql手册页。</p>
+
+<p><strong>注意：</strong>不要试图在MySQL中使用<code>CURDATE() + 1</code>这样的表达式来进行日期计算。这将不会返回你希望的值，除非你使用的是Oracle数据库。使用<code>CURDATE() + INTERVAL 1 DAY</code>。</p>
+
+<h3 id="sysdate-now-curdate">SYSDATE() NOW() CURDATE()</h3>
+
+<pre><code class="language-mysql">SELECT SYSDATE();
+</code></pre>
+
+<p>这个方法将会根据使用环境是字符串环境还是数字环境，返回当前时间的日期和时间，分别以<code>YYYY-MM-DD HH:MM:SS</code>或<code>YYYYMMDDHHMMSS</code>。这将会返回当前时区内的日期和时间。</p>
+
+<pre><code class="language-mysql">SELECT NOW()
+</code></pre>
+
+<p>这个方法是SYSDATE的别名</p>
+
+<pre><code class="language-mysql">SELECT CURDATE();
+</code></pre>
+
+<p>这个方法将会根据使用环境是字符串环境还是数字环境，返回当前时间的日期（没有时间），分别以<code>YYYY-MM-DD</code>或<code>YYYYMMDD</code>。这将会返回当前失去的日期。</p>
+
+<h3 id="时间区间">时间区间</h3>
+
+<p>虽然这可以很容易的使用<code>BETWWEN…AND…</code>来处理事件区间。但这是有问题的。相反，下面的语句可以避免大部分问题：</p>
+
+<pre><code class="language-mysql">WHERE x &gt;= '2016-02-25'
+   AND x &lt; '2016-02-25' + INTERVAL 5 DAY
+</code></pre>
+
+<p>这样做的优点：</p>
+
+<ul>
+<li><code>BETWEEN</code>将会包含范围的边界值</li>
+<li>如果在日期上面有微秒的差距，<code>23:59:59</code>是无法处理的</li>
+<li>此模式避免处理闰年和其他数据计算。</li>
+<li>这个无论x是<code>DATE</code>，<code>DATETIME</code>，<code>TIEMSTAMP</code></li>
+</ul>
+
+<h3 id="获取date或datetime表达式的日期">获取Date或DateTime表达式的日期</h3>
+
+<pre><code class="language-mysql">SELECT DATE('2019-05-05 21:21:11');
+
+--输出
+2019-05-05
+</code></pre>
+
+<h3 id="使用索引查找日期和时间">使用索引查找日期和时间</h3>
+
+<p>许多现实世界的数据库表中有许多行的datetime或timestamp列值跨越了很多时间，包括几年甚至几十年。通常需要使用WHERE子句来检索该时间跨度的某些子集。例如，我们可能希望从表中检索日期为2016年9月1日的行。</p>
+
+<p>一种方便的方法是：</p>
+
+<pre><code class="language-mysql">WHERE DATE(x) = '2016-09-01' /* slow! */
+</code></pre>
+
+<p>方便是因为我们在列的值上面使用了<code>DATE()</code>方法。这意味着MySQL将会在列的每个值上都使用这个方法，这样这个列上面的索引就使用不上了。</p>
+
+<p>更好的方法是使用：</p>
+
+<pre><code class="language-mysql">WHERE x &gt;= '2016-09-01'
+AND x &lt; '2016-09-01' + INTERVAL 1 DAY
+</code></pre>
+
+<p>这将会搜索指定时间和下一天凌晨之间发布的记录。如果在x列上面有索引，MySQL将会使用索引来提升查询的性能。这意味着将会快速的找到第一个有效的x列表，然后使用索引直到找到最后的有效x列表。使用索引是比使用<code>DATE(x) = '2016-09-1'</code>这样全表查询更加快速。</p>
+
+<p>不要使用下面的语法，即使看起来更加高效：</p>
+
+<pre><code class="language-mysql">WHERE x BETWEEN '2016-09-01' AND '2016-09-01' + INTERVAL 1 DAY /* wrong! */
+</code></pre>
+
+<p>这和之前的查询性能相似，但是这里查询了<code>2016-09-02</code>凌晨的记录。</p>
+
+<h3 id="now">NOW()</h3>
+
+<pre><code class="language-mysql">SELECT NOW();
+</code></pre>
+
+<p>显示当前服务器的日期和时间。</p>
+
+<pre><code class="language-mysql">Update `footable` set mydatefield = Now();
+</code></pre>
+
+<p>这将会把<code>mydatefield</code>字段，修改为服务器当前时区下的日期和时间。</p>
+
+<pre><code class="language-mysql"> '2016-07-21 12:00:00'
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-36.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十六）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-35.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十五）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

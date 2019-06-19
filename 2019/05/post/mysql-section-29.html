@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="MySQL的错误码">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>MySQL专业笔记(二十九)-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/mysql-section-29.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/mysql" title="MySQL">
+                           MySQL
+                        </a>
+                       
+                    </div>
+                    <h1>MySQL专业笔记(二十九)</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, May 13, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#错误码">错误码</a>
+<ul>
+<li><a href="#1-1064-语法错误">1. 1064：语法错误</a></li>
+<li><a href="#2-1175-安全更新">2. 1175：安全更新</a></li>
+<li><a href="#3-1215-不能添加外键约束">3. 1215：不能添加外键约束</a></li>
+<li><a href="#4-1067-1292-1366-1411-number-date-default等的值错误">4. 1067，1292，1366，1411：number，date，default等的值错误</a></li>
+<li><a href="#5-1045-访问禁止">5. 1045 访问禁止</a></li>
+<li><a href="#6-1236-复制中的-不可能的位置">6. 1236 复制中的“不可能的位置”</a></li>
+<li><a href="#7-2002-2003-无法连接">7. 2002，2003 无法连接</a></li>
+<li><a href="#8-126-127-134-144-145">8. 126，127，134，144，145</a></li>
+<li><a href="#9-139">9. 139</a></li>
+<li><a href="#10-1366">10. 1366</a></li>
+<li><a href="#11-126-1054-1146-1062-24">11. 126，1054，1146，1062，24</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="错误码">错误码</h2>
+
+<h3 id="1-1064-语法错误">1. 1064：语法错误</h3>
+
+<pre><code class="language-mysql">SELECT LastName, FirstName,
+FROM Person;
+</code></pre>
+
+<p>返回信息：</p>
+
+<blockquote>
+<p>Error Code: 1064. You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &lsquo;from Person&rsquo; at line 2.</p>
+</blockquote>
+
+<p>从MySQL获取&rdquo;1064 error&rdquo;的错误信息意味着查询有语法错误。换句话说，MySQL不能有效解析查询语句。</p>
+
+<p>错误信息中引号包围的信息时MySQL指出的自己不知道如何解析的查询的最开始的位置。在这个例子中，MySQL在上下文中无法理解&rdquo;from Person&rdquo;。在这个例子中，是在<code>from Person</code>中有一个额外的逗号。这个逗号告诉MySQL在SELECT语句中需要另外的一个列。</p>
+
+<p>一个语法错误通常是这样的结构<code>… near '…'</code>。引号包围的部分是离错误最近的地方。想要定位一个错误，查看引号包围部分的最开始部分和引号前面的最后的部分。</p>
+
+<p>有时候，你会遇到<code>… near ''</code>，这时候，引号中没有任何东西。这意味着MySQL不能指出错误在语句的开始还是结束位置。这通常意味着查询语句包含不完整的引号(&lsquo;或者&rdquo;)，或者不完整的括号，或者之前没有正确终止该语句。</p>
+
+<p>对于存储例程，你可能忘记使用DELIMITER。</p>
+
+<p>所以，当你遇到了一个1064错误，查看查询语句，查看错误信息中指明的位置。检查错误信息说明位置周围的查询语句。</p>
+
+<p>如果你寻找某些人来帮助你解决一个1064错误，最好提供完整的查询语句和错误信息内容。</p>
+
+<h3 id="2-1175-安全更新">2. 1175：安全更新</h3>
+
+<p>这个错误通常出现在你更新或删除表中的记录，但是没有包含一个条件<code>WHERE</code>语句。</p>
+
+<p>想要不出现这个错误，可以修改下面的配置项：</p>
+
+<pre><code class="language-mysql">SET SQL_SAFE_UPDATES = 0;
+</code></pre>
+
+<p>重新启用的话，输入下面的内容：</p>
+
+<pre><code class="language-mysql">SET SQL_SAFE_UPDATES = 1;
+</code></pre>
+
+<h3 id="3-1215-不能添加外键约束">3. 1215：不能添加外键约束</h3>
+
+<p>当表的结构不足以处理开发人员所授权的快速查找验证外键（FK）需求时，就会出现此错误。</p>
+
+<pre><code class="language-mysql">CREATE TABLE `gtType` (
+    `type` char(2) NOT NULL,
+    `description` varchar(1000) NOT NULL,
+    PRIMARY KEY (`type`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `getTogethers` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `type` char(2) NOT NULL,
+    `eventDT` datetime NOT NULL,
+    `location` varchar(1000) NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `fk_gt2type` (`type`),  -- 查看注意点
+    CONSTRAINT ·gettogethers_ibfk_1` FOREIGN KEY (`type`) REFERENCES `gtType` (`type`)
+)ENGINE=InnoDB;
+</code></pre>
+
+<p><strong>注意：</strong>因为后面的外键定义，如果需要的话一个像这样的KEY将会被自动创建。开发者可以忽略这个，如果必要的话KEY(索引)将会被添加。下面的例子就是忽略这个KEY的。</p>
+
+<p>到目前为止，一切都是正常的。知道下面的例子：</p>
+
+<pre><code class="language-mysql">CREATE TABLE `someOther` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `someDT` datetime NOT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `someOther_dt` FOREIGN KEY (`someDT`) REFERENCES `getTogethers` (`eventDT`)
+) ENGINE=InnoDB;
+</code></pre>
+
+<blockquote>
+<p>Error Code: 1215. Cannot add foreign key constraint</p>
+</blockquote>
+
+<p>这里，因为我们缺少到<code>getTogethers</code>表中<code>eventDT</code>字段的引用，所以在解析的时候就出问题了。要解决这个问题：</p>
+
+<pre><code class="language-mysql">CREATE INDEX `gt_eventdt` ON getTogethers (`eventDT`);
+</code></pre>
+
+<p>现在<code>getTogethers</code>已经修改了， 现在创建<code>someOther</code>的创建就会成功。</p>
+
+<p>在MySQL的手册<a href="https://dev.mysql.com/doc/refman/5.6/en/create-table-foreign-keys.html">外键约束</a>中：</p>
+
+<blockquote>
+<p>MySQL要求外键和引用key上面拥有索引，这样在检查外键的时候会很快，就不需要进行表查询了。在引用表中，必须有一个索引，其中外键列按照相同的顺序排在第一列。如果索引不存在的话，引用表上的索引将会自动创建。</p>
+
+<p>外键和引用key相应的列必须是类似的数据类型。整形的大小和符号必须相同。字符串类型的长度不需要相同。对于非二进制(字符)字符串列，字符集和排序规则必须相同。</p>
+
+<p>InnoDB允许外键引用到任何的列或者列的组合上面。然而，在引用表上面，必须有一个索引，其中引用的列被列为相同顺序的第一列。</p>
+</blockquote>
+
+<p>请注意，上面最后一点是关于第一列（最左边的）和缺少主键要求（尽管非常建议）。</p>
+
+<p>成功创建引用(子)表之后，通过下面的命令可以看到自动为你创建的任何键：</p>
+
+<pre><code class="language-mysql">SHOW CREATE TABLE someOther;
+</code></pre>
+
+<p>遇到这个错误的其他常见情况包括，如上述文档所描述的，但应该突出显示的：</p>
+
+<ul>
+<li>看似微不足道的差异：有符号的INT指向无符号的INT</li>
+<li>开发人员无法理解多列(复合)KEYS和第一(最左)排序要求。</li>
+</ul>
+
+<h3 id="4-1067-1292-1366-1411-number-date-default等的值错误">4. 1067，1292，1366，1411：number，date，default等的值错误</h3>
+
+<p><strong>1067</strong> 这可能和TIMESTAMP的默认值有关系，这个的默认值随着的时间变化。查看<code>TIMESTAMP defaults</code>部分的信息。</p>
+
+<p><strong><sup>1292</sup>&frasl;<sub>1366</sub> DOUBLE/INTEGER</strong> 检查字符或其他的错误。检查列是否对齐了：也许你认为放到一个VARCHAR列，实际放到一个数字列中了。</p>
+
+<p><strong>1292 DATETIME</strong> 检查过去或将来是否更加遥远。早上2点到3点之间检查夏令时是否有变化。检查是否有错误的语法，像+00时区内容。</p>
+
+<p><strong>1292 VARIABLE</strong> 检查你给变量赋的值是不是许可的值。</p>
+
+<p><strong>1292 LOAD DATA</strong> 检查有问题的行。检查逃脱符等等，检查数据类型。</p>
+
+<p><strong>1411 STR_TO_DATE</strong> 格式不正确的时间。</p>
+
+<h3 id="5-1045-访问禁止">5. 1045 访问禁止</h3>
+
+<p>查看&rdquo;GRANT&rdquo;和&rdquo;恢复root密码&rdquo;部分。</p>
+
+<h3 id="6-1236-复制中的-不可能的位置">6. 1236 复制中的“不可能的位置”</h3>
+
+<p>通常这意味着Master机器出现问题了，并且<code>sync_binlog</code>是off的。这个解决办法就是<code>CHANGE MASTER to POS=0</code>到Slave机器上的另外的binlog文件。</p>
+
+<p>原因：在刷新到binlog之前(当<code>sync_binlog=OFF</code>时)，Master机器将复制项发送到Slave机器。如果Master机器在系统刷新之前崩溃了，则Slave机器已经从逻辑上移过binlog文件的尾部信息。当主机再次启动时，它将启动一个新的binlog，因此更改到该binlog的开头是最好的解决方案。</p>
+
+<p>最好的解决办法是<code>sync_binlog=ON</code>，如果你可以负担它导致的额外的I/O。</p>
+
+<p>(如果使用GTID运行。。。)</p>
+
+<h3 id="7-2002-2003-无法连接">7. 2002，2003 无法连接</h3>
+
+<p>检查防火墙是否限制了3306端口。</p>
+
+<p>一些可能的诊断和/或解决方案</p>
+
+<ul>
+<li>服务器是否正在运行？</li>
+<li>执行命令：&rdquo;service firewalld stop&rdquo;或 &ldquo;systemctl disable firewalld&rdquo;</li>
+<li>telnet master 3306</li>
+<li>检查绑定的地址是否正确</li>
+<li>检查<code>skip-name-resolve</code></li>
+<li>检查socket</li>
+</ul>
+
+<h3 id="8-126-127-134-144-145">8. 126，127，134，144，145</h3>
+
+<p>当你访问MySQL的一些记录的时候，你可能会遇到一些错误信息。由于MySQL数据库的损坏而发生这些错误。下面是一些类型：</p>
+
+<pre><code>MySQL error code 126 = 索引文件毁坏
+MySQL error code 127 = 记录文件毁坏
+MySQL error code 134 = 记录文件已经被删除(或记录文件毁坏)
+MySQL error code 144 = 表毁坏了，并且上次修复操作失败了
+MySQL error code 145 = 表被标记为毁坏，并且应该被修复
+</code></pre>
+
+<p>MySQL错误，病毒攻击，服务器本库，不正确的关键，损坏的表都是造成这种现象的原因。当出现这种情况的时候，数据库是不可访问的，你没有办法访问任何信息。想要访问数据，最好的办法是从升级备份中获取数据。但是，如果您没有更新或任何有效的备份，那么您可以进行MySQL修复。</p>
+
+<p>如果表的引擎是<code>MyISAM</code>:</p>
+
+<pre><code class="language-mysql">CHECK TABLE
+REPAIR TABLE
+</code></pre>
+
+<p>然后就认真的考虑下是否切换到InnoDB，这样这个错误就不会在发生。</p>
+
+<p><strong>语法</strong></p>
+
+<pre><code> CHECK TABLE &lt;table name&gt; ////To check the extent of database corruption 
+ REPAIR TABLE &lt;table name&gt; ////To repair table
+</code></pre>
+
+<h3 id="9-139">9. 139</h3>
+
+<p>139错误可能意味着表中定义的字段的数量和大小超出了某个限制。解决办法：</p>
+
+<ul>
+<li>重新考虑表的结构</li>
+<li>规范一下字段的大小</li>
+<li>将表进行拆分</li>
+</ul>
+
+<h3 id="10-1366">10. 1366</h3>
+
+<p>这通常意味着客户端和服务器的字符集处理不一致。</p>
+
+<h3 id="11-126-1054-1146-1062-24">11. 126，1054，1146，1062，24</h3>
+
+<p>(稍微休息一下)加上那四个错误数字之后，这里基本已经覆盖到用户常见的50%以上的错误。</p>
+
+<p>(是的，这个例子需要修改)</p>
+
+<p><strong>24 不能打开文件(打开太多的文件了)</strong></p>
+
+<p><code>open_files_limit</code>依赖于系统的配置。<code>table_open_cache</code>需要小于这个配置。</p>
+
+<p>这可以造成这个错误：</p>
+
+<ul>
+<li>在一个存储过程中<code>DEALLOCATE PREPARE</code>失败</li>
+<li>当分区的表有很多分区 并且<code>inoodb_file_per_table=ON</code>。建议在给定的表中不要有50个以上的分区(由于各种原因)。(当&rdquo;Native Partitions&rdquo;有效的时候，这个建议可能更改)</li>
+</ul>
+
+<p>这种错误的明显解决办法就是增加系统的限制：允许更多的文件，修改<code>ulimit</code>或<code>/etc/security/limits.conf</code>或<code>sysctl.conf(kern.maxfiles&amp;kern.maxfilesperproc)</code>或<code>操作系统以来的其他文件</code>。然后增加<code>open_files_limit</code>和<code>table_open_cache</code>。</p>
+
+<p>在5.6.8，<code>open_files_limit</code>根据<code>max_connections</code>自动调整大小，但是可以修改默认值。</p>
+
+<p><strong>1062 重复输入</strong></p>
+
+<p>这个错误主要是因为下面两个原因：</p>
+
+<ol>
+<li>重复的值：<code>Error Code: 1062. Duplicate entry '12' for key 'PRIMARY'</code></li>
+</ol>
+
+<p>主键列是唯一的，并且不接受重复的值。所以当你想要向表中插入一个已经存在的新行时，将会产生这个错误。</p>
+
+<blockquote>
+<p>要解决这个问题，就把主键列设置为<code>AUTO_INCREMENT</code>。当你试着插入一个新行的时候，忽略主键列或者为主键插入一个NULL。</p>
+</blockquote>
+
+<pre><code class="language-mysql">   CREATE TABLE userDetails(
+       userId INT(10) NOT NULL AUTO_INCREMENT,
+       firstName VARCHAR(50),
+       lastName VARCHAR(50),
+       isActive INT(1) DEFAULT 0,
+       PRIMARY KEY (userId)
+   );
+   
+   -- 插入新行
+   INSERT INTO userDetails VALUES (NULL, 'John', 'Doe', 1);
+</code></pre>
+
+<ol>
+<li>唯一的数据列：<code>Erro Code: 1062. Duplicate entry 'A' for key 'code'</code>。</li>
+</ol>
+
+<p>你可能把一列设置为唯一的，但是你试着像这个表表中插入这列已经存在的值，将会产生一个错误。</p>
+
+<blockquote>
+<p>将要避免这个问题，使用<code>INSERT IGNORE</code>来代替普通的<code>INSERT</code>操作。如果你想要插入的行在表中不存在，将会正常插入。如果记录重复了，<code>IGNORE</code>将不会产生错误。</p>
+</blockquote>
+
+<pre><code class="language-mysql">   INSERT IGNORE INTO userDetails VALUES (NULL, 'John', 'Doe', 1);
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/php-section-44.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十四）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-43.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十三）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
