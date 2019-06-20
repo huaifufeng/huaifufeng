@@ -6,7 +6,7 @@
     <description>Recent content in 数据库 on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 19 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 20 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>MySQL专业笔记(六十七)</title>
       <link>http://blog.huaifufeng.com/2019/06/post/mysql-section-67.html</link>
-      <pubDate>Wed, 19 Jun 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 20 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/06/post/mysql-section-67.html</guid>
       <description>忘记密码恢复 1. 设置root密码，运行root使用socket和http访问 解决问题：access denied for user root using password YES Stop mySQL:
@@ -24,19 +24,6 @@ mysql -u root  在SQL shell中，查看用户是否存在：
 SELECT User, password, plugin FROM mysql.user;  更新用户信息(plugin为null，表示启用所有的组件)：
 update mysql.user set password=PASSWORD(&#39;mypassword&#39;), plugin=NULL WHERE User=&#39;root&#39;; exit;  在Unix的shell终止不带验证的MySQL，然后重启带有验证的MySQL：
 sudo service mysql stop sudo service mysql start  参考：MySQL Notes for Professionals book</description>
-    </item>
-    
-    <item>
-      <title>MySQL专业笔记(六十八)</title>
-      <link>http://blog.huaifufeng.com/2019/06/post/mysql-section-68.html</link>
-      <pubDate>Wed, 19 Jun 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/2019/06/post/mysql-section-68.html</guid>
-      <description>MySQL性能建议 1. 创建联合索引 在大多数情况下，组合索引比单列索引的性能提升的高。创建一个最佳的联合索引，按照下面的顺序排序列：
- =列：WHERE子句中开始(例如 INDEX(a, b, …) 对于WHERE a=12 AND b=&#39;xyz&#39;...) IN列：优化器可能跳过索引 一个&amp;rdquo;范围&amp;rdquo;：(例如：x BETWEEN 3 AND 9, name LIKE &#39;J%&#39;) 将会不会使用任何第一个范围列的列。 所有GROUP BY中的列，按照顺序 所有ORDER BY中的列，按照顺序。只有在所有的列是ASC或DESC下有效，或者你用的事8.0
-  注意和异常：
- 不要重复任何列 跳过所有不使用的案例 如果你没有使用WHERE语句中的所有列，就不需要继续使用GROUP BY等 有一些情况下只有ORDER BY列是有用的，忽略WHERE列 不要把列&amp;rdquo;放入&amp;rdquo;方法中(例如DATE(x)=…不能用到x的索引) &amp;ldquo;前缀&amp;rdquo;索引(例如text_col(99))不太可能有帮助，可能会造成伤害  更多详情。
-2. 优化InnoDB的表存储  在InnoDB中，有一个长的Primary KEY(或者是一列有很长的值，或者多个组合列有长值)浪费很大的磁盘空间。行的主键值在同一行所有辅助索引记录中重复。如果主键过长，创建一个自动递增的列作为主键。 使用VARCHAR数据类型替换CHAR类型当存储变长字符串或者列中有很多NULL值。一个CHAR(N)的列一直花费N个字符存储数据，不管这个字符串是更短的或只是NULL  参考：MySQL Notes for Professionals book</description>
     </item>
     
     <item>
