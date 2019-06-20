@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="服务器信息">
+    <meta name="description" content="GRANT确保安全">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十一)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(六十四)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-61.html">
+    <link rel="canonical" href="/2019/06/post/mysql-section-64.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十一)</h1>
+                    <h1>MySQL专业笔记(六十四)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, June 14, 2019
+                    <span  class="meta">Posted by 怀府风 on Monday, June 17, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#服务器信息">服务器信息</a>
+<li><a href="#grant确保安全">GRANT确保安全</a>
 <ul>
-<li><a href="#1-show-variables-例子">1. SHOW VARIABLES 例子</a></li>
-<li><a href="#2-show-status-例子">2. SHOW STATUS 例子</a></li>
+<li><a href="#1-最佳实践">1. 最佳实践</a></li>
+<li><a href="#2-主机-user-主机">2. 主机(user@主机)</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,87 +193,53 @@
         		
         		
 
-<h2 id="服务器信息">服务器信息</h2>
+<h2 id="grant确保安全">GRANT确保安全</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
+<h3 id="1-最佳实践">1. 最佳实践</h3>
 
-<tbody>
-<tr>
-<td>GLOBAL</td>
-<td>显示配置到整个服务器上面的变量。可选的</td>
-</tr>
+<p>限制root(或任何其他的超级用户)本地登录：</p>
 
-<tr>
-<td>SESSION</td>
-<td>显示只配置当前会有的变量。可选</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="1-show-variables-例子">1. SHOW VARIABLES 例子</h3>
-
-<p>获取所有的服务器变量，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW VARIABLES;
+<pre><code class="language-mysql">GRANT ... TO root@localhost ...
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<p>这个可以避免从其他服务器上面访问。你应该避免给太多人SUPER权限，并且他们应该意识到他们的责任。应用程序不应该拥有SUPER权限。</p>
 
-<pre><code class="language-mysql">-- 会话变量
-SHOW SESSION VARIABLES;
+<p>现在用户只能登录一个数据库：</p>
 
--- 全局变量
-SHOW GLOBALE VARIABLES;
+<pre><code class="language-mysql">GRANT ... ON dbnae.* ...
 </code></pre>
 
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
+<p>这样，这样黑进应用程序代码的人就无法通过dbname。这可以通过下面任何一种方法完善：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE 'max_join_size';
+<pre><code class="language-mysql">GRANT SELECT ON dbname.* ... -- 只读
+GRANT ... ON dbname.tblname ... -- 只有一个表
 </code></pre>
 
-<p>或者使用标识符：</p>
+<p>只读还可以需要&rdquo;安全&rdquo;的配置：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE &quot;%size%&quot;;
+<pre><code class="language-mysql">GRANT SELECT, CREATE TEMPORARY TABLE ON dbname.* ... -- 只读
 </code></pre>
 
-<p>你可以使用WHERE语句来筛选这个结果：</p>
+<p>如你所见，没有绝对安全的方法。但是你可以做一些事情来减少被攻破的可能。(诚实的人也是这样。)</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES WHERE VALUE &gt; 0;
+<p>在极少数情况下，你可能需要营养程序执行一些只有root用户可以执行的操作。这可以通过&rdquo;存储过程&rdquo;来实现，这个具有安全定义符(并且root定义了)。这将只公开SP所做的，例如，可能是某个特定表上的一个特定操作。</p>
+
+<h3 id="2-主机-user-主机">2. 主机(user@主机)</h3>
+
+<p>这里&rdquo;host&rdquo;可以是一个主机名称或者IP地址。另外，它可能涉及到通配符。</p>
+
+<pre><code class="language-mysql">GRANT SELECT ON db.* TO sam@'my.domain.com' IDENTIFIED BY 'foo';
 </code></pre>
 
-<h3 id="2-show-status-例子">2. SHOW STATUS 例子</h3>
+<p>例子：注意：这里通常是需要用引号包起来的</p>
 
-<p>获取所有的服务器的状态，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW STATUS;
+<pre><code>localhost -- the same machine as mysqld
+'my.domain.com' -- a specific domain; this involves a lookup
+'11.22.33.44' -- a specific IP address
+'192.168.1.%' -- wild card for trailing part of IP address. (192.168.% and 10.% and 11.% are &quot;internal&quot; ip addresses.)
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
-
-<pre><code class="language-mysql">-- 会话状态
-SHOW SESSION STATUS;
-
--- 全局状态
-SHOW GLOBAL STATUS;
-</code></pre>
-
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS LIKE &quot;key%&quot;;
-</code></pre>
-
-<p>或者使用WHERE命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS WHERE VALUE &gt; 0
-</code></pre>
-
-<p>GLOBAL和SESSION的主要区别在于：使用GLOBAL将会显示有关服务器及连接的聚合信息，而SESSION只会显示当前连接的信息。</p>
+<p>使用<code>localhost</code>依赖于服务器的安全性。对最佳实践，只允许root使用localhost。在某些情况下，<code>0.0.0.1</code>和<code>::1</code>是相同的。</p>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -284,12 +250,12 @@ SHOW GLOBAL STATUS;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-65.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十五)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-60.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-63.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十三)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

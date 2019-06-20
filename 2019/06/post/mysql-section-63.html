@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="服务器信息">
+    <meta name="description" content="创建新用户">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十一)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(六十三)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-61.html">
+    <link rel="canonical" href="/2019/06/post/mysql-section-63.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十一)</h1>
+                    <h1>MySQL专业笔记(六十三)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, June 14, 2019
+                    <span  class="meta">Posted by 怀府风 on Sunday, June 16, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#服务器信息">服务器信息</a>
+<li><a href="#创建新用户">创建新用户</a>
 <ul>
-<li><a href="#1-show-variables-例子">1. SHOW VARIABLES 例子</a></li>
-<li><a href="#2-show-status-例子">2. SHOW STATUS 例子</a></li>
+<li><a href="#1-创建mysql用户">1. 创建MySQL用户</a></li>
+<li><a href="#2-指定密码">2. 指定密码</a></li>
+<li><a href="#3-创建一个用户并且授予所有权限">3. 创建一个用户并且授予所有权限</a></li>
+<li><a href="#4-重命名用户">4. 重命名用户</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,87 +195,53 @@
         		
         		
 
-<h2 id="服务器信息">服务器信息</h2>
+<h2 id="创建新用户">创建新用户</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
+<h3 id="1-创建mysql用户">1. 创建MySQL用户</h3>
 
-<tbody>
-<tr>
-<td>GLOBAL</td>
-<td>显示配置到整个服务器上面的变量。可选的</td>
-</tr>
+<p>要创建新用户，我们需要 按照下面的步骤：</p>
 
-<tr>
-<td>SESSION</td>
-<td>显示只配置当前会有的变量。可选</td>
-</tr>
-</tbody>
-</table>
+<p><strong>步骤1</strong>：使用<code>root</code>用户登录到MySQL：</p>
 
-<h3 id="1-show-variables-例子">1. SHOW VARIABLES 例子</h3>
-
-<p>获取所有的服务器变量，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW VARIABLES;
+<pre><code class="language-shell">$ mysql -u root -p
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<p><strong>步骤2：</strong>我们可以看到MySQL的命令提示</p>
 
-<pre><code class="language-mysql">-- 会话变量
-SHOW SESSION VARIABLES;
-
--- 全局变量
-SHOW GLOBALE VARIABLES;
+<pre><code class="language-mysql">mysql&gt; CREATE USER 'my_new_user'@'localhost' IDENTIFIED BY 'test_password';
 </code></pre>
 
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
+<p>现在，我们成功创建了新用户，但是这个用户还没有任何权限。所以需要使用下面的命令给用户赋予相应的权限：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE 'max_join_size';
+<pre><code class="language-mysql">mysql&gt; GRANT ALL PRIVILEGES ON my_db.* TO 'my_new_user'@'localhost' identified by 'my_password';
 </code></pre>
 
-<p>或者使用标识符：</p>
+<h3 id="2-指定密码">2. 指定密码</h3>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE &quot;%size%&quot;;
+<p>最基本的方式是：</p>
+
+<pre><code class="language-mysql">mysql&gt; CREATE USER 'my_new_user'@'localhost' IDENTIFIED BY 'test_password';
 </code></pre>
 
-<p>你可以使用WHERE语句来筛选这个结果：</p>
+<p>但是，对于不建议使用明文编码密码的情况，直接使用PASSOWRD方法来获取密码的hash值：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES WHERE VALUE &gt; 0;
+<pre><code class="language-mysql">mysql&gt; select PASSWORD('test_password'); -- returns *4414E26EDED6D661B5386813EBBA95065DBC4728 
+mysql&gt; CREATE USER 'my_new_user'@'localhost' IDENTIFIED BY PASSWORD '*4414E26EDED6D661B5386813EBBA95065DBC4728';
 </code></pre>
 
-<h3 id="2-show-status-例子">2. SHOW STATUS 例子</h3>
+<h3 id="3-创建一个用户并且授予所有权限">3. 创建一个用户并且授予所有权限</h3>
 
-<p>获取所有的服务器的状态，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW STATUS;
+<pre><code class="language-mysql">grant all privileges on schema_name.* to 'new_user_name'@'%' identified by 'newpassword';
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<p>注意：这可以用来创建新的root用户</p>
 
-<pre><code class="language-mysql">-- 会话状态
-SHOW SESSION STATUS;
+<h3 id="4-重命名用户">4. 重命名用户</h3>
 
--- 全局状态
-SHOW GLOBAL STATUS;
+<pre><code class="language-mysql">rename user 'user'@'%' to 'new_name'@'%';
 </code></pre>
 
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS LIKE &quot;key%&quot;;
-</code></pre>
-
-<p>或者使用WHERE命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS WHERE VALUE &gt; 0
-</code></pre>
-
-<p>GLOBAL和SESSION的主要区别在于：使用GLOBAL将会显示有关服务器及连接的聚合信息，而SESSION只会显示当前连接的信息。</p>
+<p>如果你创建用户的时候拼错了名字，可以通过rename命令修改用户名。</p>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -284,12 +252,12 @@ SHOW GLOBAL STATUS;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-64.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十四)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-60.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

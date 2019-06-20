@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="服务器信息">
+    <meta name="description" content="修改密码">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十一)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(六十五)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-61.html">
+    <link rel="canonical" href="/2019/06/post/mysql-section-65.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十一)</h1>
+                    <h1>MySQL专业笔记(六十五)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, June 14, 2019
+                    <span  class="meta">Posted by 怀府风 on Tuesday, June 18, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#服务器信息">服务器信息</a>
+<li><a href="#修改密码">修改密码</a>
 <ul>
-<li><a href="#1-show-variables-例子">1. SHOW VARIABLES 例子</a></li>
-<li><a href="#2-show-status-例子">2. SHOW STATUS 例子</a></li>
+<li><a href="#1-linux上面修改mysql-root的密码">1. Linux上面修改MySQL root的密码</a></li>
+<li><a href="#2-windows修改mysql-root密码">2. Windows修改MySQL root密码</a></li>
+<li><a href="#3-处理过程">3. 处理过程</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,87 +194,122 @@
         		
         		
 
-<h2 id="服务器信息">服务器信息</h2>
+<h2 id="修改密码">修改密码</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
+<h3 id="1-linux上面修改mysql-root的密码">1. Linux上面修改MySQL root的密码</h3>
 
-<tbody>
-<tr>
-<td>GLOBAL</td>
-<td>显示配置到整个服务器上面的变量。可选的</td>
-</tr>
+<p>修改MySQL root用户的密码：</p>
 
-<tr>
-<td>SESSION</td>
-<td>显示只配置当前会有的变量。可选</td>
-</tr>
-</tbody>
-</table>
+<p><strong>步骤1：</strong>停止MySQL服务器</p>
 
-<h3 id="1-show-variables-例子">1. SHOW VARIABLES 例子</h3>
+<ul>
+<li>在Ubuntu或Debian</li>
+</ul>
 
-<p>获取所有的服务器变量，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW VARIABLES;
+<pre><code class="language-shell">  sudo /etc/init.d/mysql stop
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<ul>
+<li>在CentOS，Fedora或Red Hat Enterprise Linux</li>
+</ul>
 
-<pre><code class="language-mysql">-- 会话变量
-SHOW SESSION VARIABLES;
-
--- 全局变量
-SHOW GLOBALE VARIABLES;
+<pre><code class="language-shell">  sudo /etc/init.d/mysqld stop
 </code></pre>
 
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
+<p><strong>步骤2：</strong>不带权限系统开启MySQL服务器</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE 'max_join_size';
+<pre><code class="language-shell">sudo mysqld_safe --skip-grant-tables &amp;
 </code></pre>
 
-<p>或者使用标识符：</p>
+<p>或者，如果<code>mysqld_safe</code>不可用</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE &quot;%size%&quot;;
+<pre><code class="language-shell">sudo mysqld --skip-grant-tables &amp;
 </code></pre>
 
-<p>你可以使用WHERE语句来筛选这个结果：</p>
+<p><strong>步骤3：</strong>连接MySQL服务器</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES WHERE VALUE &gt; 0;
+<pre><code class="language-shell">mysql -u root 
 </code></pre>
 
-<h3 id="2-show-status-例子">2. SHOW STATUS 例子</h3>
+<p><strong>步骤4：</strong>为root用户设置新密码</p>
 
-<p>获取所有的服务器的状态，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
+<p>Version&gt;5.7</p>
 
-<pre><code class="language-mysql">SHOW STATUS;
+<pre><code class="language-mysql">FLUSH PRIVILEGES;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password';
+FLUSH PRIVILEGES;
+exit;
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<p>Version&lt;=5.7</p>
 
-<pre><code class="language-mysql">-- 会话状态
-SHOW SESSION STATUS;
-
--- 全局状态
-SHOW GLOBAL STATUS;
+<pre><code class="language-mysql">FLUSH PRIVILEGES;
+SET PASSWORD FOR 'root'@'localhost'=PASSWORD('new_password');
+FLUSH PRIVILEGES;
+exit;
 </code></pre>
 
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
+<p>注意：<code>ALTER USER</code>的语法是在MySQL5.7.6提供的。</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS LIKE &quot;key%&quot;;
+<p><strong>步骤5：</strong>重启MySQL服务器</p>
+
+<ul>
+<li>在Ubuntu或Debian上</li>
+</ul>
+
+<pre><code class="language-shell">  sudo /etc/init.d/mysql stop
+  sudo /etc/init.d/mysql start
 </code></pre>
 
-<p>或者使用WHERE命令：</p>
+<ul>
+<li>在CentOS，Fedora或Red Hat Enterprise Linux</li>
+</ul>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS WHERE VALUE &gt; 0
+<pre><code class="language-shell">  sudo /etc/init.d/mysqld stop
+  sudo /etc/init.d/mysqld start
 </code></pre>
 
-<p>GLOBAL和SESSION的主要区别在于：使用GLOBAL将会显示有关服务器及连接的聚合信息，而SESSION只会显示当前连接的信息。</p>
+<h3 id="2-windows修改mysql-root密码">2. Windows修改MySQL root密码</h3>
+
+<p>当我们想要在Windows上面修改root的密码的时候，我们需要执行下面的步骤：</p>
+
+<p><strong>步骤1：</strong>使用下面的任意方式开启命令行终端</p>
+
+<p>按下<code>Ctrl+R</code>或者到<code>开始 &gt; 运行</code>，之后输入cmd，输入enter</p>
+
+<p><strong>步骤2：</strong>切换到MySQL按照的目录，</p>
+
+<pre><code class="language-powershell">C:\&gt; cd C:\mysql\bin
+</code></pre>
+
+<p><strong>步骤3：</strong>开始mysql输入命令行</p>
+
+<pre><code>C:\mysql\bin&gt; mysql -u root mysql
+</code></pre>
+
+<p><strong>步骤4：</strong>使用下面的查询修改密码</p>
+
+<pre><code>mysql&gt; SET PASSWORD FOR root@localhost=PASSWORD('my_new_password');
+</code></pre>
+
+<h3 id="3-处理过程">3. 处理过程</h3>
+
+<ol>
+<li>停止MySQL(mysqld)服务器/守护进程</li>
+<li>使用<code>—skip-grant-tables</code>选项开启MySQL服务器，这样将不会要求输入密码：<code>mysqld_safe —skip-grant-tables &amp;</code></li>
+<li>使用<code>mysql -u root</code>使用root用户连接到MySQL</li>
+<li>修改密码
+
+<ul>
+<li>(5.7.6及之后)<code>ALTER USER 'root'@'localhost' IDENTIFIED BY 'new-password'</code></li>
+<li>(5.7.5及之前，或者MariaDB)<code>SET PASSWORD FOR 'root'@'localhost'=PASSWORD('new-password'); flush privileges;quit;</code></li>
+</ul></li>
+<li>重启MySQL服务器</li>
+</ol>
+
+<p>注意：只有当你物理位于同一台机器时，才有效果。</p>
+
+<p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/resetting-permissions.html">手册</a>。</p>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -284,12 +320,12 @@ SHOW GLOBAL STATUS;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-66.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十六)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-60.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-64.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十四)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

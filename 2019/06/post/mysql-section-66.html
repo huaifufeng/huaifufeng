@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="服务器信息">
+    <meta name="description" content="MySQL5.7之后恢复和重置默认root密码">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十一)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(六十六)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-61.html">
+    <link rel="canonical" href="/2019/06/post/mysql-section-66.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十一)</h1>
+                    <h1>MySQL专业笔记(六十六)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, June 14, 2019
+                    <span  class="meta">Posted by 怀府风 on Wednesday, June 19, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#服务器信息">服务器信息</a>
+<li><a href="#mysql5-7之后恢复和重置默认root密码">MySQL5.7之后恢复和重置默认root密码</a>
 <ul>
-<li><a href="#1-show-variables-例子">1. SHOW VARIABLES 例子</a></li>
-<li><a href="#2-show-status-例子">2. SHOW STATUS 例子</a></li>
+<li><a href="#1-当服务器初始启动时发生什么">1. 当服务器初始启动时发生什么？</a></li>
+<li><a href="#2-怎么使用默认密码修改root的密码">2. 怎么使用默认密码修改root的密码？</a></li>
+<li><a href="#3-当unix的sock文件-var-run-mysqld-不存在是-修改root密码">3. 当Unix的sock文件&rdquo;/var/run/mysqld&rdquo;不存在是，修改root密码</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,87 +194,132 @@
         		
         		
 
-<h2 id="服务器信息">服务器信息</h2>
+<h2 id="mysql5-7之后恢复和重置默认root密码">MySQL5.7之后恢复和重置默认root密码</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
+<p>在MySQL5.7之后，我们不需要再按照MySQL的时候创建一个root账户或者提供一个root密码。默认当我们启动mysql服务器的时候，默认的密码会存储在<code>mysqld.log</code>文件中。我们需要使用这个密码登录，并且我们需要修改密码。</p>
 
-<tbody>
-<tr>
-<td>GLOBAL</td>
-<td>显示配置到整个服务器上面的变量。可选的</td>
-</tr>
+<h3 id="1-当服务器初始启动时发生什么">1. 当服务器初始启动时发生什么？</h3>
 
-<tr>
-<td>SESSION</td>
-<td>显示只配置当前会有的变量。可选</td>
-</tr>
-</tbody>
-</table>
+<p>假设服务器的数据目录是空的：</p>
 
-<h3 id="1-show-variables-例子">1. SHOW VARIABLES 例子</h3>
+<ul>
+<li>服务器初始化</li>
+<li>SSL整数和密钥文件生成在数据目录</li>
+<li>validate_password组件安装和启用</li>
+<li>超级用户&rsquo;root&rsquo;@&lsquo;localhost&rsquo;创建。设置root的密码并且存储在错误log文件内</li>
+</ul>
 
-<p>获取所有的服务器变量，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
+<h3 id="2-怎么使用默认密码修改root的密码">2. 怎么使用默认密码修改root的密码？</h3>
 
-<pre><code class="language-mysql">SHOW VARIABLES;
+<p>显示默认的&rdquo;root&rdquo;的密码：</p>
+
+<pre><code class="language-shell">shell&gt; sudo grep 'temporary password' /var/log/mysqld.log
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<p>修改root的密码，首先使用这个临时密码登录，然后设置用户的密码：</p>
 
-<pre><code class="language-mysql">-- 会话变量
-SHOW SESSION VARIABLES;
-
--- 全局变量
-SHOW GLOBALE VARIABLES;
+<pre><code>shell&gt; mysql -uroot -p
+mysql&gt; ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass5!';
 </code></pre>
 
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
+<p><strong>注意：</strong>MySQL的validate_password组件默认是现在的。这要求密码需要包含至少一个大写字母，一个小写字母，一个数字，一个特殊字符，并且密码的长度大于8个字符。</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE 'max_join_size';
+<h3 id="3-当unix的sock文件-var-run-mysqld-不存在是-修改root密码">3. 当Unix的sock文件&rdquo;/var/run/mysqld&rdquo;不存在是，修改root密码</h3>
+
+<p>如果我忘记了密码，我将会获取一个错误：</p>
+
+<pre><code class="language-shell">$ mysql -u root -p
+输出密码：
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
 </code></pre>
 
-<p>或者使用标识符：</p>
+<p>我试着解决这个问题，首先确认服务的状态：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE &quot;%size%&quot;;
+<pre><code class="language-shell">$ systemctl status mysql.service
+mysql.service - MySQL Community Server Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: en Active: active (running) since Thu 2017-06-08 14:31:33 IST; 38s ago
 </code></pre>
 
-<p>你可以使用WHERE语句来筛选这个结果：</p>
+<p>然后我使用<code>mysqld_safe —skip-grant-tables &amp;</code>，但是我遇到一个错误：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES WHERE VALUE &gt; 0;
+<blockquote>
+<p>mysqld_safe Directory &lsquo;/var/run/mysqld&rsquo; for UNIX socket file don&rsquo;t exists.</p>
+</blockquote>
+
+<pre><code>$ systemctl stop mysql.service
+$ ps -eaf|grep mysql
+$ mysqld_safe --skip-grant-tables &amp;
 </code></pre>
 
-<h3 id="2-show-status-例子">2. SHOW STATUS 例子</h3>
+<blockquote>
+<p>我解决：</p>
+</blockquote>
 
-<p>获取所有的服务器的状态，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW STATUS;
+<pre><code>$ mkdir -p /var/run/mysqld
+$ chown mysql:mysql /var/run/mysqld
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<p>现在我使用相同的代码<code>mysqld_safe —skip-grant-tables &amp;</code>，获得</p>
 
-<pre><code class="language-mysql">-- 会话状态
-SHOW SESSION STATUS;
+<blockquote>
+<p>mysqld_safe Starting mysqld daemon with databases from /var/lib/mysql</p>
+</blockquote>
 
--- 全局状态
-SHOW GLOBAL STATUS;
+<p>如果我使用<code>mysql -u root</code>我将获得：</p>
+
+<pre><code>Server version: 5.7.18-0ubuntu0.16.04.1 (Ubuntu)
+Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates. Other names may be trademarks of their respective owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql&gt;
 </code></pre>
 
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
+<blockquote>
+<p>现在可以修改密码了：</p>
+</blockquote>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS LIKE &quot;key%&quot;;
+<pre><code> mysql&gt; use mysql 
+ mysql&gt; describe user;
 </code></pre>
 
-<p>或者使用WHERE命令：</p>
+<p>读取表信息以完成表名和列名，您可以关闭此功能以使用-a更快地启动</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS WHERE VALUE &gt; 0
+<p>数据库修改：</p>
+
+<pre><code>mysql&gt; FLUSH PRIVILEGES;
+mysql&gt; SET PASSWORD FOR root@'localhost' = PASSWORD('newpwd');
 </code></pre>
 
-<p>GLOBAL和SESSION的主要区别在于：使用GLOBAL将会显示有关服务器及连接的聚合信息，而SESSION只会显示当前连接的信息。</p>
+<p>或者如果你有一个可以从任何地方连接的root账号，你也可以：</p>
+
+<pre><code>UPDATE mysql.user SET Password=PASSWORD('newpwd') WHERE User='root';
+</code></pre>
+
+<p>可选的方法：</p>
+
+<pre><code>USE mysql
+UPDATE user SET Password = PASSWORD('newpwd') 
+WHERE Host = 'localhost' AND User = 'root';
+</code></pre>
+
+<p>如果你有一个可以从任何地方访问的root账户：</p>
+
+<pre><code class="language-mysql">USE mysql
+UPDATE user SET Password = PASSWORD('newpwd')
+WHERE Host = '%' AND User = 'root';`enter code here
+</code></pre>
+
+<p>现在需要从mysql中<code>quit</code>，并且停止/启动:</p>
+
+<pre><code>FLUSH PRIVILEGES;
+sudo /etc/init.d/mysql stop 
+sudo /etc/init.d/mysql start
+</code></pre>
+
+<p>现在重新输入<code>mysql -u root -p</code>，然后输入密码会获得：</p>
+
+<blockquote>
+<p>mysql&gt;</p>
+</blockquote>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -284,12 +330,12 @@ SHOW GLOBAL STATUS;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-68.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十八)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-60.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-65.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十五)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="服务器信息">
+    <meta name="description" content="MySQL性能建议">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十一)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(六十八)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-61.html">
+    <link rel="canonical" href="/2019/06/post/mysql-section-68.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十一)</h1>
+                    <h1>MySQL专业笔记(六十八)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, June 14, 2019
+                    <span  class="meta">Posted by 怀府风 on Wednesday, June 19, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#服务器信息">服务器信息</a>
+<li><a href="#mysql性能建议">MySQL性能建议</a>
 <ul>
-<li><a href="#1-show-variables-例子">1. SHOW VARIABLES 例子</a></li>
-<li><a href="#2-show-status-例子">2. SHOW STATUS 例子</a></li>
+<li><a href="#1-创建联合索引">1. 创建联合索引</a></li>
+<li><a href="#2-优化innodb的表存储">2. 优化InnoDB的表存储</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,87 +193,39 @@
         		
         		
 
-<h2 id="服务器信息">服务器信息</h2>
+<h2 id="mysql性能建议">MySQL性能建议</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
+<h3 id="1-创建联合索引">1. 创建联合索引</h3>
 
-<tbody>
-<tr>
-<td>GLOBAL</td>
-<td>显示配置到整个服务器上面的变量。可选的</td>
-</tr>
+<p>在大多数情况下，组合索引比单列索引的性能提升的高。创建一个最佳的联合索引，按照下面的顺序排序列：</p>
 
-<tr>
-<td>SESSION</td>
-<td>显示只配置当前会有的变量。可选</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li><code>=</code>列：WHERE子句中开始(例如 <code>INDEX(a, b, …)</code> 对于<code>WHERE a=12 AND b='xyz'...</code>)</li>
+<li><code>IN</code>列：优化器可能跳过索引</li>
+<li>一个&rdquo;范围&rdquo;：(例如：<code>x BETWEEN 3 AND 9</code>, <code>name LIKE 'J%'</code>) 将会不会使用任何第一个范围列的列。</li>
+<li>所有<code>GROUP BY</code>中的列，按照顺序</li>
+<li>所有<code>ORDER BY</code>中的列，按照顺序。只有在所有的列是<code>ASC</code>或<code>DESC</code>下有效，或者你用的事8.0<br /></li>
+</ul>
 
-<h3 id="1-show-variables-例子">1. SHOW VARIABLES 例子</h3>
+<p>注意和异常：</p>
 
-<p>获取所有的服务器变量，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
+<ul>
+<li>不要重复任何列</li>
+<li>跳过所有不使用的案例</li>
+<li>如果你没有使用<code>WHERE</code>语句中的所有列，就不需要继续使用<code>GROUP BY</code>等</li>
+<li>有一些情况下只有<code>ORDER BY</code>列是有用的，忽略<code>WHERE</code>列</li>
+<li>不要把列&rdquo;放入&rdquo;方法中(例如<code>DATE(x)=…</code>不能用到<code>x</code>的索引)</li>
+<li>&ldquo;前缀&rdquo;索引(例如<code>text_col(99)</code>)不太可能有帮助，可能会造成伤害</li>
+</ul>
 
-<pre><code class="language-mysql">SHOW VARIABLES;
-</code></pre>
+<p><a href="https://mariadb.com/kb/en/mariadb/compound-composite-indexes/">更多详情。</a></p>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<h3 id="2-优化innodb的表存储">2. 优化InnoDB的表存储</h3>
 
-<pre><code class="language-mysql">-- 会话变量
-SHOW SESSION VARIABLES;
-
--- 全局变量
-SHOW GLOBALE VARIABLES;
-</code></pre>
-
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE 'max_join_size';
-</code></pre>
-
-<p>或者使用标识符：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE &quot;%size%&quot;;
-</code></pre>
-
-<p>你可以使用WHERE语句来筛选这个结果：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES WHERE VALUE &gt; 0;
-</code></pre>
-
-<h3 id="2-show-status-例子">2. SHOW STATUS 例子</h3>
-
-<p>获取所有的服务器的状态，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW STATUS;
-</code></pre>
-
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
-
-<pre><code class="language-mysql">-- 会话状态
-SHOW SESSION STATUS;
-
--- 全局状态
-SHOW GLOBAL STATUS;
-</code></pre>
-
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS LIKE &quot;key%&quot;;
-</code></pre>
-
-<p>或者使用WHERE命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS WHERE VALUE &gt; 0
-</code></pre>
-
-<p>GLOBAL和SESSION的主要区别在于：使用GLOBAL将会显示有关服务器及连接的聚合信息，而SESSION只会显示当前连接的信息。</p>
+<ol>
+<li>在InnoDB中，有一个长的<code>Primary KEY</code>(或者是一列有很长的值，或者多个组合列有长值)浪费很大的磁盘空间。行的主键值在同一行所有辅助索引记录中重复。如果主键过长，创建一个自动递增的列作为主键。</li>
+<li>使用<code>VARCHAR</code>数据类型替换<code>CHAR</code>类型当存储变长字符串或者列中有很多NULL值。一个<code>CHAR(N)</code>的列一直花费N个字符存储数据，不管这个字符串是更短的或只是NULL</li>
+</ol>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -284,12 +236,12 @@ SHOW GLOBAL STATUS;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-67.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十七)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-60.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-66.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十六)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

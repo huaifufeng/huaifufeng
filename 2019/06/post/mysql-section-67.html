@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="服务器信息">
+    <meta name="description" content="忘记密码恢复">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十一)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(六十七)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-61.html">
+    <link rel="canonical" href="/2019/06/post/mysql-section-67.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十一)</h1>
+                    <h1>MySQL专业笔记(六十七)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, June 14, 2019
+                    <span  class="meta">Posted by 怀府风 on Wednesday, June 19, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#服务器信息">服务器信息</a>
+<li><a href="#忘记密码恢复">忘记密码恢复</a>
 <ul>
-<li><a href="#1-show-variables-例子">1. SHOW VARIABLES 例子</a></li>
-<li><a href="#2-show-status-例子">2. SHOW STATUS 例子</a></li>
+<li><a href="#1-设置root密码-运行root使用socket和http访问">1. 设置root密码，运行root使用socket和http访问</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,87 +192,41 @@
         		
         		
 
-<h2 id="服务器信息">服务器信息</h2>
+<h2 id="忘记密码恢复">忘记密码恢复</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>说明</th>
-</tr>
-</thead>
+<h3 id="1-设置root密码-运行root使用socket和http访问">1. 设置root密码，运行root使用socket和http访问</h3>
 
-<tbody>
-<tr>
-<td>GLOBAL</td>
-<td>显示配置到整个服务器上面的变量。可选的</td>
-</tr>
+<p>解决问题：access denied for user root using password YES Stop mySQL:</p>
 
-<tr>
-<td>SESSION</td>
-<td>显示只配置当前会有的变量。可选</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="1-show-variables-例子">1. SHOW VARIABLES 例子</h3>
-
-<p>获取所有的服务器变量，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW VARIABLES;
+<pre><code class="language-shell">sudo systemctl stop mysql
 </code></pre>
 
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
+<p>重启MySQL，忽略授权表：</p>
 
-<pre><code class="language-mysql">-- 会话变量
-SHOW SESSION VARIABLES;
-
--- 全局变量
-SHOW GLOBALE VARIABLES;
+<pre><code class="language-shell">sudo mysqld_safe --skip-grant-tables
 </code></pre>
 
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
+<p>登录：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE 'max_join_size';
+<pre><code class="language-shell">mysql -u root
 </code></pre>
 
-<p>或者使用标识符：</p>
+<p>在SQL shell中，查看用户是否存在：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES LIKE &quot;%size%&quot;;
+<pre><code class="language-mysql">SELECT User, password, plugin FROM mysql.user;
 </code></pre>
 
-<p>你可以使用WHERE语句来筛选这个结果：</p>
+<p>更新用户信息(plugin为null，表示启用所有的组件)：</p>
 
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] VARIABLES WHERE VALUE &gt; 0;
+<pre><code class="language-mysql">update mysql.user set password=PASSWORD('mypassword'), plugin=NULL WHERE User='root';
+exit;
 </code></pre>
 
-<h3 id="2-show-status-例子">2. SHOW STATUS 例子</h3>
+<p>在Unix的shell终止不带验证的MySQL，然后重启带有验证的MySQL：</p>
 
-<p>获取所有的服务器的状态，请在首选的(PHPMyAdmin或其他)窗口或mysql的命令行中运行下面的查询：</p>
-
-<pre><code class="language-mysql">SHOW STATUS;
+<pre><code class="language-shell">sudo service mysql stop
+sudo service mysql start
 </code></pre>
-
-<p>你可以像下面这样指定要获取全局变量还是当前会话的变量：</p>
-
-<pre><code class="language-mysql">-- 会话状态
-SHOW SESSION STATUS;
-
--- 全局状态
-SHOW GLOBAL STATUS;
-</code></pre>
-
-<p>像其他的SQL查询一样，你可以在这里使用LIKE等命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS LIKE &quot;key%&quot;;
-</code></pre>
-
-<p>或者使用WHERE命令：</p>
-
-<pre><code class="language-mysql">SHOW [GLOBAL | SESSION] STATUS WHERE VALUE &gt; 0
-</code></pre>
-
-<p>GLOBAL和SESSION的主要区别在于：使用GLOBAL将会显示有关服务器及连接的聚合信息，而SESSION只会显示当前连接的信息。</p>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -283,13 +236,9 @@ SHOW GLOBAL STATUS;
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-60.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-68.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十八)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
