@@ -6,10 +6,23 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 18 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十九）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-49.html</link>
+      <pubDate>Sun, 19 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-49.html</guid>
+      <description>Unicode支持 1. 使用PHP转换Unicode字符为&amp;rsquo;\uxxxx&amp;rsquo; 你可以使用下面的方法进行字符类型转换：
+if (!function_exists(&#39;codepoint_encode&#39;)) { function codepoint_encode($str) { return substr(json_encode($str), 1, -1); } } if (!function_exists(&#39;codepoint_decode&#39;)) { function codepoint_decode($str) { return json_decode(sprintf(&#39;&amp;quot;%s&amp;quot;&#39;, $str)); } }  怎么使用：
+echo &amp;quot;\\nUse JSON encoding / decoding\\n&amp;quot;; var_dump(codepoint_encode(&#39;我好&#39;)); var_dump(codepoint_decode(&#39;\\u6211\\u597d&#39;));  输出：
+Use JSON encoding / decoding string(12) &amp;quot;\\u6211\u597d&amp;quot; string(6) &amp;quot;我好&amp;quot;  2. 使用PHP转换Unicode字符为他们的数字值和/或HTML实体 可以使用下面的代码进行转换操作：
+if (!function_exists(&#39;mb_internal_encoding&#39;)) { function mb_internal_encoding($encoding = NULL) { return ($encoding === NULL) ? iconv_get_encoding() : iconv_set_encoding(encoding); } } if (!</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十八）</title>

@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="从JSON类型提取数据">
+    <meta name="description" content="Unicode支持">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(三十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（四十九）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/mysql-section-35.html">
+    <link rel="canonical" href="/2019/05/post/php-section-49.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,12 +145,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(三十五)</h1>
+                    <h1>PHP专业笔记（四十九）</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Sunday, May 19, 2019
                         
@@ -182,10 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#从json类型提取数据">从JSON类型提取数据</a>
+<li><a href="#unicode支持">Unicode支持</a>
 <ul>
-<li><a href="#1-读取json数组值">1. 读取JSON数组值</a></li>
-<li><a href="#2-json提取运算符">2. JSON提取运算符</a></li>
+<li><a href="#1-使用php转换unicode字符为-uxxxx">1. 使用PHP转换Unicode字符为&rsquo;\uxxxx&rsquo;</a></li>
+<li><a href="#2-使用php转换unicode字符为他们的数字值和-或html实体">2. 使用PHP转换Unicode字符为他们的数字值和/或HTML实体</a></li>
+<li><a href="#3-intl扩展">3. Intl扩展</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,105 +194,160 @@
         		
         		
 
-<h2 id="从json类型提取数据">从JSON类型提取数据</h2>
+<h2 id="unicode支持">Unicode支持</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
+<h3 id="1-使用php转换unicode字符为-uxxxx">1. 使用PHP转换Unicode字符为&rsquo;\uxxxx&rsquo;</h3>
 
-<tbody>
-<tr>
-<td>json_doc</td>
-<td>有效的JSON数据</td>
-</tr>
+<p>你可以使用下面的方法进行字符类型转换：</p>
 
-<tr>
-<td>path</td>
-<td>成员路径</td>
-</tr>
-</tbody>
-</table>
+<pre><code class="language-php">if (!function_exists('codepoint_encode')) {
+    function codepoint_encode($str) {
+        return substr(json_encode($str), 1, -1);
+    }
+}
 
-<p>MySQL5.7.8支持原生的JSON类型。因为你有不同的方法来创建json对象，你也可以访问和读取元素使用不同的方法。</p>
-
-<p>主要的方法是<code>JSON_EXTRACT</code>，因此<code>-&gt;</code>和<code>-&gt;&gt;</code>运算符更加友好。</p>
-
-<h3 id="1-读取json数组值">1. 读取JSON数组值</h3>
-
-<p>创建JSON类型的@myjson变量：</p>
-
-<pre><code class="language-mysql">SET @myjson = CAST('[&quot;A&quot;, &quot;B&quot;, {&quot;id&quot;:1, &quot;label&quot;:&quot;C&quot;}]' as JSON);
+if (!function_exists('codepoint_decode')) {
+    function codepoint_decode($str) {
+        return json_decode(sprintf('&quot;%s&quot;', $str));
+    }
+}
 </code></pre>
 
-<p>SELECT查询其中的元素：</p>
+<p><strong>怎么使用：</strong></p>
 
-<pre><code class="language-mysql">SELECT
-    JSON_EXTRACT( @myjson , '$[1]' ) ,
-    JSON_EXTRACT( @myjson , '$[*].label') ,
-    JSON_EXTRACT( @myjson , '$[1].*' ) ,
-    JSON_EXTRACT( @myjson , '$[2].*')
-;
--- result values:
-'\&quot;B\&quot;', '[\&quot;C\&quot;]', NULL, '[1, \&quot;C\&quot;]' 
--- visually:
-&quot;B&quot;, [&quot;C&quot;], NULL, [1, &quot;C&quot;]
+<pre><code class="language-php">echo &quot;\\nUse JSON encoding / decoding\\n&quot;;
+var_dump(codepoint_encode('我好'));
+var_dump(codepoint_decode('\\u6211\\u597d'));
 </code></pre>
 
-<h3 id="2-json提取运算符">2. JSON提取运算符</h3>
+<p>输出：</p>
 
-<p>使用<code>-&gt;</code>或<code>-&gt;&gt;</code>运算符来提取指定路径的值，<code>-&gt;&gt;</code>是非引用的值：</p>
-
-<pre><code class="language-mysql">SELECT
-    myjson_col-&gt;&gt;'$[1]' , myjson_col-&gt;'$[1]' ,
-    myjson_col-&gt;&gt;'$[*].label' ,
-    myjson_col-&gt;&gt;'$[1].*' ,
-    myjson_col-&gt;&gt;'$[2].*'
-FROM tablename ; 
--- visuall:
-    B, &quot;B&quot; , [&quot;C&quot;], NULL, [1, &quot;C&quot;] 
---^^^ ^^^
+<pre><code>Use JSON encoding / decoding
+string(12) &quot;\\u6211\u597d&quot;
+string(6) &quot;我好&quot;
 </code></pre>
 
-<p>所以<code>col-&gt;&gt;path</code>等价于<code>JSON_UNQUOTE(JSON_EXTRACT(col, path))</code>:</p>
+<h3 id="2-使用php转换unicode字符为他们的数字值和-或html实体">2. 使用PHP转换Unicode字符为他们的数字值和/或HTML实体</h3>
 
-<blockquote>
-<p>和<code>-&gt;</code>一样，<code>-&gt;&gt;</code>在EXPLAIN的输出中始终展开，像下面显示的：</p>
+<p>可以使用下面的代码进行转换操作：</p>
 
-<pre><code class="language-mysql">mysql&gt; EXPLAIN SELECT c-&gt;&gt;'$.name' AS name
--&gt;     FROM jemp WHERE g &gt; 2\G
-*************************** 1. row ***************************
-id: 1
-select_type: SIMPLE
-table: jemp
-partitions: NULL
-type: range
-possible_keys: i
-key: i
-key_len: 5
-ref: NULL
-rows: 2
-filtered: 100.00
-Extra: Using where
-1 row in set, 1 warning (0.00 sec)
+<pre><code class="language-php">if (!function_exists('mb_internal_encoding')) {
+    function mb_internal_encoding($encoding = NULL) {
+        return ($encoding === NULL) ? iconv_get_encoding() : iconv_set_encoding(encoding);
+    }
+}
 
-mysql&gt; SHOW WARNINGS\G
-*************************** 1. row ***************************
-Level: Note
-Code: 1003
-Message: /* select#1 */ select
-json_unquote(json_extract(`jtest`.`jemp`.`c`,'$.name')) AS `name` from
-`jtest`.`jemp` where (`jtest`.`jemp`.`g` &gt; 2)
-1 row in set (0.00 sec)
+if (!function_exists('mb_convert_encoding')) {
+    function mb_convert_encoding($str, $to_encoding, $from_encoding = NULL) {
+        return iconv(($from_encoding === NULL) ? mb_internal_encoding() : $from_encoding, $to_encoding, $str);
+    }
+}
+
+if (!function_exists('mb_chr')) {
+    function mb_chr($ord, $encode = 'UTF-8') {
+        if ($encoding === 'UCS-4BE') {
+            return pack(&quot;N&quot;, $ord);
+        } else {
+            return mb_convert_encoding(mb_chr($ord, 'UCS-4BE'), $encoding, 'UCS-4BE');
+        }
+    }
+}
+
+if (!function_exists('mb_ord')) {
+    function mb_ord($char, $encoding = 'UTF-8') {
+        if ($encoding === 'UCS-4BE') {
+            list(, $ord) = (strlen($char) === 4 ? @unpack('N', $char) : @unpack('n', $char));
+            return $ord;
+        } else {
+            return mb_ord(mb_convert_encoding($char, 'UCS-4BE', $encoding), 'UCS-4BE');
+        }
+    }
+}
+
+if (!function_exists('mb_htmlentities')) {
+    function mb_htmlentities($string, $hex = true, $encoding = 'UTF-8') {
+				return preg_replace_callback('/[\x{80}-\x{10FFFF}]/u', function($match) use ($hex) {
+				    return sprintf($hex ? '&amp;#x%X' : '&amp;#%d', mb_ord($match[0]));
+				}, $string)
+    }
+}
+
+if (!function_exists('mb_html_entity_decode')) {
+    function mb_html_entity_decode($string, $flags = null, $encoding = 'UTF-8') {
+        return html_entity_decode($string, ($flags === NULL) ? ENT_COMPAT | ENT_HTML401 : $flags, $encoding);
+    }
+}
 </code></pre>
 
-<p>查看<a href="https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#operator_json-inline-path">行内路径提取</a>。</p>
-</blockquote>
+<p><strong>怎么使用：</strong></p>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<pre><code class="language-php">echo &quot;Get string from numeric DEC value\n&quot;:
+var_dump(mb_chr(50319, 'UCS-4BE'));
+var_dump(mb_chr(271));
+
+echo &quot;\nGet string from numberic HEX value\n&quot;:
+var_dump(mb_chr(0xC48F, 'UCS-4BE'));
+var_dump(mb_chr(0x010F));
+
+echo &quot;\nGet numeric value of character as DEC string\n&quot;:
+var_dump(mb_ord('ď'm 'UCS-4BE'));
+var_dump(mb_ord('ď'));
+
+echo &quot;\nGet numeric value of character as HEX string\n&quot;; 
+var_dump(dechex(mb_ord('ď', 'UCS-4BE'))); 
+var_dump(dechex(mb_ord('ď')));
+
+echo &quot;\nEncode / decode to DEC based HTML entities\n&quot;; 
+var_dump(mb_htmlentities('tchüß', false)); 
+var_dump(mb_html_entity_decode('tch&amp;#252;&amp;#223;'));
+
+echo &quot;\nEncode / decode to HEX based HTML entities\n&quot;; 
+var_dump(mb_htmlentities('tchüß'));
+var_dump(mb_html_entity_decode('tch&amp;#xFC;&amp;#xDF;'))
+</code></pre>
+
+<p><strong>输出：</strong></p>
+
+<pre><code>Get string from numeric DEC value 
+string(4) &quot;ď&quot;
+string(2) &quot;ď&quot;
+
+Get string from numeric HEX value 
+string(4) &quot;ď&quot;
+string(2) &quot;ď&quot;
+
+Get numeric value of character as DEC int
+int(50319)
+int(271)
+
+Get numeric value of character as HEX string
+string(4) &quot;c48f&quot;
+string(3) &quot;10f&quot;
+
+Encode / decode to DEC based HTML entities 
+string(15) &quot;tch&amp;#252;&amp;#223;&quot;
+string(7) &quot;tchüß&quot;
+
+Encode / decode to HEX based HTML entities 
+string(15) &quot;tch&amp;#xFC;&amp;#xDF;&quot;
+string(7) &quot;tchüß&quot;
+</code></pre>
+
+<h3 id="3-intl扩展">3. Intl扩展</h3>
+
+<p>原生的字符串函数是单字节的函数，不能很好的处理Unicode字符。iconv和mbstring提供了对Unicode字符的部分支持，intl扩展提供了对Unicode的完整支持。intl是facto de 标准ICU库的封装，查看<a href="http://site.icu-project.org/来了解https://php.net/manual/en/book.intl.php中没有完全支持的功能。如果你没有按照这个扩展，可以查看[Symfony框架的支持](https://github.com/symfony/symfony/blob/3.2/src/Symfony/Component/Intl/Intl.php)。">http://site.icu-project.org/来了解https://php.net/manual/en/book.intl.php中没有完全支持的功能。如果你没有按照这个扩展，可以查看[Symfony框架的支持](https://github.com/symfony/symfony/blob/3.2/src/Symfony/Component/Intl/Intl.php)。</a></p>
+
+<p>ICU提供了完全的国际化，其中Unicode只是其中的一部分。你可以很简单的进行转码：</p>
+
+<pre><code>\UConverter::transcode($sString, 'UTF-8', 'UTF-8'); // strip bad bytes against attacks
+</code></pre>
+
+<p>但是，不要忽略iconv函数，可以尝试一下：</p>
+
+<pre><code>\iconv('UTF-8', 'ASCII//TRANSLIT', &quot;Cliënt&quot;); // output: &quot;Client&quot;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -300,12 +356,12 @@ json_unquote(json_extract(`jtest`.`jemp`.`c`,'$.name')) AS `name` from
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/mysql-section-36.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十六)">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-35.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十五)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/php-section-49.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十九）">Next Post &rarr;</a>
+                      <a href="/2019/05/post/mysql-section-34.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十四)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
