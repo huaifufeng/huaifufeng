@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="MySQL性能建议">
+    <meta name="description" content="UTF-8">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（四十八）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-68.html">
+    <link rel="canonical" href="/2019/05/post/php-section-48.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十八)</h1>
+                    <h1>PHP专业笔记（四十八）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, June 21, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, May 18, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#mysql性能建议">MySQL性能建议</a>
+<li><a href="#utf-8">UTF-8</a>
 <ul>
-<li><a href="#1-创建联合索引">1. 创建联合索引</a></li>
-<li><a href="#2-优化innodb的表存储">2. 优化InnoDB的表存储</a></li>
+<li><a href="#1-输入">1. 输入</a></li>
+<li><a href="#2-输出">2. 输出</a></li>
+<li><a href="#3-数据存储和访问">3. 数据存储和访问</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,56 +194,114 @@
         		
         		
 
-<h2 id="mysql性能建议">MySQL性能建议</h2>
+<h2 id="utf-8">UTF-8</h2>
 
-<h3 id="1-创建联合索引">1. 创建联合索引</h3>
-
-<p>在大多数情况下，组合索引比单列索引的性能提升的高。创建一个最佳的联合索引，按照下面的顺序排序列：</p>
+<h3 id="1-输入">1. 输入</h3>
 
 <ul>
-<li><code>=</code>列：WHERE子句中开始(例如 <code>INDEX(a, b, …)</code> 对于<code>WHERE a=12 AND b='xyz'...</code>)</li>
-<li><code>IN</code>列：优化器可能跳过索引</li>
-<li>一个&rdquo;范围&rdquo;：(例如：<code>x BETWEEN 3 AND 9</code>, <code>name LIKE 'J%'</code>) 将会不会使用任何第一个范围列的列。</li>
-<li>所有<code>GROUP BY</code>中的列，按照顺序</li>
-<li>所有<code>ORDER BY</code>中的列，按照顺序。只有在所有的列是<code>ASC</code>或<code>DESC</code>下有效，或者你用的事8.0<br /></li>
+<li>你需要在任何地方存储和使用接收到的UTF-8格式的数据。PHP的<a href="https://php.net/manual/en/function.mb-check-encoding.php">mb_check_encoding</a>可以完成这个功能，但是你要始终如一的使用。确实没有办法解决这个问题，因为恶意客户机可以用他们想要的任何编码提交数据。</li>
 </ul>
 
-<p>注意和异常：</p>
+<pre><code class="language-php">  $string = $_REQUEST['user_comment'];
+  if (!mb_check_encoding($string, 'UTF-8')) {
+      $actualEncoding = mb_detect_encoding($string);
+      $string = mb_convert_encoding($string, 'UTF-8', $actualEncoding);
+  }
+</code></pre>
 
 <ul>
-<li>不要重复任何列</li>
-<li>跳过所有不使用的案例</li>
-<li>如果你没有使用<code>WHERE</code>语句中的所有列，就不需要继续使用<code>GROUP BY</code>等</li>
-<li>有一些情况下只有<code>ORDER BY</code>列是有用的，忽略<code>WHERE</code>列</li>
-<li>不要把列&rdquo;放入&rdquo;方法中(例如<code>DATE(x)=…</code>不能用到<code>x</code>的索引)</li>
-<li>&ldquo;前缀&rdquo;索引(例如<code>text_col(99)</code>)不太可能有帮助，可能会造成伤害</li>
+<li><strong>如果你使用的事HTML5，你可以忽略这一点。</strong>你希望浏览器发送给你的所有数据都是UTF-8的。唯一有效的方式是在你的<code>&lt;form&gt;</code>标签中添加<code>accept-charset</code>属性。</li>
 </ul>
 
-<p><a href="https://mariadb.com/kb/en/mariadb/compound-composite-indexes/">更多详情。</a></p>
+<pre><code class="language-html">  &lt;form action=&quot;somepage.php&quot; accept-charset=&quot;UTF-8&quot;&gt;
+</code></pre>
 
-<h3 id="2-优化innodb的表存储">2. 优化InnoDB的表存储</h3>
+<h3 id="2-输出">2. 输出</h3>
 
-<ol>
-<li><p>在InnoDB中，有一个长的<code>Primary KEY</code>(或者是一列有很长的值，或者多个组合列有长值)浪费很大的磁盘空间。行的主键值在同一行所有辅助索引记录中重复。如果主键过长，创建一个自动递增的列作为主键。</p></li>
+<ul>
+<li>如果你的系统传输文本到另外的系统，需要通知他们编码方式。在PHP中，你可以在<code>php.ini</code>中设置<a href="https://www.php.net/manual/zh/ini.core.php#ini.default-charset">default_charset</a>选项，或者手动设置<code>Content-Type</code>这个MIME头。这是针对现代浏览器的首选项：</li>
+</ul>
 
-<li><p>使用<code>VARCHAR</code>数据类型替换<code>CHAR</code>类型当存储变长字符串或者列中有很多NULL值。一个<code>CHAR(N)</code>的列一直花费N个字符存储数据，不管这个字符串是更短的或只是NULL。较小的表更适合缓冲池并减少磁盘的I/O。</p></li>
-</ol>
+<pre><code class="language-php">  header('Content-Type: text/html; charset=utf-8');
+</code></pre>
+
+<ul>
+<li><p>如果你不能设置响应头的话，你需要在HTML文件中修改<a href="http://stackoverflow.com/q/4696499/4245525">HTML的源信息</a>。</p>
+
+<ul>
+<li>HTML5</li>
+</ul>
+
+<pre><code class="language-html">&lt;meta charset=&quot;utf-8&quot;&gt;
+</code></pre>
+
+<ul>
+<li>老版本的HTML</li>
+</ul>
+
+<pre><code>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+</code></pre></li>
+</ul>
+
+<h3 id="3-数据存储和访问">3. 数据存储和访问</h3>
 
 <blockquote>
-<p>当使用COMPACT行格式(默认的InnoDB格式)和可变长度字符集(像utf8或sjis)时，CHAR(N)列占用可变的空间，但是仍然至少占用N个字节</p>
+<p>这个主题主要讨论UTF-8以及在数据库中使用的注意点。如果你想要了解更多的PHP中使用数据库的信息，查看更多的信息。</p>
 </blockquote>
 
-<ol>
-<li><p>对于那些包含大量重复文本或者数值数据的大表，考虑使用压缩行格式。花费更少的磁盘I/O来加载数据到缓存池或者执行全表查询。在做一个长久的决定之前，计算依稀使用压缩行格式和压缩行格式可以达到的压缩量。警告：基准测试很少显示出比2:1更好的压缩比，并且缓冲池中有很多用于压缩的开销。</p></li>
+<p><strong>存储数据到数据库</strong></p>
 
-<li><p>一旦你的数据达到稳定的大小，或者一个增长表增加了数十兆或数百兆字节，请考虑使用OPTIMIZE TABLE语句来重新组织表并且压缩任何浪费的空间。重新组织表使用更少的磁盘I/O来进行完整的表扫描。这是一种简单的技术，可以在其他的技术(如改进索引使用或优化应用程序代码)不能提供性能的情况下。警告：无论表的大小，OPTIMIZE TABLE 应该很少执行。因为它成本很高，而且很少能改善到使用这个功能。InnoDB相当擅长保持其B+树不存在大量的浪费空间。</p></li>
-</ol>
+<ul>
+<li>指定你数据库中所有的表和文本列为<code>utf8mb4</code>，这使得MySQL可以物理地存储和检索以UTF-8编码的值。</li>
+</ul>
 
 <blockquote>
-<p>OPTIMIZE TABLE复制表的数据部分并且重建表的索引。这么做的好处是改进了索引中的数据，减少表空间和磁盘的碎片。根据表中的数据，这些好处也各不相同。你可能会发现，对于某些表有显著的收益，但是对于其他的表没有。并且收益会随着时间减少，直到你下次优化表。如果表很大或者正在重建的索引不适合缓冲池，这个操作会很慢。向表中加入大量数据后的第一次执行通常比以后的运行慢的多。</p>
+<p>如果指定了utf8mb4_*排序集（没有显示指定字符集），MySQL将会隐式的使用utf8mb4编码</p>
 </blockquote>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<ul>
+<li>老版本的MySQL(早于5.2.3)不支持<code>utf8mb4</code>，你需要使用utf8，这是Unicode字符集的子集。</li>
+</ul>
+
+<p><strong>从MySQL数据库读取数据</strong></p>
+
+<ul>
+<li>在你的应用中，无论你使用什么DB的方法，都需要指定连接的字符集为<code>utf8mb4</code>。这样，当MySQL将数据移交给您的应用程序时，它就不会从它的原生UTF-8进行转换，反之亦然。</li>
+<li>一些驱动程序提供了自己的机制来配置连接字符集，这两个机制都更新了自己的内部状态，并通知MySQL要在连接上使用的编码。这通常是首选的方法。</li>
+</ul>
+
+<p>例如（同样的考虑适用于上述情况）：</p>
+
+<ul>
+<li>如果你在PHP5.3.6之后使用<a href="https://www.php.net/manual/zh/book.pdo.php">PDO</a>抽象层，你需要在<a href="https://www.php.net/manual/zh/ref.pdo-mysql.connection.php">DSN</a>中指定<code>charset</code>:</li>
+</ul>
+
+<pre><code class="language-php">  $handle = new PDO('mysql:charset=utf8mb4');
+</code></pre>
+
+<ul>
+<li>如果你使用<a href="https://www.php.net/manual/zh/book.mysqli.php">mysqli</a>，你可以调用<a href="https://www.php.net/manual/zh/mysqli.set-charset.php">set_charset()</a>方法：</li>
+</ul>
+
+<pre><code class="language-php">  $conn = mysqli_connect('localhost', 'my_user', 'my_password', 'my_db');
+  $conn-&gt;set_charset('utf8mb4'); // object oriented style 
+  mysqli_set_charset($conn, 'utf8mb4'); // procedural style
+</code></pre>
+
+<ul>
+<li>如果你坚持使用普通的<a href="https://www.php.net/manual/zh/book.mysql.php">mysql</a>，但恰好运行php≥5.2.3，你可以调用mysql_set_charset：</li>
+</ul>
+
+<pre><code class="language-php">  $conn = mysql_connect('localhost', 'my_user', 'my_password');
+  $conn-&gt;set_charset('utf8mb4'); // object oriented style
+  mysql_set_charset($conn, 'utf8mb4'); // procedural style
+</code></pre>
+
+<ul>
+<li>如果数据库驱动程序不提供自己的连接字符集设置机制，则可能需要发出一个查询来告诉MySQL应用程序希望如何对连接上的数据进行编码：<a href="https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html">SET NAMES &lsquo;utf8mb4&rsquo;</a>。</li>
+</ul>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -251,12 +310,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/mysql-section-69.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十九)">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-34.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十四)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-67.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十七)">Next Post &rarr;</a>
+                      <a href="/2019/05/post/mysql-section-33.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十三)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

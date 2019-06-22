@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="MySQL性能建议">
+    <meta name="description" content="MySQL性能调整">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十八)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>MySQL专业笔记(六十九)-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-68.html">
+    <link rel="canonical" href="/2019/06/post/mysql-section-69.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -150,9 +150,9 @@
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十八)</h1>
+                    <h1>MySQL专业笔记(六十九)</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, June 21, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, June 22, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,16 @@
 <ul>
 <li>
 <ul>
-<li><a href="#mysql性能建议">MySQL性能建议</a>
+<li><a href="#mysql性能调整">MySQL性能调整</a>
 <ul>
-<li><a href="#1-创建联合索引">1. 创建联合索引</a></li>
-<li><a href="#2-优化innodb的表存储">2. 优化InnoDB的表存储</a></li>
+<li><a href="#1-不要把列放到函数内">1. 不要把列放到函数内</a></li>
+<li><a href="#2-or">2. OR</a></li>
+<li><a href="#3-添加正确的索引">3. 添加正确的索引</a></li>
+<li><a href="#4-有一个索引">4. 有一个索引</a></li>
+<li><a href="#5-子查询">5. 子查询</a></li>
+<li><a href="#6-join-group-by">6. JOIN + GROUP BY</a></li>
+<li><a href="#7-设置正确的缓存">7. 设置正确的缓存</a></li>
+<li><a href="#8-相反">8. 相反</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,54 +199,135 @@
         		
         		
 
-<h2 id="mysql性能建议">MySQL性能建议</h2>
+<h2 id="mysql性能调整">MySQL性能调整</h2>
 
-<h3 id="1-创建联合索引">1. 创建联合索引</h3>
+<h3 id="1-不要把列放到函数内">1. 不要把列放到函数内</h3>
 
-<p>在大多数情况下，组合索引比单列索引的性能提升的高。创建一个最佳的联合索引，按照下面的顺序排序列：</p>
+<p>一个常见的错误是把一个索引的列放入到一个函数中。例如，下面的查询不会用到索引：</p>
+
+<pre><code class="language-mysql">WHERE DATE(dt) = '2000-01-01'
+</code></pre>
+
+<p>相反，对于索引<code>INDEX(dt)</code>下面可能会用到索引：</p>
+
+<pre><code class="language-mysql">WHERE dt='2000-01-01' -- 如果dt是DATE类型的话
+</code></pre>
+
+<p>这个对于<code>DATE, DATETIME,TIMESTAMP和DATETIME(6)毫秒</code>也是有效的：</p>
+
+<pre><code class="language-mysql">WHERE dt &gt;= '2000-01-01'
+    AND dt &lt; '2000-01-01' + INTERVAL 1 DAY
+</code></pre>
+
+<h3 id="2-or">2. OR</h3>
+
+<p>通常OR会很降低性能：</p>
+
+<pre><code class="language-mysql">WHERE a = 12 OR b = 78
+</code></pre>
+
+<p>不能使用索引<code>INDEX(a, b)</code>，可以或不可以通过&rdquo;索引合并&rdquo;使用<code>INDEX(a)和INDEX(b)</code>。索引合并总榜什么都没有好，但只是好一点。</p>
+
+<pre><code class="language-mysql">WHERE x = 3 OR x = 5
+</code></pre>
+
+<p>应该换成：</p>
+
+<pre><code class="language-mysql">WHERE x IN (3, 5)
+</code></pre>
+
+<p>这可能会用到<code>x</code>的索引。</p>
+
+<h3 id="3-添加正确的索引">3. 添加正确的索引</h3>
+
+<p>这是一个很多的主题，但是也是一个最重要的&rdquo;性能&rdquo;主题。</p>
+
+<p>初学者的主要经验是学习&rdquo;复合&rdquo;索引。下面是一个例子：</p>
+
+<pre><code class="language-mysql">INDEX(last_name, first_name)
+</code></pre>
+
+<p>对于下面的查询，索引都是有效的：</p>
+
+<pre><code class="language-mysql">WHERE last_name = '...'
+WHERE first_name = '...' AND last_name = '...' -- where中的顺序是没有关系的
+</code></pre>
+
+<p>但是对于下面的查询就没有效果了：</p>
+
+<pre><code class="language-mysql">WHERE first_name = '...' -- 索引的顺序是很重要的
+WHERE last_name = '...' OR first_name = '...' -- &quot;OR&quot;很差
+</code></pre>
+
+<h3 id="4-有一个索引">4. 有一个索引</h3>
+
+<p>对于任何不小的表来说，提升性能最重要的事情就是天津一个合适的索引：</p>
+
+<pre><code class="language-mysql">WHERE a = 12 --&gt; INDEX(a) 
+WHERE a &gt; 12 --&gt; INDEX(a)
+
+WHERE a = 12 AND b &gt; 78 --&gt; INDEX(a,b) 比 INDEX(b,a)有用
+WHERE a &gt; 12 AND b &gt; 78 --&gt; INDEX(a) or INDEX(b); 都是范围
+
+ORDER BY x --&gt; INDEX(x)
+ORDER BY x, y --&gt; INDEX(x,y) 按照顺序
+ORDER BY x DESC, y ASC --&gt; 没有索引有效，这里是混合的升降排序
+</code></pre>
+
+<h3 id="5-子查询">5. 子查询</h3>
+
+<p>子查询有几种类型，它们有不同的优化潜力。注意子查询可以是&rdquo;相关的&rdquo;或&rdquo;不相关的&rdquo;。相关表示子查询依赖于子查询外部的值。这通常意味着必须为每个外部值重新计算子查询。</p>
+
+<p>相关子查询通常很好。注意：它必须返回至多1个值。通常作为左连接的替代，但不一定有连接快。</p>
+
+<pre><code class="language-mysql">SELECT a, b, ( SELECT ... FROM t WHERE t.x = u.x ) AS c FROM u ...
+SELECT a, b, ( SELECT MAX(x) ... ) AS c FROM u ...
+SELECT a, b, ( SELECT x FROM t ORDER BY ... LIMIT 1 ) AS c FROM u ...
+</code></pre>
+
+<p>下面是非相关的：</p>
+
+<pre><code class="language-mysql">SELECT ...
+FROM ( SELECT ... ) AS a JOIN b ON ...
+</code></pre>
+
+<p>注意<code>FROM SELECT</code>:</p>
 
 <ul>
-<li><code>=</code>列：WHERE子句中开始(例如 <code>INDEX(a, b, …)</code> 对于<code>WHERE a=12 AND b='xyz'...</code>)</li>
-<li><code>IN</code>列：优化器可能跳过索引</li>
-<li>一个&rdquo;范围&rdquo;：(例如：<code>x BETWEEN 3 AND 9</code>, <code>name LIKE 'J%'</code>) 将会不会使用任何第一个范围列的列。</li>
-<li>所有<code>GROUP BY</code>中的列，按照顺序</li>
-<li>所有<code>ORDER BY</code>中的列，按照顺序。只有在所有的列是<code>ASC</code>或<code>DESC</code>下有效，或者你用的事8.0<br /></li>
+<li>如果返回1个值，非常好</li>
+<li>一个很好的范例(同样是&rdquo;1行&rdquo;)，对于子查询<code>(SELECT @n:=0)</code>，初始化一个变量<code>@variable</code>在子查询其他部分或者查询中使用。</li>
+<li>如果返回很多行，并且<code>JOIN</code>也是<code>(SELECT …)</code>返回很多行，性能是很差的。在5.6之前没有索引，所以这就变成了<code>CROSS JOIN</code>;在5.6之后，涉及到在临时表上推导出最好的索引，然后生成它，最后在完成选择后丢弃它。</li>
 </ul>
 
-<p>注意和异常：</p>
+<h3 id="6-join-group-by">6. JOIN + GROUP BY</h3>
+
+<p>一个常见的导致查询效率低下的问题像下面这样：</p>
+
+<pre><code class="language-mysql">SELECT ... 
+    FROM a
+    JOIN b ON ... 
+    WHERE ... 
+    GROUP BY a.id
+</code></pre>
+
+<p>首先，<code>JOIN</code>扩展了行数，然后<code>GROUP BY</code>将结果变为了a中的行数。可能没有更好的办法来解决扩展-压缩的问题。一个可能的办法是在SELECT中将JOIN变为一个子查询。这也消除了GROUP BY。</p>
+
+<h3 id="7-设置正确的缓存">7. 设置正确的缓存</h3>
+
+<p><code>innodb_buffer_pool_size</code>应该被设置为有效内存的70%。</p>
+
+<h3 id="8-相反">8. 相反</h3>
+
+<p>以下是一些不太可能有助于提高性能的事情。它们来源于过时的信息和/或幼稚。</p>
 
 <ul>
-<li>不要重复任何列</li>
-<li>跳过所有不使用的案例</li>
-<li>如果你没有使用<code>WHERE</code>语句中的所有列，就不需要继续使用<code>GROUP BY</code>等</li>
-<li>有一些情况下只有<code>ORDER BY</code>列是有用的，忽略<code>WHERE</code>列</li>
-<li>不要把列&rdquo;放入&rdquo;方法中(例如<code>DATE(x)=…</code>不能用到<code>x</code>的索引)</li>
-<li>&ldquo;前缀&rdquo;索引(例如<code>text_col(99)</code>)不太可能有帮助，可能会造成伤害</li>
+<li>InnoDB已经改进到Myisam不太可能更好的程度。</li>
+<li>分区很少提供性能优势，甚至会损害性能。</li>
+<li>设置<code>query_cache_size</code>大于100M将会损害到性能</li>
+<li>在<code>my.cnf</code>中增加大量值可能会导致“交换”，这是一个严重的性能问题。</li>
+<li>&ldquo;前缀索引&rdquo;(像<code>INDEX(foo(20))</code>)通常是没用的</li>
+<li><code>OPTIMIZE TABLE</code>几乎是没用的，并且会锁表。</li>
 </ul>
-
-<p><a href="https://mariadb.com/kb/en/mariadb/compound-composite-indexes/">更多详情。</a></p>
-
-<h3 id="2-优化innodb的表存储">2. 优化InnoDB的表存储</h3>
-
-<ol>
-<li><p>在InnoDB中，有一个长的<code>Primary KEY</code>(或者是一列有很长的值，或者多个组合列有长值)浪费很大的磁盘空间。行的主键值在同一行所有辅助索引记录中重复。如果主键过长，创建一个自动递增的列作为主键。</p></li>
-
-<li><p>使用<code>VARCHAR</code>数据类型替换<code>CHAR</code>类型当存储变长字符串或者列中有很多NULL值。一个<code>CHAR(N)</code>的列一直花费N个字符存储数据，不管这个字符串是更短的或只是NULL。较小的表更适合缓冲池并减少磁盘的I/O。</p></li>
-</ol>
-
-<blockquote>
-<p>当使用COMPACT行格式(默认的InnoDB格式)和可变长度字符集(像utf8或sjis)时，CHAR(N)列占用可变的空间，但是仍然至少占用N个字节</p>
-</blockquote>
-
-<ol>
-<li><p>对于那些包含大量重复文本或者数值数据的大表，考虑使用压缩行格式。花费更少的磁盘I/O来加载数据到缓存池或者执行全表查询。在做一个长久的决定之前，计算依稀使用压缩行格式和压缩行格式可以达到的压缩量。警告：基准测试很少显示出比2:1更好的压缩比，并且缓冲池中有很多用于压缩的开销。</p></li>
-
-<li><p>一旦你的数据达到稳定的大小，或者一个增长表增加了数十兆或数百兆字节，请考虑使用OPTIMIZE TABLE语句来重新组织表并且压缩任何浪费的空间。重新组织表使用更少的磁盘I/O来进行完整的表扫描。这是一种简单的技术，可以在其他的技术(如改进索引使用或优化应用程序代码)不能提供性能的情况下。警告：无论表的大小，OPTIMIZE TABLE 应该很少执行。因为它成本很高，而且很少能改善到使用这个功能。InnoDB相当擅长保持其B+树不存在大量的浪费空间。</p></li>
-</ol>
-
-<blockquote>
-<p>OPTIMIZE TABLE复制表的数据部分并且重建表的索引。这么做的好处是改进了索引中的数据，减少表空间和磁盘的碎片。根据表中的数据，这些好处也各不相同。你可能会发现，对于某些表有显著的收益，但是对于其他的表没有。并且收益会随着时间减少，直到你下次优化表。如果表很大或者正在重建的索引不适合缓冲池，这个操作会很慢。向表中加入大量数据后的第一次执行通常比以后的运行慢的多。</p>
-</blockquote>
 
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
@@ -250,13 +337,9 @@
               <hr>
               <ul class="pager">
                   
-                  <li class="previous">
-                      <a href="/2019/06/post/mysql-section-69.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十九)">&larr; Previous Post</a>
-                  </li>
-                  
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-67.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十七)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-68.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十八)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

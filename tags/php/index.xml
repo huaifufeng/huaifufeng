@@ -6,10 +6,40 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 16 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（四十八）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-48.html</link>
+      <pubDate>Sat, 18 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-48.html</guid>
+      <description>UTF-8 1. 输入  你需要在任何地方存储和使用接收到的UTF-8格式的数据。PHP的mb_check_encoding可以完成这个功能，但是你要始终如一的使用。确实没有办法解决这个问题，因为恶意客户机可以用他们想要的任何编码提交数据。  $string = $_REQUEST[&#39;user_comment&#39;]; if (!mb_check_encoding($string, &#39;UTF-8&#39;)) { $actualEncoding = mb_detect_encoding($string); $string = mb_convert_encoding($string, &#39;UTF-8&#39;, $actualEncoding); }   如果你使用的事HTML5，你可以忽略这一点。你希望浏览器发送给你的所有数据都是UTF-8的。唯一有效的方式是在你的&amp;lt;form&amp;gt;标签中添加accept-charset属性。  &amp;lt;form action=&amp;quot;somepage.php&amp;quot; accept-charset=&amp;quot;UTF-8&amp;quot;&amp;gt;  2. 输出  如果你的系统传输文本到另外的系统，需要通知他们编码方式。在PHP中，你可以在php.ini中设置default_charset选项，或者手动设置Content-Type这个MIME头。这是针对现代浏览器的首选项：  header(&#39;Content-Type: text/html; charset=utf-8&#39;);   如果你不能设置响应头的话，你需要在HTML文件中修改HTML的源信息。
+ HTML5  &amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;   老版本的HTML  &amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=utf-8&amp;quot; /&amp;gt;   3. 数据存储和访问  这个主题主要讨论UTF-8以及在数据库中使用的注意点。如果你想要了解更多的PHP中使用数据库的信息，查看更多的信息。
+ 存储数据到数据库
+ 指定你数据库中所有的表和文本列为utf8mb4，这使得MySQL可以物理地存储和检索以UTF-8编码的值。   如果指定了utf8mb4_*排序集（没有显示指定字符集），MySQL将会隐式的使用utf8mb4编码
+  老版本的MySQL(早于5.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（四十七）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-47.html</link>
+      <pubDate>Fri, 17 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-47.html</guid>
+      <description>生成器 Yield关键字 一个yield和一个return语句很像，除了终止函数的执行并返回，yield语句返回一个Generator对象并且终止generator函数的执行。
+下面是一个使用yield实现的range函数的例子：
+function gen_one_to_three() { for ($i = 0; $i &amp;lt; 3; $i++) { yield $i; } }  通过var_dump函数可以看到这个方法返回一个Generator对象。
+var_dump(gen_one_to_three()); 输出： class Generator (0) { }  Yield值
+之后Generator像数组一样被迭代处理：
+foreach (gen_one_to_three() as $value) { echo &amp;quot;$value\n&amp;quot;; }  上面的例子会输出：
+1 2 3  带有key的Yield值
+处理Yield值之后，你可以使用Yield的键/值对：
+function gen_one_to_three() { $keys = [&amp;quot;first&amp;quot;, &amp;quot;second&amp;quot;, &amp;quot;third&amp;quot;]; for ($i = 1; $i &amp;lt;= 3; $i++) { // Note that $i is preserved between yields.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十六）</title>
