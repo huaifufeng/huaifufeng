@@ -6,10 +6,25 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 19 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 20 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（五十）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-50.html</link>
+      <pubDate>Mon, 20 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-50.html</guid>
+      <description>URL 1. 解析URL 想要把一个URL解析到各自单独的部分，使用parse_url()函数：
+$url = &amp;quot;http://blog.huaifufeng.com/page?foo=1&amp;amp;bar=baz#anchor&amp;quot;; $parts = parse_url($url);  在上面执行之后，$parts里面的内容就像下面这样：
+Array ( [scheme] =&amp;gt; http [host] =&amp;gt; www.example.com [path] =&amp;gt; /page [query] =&amp;gt; foo=1&amp;amp;bar=baz [fragment] =&amp;gt; anchor )  你也可以选择一个部分而不是整个部分，可以使用下面的方法：
+$url = &#39;http://www.example.com/page?foo=1&amp;amp;bar=baz#anchor&#39;; $queryString = parse_url($url, PHP_URL_QUERY); //输出：foo=1&amp;amp;bar=baz  支持下面的常量: PHP_URL_SCHEME, PHP_URL_HOST, PHP_URL_PORT, PHP_URL_USER, PHP_URL_PASS, PHP_URL_PATH, PHP_URL_QUERY and PHP_URL_FRAGMENT.
+像要把query字符串解析进入一个键值对，可以使用parse_str()：
+Array ( [foo] =&amp;gt; 1 [bar] =&amp;gt; baz )  2. 将数组生成一个URL加密的参数字符串 http_build_query()可以将数组或对象生成一个参数字符串。这些参数可以被追加到网址后面生成一个GET请求，或者用在一个POST请求，例如cURL：
+$parameters = [ &#39;parameter1&#39; =&amp;gt; &#39;foo&#39;, &#39;parameter2&#39; =&amp;gt; &#39;bar&#39;, ]; $queryString = http_build_query($parameters);  $queryString将会有下面的内容：</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（四十九）</title>

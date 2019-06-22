@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="从JSON类型提取数据">
+    <meta name="description" content="URL处理">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(三十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（五十）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/mysql-section-35.html">
+    <link rel="canonical" href="/2019/05/post/php-section-50.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(三十五)</h1>
+                    <h1>PHP专业笔记（五十）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, May 19, 2019
+                    <span  class="meta">Posted by 怀府风 on Monday, May 20, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#从json类型提取数据">从JSON类型提取数据</a>
+<li><a href="#url">URL</a>
 <ul>
-<li><a href="#1-读取json数组值">1. 读取JSON数组值</a></li>
-<li><a href="#2-json提取运算符">2. JSON提取运算符</a></li>
+<li><a href="#1-解析url">1. 解析URL</a></li>
+<li><a href="#2-将数组生成一个url加密的参数字符串">2. 将数组生成一个URL加密的参数字符串</a></li>
+<li><a href="#3-重定向到另外的url">3. 重定向到另外的URL</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,105 +194,126 @@
         		
         		
 
-<h2 id="从json类型提取数据">从JSON类型提取数据</h2>
+<h2 id="url">URL</h2>
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>描述</th>
-</tr>
-</thead>
+<h3 id="1-解析url">1. 解析URL</h3>
 
-<tbody>
-<tr>
-<td>json_doc</td>
-<td>有效的JSON数据</td>
-</tr>
+<p>想要把一个URL解析到各自单独的部分，使用<a href="https://www.php.net/manual/zh/function.parse-url.php">parse_url()</a>函数：</p>
 
-<tr>
-<td>path</td>
-<td>成员路径</td>
-</tr>
-</tbody>
-</table>
-
-<p>MySQL5.7.8支持原生的JSON类型。因为你有不同的方法来创建json对象，你也可以访问和读取元素使用不同的方法。</p>
-
-<p>主要的方法是<code>JSON_EXTRACT</code>，因此<code>-&gt;</code>和<code>-&gt;&gt;</code>运算符更加友好。</p>
-
-<h3 id="1-读取json数组值">1. 读取JSON数组值</h3>
-
-<p>创建JSON类型的@myjson变量：</p>
-
-<pre><code class="language-mysql">SET @myjson = CAST('[&quot;A&quot;, &quot;B&quot;, {&quot;id&quot;:1, &quot;label&quot;:&quot;C&quot;}]' as JSON);
+<pre><code class="language-php">$url = &quot;http://blog.huaifufeng.com/page?foo=1&amp;bar=baz#anchor&quot;;
+$parts = parse_url($url);
 </code></pre>
 
-<p>SELECT查询其中的元素：</p>
+<p>在上面执行之后，<code>$parts</code>里面的内容就像下面这样：</p>
 
-<pre><code class="language-mysql">SELECT
-    JSON_EXTRACT( @myjson , '$[1]' ) ,
-    JSON_EXTRACT( @myjson , '$[*].label') ,
-    JSON_EXTRACT( @myjson , '$[1].*' ) ,
-    JSON_EXTRACT( @myjson , '$[2].*')
-;
--- result values:
-'\&quot;B\&quot;', '[\&quot;C\&quot;]', NULL, '[1, \&quot;C\&quot;]' 
--- visually:
-&quot;B&quot;, [&quot;C&quot;], NULL, [1, &quot;C&quot;]
+<pre><code>Array
+(
+    [scheme] =&gt; http
+    [host] =&gt; www.example.com
+    [path] =&gt; /page
+    [query] =&gt; foo=1&amp;bar=baz
+    [fragment] =&gt; anchor
+)
 </code></pre>
 
-<h3 id="2-json提取运算符">2. JSON提取运算符</h3>
+<p>你也可以选择一个部分而不是整个部分，可以使用下面的方法：</p>
 
-<p>使用<code>-&gt;</code>或<code>-&gt;&gt;</code>运算符来提取指定路径的值，<code>-&gt;&gt;</code>是非引用的值：</p>
-
-<pre><code class="language-mysql">SELECT
-    myjson_col-&gt;&gt;'$[1]' , myjson_col-&gt;'$[1]' ,
-    myjson_col-&gt;&gt;'$[*].label' ,
-    myjson_col-&gt;&gt;'$[1].*' ,
-    myjson_col-&gt;&gt;'$[2].*'
-FROM tablename ; 
--- visuall:
-    B, &quot;B&quot; , [&quot;C&quot;], NULL, [1, &quot;C&quot;] 
---^^^ ^^^
+<pre><code>$url = 'http://www.example.com/page?foo=1&amp;bar=baz#anchor';
+$queryString = parse_url($url, PHP_URL_QUERY);
+//输出：foo=1&amp;bar=baz
 </code></pre>
 
-<p>所以<code>col-&gt;&gt;path</code>等价于<code>JSON_UNQUOTE(JSON_EXTRACT(col, path))</code>:</p>
+<p>支持下面的常量: PHP_URL_SCHEME, PHP_URL_HOST, PHP_URL_PORT, PHP_URL_USER, PHP_URL_PASS, PHP_URL_PATH, PHP_URL_QUERY and PHP_URL_FRAGMENT.</p>
 
-<blockquote>
-<p>和<code>-&gt;</code>一样，<code>-&gt;&gt;</code>在EXPLAIN的输出中始终展开，像下面显示的：</p>
+<p>像要把query字符串解析进入一个键值对，可以使用<a href="https://php.net/parse_str">parse_str()</a>：</p>
 
-<pre><code class="language-mysql">mysql&gt; EXPLAIN SELECT c-&gt;&gt;'$.name' AS name
--&gt;     FROM jemp WHERE g &gt; 2\G
-*************************** 1. row ***************************
-id: 1
-select_type: SIMPLE
-table: jemp
-partitions: NULL
-type: range
-possible_keys: i
-key: i
-key_len: 5
-ref: NULL
-rows: 2
-filtered: 100.00
-Extra: Using where
-1 row in set, 1 warning (0.00 sec)
-
-mysql&gt; SHOW WARNINGS\G
-*************************** 1. row ***************************
-Level: Note
-Code: 1003
-Message: /* select#1 */ select
-json_unquote(json_extract(`jtest`.`jemp`.`c`,'$.name')) AS `name` from
-`jtest`.`jemp` where (`jtest`.`jemp`.`g` &gt; 2)
-1 row in set (0.00 sec)
+<pre><code>Array
+(
+    [foo] =&gt; 1
+    [bar] =&gt; baz 
+)
 </code></pre>
 
-<p>查看<a href="https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#operator_json-inline-path">行内路径提取</a>。</p>
-</blockquote>
+<h3 id="2-将数组生成一个url加密的参数字符串">2. 将数组生成一个URL加密的参数字符串</h3>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p><a href="https://www.php.net/manual/zh/function.http-build-query.php">http_build_query()</a>可以将数组或对象生成一个参数字符串。这些参数可以被追加到网址后面生成一个GET请求，或者用在一个POST请求，例如cURL：</p>
+
+<pre><code class="language-php">$parameters = [
+    'parameter1' =&gt; 'foo',
+    'parameter2' =&gt; 'bar',
+];
+$queryString = http_build_query($parameters);
+</code></pre>
+
+<p><code>$queryString</code>将会有下面的内容：</p>
+
+<pre><code>parameter1=foo&amp;parameter2=bar
+</code></pre>
+
+<p><code>http_build_query()</code>对于多维数组也是有效的：</p>
+
+<pre><code class="language-php">$parameters = [
+    'parameter3' =&gt; [
+        'sub1' =&gt; 'foo',
+        'sub2' =&gt; 'bar'
+    ],
+    'parameter4' =&gt; 'baz'
+];
+$queryString = http_build_query($parameters);
+</code></pre>
+
+<p><code>$queryString</code>将会有下面的内容：</p>
+
+<pre><code>parameter3%5Bsub1%5D=foo&amp;parameter3%5Bsub2%5D=bar&amp;parameter4=baz
+</code></pre>
+
+<p>这是下面的URL的加密版本：</p>
+
+<pre><code>parameter3[sub1]=foo&amp;parameter3[sub2]=bar&amp;parameter4=baz
+</code></pre>
+
+<h3 id="3-重定向到另外的url">3. 重定向到另外的URL</h3>
+
+<p>你可以使用<code>header()</code>函数通知浏览器重定向到不同的URL：</p>
+
+<pre><code class="language-php">$url = 'https://example.org/foo/bar';
+if (!headers_sent()) { //检查浏览器头是否发送
+    header('Location: ' . $url);
+    exit; //避免之后的代码执行
+} else {
+    throw new Exception('Cannot redirect, headers already sent'); 
+}
+</code></pre>
+
+<p>你也可以重定义到一个相对URL(这不是标准HTTP准则的一部分，但是所有的浏览器都支持)：</p>
+
+<pre><code class="language-php">$url = 'foo/bar';
+if (!headers_sent()) {
+    header('Location: ' . $url); 
+    exit; 
+} else {
+    throw new Exception('Cannot redirect, headers already sent'); 
+}
+</code></pre>
+
+<p>如果headers已经发送了，你可以发送一个<code>meta refresh</code>的HTML标签。</p>
+
+<p><strong>警告：</strong>meta refresh标签依赖客户端正确处理，有些将不会这样做。一般来说，这只在web浏览器中有效。另外，考虑到headers已经发送了，这可能会有一个bug，可能会触发一个异常。</p>
+
+<p>你也可以发送了链接让用户去点击，对于那些不支持meta refresh的浏览器：</p>
+
+<pre><code class="language-php">$url = 'https://example.org/foo/bar';
+if (!headers_sent()) {
+    header(&quot;Location: &quot; . $url);
+} else {
+    $saveUrl = htmlspecialchars($url);
+    print '&lt;meta http-equiv=&quot;refresh&quot; content=&quot;0; url=' . $saveUrl . '&quot;&gt;';
+    print '&lt;p&gt;Please Continue to &lt;a href=&quot;' . $saveUrl . '&quot;&gt;' . $saveUrl . '&lt;/a&gt;&lt;/p&gt;';
+}
+exit;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -300,12 +322,12 @@ json_unquote(json_extract(`jtest`.`jemp`.`c`,'$.name')) AS `name` from
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/php-section-50.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五十）">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-36.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十六)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/php-section-49.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四十九）">Next Post &rarr;</a>
+                      <a href="/2019/05/post/mysql-section-35.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十五)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
