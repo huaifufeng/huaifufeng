@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="事件">
+    <meta name="description" content="对象序列化">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(三十九)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（五十二）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/mysql-section-39.html">
+    <link rel="canonical" href="/2019/05/post/php-section-52.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(三十九)</h1>
+                    <h1>PHP专业笔记（五十二）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Thursday, May 23, 2019
+                    <span  class="meta">Posted by 怀府风 on Wednesday, May 22, 2019
                         
                     </span>
                 </div>
@@ -182,9 +182,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#事件">事件</a>
+<li><a href="#对象序列化">对象序列化</a>
 <ul>
-<li><a href="#1-创建一个事件">1. 创建一个事件</a></li>
+<li><a href="#1-serialize-unserialize">1. serialize / unserialize</a></li>
+<li><a href="#2-serializable接口">2. Serializable接口</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -192,144 +193,74 @@
         		
         		
 
-<h2 id="事件">事件</h2>
+<h2 id="对象序列化">对象序列化</h2>
 
-<h3 id="1-创建一个事件">1. 创建一个事件</h3>
+<h3 id="1-serialize-unserialize">1. serialize / unserialize</h3>
 
-<p>MySQL有它的事件功能，可以避免复杂的cron交互，当您计划的大部分内容与SQL相关，而与文件关联较少时。查看<a href="https://dev.mysql.com/doc/refman/5.7/en/create-event.html">事件手册</a>。把事件想象为定时执行的存储过程。</p>
+<p><code>serialize()</code>返回一个包含PHP中存储的任何值的字节流格式的字符串。<code>unserialize()</code>将会把这个变量转换为初始的值。</p>
 
-<p>要节省调试事件相关问题的时间，请记住必须打开全局事件处理程序才能处理事件。</p>
+<p><strong>序列化对象</strong></p>
 
-<pre><code class="language-mysql">SHOW VARIABLES WHERE variable_name = 'even_scheduler';
-
-+-----------------+-------+
-| Variable_name   | Value |
-+-----------------+-------+
-| event_scheduler | OFF   |
-+-----------------+-------+
+<pre><code class="language-php">serialize($object);
 </code></pre>
 
-<p>当配置关闭的时候，什么都不会触发。使用下面的命令打开这个配置：</p>
+<p><strong>反序列化对象</strong></p>
 
-<pre><code class="language-mysql">SET GLOBAL event_scheduler = ON;
+<pre><code class="language-php">unserialize($object)
 </code></pre>
 
-<p><strong>测试的表</strong></p>
+<p><strong>例子</strong></p>
 
-<pre><code class="language-mysql">CREATE TABLE theMessage (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT NO NULL,
-    message VARCHAR(255) NOTT NULL,
-    updateDt DATETIME NOT NULL,
-    KEY (updateDt)
-);
+<pre><code class="language-php">$array = array();
+$array[&quot;a&quot;] = &quot;Foo&quot;;
+$array[&quot;b&quot;] = &quot;Bar&quot;;
+$array[&quot;c&quot;] = &quot;Baz&quot;;
+$array[&quot;d&quot;] = &quot;Wom&quot;;
 
-INSERT theMessages(userId,message,updateDt) VALUES (1,'message 123','2015-08-24 11:10:09'); 
-INSERT theMessages(userId,message,updateDt) VALUES (7,'message 124','2015-08-29');
-INSERT theMessages(userId,message,updateDt) VALUES (1,'message 125','2015-09-03 12:00:00'); 
-INSERT theMessages(userId,message,updateDt) VALUES (1,'message 126','2015-09-03 14:00:00');
+$serializedArray = serialize($array);
+echo $serializedArray; //output: 
+a:4:{s:1:&quot;a&quot;;s:3:&quot;Foo&quot;;s:1:&quot;b&quot;;s:3:&quot;Bar&quot;;s:1:&quot;c&quot;;s:3:&quot;Baz&quot;;s:1:&quot;d&quot;;s:3:&quot;Wom&quot;;}
 </code></pre>
 
-<p>上述插入件用于显示起点。请注意，下面创建的两个事件将清除行。</p>
+<h3 id="2-serializable接口">2. Serializable接口</h3>
 
-<p><strong>创建两个事件，一个每天运行，一个每10分钟运行</strong></p>
-
-<p>忽略他们实际在做什么（相互对抗）。关注在时间间隔和日程安排上。</p>
-
-<pre><code class="language-mysql">DROP EVENT IF EXISTS `delete7DayOldMessages`; 
-DELIMITER $$
-CREATE EVENT `delete7DayOldMessages`
-    ON SCHEDULE EVERY 1 DAY STARTS '2015-09-01 00:00:00'
-    ON COMPLETION PRESERVE 
-DO BEGIN
-    DELETE FROM theMessages
-    WHERE datediff(now(),updateDt)&gt;6; -- not terribly exact, yesterday but &lt;24hrs is still 1 day
-    -- Other code here
-    
-END$$
-
-DELIMITER ;
-</code></pre>
-
-<p>下一个:</p>
-
-<pre><code class="language-mysql">DROP EVENT IF EXISTS `Every_10_Minutes_Cleanup`; 
-DELIMITER $$
-CREATE EVENT `Every_10_Minutes_Cleanup`
-    ON SCHEDULE EVERY 10 MINUTE STARTS '2015-09-01 00:00:00'
-    ON COMPLETION PRESERVE 
-DO BEGIN
-    DELETE FROM theMessages
-    WHERE TIMESTAMPDIFF(HOUR, updateDt, now())&gt;168; -- messages over 1 week old (168 hours)
-   -- Other code here
-
-END$$ 
-DELIMITER ;
-</code></pre>
-
-<p><strong>不同的方法显示事件状态</strong></p>
-
-<pre><code class="language-mysql">SHOW EVENTS FROM my_db_name; -- List all events by schema name (db name) 
-SHOW EVENTS;
-SHOW EVENTS\G; -- &lt;--------- I like this one from mysql&gt; prompt
-
- *************************** 1. row ***************************
- Db: my_db_name
- Name: delete7DayOldMessages
- Definer: root@localhost
- Time zone: SYSTEM
- Type: RECURRING
- Execute at: NULL
- Interval value: 1
- Interval field: DAY
- Starts: 2015-09-01 00:00:00
- Ends: NULL
- Status: ENABLED
- Originator: 1
- character_set_client: utf8
- collation_connection: utf8_general_ci
- Database Collation: utf8_general_ci
- *************************** 2. row ***************************
- Db: my_db_name
- Name: Every_10_Minutes_Cleanup
- Definer: root@localhost
- Time zone: SYSTEM
- Type: RECURRING
- Execute at: NULL
- Interval value: 10
- Interval field: MINUTE
- Starts: 2015-09-01 00:00:00
- Ends: NULL
- Status: ENABLED
- Originator: 1
- character_set_client: utf8
- collation_connection: utf8_general_ci
- Database Collation: utf8_general_ci
- 2 rows in set (0.06 sec)
-</code></pre>
-
-<p><strong>随机考虑的东西</strong></p>
-
-<pre><code class="language-mysql">DROP EVENT someEventName;  -- 删除事件和代码
-ON COMPLETION PRESERVE; -- 当事件完成之后保留它，否则将会被删除
-</code></pre>
-
-<p>事件像触发器一样，不是被用户程序调用的。相反他们是安排好时间的，成功或者失败。</p>
-
-<p>手册中展示了灵活的间隔选择，下面列了出来：</p>
+<p>简介</p>
 
 <blockquote>
-<p>间隔：</p>
-
-<pre><code>quantity {YEAR | QUARTER | MONTH | DAY | HOUR | MINUTE |
-          WEEK | SECOND | YEAR_MONTH | DAY_HOUR | DAY_MINUTE | DAY_SECOND | 
-          HOUR_MINUTE | HOUR_SECOND | MINUTE_SECOND}
-</code></pre>
+<p>实现这个接口的类不在支持<code>__sleep()</code>和<code>wakeup()</code>魔术方法。当实例序列化的时候，serialize方法将会调用。除非在方法内部编程，否则这将不会调用<code>__destruct()</code>和其他有副作用的方法。当类的数据要反序列化的时候<code>unserialize()</code>方法将会作为构造函数调用，而不是<code>__construct()</code>。如果你想要执行标准的构造方法，就在这个方法里面调用。</p>
 </blockquote>
 
-<p>事件是处理系统的重复任务和计划任务的强大机制。它们可能包含尽可能多的语句、DDL和DML例程，以及您可能合理希望的复杂连接。查看<a href="http://dev.mysql.com/doc/refman/5.7/en/stored-program-restrictions.html">详细的手册</a>。</p>
+<p><strong>基本用法</strong></p>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<pre><code class="language-php">class obj implents Serializable {
+    private $data;
+    public function __construct() {
+        $this-&gt;data = &quot;My private data&quot;;
+    }
+    
+    public function serialize() {
+        return serialize($this-&gt;data);
+    }
+    
+    public function unserialize($data) {
+        $this-&gt;data = unserialize($data);
+    }
+    
+    public function getData() {
+        return $this-&gt;data;
+    }
+}
+
+$obj = new Obj();
+$user = serialize($obj);
+
+var_dump($user); //string(38) &quot;C:3:&quot;obj&quot;:23:{s:15:&quot;My private data&quot;;}&quot;
+
+$newObj = unserialize($user);
+var_dump($newobj-&gt;getData()); // string(15) &quot;My private data&quot;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -338,12 +269,12 @@ ON COMPLETION PRESERVE; -- 当事件完成之后保留它，否则将会被删�
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/mysql-section-40.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十)">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-38.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十八)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/php-section-53.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五十三）">Next Post &rarr;</a>
+                      <a href="/2019/05/post/mysql-section-37.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十七)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

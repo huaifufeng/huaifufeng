@@ -471,6 +471,24 @@ CREATE TABLE theMessage ( Id INT AUTO_INCREMENT PRIMARY KEY, userId INT NO NULL,
     </item>
     
     <item>
+      <title>PHP专业笔记（五十三）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-53.html</link>
+      <pubDate>Thu, 23 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-53.html</guid>
+      <description>序列化    参数 详情     value 要序列化的值，serialize()接受所有的类型，除了资源类型。你甚至可以序列化包含自身引用的数组。包含循环引用的数组和对象也是可以处理的。任何其他的引用都会丢失。当序列化的时候，PHP会在序列化之前首先调用__sleep()方法。这允许对象在序列化的最后一分钟进行数据的清理工作。同样，在调用unserialize()方法的时候，会首先调用__wakeup()方法。对象的私有属性前添加类型；受保护的属性前面会有&amp;rdquo;*&amp;ldquo;。这些预先准备好的值两边都有空字节。    1. 序列化不同的类型 生成一个值的可存储格式。
+这在存储或传输PHP值而不丢失值的类型和结构的时候很有用。
+想要把序列化的结果返回PHP的值，可以使用unserialize()方法。
+序列化string
+$string = &amp;quot;Hello world&amp;quot;; echo serialize($string); // 输出: // s:11:&amp;quot;Hello world&amp;quot;;  序列化double
+$double = 1.5; echo serialize($double); // 输出: // d:1.5;  序列化float
+float和double的序列化效果相同。
+序列化integer
+$integer = 65; echo serialize($integer); // 输出: // i:65;  序列化boolean
+$boolean = true; echo serialize($boolean); // Output: // b:1; $boolean = false; echo serialize($boolean); // Output: // b:0;  序列化NULL</description>
+    </item>
+    
+    <item>
       <title>MySQL专业笔记(三十八)</title>
       <link>http://blog.huaifufeng.com/2019/05/post/mysql-section-38.html</link>
       <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
@@ -491,6 +509,22 @@ innodb_io_capacity = 2500 innodb_io_capacity_max = 3000  RAM利用率</descripti
     </item>
     
     <item>
+      <title>PHP专业笔记（五十二）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-52.html</link>
+      <pubDate>Wed, 22 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-52.html</guid>
+      <description>对象序列化 1. serialize / unserialize serialize()返回一个包含PHP中存储的任何值的字节流格式的字符串。unserialize()将会把这个变量转换为初始的值。
+序列化对象
+serialize($object);  反序列化对象
+unserialize($object)  例子
+$array = array(); $array[&amp;quot;a&amp;quot;] = &amp;quot;Foo&amp;quot;; $array[&amp;quot;b&amp;quot;] = &amp;quot;Bar&amp;quot;; $array[&amp;quot;c&amp;quot;] = &amp;quot;Baz&amp;quot;; $array[&amp;quot;d&amp;quot;] = &amp;quot;Wom&amp;quot;; $serializedArray = serialize($array); echo $serializedArray; //output: a:4:{s:1:&amp;quot;a&amp;quot;;s:3:&amp;quot;Foo&amp;quot;;s:1:&amp;quot;b&amp;quot;;s:3:&amp;quot;Bar&amp;quot;;s:1:&amp;quot;c&amp;quot;;s:3:&amp;quot;Baz&amp;quot;;s:1:&amp;quot;d&amp;quot;;s:3:&amp;quot;Wom&amp;quot;;}  2. Serializable接口 简介
+ 实现这个接口的类不在支持__sleep()和wakeup()魔术方法。当实例序列化的时候，serialize方法将会调用。除非在方法内部编程，否则这将不会调用__destruct()和其他有副作用的方法。当类的数据要反序列化的时候unserialize()方法将会作为构造函数调用，而不是__construct()。如果你想要执行标准的构造方法，就在这个方法里面调用。
+ 基本用法
+class obj implents Serializable { private $data; public function __construct() { $this-&amp;gt;data = &amp;quot;My private data&amp;quot;; } public function serialize() { return serialize($this-&amp;gt;data); } public function unserialize($data) { $this-&amp;gt;data = unserialize($data); } public function getData() { return $this-&amp;gt;data; } } $obj = new Obj(); $user = serialize($obj); var_dump($user); //string(38) &amp;quot;C:3:&amp;quot;obj&amp;quot;:23:{s:15:&amp;quot;My private data&amp;quot;;}&amp;quot; $newObj = unserialize($user); var_dump($newobj-&amp;gt;getData()); // string(15) &amp;quot;My private data&amp;quot;  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>MySQL专业笔记(三十七)</title>
       <link>http://blog.huaifufeng.com/2019/05/post/mysql-section-37.html</link>
       <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
@@ -502,6 +536,19 @@ mysql&amp;gt; CREATE TRIGGER ins_sum BEFORE INSERT ON account -&amp;gt;FOR EACH 
 插入数据
 想要使用触发器，将累加变量(@sum)设置为0，执行一个INSERT语句，然后查看这个变量的值：
 mysql&amp;gt; SET @sum = 0; mysql&amp;gt; INSERT INTO account VALUES(137,14.98),(141,1937.50),(97,-100.00); mysql&amp;gt; SELECT @sum AS &#39;Total amount inserted&#39;; +-----------------------+ | Total amount inserted | +-----------------------+ | 1852.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（五十一）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-51.html</link>
+      <pubDate>Tue, 21 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-51.html</guid>
+      <description>怎么分解URL 在编写PHP代码的时候，你可能需要将URL地址分解为多个部分。根据你的需要显然有不止一种方式实现这个功能。这个主题就是介绍这些方法，从中你可以选择自己最合适的方法。
+1. parse_url()  parse_url()：这个函数解析URL并且放回URL任何部分的一个关联数组。
+ $url = parse_url(&#39;http://example.com/project/controller/action/param1/param2&#39;); Array ( [scheme] =&amp;gt; http [host] =&amp;gt; example.com [path] =&amp;gt; /project/controller/action/param1/param2 )  如果你需要获取将path进行分隔，你可以使用explode方法：
+$url = parse_url(&#39;http://example.com/project/controller/action/param1/param2&#39;); $url[&#39;sections&#39;] = explode(&#39;/&#39;, $url[&#39;path&#39;]); Array ( [scheme] =&amp;gt; http [host] =&amp;gt; example.com [path] =&amp;gt; /project/controller/action/param1/param2 [sections] =&amp;gt; Array ( [0] =&amp;gt; [1] =&amp;gt; project [2] =&amp;gt; controller [3] =&amp;gt; action [4] =&amp;gt; param1 [5] =&amp;gt; param2 ) )  如果你想要获取section最后的部分，你可以使用下面的方法：
+$last = end($url[&#39;sections&#39;]);  如果URL中有GET的变量，你可以获取这些值：</description>
     </item>
     
     <item>

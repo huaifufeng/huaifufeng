@@ -158,12 +158,27 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/05/post/php-section-53.html</loc>
+    <lastmod>2019-05-23T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/05/post/mysql-section-38.html</loc>
     <lastmod>2019-05-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/05/post/php-section-52.html</loc>
+    <lastmod>2019-05-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/05/post/mysql-section-37.html</loc>
+    <lastmod>2019-05-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/05/post/php-section-51.html</loc>
     <lastmod>2019-05-21T00:00:00+00:00</lastmod>
   </url>
   
@@ -1275,13 +1290,13 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/go/</loc>
+    <loc>http://blog.huaifufeng.com/categories/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/go/</loc>
+    <loc>http://blog.huaifufeng.com/tags/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -1293,13 +1308,13 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/java/</loc>
+    <loc>http://blog.huaifufeng.com/categories/java/</loc>
     <lastmod>2019-04-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/java/</loc>
+    <loc>http://blog.huaifufeng.com/tags/java/</loc>
     <lastmod>2019-04-25T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -1311,14 +1326,14 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/php/</loc>
-    <lastmod>2019-05-20T00:00:00+00:00</lastmod>
+    <loc>http://blog.huaifufeng.com/categories/php/</loc>
+    <lastmod>2019-05-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/php/</loc>
-    <lastmod>2019-05-20T00:00:00+00:00</lastmod>
+    <loc>http://blog.huaifufeng.com/tags/php/</loc>
+    <lastmod>2019-05-23T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
