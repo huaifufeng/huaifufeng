@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="Closure闭包">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（五十四）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/php-section-54.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（五十四）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, May 24, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#closure">Closure</a>
+<ul>
+<li><a href="#1-闭包的基本用法">1. 闭包的基本用法</a></li>
+<li><a href="#2-使用外部变量">2. 使用外部变量</a></li>
+<li><a href="#3-基本闭包绑定">3. 基本闭包绑定</a></li>
+<li><a href="#4-闭包绑定和作用域">4. 闭包绑定和作用域</a></li>
+<li><a href="#5-一次调用时绑定闭包">5. 一次调用时绑定闭包</a></li>
+<li><a href="#6-闭包实现观察者模式">6. 闭包实现观察者模式</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="closure">Closure</h2>
+
+<h3 id="1-闭包的基本用法">1. 闭包的基本用法</h3>
+
+<p>一个<code>closure</code>等价于PHP中的匿名函数，例如一个没有名称的方法。即使这在技术上不正确，闭包的行为仍然与函数的行为相同，只有一些额外的特性。</p>
+
+<p>一个闭包就是一个Closure类的对象，通过创建一个没有名称的方法实现。例如：</p>
+
+<pre><code class="language-php">&lt;?php
+$myClosure = function() {
+    echo 'Hello world!';
+};
+$myClosure(); // Shows &quot;Hello world!&quot;
+</code></pre>
+
+<p>注意<code>$myClosure</code>就是Closure的一个实例，让你知道你做了什么。(<a href="https://www.php.net/manual/zh/class.closure.php">https://www.php.net/manual/zh/class.closure.php</a>)</p>
+
+<p>Closure的经典用法就是在你必须使用一个<code>callable</code>的方法，例如<a href="https://www.php.net/manual/zh/function.usort.php">usort</a>。</p>
+
+<p>下面是一个示例，其中数组按每个人的兄弟姐妹数排序：</p>
+
+<pre><code class="language-php">&lt;?php
+$data = [ 
+    [
+        'name' =&gt; 'John',
+        'nbrOfSiblings' =&gt; 2,
+    ],
+    [
+        'name' =&gt; 'Stan',
+        'nbrOfSiblings' =&gt; 1,
+    ], 
+    [
+        'name' =&gt; 'Tom',
+        'nbrOfSiblings' =&gt; 3,
+    ]
+];
+
+usort($data, function($e1, $e2) {
+    if ($e1['nbrOfSiblings'] == $e2['nbrOfSiblings']) {
+        return 0; 
+    }
+  
+    return $e1['nbrOfSiblings'] &lt; $e2['nbrOfSiblings'] ? -1 : 1;
+});
+
+var_dump($data); // Will show Stan first, then John and finally Tom
+</code></pre>
+
+<h3 id="2-使用外部变量">2. 使用外部变量</h3>
+
+<p>想要在一个闭包里面使用外部的变量，你可以使用<code>use</code>关键字。例如：</p>
+
+<pre><code class="language-php">&lt;?php
+$quantity = 1;
+$calculator = function($number) use($quantity) { 
+    return $number + $quantity;
+};
+var_dump($calculator(2)); // Shows &quot;3&quot;
+</code></pre>
+
+<p>你可以进一步的创建&rdquo;动态&rdquo;闭包。可以创建返回特定计算器的函数，具体取决于要添加的数量。例如：</p>
+
+<pre><code class="language-php">&lt;?php
+function createCalculator($quantity) {
+    return function($number) use($quantity) {
+        return $number + $quantity;
+    }
+}
+
+$calculator1 = createCalculator(1);
+$calculator1 = createCalculator(1);
+
+var_dump($calculator1(2)); //返回 3
+var_dump($calculator2(2)); //返回 4
+</code></pre>
+
+<h3 id="3-基本闭包绑定">3. 基本闭包绑定</h3>
+
+<p>就像前面看到的，闭包就是Closure类的一个实例，可以对其调用不同的方法。其中一个是<code>bindTo</code>，对闭包调用这个方法，将会返回一个绑定在另外对象的新闭包方法。例如：</p>
+
+<pre><code>&lt;?php
+$myClosure = fuction() {
+    echo $this-&gt;property;
+}
+
+class MyClass
+{
+    public $property;
+    public function __construct($propertyValue) {
+        $this-&gt;property = $propertyValue;
+    }
+}
+
+$myInstance = new MyClass('Hello World!');
+$myBoundClosure = $myClosure-&gt;bindTo($myInstance);
+
+$myBoundClosure();  // &quot;Hello World!&quot;
+</code></pre>
+
+<h3 id="4-闭包绑定和作用域">4. 闭包绑定和作用域</h3>
+
+<p>让我们想象一下有下面的例子：</p>
+
+<pre><code class="language-php">&lt;?php
+$myClosure = function() {
+    echo $this-&gt;property;
+}
+
+class MyClass
+{
+    public $property;
+    
+    public function __construct($propertyValue) {
+        $this-&gt;property = $propertyValue;
+    }
+}
+
+$myInstance = new MyClass('Hello world!');
+$myBoundClosure = $myClosure-&gt;bindTo($myInstance); 
+$myBoundClosure(); // 显示 &quot;Hello world!&quot;
+</code></pre>
+
+<p>试着把<code>property</code>的可见性修改为protected或private。你将会遇到一个致命错误：你没有访问这个属性的权限。实际上，即使闭包已经绑定到对象，调用闭包的范围也不是拥有该访问权限所需的范围。这就是<code>bindTo</code>第二个参数的作用。</p>
+
+<p>如果属性是<code>private</code>的，唯一访问这个属性的方法就是允许访问这个属性的类的作用域。在前面的例子中，没有指定作业区间，这意味着闭包是在闭包创建的作用域内调用的，让我们修改一下：</p>
+
+<pre><code class="language-php">&lt;?php
+$myClosure = function() {
+    echo $this-&gt;property;
+};
+
+class MyClass {
+    private $property; // $property is now private
+    public function __construct($propertyValue) {
+        $this-&gt;property = $propertyValue;
+    }
+}
+
+$myInstance = new MyClass('Hello world!');
+$myBoundClosure = $myClosure-&gt;bindTo($myInstance, MyClass::class); 
+$myBoundClosure(); // Shows &quot;Hello world!&quot;
+</code></pre>
+
+<p>就像上面说的，如果没有指定第二个参数的 话，这个闭包是在创建这个闭包的作用域内调用的。例如，一个闭包是在一个方法的类的内部创建的，这个闭包是在这个方面的相同的作用域环境的对象调用的：</p>
+
+<pre><code class="language-php">&lt;?php
+class MyClass {
+    private $property;
+    public function __construct($propertyValue)
+    {
+        $this-&gt;property = $propertyValue;
+    }
+    
+    public function getDisplayer() {
+        return function() {
+            echo $this-&gt;property;
+        }; 
+    }
+}
+
+$myInstance = new MyClass('Hello world!');
+$displayer = $myInstance-&gt;getDisplayer(); 
+$displayer(); // 显示 &quot;Hello world!&quot;
+</code></pre>
+
+<h3 id="5-一次调用时绑定闭包">5. 一次调用时绑定闭包</h3>
+
+<p>从PHP7开始，提供了<a href="https://www.php.net/manual/en/closure.call.php">call</a>方法，允许为一次调用对闭包进行绑定。例如：</p>
+
+<pre><code class="language-php">&lt;?php
+class MyClass {
+    private $property;
+    public function __construct($propertyValue) {
+        $this-&gt;property = $propertyValue;
+    }
+}
+
+$myClosure = function() { 
+    echo $this-&gt;property;
+};
+
+$myInstance = new MyClass('Hello world!');
+$myClosure-&gt;call($myInstance); // 显示 &quot;Hello world!&quot;
+</code></pre>
+
+<p>相对于<code>bindTo</code>方法，我们不需要担心作用域的问题。这个调用使用的作用域和访问或调用<code>$myInstance</code>的作用域相同。</p>
+
+<h3 id="6-闭包实现观察者模式">6. 闭包实现观察者模式</h3>
+
+<p>通常来说，一个观察者就是包含当被观察对象触发指定行为时要执行的方法的类。在某些情况下，闭包足以实现观察者模式。</p>
+
+<p>下面是这样实现的一个详细例子。让我们实现一个类，目的是在属性修改时通知观察者。</p>
+
+<pre><code>&lt;?php
+class ObservedStuff implents SplSubject
+{
+    protected $property;
+    protected $observers = [];
+    
+    public function attach(SplObserver $observer) 
+    {
+        $this-&gt;observers[] = $observer;
+        return $this;
+    }
+    
+    public function detach(SplObserver $observer)
+    {
+        if (false !== $key = array_search($observer, $this-&gt;observers, true)) {
+            unset($this-&gt;observers[$key]);
+        }
+    }
+    
+    public function notiy()
+    {
+        foreach ($this-&gt;observers as $observer) {
+            $observer-&gt;update($this);
+        }
+    }
+    
+    public function getProperty()
+    {
+        return $this-&gt;property;
+    }
+    
+    public function setProperty($property)
+    {
+        $this-&gt;property = $property;
+        $this-&gt;notify();
+    }
+}
+</code></pre>
+
+<p>然后让我们声明代表不同观察者的类：</p>
+
+<pre><code class="language-php">&lt;?php
+class NamedObserver implements SplObserver {
+    protected $name; 
+    protected $closure;
+    public function __construct(Closure $closure, $name) {
+        $this-&gt;closure = $closure-&gt;bindTo($this, $this);
+        $this-&gt;name = $name;
+    }
+    
+    public function update(SplSubject $subject) {
+        $closure = $this-&gt;closure;
+        $closure($subject);
+    }
+}
+</code></pre>
+
+<p>最后，让我们测试一下：</p>
+
+<pre><code class="language-php">&lt;?php
+$o = new ObservedStuff();
+
+$observer1 = function(SplSubject $subject) {
+    echo $this-&gt;name . &quot; has been notified! New property value: &quot;, $subject-&gt;getProperty(), &quot;\n&quot;;
+}
+
+$observer2 = function(SplSubject $subject) {
+    echo $this-&gt;name, ' has been notified! New property value: ', $subject-&gt;getProperty(), &quot;\n&quot;;
+};
+
+$o-&gt;attach(new NamedObserver($observer1, 'Observer1'))
+-&gt;attach(new NamedObserver($observer2, 'Observer2'));
+
+$o-&gt;setProperty('Hello world!');
+// Shows:
+// Observer1 has been notified! New property value: Hello world! // Observer2 has been notified! New property value: Hello world!
+</code></pre>
+
+<p>注意，这个例子有效是因为观察者具有相同的性质(他们都是&rdquo;NamedObserver&rdquo;)。</p>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/mysql-section-40.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/mysql-section-39.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(三十九)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

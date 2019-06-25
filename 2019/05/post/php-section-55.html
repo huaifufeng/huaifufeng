@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="ENUM">
+    <meta name="description" content="读取请求的数据">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(四十)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（五十五）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/mysql-section-40.html">
+    <link rel="canonical" href="/2019/05/post/php-section-55.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(四十)</h1>
+                    <h1>PHP专业笔记（五十五）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Friday, May 24, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, May 25, 2019
                         
                     </span>
                 </div>
@@ -182,12 +182,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#enum">ENUM</a>
+<li><a href="#读取请求的数据">读取请求的数据</a>
 <ul>
-<li><a href="#1-什么是enum">1. 什么是ENUM？</a></li>
-<li><a href="#2-varchar是一种可选方案">2. VARCHAR是一种可选方案</a></li>
-<li><a href="#3-添加一个选项">3. 添加一个选项</a></li>
-<li><a href="#4-null-vs-not-null">4. NULL VS NOT NULL</a></li>
+<li><a href="#1-读取原始post数据">1. 读取原始POST数据</a></li>
+<li><a href="#2-读取post数据">2. 读取POST数据</a></li>
+<li><a href="#3-读取get数据">3. 读取GET数据</a></li>
+<li><a href="#4-处理文件上传错误">4. 处理文件上传错误</a></li>
+<li><a href="#5-post传递数组">5. POST传递数组</a></li>
+<li><a href="#6-使用http-put上传文件">6. 使用HTTP PUT上传文件</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,113 +197,203 @@
         		
         		
 
-<h2 id="enum">ENUM</h2>
+<h2 id="读取请求的数据">读取请求的数据</h2>
 
-<h3 id="1-什么是enum">1. 什么是ENUM？</h3>
+<h3 id="1-读取原始post数据">1. 读取原始POST数据</h3>
 
-<p>ENUM提供了一个为一行数据增加属性的功能。具有少量非数字选项的属性效果最好。例子：</p>
+<p>使用POST请求发送的数据通常是MIME类型为<code>application/x-www-form-urlencoded</code>的键/值的数据格式。然而很多应用像web服务要求原始的数据格式，像XML或JSON格式。这个数据可以使用两个方法中的一个进行获取。</p>
 
-<pre><code class="language-mysql">reply ENUM('yes', 'no')
-gender ENUM('male', 'female', 'other', 'decline-to-state')
+<p><code>php://input</code>提供访问原始请求数据体的数据流。</p>
+
+<pre><code class="language-php">$rawdata = file_get_contents(&quot;php://input&quot;);
+
+//假如是json数据
+$decoded = json_decode($rawdata);
 </code></pre>
 
-<p>它们的值是字符串：</p>
+<p>在PHP5.6之前，<code>$HTTP_RAW_POST_DATA</code>是一个包含元素POST数据的全局变量。只有在<code>php.ini</code>中的<code>always_populate_raw_post_data</code>选项开启的时候有效。</p>
 
-<pre><code class="language-mysql"> INSERT ... VALUES ('yes', 'female') 
- SELECT ... --&gt; yes female
+<pre><code class="language-php">$rawdata = $HTTP_RAW_POST_DATA;
+//假设是xml数据
+$decoded = simplexml_load_string($rawdata);
 </code></pre>
 
-<h3 id="2-varchar是一种可选方案">2. VARCHAR是一种可选方案</h3>
+<p>从PHP5.6开始不推荐使用了，在PHP7.0的时候移除。</p>
 
-<p>假设我们有下面的内容：</p>
+<p>当数据的类型是<code>multipart/form-data</code>的时候，上面的方法都没有效果，因为我们这些数据是用来上传文件的。</p>
 
-<pre><code class="language-mysql">type ENUM('fish', 'mammal', 'bird');
+<h3 id="2-读取post数据">2. 读取POST数据</h3>
 
--- 下面是另一种方案
-type VARCHAR(20) COMENT 'fish,mammal,bird等等'
+<p>一个POST请求中的数据是存储在<a href="https://www.php.net/manual/zh/language.variables.superglobals.php">超全局变量</a>$_POST中的关联数组中。</p>
+
+<p>注意访问数组中不存在的元素将会产生一个notice错误，所以在访问数组元素之前需要使用<code>isset()</code>或<code>empty()</code>函数或null船运算符进行元素存在性的检查。</p>
+
+<p>例如：</p>
+
+<pre><code class="language-php">$from = isset($_POST['name']) ? $_POST['name'] : 'NO NAME';
+$message = isset($_POST['message']) ? $_POST['message'] : 'NO MESSAGE';
+
+echo &quot;Message from $from: $message&quot;;
+
+//在PHP7.0之后
+$from = $_POST['name'] ?? 'NO NAME';
+$message = $_POST['message'] ?? 'NO MESSAGE';
+
+echo &quot;Message from $from: $message&quot;;
 </code></pre>
 
-<p>这是相当开放的，因为新的类型是很容易添加的。</p>
+<h3 id="3-读取get数据">3. 读取GET数据</h3>
 
-<p>比较，以及是否比枚举更好或更差：</p>
+<p>一个GET请求中的数据存储在超全局变量$_GET中的一个关联数组。</p>
 
-<ul>
-<li>(相同) INSERT:简单的提供相同的字符串</li>
-<li>(更糟？) INSERT：拼写错误可能注意不到</li>
-<li>(相同) SELECT：返回实际的字符串</li>
-<li>(更坏) 需要更多的存储空间。</li>
-</ul>
+<p>注意访问数组中不存在的元素将会产生一个notice错误，所以在访问数组元素之前需要使用<code>isset()</code>或<code>empty()</code>函数或null船运算符进行元素存在性的检查。</p>
 
-<h3 id="3-添加一个选项">3. 添加一个选项</h3>
+<p>例如（对于网址/topics.php?author=alice&amp;topic=php）</p>
 
-<pre><code class="language-mysql">ALTER TABLE tbl MODIFY COLUMN type ENUM('fish','mammal','bird','insect');
+<pre><code class="language-php">$author = isset($_GET[&quot;author&quot;]) ? $_GET[&quot;author&quot;] : &quot;NO AUTHOR&quot;;
+$topic = isset($_GET[&quot;topic&quot;]) ? $_GET[&quot;topic&quot;] : &quot;NO TOPIC&quot;;
+echo &quot;Showing posts from $author about $topic&quot;;
+
+//在PHP7.0之后
+$author = $_GET[&quot;author&quot;] ?? &quot;NO AUTHOR&quot;;
+$topic = $_GET[&quot;topic&quot;] ?? &quot;NO TOPIC&quot;;
+echo &quot;Showing posts from $author about $topic&quot;;
 </code></pre>
 
-<p>注意：</p>
+<h3 id="4-处理文件上传错误">4. 处理文件上传错误</h3>
 
-<ul>
-<li>和其他的<code>MODIFY COLUMN</code>一样，你需要包含<code>NOT NULL</code>，以及任何其他之前拥有的限定符，不然会丢失一些东西</li>
-<li>如果添加在列表的末尾，并且列表的数量小于256个，<code>ALTER</code>操作将会正常执行修改表结构的操作。也就是说，不会有冗长的表副本。（旧版本的MySQL没有这种优化。）</li>
-</ul>
+<p>这个<code>$_FILES['FILE_NAME']['error']</code>（这里&rdquo;FILE_NAME&rdquo;是form中file这个input的name属性值）可以包含下面中的一个值：</p>
 
-<h3 id="4-null-vs-not-null">4. NULL VS NOT NULL</h3>
+<ol>
+<li><code>UPLOAD_ERR_OK</code>：没有错误，文件上传成功</li>
+<li><code>UPLOAD_ERR_INI_SIZE</code>：上传文件超出<code>php.ini</code>中<code>upload_max_filesize</code>选项配置的值</li>
+<li><code>UPLOAD_ERR_PARTIAL</code>：上传文件的大小超出HTML表格中<code>MAX_FILE_SIZE</code>选项指定的大小</li>
+<li><code>UPLOAD_ERR_NO_FILE</code>：没有上传文件</li>
+<li><code>UPLOAD_ERR_NO_TMP_DIR</code>：缺少临时文件夹。（PHP5.0.3开始支持）</li>
+<li><code>UPLOAD_ERR_CANT_WRITE</code>：将文件写入磁盘失败。（PHP5.1.0开始支持）</li>
+<li><code>UPLOAD_ERR_EXTENSION</code>：PHP扩展阻止文件上传。（PHP5.2.0开始支持）</li>
+</ol>
 
-<p>下面是当NULL和&rsquo;错误值&rsquo;存储到NULLable和非NULL时什么将会发生的例子。也展示了通过+0来转换为数字的操作。</p>
+<p>一个基本的检查错误的方式向下面一样：</p>
 
-<pre><code class="language-mysql">CREATE TABLE enum (
-    e ENUM('yes', 'no') NOT NULL, 
-    enull ENUM('x', 'y', 'z') NULL
-  );
-  
-INSERT INTO enum (e, enull)
-    VALUES
-        ('yes', 'x'),
-        ('no', 'y'),
-        (NULL, NULL), 
-        ('bad-value', 'bad-value');
-
- Query OK, 4 rows affected, 3 warnings (0.00 sec)
- Records: 4  Duplicates: 0  Warnings: 3
- 
- mysql&gt;SHOW WARNINGS;
- +---------+------+--------------------------------------------+
- | Level   | Code | Message                                    |
- +---------+------+--------------------------------------------+
- | Warning | 1048 | Column 'e' cannot be null                  |
- | Warning | 1265 | Data truncated for column 'e' at row 4     |
- | Warning | 1265 | Data truncated for column 'enull' at row 4 |
- +---------+------+--------------------------------------------+
- 3 rows in set (0.00 sec)
+<pre><code class="language-php">&lt;?php
+$fileError = $_FILES['FILE_NAME']['error'];
+switch($fileError) {
+		case UPLOAD_ERR_INI_SIZE:
+				//超出php.ini中文件大小限制
+				break;
+		case UPLOAD_ERR_PARTIAL:
+				//超出HTML文件大小限制
+				break;
+    case UPLOAD_ERR_NO_FILE:
+				//没有上传文件 
+				break;
+    case UPLOAD_ERR_NO_TMP_DIR:
+        //没有临时文件目录
+        break;
+    case UPLOAD_ERR_CANT_WRITE: 
+        //写入磁盘失败
+        break;
+		default:
+				//没有错误 
+				break;
+} 
 </code></pre>
 
-<p>INSERT语句之后表中存储什么内容呢，这里使用&rdquo;+0&rdquo;转换数字来看看表里面存储了什么内。</p>
+<h3 id="5-post传递数组">5. POST传递数组</h3>
 
-<pre><code class="language-mysql">mysql&gt; SELECT e, e+0 FROM enum;
+<p>通常，HTML中表格提交给PHP的是一个单独的值，例如：</p>
 
-+-----+-----+
-| e   | e+0 |
-+-----+-----+
-| yes |   1 |
-| no  |   2 |
-|     |   0 | -- NULL 
-|     |   0 | -- 'bad-value'
-+-----+-----+
-
-4 rows in set (0.00 sec)
-
-mysql&gt;SELECT enull, enull+0 FROM enum;
-+-------+---------+
-| enull | enull+0 | 
-+-------+---------+
-|     x |       1 |
-|     y |       2 |
-|  NULL |    NULL |
-|       |       0 | -- 'bad-value' 
-+-------+---------+
-4 rows in set (0.00 sec)
+<pre><code class="language-php">&lt;pre&gt;
+&lt;?php print_r($_POST); ?&gt;
+&lt;/pre&gt;
+&lt;form method=&quot;post&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;foo&quot; value=&quot;bar&quot;/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
 </code></pre>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>结果就像下面这样：</p>
+
+<pre><code>Array
+(
+    [foo] =&gt; bar
+)
+</code></pre>
+
+<p>但是，某些场景下面你希望传递一个数组值。这可以通过在HTML元素中添加一个类似PHP的后缀的name属性：</p>
+
+<pre><code class="language-php">&lt;pre&gt;
+&lt;?php print_r($_POST);?&gt; 
+&lt;/pre&gt;
+&lt;form method=&quot;post&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;foo[]&quot; value=&quot;bar&quot;/&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;foo[]&quot; value=&quot;baz&quot;/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>结果像下面一样：</p>
+
+<pre><code>Array
+(
+    [foo] =&gt; Array
+        (
+            [0] =&gt; bar
+            [1] =&gt; baz 
+        )
+)
+</code></pre>
+
+<p>你也可以指定数组的键值，不管是数字还是字符串都可以：</p>
+
+<pre><code class="language-php">&lt;pre&gt;
+&lt;?php print_r($_POST);?&gt; 
+&lt;/pre&gt;
+&lt;form method=&quot;post&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;foo[42]&quot; value=&quot;bar&quot;/&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;foo[foo]&quot; value=&quot;baz&quot;/&gt;
+    &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>将会输出下面的内容：</p>
+
+<pre><code>Array
+(
+    [foo] =&gt; Array
+        (
+            [42] =&gt; bar
+            [foo] =&gt; baz 
+        )
+)
+</code></pre>
+
+<p>这项技术用来避免在$_POST数组上面进行循环处理，从而让代码更加精简，更加简洁。</p>
+
+<h3 id="6-使用http-put上传文件">6. 使用HTTP PUT上传文件</h3>
+
+<p>PHP提供了对一些客户端使用HTTP PUT方法像服务器上传文件的支持。PUT请求上传文件比使用POST请求上传文件更加简单，下面就是一个例子：</p>
+
+<pre><code>PUT /path/filename.html HTTP/1.1
+</code></pre>
+
+<p>在你的代码中，向下面这样处理：</p>
+
+<pre><code class="language-php">&lt;?php
+$putdata = fopen(&quot;php://input&quot;, 'r');
+
+$fp = fopen('putfile.ext', 'w');
+
+while ($data = fread($putdata, 1024)) {
+    fwrite($fp, $data);
+}
+fclose($fp); 
+fclose($putdata); 
+?&gt;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -310,12 +402,12 @@ mysql&gt;SELECT enull, enull+0 FROM enum;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/php-section-55.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五十五）">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-41.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十一)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/php-section-54.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五十四）">Next Post &rarr;</a>
+                      <a href="/2019/05/post/mysql-section-40.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

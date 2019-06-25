@@ -6,10 +6,41 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 23 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（五十五）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-55.html</link>
+      <pubDate>Sat, 25 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-55.html</guid>
+      <description>读取请求的数据 1. 读取原始POST数据 使用POST请求发送的数据通常是MIME类型为application/x-www-form-urlencoded的键/值的数据格式。然而很多应用像web服务要求原始的数据格式，像XML或JSON格式。这个数据可以使用两个方法中的一个进行获取。
+php://input提供访问原始请求数据体的数据流。
+$rawdata = file_get_contents(&amp;quot;php://input&amp;quot;); //假如是json数据 $decoded = json_decode($rawdata);  在PHP5.6之前，$HTTP_RAW_POST_DATA是一个包含元素POST数据的全局变量。只有在php.ini中的always_populate_raw_post_data选项开启的时候有效。
+$rawdata = $HTTP_RAW_POST_DATA; //假设是xml数据 $decoded = simplexml_load_string($rawdata);  从PHP5.6开始不推荐使用了，在PHP7.0的时候移除。
+当数据的类型是multipart/form-data的时候，上面的方法都没有效果，因为我们这些数据是用来上传文件的。
+2. 读取POST数据 一个POST请求中的数据是存储在超全局变量$_POST中的关联数组中。
+注意访问数组中不存在的元素将会产生一个notice错误，所以在访问数组元素之前需要使用isset()或empty()函数或null船运算符进行元素存在性的检查。
+例如：
+$from = isset($_POST[&#39;name&#39;]) ? $_POST[&#39;name&#39;] : &#39;NO NAME&#39;; $message = isset($_POST[&#39;message&#39;]) ? $_POST[&#39;message&#39;] : &#39;NO MESSAGE&#39;; echo &amp;quot;Message from $from: $message&amp;quot;; //在PHP7.0之后 $from = $_POST[&#39;name&#39;] ?? &#39;NO NAME&#39;; $message = $_POST[&#39;message&#39;] ?? &#39;NO MESSAGE&#39;; echo &amp;quot;Message from $from: $message&amp;quot;;  3.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（五十四）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-54.html</link>
+      <pubDate>Fri, 24 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-54.html</guid>
+      <description>Closure 1. 闭包的基本用法 一个closure等价于PHP中的匿名函数，例如一个没有名称的方法。即使这在技术上不正确，闭包的行为仍然与函数的行为相同，只有一些额外的特性。
+一个闭包就是一个Closure类的对象，通过创建一个没有名称的方法实现。例如：
+&amp;lt;?php $myClosure = function() { echo &#39;Hello world!&#39;; }; $myClosure(); // Shows &amp;quot;Hello world!&amp;quot;  注意$myClosure就是Closure的一个实例，让你知道你做了什么。(https://www.php.net/manual/zh/class.closure.php)
+Closure的经典用法就是在你必须使用一个callable的方法，例如usort。
+下面是一个示例，其中数组按每个人的兄弟姐妹数排序：
+&amp;lt;?php $data = [ [ &#39;name&#39; =&amp;gt; &#39;John&#39;, &#39;nbrOfSiblings&#39; =&amp;gt; 2, ], [ &#39;name&#39; =&amp;gt; &#39;Stan&#39;, &#39;nbrOfSiblings&#39; =&amp;gt; 1, ], [ &#39;name&#39; =&amp;gt; &#39;Tom&#39;, &#39;nbrOfSiblings&#39; =&amp;gt; 3, ] ]; usort($data, function($e1, $e2) { if ($e1[&#39;nbrOfSiblings&#39;] == $e2[&#39;nbrOfSiblings&#39;]) { return 0; } return $e1[&#39;nbrOfSiblings&#39;] &amp;lt; $e2[&#39;nbrOfSiblings&#39;] ? -1 : 1; }); var_dump($data); // Will show Stan first, then John and finally Tom  2.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（五十三）</title>
