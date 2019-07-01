@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="MyISAM引擎">
+    <meta name="description" content="类型转换和非严格比较问题">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(四十三)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（五十六）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/mysql-section-43.html">
+    <link rel="canonical" href="/2019/05/post/php-section-56.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(四十三)</h1>
+                    <h1>PHP专业笔记（五十六）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, May 27, 2019
+                    <span  class="meta">Posted by 怀府风 on Sunday, May 26, 2019
                         
                     </span>
                 </div>
@@ -182,9 +182,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#myisam引擎">MyISAM引擎</a>
+<li><a href="#类型转换和非严格比较问题">类型转换和非严格比较问题</a>
 <ul>
-<li><a href="#1-engine-myisam">1. ENGINE=MyISAM</a></li>
+<li><a href="#1-什么是类型转换">1. 什么是类型转换？</a></li>
+<li><a href="#2-从文件读取">2. 从文件读取</a></li>
+<li><a href="#3-switch">3. Switch</a></li>
+<li><a href="#4-严格类型">4. 严格类型</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -192,16 +195,168 @@
         		
         		
 
-<h2 id="myisam引擎">MyISAM引擎</h2>
+<h2 id="类型转换和非严格比较问题">类型转换和非严格比较问题</h2>
 
-<h3 id="1-engine-myisam">1. ENGINE=MyISAM</h3>
+<h3 id="1-什么是类型转换">1. 什么是类型转换？</h3>
 
-<pre><code class="language-mysql">CREATE TABLE foo ( 
-...
-) ENGINE=MyISAM;
+<p>PHP是一种弱类型语音。这意味着，默认情况下表达式中的操作数不需要具有相同(或兼容)的类型。例如，你可以在字符串后面追加一个数字，并且希望它正常工作。</p>
+
+<pre><code class="language-php">var_dump(&quot;This is example number &quot; . 1);
 </code></pre>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>这个输出将会是：</p>
+
+<blockquote>
+<p>string(24) &ldquo;This is example number 1&rdquo;</p>
+</blockquote>
+
+<p>PHP通过将不兼容的变量类型自动转换为允许执行请求的操作的类型来实现这点。在上面的例子中，将会把整数1转换为字符串，这意味着可以和前面的字符串字面量拼接起来。这被叫做类型转换。这是PHP一个非常强大的特性，但如果你不知道的话，可能会导致很多麻烦，甚至导致安全问题。</p>
+
+<p>假设下面的代码：</p>
+
+<pre><code class="language-php">if (1 == $variable) {
+    //处理一些问题
+}
+</code></pre>
+
+<p>这里目的似乎是让程序员检查变量的值是不是1。但是如果变量<code>$variable</code>的值是&rdquo;1 and a half&rdquo;，会发生什么？答案可能让你吃惊：</p>
+
+<pre><code class="language-php">$variable = &quot;1 and a half&quot;;
+var_dump (1 == $variable);
+</code></pre>
+
+<p>这个结果是：</p>
+
+<blockquote>
+<p>bool(true)</p>
+</blockquote>
+
+<p>为什么会是这个结果？这是因为PHP意思到&rdquo;1 and a half&rdquo;是一个字符串，但是它需要和一个整数1进行比较。为了避免失败，PHP进行了类型转换，试着将这个字符串转换为整数。PHP通过将字符串开头的可以转换为整数的部分转换为整数。一遇到一个不能转换为整数的字符串就立刻停止。因此&rdquo;1 and a half&rdquo;转换为整数1。</p>
+
+<p>当然，这是认为设计的一个例子，但这足以说明一些问题。接下来的例子将会涵盖这些情况，我在实际软件开发中因为类型转换造成的问题。</p>
+
+<h3 id="2-从文件读取">2. 从文件读取</h3>
+
+<p>当我们读取一个文件的内容时，我们想要知道什么时候我们到文件的末尾了。<code>fgets()</code>方法在到达文件末尾的时候，会返回一个false，所以我们可以在循环中用这个作为判断条件。然而，如果数据返回的是一个可转换为<code>false</code>的内容，这个循环就会提前中断执行。</p>
+
+<pre><code class="language-php">$handle = fopen(&quot;/path/to/my/file&quot;, 'r');
+
+if ($handle === false) {
+    throw new Exception(&quot;Failed to open file for reading&quot;);
+}
+
+while($data = fgets($handle)) {
+    echo(&quot;Current file line is $data\n&quot;);
+}
+
+fclose($handle);
+</code></pre>
+
+<p>如果文件的内容包含一个空行，<code>while</code>循环在遇到这个空行的时候会中断执行，因为空字符串会被识别为 <code>false</code>。</p>
+
+<p>所以，我们在这里需要使用严格比较运算符，强制返回值是一个布尔值<code>false</code>：</p>
+
+<pre><code class="language-php">while ($data = fgets($handle) !== false) {
+    echo &quot;Current file line is $data\n&quot;;
+}
+</code></pre>
+
+<p>注意，这是一个人为的例子，在实际开发中，我们使用下面的方式：</p>
+
+<pre><code class="language-php">while (!feof($handle)) {
+    $data = fgets($handle);
+    echo &quot;Current file line is $data&quot;;
+}
+</code></pre>
+
+<p>或者使用下面的方法：</p>
+
+<pre><code class="language-php">$filedata = file(&quot;/path/to/my/file&quot;);
+foreach ($filedata as $data) {
+    echo &quot;Current file line is $data\n&quot;;
+}
+</code></pre>
+
+<h3 id="3-switch">3. Switch</h3>
+
+<p>Switch使用非严格比较来判断是否匹配。这会导致一些<a href="https://stackoverflow.com/questions/4098104/odd-behaviour-in-a-switch-statement">奇怪的问题</a>。例如，假设有下面的语句：</p>
+
+<pre><code class="language-php">switch ($name) {
+    case 'input 1':
+        $mode = 'output_1';
+        break;
+    case 'input 2':
+        $mode = 'output_2';
+        break;
+    default:
+        $mode = 'unknown';
+				break; 
+}
+</code></pre>
+
+<p>这是一个非常简单的语句，当<code>$name</code>是字符串的时候，可以像期待的一样工作，但是会有一些其他问题。例如，如果 <code>$name</code>是整数0，在进行比较的时候就会发生类型转换。然而这里是case语句中的值进行转换的，而不是switch中的条件。字符串<code>input 1</code>转换为整数0，匹配到了传入的整数0。结果就是如果提供一个整数0 ，第一个case语句将会匹配到并执行。</p>
+
+<p>这个问题有一些解决办法：</p>
+
+<p><strong>显示转换</strong></p>
+
+<p>这个值在比较值钱先类型转换为字符串：</p>
+
+<pre><code class="language-php">switch((string) $name) {
+    ...
+}
+</code></pre>
+
+<p>或者使用<code>strval()</code>转换字符串函数：</p>
+
+<pre><code class="language-php">switch(strval($name)) {
+    ...
+}
+</code></pre>
+
+<p>这两个方法都保证在比较的时候两个值的类型是一样的。</p>
+
+<p><strong>避免switch</strong></p>
+
+<p>使用<code>if</code>语句，这个可以让我们选择使用什么类型的比较，比如使用严格模式比较：</p>
+
+<pre><code class="language-php">if ($name === &quot;input 1&quot;) {
+    $mode = &quot;output_1&quot;;
+} elseif ($name === &quot;input 2&quot;) {
+    $mode = &quot;output_2&quot;;
+} else {
+    $mode = &quot;unknown&quot;;
+}
+</code></pre>
+
+<h3 id="4-严格类型">4. 严格类型</h3>
+
+<p>从PHP7.0开始，一些类型转换造成的问题可以使用<a href="https://www.php.net/manual/zh/functions.arguments.php">严格类型避免</a>。通过在文件的第一行包含<code>declare</code>语句，PHP将会执行强制的参数类型声明，当类型不正确是返回<code>TypeError</code>异常。</p>
+
+<pre><code class="language-php">declare(strict_types=1);
+</code></pre>
+
+<p>例如，下面的代码，使用了参数的类型定义，在运行的时候，将会抛出一个可以捕捉的异常<code>TypeError</code>：</p>
+
+<pre><code class="language-php">&lt;?php 
+declare(strict_types=1);
+function sum(int $a, int $b) {
+    return $a + $b;
+}
+echo sum(&quot;1&quot;, 2);
+</code></pre>
+
+<p>和上面一样，下面的代码使用了返回值类型声明：要求返回整数，返回不是整数的值都会抛出一个异常：</p>
+
+<pre><code class="language-php">&lt;?php 
+declare(strict_types=1);
+function returner($a): int { 
+    return $a;
+}
+returner(&quot;this is a string&quot;);
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -210,12 +365,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/php-section-58.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五十八）">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-42.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十二)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/php-section-57.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五十七）">Next Post &rarr;</a>
+                      <a href="/2019/05/post/mysql-section-41.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十一)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="MyISAM引擎">
+    <meta name="description" content="Sockets">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(四十三)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（五十七）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/mysql-section-43.html">
+    <link rel="canonical" href="/2019/05/post/php-section-57.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,12 +145,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(四十三)</h1>
+                    <h1>PHP专业笔记（五十七）</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Monday, May 27, 2019
                         
@@ -182,9 +182,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#myisam引擎">MyISAM引擎</a>
+<li><a href="#sockets">Sockets</a>
 <ul>
-<li><a href="#1-engine-myisam">1. ENGINE=MyISAM</a></li>
+<li><a href="#1-tcp客户端scoket">1. TCP客户端scoket</a></li>
+<li><a href="#2-tcp服务器socket">2. TCP服务器socket</a></li>
+<li><a href="#3-udp服务器socket">3. UDP服务器socket</a></li>
+<li><a href="#4-处理socket错误">4. 处理socket错误</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -192,16 +195,168 @@
         		
         		
 
-<h2 id="myisam引擎">MyISAM引擎</h2>
+<h2 id="sockets">Sockets</h2>
 
-<h3 id="1-engine-myisam">1. ENGINE=MyISAM</h3>
+<h3 id="1-tcp客户端scoket">1. TCP客户端scoket</h3>
 
-<pre><code class="language-mysql">CREATE TABLE foo ( 
-...
-) ENGINE=MyISAM;
+<p><strong>创建一个使用TCP的socket：</strong></p>
+
+<pre><code class="language-php">$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 </code></pre>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>一定要确保socket创建成功了。<code>onSocketFailure</code>函数是这个主题中用来处理socket错误的例子。</p>
+
+<pre><code class="language-php">if (!is_resource($sokcet)) {
+    onSocketFailure(&quot;Failed to create socket&quot;);
+}
+</code></pre>
+
+<p><strong>连接指定地址的socket</strong></p>
+
+<p>连接失败的话，第二行可以处理失败情况：</p>
+
+<pre><code class="language-php">socket_connect($socket, 'chat.stackoverflow.com', 6667)
+    or onSocketFailure(&quot;Failed to connect to chat.stackoverflow.com:6667&quot;, $socket);
+</code></pre>
+
+<p><strong>向服务端发送数据</strong></p>
+
+<p><code>socket_write</code>函数通过一个socket发送字节数据。在PHP中，一个字节数组是由字符串表示的，通常不区分编码。</p>
+
+<pre><code class="language-php">socket_write($socket, &quot;NICK Alice\r\nUSER alice 0 * :Alice\r\n&quot;);
+</code></pre>
+
+<p><strong>从服务器接收数据</strong></p>
+
+<p>下面的代码片段使用<code>socket_read</code>从服务器接收一些数据。</p>
+
+<p>当给函数传入<code>PHP_NORMAL_READ</code>这第三个参数的时候，当遇到<code>\r或\n</code>的时候会中断读取，直接返回读取的值，这个值包括这两个字符。</p>
+
+<p>当第三个参数传入<code>PHP_BINARY_READ</code>时，将会从数据流中读取到需要的字节数量。</p>
+
+<p>当在方法之前调用了<code>socket_set_nonblock</code>方法，那么将会使用<code>PHP_BINARY_READ</code>，<code>socket_read</code>将会立即返回false。否则，方法将会阻塞直到获取到足够的数据（达到第二个参数设置的长度，或者遇到一个行结束符）或者socket被关闭了。</p>
+
+<p>下面的例子是从一个假设的IRC服务器读取数据：</p>
+
+<pre><code class="language-php">while(true) {
+    //读取数据
+    $line = socket_read($socket, 1025, PHP_NORMAL_READ);
+    if (substr($line, -1) === '\r') {
+        //判断是不是换行，是就在读取\n
+        socket_read($socket, 1, PHP_BINARY_READ);
+    }
+    
+    $message = parseLine($line);
+    if ($message-&gt;type === 'QUIT') {
+        break;
+    }
+}
+</code></pre>
+
+<p><strong>关闭socket</strong></p>
+
+<p>关闭socket将会释放socket和它关联的资源。</p>
+
+<pre><code class="language-php">socket_close($socket);
+</code></pre>
+
+<h3 id="2-tcp服务器socket">2. TCP服务器socket</h3>
+
+<p><strong>创建socket</strong></p>
+
+<p>创建一个使用TCP的socket。这个和创建客户端socket是一样的：</p>
+
+<pre><code class="language-php">$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+</code></pre>
+
+<p><strong>socket绑定</strong></p>
+
+<p>在这个socket上面绑定一个指定的网址（参数2）的一个指定的端口（参数3）。</p>
+
+<p>第二个参数通常是<code>&quot;0.0.0.0&quot;</code>，这意味着接收所有网络的链接。也可以是具体的地址。<code>socket_bind</code><a href="https://www.google.com.hk/search?q=site%3Astackexchange.com%20OR%20site%3Astackoverflow.com%20kill%20processes%20bound%20to%20address">一个常见的错误是地址已经绑定到另外的进程上面了</a>。其他进程通常被杀死（通常是手动的，避免意外杀死关键进程），以便释放socket。</p>
+
+<pre><code class="language-php">socket_bind($socket, '0.0.0.0', 6667) or onSocketFailure(&quot;Failed to bind to 0.0.0.0:6667&quot;);
+</code></pre>
+
+<p><strong>设置socket的监听</strong></p>
+
+<p>使用<code>socket_listen</code>让socket监听输入的链接。第二个参数是允许在接受之前队列中的最大连接数。</p>
+
+<pre><code class="language-php">socket_listen($socket, 5);
+</code></pre>
+
+<p><strong>处理链接</strong></p>
+
+<p>一个TCP服务器就是处理子链接的服务器。<code>socket_accept</code>创建一个子链接。</p>
+
+<pre><code class="language-php">$conn = socket_accept($socket);
+</code></pre>
+
+<p>使用<code>socket_accept</code>从链接接受数据是和TCP客户端传输数据相同的。</p>
+
+<p>当这个链接需要关闭的时候，直接调用<code>socket_close($conn);</code>。这将不会影响原本的TCP服务器socket。</p>
+
+<p><strong>关闭服务器连接</strong></p>
+
+<p>换句话说，当服务端socket不在使用时，使用<code>socket_close($socket)</code>关闭这个链接。这将会释放TCP地址，允许其他的进程绑定这个地址。</p>
+
+<h3 id="3-udp服务器socket">3. UDP服务器socket</h3>
+
+<p>一个UDP服务器而不是TCP，不是基于流的。它是基于数据包的，即客户端以&rdquo;数据包&rdquo;的单位向服务器发送数据，客户端通过地址来区分客户端。没有将来自同一个客户端的不同数据包关联其他的内置函数（和TCP不同，来自同一个客户端的数据有<code>socket_accept</code>创建的特定资源处理）。每次UDP包达到的时候，可以把它认为是一个新的TCP连接，进行接收和关闭处理。</p>
+
+<p><strong>创建UDP服务器socket</strong></p>
+
+<pre><code class="language-php">$socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UPD);
+</code></pre>
+
+<p><strong>绑定指定的地址</strong></p>
+
+<p>这个参数是和TCP服务器一样的：</p>
+
+<pre><code class="language-php">socket_bind($socket, '0.0.0.0', 9000) or onSocketFailure(&quot;Failed to bind to 0.0.0.0:9000&quot;);
+</code></pre>
+
+<p><strong>发送数据包</strong></p>
+
+<p>下面的代码在UDP数据包中发送数据<code>$data</code>到<code>$address:$port</code>。</p>
+
+<pre><code class="language-php">socket_sendto($socket, $data, strlen($data), 0, $address, $port);
+</code></pre>
+
+<p><strong>接收数据包</strong></p>
+
+<p>下面的代码片段尝试以客户端索引方式关联UDP数据包。</p>
+
+<pre><code class="language-php">$clients = []; 
+while (true){
+    socket_recvfrom($socket, $buffer, 32768, 0, $ip, $port) === true or onSocketFailure(&quot;Failed to receive packet&quot;, $socket);
+    $address = &quot;$ip:$port&quot;;
+    if (!isset($clients[$address])) {
+        $clients[$address] = new Client(); 
+    }
+    $clients[$address]-&gt;handlePacket($buffer);
+}
+</code></pre>
+
+<p><strong>关闭服务器</strong></p>
+
+<p><code>socket_close</code>可以用来关闭一个UPD服务器socket资源。这将会释放UDP地址，允许其他的进程绑定这个地址。</p>
+
+<h3 id="4-处理socket错误">4. 处理socket错误</h3>
+
+<p><code>socket_last_error</code>可以用于从socket扩展中获取最后一个错误的错误ID。</p>
+
+<p><code>socket_strerror</code>可以用来将错误ID转换为用户可读的字符串。</p>
+
+<pre><code class="language-php">function onSocketFailure(string $message, $socket = null) { 
+    if(is_resource($socket)) {
+        $message .= &quot;: &quot; . socket_strerror(socket_last_error($socket));
+    }
+    die($message);
+}
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -210,12 +365,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/php-section-58.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五十八）">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-43.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十三)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/05/post/php-section-57.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五十七）">Next Post &rarr;</a>
+                      <a href="/2019/05/post/mysql-section-42.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十二)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -6,10 +6,68 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 25 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（五十八）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-58.html</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-58.html</guid>
+      <description>PDO PDO(PHP数据对象)扩展允许开发人员连接到不同类型的数据库，并以统一的、面向对象的方式对他们进行查询。
+1. 使用参数化查询避免SQL注入 SQL注入是一种攻击方式：允许任意用户修改SQL查询，在其中添加不希望的命令。例如，下面的代码是很脆弱的：
+$sql = &amp;quot;SELECT name, email, user_level FROM users WHERE userID=&amp;quot; . $_GET[&#39;user&#39;]; $conn-&amp;gt;query($sql);  这允许脚本的任何用户随意的修改我们的数据库。例如，下面的查询字符串：
+page.php?user=0;%20TRUNCATE%20TABLE%20users;  这就会把我们的查询修改为：
+SELECT name, email, user_level FROM users WHERE userID = 0; TRUNCATE TABLE users;  虽然这是一个极端的例子（大多数SQL注入的攻击不是为了删除数据，也不是大多数的PHP查询支持多查询），这是一个说明通过不小心组装查询来实现SQL注入攻击的例子。不幸的是，这样的攻击非常常见，而且由于编码人员未能采取适当的预防措施来包含他们的数据，这种攻击非常有效。
+要避免SQL注入的发送，prepare语句是推荐的解决办法。不是将用户的数据直接拼接到查询语句中，在查询中使用占位符。然后单独发送数据，这意味着SQL引擎不会混淆命令和用户数据。
+ 虽然这里介绍的事PDO，但是要注意PHP的MySQLi扩展也是支持prepare语句的。
+ PDO支持两种类型的占位符（占位符不能用于列名或表名，只适用于值）
+ 命名的占位符。一个冒号(:)，后面跟上一个唯一的名称(例如：:user)  $sql = &amp;quot;SELECT name,email,user_level FROM users WHERE userID=:user&amp;quot;; $prep = $conn-&amp;gt;prepare($sql); $prep-&amp;gt;execute([&#39;:user&#39; =&amp;gt; $_GET[&#39;user&#39;]]); $result = $prep-&amp;gt;fetchAll();   传统的SQL位置占位符，就是?:  $sql = &#39;SELECT name, user_level FROM users WHERE userID = ?</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（五十七）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-57.html</link>
+      <pubDate>Mon, 27 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-57.html</guid>
+      <description>Sockets 1. TCP客户端scoket 创建一个使用TCP的socket：
+$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);  一定要确保socket创建成功了。onSocketFailure函数是这个主题中用来处理socket错误的例子。
+if (!is_resource($sokcet)) { onSocketFailure(&amp;quot;Failed to create socket&amp;quot;); }  连接指定地址的socket
+连接失败的话，第二行可以处理失败情况：
+socket_connect($socket, &#39;chat.stackoverflow.com&#39;, 6667) or onSocketFailure(&amp;quot;Failed to connect to chat.stackoverflow.com:6667&amp;quot;, $socket);  向服务端发送数据
+socket_write函数通过一个socket发送字节数据。在PHP中，一个字节数组是由字符串表示的，通常不区分编码。
+socket_write($socket, &amp;quot;NICK Alice\r\nUSER alice 0 * :Alice\r\n&amp;quot;);  从服务器接收数据
+下面的代码片段使用socket_read从服务器接收一些数据。
+当给函数传入PHP_NORMAL_READ这第三个参数的时候，当遇到\r或\n的时候会中断读取，直接返回读取的值，这个值包括这两个字符。
+当第三个参数传入PHP_BINARY_READ时，将会从数据流中读取到需要的字节数量。
+当在方法之前调用了socket_set_nonblock方法，那么将会使用PHP_BINARY_READ，socket_read将会立即返回false。否则，方法将会阻塞直到获取到足够的数据（达到第二个参数设置的长度，或者遇到一个行结束符）或者socket被关闭了。
+下面的例子是从一个假设的IRC服务器读取数据：
+while(true) { //读取数据 $line = socket_read($socket, 1025, PHP_NORMAL_READ); if (substr($line, -1) === &#39;\r&#39;) { //判断是不是换行，是就在读取\n socket_read($socket, 1, PHP_BINARY_READ); } $message = parseLine($line); if ($message-&amp;gt;type === &#39;QUIT&#39;) { break; } }  关闭socket</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（五十六）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-56.html</link>
+      <pubDate>Sun, 26 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-56.html</guid>
+      <description>类型转换和非严格比较问题 1. 什么是类型转换？ PHP是一种弱类型语音。这意味着，默认情况下表达式中的操作数不需要具有相同(或兼容)的类型。例如，你可以在字符串后面追加一个数字，并且希望它正常工作。
+var_dump(&amp;quot;This is example number &amp;quot; . 1);  这个输出将会是：
+ string(24) &amp;ldquo;This is example number 1&amp;rdquo;
+ PHP通过将不兼容的变量类型自动转换为允许执行请求的操作的类型来实现这点。在上面的例子中，将会把整数1转换为字符串，这意味着可以和前面的字符串字面量拼接起来。这被叫做类型转换。这是PHP一个非常强大的特性，但如果你不知道的话，可能会导致很多麻烦，甚至导致安全问题。
+假设下面的代码：
+if (1 == $variable) { //处理一些问题 }  这里目的似乎是让程序员检查变量的值是不是1。但是如果变量$variable的值是&amp;rdquo;1 and a half&amp;rdquo;，会发生什么？答案可能让你吃惊：
+$variable = &amp;quot;1 and a half&amp;quot;; var_dump (1 == $variable);  这个结果是：
+ bool(true)
+ 为什么会是这个结果？这是因为PHP意思到&amp;rdquo;1 and a half&amp;rdquo;是一个字符串，但是它需要和一个整数1进行比较。为了避免失败，PHP进行了类型转换，试着将这个字符串转换为整数。PHP通过将字符串开头的可以转换为整数的部分转换为整数。一遇到一个不能转换为整数的字符串就立刻停止。因此&amp;rdquo;1 and a half&amp;rdquo;转换为整数1。
+当然，这是认为设计的一个例子，但这足以说明一些问题。接下来的例子将会涵盖这些情况，我在实际软件开发中因为类型转换造成的问题。
+2. 从文件读取 当我们读取一个文件的内容时，我们想要知道什么时候我们到文件的末尾了。fgets()方法在到达文件末尾的时候，会返回一个false，所以我们可以在循环中用这个作为判断条件。然而，如果数据返回的是一个可转换为false的内容，这个循环就会提前中断执行。
+$handle = fopen(&amp;quot;/path/to/my/file&amp;quot;, &#39;r&#39;); if ($handle === false) { throw new Exception(&amp;quot;Failed to open file for reading&amp;quot;); } while($data = fgets($handle)) { echo(&amp;quot;Current file line is $data\n&amp;quot;); } fclose($handle);  如果文件的内容包含一个空行，while循环在遇到这个空行的时候会中断执行，因为空字符串会被识别为 false。</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（五十五）</title>

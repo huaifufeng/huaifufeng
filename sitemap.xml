@@ -133,12 +133,27 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/05/post/php-section-58.html</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/05/post/mysql-section-43.html</loc>
     <lastmod>2019-05-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/05/post/php-section-57.html</loc>
+    <lastmod>2019-05-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/05/post/mysql-section-42.html</loc>
+    <lastmod>2019-05-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/05/post/php-section-56.html</loc>
     <lastmod>2019-05-26T00:00:00+00:00</lastmod>
   </url>
   
@@ -1337,13 +1352,13 @@
   
   <url>
     <loc>http://blog.huaifufeng.com/tags/php/</loc>
-    <lastmod>2019-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://blog.huaifufeng.com/categories/php/</loc>
-    <lastmod>2019-05-25T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
