@@ -6,10 +6,35 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 29 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（五十九）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-59.html</link>
+      <pubDate>Wed, 29 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-59.html</guid>
+      <description>PHP MySQLi mysqli接口是mysql的一种改进方案（含义是&amp;rdquo;MySQL Improvement 扩展&amp;rdquo;），而mysql接口在PHP5.5标记为不推荐使用，在PHP7.0中移除。mysqli扩展（也被称为MySQL优化扩展）为MySQL4.1.3之后的新特性开发的。mysqli扩展在PHP5之后开始支持。
+1. 关闭连接 当我们在数据库上面的查询结束之后，强烈建议关闭连接来释放资源。
+面向对象方式
+$conn-&amp;gt;close();  面向过程方式：
+mysqli_close($conn);  注意：服务器的连接在脚本执行结束之后就会立即关闭，除非在结束之前使用close方法进行关闭。
+用例：如果我们的脚本在获取全部结果之后还有很多的处理要进行，那我们肯定应该关闭连接。如果不这么做，当Web服务器大量使用的时候，MySQL服务器可能达到连接限制。
+2. Mysqli 连接 面向对象：
+连接服务器：
+$conn = new mysqli(&amp;quot;localhost&amp;quot;, &amp;quot;my_user&amp;quot;, &amp;quot;my_password&amp;quot;);  设置默认的数据库：$conn-&amp;gt;select_db(&amp;quot;my_db&amp;quot;);
+连接一个数据库：
+$conn = new mysqli(&#39;localhost&#39;, &#39;my_user&#39;, &#39;my_password&#39;, &#39;my_db&#39;);  面向过程：
+连接服务器
+$conn = mysqli_connect(&#39;localhost&#39;, &#39;mysql_user&#39;, &#39;my_password&#39;);  设置默认的数据库：mysqli_select_db($conn, &#39;my_db&#39;);
+连接数据库：
+$conn = mysqli_connect(&#39;localhost&#39;, &#39;my_user&#39;, &#39;my_password&#39;, &#39;my_db&#39;);  验证数据库连接
+面向对象方式
+if ($conn-&amp;gt;connect_errno &amp;gt; 0) { trigger_error($db-&amp;gt;connect_error); } //else 正确的逻辑  面向过程方式</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（五十八）</title>

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="PHP MySQLi">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（五十九）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/php-section-59.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（五十九）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, May 29, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#php-mysqli">PHP MySQLi</a>
+<ul>
+<li><a href="#1-关闭连接">1. 关闭连接</a></li>
+<li><a href="#2-mysqli-连接">2. Mysqli 连接</a></li>
+<li><a href="#3-循环处理mysqli结果集">3. 循环处理MySQLi结果集</a></li>
+<li><a href="#4-mysqli的prepare语句">4. MySQLi的prepare语句</a></li>
+<li><a href="#5-转义字符串">5. 转义字符串</a></li>
+<li><a href="#6-mysqli中调试sql">6. MySQLi中调试SQL</a></li>
+<li><a href="#7-mysqli查询">7. MySQLi查询</a></li>
+<li><a href="#8-怎么从prepare语句获取数据">8.怎么从prepare语句获取数据</a></li>
+<li><a href="#9-mysqli-插入id">9. MySQLi 插入id</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="php-mysqli">PHP MySQLi</h2>
+
+<p><a href="https://www.php.net/manual/zh/book.mysqli.php">mysqli接口</a>是<code>mysql</code>的一种改进方案（含义是&rdquo;MySQL Improvement 扩展&rdquo;），而mysql接口在PHP5.5标记为不推荐使用，在PHP7.0中移除。mysqli扩展（也被称为MySQL优化扩展）为MySQL4.1.3之后的新特性开发的。mysqli扩展在PHP5之后开始支持。</p>
+
+<h3 id="1-关闭连接">1. 关闭连接</h3>
+
+<p>当我们在数据库上面的查询结束之后，强烈建议关闭连接来释放资源。</p>
+
+<p><strong>面向对象方式</strong></p>
+
+<pre><code class="language-php">$conn-&gt;close();
+</code></pre>
+
+<p><strong>面向过程方式：</strong></p>
+
+<pre><code class="language-php">mysqli_close($conn);
+</code></pre>
+
+<p><strong>注意：</strong>服务器的连接在脚本执行结束之后就会立即关闭，除非在结束之前使用close方法进行关闭。</p>
+
+<p><strong>用例：</strong>如果我们的脚本在获取全部结果之后还有很多的处理要进行，那我们肯定应该关闭连接。如果不这么做，当Web服务器大量使用的时候，MySQL服务器可能达到连接限制。</p>
+
+<h3 id="2-mysqli-连接">2. Mysqli 连接</h3>
+
+<p><strong>面向对象：</strong></p>
+
+<p>连接服务器：</p>
+
+<pre><code class="language-php">$conn = new mysqli(&quot;localhost&quot;, &quot;my_user&quot;, &quot;my_password&quot;);
+</code></pre>
+
+<p>设置默认的数据库：<code>$conn-&gt;select_db(&quot;my_db&quot;);</code></p>
+
+<p>连接一个数据库：</p>
+
+<pre><code class="language-php">$conn = new mysqli('localhost', 'my_user', 'my_password', 'my_db');
+</code></pre>
+
+<p><strong>面向过程：</strong></p>
+
+<p>连接服务器</p>
+
+<pre><code class="language-php">$conn = mysqli_connect('localhost', 'mysql_user', 'my_password');
+</code></pre>
+
+<p>设置默认的数据库：<code>mysqli_select_db($conn, 'my_db');</code></p>
+
+<p>连接数据库：</p>
+
+<pre><code class="language-php">$conn = mysqli_connect('localhost', 'my_user', 'my_password', 'my_db');
+</code></pre>
+
+<p><strong>验证数据库连接</strong></p>
+
+<p>面向对象方式</p>
+
+<pre><code class="language-php">if ($conn-&gt;connect_errno &gt; 0) {
+    trigger_error($db-&gt;connect_error);
+} //else 正确的逻辑
+</code></pre>
+
+<p>面向过程方式</p>
+
+<pre><code class="language-php">if (!$conn) {
+    trigger_error(mysqli_connect_error());
+} //else 正确
+</code></pre>
+
+<h3 id="3-循环处理mysqli结果集">3. 循环处理MySQLi结果集</h3>
+
+<p>PHP让从结果集中获取数据变得很简单，并且使用<code>while</code>语句进行循环处理。当获取下一行失败的时候，会返回一个<code>false</code>，这时循环就结束了。这些例子对下面的方法都有效果：</p>
+
+<ul>
+<li><a href="https://www.php.net/manual/zh/mysqli-result.fetch-assoc.php">mysqli_fetch_assoc</a> - 返回列名作为key的管理数组。</li>
+<li><a href="https://www.php.net/manual/zh/mysqli-result.fetch-object.php">mysqli_fetch_object</a> - 返回列名作为变量的<code>stdClass</code>对象</li>
+<li><a href="https://www.php.net/manual/zh/mysqli-result.fetch-array.php">mysqli_fetch_array</a> - 关联数组和数字数组（）可以使用参数获取一个或另一个</li>
+<li><a href="https://www.php.net/manual/zh/mysqli-result.fetch-row.php">mysqli_fetch_row</a> - 数字数组</li>
+</ul>
+
+<p><strong>面向对象方式</strong></p>
+
+<pre><code class="language-php">while ($row = $result-&gt;fetch_assoc()) {
+    var_dump($row);
+}
+</code></pre>
+
+<p><strong>面向过程方式</strong></p>
+
+<pre><code class="language-php">while ($row = mysqli_fetch_assoc($result)) {
+    var_dump($row);
+}
+</code></pre>
+
+<p>想要从结果集中获取明确的信息，我们可以使用：</p>
+
+<pre><code class="language-php">while ($row = $result-&gt;fetch_assoc()) {
+    echo &quot;Name and surname: &quot; . $row['name'] . ' ' . $row['surname'] . '&lt;br&gt;';
+    echo 'Age: ' . $row['age'] . '&lt;br&gt;'; //输出年龄
+}
+</code></pre>
+
+<h3 id="4-mysqli的prepare语句">4. MySQLi的prepare语句</h3>
+
+<p>阅读之前使用<code>变量查询避免SQL注入</code>的部分了解一下为什么prepare语句可以帮助我们增加我们SQL的安全性，避免SQL注入问题。</p>
+
+<p>这里<code>$conn</code>变量是一个MySQLi对象。查看MySQLi连接了解更多信息。</p>
+
+<p>对于两个例子，我们假设<code>$sql</code>是：</p>
+
+<pre><code class="language-php">$sql = &quot;SELECT column_1 FROM table WHERE column_2=? AND column_3&gt;?&quot;;
+</code></pre>
+
+<p>这里<code>?</code>表示我们之后要提供的值。注意这里我们不需要使用引号将占位符包围起来，不敢这是什么类型。我们也只可以在查询的数据部分中使用占位符，像SET, VALUES, WHERE。我们不能在SELECT或FROM部分提供占位符。</p>
+
+<p><strong>面向对象方式</strong></p>
+
+<pre><code class="language-php">if ($stmt = $conn-&gt;prepare($sql)) {
+    $stmt-&gt;bind_param(&quot;si&quot;, $column_2_value, $column_3_value);
+    $stmt-&gt;execute();
+    
+    $stmt-&gt;bind_result($column_1);
+    $stmt-&gt;fetch();
+    $stmt-&gt;close();
+}
+</code></pre>
+
+<p><strong>面向过程方式</strong></p>
+
+<pre><code class="language-php">if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_Param($stmt, &quot;si&quot;, $column_2_value, $column_3_value);
+    mysqli_stmt_execute($stmt);
+    
+    mysqli_stmt_close($stmt);
+}
+</code></pre>
+
+<p><code>$stmt-&gt;bind_param</code>的第一个参数或者<code>mysqli_stmt_bind_param</code>的第二个参数由SQL查询中变量的相应类型决定：</p>
+
+<pre><code>变量的数据量类型
+i   integer
+d   double
+s   string
+b   blob
+</code></pre>
+
+<p>你的参数列表需要按照查询中的顺序提供。在例子中<code>si</code>表示第一个参数<code>column_2=?</code>是字符串，第二个参数<code>column_3&gt;?</code>是整数。</p>
+
+<p>获取数据，查看如何从prepare中获取数据部分。</p>
+
+<h3 id="5-转义字符串">5. 转义字符串</h3>
+
+<p>转义字符串是一个老的（并且不安全）的方法，这个方法用来让插入查询的数据更加安全。这是通过使用MySQL的方法mysql_real_escape_string()来处理和清除数据（换句话说，PHP不会进行转义操作）。MySQLi的API提供对这个方法的直接访问：</p>
+
+<pre><code class="language-php">$escaped = $conn-&gt;real_escape_string($_GET['var']);
+//或
+$escaped = mysqli_real_escape_string($conn, $_GET['var']);
+</code></pre>
+
+<p>此时，你有一个MySQL认为是安全的可以直接在查询中使用的安全的字符串：</p>
+
+<pre><code class="language-php">$sql = 'SELECT * FROM users WHERE username=&quot;'. $escaped .'&quot;';
+$result = $conn-&gt;query($sql);
+</code></pre>
+
+<p>但是为什么这个不像prepare语句一样安全呢？有一些方法可以欺骗MySQL让他认为生成的字符串是安全的。假设下面的例子：</p>
+
+<pre><code class="language-php">$id = mysqli_real_escape_string(&quot;1 OR 1=1&quot;);
+$sql = 'SELECT * FROM table WHERE id=' . $id;
+</code></pre>
+
+<p><code>1 OR 1=1</code>并不表示数据是MySQL将要转义的数据。这仍然是SQL注入的。有一些<a href="https://stackoverflow.com/questions/5741187/sql-injection-that-gets-around-mysql-real-escape-string">另外的例子</a>表示返回不安全数据的地方。问题是MySQL的转移方法设计用来让数据符合SQL的语法。并不是设计用来确保用户数据和SQL命令混淆。</p>
+
+<h3 id="6-mysqli中调试sql">6. MySQLi中调试SQL</h3>
+
+<p>现在你的SQL执行失败了（查看MySQLi连接部分了解怎么获取<code>$conn</code>）</p>
+
+<pre><code class="language-php">$result = $conn-&gt;query(&quot;SELECT * FROM non_existent_table&quot;);  //查询失败
+</code></pre>
+
+<p>我们怎么寻找发生了什么呢？<code>$result</code>现在是<code>false</code>，所以这个没有用处。幸运的是<code>$conn</code>可以告诉我们MySQL为什么失败了：</p>
+
+<pre><code class="language-php">trigger_error($conn-&gt;error);
+</code></pre>
+
+<p>或者面向对象方法：</p>
+
+<pre><code class="language-php">trigger_error(mysqli_error($conn));
+</code></pre>
+
+<p>你可以获得下面这样类似的错误：</p>
+
+<blockquote>
+<p>Table &lsquo;my_db.non_existent_table&rsquo; doesn&rsquo;t exist</p>
+</blockquote>
+
+<h3 id="7-mysqli查询">7. MySQLi查询</h3>
+
+<p><code>query</code>方法获取一个有效的SQL字符串，然后直接在数据库连接<code>$conn</code>上执行它：</p>
+
+<p><strong>面向对象：</strong></p>
+
+<pre><code class="language-php">$result = $conn-&gt;query(&quot;SELECT * FROM `pepore`&quot;);
+</code></pre>
+
+<p><strong>面向过程：</strong></p>
+
+<pre><code class="language-php">$result = mysqli_query($conn, &quot;SELECT * FROM `people`&quot;);
+</code></pre>
+
+<p><strong>注意：</strong>这里一个常见的问题是简单的执行这个查询，然后期望它正常工作（返回一个<a href="https://www.php.net/manual/zh/class.mysqli-stmt.php">mysqli_stmt_object</a>）。因为这个方法获取一个字符串，所以在查询之前你需要首先创建查询字符串。如果SQL中有任何错误，MySQL的编译器将会失败，这时这个方法将会返回一个<code>false</code>。</p>
+
+<pre><code class="language-php">$result = $conn-&gt;query(&quot;SELECT * FROM non_existent_table&quot;);
+$row = $result-&gt;fetch_assoc();
+</code></pre>
+
+<p>上面的代码将会返回一个<code>E_FATAL</code>错误，因为<code>$result</code>是一个<code>false</code>，并不是一个对象。</p>
+
+<blockquote>
+<p>PHP Fatal error: Call to a member function fetch_assoc() on a non-object</p>
+</blockquote>
+
+<p>面向过程方式错误是相似的，但不是一个致命错误，因为我们只是违反了函数希望的参数。</p>
+
+<pre><code class="language-php">$row = mysqli_fetch_assoc($reult);
+</code></pre>
+
+<p>你会获取下面的错误：</p>
+
+<pre><code class="language-php">mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given
+</code></pre>
+
+<p>你可以检查这个值，在使用之前：</p>
+
+<pre><code class="language-php">if ($result) {
+    $row = mysqli_fetch_assoc($result);
+}
+</code></pre>
+
+<h3 id="8-怎么从prepare语句获取数据">8.怎么从prepare语句获取数据</h3>
+
+<p><strong>prepare语句</strong></p>
+
+<p>查看MySQLi的prepare语句了解怎么建立prepare语句和执行查询。</p>
+
+<p><strong>绑定结果</strong></p>
+
+<p><strong>面向对象</strong></p>
+
+<pre><code class="language-php">$stmt-&gt;bind_result($forename);
+</code></pre>
+
+<p>面向过程：</p>
+
+<pre><code class="language-php">mysqli_stmt_bind_result($stmt,  $forename);
+</code></pre>
+
+<p>使用<code>bind_result</code>的一个问题是这个方法需要指定将要使用的列。这意味 这项上面的查询语句需要像<code>SELECT forename FROM users</code>这样。想要包含更多的列的话简单的在<code>bind_result</code>方法中使用跟多的参数（确保添加的列在查询语句中）。</p>
+
+<p>在两个例子中，我们把<code>forename</code>列的值放入<code>$forename</code>变量。这个方法你可以添加你希望的数量。这个设置只需要做一次，因为这个方法是绑定的引用。</p>
+
+<p>我们可以像下面循环：</p>
+
+<p><strong>面向对象</strong></p>
+
+<pre><code class="language-php">while ($stmt-&gt;fetch()) {
+    echo &quot;$forename&lt;br/&gt;&quot;;
+}
+</code></pre>
+
+<p><strong>面向过程</strong></p>
+
+<pre><code class="language-php">while (mysqli_stmt_fetch($stmt)) {
+    echo &quot;$forename&lt;br/&gt;&quot;;
+}
+</code></pre>
+
+<p>这的一个缺点就是你需要一个设置很多变量，这在处理大查询时特别麻烦。如果你按照了<a href="https://www.php.net/manual/zh/book.mysqlnd.php">MySQL原生驱动(mysqlnd)</a>，你可以简单的使用<a href="https://www.php.net/manual/zh/mysqli-stmt.get-result.php">get_result</a>方法。</p>
+
+<p><strong>面向对象</strong></p>
+
+<pre><code class="language-php">$result = $stmt-&gt;get_result();
+</code></pre>
+
+<p><strong>面向过程</strong></p>
+
+<pre><code class="language-php">$result = mysqli_stmt_get_result($stmt);
+</code></pre>
+
+<p>这个是更加简单的方式，因为我们获得了一个<a href="https://www.php.net/manual/zh/class.mysqli-result.php">mysqli_result</a>对象。这个是和mysqli_query返回的是相同的对象。这样你就可以使用一个简单的循环来获取你的是数据。</p>
+
+<p><strong>如果我没有按照mysqlnd？</strong></p>
+
+<p>如果是这个问题的话@已经有了一个<a href="https://stackoverflow.com/questions/10752815/mysqli-get-result-alternative/30551477#30551477">很好的答案</a>。</p>
+
+<p>下面的方法可以完成和<code>get_result</code>方法一样的任务，当服务器上面没有安装的时候。这只是简单的循环结果集，然后场景一个关联数组。</p>
+
+<pre><code class="language-php">function get_result(\mysqli_stmt $statement) {
+    $result = array();
+    $statement-&gt;store_result();
+    for ($i = 0; $i &lt; $statement-&gt;num; $i++) {
+        $metadata = $statement-&gt;result_metadata();
+        $params = array();
+        while ($field = $metadata-&gt;fetch_field()) {
+            $params[] = &amp;$result[$i][$field-&gt;name];
+        }
+        call_user_func_array(array($statement, 'bind_result'), $params);
+        $statement-&gt;fetch();
+    }
+    
+    return $result;
+}
+</code></pre>
+
+<p>然后我们可以用这个方法像上面一样获取数据，就像我们使用<code>mysqli_fetch_assoc()</code>。</p>
+
+<pre><code class="language-php">&lt;?php
+$query = $mysqli-&gt;prepare(&quot;SELECT * FROM users WHERE forename LIKE ?&quot;);
+$condition = &quot;J%&quot;;
+$query-&gt;bind_param(&quot;s&quot;, $condition);
+$query-&gt;execute();
+$result = get_result($query);
+
+while ($row = array_shift($result)) {
+    echo $row[&quot;id&quot;] . ' - ' . $row[&quot;forename&quot;] . ' ' . $row[&quot;surname&quot;] . '&lt;br&gt;';
+}
+</code></pre>
+
+<p>这将会获得和我们使用<code>mysqlnd</code>一样的输出，只是没有必要在安装了。这在你不能在你的系统上面安装指定驱动是非常有效果。只要实现这个方案。</p>
+
+<h3 id="9-mysqli-插入id">9. MySQLi 插入id</h3>
+
+<p>获取数据表执行<code>INSERT</code>语句时一个<code>AUTO_INCREMENT</code>列产生的ID。</p>
+
+<p><strong>面向对象</strong></p>
+
+<pre><code class="language-php">$id = $conn-&gt;insert_id;
+</code></pre>
+
+<p><strong>面向过程</strong></p>
+
+<pre><code class="language-php">$id = mysqli_insert_id($conn);
+</code></pre>
+
+<blockquote>
+<p>如果连接没有以前的查询或者查询没有更新AUTO_INCREMENT列，这将会返回0.</p>
+</blockquote>
+
+<p><strong>更新时插入id</strong></p>
+
+<p>通常<code>UPDATE</code>语句不会返回一个insert id，因为<code>AUTO_INCREMENT</code>列只有当一个新行被保存（或插入）的时候才会返回。一种更新id的方法是使用<code>INSERT … ON DUPLICATE KEY UPDATE</code>来进行更新操作。</p>
+
+<p>为下面的例子做准备：</p>
+
+<pre><code class="language-php">CREATE TABLE iodku (
+id INT AUTO_INCREMENT NOT NULL, name VARCHAR(99) NOT NULL,
+misc INT NOT NULL,
+PRIMARY KEY(id),
+UNIQUE(name)
+) ENGINE=InnoDB;
+INSERT INTO iodku (name, misc)
+    VALUES
+    ('Leslie', 123),
+('Sally', 456);
+Query OK, 2 rows affected (0.00 sec) Records: 2 Duplicates: 0 Warnings: 0 
++----+--------+------+
+| id |   name | misc | 
+  +----+--------+------+
+|  1 | Leslie |  123 |
+|  2 |  Sally |  456 |
++----+--------+------+
+</code></pre>
+
+<p>iodku的例子执行一个&rdquo;更新&rdquo;操作，然后使用<code>LAST_INSERT_ID()</code>获取关联的<code>id</code>。</p>
+
+<pre><code class="language-php">$sql = &quot;INSERT INTO iodku (name, misc)
+    VALUES
+    ('Sally', 3333)  -- 应该更新的
+    ON DUPLICATE KEY UPDATE  -- name触发 &quot;duplicate key&quot;
+    id = LAST_INSERT_ID(id),
+    misc = VALUES(misc)&quot;;
+$conn-&gt;query($sql);
+$id = $conn-&gt;insert_id;  -- 获取存在的值 2
+</code></pre>
+
+<p>iodku的例子执行一个&rdquo;更新&rdquo;操作，然后使用<code>LAST_INSERT_ID()</code>获取新的<code>id</code>。</p>
+
+<pre><code class="language-php">$sql = &quot;INSERT INTO iodku (name, misc)
+    VALUES
+    ('Dana', 789)  -- 应该插入
+    ON DUPLICATE KEY UPDATE
+    id = LAST_INSERT_ID(id),
+    misc = VALUES(misc);
+$conn-&gt;query($sql);
+$id = $conn-&gt;insert_id;  -- 获取新值 3
+</code></pre>
+
+<p>数据表的内容：</p>
+
+<pre><code class="language-mysql">SELECT * FROM iodku;
++----+--------+------+
+| id | name   | misc |
++----+--------+------+
+|  1 | Leslie |  123 |
+|  2 | Sally  | 3333 |  -- IODKU 更新
+|  3 | Dana   |  789 |  -- IODKU 添加
++----+--------+------+
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/mysql-section-45.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十五)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/mysql-section-44.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十四)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
