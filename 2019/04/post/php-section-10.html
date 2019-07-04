@@ -452,21 +452,19 @@ echo $i--; // Prints 2 (but $i value is now 1)
 <p>只有两种字符串拼接运算符：</p>
 
 <ul>
-<li>两个字符串拼接</li>
+<li><p>两个字符串拼接</p>
+
+<pre><code>$a = &quot;a&quot;;
+$b = &quot;b&quot;;
+$c = $a . $b; // $c =&gt; &quot;ab&quot;
+</code></pre></li>
+
+<li><p>拼接字符串并且赋值</p>
+
+<pre><code>$a = &quot;a&quot;;
+$a .= &quot;b&quot;; // $a =&gt; &quot;ab&quot;
+</code></pre></li>
 </ul>
-
-<pre><code>  $a = &quot;a&quot;;
-  $b = &quot;b&quot;;
-  $c = $a . $b; // $c =&gt; &quot;ab&quot;
-</code></pre>
-
-<ul>
-<li>拼接字符串并且赋值</li>
-</ul>
-
-<pre><code>  $a = &quot;a&quot;;
-  $a .= &quot;b&quot;; // $a =&gt; &quot;ab&quot;
-</code></pre>
 
 <h3 id="对象和类操作符">对象和类操作符</h3>
 
@@ -982,12 +980,12 @@ $a = $o instanceof $name; // YetAnotherClass is not defined!
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/php-section-11.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十一）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/php-section-9.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/php-section-9.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九）">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-11.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（十一）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

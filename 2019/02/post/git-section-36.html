@@ -254,18 +254,16 @@ git for-each-ref refs/remotes | cut -d / -f 4- | grep -v @ | while read branchna
 <p>按照下面的顺序依次执行相应的命令从Mercurial仓库迁移到Git仓库：</p>
 
 <ol>
-<li>使用<a href="https://github.com/frej/fast-export">fast-export</a>：</li>
-</ol>
+<li><p>使用<a href="https://github.com/frej/fast-export">fast-export</a>：</p>
 
-<pre><code>   cd
-   git clone git://repo.or.cz/fast-export.git
-   git init git_repo
-   cd git_repo
-   ~/fast-export/hg-fast-export.sh -r /path/to/old/mercurial_repo
-   git checkout HEAD
-</code></pre>
+<pre><code>cd
+git clone git://repo.or.cz/fast-export.git
+git init git_repo
+cd git_repo
+~/fast-export/hg-fast-export.sh -r /path/to/old/mercurial_repo
+git checkout HEAD
+</code></pre></li>
 
-<ol>
 <li><p>使用<a href="http://hg-git.github.io/">Hg-Git</a>：<a href="https://stackoverflow.com/questions/10710250/converting-mercurial-folder-to-a-git-repository/31827990#31827990">这里</a>有非常详细的解答</p></li>
 
 <li><p>使用<a href="https://help.github.com/en/articles/about-github-importer">GitHub的导入器</a>：按照<a href="https://github.com/new/import">GitHub</a>的详细流程。</p></li>
@@ -350,12 +348,12 @@ git push origin master
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-31.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十一)">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-30.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-30.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-31.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十一)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

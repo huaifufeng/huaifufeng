@@ -217,18 +217,16 @@
 <h4 id="普通语法">普通语法</h4>
 
 <ol>
-<li>取消符合引用，修改分支头到新的对象</li>
+<li><p>取消符合引用，修改分支头到新的对象</p>
+
+<pre><code>git update-ref HEAD &lt;newvalue&gt;
+</code></pre></li>
+
+<li><p>验证引用中当前只和<code>oldvalue</code>匹配后，修改<code>newvalue</code>到引用中</p>
+
+<pre><code>git update-ref refs/head/master &lt;newvalue&gt; &lt;oldvalue&gt;
+</code></pre></li>
 </ol>
-
-<pre><code>   git update-ref HEAD &lt;newvalue&gt;
-</code></pre>
-
-<ol>
-<li>验证引用中当前只和<code>oldvalue</code>匹配后，修改<code>newvalue</code>到引用中</li>
-</ol>
-
-<pre><code>   git update-ref refs/head/master &lt;newvalue&gt; &lt;oldvalue&gt;
-</code></pre>
 
 <p>上面的语法只有咱当前的值是<code>oldvalue</code>的时候，修改master分支的头到<code>newvalue</code>。</p>
 
@@ -263,12 +261,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/bash-section-49.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十九)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-48.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十八)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/bash-section-48.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十八)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-49.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四十九)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

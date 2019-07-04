@@ -595,8 +595,8 @@ if ($var) {}
 
 <ul>
 <li><code>字符串</code>长度不为0就是<code>true</code>，包括只有空格的字符串</li>
-<li><code>空字符串</code>等于<code>false</code>。</li>
-</ul>
+
+<li><p><code>空字符串</code>等于<code>false</code>。</p>
 
 <pre><code>$var = '';
 $var_is_true = ($var == true); //false
@@ -605,11 +605,9 @@ $var_is_false = ($var == false); //true
 $var = ' ';
 $var_is_true = ($var == true); //true
 $var_Is_false = ($var == false); //false
-</code></pre>
+</code></pre></li>
 
-<ul>
-<li><code>整数</code>除了0等于<code>false</code>，其他值都等于<code>true</code></li>
-</ul>
+<li><p><code>整数</code>除了0等于<code>false</code>，其他值都等于<code>true</code></p>
 
 <pre><code>$var = -1;
 $var_is_true = ($var == true); //true
@@ -617,20 +615,16 @@ $var = 99;
 $var_is_true = ($var == true); //true
 $var = 0;
 $var_is_true = ($var == true); //false
-</code></pre>
+</code></pre></li>
 
-<ul>
-<li><code>null</code>等于<code>false</code></li>
-</ul>
+<li><p><code>null</code>等于<code>false</code></p>
 
 <pre><code>$var = null;
 $var_is_true = ($var == true); //false
 $var_is_false = ($var == false); //true
-</code></pre>
+</code></pre></li>
 
-<ul>
-<li>空字符串&rdquo;和字符串&rsquo;0&rsquo;等于<code>false</code></li>
-</ul>
+<li><p>空字符串&rdquo;和字符串&rsquo;0&rsquo;等于<code>false</code></p>
 
 <pre><code>$var = '';
 $var_is_true = ($var == true); //false
@@ -639,18 +633,16 @@ $var_is_false = ($var == false); //true
 $var = '0';
 $var_is_true = ($var == true); //false
 $var_is_true = ($var == false); //true
-</code></pre>
+</code></pre></li>
 
-<ul>
-<li>浮点数非0的值等于<code>true</code>，0值等于<code>false</code>
+<li><p>浮点数非0的值等于<code>true</code>，0值等于<code>false</code></p>
 
 <ul>
 <li><code>NAN</code>等于<code>true</code>：<code>NAN==true</code>等于true，因为NAN是一个非零的浮点数</li>
 <li>0值包括+0和-0。PHP在双精度浮点数中不区分+0和-0，所有<code>floatval('0')== floatval('-0')</code>等于true。</li>
 <li>实际上，<code>floatval('0') === floatval('-0')</code></li>
-<li>另外，<code>floatval('0') == false</code>和<code>floatval('-0') == false</code></li>
-</ul></li>
-</ul>
+
+<li><p>另外，<code>floatval('0') == false</code>和<code>floatval('-0') == false</code></p>
 
 <pre><code>$var = NAN;
 $var_is_true = ($var == true); //true
@@ -663,7 +655,9 @@ $var_is_false = ($var == false); //true
 $var = floatval('-0') == floatval('-0');
 $var_is_true = ($var == true); //false
 $var_is_false = ($var == false); //true
-</code></pre>
+</code></pre></li>
+</ul></li>
+</ul>
 
 <h4 id="全等运算符">全等运算符</h4>
 
@@ -728,12 +722,12 @@ if ($idx !== false) {
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/bash-section-65.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十五)">&larr; Previous Post</a>
+                      <a href="/2019/04/post/bash-section-64.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十四)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/bash-section-64.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十四)">Next Post &rarr;</a>
+                      <a href="/2019/04/post/bash-section-65.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十五)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

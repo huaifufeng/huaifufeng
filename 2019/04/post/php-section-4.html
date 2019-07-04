@@ -493,53 +493,54 @@ if ($_FILES[&quot;myVar&quot;][&quot;error&quot;] == UPLOAD_ERR_OK)
 
 <ul>
 <li><code>input</code>的名字有一个方括号。这是因为现在有一个数组的文件所以我们要告诉form使用一个数组保存选择的文件。省略方括号将导致只有最后一个文件赋值到<code>$_FILES[&quot;myVar&quot;]</code>。</li>
-<li><code>multiple=&quot;multiple&quot;</code>属性。这告诉浏览器可以选择多于一个文件。</li>
-</ul>
+
+<li><p><code>multiple=&quot;multiple&quot;</code>属性。这告诉浏览器可以选择多于一个文件。</p>
 
 <pre><code>$total = isset($_FILES[&quot;myVar&quot;]) ? count($_FILES[&quot;myVar&quot;][&quot;name&quot;]) : 0; // count how many files were sent
 // iterate over each of the files
 for ($i = 0; $i &lt; $total; $i++)
 {
-    // there isn't an error
-    if ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i] == UPLOAD_ERR_OK)
-    {
-        $folderLocation = &quot;myFiles&quot;; // a relative path. (could be &quot;path/to/file&quot; for example) 
+// there isn't an error
+if ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i] == UPLOAD_ERR_OK)
+{
+    $folderLocation = &quot;myFiles&quot;; // a relative path. (could be &quot;path/to/file&quot; for example) 
         
-        // if the folder doesn't exist then make it
-        if (!file_exists($folderLocation)) mkdir($folderLocation);
+    // if the folder doesn't exist then make it
+    if (!file_exists($folderLocation)) mkdir($folderLocation);
         
-        move_uploaded_file($_FILES[&quot;myVar&quot;][&quot;tmp_name&quot;][$i], &quot;$folderLocation/&quot; .     basename($_FILES[&quot;myVar&quot;][&quot;name&quot;][$i]));
-    }
-    // else report the error
-    else switch ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i])
-    {
-        case UPLOAD_ERR_INI_SIZE:
-            echo &quot;Value: 1; The uploaded file exceeds the upload_max_filesize directive in php.ini.&quot;;
-            break;
-        case UPLOAD_ERR_FORM_SIZE:
-            echo &quot;Value: 2; The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.&quot;;
-            break;
-        case UPLOAD_ERR_PARTIAL:
-            echo &quot;Value: 3; The uploaded file was only partially uploaded.&quot;;
-            break;
-        case UPLOAD_ERR_NO_FILE:
-            echo &quot;Value: 4; No file was uploaded.&quot;;
-            break;
-        case UPLOAD_ERR_NO_TMP_DIR:
-            echo &quot;Value: 6; Missing a temporary folder. Introduced in PHP 5.0.3.&quot;;
-            break;
-        case UPLOAD_ERR_CANT_WRITE:
-            echo &quot;Value: 7; Failed to write file to disk. Introduced in PHP 5.1.0.&quot;;
-            break;
-        case UPLOAD_ERR_EXTENSION:
-            echo &quot;Value: 8; A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help. Introduced in PHP 5.2.0.&quot;;
-            break;
-        default:
-            echo &quot;An unknown error has occurred.&quot;;
-            break;
-    } 
+    move_uploaded_file($_FILES[&quot;myVar&quot;][&quot;tmp_name&quot;][$i], &quot;$folderLocation/&quot; .     basename($_FILES[&quot;myVar&quot;][&quot;name&quot;][$i]));
 }
-</code></pre>
+// else report the error
+else switch ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i])
+{
+    case UPLOAD_ERR_INI_SIZE:
+        echo &quot;Value: 1; The uploaded file exceeds the upload_max_filesize directive in php.ini.&quot;;
+        break;
+    case UPLOAD_ERR_FORM_SIZE:
+        echo &quot;Value: 2; The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.&quot;;
+        break;
+    case UPLOAD_ERR_PARTIAL:
+        echo &quot;Value: 3; The uploaded file was only partially uploaded.&quot;;
+        break;
+    case UPLOAD_ERR_NO_FILE:
+        echo &quot;Value: 4; No file was uploaded.&quot;;
+        break;
+    case UPLOAD_ERR_NO_TMP_DIR:
+        echo &quot;Value: 6; Missing a temporary folder. Introduced in PHP 5.0.3.&quot;;
+        break;
+    case UPLOAD_ERR_CANT_WRITE:
+        echo &quot;Value: 7; Failed to write file to disk. Introduced in PHP 5.1.0.&quot;;
+        break;
+    case UPLOAD_ERR_EXTENSION:
+        echo &quot;Value: 8; A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help. Introduced in PHP 5.2.0.&quot;;
+        break;
+    default:
+        echo &quot;An unknown error has occurred.&quot;;
+        break;
+} 
+}
+</code></pre></li>
+</ul>
 
 <p>这是非常简单的例子，没有处理错误像文件类型不允许，使用PHP代码命名(像SQL注入)。查看文档。</p>
 
@@ -807,12 +808,12 @@ Output
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/php-section-5.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/bash-section-66.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十六)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/bash-section-66.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六十六)">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-5.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（五）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

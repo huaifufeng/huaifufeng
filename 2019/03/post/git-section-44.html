@@ -274,32 +274,26 @@ $ git worktree prune
 <p>在这些步骤之间不要使用任何git的命令，否则可能会触发垃圾回收操作，然后二级工作树的引用可能就丢失了。不要中断的从头执行到尾：</p>
 
 <ol>
-<li>修改工作树的<code>.git</code>文件，指向main工作树中的新地址中。文件<code>/home/user/project-1/.git</code>应该包含下面的内容：</li>
+<li><p>修改工作树的<code>.git</code>文件，指向main工作树中的新地址中。文件<code>/home/user/project-1/.git</code>应该包含下面的内容：</p>
+
+<pre><code>gitdir: /home/user/project-main/.git/worktrees/project-2
+</code></pre></li>
+
+<li><p>重命名main项目中的<code>.git</code>目录中的工作树，将已经存在的工作树目录移动到新的位置：</p>
+
+<pre><code>$ mv /home/user/project-main/.git/worktrees/project-1 /home/user/project- main/.git/worktrees/project-2
+</code></pre></li>
+
+<li><p>修改<code>inside /home/user/project-main/.git/worktrees/project-2/gitdir</code>中的引用，指向新的位置。在这个例子中，文件将会有下面的内容：</p>
+
+<pre><code>/home/user/project-2/.git
+</code></pre></li>
+
+<li><p>最后，将你的工作树移动到新的地址：</p>
+
+<pre><code>$ mv /home/user/project-1 /home/user/project-2
+</code></pre></li>
 </ol>
-
-<pre><code>   gitdir: /home/user/project-main/.git/worktrees/project-2
-</code></pre>
-
-<ol>
-<li>重命名main项目中的<code>.git</code>目录中的工作树，将已经存在的工作树目录移动到新的位置：</li>
-</ol>
-
-<pre><code>   $ mv /home/user/project-main/.git/worktrees/project-1 /home/user/project- main/.git/worktrees/project-2
-</code></pre>
-
-<ol>
-<li>修改<code>inside /home/user/project-main/.git/worktrees/project-2/gitdir</code>中的引用，指向新的位置。在这个例子中，文件将会有下面的内容：</li>
-</ol>
-
-<pre><code>   /home/user/project-2/.git
-</code></pre>
-
-<ol>
-<li>最后，将你的工作树移动到新的地址：</li>
-</ol>
-
-<pre><code>   $ mv /home/user/project-1 /home/user/project-2
-</code></pre>
 
 <p>如果上面的步骤都没有问题，列出已经存在的工作树将会引用到新的地址：</p>
 
@@ -319,12 +313,12 @@ $ git worktree prune
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/bash-section-39.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十九)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-38.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十八)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/bash-section-38.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十八)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-39.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十九)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

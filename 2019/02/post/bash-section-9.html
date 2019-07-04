@@ -270,22 +270,23 @@ $ &gt; file.txt ls
 <ol>
 <li>文件不存在创建指定文件</li>
 <li>重置（删除文件内容）</li>
-<li>向文件写入内容</li>
-</ol>
+
+<li><p>向文件写入内容</p>
 
 <pre><code>$ echo &quot;first line&quot; &gt; /tmp/lines 
 $ echo &quot;second line&quot; &gt; /tmp/lines
 
 $ cat /tmp/lines 
 second line
-</code></pre>
+</code></pre></li>
+</ol>
 
 <h4 id="追加">追加 &gt;&gt;</h4>
 
 <ol>
 <li>不存在创建文件</li>
-<li>追加文件（向文件末尾写入内容）</li>
-</ol>
+
+<li><p>追加文件（向文件末尾写入内容）</p>
 
 <pre><code># Overwrite existing file
 $ echo &quot;first line&quot; &gt; /tmp/lines 
@@ -296,7 +297,8 @@ $ echo &quot;second line&quot; &gt;&gt; /tmp/lines
 $ cat /tmp/lines 
 first line 
 second line
-</code></pre>
+</code></pre></li>
+</ol>
 
 <h3 id="重定向到stdout和stderr">重定向到STDOUT和STDERR</h3>
 
@@ -403,47 +405,45 @@ $ ls -l
 <h4 id="更多命名管道的例子">更多命名管道的例子</h4>
 
 <ol>
-<li>例子1：所有命令在一个终端或shell中运行</li>
+<li><p>例子1：所有命令在一个终端或shell中运行</p>
+
+<pre><code>$ { ls -l &amp;&amp; cat file3; } &gt;mypipe &amp;
+$ cat &lt;mypipe
+# Output: Prints ls -l data and then prints file3 contents on screen
+</code></pre></li>
+
+<li><p>例子2：所有命令在一个终端或shell中运行</p>
+
+<pre><code>$ ls -l &gt;mypipe &amp;
+$ cat file3 &gt;mypipe &amp;
+$ cat &lt;mypipe
+#Output: This prints on screen the contents of mypipe.
+</code></pre></li>
 </ol>
-
-<pre><code>   $ { ls -l &amp;&amp; cat file3; } &gt;mypipe &amp;
-   $ cat &lt;mypipe
-   # Output: Prints ls -l data and then prints file3 contents on screen
-</code></pre>
-
-<ol>
-<li>例子2：所有命令在一个终端或shell中运行</li>
-</ol>
-
-<pre><code>   $ ls -l &gt;mypipe &amp;
-   $ cat file3 &gt;mypipe &amp;
-   $ cat &lt;mypipe
-   #Output: This prints on screen the contents of mypipe.
-</code></pre>
 
 <p>首先<code>file3</code>文件的内容会显示，然后<code>ls -l</code>命令的结果霍先生（LIFO配置）</p>
 
 <ol>
-<li>例子3：所有命令在一个终端或shell中运行</li>
-</ol>
+<li><p>例子3：所有命令在一个终端或shell中运行</p>
 
-<pre><code>   $ { pipedata=$(&lt;mypipe) &amp;&amp; echo &quot;$pipedata&quot;; } &amp;
-   $ ls &gt;mypipe
-   # Output: Prints the output of ls directly on screen
-</code></pre>
+<pre><code>$ { pipedata=$(&lt;mypipe) &amp;&amp; echo &quot;$pipedata&quot;; } &amp;
+$ ls &gt;mypipe
+# Output: Prints the output of ls directly on screen
+</code></pre></li>
+</ol>
 
 <p>注意，变量<code>$pipedata</code>在主终端/主shell中不可用，因为使用&amp;调用子shell，并且<code>$pipedata</code>仅在此子shell中可用。</p>
 
 <ol>
-<li>例子4：所有命令在一个终端或shell中运行</li>
-</ol>
+<li><p>例子4：所有命令在一个终端或shell中运行</p>
 
-<pre><code>   $ export pipedata
-   $ pipedata=$(&lt;mypipe) &amp;
-   $ ls -l *.sh &gt;mypipe
-   $ echo &quot;$pipedata&quot;
-   #Output : Prints correctly the contents of mypipe
-</code></pre>
+<pre><code>$ export pipedata
+$ pipedata=$(&lt;mypipe) &amp;
+$ ls -l *.sh &gt;mypipe
+$ echo &quot;$pipedata&quot;
+#Output : Prints correctly the contents of mypipe
+</code></pre></li>
+</ol>
 
 <p>由于变量的导出声明，这将正确打印主shell中$pipedata变量的值。由于调用了后台shell（&amp;），主终端/主shell未挂起。</p>
 
@@ -603,12 +603,12 @@ root@server~#
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/git-section-15.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十五）">&larr; Previous Post</a>
+                      <a href="/2019/02/post/git-section-14.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十四）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-14.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十四）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-15.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十五）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

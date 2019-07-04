@@ -521,31 +521,29 @@ It will open the hunk in a text editor and you can edit it as needed.
 <h3 id="gpg签名提交">GPG签名提交</h3>
 
 <ol>
-<li>确定你的key ID</li>
-</ol>
+<li><p>确定你的key ID</p>
 
-<pre><code>   gpg --list-secret-keys --keyid-format LONG
+<pre><code>gpg --list-secret-keys --keyid-format LONG
    
-   /Users/davidcondrey/.gnupg/secring.gpg 
-   --------------------------------------
-   sec 2048R/YOUR-16-DIGIT-KEY-ID YYYY-MM-DD [expires: YYYY-MM-DD]
-</code></pre>
+/Users/davidcondrey/.gnupg/secring.gpg 
+--------------------------------------
+sec 2048R/YOUR-16-DIGIT-KEY-ID YYYY-MM-DD [expires: YYYY-MM-DD]
+</code></pre></li>
+</ol>
 
 <p>你的ID是第一个斜杠之后的16位字母数字字符串</p>
 
 <ol>
-<li>把你的ID添加到你的配置文件中</li>
+<li><p>把你的ID添加到你的配置文件中</p>
+
+<pre><code>$ git config --global user.signingkey YOUR-16-DIGIT-KEY-ID
+</code></pre></li>
+
+<li><p>在版本1.7.9时，你可以在提交时使用<code>-S</code>选项为你的提交添加一个签名。使用这个选项会提醒你输入你的GPG密码，将会给这个提交历史添加签名：</p>
+
+<pre><code>$ git commit -S -m &quot;Your commit message&quot;
+</code></pre></li>
 </ol>
-
-<pre><code>   $ git config --global user.signingkey YOUR-16-DIGIT-KEY-ID
-</code></pre>
-
-<ol>
-<li>在版本1.7.9时，你可以在提交时使用<code>-S</code>选项为你的提交添加一个签名。使用这个选项会提醒你输入你的GPG密码，将会给这个提交历史添加签名：</li>
-</ol>
-
-<pre><code>   $ git commit -S -m &quot;Your commit message&quot;
-</code></pre>
 
 <h3 id="提交指定文件">提交指定文件</h3>
 
@@ -616,12 +614,12 @@ git commit --amend --reset-author
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-5.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五)">&larr; Previous Post</a>
+                      <a href="/2019/01/post/bash-section-4.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/01/post/bash-section-4.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-5.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

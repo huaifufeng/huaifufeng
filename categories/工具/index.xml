@@ -227,9 +227,13 @@ git fetch -p &amp;amp;&amp;amp; git branch -vv | awk &#39;/: gone]/{print $1}&#3
 列出所有的tag 使用git tag可以列出所有有效的tag：
 $ git tag &amp;lt;output follows&amp;gt; v0.1 v1.3   注意：这里tag是按照字符顺序输出的。
  也可以搜索指定的tag：
-$ git tag -l &amp;quot;v1.8.5*&amp;quot; &amp;lt;output follows&amp;gt; v1.8.5 v1.8.5-rc0 v1.8.5-rc1 v1.8.5-rc2 v1.8.5-rc3 v1.8.5.1 v1.8.5.2 v1.8.5.3 v1.8.5.4 v1.8.5.5  创建并push标签 创建标签  在当前分支创建tag   git tag &amp;lt;tagname&amp;gt;  这将在当前分支的当前状态创建一个tag
- 在某些提交上创建tag   git tag tag-name commit-identifier  这将在commit-identifier的提交上创建tag。
-push tag  push单独的标签   git push origin tag-name   一次push所有的tag   git push origin --tags  参考：Git® Notes for Professionals book</description>
+$ git tag -l &amp;quot;v1.8.5*&amp;quot; &amp;lt;output follows&amp;gt; v1.8.5 v1.8.5-rc0 v1.8.5-rc1 v1.8.5-rc2 v1.8.5-rc3 v1.8.5.1 v1.8.5.2 v1.8.5.3 v1.8.5.4 v1.8.5.5  创建并push标签 创建标签  在当前分支创建tag
+git tag &amp;lt;tagname&amp;gt;   这将在当前分支的当前状态创建一个tag
+ 在某些提交上创建tag
+git tag tag-name commit-identifier   这将在commit-identifier的提交上创建tag。
+push tag  push单独的标签
+git push origin tag-name  一次push所有的tag
+git push origin --tags   参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -353,7 +357,9 @@ git_branch() { git branch 2&amp;gt; /dev/null | sed -e &#39;/^[^*]/d&#39; -e &#3
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-54.html</guid>
       <description>修改引用中对象名称 修改引用中对象名称 使用 修改引用中的对象名称
-语法 git update-ref [-m &amp;lt;reason&amp;gt;] (-d &amp;lt;ref&amp;gt; [&amp;lt;oldvalue&amp;gt;] | [--no-deref] [--create-reflog] &amp;lt;ref&amp;gt; &amp;lt;newvalue&amp;gt; [&amp;lt;oldvalue&amp;gt;] | --stdin [-z])  普通语法  取消符合引用，修改分支头到新的对象   git update-ref HEAD &amp;lt;newvalue&amp;gt;   验证引用中当前只和oldvalue匹配后，修改newvalue到引用中   git update-ref refs/head/master &amp;lt;newvalue&amp;gt; &amp;lt;oldvalue&amp;gt;  上面的语法只有咱当前的值是oldvalue的时候，修改master分支的头到newvalue。
+语法 git update-ref [-m &amp;lt;reason&amp;gt;] (-d &amp;lt;ref&amp;gt; [&amp;lt;oldvalue&amp;gt;] | [--no-deref] [--create-reflog] &amp;lt;ref&amp;gt; &amp;lt;newvalue&amp;gt; [&amp;lt;oldvalue&amp;gt;] | --stdin [-z])  普通语法  取消符合引用，修改分支头到新的对象
+git update-ref HEAD &amp;lt;newvalue&amp;gt;  验证引用中当前只和oldvalue匹配后，修改newvalue到引用中
+git update-ref refs/head/master &amp;lt;newvalue&amp;gt; &amp;lt;oldvalue&amp;gt;   上面的语法只有咱当前的值是oldvalue的时候，修改master分支的头到newvalue。
 在验证引用还包含&amp;lt;oldvalue&amp;gt;之后，使用-d标识删除到命名的引用&amp;lt;ref&amp;gt;。
 使用—create-reflog之后，更新引用将会为每个引用创建一个reflog，即使通常不会创建reflog。
 使用-z标志以nul终止格式指定，该格式具有更新、创建、删除、验证等值。
@@ -962,8 +968,9 @@ git add build/.gitkeep git commit -m &amp;quot;Keep the build directory around&a
       <guid>http://blog.huaifufeng.com/2019/02/post/bash-section-26.html</guid>
       <description>Bash算法    参数 详情     EXPRESSION 执行的表达式    (())算法 #!/bin/bash echo $((2 + 1))  输出3。
 #!/bin/bash var1=4 var2=5 ((output=$var1 * $var2)) printf &amp;quot;%d\n&amp;quot; &amp;quot;$output&amp;quot;  输出20
-算法命令  let   let num=1+2 let num=&amp;quot;1+2&amp;quot; let &#39;num= 1 + 2&#39; let num=1 num+=2  如果有空格或者填充字符，你就需要引号了。所有下面会出现错误：
- let num= 1 + 2 //错误 let &#39;num = 1 + 2&#39; //正确 let a[1] = 1 + 1 //错误 let &#39;a[1] = 1 + 1&#39; //正确   (())   ((a=$a+1)) //a加1 ((a = a + 1)) //a加1 ((a += 1)) //a加1  我们可以在if表达式中使用(())。例如：</description>
+算法命令  let
+let num=1+2 let num=&amp;quot;1+2&amp;quot; let &#39;num= 1 + 2&#39; let num=1 num+=2   如果有空格或者填充字符，你就需要引号了。所有下面会出现错误：
+ let num= 1 + 2 //错误 let &#39;num = 1 + 2&#39; //正确 let a[1] = 1 + 1 //错误 let &#39;a[1] = 1 + 1&#39; //正确   (())</description>
     </item>
     
     <item>
@@ -1103,7 +1110,11 @@ if [[ -f $filename ]]; then echo &amp;quot;$filename is a regular file&amp;quot;
       <description>子树 创建、拉入和反向端口子树 创建子树 添加一个新的远端plugin指向组件的远端仓库：
 git remote add plugin https://path.to/remotes/plugin.git  然后创建一个子树指定一个plugins/demo前缀的新目录。plugin是远端的名称，master是引用的子树仓库的master分支名。
 git subtree add --prefix=plugins/demo plugin master  子树更新 pull拉取plugin中正常的提交：
-git subtree pull --prefix=plugins/demo plugin master  反向端口子树更新  指定在超级项目中进行的要进行反向移植的提交：   git commit -am &amp;quot;new changes to be backported&amp;quot;   签出要合并的新分支，设置为跟踪子树存储库   git checkout -b backport plugin/master   Cherry-pick backports   git cherry-pick -x --strategy=subtree master   推送修改到远端的plugin   git push plugin backport:master  参考：Git® Notes for Professionals book</description>
+git subtree pull --prefix=plugins/demo plugin master  反向端口子树更新  指定在超级项目中进行的要进行反向移植的提交：
+git commit -am &amp;quot;new changes to be backported&amp;quot;  签出要合并的新分支，设置为跟踪子树存储库
+git checkout -b backport plugin/master  Cherry-pick backports
+git cherry-pick -x --strategy=subtree master  推送修改到远端的plugin
+git push plugin backport:master   参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -1357,9 +1368,10 @@ $ v=&amp;quot;BYE&amp;quot; # Just the first character $ printf &#39;%s\n&#39; &
 $ bash helloJohn.sh Hello, John Doe   如果你没有修改参数，可以不用把这个参数放到本地变量中，可以直接使用`echo &amp;ldquo;Hello, $1&amp;rdquo;
  你可以在函数中使用$1，$2，$3等等的变量访问函数的参数。
    注意：对于超过9个的参数，使用$10是没有用的，因为这将被解析成为$10，所以你需要使用${10}、${11}这样的变量。
-  在函数中，$@引用所有的参数：   #!/bin/bash foo() { echo &amp;quot;$@&amp;quot; } foo 1 2 3 # output =&amp;gt; 1 2 3   注意：你应该像这里展示的一样，在$@周围使用双引号。
+  在函数中，$@引用所有的参数：
+#!/bin/bash foo() { echo &amp;quot;$@&amp;quot; } foo 1 2 3 # output =&amp;gt; 1 2 3    注意：你应该像这里展示的一样，在$@周围使用双引号。
  省略引号将导致shell扩展通配符（即使用户为避免这种情况而专门引用通配符），并且通常会引入不受欢迎的行为，甚至潜在的安全问题。
- foo &amp;quot;string with spaces;&amp;quot; &#39;$HOME&#39; &amp;quot;*&amp;quot; # output =&amp;gt; string with spaces; $HOME *   想要使用默认值的话，用${1:-default_val}的格式：   #!</description>
+ foo &amp;quot;string with spaces;&amp;quot; &#39;$HOME&#39; &amp;quot;*&amp;quot; # output =&amp;gt; string with spaces; $HOME *   想要使用默认值的话，用${1:-default_val}的格式：</description>
     </item>
     
     <item>
@@ -1490,7 +1502,8 @@ git checkout &amp;lt;branch&amp;gt; git reset --soft $(git merge-base master &am
 $ ls &amp;gt;file.txt $ &amp;gt; file.txt ls  如果目标文件不存在的话，就会创建这个文件，否则就会重置这个文件。
 默认的文件标识符是标准输出，或者没有提供的话就是1。下面的命令和之前的一样，只是指定了标准输出：
 $ ls 1&amp;gt;file.txt  注意：重定向是执行的shell初始化的，而不是由执行的命令初始化的，因此在命令执行前，初始化工作就已经完成了。
-追加 Vs 重置 重置 &amp;gt;  文件不存在创建指定文件 重置（删除文件内容） 向文件写入内容  $ echo &amp;quot;first line&amp;quot; &amp;gt; /tmp/lines $ echo &amp;quot;second line&amp;quot; &amp;gt; /tmp/lines $ cat /tmp/lines second line  追加 &amp;gt;&amp;gt;  不存在创建文件 追加文件（向文件末尾写入内容）  # Overwrite existing file $ echo &amp;quot;first line&amp;quot; &amp;gt; /tmp/lines # Append a second line $ echo &amp;quot;second line&amp;quot; &amp;gt;&amp;gt; /tmp/lines $ cat /tmp/lines first line second line  重定向到STDOUT和STDERR 文件标识符0和1是指针。我们通过重定向更改文件描述符指向的内容。&amp;gt;/dev/null意味着1指向/dev/null。</description>
+追加 Vs 重置 重置 &amp;gt;  文件不存在创建指定文件 重置（删除文件内容） 向文件写入内容
+$ echo &amp;quot;first line&amp;quot; &amp;gt; /tmp/lines $ echo &amp;quot;second line&amp;quot; &amp;gt; /tmp/lines $ cat /tmp/lines second line   追加 &amp;gt;&amp;gt;  不存在创建文件 追加文件（向文件末尾写入内容）</description>
     </item>
     
     <item>
@@ -1526,10 +1539,14 @@ $ sleep 10 &amp;amp; [1] 20024 $ fg % # to bring a process to foreground &#39;fg
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-13.html</guid>
       <description>配置    Parameter Detals     &amp;ndash;system 编辑为每个人使用的系统配置（在linux上，配置文件在$(prefix)/etc/gitconfig）   &amp;ndash;global 修改为你的每个仓库使用的全局配置文件（在linux上，配置文件在~/.gitconfig）   &amp;ndash;local 编辑指定仓库的配置文件，在你仓库的.git/config这个文件内，这个是默认的配置    配置编辑器 有多个方式来配置你commit和rebase的时候使用的编辑器：
- 修改core.editor配置项：   $ git config --global core.editor nano   设置GIT_EDITOR环境变量：  举个例子，应用到一个命令：
+ 修改core.editor配置项：
+$ git config --global core.editor nano  设置GIT_EDITOR环境变量：
+  举个例子，应用到一个命令：
  $ GIT_EDITOR=nano git commit  或者为终端执行的所有git命令。注意：直到你关闭了终端，这个配置才会生效：
- $ export GIT_EDITOR=nano   想要修改终端所有程序的编辑器，不仅仅是git，可以VISUAL或EDITOR环境变量（可以查看VISUAL vs EDITOR）:   $ export EDITOR=nano  注意：像上面一样，这个命令只会应用到当前的终端页面。你的shell通常会有一个配置文件，允许你永远的设置你的配置。（比如在bash时，可以添加上面的配置到~/.bashrc获取~/.bash_profile配置文件）。
-一些文本编辑器（主要是GUI编辑器）一次只运行一个实例，如果你已经打开了一个实例，通常会退出。如果您的文本编辑器就是这种情况，Git将打印Aborting commit due to empty commit message。不允许你先编辑你的提交信息。如果你遇到了这种情况，检查你的编辑器文档是否有--wait这个配置项。允许你在文档关闭之前终端提交。</description>
+ $ export GIT_EDITOR=nano   想要修改终端所有程序的编辑器，不仅仅是git，可以VISUAL或EDITOR环境变量（可以查看VISUAL vs EDITOR）:
+$ export EDITOR=nano   注意：像上面一样，这个命令只会应用到当前的终端页面。你的shell通常会有一个配置文件，允许你永远的设置你的配置。（比如在bash时，可以添加上面的配置到~/.bashrc获取~/.bash_profile配置文件）。
+一些文本编辑器（主要是GUI编辑器）一次只运行一个实例，如果你已经打开了一个实例，通常会退出。如果您的文本编辑器就是这种情况，Git将打印Aborting commit due to empty commit message。不允许你先编辑你的提交信息。如果你遇到了这种情况，检查你的编辑器文档是否有--wait这个配置项。允许你在文档关闭之前终端提交。
+自动纠正错别字 $ git config --global help.</description>
     </item>
     
     <item>
@@ -1580,10 +1597,13 @@ $ grep &amp;quot;*foo&amp;quot; ~/Desktop/bar  参考：Bash Notes for Professio
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-11.html</guid>
       <description>别名 简单别名 有两种方法来创建Git别名：
- 编辑~/.gitconfig文件：   [alias] ci = commit st = status co = checkout   使用命令行：   git config --global alias.ci &amp;quot;commit&amp;quot; git config --global alias.st &amp;quot;status&amp;quot; git config --global alias.co &amp;quot;checkout&amp;quot;  在别名创建之后：
+ 编辑~/.gitconfig文件：
+[alias] ci = commit st = status co = checkout  使用命令行：
+git config --global alias.ci &amp;quot;commit&amp;quot; git config --global alias.st &amp;quot;status&amp;quot; git config --global alias.co &amp;quot;checkout&amp;quot;   在别名创建之后：
  git ci就是git commit git st就是git status git co就是git checkout  像正常的命令一样，别名也可以使用参数，例如：
  git ci -m &amp;quot;Commit message...&amp;quot; git co -b feature-42  显示搜索别名 你可以使用--get-regexp选项来列出所有的别名：
-$ git config --get-regexp &#39;^alias\.&#39;  搜索别名 想要搜索别名的话，在.</description>
+$ git config --get-regexp &#39;^alias\.&#39;  搜索别名 想要搜索别名的话，在.gitconfig中添加下面的配置：
+aliases = !</description>
     </item>
     
     <item>
@@ -1716,12 +1736,13 @@ $ git reset --hard  如果没有—hard选项的话，这将会执行一个软re
 $ echo &amp;quot;Hello World&amp;quot; #&amp;gt; Hello World # Output Example  注意点：
  你可以在终端中通过修改shell的名称来修改shell。比如：sh，bash等等 echo是Bash内建的一个命令，会把它接收到的参数输出到标准输出中。默认它会在输出的后面输出一个新行。  非交互shell Bash shell也可以在脚本中被按照非交互模式运行，当shell不需要人工操作时。交互的行为和非交互的行为都是唯一的：Unix V7 Bourne shell和其他的衍生shell 的一项重要设计原则。因此，任何在命令行中可以执行的命令都可以放到脚本中重复使用。
 下面的步骤创建了一个Hello World脚本：
- 创建一个叫hello-world.sh的文件。   $ touch hello-world.sh   为文件添加执行权限：chmod +x hello-world.sh
+ 创建一个叫hello-world.sh的文件。
+ $ touch hello-world.sh  为文件添加执行权限：chmod +x hello-world.sh
  添加下面的代码：
-   #!/bin/bash echo &amp;quot;Hello World&amp;quot;  第一行：脚本的第一行必须以字符串#!开始，这被叫做 shebang。这个shebang通知操作系统去允许/bin/bash，并且把文件的路径作为参数传递给这个命令。像：/bin/bash hello-world.sh
+#!/bin/bash echo &amp;quot;Hello World&amp;quot;   第一行：脚本的第一行必须以字符串#!开始，这被叫做 shebang。这个shebang通知操作系统去允许/bin/bash，并且把文件的路径作为参数传递给这个命令。像：/bin/bash hello-world.sh
 第二行：使用echo命令把Hello world输出到标准输出。
  在命令行中执行hello-world.sh这个脚本可以使用下面的人一个方式：
- ./hello-world.sh 最常用的方法，也是最推荐的方法。 /bin/bash hello-world.sh bash hello-world.</description>
+ ./hello-world.sh 最常用的方法，也是最推荐的方法。 /bin/bash hello-world.sh bash hello-world.sh 这里假设/bin在你的$PATH列表内 sh hello-world.sh   当真正在产品环境使用时，你要忽略掉.</description>
     </item>
     
     <item>

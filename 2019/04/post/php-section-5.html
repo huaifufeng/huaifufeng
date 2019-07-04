@@ -214,49 +214,39 @@
 <p><code>echo</code>和<code>print</code>是语言结构，不是函数。这意味着它们不想函数那样需要括号在参数的周围(当然也可以在参数的周围添加括号，这样也没有什么问题)。这将会输出变量、常量和表达式的字符串格式。不能用来输出数组和对象。</p>
 
 <ul>
-<li>把字符串<code>joel</code>赋值给变量<code>$name</code></li>
+<li><p>把字符串<code>joel</code>赋值给变量<code>$name</code></p>
+
+<pre><code>$name = 'joel';
+</code></pre></li>
+
+<li><p>使用<code>echo</code>和<code>print</code>来输出<code>$name</code>的值</p>
+
+<pre><code>echo $name; #&gt; Joel 
+print $name; #&gt; Joel
+</code></pre></li>
+
+<li><p>括号不是要求的，但是可以使用</p>
+
+<pre><code>echo($name); #&gt; Joel 
+print($name); #&gt; Joel
+</code></pre></li>
+
+<li><p>使用多个参数(只有<code>echo</code>支持)</p>
+
+<pre><code>echo $name, &quot;Smith&quot;; #&gt; JoelSmith
+echo($name, &quot; &quot;, &quot;Smith&quot;); #&gt; Joel Smith
+</code></pre></li>
+
+<li><p><code>print</code>不像<code>echo</code>，是一个返回值为1的表达式，可以被用在更多的地方</p>
+
+<pre><code>print(&quot;hey&quot;) &amp;&amp; print(&quot; &quot;) &amp;&amp; print(&quot;you&quot;); #&gt; you11
+</code></pre></li>
+
+<li><p>下面和上面是相等的</p>
+
+<pre><code>print (&quot;hey&quot; &amp;&amp; (print (&quot; &quot; &amp;&amp; print &quot;you&quot;))); #&gt; you11
+</code></pre></li>
 </ul>
-
-<pre><code>  $name = 'joel';
-</code></pre>
-
-<ul>
-<li>使用<code>echo</code>和<code>print</code>来输出<code>$name</code>的值</li>
-</ul>
-
-<pre><code>  echo $name; #&gt; Joel 
-  print $name; #&gt; Joel
-</code></pre>
-
-<ul>
-<li>括号不是要求的，但是可以使用</li>
-</ul>
-
-<pre><code>   echo($name); #&gt; Joel 
-   print($name); #&gt; Joel
-</code></pre>
-
-<ul>
-<li>使用多个参数(只有<code>echo</code>支持)</li>
-</ul>
-
-<pre><code>  echo $name, &quot;Smith&quot;; #&gt; JoelSmith
-  echo($name, &quot; &quot;, &quot;Smith&quot;); #&gt; Joel Smith
-</code></pre>
-
-<ul>
-<li><code>print</code>不像<code>echo</code>，是一个返回值为1的表达式，可以被用在更多的地方</li>
-</ul>
-
-<pre><code>  print(&quot;hey&quot;) &amp;&amp; print(&quot; &quot;) &amp;&amp; print(&quot;you&quot;); #&gt; you11
-</code></pre>
-
-<ul>
-<li>下面和上面是相等的</li>
-</ul>
-
-<pre><code>  print (&quot;hey&quot; &amp;&amp; (print (&quot; &quot; &amp;&amp; print &quot;you&quot;))); #&gt; you11
-</code></pre>
 
 <h4 id="echo的简短写法">echo的简短写法</h4>
 
@@ -588,12 +578,12 @@ foreach ($products as $key =&gt; $value) {
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/php-section-6.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（六）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/php-section-4.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/php-section-4.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（四）">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-6.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（六）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

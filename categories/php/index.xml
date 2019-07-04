@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Php on 怀府小阁</title>
+    <title>PHP on 怀府小阁</title>
     <link>http://blog.huaifufeng.com/categories/php/</link>
-    <description>Recent content in Php on 怀府小阁</description>
+    <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 30 May 2019 00:00:00 +0000</lastBuildDate>
@@ -221,7 +221,8 @@ if (!function_exists(&#39;mb_internal_encoding&#39;)) { function mb_internal_enc
       
       <guid>http://blog.huaifufeng.com/2019/05/post/php-section-48.html</guid>
       <description>UTF-8 1. 输入  你需要在任何地方存储和使用接收到的UTF-8格式的数据。PHP的mb_check_encoding可以完成这个功能，但是你要始终如一的使用。确实没有办法解决这个问题，因为恶意客户机可以用他们想要的任何编码提交数据。  $string = $_REQUEST[&#39;user_comment&#39;]; if (!mb_check_encoding($string, &#39;UTF-8&#39;)) { $actualEncoding = mb_detect_encoding($string); $string = mb_convert_encoding($string, &#39;UTF-8&#39;, $actualEncoding); }   如果你使用的事HTML5，你可以忽略这一点。你希望浏览器发送给你的所有数据都是UTF-8的。唯一有效的方式是在你的&amp;lt;form&amp;gt;标签中添加accept-charset属性。  &amp;lt;form action=&amp;quot;somepage.php&amp;quot; accept-charset=&amp;quot;UTF-8&amp;quot;&amp;gt;  2. 输出  如果你的系统传输文本到另外的系统，需要通知他们编码方式。在PHP中，你可以在php.ini中设置default_charset选项，或者手动设置Content-Type这个MIME头。这是针对现代浏览器的首选项：  header(&#39;Content-Type: text/html; charset=utf-8&#39;);   如果你不能设置响应头的话，你需要在HTML文件中修改HTML的源信息。
- HTML5  &amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;   老版本的HTML  &amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=utf-8&amp;quot; /&amp;gt;   3. 数据存储和访问  这个主题主要讨论UTF-8以及在数据库中使用的注意点。如果你想要了解更多的PHP中使用数据库的信息，查看更多的信息。
+ HTML5  &amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;   老版本的HTML
+&amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=utf-8&amp;quot; /&amp;gt;   3. 数据存储和访问  这个主题主要讨论UTF-8以及在数据库中使用的注意点。如果你想要了解更多的PHP中使用数据库的信息，查看更多的信息。
  存储数据到数据库
  指定你数据库中所有的表和文本列为utf8mb4，这使得MySQL可以物理地存储和检索以UTF-8编码的值。   如果指定了utf8mb4_*排序集（没有显示指定字符集），MySQL将会隐式的使用utf8mb4编码
   老版本的MySQL(早于5.</description>
@@ -813,7 +814,13 @@ cosnt TAU = PI * 2; define(&amp;quot;EARTH_IS_ROUND&amp;quot;, !EARTH_IS_FLAT); 
       <guid>http://blog.huaifufeng.com/2019/04/post/php-section-5.html</guid>
       <description>输出变量的值 创建一个动态的、交互的PHP项目，输出变量和他们的值是有用的。PHP提供了多个变量值的输出方法。这里主要介绍标准的输出方法和这些方法的使用场景。
 echo和print echo和print是语言结构，不是函数。这意味着它们不想函数那样需要括号在参数的周围(当然也可以在参数的周围添加括号，这样也没有什么问题)。这将会输出变量、常量和表达式的字符串格式。不能用来输出数组和对象。
- 把字符串joel赋值给变量$name   $name = &#39;joel&#39;;   使用echo和print来输出$name的值   echo $name; #&amp;gt; Joel print $name; #&amp;gt; Joel   括号不是要求的，但是可以使用   echo($name); #&amp;gt; Joel print($name); #&amp;gt; Joel   使用多个参数(只有echo支持)   echo $name, &amp;quot;Smith&amp;quot;; #&amp;gt; JoelSmith echo($name, &amp;quot; &amp;quot;, &amp;quot;Smith&amp;quot;); #&amp;gt; Joel Smith   print不像echo，是一个返回值为1的表达式，可以被用在更多的地方   print(&amp;quot;hey&amp;quot;) &amp;amp;&amp;amp; print(&amp;quot; &amp;quot;) &amp;amp;&amp;amp; print(&amp;quot;you&amp;quot;); #&amp;gt; you11   下面和上面是相等的   print (&amp;quot;hey&amp;quot; &amp;amp;&amp;amp; (print (&amp;quot; &amp;quot; &amp;amp;&amp;amp; print &amp;quot;you&amp;quot;))); #&amp;gt; you11  echo的简短写法 在outside of PHP tags，echo的简短写法是有效的。使用&amp;lt;?</description>
+ 把字符串joel赋值给变量$name
+$name = &#39;joel&#39;;  使用echo和print来输出$name的值
+echo $name; #&amp;gt; Joel print $name; #&amp;gt; Joel  括号不是要求的，但是可以使用
+echo($name); #&amp;gt; Joel print($name); #&amp;gt; Joel  使用多个参数(只有echo支持)
+echo $name, &amp;quot;Smith&amp;quot;; #&amp;gt; JoelSmith echo($name, &amp;quot; &amp;quot;, &amp;quot;Smith&amp;quot;); #&amp;gt; Joel Smith  print不像echo，是一个返回值为1的表达式，可以被用在更多的地方
+print(&amp;quot;hey&amp;quot;) &amp;amp;&amp;amp; print(&amp;quot; &amp;quot;) &amp;amp;&amp;amp; print(&amp;quot;you&amp;quot;); #&amp;gt; you11  下面和上面是相等的
+print (&amp;quot;hey&amp;quot; &amp;amp;&amp;amp; (print (&amp;quot; &amp;quot; &amp;amp;&amp;amp; print &amp;quot;you&amp;quot;))); #&amp;gt; you11   echo的简短写法 在outside of PHP tags，echo的简短写法是有效的。使用&amp;lt;?</description>
     </item>
     
     <item>

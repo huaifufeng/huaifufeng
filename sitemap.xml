@@ -3,8 +3,44 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://blog.huaifufeng.com/categories/</loc>
+    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/mysql/</loc>
+    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/06/post/mysql-section-69.html</loc>
     <lastmod>2019-06-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/post/</loc>
+    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/</loc>
+    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/</loc>
+    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -120,6 +156,18 @@
   <url>
     <loc>http://blog.huaifufeng.com/2019/05/post/mysql-section-46.html</loc>
     <lastmod>2019-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/categories/php/</loc>
+    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/php/</loc>
+    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -468,6 +516,18 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/categories/java/</loc>
+    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/java/</loc>
+    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/java-section-1.html</loc>
     <lastmod>2019-04-25T00:00:00+00:00</lastmod>
   </url>
@@ -638,6 +698,12 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/tags/bash/</loc>
+    <lastmod>2019-04-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/bash-section-66.html</loc>
     <lastmod>2019-04-03T00:00:00+00:00</lastmod>
   </url>
@@ -645,6 +711,12 @@
   <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/php-section-3.html</loc>
     <lastmod>2019-04-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2019-04-03T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -705,6 +777,12 @@
   <url>
     <loc>http://blog.huaifufeng.com/2019/03/post/bash-section-56.html</loc>
     <lastmod>2019-03-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/git/</loc>
+    <lastmod>2019-03-24T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -1293,34 +1371,8 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/2019/01/post/go-learn-2.html</loc>
+    <loc>http://blog.huaifufeng.com/categories/go/</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</loc>
-    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/2019/01/post/hugo-first.html</loc>
-    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/tags/bash/</loc>
-    <lastmod>2019-04-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/tags/git/</loc>
-    <lastmod>2019-03-24T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -1331,9 +1383,13 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/categories/go/</loc>
+    <loc>http://blog.huaifufeng.com/2019/01/post/go-learn-2.html</loc>
     <lastmod>2019-01-12T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/01/post/go-learn-1.html</loc>
+    <lastmod>2019-01-06T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -1343,63 +1399,8 @@
   </url>
   
   <url>
-    <loc>http://blog.huaifufeng.com/tags/java/</loc>
-    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/categories/java/</loc>
-    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/tags/mysql/</loc>
-    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/tags/php/</loc>
-    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/categories/php/</loc>
-    <lastmod>2019-05-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/post/</loc>
-    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/tags/</loc>
-    <lastmod>2019-04-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/categories/%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2019-04-03T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/</loc>
-    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-    <lastmod>2019-06-22T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <loc>http://blog.huaifufeng.com/2019/01/post/hugo-first.html</loc>
+    <lastmod>2019-01-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>

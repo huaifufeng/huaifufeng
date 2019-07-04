@@ -293,25 +293,21 @@
 <p>这个<code>start</code>和<code>end</code>可以是下面的值：</p>
 
 <ul>
-<li>行号</li>
+<li><p>行号</p>
+
+<pre><code>git blame -L 10, 30
+</code></pre></li>
+
+<li><p>/regex/ 正则表达式</p>
+
+<pre><code>git blame -L /void main/, git blame -L 46,/void foo/
+</code></pre></li>
+
+<li><p>+offset,-offset(只能用于end)</p>
+
+<pre><code>git blame -L 108,+30, git blame -L 125,-15
+</code></pre></li>
 </ul>
-
-<pre><code>  git blame -L 10, 30
-</code></pre>
-
-<ul>
-<li>/regex/ 正则表达式</li>
-</ul>
-
-<pre><code>  git blame -L /void main/, git blame -L 46,/void foo/
-</code></pre>
-
-<ul>
-<li>+offset,-offset(只能用于end)</li>
-</ul>
-
-<pre><code>  git blame -L 108,+30, git blame -L 125,-15
-</code></pre>
 
 <p>多个行区间是可以的，并且行区间有重叠也是支持的：</p>
 
@@ -356,12 +352,12 @@ git blame -L 1,10 test.c
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/03/post/bash-section-37.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十七)">&larr; Previous Post</a>
+                      <a href="/2019/03/post/bash-section-36.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十六)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/03/post/bash-section-36.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十六)">Next Post &rarr;</a>
+                      <a href="/2019/03/post/bash-section-37.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三十七)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

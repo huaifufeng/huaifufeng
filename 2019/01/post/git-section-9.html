@@ -268,19 +268,17 @@ $ git commit -m &quot;update submodules&quot;
 <p>假设下面的子模块的操作：</p>
 
 <ul>
-<li>可以使用一个分支来提交：</li>
+<li><p>可以使用一个分支来提交：</p>
+
+<pre><code>$ git submodule -b abranch -- /url/of/submodule/repo
+</code></pre></li>
+
+<li><p>或者配置子模块跟踪某个分支：</p>
+
+<pre><code>$ cd /path/to/parent/repo
+$ git config -f .gitmodules submodule.asubmodule.branch abranch
+</code></pre></li>
 </ul>
-
-<pre><code>  $ git submodule -b abranch -- /url/of/submodule/repo
-</code></pre>
-
-<ul>
-<li>或者配置子模块跟踪某个分支：</li>
-</ul>
-
-<pre><code>  $ cd /path/to/parent/repo
-  $ git config -f .gitmodules submodule.asubmodule.branch abranch
-</code></pre>
 
 <h3 id="移动子模块">移动子模块</h3>
 
@@ -361,12 +359,12 @@ $ git rm the_submodule
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/01/post/bash-section-4.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四)">&larr; Previous Post</a>
+                      <a href="/2019/01/post/bash-section-3.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/01/post/bash-section-3.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(三)">Next Post &rarr;</a>
+                      <a href="/2019/01/post/bash-section-4.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(四)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -209,23 +209,21 @@
 <p>有两种方法来创建Git别名：</p>
 
 <ul>
-<li>编辑<code>~/.gitconfig</code>文件：</li>
+<li><p>编辑<code>~/.gitconfig</code>文件：</p>
+
+<pre><code>[alias]
+ci = commit 
+st = status 
+co = checkout
+</code></pre></li>
+
+<li><p>使用命令行：</p>
+
+<pre><code>git config --global alias.ci &quot;commit&quot; 
+git config --global alias.st &quot;status&quot; 
+git config --global alias.co &quot;checkout&quot;
+</code></pre></li>
 </ul>
-
-<pre><code>  [alias]
-  ci = commit 
-  st = status 
-  co = checkout
-</code></pre>
-
-<ul>
-<li>使用命令行：</li>
-</ul>
-
-<pre><code>  git config --global alias.ci &quot;commit&quot; 
-  git config --global alias.st &quot;status&quot; 
-  git config --global alias.co &quot;checkout&quot;
-</code></pre>
 
 <p>在别名创建之后：</p>
 
@@ -410,12 +408,12 @@ doc/
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-6.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六)">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-5.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-5.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(五)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-6.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(六)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

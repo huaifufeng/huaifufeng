@@ -230,16 +230,16 @@ Hello, John Doe
 </blockquote>
 
 <ol>
-<li>在函数中，<code>$@</code>引用所有的参数：</li>
-</ol>
+<li><p>在函数中，<code>$@</code>引用所有的参数：</p>
 
-<pre><code>   #!/bin/bash
-   foo() {
-   	echo &quot;$@&quot;
-   }
+<pre><code>#!/bin/bash
+foo() {
+	echo &quot;$@&quot;
+}
    
-   foo 1 2 3 # output =&gt; 1 2 3
-</code></pre>
+foo 1 2 3 # output =&gt; 1 2 3
+</code></pre></li>
+</ol>
 
 <blockquote>
 <p><strong>注意：</strong>你应该像这里展示的一样，在<code>$@</code>周围使用双引号。</p>
@@ -252,28 +252,26 @@ Hello, John Doe
 </code></pre>
 
 <ol>
-<li>想要使用默认值的话，用<code>${1:-default_val}</code>的格式：</li>
-</ol>
+<li><p>想要使用默认值的话，用<code>${1:-default_val}</code>的格式：</p>
 
-<pre><code>   #!/bin/bash
-   foo() {
-   	local val=${1:-25}
-       echo &quot;$val&quot;
-   }
+<pre><code>#!/bin/bash
+foo() {
+	local val=${1:-25}
+   echo &quot;$val&quot;
+}
    
-    foo # output =&gt; 25 
-    foo 30 # output =&gt; 30
-</code></pre>
+foo # output =&gt; 25 
+foo 30 # output =&gt; 30
+</code></pre></li>
 
-<ol>
-<li>要求使用一个变量，使用<code>${var:?error message}</code>这种格式：</li>
+<li><p>要求使用一个变量，使用<code>${var:?error message}</code>这种格式：</p>
+
+<pre><code>foo() {
+	local val=${1:?Must provide an argument} 
+	echo &quot;$val&quot;
+}
+</code></pre></li>
 </ol>
-
-<pre><code>   foo() {
-   	local val=${1:?Must provide an argument} 
-   	echo &quot;$val&quot;
-   }
-</code></pre>
 
 <h3 id="简单函数">简单函数</h3>
 
@@ -455,12 +453,12 @@ ssh graucho
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/git-section-20.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十）">&larr; Previous Post</a>
+                      <a href="/2019/02/post/git-section-19.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十九）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/git-section-19.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（十九）">Next Post &rarr;</a>
+                      <a href="/2019/02/post/git-section-20.html" data-toggle="tooltip" data-placement="top" title="Git专业笔记（二十）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

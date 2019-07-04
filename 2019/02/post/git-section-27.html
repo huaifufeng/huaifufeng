@@ -223,32 +223,26 @@
 <h3 id="反向端口子树更新">反向端口子树更新</h3>
 
 <ol>
-<li>指定在超级项目中进行的要进行反向移植的提交：</li>
+<li><p>指定在超级项目中进行的要进行反向移植的提交：</p>
+
+<pre><code>git commit -am &quot;new changes to be backported&quot;
+</code></pre></li>
+
+<li><p>签出要合并的新分支，设置为跟踪子树存储库</p>
+
+<pre><code>git checkout -b backport plugin/master
+</code></pre></li>
+
+<li><p>Cherry-pick backports</p>
+
+<pre><code>git cherry-pick -x --strategy=subtree master
+</code></pre></li>
+
+<li><p>推送修改到远端的plugin</p>
+
+<pre><code>git push plugin backport:master
+</code></pre></li>
 </ol>
-
-<pre><code>   git commit -am &quot;new changes to be backported&quot;
-</code></pre>
-
-<ol>
-<li>签出要合并的新分支，设置为跟踪子树存储库</li>
-</ol>
-
-<pre><code>   git checkout -b backport plugin/master
-</code></pre>
-
-<ol>
-<li>Cherry-pick backports</li>
-</ol>
-
-<pre><code>   git cherry-pick -x --strategy=subtree master
-</code></pre>
-
-<ol>
-<li>推送修改到远端的plugin</li>
-</ol>
-
-<pre><code>   git push plugin backport:master
-</code></pre>
 
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
@@ -259,12 +253,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/02/post/bash-section-22.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十二)">&larr; Previous Post</a>
+                      <a href="/2019/02/post/bash-section-21.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十一)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/02/post/bash-section-21.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十一)">Next Post &rarr;</a>
+                      <a href="/2019/02/post/bash-section-22.html" data-toggle="tooltip" data-placement="top" title="Bash专业笔记(二十二)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
