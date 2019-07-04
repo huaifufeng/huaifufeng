@@ -6,10 +6,24 @@
     <description>Recent content in Php on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 29 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 30 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（六十）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-60.html</link>
+      <pubDate>Thu, 30 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-60.html</guid>
+      <description>SQLite3 1. SQLite3快速开始指导 这是一个使用SQLite3相关API的一个完整例子。目的是帮助你可以很快的开始并运行真实的例子。你也可以获取一个指导的可执行PHP文件。
+创建/打开数据库
+首先让我们创建一个新的数据库。只有在文件不存在的情况下创建，然后打开准备读取/写入。文件的扩展名由你自己觉得，但是.sqlite是非常常见的，并且不需要解释说明的。
+$db = new SQLite3(&#39;analytics.sqlite&#39;, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);  创建表
+$db-&amp;gt;query(&#39;CREATE TABLE IF NOT EXISTS &amp;quot;visits&amp;quot; ( &amp;quot;id&amp;quot; INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, &amp;quot;user_id&amp;quot; INTEGER, &amp;quot;url&amp;quot; VARCHAR, &amp;quot;time&amp;quot; DATETIME )&#39;);  插入示例
+参考：PHP® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（五十九）</title>
