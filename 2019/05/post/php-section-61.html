@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="集群">
+    <meta name="description" content="使用MongoDB">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(四十七)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（六十一）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/05/post/mysql-section-47.html">
+    <link rel="canonical" href="/2019/05/post/php-section-61.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,12 +145,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(四十七)</h1>
+                    <h1>PHP专业笔记（六十一）</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Friday, May 31, 2019
                         
@@ -182,9 +182,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#集群">集群</a>
+<li><a href="#使用mongodb">使用MongoDB</a>
 <ul>
-<li><a href="#1-消除歧义">1. 消除歧义</a></li>
+<li><a href="#1-连接mongodb">1. 连接MongoDB</a></li>
+<li><a href="#2-获取多个文档-find">2. 获取多个文档 - find()</a></li>
+<li><a href="#3-获取一个文档-findone">3. 获取一个文档 - findOne()</a></li>
+<li><a href="#4-插入一个文档">4. 插入一个文档</a></li>
+<li><a href="#5-更新一个文档">5. 更新一个文档</a></li>
+<li><a href="#6-删除一个文档">6. 删除一个文档</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -192,22 +197,88 @@
         		
         		
 
-<h2 id="集群">集群</h2>
+<h2 id="使用mongodb">使用MongoDB</h2>
 
-<h3 id="1-消除歧义">1. 消除歧义</h3>
+<h3 id="1-连接mongodb">1. 连接MongoDB</h3>
 
-<p>&ldquo;MySQL集群&rdquo;消除歧义：</p>
+<p>创建一个MongoDB连接，之后你可以在这个连接查询数据：</p>
 
-<ul>
-<li>NDB集群：一种专用，主要是内存中引擎。没有广泛使用</li>
-<li>Galera集群又叫Percona XtraDB集群又叫PXC又叫带有Galera的MariaDB：一个非常好的MySQL高可用性解决方案;它超越了Replication</li>
-</ul>
+<pre><code class="language-php">$manager = new \MongoDB\Driver\Manager('mongodb://localhost:27017');
+</code></pre>
 
-<p>查看单独的&rdquo;集群&rdquo;相关的页面。</p>
+<p>在下面的例子中，你可以知道怎么在连接对象上面怎么进行查询。</p>
 
-<p>对于&rdquo;聚簇索引&rdquo;，查看主键相关。</p>
+<p>这个扩展将会自动的关闭连接，所有不是必须手动关闭的。</p>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<h3 id="2-获取多个文档-find">2. 获取多个文档 - find()</h3>
+
+<p>搜索多个名称为<code>Mike</code>的用户的例子：</p>
+
+<pre><code class="language-php">$filter = ['name' =&gt; 'Mike'];
+$query = new \MongoDB\Driver\Query($filter);
+
+$cursor = $manger-&gt;executeQuery('database_name.collection_name', $query);
+foreach ($cursor as $doc) {
+    var_dump($doc);
+}
+</code></pre>
+
+<h3 id="3-获取一个文档-findone">3. 获取一个文档 - findOne()</h3>
+
+<p>获取指定id对应的一个用户的信息的例子，你可以使用：</p>
+
+<pre><code class="language-php">$options = ['limit' =&gt; 1];
+$filter = ['_id' =&gt; new \MongoDB\BSON\ObjectID('578ff7c3648c940e008b457a')];
+$query = new \MongoDB\Driver\Query($filter, $options);
+
+$cursor = $manager-&gt;executeQuery('database_name.collection_name', $query);
+$cursorArray = $cursor-&gt;toArray();
+if(isset($cursorArray[0])) {
+    var_dump($cursorArray[0]);
+}
+</code></pre>
+
+<h3 id="4-插入一个文档">4. 插入一个文档</h3>
+
+<p>添加一个文档的例子：</p>
+
+<pre><code class="language-php">$document = [
+    'name' =&gt; 'John',
+    'active' =&gt; true,
+    'info' =&gt; ['genre' =&gt; 'male', 'age' =&gt; 30]
+];
+$bulk = new \MongoDB\Driver\BulkWrite;
+$_id1 = $bulk-&gt;insert($document);
+$result = $manager-&gt;executeBulkWrite('database_name.collection_name', $bulk);
+</code></pre>
+
+<h3 id="5-更新一个文档">5. 更新一个文档</h3>
+
+<p>更新所有名字为&rdquo;John&rdquo;的例子：</p>
+
+<pre><code class="language-php">$filter = ['name' =&gt; 'John'];
+$document = ['name' =&gt; 'Mike'];
+
+$bulk = new \MongoDB\Driver\BulkWrite; 
+$bulk-&gt;update(
+    $filter, $document, ['multi' =&gt; true]
+);
+$result = $manager-&gt;executeBulkWrite('database_name.collection_name', $bulk);
+</code></pre>
+
+<h3 id="6-删除一个文档">6. 删除一个文档</h3>
+
+<p>删除所有名字为&rdquo;Peter&rdquo;的文档的例子：</p>
+
+<pre><code>$bulk = new \MongoDB\Driver\BulkWrite; 
+
+$filter = ['name' =&gt; 'Peter'];
+$bulk-&gt;delete($filter);
+
+$result = $manager-&gt;executeBulkWrite('database_name.collection_name', $bulk);
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -216,12 +287,12 @@
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/05/post/php-section-61.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（六十一）">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-46.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十六)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-48.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十八)">Next Post &rarr;</a>
+                      <a href="/2019/05/post/mysql-section-47.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十七)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

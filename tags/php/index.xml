@@ -6,10 +6,24 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 30 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 31 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（六十一）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/php-section-61.html</link>
+      <pubDate>Fri, 31 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/php-section-61.html</guid>
+      <description>使用MongoDB 1. 连接MongoDB 创建一个MongoDB连接，之后你可以在这个连接查询数据：
+$manager = new \MongoDB\Driver\Manager(&#39;mongodb://localhost:27017&#39;);  在下面的例子中，你可以知道怎么在连接对象上面怎么进行查询。
+这个扩展将会自动的关闭连接，所有不是必须手动关闭的。
+2. 获取多个文档 - find() 搜索多个名称为Mike的用户的例子：
+$filter = [&#39;name&#39; =&amp;gt; &#39;Mike&#39;]; $query = new \MongoDB\Driver\Query($filter); $cursor = $manger-&amp;gt;executeQuery(&#39;database_name.collection_name&#39;, $query); foreach ($cursor as $doc) { var_dump($doc); }  3. 获取一个文档 - findOne() 获取指定id对应的一个用户的信息的例子，你可以使用：
+$options = [&#39;limit&#39; =&amp;gt; 1]; $filter = [&#39;_id&#39; =&amp;gt; new \MongoDB\BSON\ObjectID(&#39;578ff7c3648c940e008b457a&#39;)]; $query = new \MongoDB\Driver\Query($filter, $options); $cursor = $manager-&amp;gt;executeQuery(&#39;database_name.collection_name&#39;, $query); $cursorArray = $cursor-&amp;gt;toArray(); if(isset($cursorArray[0])) { var_dump($cursorArray[0]); }  4.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（六十）</title>
