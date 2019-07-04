@@ -185,6 +185,8 @@
 <li><a href="#sqlite3">SQLite3</a>
 <ul>
 <li><a href="#1-sqlite3快速开始指导">1. SQLite3快速开始指导</a></li>
+<li><a href="#2-查询数据库">2. 查询数据库</a></li>
+<li><a href="#3-只获取一个结果">3. 只获取一个结果</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -216,6 +218,114 @@
 </code></pre>
 
 <p><strong>插入示例</strong></p>
+
+<p>建议将相关的查询放入到一个事务中（包含在关键字<code>BEGIN</code>和<code>COMMIT</code>中），即使你不关心原子性。如果你没有这么做的话，SQLite会把每个查询都放到一个事务中，这将会极大降低每个事情的执行。如果你是刚开始使用SQLite，你会很奇怪<a href="http://stackoverflow.com/a/3852082/388994">为什么INSERT语句这么慢</a>。</p>
+
+<pre><code class="language-sqlite">$db-&gt;exec('BEGIN');
+$db-&gt;query('INSERT INTO &quot;visits&quot; (&quot;user_id&quot;, &quot;url&quot;, &quot;time&quot;)
+    VALUES (42, &quot;/test&quot;, &quot;2017-01-14 10:11:23&quot;)');
+$db-&gt;query('INSERT INTO &quot;visits&quot; (&quot;user_id&quot;, &quot;url&quot;, &quot;time&quot;)
+    VALUES (42, &quot;/test2&quot;, &quot;2017-01-14 10:11:44&quot;)');
+$db-&gt;exec('COMMIT');
+</code></pre>
+
+<p>使用preapre语句插入潜在风险的数据。你可以使用命名参数完成这个功能：</p>
+
+<pre><code class="language-sqlite">$statement = $db-&gt;prepare('INSERT INTO &quot;visits&quot; (&quot;user_id&quot;, &quot;url&quot;, &quot;time&quot;)
+    VALUES (:uid, :url, :time)');
+$statement-&gt;bindValue(':uid', 1337);
+$statement-&gt;bindValue(':url', '/test');
+$statement-&gt;bindValue(':time', date('Y-m-d H:i:s'));
+$statement-&gt;execute(); //you can reuse the statement with different values
+</code></pre>
+
+<p><strong>获取数据</strong></p>
+
+<p>让我们获取今天id=42的用户的房屋信息。我们将会再次使用prepare语句，但是这里我们使用数字参数，这将会是更加简洁的：</p>
+
+<pre><code class="language-php">$statement = $db-&gt;prepare('SELECT * FROM &quot;visits&quot; WHERE &quot;user_id&quot;=? AND &quot;time&quot;&gt;=?');
+$statement-&gt;bindValue(1, 42);
+$statement-&gt;bindValue(2, '2017-01-14');
+$result = $statement-&gt;execute();
+
+echo &quot;Get the 1st row as an associative array:\n&quot;; 
+print_r($result-&gt;fetchArray(SQLITE3_ASSOC));
+echo &quot;\n&quot;;
+
+echo &quot;Get the next row as a numeric array:\n&quot;; 
+print_r($result-&gt;fetchArray(SQLITE3_NUM)); 
+echo &quot;\n&quot;;
+</code></pre>
+
+<blockquote>
+<p>注意：如果没有更多的行了，fetchArray()将会返回<code>false</code>。你在<code>while</code>循环中这个会很有用处。</p>
+</blockquote>
+
+<p>释放内存 - 这个并不会自动执行，当你的脚本执行的时候。</p>
+
+<pre><code class="language-php">$result-&gt;finalize();
+</code></pre>
+
+<p><strong>简写</strong></p>
+
+<p>这里是获取当行数据并存入一个管理数组的简单方式。第二个参数表示我们想要所有的搜索的列。</p>
+
+<p>注意，简单例子不支持参数绑定，但是你可以使用专用字符串来代替。一直把值放到一个单引号里面。双引号用于表名和列名（就像MySQL中的倒引号）</p>
+
+<pre><code class="language-sqlite">$query = 'SELECT * FROM &quot;visits&quot; WHERE &quot;url&quot; = \'' .
+    SQLite3::escapeString('/test') .
+    '\' ORDER BY &quot;id&quot; DESC LIMIT 1';
+$lastVisit = $db-&gt;querySingle($query, true);
+echo &quot;Last visit of '/test':\n&quot;; 
+print_r($lastVisit);
+echo &quot;\n&quot;;
+</code></pre>
+
+<p>另外的只获取一个值得有效简写：</p>
+
+<pre><code class="language-php">$userCount = $db-&gt;querySingle('SELECT COUNT(DISTINCT &quot;user_id&quot;) FROM &quot;visits&quot;');
+echo &quot;User count: $userCount\n&quot;; 
+echo &quot;\n&quot;;
+</code></pre>
+
+<p><strong>清理</strong></p>
+
+<p>最后，关闭数据库。虽然在脚本结束之后，这个会自动执行。</p>
+
+<pre><code class="language-php">$db-&gt;close();
+</code></pre>
+
+<h3 id="2-查询数据库">2. 查询数据库</h3>
+
+<pre><code class="language-php">&lt;?php
+//从服务器数据库文件创建sqlite对象
+$database = new SQLite3('mysqlitedb.db'); 
+
+//查询这个数据库
+$results = $database-&gt;query('SELECT bar FROM foo');
+
+//循环所有的结果
+while ($row = $results-&gt;fetchArray()) {
+    var_dump($row);
+}
+?&gt;
+</code></pre>
+
+<p>也可以查看<a href="http://stackoverflow.com/documentation/sql/topics">http://stackoverflow.com/documentation/sql/topics</a></p>
+
+<h3 id="3-只获取一个结果">3. 只获取一个结果</h3>
+
+<p>除了使用<code>LIMIT</code>语句，你可以使用SQLite3的函数<code>querySingle</code>来获取单独的行，或者第一列。</p>
+
+<pre><code class="language-php">&lt;?php
+$database = new SQLite3('mysqlitedb.db');
+
+//没有第二个参数，查询只返回第一个结果的第一个列，和列的类型一样
+$database-&gt;querySingle('SELECT column1Name FROM table WHERE column2Name=1');
+
+//添加第二个参数，获取结果集的第一列的数组
+$database-&gt;querySingle('SELECT column1Name, column2Name FROM user WHERE column3Name=1', true); ?&gt;
+</code></pre>
 
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 

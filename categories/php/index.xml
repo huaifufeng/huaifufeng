@@ -22,7 +22,9 @@
 首先让我们创建一个新的数据库。只有在文件不存在的情况下创建，然后打开准备读取/写入。文件的扩展名由你自己觉得，但是.sqlite是非常常见的，并且不需要解释说明的。
 $db = new SQLite3(&#39;analytics.sqlite&#39;, SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);  创建表
 $db-&amp;gt;query(&#39;CREATE TABLE IF NOT EXISTS &amp;quot;visits&amp;quot; ( &amp;quot;id&amp;quot; INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, &amp;quot;user_id&amp;quot; INTEGER, &amp;quot;url&amp;quot; VARCHAR, &amp;quot;time&amp;quot; DATETIME )&#39;);  插入示例
-参考：PHP® Notes for Professionals book</description>
+建议将相关的查询放入到一个事务中（包含在关键字BEGIN和COMMIT中），即使你不关心原子性。如果你没有这么做的话，SQLite会把每个查询都放到一个事务中，这将会极大降低每个事情的执行。如果你是刚开始使用SQLite，你会很奇怪为什么INSERT语句这么慢。
+$db-&amp;gt;exec(&#39;BEGIN&#39;); $db-&amp;gt;query(&#39;INSERT INTO &amp;quot;visits&amp;quot; (&amp;quot;user_id&amp;quot;, &amp;quot;url&amp;quot;, &amp;quot;time&amp;quot;) VALUES (42, &amp;quot;/test&amp;quot;, &amp;quot;2017-01-14 10:11:23&amp;quot;)&#39;); $db-&amp;gt;query(&#39;INSERT INTO &amp;quot;visits&amp;quot; (&amp;quot;user_id&amp;quot;, &amp;quot;url&amp;quot;, &amp;quot;time&amp;quot;) VALUES (42, &amp;quot;/test2&amp;quot;, &amp;quot;2017-01-14 10:11:44&amp;quot;)&#39;); $db-&amp;gt;exec(&#39;COMMIT&#39;);  使用preapre语句插入潜在风险的数据。你可以使用命名参数完成这个功能：
+$statement = $db-&amp;gt;prepare(&#39;INSERT INTO &amp;quot;visits&amp;quot; (&amp;quot;user_id&amp;quot;, &amp;quot;url&amp;quot;, &amp;quot;time&amp;quot;) VALUES (:uid, :url, :time)&#39;); $statement-&amp;gt;bindValue(&#39;:uid&#39;, 1337); $statement-&amp;gt;bindValue(&#39;:url&#39;, &#39;/test&#39;); $statement-&amp;gt;bindValue(&#39;:time&#39;, date(&#39;Y-m-d H:i:s&#39;)); $statement-&amp;gt;execute(); //you can reuse the statement with different values  获取数据</description>
     </item>
     
     <item>
