@@ -6,10 +6,43 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 31 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 02 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（六十三）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-63.html</link>
+      <pubDate>Sun, 02 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-63.html</guid>
+      <description>PHP中使用Redis 1. 连接redis实例 假设一个redis服务运行在localhost的默认端口，下面的命令可以连接到这个Redis服务器：
+$redis = new Redis(); $redis-&amp;gt;connect(&#39;127.0.0.1&#39;, 6379);  2. Ubuntu上安装Redis 在Ubuntu上面安装PHP，首先安装Redis服务器：
+sudo apt install redis-server  然后安装PHP的Redis模块：
+sudo apt install php-redis  然后重启Apache服务器
+sudo service apache2 restart  3. 在PHP中执行Redis命令 PHP的Redis模块有和Redis CLI客户端一样的命令，所以可以直接使用。
+语法像下面一样：
+//创建两个新key $redis-&amp;gt;set(&#39;mykey-1&#39;, 123); $redis-&amp;gt;set(&#39;mykey-2&#39;, &#39;abcd&#39;); //获取一个key (prints &#39;123&#39;) var_dump($redis-&amp;gt;get(&#39;mykey-1&#39;)); // 获取所有以&#39;my-key-&#39;开头的key // (prints &#39;123&#39;, &#39;abcd&#39;) var_dump($redis-&amp;gt;keys(&#39;mykey-*&#39;));  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（六十二）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-62.html</link>
+      <pubDate>Sat, 01 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-62.html</guid>
+      <description>mongo-php 1. MongoDB和PHP之间的信息 要求
+ MongoDB服务器运行的端口通常是27017。（在命令终端中输入mongod来运行mongodb 服务器） PHP已经安装了，不管是cgi还是fpm，同时安装了MongoDB的扩展（PHP默认没有安装MongoDB扩展） Composer仓库(mongodb/mongodb)(在项目的根目录运行`php composer.phar require &amp;ldquo;mongodb/mongodb=^1.0.0&amp;rdquo;来安装MongoDB库)。  如果上面的要求都正常了，你就可以开始了：
+ 检查PHP安装
+ 如果不确定PHP是否安装，可以在命令终端中运行&amp;rdquo;php -v&amp;rdquo;，将会返回类似下面的内容：
+PHP 7.1.23 (cli) (built: Nov 7 2018 18:20:35) ( NTS ) Copyright (c) 1997-2018 The PHP Group Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies   检查MongoDB安装
+ 检查MongoDB安装通过运行mongo —version，这将会返回MongoDB shell version: 3.2.6
+ 检查Composer安装
+ 检查Composer安装通过运行php composer.phar —version将会返回Composer version 1.2-dev (3d09c17b489cd29a0c0b3b11e731987e7097797d) 2016-08-30 16:12:39
+使用php连接MongoDB
+&amp;lt;?php //Composer的自动加载类 require &amp;quot;vendor/autoload.php&amp;quot;; //建立连接 try { $mongo = new MongoDB\Client(&amp;quot;mongodb://username:password@localhost:27017&amp;quot;); print_r($mongo-&amp;gt;lisDatabases()); } catch (\Exception $e) { echo $e-&amp;gt;getMessage(); } //使用默认配置 try { $mongo = new MongoDB\Client(&amp;quot;mongodb://localhost:27017&amp;quot;); print_r($mongo-&amp;gt;listDatabases()); } catch (\Exception $e) { echo $e-&amp;gt;getMessage(); }  上面的代码使用包含在/vendor/autoload.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（六十一）</title>

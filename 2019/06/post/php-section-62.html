@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="主从复制">
+    <meta name="description" content="mongo-php">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(四十九)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（六十二）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-49.html">
+    <link rel="canonical" href="/2019/06/post/php-section-62.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(四十九)</h1>
+                    <h1>PHP专业笔记（六十二）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Sunday, June 2, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, June 1, 2019
                         
                     </span>
                 </div>
@@ -182,10 +182,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#复制">复制</a>
+<li><a href="#mongo-php">mongo-php</a>
 <ul>
-<li><a href="#1-主从配置复制">1. 主从配置复制</a></li>
-<li><a href="#2-复制错误">2. 复制错误</a></li>
+<li><a href="#1-mongodb和php之间的信息">1. MongoDB和PHP之间的信息</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -193,174 +192,109 @@
         		
         		
 
-<h2 id="复制">复制</h2>
+<h2 id="mongo-php">mongo-php</h2>
 
-<h3 id="1-主从配置复制">1. 主从配置复制</h3>
+<h3 id="1-mongodb和php之间的信息">1. MongoDB和PHP之间的信息</h3>
 
-<p>假设有两个MySQL服务器进行复制配置，其中一台是主库，一台是从库。</p>
+<p><strong>要求</strong></p>
 
-<p>我们需要配置主库记录在其上执行的每个操作的日志。我们需要配置从库监控主库的日志，一旦主库做了一些修改操作，从库就需要执行同样的操作。</p>
+<ul>
+<li>MongoDB服务器运行的端口通常是27017。（在命令终端中输入<code>mongod</code>来运行mongodb 服务器）</li>
+<li>PHP已经安装了，不管是cgi还是fpm，同时安装了MongoDB的扩展（PHP默认没有安装MongoDB扩展）</li>
+<li>Composer仓库(mongodb/mongodb)(在项目的根目录运行`php composer.phar require &ldquo;mongodb/mongodb=^1.0.0&rdquo;来安装MongoDB库)。</li>
+</ul>
 
-<p><strong>主库配置</strong></p>
+<p>如果上面的要求都正常了，你就可以开始了：</p>
 
-<p>首先，我们需要为主库设置一个用户。这个用户用来给从库建立到主库的连接使用。</p>
+<blockquote>
+<p>检查PHP安装</p>
+</blockquote>
 
-<pre><code class="language-mysql">CREATE USER 'user_name'@'%' IDENTIFIED BY 'user_password'; 
-GRANT REPLICATION SLAVE ON *.* TO 'user_name'@'%';
-FLUSH PRIVILEGES;
+<p>如果不确定PHP是否安装，可以在命令终端中运行&rdquo;php -v&rdquo;，将会返回类似下面的内容：</p>
+
+<pre><code>PHP 7.1.23 (cli) (built: Nov  7 2018 18:20:35) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies
 </code></pre>
 
-<p>修改上面代码中的<code>user_name</code>和<code>user_password</code>为你自己的用户名和密码。</p>
+<blockquote>
+<p>检查MongoDB安装</p>
+</blockquote>
 
-<p>现在<code>my.inf</code>(Linux中是my.cnf)需要被修改了，在<code>[mysqld]</code>部分添加下面的内容：</p>
+<p>检查MongoDB安装通过运行<code>mongo —version</code>，这将会返回<code>MongoDB shell version: 3.2.6</code></p>
 
-<pre><code class="language-mysql">server-id = 1
-log-bin = mysql-bin.log
-binlog-do-db = your_database
+<blockquote>
+<p>检查Composer安装</p>
+</blockquote>
+
+<p>检查Composer安装通过运行<code>php composer.phar —version</code>将会返回<code>Composer version 1.2-dev (3d09c17b489cd29a0c0b3b11e731987e7097797d) 2016-08-30 16:12:39</code></p>
+
+<p><strong>使用php连接MongoDB</strong></p>
+
+<pre><code class="language-php">&lt;?php
+  
+//Composer的自动加载类
+require &quot;vendor/autoload.php&quot;;
+
+//建立连接
+try {
+    $mongo = new MongoDB\Client(&quot;mongodb://username:password@localhost:27017&quot;);
+    print_r($mongo-&gt;lisDatabases());
+} catch (\Exception $e) {
+    echo $e-&gt;getMessage();
+}
+
+//使用默认配置
+try {
+    $mongo = new MongoDB\Client(&quot;mongodb://localhost:27017&quot;);
+    print_r($mongo-&gt;listDatabases());
+} catch (\Exception $e) {
+    echo $e-&gt;getMessage();
+}
 </code></pre>
 
-<p>第一行用来为这个MySQL服务器设置一个ID。</p>
+<p><em>上面的代码使用包含在<code>/vendor/autoload.php</code>的MongoDB的composer仓库(<code>mongodb/mongodb</code>)来连接一个运行在端口<code>27017</code>的MongoDB服务器。如果一切正常，然后会列出一个数组。如果连接MongoDB出现了一个异常，将会打印异常信息。</em></p>
 
-<p>第二行告诉MySQL开始在指定的log文件中开始写入日志。在Linux机器上，这个需要被设置为<code>log-bin=/home/mysql/logs/mysql-bin.log</code>。如果您正在已使用复制的MySQL服务器中启动复制，请确保此目录中没有复制日志。</p>
+<p><strong>创建（插入）MongoDB</strong></p>
 
-<p>第三行用来说明我们想要哪个数据库去写日志。你需要替换其中的<code>your_database</code>为你自己的数据库名。</p>
-
-<p>确保<code>ship-networking</code>没有开启，重启主库。</p>
-
-<p><strong>从库配置</strong></p>
-
-<p>从库的<code>my.inf</code>也需要修改。需要在<code>[mysqld]</code>部分包含下面的内容：</p>
-
-<pre><code class="language-mysql">server-id = 2
-master-host = master_ip_address
-master-connect-retry = 60
-
-master-user = user_name
-master-password = user_password
-replicate-do-db = your_database
-
-relay-log = slave-relay.log
-relay-log-index = slave-relay-log.index
+<pre><code class="language-php">&lt;?php
+ //MongoDB 使用collection而不是Tables在SQL中.
+ //使用$mongo查询数据库和collection
+ //NOTE: 如果数据库和collection不存在，MongoDB将会自动创建
+  $collection = $mongo-&gt;demo-&gt;beers;
+ //使用$collection我们可以在MongoDB中插入一个文档，这里文档和行是相似的
+  $result = $collection-&gt;insertOne( [ 'name' =&gt; 'Hinterland', 'brewery' =&gt; 'BrewDog' ] );
+ //每个插入的文档都有唯一的值.
+  echo &quot;Inserted with Object ID '{$result-&gt;getInsertedId()}'&quot;; ?&gt;
 </code></pre>
 
-<p>第一行用来设置这个从库的ID，这个ID应该是唯一的。</p>
+<p><em>在上面的例子中，我们使用前面创建的<code>$mongo</code>对象。MongoDB使用JSON格式的数据，所以我们在PHP中使用数组插入到MongoDB中。这个转换过程或相反的过程在MongoDB库中进行。MongoDB中的每个文档都有一个唯一的id，叫做<code>_id</code>，在插入的时候，我们可以使用<code>$result-&gt;getInsertedId()</code>来获取这个id。</em></p>
 
-<p>第二行是主库服务器的IP地址。修改这个值为你的主库服务器的IP。</p>
+<p><strong>MongoDB读取（查找）</strong></p>
 
-<p>第三行以秒为单位，限制重试的次数。</p>
-
-<p>下面两行是从库的用户名和密码，用来连接主库。</p>
-
-<p>下面的一行设置要复制的数据库的名称。</p>
-
-<p>最后两行设置<code>relay-log</code>和<code>relay-log-index</code>两个文件的名称。</p>
-
-<p>确保<code>skip-networking</code>没有开启，重启从库服务器。</p>
-
-<p><strong>向从库复制数据</strong></p>
-
-<p>如果数据不断的被添加到主库，没有就必须要限制主库数据库的访问，避免任何东西添加到主库中。这可以通过在主库中执行下面的命令实现：</p>
-
-<pre><code class="language-mysql">FLUSH TABLES WITH READ LOCK;
+<pre><code class="language-php">&lt;?php
+ //use find() method to query for records, where parameter will be array containing key value pair we need to find.
+ $result = $collection-&gt;find( [ 'name' =&gt; 'Hinterland', 'brewery' =&gt; 'BrewDog' ] );
+// all the data(result) returned as array
+// use for each to filter the required keys
+foreach ($result as $entry) {
+    echo $entry['_id'], ': ', $entry['name'], &quot;\n&quot;; 
+}
+?&gt;
 </code></pre>
 
-<p>如果没有数据添加到主库，你可以省略掉上面的操作。</p>
+<p><strong>删除</strong></p>
 
-<p>我们使用<code>mysqldump</code>来备份主库上面的数据。</p>
-
-<pre><code class="language-mysql">mysqldump your_database -u root -p &gt; D://Backup/backup.sql;
+<pre><code class="language-php">&lt;?php
+$result = $collection-&gt;drop( [ 'name' =&gt; 'Hinterland'] ); 
+//return 1 if the drop was sucessfull and 0 for failure
+print_r($result-&gt;ok);
+?&gt;
 </code></pre>
 
-<p>根据你的配置修改上面代码中的<code>your_database</code>和备份文件路径。你现在在指定的路径下有<code>backup.sql</code>的文件。如果从库中没有这个数据库，使用下面的命令创建这个数据库：</p>
+<p>MongoDB中$collection更多的方法查看<a href="https://docs.mongodb.com/php-library/current/">手册</a>。</p>
 
-<pre><code class="language-mysql">CREATE DATABASE `your_database`;
-</code></pre>
-
-<p>现在我们需要把备份数据导入到从库中：</p>
-
-<pre><code class="language-mysql">mysql -u root -p your_database &lt;D://Backup/backup.sql
----&gt;修改 `your_database` and 备份文件目录
-</code></pre>
-
-<p><strong>开始复制</strong></p>
-
-<p>要开启复制，我们需要找到主库中的log文件名称和位置。我们在主库执行下面的命令：</p>
-
-<pre><code>SHOW MASTER STATUS;
-</code></pre>
-
-<p>将会获得下面的输出内容：</p>
-
-<pre><code class="language-mysql">+---------------------+----------+-------------------------------+------------------+
-| File                | Position | Binlog_Do_DB                  | Binlog_Ignore_DB |
-+---------------------+----------+-------------------------------+------------------+
-| mysql-bin.000001    | 130      | your_database                 |                  |
-+---------------------+----------+-------------------------------+------------------+
-</code></pre>
-
-<p>在从库执行下面的命令：</p>
-
-<pre><code class="language-mysql">SLAVE STOP;
-CHANGE MASTER TO MASTER_HOST='master_ip_address', MASTER_USER='user_name', MASTER_PASSWORD='user_password', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=130; 
-SLAVE START;
-</code></pre>
-
-<p>首先我们停止从库。然后我们告诉从库从哪里寻找主库日志文件。对于<code>MASTER_LOG_FILE</code>和<code>MASTER_LOG_POS</code>的值，从我们在主库中执行<code>SHOW MASTER STATUS</code>的结果中查找。</p>
-
-<p>你按照自己的配置修改上面代码中的IP地址，用户名和密码。</p>
-
-<p>从库现在等待中。我们可以在从库中执行下面的命令查看从库的状态：</p>
-
-<pre><code class="language-mysql">SHOW SLAVE STATUS;
-</code></pre>
-
-<p>如果前面你在主库中执行了<code>FLUSH TABLES WITH READ LOCK</code>命令，现在执行下面的命令解锁：</p>
-
-<pre><code class="language-mysql">UNLOCK TABLES;
-</code></pre>
-
-<p>现在主库执行的每个操作都会写入到日志中，从库会监控主库的日志文件。一旦主库日志文件做了修改，从库将会同步修改操作。</p>
-
-<h3 id="2-复制错误">2. 复制错误</h3>
-
-<p>当在slave上运行查询时出现错误时，mysql会自动停止复制以识别问题并进行修复。这主要是因为事件导致了重复的键或找不到行，并且无法更新或删除。虽然不建议这样做，但你也可以跳过这些错误。</p>
-
-<p>要跳过从库中挂起的一个查询，使用下面的语法：</p>
-
-<pre><code class="language-mysql">SET GLOBAL sql_slave_skip_counter = N;
-</code></pre>
-
-<p>这个语句将会跳过主库下N次的操作。这个语句只有在从库线程没有执行的情况下才有效。否则，将会产生一个错误：</p>
-
-<pre><code class="language-mysql">STOP SLAVE;
-SET GLOBAL sql_slave_skip_counter=1; 
-START SLAVE;
-</code></pre>
-
-<p>在一些情况下，这是有用的。如果这个语句是事务中的一部分，这将会更加复杂，跳过产生错误的语句将会导致整个事务被跳过。</p>
-
-<p>如果你想跳过包含相同错误码的更多的查询，并且你确定跳过这些错误不会导致主从不一致的问题，你希望跳过所有这些错误，那么你可以在<code>my.cnf</code>中添加下面一行。</p>
-
-<p>假设你想要跳过重复错误：</p>
-
-<pre><code class="language-mysql">1062 | Error 'Duplicate entry 'xyz' for key 1' on query
-</code></pre>
-
-<p>就在<code>my.cnf</code>中添加下面一行：</p>
-
-<pre><code class="language-mysql">slave-skip-errors = 1062
-</code></pre>
-
-<p>你可以跳过其他类型或者所有类型的错误，但是需要确保跳过这些错误不会导致主从不一致。下面是语法和例子：</p>
-
-<pre><code class="language-mysql">slave-skip-errors=[err_code1,err_code2,...|all]
-
-slave-skip-errors=1062,1053 
-slave-skip-errors=all 
-slave-skip-errors=ddl_exist_errors
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -369,12 +303,12 @@ slave-skip-errors=ddl_exist_errors
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/php-section-63.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（六十三）">&larr; Previous Post</a>
+                      <a href="/2019/05/post/mysql-section-47.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十七)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/mysql-section-50.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十)">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-48.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(四十八)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
