@@ -6,10 +6,24 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 02 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 03 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（六十四）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-64.html</link>
+      <pubDate>Mon, 03 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-64.html</guid>
+      <description>使用PHP发送邮件    参数 想去     string $to 收件人地址   string $subject 邮件主题行   string $message 邮件主题   string $additional_headers 可选：邮件头信息   string $adaitional_parameters 可选：在命令行中传递给配置的邮件发送应用程序的参数    1. 发送邮件 - 基础，更详细和完整的例子 一个典型的邮件包含下面3个主要部分：
+ 一个收件人（是一个邮件地址） 一个主题 一个信息主题  在PHP中发送邮件很简单，只需要调用mail()方法。mail()接受5个参数，但是只有前3个是发送一个邮件所需要的（尽管像下面显示的这四个参数是常用的）。前开始的3个参数：
+ 收件人的地址(字符串) 邮件的主题(字符串) 邮件的主题(字符串)（邮件的内容）  最简单的例子像下面一样：
+mail(&#39;recipient@example.com&#39;, &#39;Email Subject&#39;, &#39;This is the email message body&#39;);  上面的简单例子在有限的环境下（如内部硬编码的报警邮件）是正常工作的。但是通常将放入mail()的内容放到一个变量中，这样让代码更加清晰，便于管理（例如，从表单提交中动态创建邮件内容）。
+例如，mail()接受第四个参数，允许在邮件中发送更多的邮件头。你可以设置下面的头信息：
+ From名称和邮件地址，用户将会看到的 用户回复将会发送到的Rely-To邮件地址 额外的非标准头信息：X-Mailer向收件人说明邮件是通过PHP发送的  $to = &#39;recipient@example.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（六十三）</title>
