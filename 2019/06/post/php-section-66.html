@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="命令行接口CLI">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（六十六）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/php-section-66.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（六十六）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, June 5, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#命令行接口cli">命令行接口CLI</a>
+<ul>
+<li><a href="#1-处理程序选项">1. 处理程序选项</a></li>
+<li><a href="#2-参数处理">2. 参数处理</a></li>
+<li><a href="#3-输入和输出处理">3. 输入和输出处理</a></li>
+<li><a href="#4-返回码">4. 返回码</a></li>
+<li><a href="#5-限制脚本执行命令行">5. 限制脚本执行命令行</a></li>
+<li><a href="#6-命令行执行的不同">6. 命令行执行的不同</a></li>
+<li><a href="#7-运行你的脚本">7. 运行你的脚本</a></li>
+<li><a href="#8-getopt-的边缘示例">8. getopt()的边缘示例</a></li>
+<li><a href="#9-运行内建的web服务器">9. 运行内建的web服务器</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="命令行接口cli">命令行接口CLI</h2>
+
+<h3 id="1-处理程序选项">1. 处理程序选项</h3>
+
+<p>程序选项可以使用<code>getopt()</code>方法处理。执行和POSIX的<code>getopt</code>命令有相似的语法，并且提供GNU类型长选项支持。</p>
+
+<pre><code class="language-php">#!/usr/bin/php
+
+// a single colon indicates the option takes a value 
+// a double colon indicates the value may be omitted 
+$shortopts = &quot;hf:v::d&quot;;
+// GNU-style long options are not required
+$longopts = [&quot;help&quot;, &quot;version&quot;];
+$opts = getopt($shortopts, $longopts);
+
+// options without values are assigned a value of boolean false 
+// you must check their existence, not their truthiness
+if (isset($opts[&quot;h&quot;]) || isset($opts[&quot;help&quot;])) {
+    fprintf(STDERR, &quot;Here is some help!\n&quot;);
+    exit; 
+}
+
+// long options are called with two hyphens: &quot;--version&quot;
+if (isset($opts[&quot;version&quot;])) {
+    fprintf(STDERR, &quot;%s Version 223.45&quot; . PHP_EOL, $argv[0]); 
+    exit;
+}
+
+// options with values can be called like &quot;-f foo&quot;, &quot;-ffoo&quot;, or &quot;-f=foo&quot;
+$file = &quot;&quot;;
+if (isset($opts[&quot;f&quot;])) {
+    $file = $opts[&quot;f&quot;];
+}
+if (empty($file)) {
+    fprintf(STDERR, &quot;We wanted a file!&quot; . PHP_EOL);
+    exit(1);
+}
+fprintf(STDOUT, &quot;File is %s&quot; . PHP_EOL, $file);
+
+// options with optional values must be called like &quot;-v5&quot; or &quot;-v=5&quot;
+$verbosity = 0;
+if (isset($opts[&quot;v&quot;])) {
+    $verbosity = ($opts[&quot;v&quot;] === false) ? 1 : (int)$opts[&quot;v&quot;]; 
+}
+fprintf(STDOUT, &quot;Verbosity is %d&quot; . PHP_EOL, $verbosity);
+
+// options called multiple times are passed as an array
+$debug = 0;
+if (isset($opts[&quot;d&quot;])) {
+    $debug = is_array($opts[&quot;d&quot;]) ? count($opts[&quot;d&quot;]) : 1;
+}
+fprintf(STDOUT, &quot;Debug is %d&quot; . PHP_EOL, $debug);
+// there is no automated way for getopt to handle unexpected options
+</code></pre>
+
+<p>这个脚本可以使用下面的命令测试：</p>
+
+<pre><code>./test.php --help
+./test.php --version
+./test.php -f foo -ddd
+./test.php -v -d -ffoo
+./test.php -v5 -f=foo
+./test.php -f foo -v 5 -d
+</code></pre>
+
+<p>注意上面的最后的方法不会正常执行，因为<code>-v 5</code>是无效的：</p>
+
+<blockquote>
+<p>Note: As of PHP 5.3.0, getopt is OS independent, working also on Windows.</p>
+</blockquote>
+
+<h3 id="2-参数处理">2. 参数处理</h3>
+
+<p>参数以类似于大多数C语言的样式传递给程序。<code>$argc</code>是一个包含程序名的参数数量的整数。<code>$argv</code>是一个包含程序参数的数组。<code>$argv</code>的第一个值是程序的名称。</p>
+
+<pre><code class="language-php">#!/usr/bin/php
+printf(&quot;You called the program %s with %d arguments\n&quot;, $argv[0], $argc - 1); unset($argv[0]);
+foreach ($argv as $i =&gt; $arg) {
+    printf(&quot;Argument %d is %s\n&quot;, $i, $arg);
+}
+</code></pre>
+
+<p>使用命令<code>php example.php foo bar</code>调用上面的程序（其中example.php包含上面的代码）将会有下面的输出：</p>
+
+<blockquote>
+<p>You called the program example.php with 2 arguments</p>
+
+<p>Argument 1 is foo
+Argument 2 is bar</p>
+</blockquote>
+
+<p>注意<code>$argc</code>和<code>$argv</code>是全局变量，不是超全局变量。如果他们需要在方法中使用的话，需要使用<code>global</code>导入到本地作用域中。</p>
+
+<p>此示例显示使用<code>&quot;&quot;</code>或<code>\</code>等转义符时如何对参数进行分组。</p>
+
+<p><strong>例子脚本</strong></p>
+
+<pre><code class="language-php">var_dump($argc, $argv);
+</code></pre>
+
+<p><strong>命令行：</strong></p>
+
+<pre><code class="language-php">$ php argc.argv.php --this-is-an-option three\ words\ together or &quot;in one quote&quot; but\ multiple\spaces\ counted\ as\ one
+int(6)
+array(6) {
+  [0]=&gt;
+  string(13) &quot;argc.argv.php&quot;
+  [1]=&gt;
+  string(19) &quot;--this-is-an-option&quot;
+  [2]=&gt;
+  string(20) &quot;three words together&quot;
+  [3]=&gt;
+  string(2) &quot;or&quot;
+  [4]=&gt;
+  string(12) &quot;in one quote&quot;
+  [5]=&gt;
+  string(34) &quot;but multiple spaces counted as one&quot;
+}
+</code></pre>
+
+<p>如果PHP脚本使用<code>-r</code>运行：</p>
+
+<pre><code class="language-php">$ php -r 'var_dump($argv);'
+array(1) {
+    [0]=&gt;
+    string(1) &quot;-&quot;
+}
+</code></pre>
+
+<p>或者使用管道传递到php：</p>
+
+<pre><code>$ echo '&lt;?php var_dump($argv);' | php
+array(1) {
+    [0]=&gt;
+    string(1) &quot;-&quot;
+}
+</code></pre>
+
+<h3 id="3-输入和输出处理">3. 输入和输出处理</h3>
+
+<p>当在CLI中运行的时候，<strong>STDIN</strong>，<strong>STDOUT</strong>，<strong>STDERR</strong>是预先定义的。这些常亮是文件处理的，等同于下面的代码：</p>
+
+<pre><code class="language-php">STDIN = fopen(&quot;php://stdin&quot;, &quot;r&quot;);
+STDOUT = fopen(&quot;php://stdout&quot;, &quot;w&quot;);
+STDERR = fopen(&quot;php://stderr&quot;, &quot;w&quot;);
+</code></pre>
+
+<p>这些常亮可以用到任何地方，一个标准的文件处理像下面一样：</p>
+
+<pre><code class="language-php">#!/usr/bin/php
+while ($line = fgets(STDIN)) {
+    $line = strtolower(trim($line));
+    switch ($line) {
+        case &quot;bad&quot;:
+            fprintf(STDERR, &quot;%s is bad&quot; . PHP_EOL, $line); break;
+        case &quot;quit&quot;:
+            exit;
+        default:
+            fprintf(STDOUT, &quot;%s is good&quot; . PHP_EOL, $line); break;
+    }
+}
+</code></pre>
+
+<p>在大多数的环境中，可以使用内建的流地址（<code>php://stdin</code>, <code>php://stdout</code>，和<code>php://stderr</code>）来代替文件名：</p>
+
+<pre><code class="language-php">file_put_contents('php://stdout', 'This is stdout content');
+file_put_contents('php://stderr', 'This is stderr content');
+// Open handle and write multiple times.
+$stdout = fopen('php://stdout', 'w');
+fwrite($stdout, 'Hello world from stdout' . PHP_EOL);
+fwrite($stdout, 'Hello again');
+fclose($stdout);
+</code></pre>
+
+<p>另外，你可以使用<a href="http://php.net/manual/en/function.readline.php">readline()</a>来输入，使用<strong>echo</strong>或<strong>print</strong>或其他字符串输出函数来输出：</p>
+
+<pre><code class="language-php"> $name = readline(&quot;Please enter your name:&quot;); 
+ print &quot;Hello, {$name}.&quot;;
+</code></pre>
+
+<h3 id="4-返回码">4. 返回码</h3>
+
+<p><code>exit</code>结构可以用来返回一个返回码到执行环境：</p>
+
+<pre><code class="language-shell">#!/usr/bin/php
+if ($argv[1] === &quot;bad&quot;) {
+    exit(1);
+} else {
+    exit(0);
+}
+</code></pre>
+
+<p>如果没有提供的话，默认会返回0，也就是说<code>exit</code>等价于<code>exit(0)</code>。因为<code>exit</code>不是方法，所以当没有值得时候，括号是可以省略的。</p>
+
+<p>返回码应该介于<code>0~254</code>之间（255是PHP预留的）。安装惯例，返回状态码0告诉调用程序PHP脚本执行成功。使用非0返回码告诉调用程序发生了特定的错误。</p>
+
+<h3 id="5-限制脚本执行命令行">5. 限制脚本执行命令行</h3>
+
+<p>函数<code>php_sapi_name()</code>和常量<code>PHP_SAPI</code>都返回PHP正在使用的接口类型。他们可以用来限制命令行脚本的执行，通过检查返回值是不是&rdquo;cli&rdquo;。</p>
+
+<pre><code class="language-php">if (php_sapi_name() === 'cli') {
+    echo &quot;Executed from command line\n&quot;;
+} else {
+    echo &quot;Executed from web browser\n&quot;;
+}
+</code></pre>
+
+<p><a href="https://api.drupal.org/api/drupal/includes!bootstrap.inc/function/drupal_is_cli/7.x">drupal_is_cli()</a>就是一个用来检查脚本是不是在命令行执行的方法：</p>
+
+<pre><code class="language-php">function drupal_is_cli() {
+    return (!isset($_SERVER['SERVER_SOFTWARE']) &amp;&amp; (php_sapi_name() == 'cli' ||
+(is_numeric($_SERVER['argc']) &amp;&amp; $_SERVER['argc'] &gt; 0)));
+}
+</code></pre>
+
+<h3 id="6-命令行执行的不同">6. 命令行执行的不同</h3>
+
+<p>当运行在CLI时，PHP会有和Web运行不同的地方。应该记住这些不同，特别是同样的脚本可能运行在不同的环境下。</p>
+
+<ul>
+<li><strong>没有目录修改</strong>。当在web服务器运行脚本时，当前工作目录一直是脚本的目录。代码<code>require(&quot;./stuff.inc&quot;)</code>假设文件在和脚本相同的目录。在命令行中，工作目录是你调用脚本时的目录。在命令行中调用的脚本，应该一直使用绝对路径。（注意：魔术常量<code>__DIR__</code>和<code>__FILE__</code>是正常工作的，返回脚本的路径）</li>
+<li><strong>没有输出缓存</strong>。<code>php.ini</code>分别将<code>output_buffering</code>和<code>implict_flush</code>设置为<code>false</code>和<code>true</code>。缓存仍然可用，但是要显示开启，否则输出还是会实时显示。</li>
+<li><strong>没有时间限制</strong>。<code>php.ini</code>将<code>max_execution_time</code>设置为0，所以没有执行时间限制。</li>
+<li><strong>没有HTML错误</strong>。如果在<code>php.ini</code>中启用了<code>html_errors</code>，将会在命令行中忽略。</li>
+<li><strong>加载不同的php.ini</strong>。当你在命令行的时候，可以使用不同的<code>php.ini</code>文件。你可以通过<code>php —ini</code>来获取使用的ini文件地址。</li>
+</ul>
+
+<h3 id="7-运行你的脚本">7. 运行你的脚本</h3>
+
+<p>不管是在Unix/Linux，或者Windows，一个脚本可以向一个参数一样传递给PHP执行，后面跟上脚本的选项和参数：</p>
+
+<pre><code class="language-php">php ~/example.php foo bar
+c:\php\php.exe c:\example.php foo bar
+</code></pre>
+
+<p>这里传入的<code>foo</code>和<code>bar</code>就是传递给<code>example.php</code>的参数。</p>
+
+<p>在Unix/Linux中，更推荐的运行脚本的方法是Shebang(例如：#!/usr/bin/env php)，作为文件的第一行，设置文件的可执行标识。假设脚本在当前的路径，可以直接调用：</p>
+
+<pre><code class="language-shell"> example.php foo bar
+</code></pre>
+
+<p>使用<code>/usr/bin/env php</code>可以让php执行器可以在PATH中找到。按照PHP按装方式的不同，可能不在相同的路径（像<code>/usr/bin/php</code>或<code>/usr/local/bin/php</code>），所以<code>/usr/bin/env</code>是更加常用的。</p>
+
+<p>在Windows中，通过将PHP的目录和你执行脚本的目录添加到PATH中，编辑PATHEXT来使用PATH来解析<code>.php</code>，这可以获得相同的结果。  另一种方式是在你PHP脚本的目录添加<code>example.dat</code>或<code>example.cmd</code>，并在脚本中添加下面这行：</p>
+
+<pre><code class="language-shell">c:\php\php.exe &quot;%~dp0example.php&quot; %*
+</code></pre>
+
+<p>或者，你把PHP目录添加到PATH中，更简单的写法：</p>
+
+<pre><code>php &quot;%~dp0example.php&quot; %*
+</code></pre>
+
+<h3 id="8-getopt-的边缘示例">8. getopt()的边缘示例</h3>
+
+<p>下面的示例显示了当用户输入不标准的时候，<code>getopt</code>的行为：</p>
+
+<p><strong>getopt.php</strong></p>
+
+<pre><code class="language-php">var_dump(
+    getopt(&quot;ab:c::&quot;, [&quot;delta&quot;, &quot;epsilon:&quot;, &quot;zeta::&quot;])
+);
+</code></pre>
+
+<p><strong>shell命令</strong></p>
+
+<pre><code class="language-php">$ php getopt.php -a -a -bbeta -b beta -cgamma --delta --epsilon --zeta --zeta=f  -c gamma
+array(6) {
+  [&quot;a&quot;]=&gt;
+  array(2) {
+      [0]=&gt; bool(false) 
+      [1]=&gt; bool(false)
+  }
+  [&quot;b&quot;]=&gt;
+  array(2) {
+    [0]=&gt;
+    string(4) &quot;beta&quot;
+    [1]=&gt;
+    string(4) &quot;beta&quot;
+  }
+  [&quot;c&quot;]=&gt;
+  array(2) {
+    [0]=&gt;
+    string(5) &quot;gamma&quot; 
+    [1]=&gt;
+    bool(false)
+}
+  [&quot;delta&quot;]=&gt; bool(false) 
+  [&quot;epsilon&quot;]=&gt; string(6) &quot;--zeta&quot; 
+  [&quot;zeta&quot;]=&gt; string(1) &quot;f&quot;
+}
+</code></pre>
+
+<p>从这个例子中，可以看出来：</p>
+
+<ul>
+<li>如果启用了个别选项（无冒号），则其布尔值始终为false。</li>
+<li>如果一个选项重复，<code>getopt</code>输出中的相应值将成为一个数组。</li>
+<li>必需参数选项（一个冒号）接受一个空格或无空格（如可选参数选项）作为分隔符</li>
+<li>在一个参数不能映射到任何选项之后，后面的选项也不会映射。</li>
+</ul>
+
+<h3 id="9-运行内建的web服务器">9. 运行内建的web服务器</h3>
+
+<p>在PHP5.4之后，PHP提供了内建的服务器。这允许开发的时候不需要安装类似nginx或apache这样的http服务器。内建服务器只是为了开发和测试的目的。</p>
+
+<p>可以使用<code>-S</code>选项运行这个服务器。</p>
+
+<p>创建一个包含下面内容的<code>index.php</code>文件。</p>
+
+<pre><code class="language-php"> &lt;?php
+echo &quot;Hello World from built-in PHP server&quot;;
+</code></pre>
+
+<p>运行<code>php -S localhost:8080</code>。</p>
+
+<p>现在，你可以再浏览器中看到这个内容。可以在浏览器中打开<code>http://localhost:8080</code>地址</p>
+
+<p>在终端中，将会输出下面的访问日志内容：</p>
+
+<pre><code>[Mon Aug 15 18:20:19 2016] ::1:52455 [200]: /
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/mysql-section-51.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十一)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/mysql-section-52.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十二)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

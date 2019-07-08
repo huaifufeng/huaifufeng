@@ -6,10 +6,47 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 03 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（六十七）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-67.html</link>
+      <pubDate>Thu, 06 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-67.html</guid>
+      <description>本地化 1. gettext()获取本地字符串 GNUgettext是一个必须包含在PHP的php.ini文件中扩展。
+extension=php_gettext.dll #Windows extension=gettext.so #Linux  gettext实现一个NLS（非语言支持）APi，这被用来国际化你的PHP应用。在PHP中你可以通过设置语言环境，设置翻译表，和在想要翻译的字符串上调用gettext()方法来获取字符串的翻译。
+&amp;lt;?php // Set language to French putenv(&#39;LC_ALL= fr_FR&#39;); setlocale(LC_ALL, &#39;fr_FR&#39;); // Specify location of translation tables for &#39;myPHPApp&#39; domain bindtextdomain(&amp;quot;myPHPApp&amp;quot;, &amp;quot;./locale&amp;quot;); // Select &#39;myPHPApp&#39; domain textdomain(&amp;quot;myPHPApp&amp;quot;);  myPHPApp.po
+#: /Hello_world.php:56 msgid &amp;quot;Hello&amp;quot; msgstr &amp;quot;Bonjour&amp;quot; #: /Hello_world.php:242 msgid &amp;quot;How are you?&amp;quot; msgstr &amp;quot;Comment allez-vous?&amp;quot;  gettext()加载一个给定的post-componed.po，一个.mo文件，它将您的要翻译的字符串映射为如上所述。
+在这一小段设置代码之后，将在以下文件中查找翻译：
+ ./locale/fr_FR/LC_MESSAGES/myPHPApp.mo  每当你调用gettext(&#39;some string&#39;)，如果翻译文件.mo中已经翻译了some string，那么翻译将会被返回。否则，没有翻译的some string将会被返回。
+// Print the translated version of &#39;Welcome to My PHP Application&#39; echo gettext(&amp;quot;Welcome to My PHP Application&amp;quot;); // Or use the alias _() for gettext() echo _(&amp;quot;Have a nice day&amp;quot;);  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（六十六）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-66.html</link>
+      <pubDate>Wed, 05 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-66.html</guid>
+      <description>命令行接口CLI 1. 处理程序选项 程序选项可以使用getopt()方法处理。执行和POSIX的getopt命令有相似的语法，并且提供GNU类型长选项支持。
+#!/usr/bin/php // a single colon indicates the option takes a value // a double colon indicates the value may be omitted $shortopts = &amp;quot;hf:v::d&amp;quot;; // GNU-style long options are not required $longopts = [&amp;quot;help&amp;quot;, &amp;quot;version&amp;quot;]; $opts = getopt($shortopts, $longopts); // options without values are assigned a value of boolean false // you must check their existence, not their truthiness if (isset($opts[&amp;quot;h&amp;quot;]) || isset($opts[&amp;quot;help&amp;quot;])) { fprintf(STDERR, &amp;quot;Here is some help!</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（六十五）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-65.html</link>
+      <pubDate>Tue, 04 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-65.html</guid>
+      <description>SQLSRV 1. 获取错误信息 当一个查询出错的时候，获取驱动指出的造成错误原因的错误信息是非常重要的。语法是:
+sqlsrv_errors([int $errorsOrWarnings]);  这将会返回一个数组：
+   key 描述     SQLSTATE SQL服务器/OBDC驱动的状态   code SQL服务器的错误码   message 错误的描述信息    上面语句的常见用法是：
+$brokenQuery = &amp;quot;SELECT BadColumnName FROM Table_1&amp;quot;; $stmt = sqlsrv_query($conn, $brokenQuery); if ($stmt === false) { if (($errors = sqlsrv_errors()) != null) { foreach ($errors as $error) { echo &amp;quot;SQLSTATE: &amp;quot;.$error[&#39;SQLSTATE&#39;].&amp;quot;&amp;lt;br /&amp;gt;&amp;quot;; echo &amp;quot;code: &amp;quot;.$error[&#39;code&#39;].&amp;quot;&amp;lt;br /&amp;gt;&amp;quot;; echo &amp;quot;message: &amp;quot;.$error[&#39;message&#39;].&amp;quot;&amp;lt;br /&amp;gt;&amp;quot;; } } }  2.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（六十四）</title>
