@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="ERROR 1055：ONLY_FULL_GROUP_BY: 有一些select的字段不在GROUP BY语句中">
+    <meta name="description" content="类型转换">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Java专业笔记（二）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/mysql-section-15.html">
+    <link rel="canonical" href="/2019/04/post/java-section-2.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/java" title="Java">
+                           Java
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(十五)</h1>
+                    <h1>Java专业笔记（二）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, April 29, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, April 26, 2019
                         
                     </span>
                 </div>
@@ -182,12 +182,13 @@
 <ul>
 <li>
 <ul>
-<li><a href="#error-1055">ERROR 1055</a>
+<li><a href="#类型转换">类型转换</a>
 <ul>
-<li><a href="#无用group-by返回不可预测的结果-墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</a></li>
-<li><a href="#无用select-如果修复">无用SELECT * ，如果修复</a></li>
-<li><a href="#any-value">ANY_VALUE()</a></li>
-<li><a href="#使用和误用group-by">使用和误用GROUP BY</a></li>
+<li><a href="#1-数字元素转换">1.  数字元素转换</a></li>
+<li><a href="#2-基础数字提升">2. 基础数字提升</a></li>
+<li><a href="#3-非数字元素转换">3. 非数字元素转换</a></li>
+<li><a href="#4-对象转换">4. 对象转换</a></li>
+<li><a href="#5-使用instanceof测试类是否可以转换">5. 使用instanceof测试类是否可以转换</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,112 +196,103 @@
         		
         		
 
-<h2 id="error-1055">ERROR 1055</h2>
+<h2 id="类型转换">类型转换</h2>
 
-<p>最新版本的MySQL开始为之前的一些查询产生1055的错误。这个主题就是来介绍一下这样的错误。MySQL团队一直在努力让GROUP BY的扩展失效，或者至少让开发人员便于编写这样的查询。</p>
+<h3 id="1-数字元素转换">1.  数字元素转换</h3>
 
-<h3 id="无用group-by返回不可预测的结果-墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</h3>
+<p>数字值可以有两种转换方式。</p>
 
-<pre><code class="language-mysql">SELECT item.item_id, users.category, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP item.item_id
+<p>当原本的类型比目标类型小的时候，*隐式*转换就会发生。</p>
+
+<pre><code class="language-java">//隐式转换
+byte byteVar = 42;
+short shortVar = byteVar;
+int intVar = shortVar;
+long longVar = intVar;
+float floatVar = longVar;
+double doubleVar = floatVar;
 </code></pre>
 
-<p>将会显示 item表的行，并且显示表uses中关联的行数。也会显示uses.category中的值。</p>
+<p>当原本的类型比目标类型大的时候，*显示*转换就必须要使用了。</p>
 
-<p>这个查询在(<code>ONLY_FULL_GROUP_BY</code>标识出现之前)MySQL中可以执行。这里使用了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html">非标准的GROUP BY</a>。</p>
-
-<p>但是这有个问题：如果在JOIN语句的ON条件中匹配到了多个uses记录，那么MySQL将会从这些记录中返回一行的category字段值。哪一条？查询优化器，应用的用户都不能提前知道。准确的说：结果是不可预期的。MySQL将会返回任何想要返回的值。</p>
-
-<p>*不可预期就是随机的*，有一个显著的区别。有人希望每次都有一个随机的选择。因此，如果一个选择的随机的，你可以在调试或测试中观察到这个情况。不可预期的结果是坏的：MySQL每次返回相同的结果，知道不相同了。有时候在新版本的MySQL中会有不同的结果。有时候这是导致问题的增长的表。什么会出问题，什么将会出问题，什么时候出问题你不知道。这叫做墨菲定律。</p>
-
-<p>MySQL团队在努力让开发者更难犯这个错误。新版本的MySQL有一个叫做<code>ONLY_GROUP_BY</code>的<code>sql_mod</code>标签。当这个标识设置了，MySQL将会返回一个1055错误， 拒绝运行这个查询。</p>
-
-<h3 id="无用select-如果修复">无用SELECT * ，如果修复</h3>
-
-<p>有时候有一个像下面这样的查询，在SELECT中使用*：</p>
-
-<pre><code class="language-mysql">SELECT item.*, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id
+<pre><code class="language-java">//显示转换
+double doubleVar = 42.0d;
+float floatVar = (float) doubleVar;
+long longVar = (long)floatVar;
+int intVar = (int)longVar;
+short shortVar = (short)intVar;
+byte byteVar = (byte) shortVar;
 </code></pre>
 
-<p>当设置了<code>ONLY_FULL_GROUP_BY</code>，这样的查询就需要优化了。</p>
+<p>当从浮点数元素（float, double）向整数值转换的时候，这个数字是<strong>向下取整的</strong>。</p>
 
-<p>要做优化的话，需要使用一个带有<code>GROUP BY</code>子句的子查询，让这个子查询返回每个<code>item_id</code>对应的<code>number_of_uses</code>字段。这个子查询很短也很简洁，因为它只需要查询<code>uses</code>表。</p>
+<h3 id="2-基础数字提升">2. 基础数字提升</h3>
 
-<pre><code class="language-mysql">SELECT item_id, COUNT(*) number_of_uses
-FROM uses
-GROUP BY item_id;
+<pre><code class="language-java">static void testNumericPromotion() {
+    char char1 = 1, char2 = 2;
+    short short1 = 1, short2 = 2;
+    int int1 = 1, int2 = 2;
+    float float1 = 1.0f, float2 = 2.0f;
+    
+    //char1 = char1 + char2; //错误：不能从int转换到char
+    //short1 = short1 + short2; //错误：不能从int转换为short
+    int1 = char1 + char2; //char提升为int
+    int1 = short1 + short2; //short提升为int
+    int1 = char1 + short2;  //char和short都提升为int
+    float1 = short1 + float2; //short提升为float
+    int1 = int1 + int2; //int不变
+}
 </code></pre>
 
-<p>然后我们和<code>item</code>表一起使用这个子查询：</p>
+<h3 id="3-非数字元素转换">3. 非数字元素转换</h3>
 
-<pre><code class="language-mysql">SELECT item.*,usecount.number_of_uses
-FROM item
-JOIN (
-    SELECT item_id, COUNT(*) number_of_uses
-    FROM uses
-    GROUP BY item_id
-) usecount ON item_item_id = usecount.item_id;
+<p><code>boolean</code>类型不能转换为其他的基础类型，也不能从其他基础类型转换得来。</p>
+
+<p><code>char</code>类型可以使用Unicode指定的代码点映射转换为任何数字类型，或者从数字类型转换来。一个<code>char</code>在内存中表示为一个无符号16位整数值(2个字节)，所以转换为一个<code>byte</code>（1个字节）的时候会丢掉8位(这对于ASCII字符是安全的)。<code>Character</code>类使用<code>int</code>(4个字节)传输或接受代码点值，但是<code>short</code>(2个字节)也足够存储Unicode的代码点。</p>
+
+<pre><code class="language-java">int badInt = (int) true; //不兼容的类型
+char char1 = (char) 65; //A
+byte byte1 = (byte) 'A'; // 65
+short short1 = (short) 'A'; //65
+int int1 = (int) 'A'; //65
+
+char char2 = (char)8253; //‽
+byte byte2 = (byte) '‽';// 61 将代码点转换为ASCII
+short short2 = (short)'‽'; //8253
+int int2 = (int) '‽'; //8253
 </code></pre>
 
-<p>这允许你使用简单并且正确的<code>GROUP BY</code>的语句，并且允许我们使用<code>*</code>标识符。</p>
+<h3 id="4-对象转换">4. 对象转换</h3>
 
-<p>注意：明智的开发人员在任何情况下避免使用<code>*</code>标识符。通常把所有的列列出来是合适的。</p>
+<p>和基础类型一样，对象转换也分为隐式和显示两类。</p>
 
-<h3 id="any-value">ANY_VALUE()</h3>
+<p>隐式转换只有在元素类型继承或实现了目标类型的情况下发生（转换为超类或接口）。</p>
 
-<pre><code class="language-mysql">SELECT item.item_id, ANY_VALUE(uses.tag) tag, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id;
+<p>显示转换必须发生在原始类型被目标类型继承或实现的情况下（转换到子类）。当被转换的对象不是目标类型的一种（或是目标的子类型）时，这将会产生一个运行时异常（<code>ClassCastException</code>）。</p>
+
+<pre><code class="language-java">Float floatVar = new Float(42.0f);
+Number n = floatVar; //隐式转换(Float实现了Number)
+Float floatVar2 = (Float)n; //显示转换
+Double doubleVar = (Double) n; //抛出异常，对象不是Double类型的
 </code></pre>
 
-<p>显示<code>item</code>表中的行，<code>uses</code>表中关联的行的行数，关联表中的tag的一个值。</p>
+<h3 id="5-使用instanceof测试类是否可以转换">5. 使用instanceof测试类是否可以转换</h3>
 
-<p>你可以任务<a href="http://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_any-value">ANY_VALUE()</a>是一个奇怪的聚合函数。不是返回一个数量，和或者最大值，它通知MySQL在相关组中选择任意一个值。这是一个解决1055错误的方法。</p>
+<p>Java提供了<code>instanceof</code>运算符来测试一个对象是不是某个类型的对象，或者是不是那个类型的子类的对象。这样程序就可以选择强制转换或不强制转换这个对象。</p>
 
-<p>当在生产环境使用<code>ANY_VALUE()</code>时要特别小心。</p>
+<pre><code class="language-java">Object obj = Calendar.getInstance();
+long time = 0;
 
-<p>它实际应该叫做<code>SURPRISE_ME()</code>。它返回GROUP BY分组中一些行的值。但是它返回哪一个是不可预知的。这意味着这完全依赖于MySQL。准确的说，它返回一个不可预期的值。</p>
+if (obj instanceof Calendar) {
+    time = ((Calendar)obj).getTimeInMillis();
+} 
 
-<p>服务器不会选择随机的值，这比那个更坏。每次查询都会返回相同的值，直到不再返回了。当一个表增长或缩小时，或当服务器有多或少的RAM时，或当服务器版本改变时，或当Mars逆行时(无论这意味着什么)。或根本没有原因，它可以改变，也可以不改变。</p>
-
-<p>你已经被警告了。</p>
-
-<h3 id="使用和误用group-by">使用和误用GROUP BY</h3>
-
-<pre><code class="language-mysql">SELECT item.item_id, item.name，COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id;
+if (obj instanceof Date) {
+    time = ((Date)obj).getTime();//这行永远不会执行，因为这不是Date类型。
+}
 </code></pre>
 
-<p>将会显示item表的行，显示uses表中关联的行的函数。这将正常工作的，但是这个不是标准的SQL-92的语法。</p>
-
-<p>为什么不是？因为包含<code>GROUP BY</code>语句的时候，<code>SELECT</code>语句(和<code>ORDER BY</code>语句)中列必须是：</p>
-
-<ol>
-<li>在<code>GROUP BY</code>语句中说明的列</li>
-<li>像<code>COUNT()</code>，<code>MIN()</code>这样的聚合函数</li>
-</ol>
-
-<p>例子中<code>SELECT</code>语句中包含了item.name列，但是这个列不满足这些条件。当SQL模式包含<code>ONLY_FULL_GROUP_BY</code>的时候，MySQL5.6和之前版本将会拒绝执行。</p>
-
-<p>这个例子想要兼容SQL-92语法的话，需要修改<code>GROUP BY</code>语句：</p>
-
-<pre><code class="language-mysql">SELECT item.item_id, item.name, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id, uses.item_id
-GROUP item.item_id, item.name;
-</code></pre>
-
-<p>如果DBMS能够证明它们与组键列之间的功能依赖性，则后面的SQL-99标准允许select语句省略组键中未聚合的列。因为item.name是功能上依赖于item.item_id，最初的例子在SQL-99中是有效的。MySQL增加了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html">功能依赖验证</a>在5.7版本。原本的例子只在<code>ONLY_FULL_GROUP_BY</code>下可以正常工作。</p>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
                 
@@ -309,12 +301,12 @@ GROUP item.item_id, item.name;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/php-section-29.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十九）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/mysql-section-12.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(十二)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/java-section-5.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（五）">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-27.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十七）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

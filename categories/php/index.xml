@@ -6,10 +6,47 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 06 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 09 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（七十）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-70.html</link>
+      <pubDate>Sun, 09 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-70.html</guid>
+      <description>异步编程 1. 生成器的优点 PHP5.5提供了生成器和yield关键字，这允许我们想同步代码一样编写异步代码。
+yield表达式负责将控制结构交还给调用代码，并在这个位置提供恢复点。可以通过yield表达式发送一个值。这个表达式的返回值要么是null，要么是Generator::send()的值。
+function reverse_range($i) { // 仅仅在这个函数中存在yield关键字就使得它成为一个生成器。 do { //$i 在恢复点之间保留着 print yield $i; } while (--$i &amp;gt; 0); } $gen = reverse_range(5); print $gen-&amp;gt;current(); $gen-&amp;gt;send(&amp;quot;injected!&amp;quot;); // send 也会唤起这个生成器 foreach ($gen as $val) { //循环处理迭代器，在每个每个迭代中唤起	echo $val; } // Output: 5injected!4321  协程可以使用这种机制来等待生成器生成Awaitable的yield（通过将自身注册于用于解析的回调）在Awaitables的yield解析的时候执行生成器。
+2. 使用Icicle时间循环 Icicle使用Awaitable和生成器来创建协程。
+require __DIR__ . &#39;/vendor/autoload.php&#39;; use Icicle\Awaitable; use Icicle\Coroutine\Coroutine; use Icicle\Loop; $generator = function (float $time) { try { //设置$start的值为microtime()返回之后大约$time秒 $start = yield Awaitable\resolve(microtime(true))-&amp;gt;delay($time); echo &amp;quot;Sleep time: &amp;quot;, microtime(true) - $start, &amp;quot;\n&amp;quot;; // 在rejected awaitable进入协程之后跑出异常 return yield Awaitable\reject(new Exception(&#39;Rejected awaitable&#39;)); } catch (Throwable $e) { // 获取 awaitable 拒绝的原因 echo &amp;quot;Caught exception: &amp;quot;, $e-&amp;gt;getMessage(), &amp;quot;\n&amp;quot;; } return yield Awaitable\resolve(&#39;Coroutine completed&#39;); }; // 协程休眠1.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（六十九）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-69.html</link>
+      <pubDate>Sat, 08 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-69.html</guid>
+      <description>编码约定 1. PHP标签 你应该使用&amp;lt;?php ?&amp;gt;或&amp;lt;?= ?&amp;gt;这两种标签。其他的方式（特别是 &amp;lt;? ?&amp;gt;）不应该使用，因为它们通常会被系统管理员禁用。
+当文件不会产生输出（整个文件都是PHP代码），需要使用?&amp;gt;来避免无意义的输出，这将会导致客户端的解析出现问题。特别是一些客户端无法识别&amp;lt;!DOCTYPE标签或开启了quirks模式。
+下面是一个简单的PHP例子：
+&amp;lt;?php print &amp;quot;Hello World&amp;quot;;  定义类的例子：
+&amp;lt;?php class Foo { ... }  PHP内嵌到HTML中的例子：
+&amp;lt;ul id=&amp;quot;nav&amp;quot;&amp;gt; &amp;lt;?php foreach ($navItems as $navItem): ?&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;&amp;lt;?= htmlspecialchars($navItem-&amp;gt;url) ?&amp;gt;&amp;quot;&amp;gt; &amp;lt;?= htmlspecialchars($navItem-&amp;gt;label) ?&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;?php endforeach; ?&amp;gt; &amp;lt;/ul&amp;gt;  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（六十八）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-68.html</link>
+      <pubDate>Fri, 07 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-68.html</guid>
+      <description>header操作 1. 设置header 下面是一个设置header的基本操作，用来在点击按钮的时候跳转到新的页面：
+if(isset($_REQUEST[&#39;action&#39;])) { switch($_REQUEST[&#39;action&#39;]){ //Setting the Header based on which button is clicked case &#39;getState&#39;: header(&amp;quot;Location: http://NewPageForState.com/getState.php?search=&amp;quot; . $_POST[&#39;search&#39;]); break; case &#39;getProject&#39;: header(&amp;quot;Location: http://NewPageForProject.com/getProject.php?search=&amp;quot; . $_POST[&#39;search&#39;]); break; } } else { GetSearchTerm(!NULL); } //Forms to enter a State or Project and click search function GetSearchTerm($success) { if (is_null($success)) { echo &amp;quot;&amp;lt;h4&amp;gt;You must enter a state or project number&amp;lt;/h4&amp;gt;&amp;quot;; } echo &amp;quot;&amp;lt;center&amp;gt;&amp;lt;strong&amp;gt;Enter the State to search for&amp;lt;/strong&amp;gt;&amp;lt;/center&amp;gt;&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;&amp;quot;; //Using the $_SERVER[&#39;PHP_SELF&#39;] keeps us on this page till the switch above determines where to go echo &amp;quot;&amp;lt;form action=&#39;&amp;quot; .</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（六十七）</title>

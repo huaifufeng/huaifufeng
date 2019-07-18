@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="ERROR 1055：ONLY_FULL_GROUP_BY: 有一些select的字段不在GROUP BY语句中">
+    <meta name="description" content="异步编程">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（七十）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/mysql-section-15.html">
+    <link rel="canonical" href="/2019/06/post/php-section-70.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(十五)</h1>
+                    <h1>PHP专业笔记（七十）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, April 29, 2019
+                    <span  class="meta">Posted by 怀府风 on Sunday, June 9, 2019
                         
                     </span>
                 </div>
@@ -182,12 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#error-1055">ERROR 1055</a>
+<li><a href="#异步编程">异步编程</a>
 <ul>
-<li><a href="#无用group-by返回不可预测的结果-墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</a></li>
-<li><a href="#无用select-如果修复">无用SELECT * ，如果修复</a></li>
-<li><a href="#any-value">ANY_VALUE()</a></li>
-<li><a href="#使用和误用group-by">使用和误用GROUP BY</a></li>
+<li><a href="#1-生成器的优点">1. 生成器的优点</a></li>
+<li><a href="#2-使用icicle时间循环">2. 使用Icicle时间循环</a></li>
+<li><a href="#3-proc-open-生成非阻塞进程">3. proc_open()生成非阻塞进程</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,112 +194,101 @@
         		
         		
 
-<h2 id="error-1055">ERROR 1055</h2>
+<h2 id="异步编程">异步编程</h2>
 
-<p>最新版本的MySQL开始为之前的一些查询产生1055的错误。这个主题就是来介绍一下这样的错误。MySQL团队一直在努力让GROUP BY的扩展失效，或者至少让开发人员便于编写这样的查询。</p>
+<h3 id="1-生成器的优点">1. 生成器的优点</h3>
 
-<h3 id="无用group-by返回不可预测的结果-墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</h3>
+<p>PHP5.5提供了生成器和yield关键字，这允许我们想同步代码一样编写异步代码。</p>
 
-<pre><code class="language-mysql">SELECT item.item_id, users.category, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP item.item_id
+<p><code>yield</code>表达式负责将控制结构交还给调用代码，并在这个位置提供恢复点。可以通过yield表达式发送一个值。这个表达式的返回值要么是<code>null</code>，要么是<code>Generator::send()</code>的值。</p>
+
+<pre><code class="language-php">function reverse_range($i) {
+    // 仅仅在这个函数中存在yield关键字就使得它成为一个生成器。
+    do {
+        //$i 在恢复点之间保留着
+        print yield $i;
+    } while (--$i &gt; 0);
+}
+$gen = reverse_range(5);
+print $gen-&gt;current();
+$gen-&gt;send(&quot;injected!&quot;); // send 也会唤起这个生成器
+
+foreach ($gen as $val) { //循环处理迭代器，在每个每个迭代中唤起	
+    echo $val;
+}
+// Output: 5injected!4321
 </code></pre>
 
-<p>将会显示 item表的行，并且显示表uses中关联的行数。也会显示uses.category中的值。</p>
+<p>协程可以使用这种机制来等待生成器生成Awaitable的yield（通过将自身注册于用于解析的回调）在Awaitables的yield解析的时候执行生成器。</p>
 
-<p>这个查询在(<code>ONLY_FULL_GROUP_BY</code>标识出现之前)MySQL中可以执行。这里使用了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html">非标准的GROUP BY</a>。</p>
+<h3 id="2-使用icicle时间循环">2. 使用Icicle时间循环</h3>
 
-<p>但是这有个问题：如果在JOIN语句的ON条件中匹配到了多个uses记录，那么MySQL将会从这些记录中返回一行的category字段值。哪一条？查询优化器，应用的用户都不能提前知道。准确的说：结果是不可预期的。MySQL将会返回任何想要返回的值。</p>
+<p><a href="https://github.com/icicleio/icicle">Icicle</a>使用Awaitable和生成器来创建协程。</p>
 
-<p>*不可预期就是随机的*，有一个显著的区别。有人希望每次都有一个随机的选择。因此，如果一个选择的随机的，你可以在调试或测试中观察到这个情况。不可预期的结果是坏的：MySQL每次返回相同的结果，知道不相同了。有时候在新版本的MySQL中会有不同的结果。有时候这是导致问题的增长的表。什么会出问题，什么将会出问题，什么时候出问题你不知道。这叫做墨菲定律。</p>
+<pre><code class="language-php">require __DIR__ . '/vendor/autoload.php';
 
-<p>MySQL团队在努力让开发者更难犯这个错误。新版本的MySQL有一个叫做<code>ONLY_GROUP_BY</code>的<code>sql_mod</code>标签。当这个标识设置了，MySQL将会返回一个1055错误， 拒绝运行这个查询。</p>
+use Icicle\Awaitable;
+use Icicle\Coroutine\Coroutine; use Icicle\Loop;
 
-<h3 id="无用select-如果修复">无用SELECT * ，如果修复</h3>
+$generator = function (float $time) { 
+    try {
+        //设置$start的值为microtime()返回之后大约$time秒
+        $start = yield Awaitable\resolve(microtime(true))-&gt;delay($time); 
+        echo &quot;Sleep time: &quot;, microtime(true) - $start, &quot;\n&quot;;
+      
+        // 在rejected awaitable进入协程之后跑出异常
+        return yield Awaitable\reject(new Exception('Rejected awaitable')); 
+    } catch (Throwable $e) { // 获取 awaitable 拒绝的原因
+        echo &quot;Caught exception: &quot;, $e-&gt;getMessage(), &quot;\n&quot;; 
+    }
+    
+    return yield Awaitable\resolve('Coroutine completed');                                
+};
 
-<p>有时候有一个像下面这样的查询，在SELECT中使用*：</p>
+// 协程休眠1.2秒之后，解析一个字符串
+$coroutine = new Coroutine($generator(1.2)); 
+$coroutine-&gt;done(function (string $data) {
+    echo $data, &quot;\n&quot;; 
+});
 
-<pre><code class="language-mysql">SELECT item.*, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id
+Loop\run();
+
+//输出
+Sleep time: 1.2049908638
+Caught exception: Rejected awaitable
+Coroutine completed
 </code></pre>
 
-<p>当设置了<code>ONLY_FULL_GROUP_BY</code>，这样的查询就需要优化了。</p>
+<h3 id="3-proc-open-生成非阻塞进程">3. proc_open()生成非阻塞进程</h3>
 
-<p>要做优化的话，需要使用一个带有<code>GROUP BY</code>子句的子查询，让这个子查询返回每个<code>item_id</code>对应的<code>number_of_uses</code>字段。这个子查询很短也很简洁，因为它只需要查询<code>uses</code>表。</p>
+<p>除非你安装了<code>pthread</code>扩展，否则PHP不支持并行运行代码。有时可以通过使用<code>proc_open()</code>和<code>stream_set_blocking()</code>并且异步读取其输出来实现这点。</p>
 
-<pre><code class="language-mysql">SELECT item_id, COUNT(*) number_of_uses
-FROM uses
-GROUP BY item_id;
+<p>如果我们把代码拆分到多个进程，我们可以像多个超进程一样运行代码。然后使用<a href="https://www.php.net/manual/zh/function.stream-set-blocking.php">stream_set_blocking()</a>来让每个子进程也不阻塞。这意味着我们可以创建多个子进程，然后在循环中检查他们的输出(简单的就是事件循环)，直到它们都执行完毕。</p>
+
+<p>作为一个例子，我们可以有一个运行一个循环的子进程，在每个迭代中sleep100-1000ms之间的随机时间（注意：对于一个子进程所有的延迟时间是一样的。）</p>
+
+<pre><code class="language-php">&lt;?php
+//subprocess.php
+$name = $argv[1];
+$delay = rand(1, 100) * 100;
+printf(&quot;$name delay: {$delay}ms&quot;);
+
+for ($i = 0; $i &lt; 5; $i++) { 
+    usleep($delay * 1000); 
+    printf(&quot;$name: $i\n&quot;);
+}
 </code></pre>
 
-<p>然后我们和<code>item</code>表一起使用这个子查询：</p>
+<p>然后主进程会生成子进程，然后读取它们的输出。我们把它拆分到小块：</p>
 
-<pre><code class="language-mysql">SELECT item.*,usecount.number_of_uses
-FROM item
-JOIN (
-    SELECT item_id, COUNT(*) number_of_uses
-    FROM uses
-    GROUP BY item_id
-) usecount ON item_item_id = usecount.item_id;
-</code></pre>
+<ul>
+<li>使用<a href="https://www.php.net/manual/zh/function.proc-open.php">proc_open()</a>生成子进程</li>
+<li>使用<a href="https://www.php.net/manual/zh/function.stream-set-blocking.php">stream_set_blocking()</a>让每个子进程不阻塞</li>
+<li>循环，直到所有的子进程结束，使用<a href="https://www.php.net/manual/zh/function.proc-get-status.php">proc_get_status()</a>进行判断</li>
+<li>在子进程中使用<a href="https://www.php.net/manual/zh/function.fclose.php">fclose()</a>使用输出管道关闭文件句柄，使用<a href="https://www.php.net/manual/zh/function.proc-close.php">proc_close()</a>关闭进程句柄</li>
+</ul>
 
-<p>这允许你使用简单并且正确的<code>GROUP BY</code>的语句，并且允许我们使用<code>*</code>标识符。</p>
-
-<p>注意：明智的开发人员在任何情况下避免使用<code>*</code>标识符。通常把所有的列列出来是合适的。</p>
-
-<h3 id="any-value">ANY_VALUE()</h3>
-
-<pre><code class="language-mysql">SELECT item.item_id, ANY_VALUE(uses.tag) tag, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id;
-</code></pre>
-
-<p>显示<code>item</code>表中的行，<code>uses</code>表中关联的行的行数，关联表中的tag的一个值。</p>
-
-<p>你可以任务<a href="http://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_any-value">ANY_VALUE()</a>是一个奇怪的聚合函数。不是返回一个数量，和或者最大值，它通知MySQL在相关组中选择任意一个值。这是一个解决1055错误的方法。</p>
-
-<p>当在生产环境使用<code>ANY_VALUE()</code>时要特别小心。</p>
-
-<p>它实际应该叫做<code>SURPRISE_ME()</code>。它返回GROUP BY分组中一些行的值。但是它返回哪一个是不可预知的。这意味着这完全依赖于MySQL。准确的说，它返回一个不可预期的值。</p>
-
-<p>服务器不会选择随机的值，这比那个更坏。每次查询都会返回相同的值，直到不再返回了。当一个表增长或缩小时，或当服务器有多或少的RAM时，或当服务器版本改变时，或当Mars逆行时(无论这意味着什么)。或根本没有原因，它可以改变，也可以不改变。</p>
-
-<p>你已经被警告了。</p>
-
-<h3 id="使用和误用group-by">使用和误用GROUP BY</h3>
-
-<pre><code class="language-mysql">SELECT item.item_id, item.name，COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id;
-</code></pre>
-
-<p>将会显示item表的行，显示uses表中关联的行的函数。这将正常工作的，但是这个不是标准的SQL-92的语法。</p>
-
-<p>为什么不是？因为包含<code>GROUP BY</code>语句的时候，<code>SELECT</code>语句(和<code>ORDER BY</code>语句)中列必须是：</p>
-
-<ol>
-<li>在<code>GROUP BY</code>语句中说明的列</li>
-<li>像<code>COUNT()</code>，<code>MIN()</code>这样的聚合函数</li>
-</ol>
-
-<p>例子中<code>SELECT</code>语句中包含了item.name列，但是这个列不满足这些条件。当SQL模式包含<code>ONLY_FULL_GROUP_BY</code>的时候，MySQL5.6和之前版本将会拒绝执行。</p>
-
-<p>这个例子想要兼容SQL-92语法的话，需要修改<code>GROUP BY</code>语句：</p>
-
-<pre><code class="language-mysql">SELECT item.item_id, item.name, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id, uses.item_id
-GROUP item.item_id, item.name;
-</code></pre>
-
-<p>如果DBMS能够证明它们与组键列之间的功能依赖性，则后面的SQL-99标准允许select语句省略组键中未聚合的列。因为item.name是功能上依赖于item.item_id，最初的例子在SQL-99中是有效的。MySQL增加了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html">功能依赖验证</a>在5.7版本。原本的例子只在<code>ONLY_FULL_GROUP_BY</code>下可以正常工作。</p>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -309,12 +297,12 @@ GROUP item.item_id, item.name;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/php-section-29.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十九）">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-55.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十五)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/java-section-5.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（五）">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-56.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十六)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

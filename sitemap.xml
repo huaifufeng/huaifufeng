@@ -109,7 +109,29 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/categories/php/</loc>
+    <lastmod>2019-06-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/php/</loc>
+    <lastmod>2019-06-09T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/06/post/php-section-70.html</loc>
+    <lastmod>2019-06-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/06/post/mysql-section-55.html</loc>
+    <lastmod>2019-06-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/06/post/php-section-69.html</loc>
     <lastmod>2019-06-08T00:00:00+00:00</lastmod>
   </url>
   
@@ -119,20 +141,13 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/06/post/php-section-68.html</loc>
+    <lastmod>2019-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/06/post/mysql-section-53.html</loc>
     <lastmod>2019-06-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/categories/php/</loc>
-    <lastmod>2019-06-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/tags/php/</loc>
-    <lastmod>2019-06-06T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -501,6 +516,23 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/categories/java/</loc>
+    <lastmod>2019-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/tags/java/</loc>
+    <lastmod>2019-04-30T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/java-section-6.html</loc>
+    <lastmod>2019-04-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/mysql-section-16.html</loc>
     <lastmod>2019-04-30T00:00:00+00:00</lastmod>
   </url>
@@ -508,6 +540,11 @@
   <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/php-section-30.html</loc>
     <lastmod>2019-04-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/java-section-5.html</loc>
+    <lastmod>2019-04-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -521,6 +558,11 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/java-section-4.html</loc>
+    <lastmod>2019-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/mysql-section-14.html</loc>
     <lastmod>2019-04-28T00:00:00+00:00</lastmod>
   </url>
@@ -528,6 +570,11 @@
   <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/php-section-28.html</loc>
     <lastmod>2019-04-28T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/java-section-3.html</loc>
+    <lastmod>2019-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -541,6 +588,11 @@
   </url>
   
   <url>
+    <loc>http://blog.huaifufeng.com/2019/04/post/java-section-2.html</loc>
+    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/mysql-section-12.html</loc>
     <lastmod>2019-04-26T00:00:00+00:00</lastmod>
   </url>
@@ -548,18 +600,6 @@
   <url>
     <loc>http://blog.huaifufeng.com/2019/04/post/php-section-26.html</loc>
     <lastmod>2019-04-26T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/categories/java/</loc>
-    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.huaifufeng.com/tags/java/</loc>
-    <lastmod>2019-04-25T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

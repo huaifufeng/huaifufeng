@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="ERROR 1055：ONLY_FULL_GROUP_BY: 有一些select的字段不在GROUP BY语句中">
+    <meta name="description" content="Getters和Setters">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(十五)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>Java专业笔记（三）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/04/post/mysql-section-15.html">
+    <link rel="canonical" href="/2019/04/post/java-section-3.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/java" title="Java">
+                           Java
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(十五)</h1>
+                    <h1>Java专业笔记（三）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, April 29, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, April 27, 2019
                         
                     </span>
                 </div>
@@ -182,12 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#error-1055">ERROR 1055</a>
+<li><a href="#getters和setters">Getters和Setters</a>
 <ul>
-<li><a href="#无用group-by返回不可预测的结果-墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</a></li>
-<li><a href="#无用select-如果修复">无用SELECT * ，如果修复</a></li>
-<li><a href="#any-value">ANY_VALUE()</a></li>
-<li><a href="#使用和误用group-by">使用和误用GROUP BY</a></li>
+<li><a href="#1-使用一个setter或getter来实现约束">1. 使用一个setter或getter来实现约束</a></li>
+<li><a href="#2-为什么使用getters和setters">2. 为什么使用Getters和Setters?</a></li>
+<li><a href="#3-添加getters和setters">3. 添加Getters和Setters</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -195,112 +194,155 @@
         		
         		
 
-<h2 id="error-1055">ERROR 1055</h2>
+<h2 id="getters和setters">Getters和Setters</h2>
 
-<p>最新版本的MySQL开始为之前的一些查询产生1055的错误。这个主题就是来介绍一下这样的错误。MySQL团队一直在努力让GROUP BY的扩展失效，或者至少让开发人员便于编写这样的查询。</p>
+<p>这个文章讨论getters和setters，Java类中提供的标准数据访问方法。</p>
 
-<h3 id="无用group-by返回不可预测的结果-墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</h3>
+<h3 id="1-使用一个setter或getter来实现约束">1. 使用一个setter或getter来实现约束</h3>
 
-<pre><code class="language-mysql">SELECT item.item_id, users.category, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP item.item_id
+<p>Setters和Getters运行一个对象有限制的访问和修改私有的变量。例如：</p>
+
+<pre><code class="language-java">public class Person {
+    private String name;
+  
+    public String getName()
+    {
+        return this.name;
+    }
+  
+    public void setName(String name) {
+        if (name != null &amp;&amp; name.length() &gt; 2) {
+            this.name = name;
+        }
+    }
+}
 </code></pre>
 
-<p>将会显示 item表的行，并且显示表uses中关联的行数。也会显示uses.category中的值。</p>
+<p>在这个<code>Person</code>类中，有一个单独的变量：<code>name</code>。这个变量可以通过<code>getName()</code>方法访问，使用<code>setName(String)</code>方法进行修改，然而，设置一个新的名字要求这个名字不为空并且长度大于2个字符。使用一个setter方法而不是把这个变量<code>name</code>变为public，这样就允许其他人进行有限制的修改。也可以在getter方法上面进行限制：</p>
 
-<p>这个查询在(<code>ONLY_FULL_GROUP_BY</code>标识出现之前)MySQL中可以执行。这里使用了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html">非标准的GROUP BY</a>。</p>
-
-<p>但是这有个问题：如果在JOIN语句的ON条件中匹配到了多个uses记录，那么MySQL将会从这些记录中返回一行的category字段值。哪一条？查询优化器，应用的用户都不能提前知道。准确的说：结果是不可预期的。MySQL将会返回任何想要返回的值。</p>
-
-<p>*不可预期就是随机的*，有一个显著的区别。有人希望每次都有一个随机的选择。因此，如果一个选择的随机的，你可以在调试或测试中观察到这个情况。不可预期的结果是坏的：MySQL每次返回相同的结果，知道不相同了。有时候在新版本的MySQL中会有不同的结果。有时候这是导致问题的增长的表。什么会出问题，什么将会出问题，什么时候出问题你不知道。这叫做墨菲定律。</p>
-
-<p>MySQL团队在努力让开发者更难犯这个错误。新版本的MySQL有一个叫做<code>ONLY_GROUP_BY</code>的<code>sql_mod</code>标签。当这个标识设置了，MySQL将会返回一个1055错误， 拒绝运行这个查询。</p>
-
-<h3 id="无用select-如果修复">无用SELECT * ，如果修复</h3>
-
-<p>有时候有一个像下面这样的查询，在SELECT中使用*：</p>
-
-<pre><code class="language-mysql">SELECT item.*, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id
+<pre><code class="language-java">public String getName(){
+    if (name.length() &gt; 16) {
+        return &quot;Name is too large!&quot;;
+    } else {
+        return this.name;
+    }
+}
 </code></pre>
 
-<p>当设置了<code>ONLY_FULL_GROUP_BY</code>，这样的查询就需要优化了。</p>
+<p>在上面修改过的<code>getName()</code>方法中，只有在name的长度小于或等于16的时候才会返回。否则，将会返回<code>&quot;Name is too large!&quot;</code>。这允许编程人员创建允许访问和修改的变量，但是可以客户端类随便的修改这个变量。</p>
 
-<p>要做优化的话，需要使用一个带有<code>GROUP BY</code>子句的子查询，让这个子查询返回每个<code>item_id</code>对应的<code>number_of_uses</code>字段。这个子查询很短也很简洁，因为它只需要查询<code>uses</code>表。</p>
+<h3 id="2-为什么使用getters和setters">2. 为什么使用Getters和Setters?</h3>
 
-<pre><code class="language-mysql">SELECT item_id, COUNT(*) number_of_uses
-FROM uses
-GROUP BY item_id;
+<p>假设Java中有一个包含getters和setters的基础的类：</p>
+
+<pre><code class="language-java">public class CountHolder {
+    private int count = 0;
+    
+    public int getCount() {
+        return this.count;
+    }
+    
+    public void setCount(int count) {
+        this.count = c;
+    }
+}
 </code></pre>
 
-<p>然后我们和<code>item</code>表一起使用这个子查询：</p>
+<p>我们不能访问<code>count</code>变量，因为它是private的。但是我们可以访问<code>getCount()</code>和<code>setCount()</code>方法，因为他们是public。对于这个，可能会产生一个问题：为什么要有这中间的部分？为什么不直接吧count设置为public？</p>
 
-<pre><code class="language-mysql">SELECT item.*,usecount.number_of_uses
-FROM item
-JOIN (
-    SELECT item_id, COUNT(*) number_of_uses
-    FROM uses
-    GROUP BY item_id
-) usecount ON item_item_id = usecount.item_id;
+<pre><code class="language-java">public class CountHolder {
+    public int count = 0;
+}
 </code></pre>
 
-<p>这允许你使用简单并且正确的<code>GROUP BY</code>的语句，并且允许我们使用<code>*</code>标识符。</p>
+<p>对于所有的意图和目的，这两者在功能上是完全相同的。它们的不同之处在于可扩展性。考虑一下这两个类分别说了什么：</p>
 
-<p>注意：明智的开发人员在任何情况下避免使用<code>*</code>标识符。通常把所有的列列出来是合适的。</p>
+<ul>
+<li><strong>第一个</strong> 我有一个方法可以给你一个<code>int</code>值，同时有一个将这个值设置为另外的<code>int</code>的方法。</li>
+<li><strong>第二个</strong> 我有一个<code>int</code>，你可以按照你的意愿设置和获取。</li>
+</ul>
 
-<h3 id="any-value">ANY_VALUE()</h3>
+<p>这些听起来是一样相似的，但是第一个在本质上面更加谨慎；这只允许你安装它规定的方式和他内部的信息进行交互。这把球留在球场上面，它可以选择内部交互是如何发生的。第二个把它内部的实现暴露在外部，现在不仅仅倾向于外部的用户，而且在API的情况下，致力于维护这种实现（或者不向后兼容API）。</p>
 
-<pre><code class="language-mysql">SELECT item.item_id, ANY_VALUE(uses.tag) tag, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id;
+<p>假设我们想要同步修改和访问count，在第一种情况下是很简单的，下面是一个简单的例子：</p>
+
+<pre><code class="language-java">public class CountHolder {
+    private int count = 0;
+    
+    public synchronized int getCount() {
+        return this.count;
+    }
+    
+    public synchronized void setCount(int count) {
+        this.count = count;
+    }
+}
 </code></pre>
 
-<p>显示<code>item</code>表中的行，<code>uses</code>表中关联的行的行数，关联表中的tag的一个值。</p>
+<p>但是在第二个例子中，如果不仔细检查和修改count变量引用的每个位置，这几乎是不可能的。更糟糕的，如果这是你类库中提供给其他人使用的项目，那么你没有执行这个修改的办法，因此必须做出上面艰难的选择。</p>
 
-<p>你可以任务<a href="http://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_any-value">ANY_VALUE()</a>是一个奇怪的聚合函数。不是返回一个数量，和或者最大值，它通知MySQL在相关组中选择任意一个值。这是一个解决1055错误的方法。</p>
+<p>因此它引出了一个问题：公共变量是否曾经是一个好事（或者至少不是坏事）？</p>
 
-<p>当在生产环境使用<code>ANY_VALUE()</code>时要特别小心。</p>
-
-<p>它实际应该叫做<code>SURPRISE_ME()</code>。它返回GROUP BY分组中一些行的值。但是它返回哪一个是不可预知的。这意味着这完全依赖于MySQL。准确的说，它返回一个不可预期的值。</p>
-
-<p>服务器不会选择随机的值，这比那个更坏。每次查询都会返回相同的值，直到不再返回了。当一个表增长或缩小时，或当服务器有多或少的RAM时，或当服务器版本改变时，或当Mars逆行时(无论这意味着什么)。或根本没有原因，它可以改变，也可以不改变。</p>
-
-<p>你已经被警告了。</p>
-
-<h3 id="使用和误用group-by">使用和误用GROUP BY</h3>
-
-<pre><code class="language-mysql">SELECT item.item_id, item.name，COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id;
-</code></pre>
-
-<p>将会显示item表的行，显示uses表中关联的行的函数。这将正常工作的，但是这个不是标准的SQL-92的语法。</p>
-
-<p>为什么不是？因为包含<code>GROUP BY</code>语句的时候，<code>SELECT</code>语句(和<code>ORDER BY</code>语句)中列必须是：</p>
+<p>我并不确定。一方面，你可以看到经受住时间测试的公共变量的例子（例如：<code>System.out</code>中引用的out变量）。另一方面，提供一个公共变量处理极低的开销和可能减少的冗长之外，没有任何好处。我这里的建议是：如果你打算公开一个变量，你应该根据这些标准以及极端偏见来判断它：</p>
 
 <ol>
-<li>在<code>GROUP BY</code>语句中说明的列</li>
-<li>像<code>COUNT()</code>，<code>MIN()</code>这样的聚合函数</li>
+<li>这个变量不应该有<strong>任何</strong>可以想象的改变的理由。这是非常容易搞砸的事情（即使你做的对，需求可能会改变），这就是为什么getter/setter是常见的方法。如果要有一个公共变量，就需要仔细考虑，特别是实现在一个库/框架/API中发布的。</li>
+<li>变量的引用频率必须足够高，以确保从减少冗长的内容中获得的最小收益。我甚至不认为这里应该考虑使用方法和直接引用的开销。对于我保守估计99.9%的应用程序来说，这太微不足道了。</li>
 </ol>
 
-<p>例子中<code>SELECT</code>语句中包含了item.name列，但是这个列不满足这些条件。当SQL模式包含<code>ONLY_FULL_GROUP_BY</code>的时候，MySQL5.6和之前版本将会拒绝执行。</p>
+<p>可能还有很多事情我没有考虑到。如果你有任何疑问，一定要使用getter/setter。</p>
 
-<p>这个例子想要兼容SQL-92语法的话，需要修改<code>GROUP BY</code>语句：</p>
+<h3 id="3-添加getters和setters">3. 添加Getters和Setters</h3>
 
-<pre><code class="language-mysql">SELECT item.item_id, item.name, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id, uses.item_id
-GROUP item.item_id, item.name;
+<p>封装是OOP的基本原则。它将数据和代码包装为一个基本单元。在这种情况下，将变量封装为私有的，然后使用Getters和Setters来查看/修改他们是一个很好的实践。</p>
+
+<pre><code class="language-java">public class Sample {
+    private String name;
+    private int age;
+    
+    public int getAge() {
+        return this.age;
+    }
+    
+    public void setAge(int age) {
+        this.age = age;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+}
 </code></pre>
 
-<p>如果DBMS能够证明它们与组键列之间的功能依赖性，则后面的SQL-99标准允许select语句省略组键中未聚合的列。因为item.name是功能上依赖于item.item_id，最初的例子在SQL-99中是有效的。MySQL增加了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html">功能依赖验证</a>在5.7版本。原本的例子只在<code>ONLY_FULL_GROUP_BY</code>下可以正常工作。</p>
+<p>这些私有变量不能直接从类的外部进行访问。因此它们可以避免未认证的访问。但是如果你想要查看或修改他们，你可以使用Getters和Setters。</p>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p><code>getXxx()</code>方法返回变量<code>xxx</code>的当前值，同时你可以使用<code>setXxx()</code>方法设置变量<code>xxx</code>的值。</p>
+
+<p>这些方法的命名规则是（在例子中变量的名称是<code>variableName</code>）：</p>
+
+<ul>
+<li>所有的非<code>boolean</code>的变量</li>
+</ul>
+
+<pre><code class="language-java">  getVariableName()  //Getter  变量首字母大写
+  setVariableName(...)  //Setter 变量首字母大写
+</code></pre>
+
+<ul>
+<li><p><code>boolean</code>变量</p>
+
+<pre><code>isVariableName()  //Getter 变量名首字母大写
+setVariableName(...)  //Setter 变量首字母大写  
+</code></pre></li>
+</ul>
+
+<p>公共的Getters和Setters是Java Bean中<a href="https://docs.oracle.com/javase/tutorial/javabeans/writing/properties.html">属性</a>定义的一部分。</p>
+
+<p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
                 
@@ -309,12 +351,12 @@ GROUP item.item_id, item.name;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/04/post/php-section-29.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十九）">&larr; Previous Post</a>
+                      <a href="/2019/04/post/mysql-section-13.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(十三)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/04/post/java-section-5.html" data-toggle="tooltip" data-placement="top" title="Java专业笔记（五）">Next Post &rarr;</a>
+                      <a href="/2019/04/post/php-section-28.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（二十八）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="Java代码文档化">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Java专业笔记（六）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/04/post/java-section-6.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/java" title="Java">
+                           Java
+                        </a>
+                       
+                    </div>
+                    <h1>Java专业笔记（六）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Tuesday, April 30, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#java代码文档化">Java代码文档化</a>
+<ul>
+<li><a href="#1-从命令行创建javadocs">1. 从命令行创建javadocs</a></li>
+<li><a href="#2-类文档">2. 类文档</a></li>
+<li><a href="#3-方法文档">3. 方法文档</a></li>
+<li><a href="#4-包文档">4. 包文档</a></li>
+<li><a href="#5-连接">5. 连接</a></li>
+<li><a href="#6-文档中的代码片段">6. 文档中的代码片段</a></li>
+<li><a href="#7-字段文档">7. 字段文档</a></li>
+<li><a href="#8-内联代码文档">8. 内联代码文档</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="java代码文档化">Java代码文档化</h2>
+
+<p>Java代码的文档通常使用<a href="http://www.oracle.com/technetwork/articles/java/index-jsp-135444.html">javadoc</a>生成的。Javadoc是Sun公司创建的用来从Java源码中生成HTML格式的API文档的工具。使用HTML格式可以方便的吧相关的文档链接到一起。</p>
+
+<h3 id="1-从命令行创建javadocs">1. 从命令行创建javadocs</h3>
+
+<p>许多IDE都支持工Javadocs自动生成HTML文档。一些构建工具（例如Maven和Gradle）也有可以处理HTML创建的插件。</p>
+
+<p>但是这些工具不是必须要来生成javadoc HTML的。可以使用命令行工具<code>javadoc</code>。</p>
+
+<p>这个工具的基本用法是：</p>
+
+<pre><code class="language-shell">javadoc JavaFile.java
+</code></pre>
+
+<p>这将会从<code>JavaFile.java</code>文件中的Javadoc注释中产生HTML文件。</p>
+
+<p>命令行工具更好的用法是递归的读取<code>[source-directory]</code>中的所有java文件，创建<code>[package.name]</code>和所有子包的文档，并把这些文档存放到<code>[docs-directory]</code>中：</p>
+
+<pre><code class="language-shell">javadoc -d [docs-directory] -subpackages -sourcepath [source-directory] [package.name]
+</code></pre>
+
+<h3 id="2-类文档">2. 类文档</h3>
+
+<p>所有的javadoc注释都以一个块注释开头，后面跟着一个星号(<code>/**</code>)，以一个快注释结尾(<code>*/</code>)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。</p>
+
+<pre><code class="language-java">/**
+ * 类的简单概述，以句号结束。
+ *
+ * 通常在概述和详情之间会留一行空白。概述(在第一个句号之前的内容)会用在类或包的描述部分。
+ *
+ * 可以使用下面的行内标记(不是完整的例子)：
+ * {@link some.other.class.Documentation} 连接到其他的文档或符号
+ * {@link some.other.class.Documentation Some Display Name} 可以通过在文档或符号定位器之后添加 
+ * 名称来定义连接的外观
+ * {@code code goes here} 用于格式化作为代码
+ * {@literal &lt;&gt;[]()foo} 用于在不转换为HTML标记或其他标记的情况下解释文本
+ *
+ * 或者可以在类文档的末尾使用下面的标记(不是详细的列表)：
+ *
+ * @author 王子
+ * @version 1.0
+ * @since 5/10/15
+ * @see some.other.class.Documentation
+ * @deprecated 这个类被some.other.package.BetterFileReader取代
+ *
+ * 你可以用自定义的标签显示额外的信息。
+ * 使用@custom.&lt;NAME&gt;和 -tag custom.&lt;NAME&gt;:htmltag:&quot;contentx&quot;命令行选项，你可以创建自定义标签
+ *
+ * 例如自定义标签：
+ * @custom.updated 2.0
+ * javadoc flag: -tag custom.updated:a:&quot;Updatedi inversion:&quot;
+ * 上面的标签将会在&quot;Updated in version&quot;下面显示@custom.updated的值
+ *
+ */
+ 
+ public class FileReader {
+ 
+ }
+</code></pre>
+
+<p><code>Classes</code>使用的相同的标签和格式可以被用于<code>Enums</code>和<code>Interfaces</code>。</p>
+
+<h3 id="3-方法文档">3. 方法文档</h3>
+
+<p>所有的javadoc注释都以一个块注释开头，后面跟着一个星号(<code>/**</code>)，以一个快注释结尾(<code>*/</code>)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。</p>
+
+<pre><code class="language-java">/**
+ * 方法的概述，用一个句号结尾。
+ *
+ * 方法的更详细描述，它做了什么，尽可能的详细。行内标签像：{@code code here} 
+ * {@link some.other.Docs} {@literal text here}可以使用。
+ * 
+ * 如果方法重写超类的方法，{@inheritDoc}可以用来从超类方法复制文档。
+ *
+ * @param stream 描述这个参数。尽可能的详细。
+ *               参数的文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是概述。
+ *
+ * @return 描述返回值。尽可能详细的。
+ *         返回值文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是概述。
+ * 
+ * @throw IOException 描述什么时候和为什么这个异常抛出了。
+ *                    异常文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是
+ *                    概述。处理@throws，可以使用@exception。
+ *
+ * @since 2.1.0
+ * @see some.other.class.Documentation
+ * @deprecated 描述为什么这个方法过期了。也可以指定替代的方法。
+ */
+ public String[] read(InputStream stream) throws IOException {
+     return null;
+ }
+</code></pre>
+
+<h3 id="4-包文档">4. 包文档</h3>
+
+<p>Version &gt;= Java SE 5</p>
+
+<p>通过使用一个叫做<code>package-info.java</code>的文件，可以穿甲包级别的文档。这个文件必须是下面的格式。</p>
+
+<pre><code class="language-java">/**
+ * 包文档显示在这里。任何文档第一个句号之前的内容都是概述。
+ * 
+ * 通常在概述和其他文档内容之间有一个空行。在这部分尽可能详细的描述。
+ *
+ * 行内标签像{@code code here} {@link reference.to.other.Documentation} 
+ * {@literal text here} 可以用到这个文档
+ */
+ package com.example.foo;
+ //文件剩下的部分必须留空
+</code></pre>
+
+<p>上面的例子中，必须把这个文件<code>package-info.java</code>放到Java包<code>com.example.foo</code>的目录里面。</p>
+
+<h3 id="5-连接">5. 连接</h3>
+
+<p>连接到另外的文档使用<code>@link</code>标签。</p>
+
+<pre><code class="language-java">/**
+ * 你可以连接已经导入类的文档，用{@link ClassName}
+ * 
+ * 你也可以使用完全指定的名称，如果类没有导入的话{@link some.other.ClassName}
+ * 
+ * 你可以指定类的元素(字段或方法)：
+ * {@link ClassName#someMethod()}
+ * {@link ClassName#someMethodWithParameters(int, String)}
+ * {@link ClassName#someField}
+ * {@link #someMethodInThisClass()} -- 用来连接当前类的成员
+ * 
+ * 你可以像链接的文档添加一个标签：
+ * {@link ClassName#someMethod() link text}
+ */
+</code></pre>
+
+<p><img src="/img/java/3A3cX.png" alt="link" /></p>
+
+<p>使用<code>@see</code>标签，你可以添加元素查看另外的部分。像<code>@param</code>和<code>@return</code>出现的位置是不相关的。文档说你应该把它写在<code>@return</code>后面。</p>
+
+<pre><code class="language-java">/**
+ * 这个方法有一个很好的注释，但是你可以在下面找到更多的信息。
+ *
+ * @see ClassName#someMethod()
+ */
+</code></pre>
+
+<p><img src="/img/java/WxxAT.png" alt="see" /></p>
+
+<p>如果你想要添加链接到外部的资源，可以使用HTML的<code>&lt;a&gt;</code>标签。你可以用在行内的任何地方或者在<code>@link</code>和<code>@see</code>两个标签里面</p>
+
+<pre><code class="language-java">/**
+ * 好奇这是这个工作的？你可以查看 &lt;a href=&quot;http://stackoverflow.com/&quot;&gt;great service&lt;/a&gt;.
+ *
+ * @see &lt;a href=&quot;http://stackoverflow.com/&quot;&gt;Stack Overflow&lt;/a&gt;
+ */
+</code></pre>
+
+<p><img src="/img/java/VyrDF.png" alt="outlink" /></p>
+
+<h3 id="6-文档中的代码片段">6. 文档中的代码片段</h3>
+
+<p>在文档中写代码的规范方法是使用{@code}结构。如果你有多行代码可以包围在<code>&lt;pre&gt;</code>里面。</p>
+
+<pre><code class="language-java">/**
+ * 类TestUtils.
+ * &lt;p&gt;
+ * 这是一个 {@code inline(&quot;code example&quot;)}.
+ * &lt;p&gt;
+ * 当写多行代码的时候，应该写在pre标签里面
+ * &lt;pre&gt;{@code
+ *  Example example1 = new FirstLineExample();
+ *  example1.butYouCanHaveMoreThanOneLine();
+ * }&lt;/pre&gt;
+ * &lt;p&gt;
+ * 感谢阅读
+ */
+class TestUtils {
+}
+</code></pre>
+
+<p>有时候你可能需要把一些复杂的代码放到javadoc注释中。这个<code>@</code>标签特别有问题。在就标签<code>&lt;code&gt;</code>标签可以用在{@literal}边上解决这个问题。</p>
+
+<pre><code class="language-java">/**
+ * 用法：
+ * &lt;pre&gt;&lt;code&gt;
+ * class SomethingTest {
+ * {@literal @}Rule
+ *  public SingleTestRule singleTestRule = new SingleTestRule(&quot;test1&quot;);
+*
+* {@literal @}Test
+* public void test1() {
+* // only this test will be executed *}
+*
+* ...
+*}
+* &lt;/code&gt;&lt;/pre&gt;
+*/
+class SingleTestRule implements TestRule { }
+</code></pre>
+
+<h3 id="7-字段文档">7. 字段文档</h3>
+
+<p>所有的javadoc注释都以一个块注释开头，后面跟着一个星号(<code>/**</code>)，以一个快注释结尾(<code>*/</code>)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。</p>
+
+<pre><code class="language-java">/**
+ * 字段也可以添加文档。
+ *
+ * 通常在概述和其他文档内容之间有一个空行。在这部分尽可能详细的描述。
+ *
+ * 字段的文档可以使用下面的行内标签：
+ * {@code code here}
+ * {@literal text here}
+ * {@link other.docs.Here}
+ *
+ * 字段文档也可以使用下面的标签：
+ * @since 2.1.0
+ * @see some.other.class.Documentation
+ * @deprecated Describe why this field is outdated
+ */
+public static final String CONSTANT_STRING = &quot;foo&quot;;
+</code></pre>
+
+<h3 id="8-内联代码文档">8. 内联代码文档</h3>
+
+<p>除了javadoc文档之外，代码还可以以内联方式记录。</p>
+
+<p>以<code>//</code>开始的行内注释可以放到代码的同行的后面，不能放在前面。</p>
+
+<pre><code class="language-java">public void method() {
+    //单行注释
+    someMethodCall(); //语句后的单行注释
+}
+</code></pre>
+
+<p>多行注释可以定义在<code>/*</code>和<code>*/</code>之间。它们可以跨多行，甚至定位在语句之间。</p>
+
+<pre><code class="language-java">public void method(Object object) {
+    /*
+     * 多行
+     * 注释
+    */
+    object/*内行注释*/.method();
+}
+</code></pre>
+
+<p>Javadocs是特殊的多行注释，以<code>/**</code>开头。</p>
+
+<p>太多的行内注释会降低代码的可读性，因此在代码不具有足够的自解释性或设计决策不明显的情况下，应尽量少使用这些注释。</p>
+
+<p>单行注释额外的用处就是标签，简单但约定驱动的关键字。一些开发环境承认这些单行注释的某些约定。例如：</p>
+
+<ul>
+<li>//TODO</li>
+<li>//FIXME</li>
+</ul>
+
+<p>或者问题引用：</p>
+
+<ul>
+<li>//PRJ-1234</li>
+</ul>
+
+<p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/04/post/mysql-section-16.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(十六)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-31.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十一）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

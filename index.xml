@@ -236,6 +236,19 @@ export MYSQL_PS1=&amp;quot;\u@\h [\d]&amp;quot;  这会让MySQL客户端提示�
     </item>
     
     <item>
+      <title>PHP专业笔记（七十）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-70.html</link>
+      <pubDate>Sun, 09 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-70.html</guid>
+      <description>异步编程 1. 生成器的优点 PHP5.5提供了生成器和yield关键字，这允许我们想同步代码一样编写异步代码。
+yield表达式负责将控制结构交还给调用代码，并在这个位置提供恢复点。可以通过yield表达式发送一个值。这个表达式的返回值要么是null，要么是Generator::send()的值。
+function reverse_range($i) { // 仅仅在这个函数中存在yield关键字就使得它成为一个生成器。 do { //$i 在恢复点之间保留着 print yield $i; } while (--$i &amp;gt; 0); } $gen = reverse_range(5); print $gen-&amp;gt;current(); $gen-&amp;gt;send(&amp;quot;injected!&amp;quot;); // send 也会唤起这个生成器 foreach ($gen as $val) { //循环处理迭代器，在每个每个迭代中唤起	echo $val; } // Output: 5injected!4321  协程可以使用这种机制来等待生成器生成Awaitable的yield（通过将自身注册于用于解析的回调）在Awaitables的yield解析的时候执行生成器。
+2. 使用Icicle时间循环 Icicle使用Awaitable和生成器来创建协程。
+require __DIR__ . &#39;/vendor/autoload.php&#39;; use Icicle\Awaitable; use Icicle\Coroutine\Coroutine; use Icicle\Loop; $generator = function (float $time) { try { //设置$start的值为microtime()返回之后大约$time秒 $start = yield Awaitable\resolve(microtime(true))-&amp;gt;delay($time); echo &amp;quot;Sleep time: &amp;quot;, microtime(true) - $start, &amp;quot;\n&amp;quot;; // 在rejected awaitable进入协程之后跑出异常 return yield Awaitable\reject(new Exception(&#39;Rejected awaitable&#39;)); } catch (Throwable $e) { // 获取 awaitable 拒绝的原因 echo &amp;quot;Caught exception: &amp;quot;, $e-&amp;gt;getMessage(), &amp;quot;\n&amp;quot;; } return yield Awaitable\resolve(&#39;Coroutine completed&#39;); }; // 协程休眠1.</description>
+    </item>
+    
+    <item>
       <title>MySQL专业笔记(五十五)</title>
       <link>http://blog.huaifufeng.com/2019/06/post/mysql-section-55.html</link>
       <pubDate>Sat, 08 Jun 2019 00:00:00 +0000</pubDate>
@@ -251,12 +264,36 @@ CREATE TEMPORARY TABLE IF NOT EXISTS tempTable1 SELECT ColumnName1,ColumnName2,.
     </item>
     
     <item>
+      <title>PHP专业笔记（六十九）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-69.html</link>
+      <pubDate>Sat, 08 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-69.html</guid>
+      <description>编码约定 1. PHP标签 你应该使用&amp;lt;?php ?&amp;gt;或&amp;lt;?= ?&amp;gt;这两种标签。其他的方式（特别是 &amp;lt;? ?&amp;gt;）不应该使用，因为它们通常会被系统管理员禁用。
+当文件不会产生输出（整个文件都是PHP代码），需要使用?&amp;gt;来避免无意义的输出，这将会导致客户端的解析出现问题。特别是一些客户端无法识别&amp;lt;!DOCTYPE标签或开启了quirks模式。
+下面是一个简单的PHP例子：
+&amp;lt;?php print &amp;quot;Hello World&amp;quot;;  定义类的例子：
+&amp;lt;?php class Foo { ... }  PHP内嵌到HTML中的例子：
+&amp;lt;ul id=&amp;quot;nav&amp;quot;&amp;gt; &amp;lt;?php foreach ($navItems as $navItem): ?&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;&amp;lt;?= htmlspecialchars($navItem-&amp;gt;url) ?&amp;gt;&amp;quot;&amp;gt; &amp;lt;?= htmlspecialchars($navItem-&amp;gt;label) ?&amp;gt; &amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;?php endforeach; ?&amp;gt; &amp;lt;/ul&amp;gt;  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>MySQL专业笔记(五十四)</title>
       <link>http://blog.huaifufeng.com/2019/06/post/mysql-section-54.html</link>
       <pubDate>Fri, 07 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/06/post/mysql-section-54.html</guid>
       <description>MySQL Client    参数 描述     -D —database=name 数据库的名称   —delimiter=str 设置语句的分隔符，默认是&amp;rdquo;;&amp;rdquo;   -e —execute=&amp;lsquo;command&amp;rsquo; 执行命令   -h —hostname=name 要连接的主机名称   -p —password=password 密码。注意：在-p和密码之间没有空格   -p (没有密码) 将会提示输入密码   -P —port=# 端口号   -s —slient 安静模式，产生更少的输出。使用-t作为列分隔符   -ss 和-s一样，但是忽略列名   -S —socket=path 当连接本地实例的时候，指定使用的socket(Unix)或pipe(Windows)   —skip-column-names 忽略列名   -u —user=name 用户名   -U —safe-updates —i-am-a-dummy 使用sql_safe_updates=ON变量登录。这在DELETE和UPDATE操作时，只允许指定Key的操作   -V —version 打印版本号并退出    1.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（六十八）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-68.html</link>
+      <pubDate>Fri, 07 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-68.html</guid>
+      <description>header操作 1. 设置header 下面是一个设置header的基本操作，用来在点击按钮的时候跳转到新的页面：
+if(isset($_REQUEST[&#39;action&#39;])) { switch($_REQUEST[&#39;action&#39;]){ //Setting the Header based on which button is clicked case &#39;getState&#39;: header(&amp;quot;Location: http://NewPageForState.com/getState.php?search=&amp;quot; . $_POST[&#39;search&#39;]); break; case &#39;getProject&#39;: header(&amp;quot;Location: http://NewPageForProject.com/getProject.php?search=&amp;quot; . $_POST[&#39;search&#39;]); break; } } else { GetSearchTerm(!NULL); } //Forms to enter a State or Project and click search function GetSearchTerm($success) { if (is_null($success)) { echo &amp;quot;&amp;lt;h4&amp;gt;You must enter a state or project number&amp;lt;/h4&amp;gt;&amp;quot;; } echo &amp;quot;&amp;lt;center&amp;gt;&amp;lt;strong&amp;gt;Enter the State to search for&amp;lt;/strong&amp;gt;&amp;lt;/center&amp;gt;&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;&amp;quot;; //Using the $_SERVER[&#39;PHP_SELF&#39;] keeps us on this page till the switch above determines where to go echo &amp;quot;&amp;lt;form action=&#39;&amp;quot; .</description>
     </item>
     
     <item>
@@ -1331,6 +1368,22 @@ $json_string = &#39;{&amp;quot;name&amp;quot;:&amp;quot;Jeff&amp;quot;, &amp;quo
     </item>
     
     <item>
+      <title>Java专业笔记（六）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/java-section-6.html</link>
+      <pubDate>Tue, 30 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/java-section-6.html</guid>
+      <description>Java代码文档化 Java代码的文档通常使用javadoc生成的。Javadoc是Sun公司创建的用来从Java源码中生成HTML格式的API文档的工具。使用HTML格式可以方便的吧相关的文档链接到一起。
+1. 从命令行创建javadocs 许多IDE都支持工Javadocs自动生成HTML文档。一些构建工具（例如Maven和Gradle）也有可以处理HTML创建的插件。
+但是这些工具不是必须要来生成javadoc HTML的。可以使用命令行工具javadoc。
+这个工具的基本用法是：
+javadoc JavaFile.java  这将会从JavaFile.java文件中的Javadoc注释中产生HTML文件。
+命令行工具更好的用法是递归的读取[source-directory]中的所有java文件，创建[package.name]和所有子包的文档，并把这些文档存放到[docs-directory]中：
+javadoc -d [docs-directory] -subpackages -sourcepath [source-directory] [package.name]  2. 类文档 所有的javadoc注释都以一个块注释开头，后面跟着一个星号(/**)，以一个快注释结尾(*/)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。
+/** * 类的简单概述，以句号结束。 * * 通常在概述和详情之间会留一行空白。概述(在第一个句号之前的内容)会用在类或包的描述部分。 * * 可以使用下面的行内标记(不是完整的例子)： * {@link some.other.class.Documentation} 连接到其他的文档或符号 * {@link some.other.class.Documentation Some Display Name} 可以通过在文档或符号定位器之后添加 * 名称来定义连接的外观 * {@code code goes here} 用于格式化作为代码 * {@literal &amp;lt;&amp;gt;[]()foo} 用于在不转换为HTML标记或其他标记的情况下解释文本 * * 或者可以在类文档的末尾使用下面的标记(不是详细的列表)： * * @author 王子 * @version 1.0 * @since 5/10/15 * @see some.</description>
+    </item>
+    
+    <item>
       <title>MySQL专业笔记(十六)</title>
       <link>http://blog.huaifufeng.com/2019/04/post/mysql-section-16.html</link>
       <pubDate>Tue, 30 Apr 2019 00:00:00 +0000</pubDate>
@@ -1352,6 +1405,25 @@ SELECT @n := @n + 1, ... FROM ( SELECT @n:=0 ) AS initialize JOIn the_real_table
       <guid>http://blog.huaifufeng.com/2019/04/post/php-section-30.html</guid>
       <description>输出缓存    方法 详细说明     ob_start() 开启输出缓存，任何这个位置之后的输出（处理http头）都会被捕获不会直接显示   ob_get_contents() 返回ob_start()捕获的内容   ob_end_clean() 清空输出缓冲区并为当前嵌套级别关闭它   ob_get_clean() 执行ob_get_contents()和ob_end_clean()两个操作   ob_get_level() 返回输出缓冲区的当前嵌套级别   ob_flush() 在不结束缓存的情况下，输出缓存的内容并发送给浏览器   ob_implict_flush() 开启隐式刷新，在每次输出之后都会刷新   ob_end_flush() 刷新内容缓冲区并将其发送到浏览器，同时结束缓冲区    获取内容并清空 输出缓存允许你把一些文本内容(text，html)存储到一个变量中，然后在脚本结束之后一次性发送给浏览器。默认情况下，PHP解析内容之后会直接发送给浏览器：
 &amp;lt;?php //开启缓存 ob_start(); //输出内容 print &amp;quot;Hello&amp;quot;; //可以跳出php ?&amp;gt; &amp;lt;em&amp;gt;World&amp;lt;/em&amp;gt; &amp;lt;?php //获取缓存内容并情况缓存 $content = ob_get_clean(); # $content = ob_get_contents(); # $did_clear_buffer = ob_end_clean(); print($content); //Hello &amp;lt;em&amp;gt;World&amp;lt;/em&amp;gt;  在ob_start()和ob_get_clean()之间的内容输出会被放到变量$content中。调用ob_get_clean()相当于同时调用了ob_get_contents()和ob_end_clean()。</description>
+    </item>
+    
+    <item>
+      <title>Java专业笔记（五）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/java-section-5.html</link>
+      <pubDate>Mon, 29 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/java-section-5.html</guid>
+      <description>Java编译器 - javac 1. javac命令 简单例子
+假设有一个HelloWorld.java的文件包含下面的java代码：
+public class HelloWorld { public static void main(String[] args) { System.out.println(&amp;quot;Hello World!&amp;quot;); } }  (对上面代码的解释，查看Java语言入门部分)
+我们可以使用下面的命令编译上面的文件：
+$ javac HelloWorld.java  这将会产生一个HelloWorld.class的文件，我们可以像下面这样运行这个文件：
+$ java HelloWorld Hello World!  上面例子的关键点是：
+ 源码文件HelloWorld.java必须和源码文件中的类名相匹配，这里是HelloWorld。如果他们不匹配的话，你会遇到一个编译错误。 二进制文件HelloWorld.class和类的名称一样的。如果你重命名HelloWorld.class，当你运行的时候，将会遇到一个错误。 当使用java运行一个java程序的时候，你使用的是类名而不是二进制文件的名称。  包的例子
+最佳实践的Java倒霉使用包来组织类的命名空间，并减少类名冲突的风险。
+如果你想要在包com.example中声明HelloWorld类，需要在HelloWorld.java中包含下面的java源码：
+package com.example; public class HelloWorld { public static void main(String[] args) { System.out.println(&amp;quot;Hello World!&amp;quot;); } }  这个源码文件需要包含在和包名一致的目录树结构中：
+. //当前目录 | -----com | -----example | -----HelloWorld.</description>
     </item>
     
     <item>
@@ -1388,6 +1460,23 @@ setcookie(&#39;user&#39;, &#39;Tom&#39;, time( + 86400), &#39;/&#39;);  参数�
     </item>
     
     <item>
+      <title>Java专业笔记（四）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/java-section-4.html</link>
+      <pubDate>Sun, 28 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/java-section-4.html</guid>
+      <description>引用数据类型 1. 间接引用 .运算符就是间接引用。
+Object obj = new Object(); String text = obj.toString(); //obj就是间接引用  间接引用遵循引用存储的内存地址，到内存中实际对象存储的位置。找到对象后，调用请求的方法（例子中是toString）。
+当一个引用的值是null，间接引用江湖导致一个NullPointerException的异常：
+Object obj = null; obj.toString(); //语句执行的时候，抛出一个NullPointerException的异常  null表示没有一个值，也就是说，跟在地址后面没有结果，所以没有可以调用对象的方法。
+2. 实例化引用类型 Object obj = new Object(); //注意new  在例子中：
+ Object是一个引用类型 obj是一个存储新引用值的变量 Object()是调用Object的构造方法  发生了什么：
+ 在内存中申请对象的空间 调用构造函数Object()初始化内存空间 内存地址存储在obj中，所以它引用新创建的对象  这个和基本类型是不同的：
+int i = 0;  这里i中存储10的实际值。
+参考：Java® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>MySQL专业笔记(十四)</title>
       <link>http://blog.huaifufeng.com/2019/04/post/mysql-section-14.html</link>
       <pubDate>Sun, 28 Apr 2019 00:00:00 +0000</pubDate>
@@ -1416,6 +1505,19 @@ echo $_SESSION[&#39;id&#39;]; //123  在PHP7.0之后，我们可以使用只读s
     </item>
     
     <item>
+      <title>Java专业笔记（三）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/java-section-3.html</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/java-section-3.html</guid>
+      <description>Getters和Setters 这个文章讨论getters和setters，Java类中提供的标准数据访问方法。
+1. 使用一个setter或getter来实现约束 Setters和Getters运行一个对象有限制的访问和修改私有的变量。例如：
+public class Person { private String name; public String getName() { return this.name; } public void setName(String name) { if (name != null &amp;amp;&amp;amp; name.length() &amp;gt; 2) { this.name = name; } } }  在这个Person类中，有一个单独的变量：name。这个变量可以通过getName()方法访问，使用setName(String)方法进行修改，然而，设置一个新的名字要求这个名字不为空并且长度大于2个字符。使用一个setter方法而不是把这个变量name变为public，这样就允许其他人进行有限制的修改。也可以在getter方法上面进行限制：
+public String getName(){ if (name.length() &amp;gt; 16) { return &amp;quot;Name is too large!&amp;quot;; } else { return this.name; } }  在上面修改过的getName()方法中，只有在name的长度小于或等于16的时候才会返回。否则，将会返回&amp;quot;Name is too large!&amp;quot;。这允许编程人员创建允许访问和修改的变量，但是可以客户端类随便的修改这个变量。
+2. 为什么使用Getters和Setters? 假设Java中有一个包含getters和setters的基础的类：</description>
+    </item>
+    
+    <item>
       <title>MySQL专业笔记(十三)</title>
       <link>http://blog.huaifufeng.com/2019/04/post/mysql-section-13.html</link>
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
@@ -1437,6 +1539,19 @@ x可以是任何数据类型
  namespace MyProject 声明一个命名空间MyProject namespace MyProject\Security\Cryptography 声明一个嵌套的命名空间 namespace MyProject {…} 声明一个花括号包围的命名空间  虽然你可以在一个文件中声明多个命名空间，但是强烈建议一个文件只声明一个命名空间：
 namespace First { class A { ... }; // Define class A in the namespace First. } namespace Second { class B { ... }; // Define class B in the namespace Second. } namespace { class C { ... }; // Define class C in the root namespace. }  每当你声明了一个命名空间，你在之后定义的类都在这个命名空间里面：
 namespace MyProject\Shapes; class Rectangle { .</description>
+    </item>
+    
+    <item>
+      <title>Java专业笔记（二）</title>
+      <link>http://blog.huaifufeng.com/2019/04/post/java-section-2.html</link>
+      <pubDate>Fri, 26 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/04/post/java-section-2.html</guid>
+      <description>类型转换 1. 数字元素转换 数字值可以有两种转换方式。
+当原本的类型比目标类型小的时候，*隐式*转换就会发生。
+//隐式转换 byte byteVar = 42; short shortVar = byteVar; int intVar = shortVar; long longVar = intVar; float floatVar = longVar; double doubleVar = floatVar;  当原本的类型比目标类型大的时候，*显示*转换就必须要使用了。
+//显示转换 double doubleVar = 42.0d; float floatVar = (float) doubleVar; long longVar = (long)floatVar; int intVar = (int)longVar; short shortVar = (short)intVar; byte byteVar = (byte) shortVar;  当从浮点数元素（float, double）向整数值转换的时候，这个数字是向下取整的。
+2. 基础数字提升 static void testNumericPromotion() { char char1 = 1, char2 = 2; short short1 = 1, short2 = 2; int int1 = 1, int2 = 2; float float1 = 1.</description>
     </item>
     
     <item>
