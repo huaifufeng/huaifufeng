@@ -187,6 +187,10 @@
 <li><a href="#1-生成器的优点">1. 生成器的优点</a></li>
 <li><a href="#2-使用icicle时间循环">2. 使用Icicle时间循环</a></li>
 <li><a href="#3-proc-open-生成非阻塞进程">3. proc_open()生成非阻塞进程</a></li>
+<li><a href="#4-使用事件和dio读取串行接口">4. 使用事件和DIO读取串行接口</a></li>
+<li><a href="#5-event扩展的http客户端">5. Event扩展的HTTP客户端</a></li>
+<li><a href="#6-基于ev扩展的http客户端请求">6. 基于Ev扩展的HTTP客户端请求</a></li>
+<li><a href="#7-使用amp事件循环">7 使用AMP事件循环</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -287,6 +291,629 @@ for ($i = 0; $i &lt; 5; $i++) {
 <li>循环，直到所有的子进程结束，使用<a href="https://www.php.net/manual/zh/function.proc-get-status.php">proc_get_status()</a>进行判断</li>
 <li>在子进程中使用<a href="https://www.php.net/manual/zh/function.fclose.php">fclose()</a>使用输出管道关闭文件句柄，使用<a href="https://www.php.net/manual/zh/function.proc-close.php">proc_close()</a>关闭进程句柄</li>
 </ul>
+
+<pre><code class="language-php">&lt;?php
+//non-blocking-proc_open.php
+//每个子进程的文件描述
+$descriptors = [
+    0 =&gt; ['pipe', 'r'], //stdin
+    1 =&gt; ['pipe', 'w'], //stdout
+];
+
+$pipes = [];
+$processes = [];
+foreach (range(1, 3) as $i) {
+    //生成子进程
+    $proc = proc_open(&quot;php subprocess.php proc&quot; . $i, $descriptors, $procPipes);
+    $processes[$i] = $proc;
+    //设置子进程非阻塞 只是输出管道
+    stream_set_blocking($procPipes[1], 0);
+    $pipes[$i] = $procPipes;
+}
+
+//运行循环直到所有子进程执行完毕
+while(array_filter($processes, function($proc) { return proc_get_status($proc)['running'];})) {
+    foreach(range(1, 3) as $i) {
+        usleep(10 * 1000); //10ms
+        //读取所有有效的输出
+        $str = fread($pipes[$i][1], 1024);
+        if ($str) {
+            printf($str);
+        }
+    }
+}
+
+//关闭所有管道和进程
+foreach(range(1, 3) as $i) {
+    fclose($pipes[$i][1]);
+    proc_close($processes[$i]);
+}
+</code></pre>
+
+<p>然后输出来自3个子进程的混合体，正如fread()读取的一样(注意，在本示例中，<code>proc1</code>的结束时间早于另外两个)。</p>
+
+<pre><code class="language-shell">$ php non-blocking-proc_open.php
+proc1 delay: 200ms
+proc2 delay: 1000ms
+proc3 delay: 800ms
+proc1: 0
+proc1: 1
+proc1: 2
+proc1: 3
+proc3: 0
+proc1: 4
+proc2: 0
+proc3: 1
+proc2: 1
+proc3: 2
+proc2: 2
+proc3: 3
+proc2: 3
+proc3: 4
+proc2: 4
+</code></pre>
+
+<h3 id="4-使用事件和dio读取串行接口">4. 使用事件和DIO读取串行接口</h3>
+
+<p><a href="https://www.php.net/manual/zh/book.event.php">Event</a>扩展现在不能够识别<a href="https://www.php.net/manual/zh/book.dio.php">DIO流</a>。没有很好的方法来获取封装在DIO资源中的文件描述符。但是有一个解决办法：</p>
+
+<ul>
+<li>使用<code>fopen()</code>打开某个端口的流</li>
+<li>设置这个流不阻塞使用<code>stream_set_blocking()</code></li>
+<li>使用<a href="https://www.php.net/manual/zh/eventutil.getsocketfd.php">EventUtil::getSocketFd()</a>从流中获取数字文件描述符</li>
+<li>然后将数字文件描述符传递给<code>dio_fdopen()</code>(当前没有记录)，然后获取DIO资源</li>
+<li>在文件描述符上面添加一个回调Event，监听读取<code>Event</code></li>
+<li>在回调中读取有效的数据，然后根据你应用的逻辑进行处理</li>
+</ul>
+
+<p><strong>dio.php</strong></p>
+
+<pre><code class="language-php">&lt;?php
+class Scanner {
+    protected $port;  //端口地址 例如 /dev/pts/5
+    protected $fd; //数字文件描述符
+    protected $base; //EventBase
+    protected $dio; //dio资源
+    protected $e_open; //Event
+    protected $e_read; //Event
+    
+    public function __construct($port) {
+        $this-&gt;port = $port;
+        $this-&gt;base = new EventBase();
+    }
+    
+    public function __destruct() {
+        $this-&gt;base-&gt;exit();
+        
+        if ($this-&gt;e_open) {
+            $this-&gt;e_open-&gt;free();
+        }
+        if ($this-&gt;e_read) {
+            $this-&gt;e_read-&gt;free();
+        }
+        if ($this-&gt;dio) {
+            dio_close($this-&gt;dio);
+        }
+    }
+    
+    public function run() {
+        $stream = fopen($this-&gt;port, 'rb');
+        stream_set_blocking($stream, false);
+        
+        $this-&gt;fd = EventUtil::getSocketFd($stream);
+        if ($this-&gt;fd &lt; 0) {
+            fprintf(STDERR, &quot;Failed attach to port, events: %d\n&quot;, $events);
+            return;
+        }
+        
+        $this-&gt;e_open = new Event($this-&gt;base, $this-&gt;fd, Event::WRITE, [$this, '_onOpen']);
+        $this-&gt;e_open-&gt;add();
+        $this-&gt;base-&gt;dispatch();
+        
+        fclose($stream);
+    }
+    
+    public function _onOpen($fd, $events) {
+        $this-&gt;e_open-&gt;del();
+        
+        $this-&gt;dio = dio_fdopen($this-&gt;fd);
+        //调用dio其他方法
+        dio_tcsetattr($this-&gt;dio, [
+            'baud' =&gt; 9600,
+            'bits' =&gt; 8,
+            'stop' =&gt; 1,
+            'parity' =&gt; 0
+        ]);
+        
+        $this-&gt;e_read = new Event($this-&gt;base, $this-&gt;fd, Event::READ|Event::PERSIST, [$this, '_onRead']);
+        $this-&gt;e_read-&gt;add();
+    }
+    
+    public function _onRead($fd, $events) {
+        while ($data = dio_read($this-&gt;dio, 1)) {
+            var_dump($data);
+        }
+    }
+}
+
+//修改端口参数
+$scanner = new Scanner('/dev/pts/5');
+$scanner-&gt;run();
+</code></pre>
+
+<p><strong>测试</strong></p>
+
+<p>在终端A上运行下面的命令：</p>
+
+<pre><code class="language-php">$ socat -d -d pty,raw,echo=0 pty,raw,echo=0
+2016/12/01 18:04:06 socat[16750] N PTY is /dev/pts/5
+2016/12/01 18:04:06 socat[16750] N PTY is /dev/pts/8
+2016/12/01 18:04:06 socat[16750] N starting data transfer loop with FDs [5,5] and [7,7]
+</code></pre>
+
+<p>输出可能是不同的。使用前两行中的PTYs（这里是<code>/dev/pts/5</code>和<code>/dev/pts/8</code>）。</p>
+
+<p>在终端B中运行上面提到的脚本。你可能需要root权限。</p>
+
+<pre><code class="language-shell">$ sudo php dio.php
+</code></pre>
+
+<p>在终端C中发送下面的内容到第一个PTY：</p>
+
+<pre><code class="language-shell">$ echo test &gt; /dev/pts/8
+string(1) &quot;t&quot;
+string(1) &quot;e&quot;
+string(1) &quot;s&quot;
+string(1) &quot;t&quot;
+string(1) &quot;
+&quot;
+</code></pre>
+
+<h3 id="5-event扩展的http客户端">5. Event扩展的HTTP客户端</h3>
+
+<p>这是一个简单的际遇Event扩展的HTTP客户端。</p>
+
+<p>这个类允许发送一系列的HTTP请求，然后异步的运行它们。</p>
+
+<p>http-client.php</p>
+
+<pre><code class="language-php">&lt;?php
+class MyHttpClient {
+   //@var EventBase
+   protected $base;
+   //@var EventHttpConnection的数组实例
+   protected $connections = [];
+   
+   public function __construct() {
+       $this-&gt;base = new EventBase();
+   }
+  
+  /**
+   * 分发所有等待中的请求
+   *
+   * @return void
+   */
+  public function run() {
+      $this-&gt;base-&gt;dispatch();
+  }
+  
+  public function __destruct() {
+      //显式销毁连接，不等待GC
+      //否则，EventBase可以更早的释放
+      $this-&gt;connections = null;
+  }
+  
+  /**
+   * @brief 添加一个等待的HTTP请求
+   *
+   * @param string $address Hostname或者IP
+   * @param int $port 端口号
+   * @param array $headers 额外的HTTP头
+   * @param int $cmd 一个EventHttpRequest::CMD_*_constant
+   * @param string $resource HTTP请求资源 '/page?a=b&amp;c=d'
+   *
+   * @return EventHttpRequest|false
+   */
+  public function addRequest($address, $port, array $headers, $cmd = EventHttpRequest::CMD_GET, $resource = '/') {
+      $conn = new EventHttpConnection($this-&gt;base, null, $address, $port);
+      $conn-&gt;setTimeout(5);
+    
+      $req = new EventHttpRequest([$this, '_requestHandler'], $this-&gt;base);
+      
+      foreach($headers as $k =&gt; $v) {
+          $req-&gt;addHeader($k, $v, EventHttpRequest::OUTPUT_HEADER);
+      }
+      $req-&gt;addHeader('Host', $address, EventHttpRequest::OUTPUT_HEADER);
+      $req-&gt;addHeader('Connection', 'close', EventHttpRequest::OUTPUT_HEADER);
+      if($conn-&gt;makeRequest($req, $cmd, $resource)) {
+          $this-&gt;connections[] = $conn;
+          return $req;
+      }
+    
+      return false;
+  }
+  
+  /**
+   * @brief 处理HTTP请求
+   *
+   * @param EventHttpRequest $req
+   * @param mixed $unused
+   *
+   * @return void 
+   */ 
+  public function _requestHandler($req, $unused) {
+      if (is_null($req)) {
+          echo &quot;Timed out\n&quot;;
+      } else {
+          $response_code = $req-&gt;getResponseCode();
+        
+          if($response_code == 0) {
+              echo &quot;Connection refuesd\n&quot;;
+          } elseif ($response_code != 200) {
+              echo &quot;Unexpected response: $response_code\n&quot;;
+          } else {
+              echo &quot;Success: $response_code\n&quot;;
+              $buf = $req-&gt;getInputBuffer();
+              echo &quot;Body:\n&quot;;
+              while($s = $buf-&gt;readLine(EventBuffer::EOL_ANY)) {
+                  echo $s, PHP_EOL;
+              }
+          }
+      }
+  }
+}
+
+$address = &quot;my-host.local&quot;;
+$port = 80;
+$headers = ['User-Agent' =&gt; 'My-User-Agent/1.0',];
+
+$clients = new MyHttpClient();
+
+//添加等待的请求
+for ($i = 0; $i &lt; 10; $i++) {
+    $client-&gt;addRequest($address, $port, $headers, EventHttpRequest::CMD_GET, 'test.php/?a=' . $i);
+}
+
+//发起请求
+$client-&gt;run();
+</code></pre>
+
+<p><strong>test.php</strong></p>
+
+<p>这是服务端的简单示例脚本：</p>
+
+<pre><code class="language-php">&lt;?php
+echo 'GET: ', var_export($_GET, true), PHP_EOL;
+echo 'User-Agent: ', $_SERVER['HTTP_USER_AGENT'] ?? '(none)', PHP_EOL;
+</code></pre>
+
+<p><strong>用例</strong></p>
+
+<pre><code class="language-shell">php http-client.php
+</code></pre>
+
+<p>示例的输出</p>
+
+<pre><code>Success: 200
+Body:
+GET: array (
+    'a' =&gt; '1', 
+)
+User-Agent: My-User-Agent/1.0
+Success: 200
+Body:
+GET: array (
+    'a' =&gt; '0', 
+)
+User-Agent: My-User-Agent/1.0
+Success: 200
+Body:
+GET: array (
+    'a' =&gt; '3', 
+)
+...
+</code></pre>
+
+<p>注意，这个代码是设计在<a href="https://php.net/manual/en/features.commandline.introduction.php">CLI SAPI</a>中长期运行的。</p>
+
+<h3 id="6-基于ev扩展的http客户端请求">6. 基于Ev扩展的HTTP客户端请求</h3>
+
+<p>这个是基于<a href="https://pecl.php.net/package/ev">Ev</a>扩展的HTTP客户端请求例子。</p>
+
+<p>Ev扩展实现了一个简单但功能强大的通用Event循环。它不提供特定网络的观察者程序，但是<a href="http://docs.php.net/manual/zh/class.evio.php">I/O的观察者程序</a>可以用来异步处理<a href="http://docs.php.net/manual/zh/book.sockets.php">sockets</a>。</p>
+
+<p>下面的代码显式了如何安排HTTP的并行请求。</p>
+
+<p><strong>http-client.php</strong></p>
+
+<pre><code class="language-php">&lt;?php
+class MyHttpRequest {
+    // @var MyHttpClient
+    private $http_client;
+    // @var string
+    private $address; 
+    // @var string HTTP resource such as /page?get=param 
+    private $resource;
+    // @var string HTTP method such as GET, POST etc.
+    private $method;
+    // @var int
+    private $service_port; 
+    // @var resource Socket 
+    private $socket;
+    // @var double Connection timeout in seconds. 
+    private $timeout = 10.;
+    // @var int Chunk size in bytes for socket_recv()
+    private $chunk_size = 20;
+    // @var EvTimer
+    private $timeout_watcher;
+    // @var EvIo
+    private $write_watcher;
+    // @var EvIo
+    private $read_watcher;
+    // @var EvTimer
+    private $conn_watcher;
+    // @var string buffer for incoming data
+    private $buffer;
+    // @var array errors reported by sockets extension in non-blocking mode. 
+    private static $e_nonblocking = [
+        11, // EAGAIN or EWOULDBLOCK
+        115, // EINPROGRESS 
+    ];
+
+    /**
+     * @param MyHttpClient $client
+     * @param string $host Hostname, e.g. google.co.uk
+     * @param string $resource HTTP resource, e.g. /page?a=b&amp;c=d
+     * @param string $method HTTP method: GET, HEAD, POST, PUT etc.
+     * @throws RuntimeException
+     */
+    public function __construct(MyHttpClient $client, $host, $resource, $method) {
+        $this-&gt;http_client = $client;
+        $this-&gt;host = $host;
+        $this-&gt;resource = $resource;
+        $this-&gt;method = $method;
+      
+        // 获取http服务器的端口
+        $this-&gt;service_port = getservbyname('www', 'tcp'); 
+        // 获取host的ip地址
+        $this-&gt;address = gethostbyname($this-&gt;host);
+        //创建一个TCP/IP socket
+        $this-&gt;socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        if (!$this-&gt;socket) {
+            throw new RuntimeException(&quot;socket_create() failed: reason: &quot; .         socket_strerror(socket_last_error()));
+        }
+      
+        // 设置进程非阻塞
+        socket_set_nonblock($this-&gt;socket);
+        $this-&gt;conn_watcher = $this-&gt;http_client-&gt;getLoop()-&gt;timer(0, 0., [$this, 'connect']);
+    }
+  
+    public function __destruct() {
+        $this-&gt;close();
+    }
+  
+    public function freeWatcher(&amp;$w) {
+        if ($w) {
+            $w-&gt;stop();
+            $w = null;
+        }
+    }
+  
+    /**
+     * 释放所有的请求资源
+     */
+    public function close() {
+        if ($this-&gt;socket) {
+            socket_close($this-&gt;socket);
+            $this-&gt;socket = null;
+        }
+      
+        $this-&gt;freeWatcher($this-&gt;timeout_watcher);
+        $this-&gt;freeWatcher($this-&gt;read_watcher);
+        $this-&gt;freeWatcher($this-&gt;write_watcher);
+        $this-&gt;freeWatcher($this-&gt;conn_watcher);
+    }
+  
+    /**
+     * 初始化一个socket连接
+     * return bool
+     */
+    public function connect() {
+        $loop = $this-&gt;http_client-&gt;getLoop();
+      
+        $this-&gt;timeout_watcher = $loop-&gt;timer($this-&gt;timeout, 0, [$this, '_onTimeout']);
+        $this-&gt;write_watcher = $loop-&gt;io($this-&gt;socket, Ev::WRITE, [$this, '_onWritable']);
+      
+        return socket_connect($this-&gt;socket, $this-&gt;address, $this-&gt;service_port);
+    }
+    
+    /**
+     * 超时观察者程序的回调程序
+     */
+    public function _onTimeout(EvTimer $w) {
+        $w-&gt;stop();
+        $this-&gt;close();
+    }
+  
+    /**
+     * socket变为可写时的回调方法
+     */
+    public function _onWritable(EvIo $w) {
+        $this-&gt;timeout_watcher-&gt;stop(); 
+        $w-&gt;stop();
+
+        $in = implode(&quot;\r\n&quot;, [
+            &quot;{$this-&gt;method} {$this-&gt;resource} HTTP/1.1&quot;, 
+            &quot;Host: {$this-&gt;host}&quot;,
+            'Connection: Close',
+        ]) . &quot;\r\n\r\n&quot;;
+      
+        if (!socket_write($this-&gt;socket, $in, strlen($in))) { 
+            trigger_error(&quot;Failed writing $in to socket&quot;, E_USER_ERROR); 
+            return;
+        }
+      
+        $loop = $this-&gt;http_client-&gt;getLoop();
+        $this-&gt;read_watcher = $loop-&gt;io($this-&gt;socket, Ev::READ, [$this, '_onReadable']);
+
+        // Continue running the loop
+        $loop-&gt;run();
+    }
+   
+    /**
+     * 可读时的回调方法
+     */
+    public function _onReadable(EvIo $w) {
+        // recv() 20 bytes in non-blocking mode
+        $ret = socket_recv($this-&gt;socket, $out, 20, MSG_DONTWAIT);
+        
+        if ($ret) {
+        // 有数据就把数据追加大buffer中
+            $this-&gt;buffer .= $out;
+        } elseif ($ret === 0) {
+        // 读完之后
+            printf(&quot;\n&lt;&lt;&lt;&lt;\n%s\n&gt;&gt;&gt;&gt;&quot;, rtrim($this-&gt;buffer)); 
+            fflush(STDOUT);
+            $w-&gt;stop();
+            $this-&gt;close();
+            return;
+        }
+        
+        // Caught EINPROGRESS, EAGAIN, or EWOULDBLOCK
+        if (in_array(socket_last_error(), static::$e_nonblocking)) {
+            return;
+        }
+      
+        $w-&gt;stop();
+        $this-&gt;close();
+    }
+}    
+
+/////////////////////////////////////
+class MyHttpClient {
+    // @var array Instances of MyHttpRequest 
+    private $requests = [];
+    // @var EvLoop
+    private $loop;
+
+    public function __construct() {
+        // Each HTTP client runs its own event loop 
+        $this-&gt;loop = new EvLoop();
+    }
+    
+    public function __destruct() { 
+        $this-&gt;loop-&gt;stop();
+    }
+  
+    /**
+     * @return EvLoop
+     */
+    public function getLoop() { 
+        return $this-&gt;loop;
+    }
+    
+    /**
+     * Adds a pending request
+     */
+    public function addRequest(MyHttpRequest $r) { 
+        $this-&gt;requests []= $r;
+    }
+  
+    /**
+     * Dispatches all pending requests
+     */
+    public function run() { 
+        $this-&gt;loop-&gt;run();
+    } 
+}
+
+///////////////////////////////////// // Usage
+$client = new MyHttpClient(); 
+foreach (range(1, 10) as $i) {
+    $client-&gt;addRequest(new MyHttpRequest($client, 'my-host.local', '/test.php?a=' . $i, 'GET')); 
+}
+$client-&gt;run();
+</code></pre>
+
+<p><strong>测试</strong></p>
+
+<p>假设<code>http://my-host.local/test.php</code>脚本在打印输出<code>$_GET</code>：</p>
+
+<pre><code class="language-php">&lt;?php
+echo 'GET: ', var_export($_GET, true), PHP_EOL;
+</code></pre>
+
+<p><code>php http-client.php</code>的输出和下面的内容相似：</p>
+
+<pre><code>&lt;&lt;&lt;&lt;
+HTTP/1.1 200 OK
+Server: nginx/1.10.1
+Date: Fri, 02 Dec 2016 12:39:54 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: close
+X-Powered-By: PHP/7.0.13-pl0-gentoo
+
+1d
+GET: array (
+    'a' =&gt; '3', 
+)
+
+0
+&gt;&gt;&gt;&gt;
+&lt;&lt;&lt;&lt;
+HTTP/1.1 200 OK
+Server: nginx/1.10.1
+Date: Fri, 02 Dec 2016 12:39:54 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: close
+X-Powered-By: PHP/7.0.13-pl0-gentoo
+
+1d
+GET: array (
+    'a' =&gt; '2', 
+)
+
+0 
+&gt;&gt;&gt;&gt; 
+...
+</code></pre>
+
+<p>注意：PHP 5的socket扩展可能会输出<code>EINPROGRESS</code>, <code>EAGAIN</code>, <code>EWOULDBLOCK</code>的<code>errno</code>值。可以通过<code>error_reporting(E_ERROR);</code>关闭日志。</p>
+
+<h3 id="7-使用amp事件循环">7 使用AMP事件循环</h3>
+
+<p>使用AMP实现。</p>
+
+<pre><code class="language-php">require __DIR__ . '/vendor/autoload.php';
+
+use Amp\Dns;
+
+// Try our system defined resolver or googles, whichever is fastest
+function queryStackOverflow($recordtype) { 
+    $requests = [
+        Dns\query(&quot;stackoverflow.com&quot;, $recordtype),
+        Dns\query(&quot;stackoverflow.com&quot;, $recordtype, [&quot;server&quot; =&gt; &quot;8.8.8.8&quot;]),
+    ];
+    // returns a Promise resolving when the first one of the requests resolves
+    return yield Amp\first($request);
+}
+
+\Amp\run(function() { // main loop, implicitly a coroutine 
+    try {
+        // convert to coroutine with Amp\resolve()
+        $promise = Amp\resolve(queryStackOverflow(Dns\Record::NS)); 
+        list($ns, $type, $ttl) = // we need only one NS result, not all
+            current(yield Amp\timeout($promise, 2000 /* milliseconds */)); 
+        echo &quot;The result of the fastest server to reply to our query was $ns&quot;;
+    } catch (Amp\TimeoutException $e) {
+        echo &quot;We've heard no answer for 2 seconds! Bye!&quot;;
+    } catch (Dns\NoRecordException $e) {
+        echo &quot;No NS records there? Stupid DNS nameserver!&quot;;
+    }
+});
+</code></pre>
 
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
