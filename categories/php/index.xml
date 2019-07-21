@@ -6,10 +6,49 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 09 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 12 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（七十三）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-73.html</link>
+      <pubDate>Wed, 12 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-73.html</guid>
+      <description>PHP中使用YAML 1. 安装YAML扩展 YAML不能使用PHP标准方式安装，需要使用PECL扩展进行安装。在Linux/Unix可以像下面这样安装：
+pecl install yaml  注意，系统上必须安装libyaml-dev包，PECL扩展只是libYAML的简单封装。
+在Windows上安装就更简单了，只需要下载编译好的dll文件或者从源码中进行编译就好了。
+2. 使用YAML存储应用配置 YAML提供了一种存储结构化数据的方式。这个数据可以是简单的键值对数据，也可以是复杂的层次数据，其中值甚至是数组。
+查看下面的YAML文件：
+database: driver: mysql host: database.mydomain.com port: 3306 db_name: sample_db user: myuser password: Passw0rd debug: true country: us  我们把这个文件保存到config.yaml。然后使用下面的代码在PHP中读取文件的内容：
+$config = yaml_parse_file(&#39;config.yaml&#39;); print_r($config);  print_r将会输出下面的内容：
+Array ( [database] =&amp;gt; Array ( [driver] =&amp;gt; mysql [host] =&amp;gt; database.mydomain.com [port] =&amp;gt; 3306 [db_name] =&amp;gt; sample_db [user] =&amp;gt; myuser [password] =&amp;gt; Passw0rd ) [debug] =&amp;gt; 1 [country] =&amp;gt; us )  现在就可以使用数组的元素访问访问配置：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（七十二）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-72.html</link>
+      <pubDate>Tue, 11 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-72.html</guid>
+      <description>PHP创建PDF文件 1. PDFlib初探 下面代码的实现依赖于PDFlib扩展。
+&amp;lt;?php //初始化一个新对象 $pdf = pdf_new(); //创建一个新的空白pdf pdf_begin_document($pdf); pdf_set_info($pdf, &amp;quot;Author&amp;quot;, &amp;quot;王子&amp;quot;); //设置pdf信息 pdf_set_info($pdf, &#39;Title&#39;, &amp;quot;HelloWorld&amp;quot;); pdf_begin_page($pdf, (72 * 8.5), (72 * 11)); //指定页面的长宽 $font = pdf_findfont($pdf, &amp;quot;Times-Roman&amp;quot;, &amp;quot;host&amp;quot;, 0); //加载字体 pdf_set_font($pdf, $font, 48); //设置字体 pdf_set_text_pos($pdf, 50, 700); //设置文本位置 pdf_show($pdf, &amp;quot;Hello World!&amp;quot;); pdf_end_page($pdf); pdf_end_document($pdf); $document = pdf_get_buffer($pdf); //获取缓存内容 $length = strlen($document); $filename = &amp;quot;HelloWorld.pdf&amp;quot;; //Finds PDF length and assigns file name header(&amp;quot;Content-Type:application/pdf&amp;quot;); header(&amp;quot;Content-Length:&amp;quot; . $length); header(&amp;quot;Content-Disposition:inline; filename=&amp;quot; .</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（七十一）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-71.html</link>
+      <pubDate>Mon, 10 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-71.html</guid>
+      <description>如何获取客户端IP 1. 正确的使用HTTP_X_FORWARDED_FOR 鉴于最近的httpproxy漏洞，还有另一个变量被广泛使用。
+HTTP_X_FORWARDED_FOR经常被用来获客户端IP，如果不做额外的检查，这会导致安全问题，特别是之后将这个IP用作身份认证或者不进行处理的SQL查询中。
+大多数可用的代码示例中忽略了这样一个事实，HTTP_X_FORWARDED_FOR实际是客户端自己提供的信息，因此不是作为获取客户端IP有效来源。一些例子确实添加了对可能误用的警告，但任然缺少对这些代码本身的额外检查。
+下面这个是PHP实现的例子，用来获取客户端的IP地址。如果你知道客户端可能使用代理，并且这个代理是可以信任的话。如果你不信任这个代理，你只能使用REMOTE_ADDR。
+function get_client_ip() { //如果没有有效信息，什么都不做 if (!isset($_SERVER[&#39;REMOTE_ADDR&#39;])) { return NULL; } //如果信任代理，从代理获取IP $proxy_header = &#39;HTTP_X_FORWARDED_FOR&#39;; //所有信任的代理，用来处理&#39;proxy_header&#39; $trusted_proxies = [&amp;quot;2001:db8::1&amp;quot;, &amp;quot;192.168.50.1&amp;quot;]; if (in_array($SERVER[&#39;REMOTE_ADDR&#39;], $trusted_proxies)) { //从代理中获取客户端ip if (array_key_exists($proxy_header, $_SERVER)) { //header里面可能包含多个代理传过来的ip，只有最后一个是可以信任的 $client_ip = trim(end(expolod(&amp;quot;,&amp;quot;, $_SERVER[$proxy_header]))); if (filter_var($client_ip, FILTER_VALIDATE_IP)) { return $client_ip; } else { //验证失败的处理 } } } //其他情况下，REMOTE_ADDR是唯一信任的ip return $_SERVER[&#39;REMOTE_ADDR&#39;]; } print get_client_ip();  参考：PHP® Notes for Professionals book</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（七十）</title>

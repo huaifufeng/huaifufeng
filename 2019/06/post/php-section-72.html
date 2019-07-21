@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="处理稀疏或丢失的数据">
+    <meta name="description" content="PHP创建PDF文件">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(五十七)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（七十二）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-57.html">
+    <link rel="canonical" href="/2019/06/post/php-section-72.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(五十七)</h1>
+                    <h1>PHP专业笔记（七十二）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, June 10, 2019
+                    <span  class="meta">Posted by 怀府风 on Tuesday, June 11, 2019
                         
                     </span>
                 </div>
@@ -182,9 +182,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#处理稀疏或丢失的数据">处理稀疏或丢失的数据</a>
+<li><a href="#php创建pdf文件">PHP创建PDF文件</a>
 <ul>
-<li><a href="#1-处理包含null值的列">1.  处理包含NULL值的列</a></li>
+<li><a href="#1-pdflib初探">1. PDFlib初探</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -192,120 +192,43 @@
         		
         		
 
-<h2 id="处理稀疏或丢失的数据">处理稀疏或丢失的数据</h2>
+<h2 id="php创建pdf文件">PHP创建PDF文件</h2>
 
-<h3 id="1-处理包含null值的列">1.  处理包含NULL值的列</h3>
+<h3 id="1-pdflib初探">1. PDFlib初探</h3>
 
-<p>在MySQL和其他的SQL语言中，NULL是一个特殊的属性。</p>
+<p>下面代码的实现依赖于<a href="https://www.php.net/manual/zh/ref.pdf.php">PDFlib扩展</a>。</p>
 
-<p>考虑有下面的表，其中包括求职者信息、他们的公司以及他们离开公司的时间。NULL值表示这个人还在公司中工作:</p>
+<pre><code class="language-php">&lt;?php
+//初始化一个新对象
+$pdf = pdf_new();
 
-<pre><code class="language-mysql">CREATE TABLE example
-(`applicant_id` INT, `company_name` VARCHAR(255), `end_date` DATE);
+//创建一个新的空白pdf
+pdf_begin_document($pdf);
+    pdf_set_info($pdf, &quot;Author&quot;, &quot;王子&quot;); //设置pdf信息
+    pdf_set_info($pdf, 'Title', &quot;HelloWorld&quot;);
+        pdf_begin_page($pdf, (72 * 8.5), (72 * 11)); //指定页面的长宽
+            $font = pdf_findfont($pdf, &quot;Times-Roman&quot;, &quot;host&quot;, 0);  //加载字体
+            pdf_set_font($pdf, $font, 48); //设置字体
+            pdf_set_text_pos($pdf, 50, 700); //设置文本位置
+            pdf_show($pdf, &quot;Hello World!&quot;);
+        pdf_end_page($pdf);
+pdf_end_document($pdf);
 
- +--------------+-----------------+------------+
- | applicant_id | company_name    | end_date   |
- +--------------+-----------------+------------+
- |            1 | Google          | NULL       |
- |            1 | Initech         | 2013-01-31 |
- |            2 | Woodworking.com | 2016-08-25 |
- |            2 | NY Times        | 2013-11-10 |
- |            3 | NFL.com         | 2014-04-13 |
- +--------------+-----------------+------------+
+$document = pdf_get_buffer($pdf); //获取缓存内容
+
+$length = strlen($document); 
+$filename = &quot;HelloWorld.pdf&quot;; //Finds PDF length and assigns file name
+
+header(&quot;Content-Type:application/pdf&quot;);
+header(&quot;Content-Length:&quot; . $length);
+header(&quot;Content-Disposition:inline; filename=&quot; . $filename);
+
+echo($document); //Send document to browser
+unset($document); pdf_delete($pdf); //Clear Memory 
+?&gt;
 </code></pre>
 
-<p>你的任务是使用一个查询获取所有在<code>2016-01-01</code>之后的记录，包括还在公司工作的员工记录(那些NULL的值)，下面这个查询语句：</p>
-
-<pre><code class="language-mysql">SELECT * FROM example WHERE end_date &gt; '2016-01-01';
-</code></pre>
-
-<p>将不会包含<code>NULL</code>值的记录：</p>
-
-<pre><code>+--------------+-----------------+------------+
-| applicant_id | company_name    | end_date   |
-+--------------+-----------------+------------+
-|            2 | Woodworking.com | 2016-08-25 |
-+--------------+-----------------+------------+
-</code></pre>
-
-<p>在<a href="https://dev.mysql.com/doc/refman/5.7/en/working-with-null.html">Mysql手册</a>中，当使用比较运算符<code>&lt;, &gt;, =, &lt;&gt;</code>的时候，返回NULL而不是<code>TRUE</code>或<code>FALSE</code>。因此一个<code>NULL</code>不会大于<code>2016-01-01</code>，也不会小于<code>2016-01-01</code>。</p>
-
-<p>这可以通过使用<code>IS NULL</code>来解决：</p>
-
-<pre><code class="language-mysql">SELECT * FROM example WHERE end_date &gt; '2016-01-01' OR end_date IS NULL;
-
- +--------------+-----------------+------------+
- | applicant_id | company_name    | end_date   |
- +--------------+-----------------+------------+
- |            1 | Google          | NULL       |
- |            2 | Woodworking.com | 2016-08-25 |
- +--------------+-----------------+------------+
-</code></pre>
-
-<p>当语句包含聚合函数像<code>MAX()</code>和<code>GROUP BY</code>语句的时候，如果列中包含NULL将会变得复杂。如果您的任务是为每个申请人选择最新雇用日期，则以下查询似乎是合乎逻辑的首次尝试：</p>
-
-<pre><code class="language-mysql">SELECT applicant_id, MAX(end_date) FROM example GROUP BY applicant_id;
-
- +--------------+---------------+
- | applicant_id | MAX(end_date) |
- +--------------+---------------+
- |            1 | 2013-01-31    |
- |            2 | 2016-08-25    |
- |            3 | 2014-04-13    |
- +--------------+---------------+
-</code></pre>
-
-<p>然而，我们知道<code>NULL</code>值表示这个申请人还在公司工作，结果的第一行是不准确的。使用<code>CASE WHEN</code>来解决<code>NULL</code>的问题：</p>
-
-<pre><code class="language-mysql">SELECT 
-    applicant_id,
-    CASE WHEN MAX(end_date is null) = 1 THEN 'present' ELSE MAX(end_date) END
-    max_date
-FROM example
-GROUP BY applicant_id;
-
- +--------------+------------+
- | applicant_id | max_date   |
- +--------------+------------+
- |            1 |    present |
- |            2 | 2016-08-25 |
- |            3 | 2014-04-13 |
- +--------------+------------+
-</code></pre>
-
-<p>此结果可加入到原始示例表中，以确定申请人上次工作的公司：</p>
-
-<pre><code class="language-mysql">SELECT 
-    data.applicant_id, 
-    data.company_name, 
-    data.max_date
-FROM ( 
-    SELECT
-      *,
-    CASE WHEN end_date is null THEN 'present' ELSE end_date END max_date 
-  FROM example
-) data
-INNER JOIN (
-   SELECT
-   applicant_id,
-    CASE WHEN MAX(end_date is null) = 1 THEN 'present' ELSE MAX(end_date) END max_date FROM
-    example
-GROUP BY applicant_id
-) j
-ON data.applicant_id = j.applicant_id AND data.max_date = j.max_date;
-
-+--------------+-----------------+------------+
-| applicant_id | company_name    | max_date   |
-+--------------+-----------------+------------+
-|            1 | Google          | present    |
-|            2 | Woodworking.com | 2016-08-25 |
-|            3 | NFL.com         | 2014-04-13 |
-+--------------+-----------------+------------+
-</code></pre>
-
-<p>这只是MySQL中关于<code>NULL</code>的很少的一部分例子。</p>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -314,12 +237,12 @@ ON data.applicant_id = j.applicant_id AND data.max_date = j.max_date;
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/php-section-71.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七十一）">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-57.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十七)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/php-section-72.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七十二）">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-58.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十八)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
