@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="一对多关系">
+    <meta name="description" content="GD处理图片">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（七十四）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-60.html">
+    <link rel="canonical" href="/2019/06/post/php-section-74.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,12 +145,12 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十)</h1>
+                    <h1>PHP专业笔记（七十四）</h1>
                     <h2 class="subheading"></h2>
                     <span  class="meta">Posted by 怀府风 on Thursday, June 13, 2019
                         
@@ -182,11 +182,11 @@
 <ul>
 <li>
 <ul>
-<li><a href="#一对多关系">一对多关系</a>
+<li><a href="#gd处理图片">GD处理图片</a>
 <ul>
-<li><a href="#1-company表示例">1. Company表示例</a></li>
-<li><a href="#2-获取某个经理管理的雇员">2. 获取某个经理管理的雇员</a></li>
-<li><a href="#3-获取雇员的经历">3. 获取雇员的经历</a></li>
+<li><a href="#1-图片输出">1. 图片输出</a></li>
+<li><a href="#2-创建图片">2. 创建图片</a></li>
+<li><a href="#3-图片裁剪和缩放">3. 图片裁剪和缩放</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -194,57 +194,179 @@
         		
         		
 
-<h2 id="一对多关系">一对多关系</h2>
+<h2 id="gd处理图片">GD处理图片</h2>
 
-<p>一对多(1:M)的概念涉及行之间的连接，特别是一个表中的一行对应另一个表中的多行的情况。</p>
+<h3 id="1-图片输出">1. 图片输出</h3>
 
-<p>1:M 是一种指向，也就是说查询1:M关系时，都可以使用&rdquo;一&rdquo;行在另一个表中找到&rdquo;多&rdquo;行，但不能使用单个&rdquo;多&rdquo;行找到多个&rdquo;单&rdquo;行。</p>
+<p>可以使用<code>image*函数</code>创建图片，这里<code>*</code>是指文件的格式。</p>
 
-<h3 id="1-company表示例">1. Company表示例</h3>
+<p>它们具有相同的语法：</p>
 
-<p>假设有一个企业表，其中每个雇员都有一个经理，这个经理关联一个或多个雇员，并且每个雇员都只有一个经理。</p>
-
-<p>两个表中有下面的数据：</p>
-
-<pre><code>EMPLOYEES
-EMP_ID FIRST_NAME LAST_NAME  MGR_ID
-E01    Johnny     Appleseed  M02
-E02    Erin       Macklemore M01
-E03    Colby      Paperwork  M03
-E04    Ron        Sonswan    M01
-       
-MANAGERS
-MGR_ID FIRST_NAME LAST_NAME
-M01    Loud       McQueen
-M02    Bossy      Pants
-M03    Barrel     Jones
+<pre><code class="language-php">bool image___(resource $im [, mixed $to [ other parameters]] )
 </code></pre>
 
-<h3 id="2-获取某个经理管理的雇员">2. 获取某个经理管理的雇员</h3>
+<p><strong>保存到一个文件</strong></p>
 
-<pre><code class="language-mysql">SELECT e.emp_id, e.first_name, e.last_name FROM employees e JOIN managers m ON m.mgr_id=e.mgr_id WHERE m.mgr_id = 'M01';
+<p>如果你想把一个图片保存为一个文件，可以在<code>$to</code>中传入一个图片的地址或者打开的流。如果传入了一个流，你不需要自己关闭，因为GD会自动的关闭它。</p>
 
--- 结果
-EMP_ID FIRST_NAME LAST_NAME
-E02    Erin       Macklemore
-E04    Ron        Sonswan
+<pre><code class="language-php">imagepng($image, &quot;/path/to/target/file.png&quot;);
+
+$stream = fopen(&quot;phar://path/to/target.phar/file.png&quot;, &quot;wb&quot;); 
+imagepng($image2, $stream);
+// Don't fclose($stream)
 </code></pre>
 
-<p>最后，对于我们查询的每个经理，我们将看到一个或多个员工返回。</p>
+<p>当使用<code>fopen</code>的时候，这里使用<code>b</code>而不是<code>t</code>，因为文件是二进制输出的。</p>
 
-<h3 id="3-获取雇员的经历">3. 获取雇员的经历</h3>
+<p>不要试着传入<code>fopen(&quot;php://temp&quot;, $f)</code>或<code>fopen(&quot;php://memory&quot;, $f)</code>。因为这个流会在执行完毕后关闭，你就不能继续使用这个流了，比如获取流的内容。</p>
 
-<p>查看此示例时，请参考上面的示例表。</p>
+<p><strong>输出HTTP响应</strong></p>
 
-<pre><code class="language-mysql">SELECT m.mgr_id, m.first_name, m.last_name FROM managers m INNER JOIN employees e ON e.mgr_id = m.mgr_id WHERE e.emp_id = 'E03';
+<p>如果你想要图片作为图片的响应(例如创建一个动态的证章)，不需要在第二个参数传入任何信息(或者传入null)。然后在HTTP响应中需要制定内容类型：</p>
 
-MGR_ID FIRST_NAME LAST_NAME
-M03    Barrel     Jones
+<pre><code class="language-php">header(&quot;Content-Type: $mimeType&quot;);
 </code></pre>
 
-<p>因为这与上面的例子相反，我们知道对应我们查询的每个员工，我们只会看到一个对应的经理。</p>
+<p><code>$mimeType</code>是你返回的MIME格式化类型。例子中包含<code>image/png</code>，<code>image/gif</code>，<code>image/jpeg</code>。</p>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p><strong>写入变量</strong></p>
+
+<p>有两种方式写入一个变量中：</p>
+
+<p><strong>使用OB(输出缓存)</strong></p>
+
+<pre><code class="language-php">ob_start();
+imagepng($image, null, $quality); // pass null to supposedly write to stdout 
+$binary = ob_get_clean();
+</code></pre>
+
+<p><strong>使用流封装</strong></p>
+
+<p>你可能有很多理由不适用输出缓存。例如：你可能已经开启了OB。因此，另外的选项就可以使用了。</p>
+
+<p>使用<code>stream_wrapper_register</code>方法，可以注册一个新的流封装。因此你可以把这个流传入一个图片输出函数，之后就可以获取这个流。</p>
+
+<pre><code>&lt;?php
+class GlobalStream {
+    private $var;
+     
+    public function stream_open(string $path) {
+        $this-&gt;var = &amp;GLOBALs[parse_url($path)]['host'];
+        return true;
+    }
+    
+    public function stream_write(string $data) {
+        $this-&gt;var .= $data;
+        return strlen($data);
+    }
+}
+
+stream_wrapper_register(&quot;global&quot;, GlobalStream::class); 
+
+$image = imagecreatetruecolor(100, 100);
+imagefill($image, 0, 0, imagecolorallocate($image, 0, 0, 0));
+
+$stream = fopen(&quot;global://myImage&quot;, &quot;&quot;);
+imagepng($image, $stream);
+echo base64_encode($myImage);
+</code></pre>
+
+<p>在这个例子中<code>GlobalStream</code>将任何输入写入到一个引用变量中（直接写入提供名字的引用变量中）。这个全局变量之后可以获取。</p>
+
+<p>有几点需要注意：</p>
+
+<ul>
+<li>一个完全实现的流封装类需要像<a href="https://www.php.net/manual/zh/stream.streamwrapper.example-1.php">这样</a>一样。但是根据<code>__call</code>魔术方法的测试，只有<code>stream_open</code>，<code>stream_write</code>，<code>stream_close</code>从内部调用的</li>
+<li><code>fopen</code>不需要任何标记，但是你至少要传入一个空字符串。这是因为<code>fopen</code>需要这样的参数，即使在你的<code>stream_open</code>中没有使用，你也需要一个虚拟的实现</li>
+<li>根据测试，<code>stream_write</code>调用了多次。记得使用<code>.=拼接赋值</code>而不是<code>=赋值</code>。</li>
+</ul>
+
+<p><strong>用例</strong></p>
+
+<p>在HTML的<code>&lt;img&gt;</code>标签中，一个图片可以直接使用而不是外部链接：</p>
+
+<pre><code class="language-php">echo '&lt;img src=&quot;data:image/png;base64,' . base64_encode($binary) . '&quot;&gt;';
+</code></pre>
+
+<h3 id="2-创建图片">2. 创建图片</h3>
+
+<p>创建一个空白图片，使用<code>imagecreatetruecolor</code>函数：</p>
+
+<pre><code class="language-php">$img = imagecreatetruecolor($width, $height);
+</code></pre>
+
+<p><code>$img</code>现在是一个<code>$width$height</code>像素的图片的图片资源变量。注意宽度是从左到右，高度是从上到下。</p>
+
+<p>图片资源也可以使用<a href="https://www.php.net/manual/zh/ref.image.php">图片创建方法</a>创建：</p>
+
+<ul>
+<li>imagecreatefrompng</li>
+<li>imagecreatefromjpeg</li>
+<li>其他的<code>imagecreatefrom*</code>方法</li>
+</ul>
+
+<p>当没有引用到图片资源时，图片资源可以被释放。当图片不在使用的时候，使用<code>imagedestroy</code>来释放图片的内存是一个很好的做法(如果你处理多个图片，这非常重要)。</p>
+
+<pre><code class="language-php">imagedestroy($image);
+</code></pre>
+
+<p><strong>转换图片</strong></p>
+
+<p>由图像转换创建的图像在输出之前不会修改图像。因此，图像转换器可以简单到三行代码：</p>
+
+<pre><code class="language-php">function convertJpegToPng(string $filename, string $outputFile) { 
+    $im = imagecreatefromjpeg($filename);
+    imagepng($im, $outputFile);
+    imagedestroy($im);
+}
+</code></pre>
+
+<h3 id="3-图片裁剪和缩放">3. 图片裁剪和缩放</h3>
+
+<p>如果你有一个图片，想要创建新尺寸的图片，可以使用<code>imagecopyresampled</code>方法。</p>
+
+<p>首先创建一个期望尺寸的图片：</p>
+
+<pre><code class="language-php"> // new image
+$dst_img = imagecreatetruecolor($width, $height);
+</code></pre>
+
+<p>然后把原本的图片传入一个变量。这可以通过<code>createimagefrom*</code>方法来实现，这里<code>*</code>代表：</p>
+
+<ul>
+<li>jpeg</li>
+<li>gif</li>
+<li>png</li>
+<li>string</li>
+</ul>
+
+<p>例如：</p>
+
+<pre><code class="language-php">//original image
+$src_img=imagecreatefromstring(file_get_contents($original_image_path));
+</code></pre>
+
+<p>现在使用<code>imagecopyresampled</code>方法从原图片复制全部或者部分内容到新图片中：</p>
+
+<pre><code class="language-php">imagecopyresampled($dst_img, $src_img,
+    $dst_x ,$dst_y, $src_x, $src_y,
+    $dst_width, $dst_height, $src_width, $src_height);
+</code></pre>
+
+<p>要设置<code>set_*</code>和<code>src_*</code>，看下面的图片：</p>
+
+<p><img src="/img/php/6MFxN.jpg" alt="src" /></p>
+
+<p>现在，你想要把整个原图片复制到目标图片中：</p>
+
+<pre><code class="language-php">$src_x = $src_y = $dst_x = $dst_y = 0;
+$dst_width = $width;// width of new image
+$dst_height = $height; //height of new image
+$src_width = imagesx($src_img); //width of initial image 
+$src_height = imagesy($src_img); //height of initial image
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -253,12 +375,12 @@ M03    Barrel     Jones
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/php-section-74.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七十四）">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-59.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(五十九)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/php-section-75.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七十五）">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-60.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

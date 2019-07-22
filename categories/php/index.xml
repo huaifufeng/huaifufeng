@@ -6,10 +6,60 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 12 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 Jun 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（七十六）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-76.html</link>
+      <pubDate>Sat, 15 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-76.html</guid>
+      <description>SOP服务器 1. 基础SOP服务器 function test($x) { return $x; } $server = new SoapServer(null, array(&#39;uri&#39; =&amp;gt; &amp;quot;http://test-uri/&amp;quot;)); $server-&amp;gt;addFunction(&amp;quot;test&amp;quot;); $server-&amp;gt;handle();  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（七十五）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-75.html</link>
+      <pubDate>Fri, 14 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-75.html</guid>
+      <description>Imagick 1. 第一步 安装
+基于Debian的系统使用apt
+sudo apt-get install php5-imagick  OSX/macOS上使用Homebrew
+brew install imagemagick  想要查看brew安装的依赖，查看https://brewformulas.org/Imagemagick
+使用二进制版本
+Imagemagick网站的说明。
+用例
+&amp;lt;?php $imagen = new Imagick(&#39;imagen.jpg&#39;); $imagen-&amp;gt;thumbnailImage(100, 0); //if you put 0 in the parameter aspect ratio is maintained echo $imagen; ?&amp;gt;  2. 转换图片到base64字符串 下面的例子展示了怎么把图片转换为base64字符串(你可以在img表的src属性中使用的字符串)。这个例子使用Imagick扩展(其他的也是有效的，像GD扩展)。
+&amp;lt;?php /** * 这加载了图片image.jpg进行操作。 * 这个图片的路径是包含代码的php文件的相对地址, 所以在这个例子中，图片需要和代码在一个目录中 */ $img = new Imagick(&#39;image.jpg&#39;); /** * 这缩放图片，提供目标的长宽。如果你想要改变图片的分辨率，使用$img-&amp;gt;resampleimage(320, 240) * * 注意第二个参数可以为0，保持原图片的长宽比 */ $img-&amp;gt;resizeImage(320, 240); /** * 这返回图片未编码的字符串内容 */ $imgBuff = $img-&amp;gt;getimageblob(); /** * 浙江清理image.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（七十四）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-74.html</link>
+      <pubDate>Thu, 13 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-74.html</guid>
+      <description>GD处理图片 1. 图片输出 可以使用image*函数创建图片，这里*是指文件的格式。
+它们具有相同的语法：
+bool image___(resource $im [, mixed $to [ other parameters]] )  保存到一个文件
+如果你想把一个图片保存为一个文件，可以在$to中传入一个图片的地址或者打开的流。如果传入了一个流，你不需要自己关闭，因为GD会自动的关闭它。
+imagepng($image, &amp;quot;/path/to/target/file.png&amp;quot;); $stream = fopen(&amp;quot;phar://path/to/target.phar/file.png&amp;quot;, &amp;quot;wb&amp;quot;); imagepng($image2, $stream); // Don&#39;t fclose($stream)  当使用fopen的时候，这里使用b而不是t，因为文件是二进制输出的。
+不要试着传入fopen(&amp;quot;php://temp&amp;quot;, $f)或fopen(&amp;quot;php://memory&amp;quot;, $f)。因为这个流会在执行完毕后关闭，你就不能继续使用这个流了，比如获取流的内容。
+输出HTTP响应
+如果你想要图片作为图片的响应(例如创建一个动态的证章)，不需要在第二个参数传入任何信息(或者传入null)。然后在HTTP响应中需要制定内容类型：
+header(&amp;quot;Content-Type: $mimeType&amp;quot;);  $mimeType是你返回的MIME格式化类型。例子中包含image/png，image/gif，image/jpeg。
+写入变量
+有两种方式写入一个变量中：
+使用OB(输出缓存)
+ob_start(); imagepng($image, null, $quality); // pass null to supposedly write to stdout $binary = ob_get_clean();  使用流封装
+你可能有很多理由不适用输出缓存。例如：你可能已经开启了OB。因此，另外的选项就可以使用了。
+使用stream_wrapper_register方法，可以注册一个新的流封装。因此你可以把这个流传入一个图片输出函数，之后就可以获取这个流。
+&amp;lt;?php class GlobalStream { private $var; public function stream_open(string $path) { $this-&amp;gt;var = &amp;amp;GLOBALs[parse_url($path)][&#39;host&#39;]; return true; } public function stream_write(string $data) { $this-&amp;gt;var .</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（七十三）</title>

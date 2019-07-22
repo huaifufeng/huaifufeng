@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="一对多关系">
+    <meta name="description" content="Imagick">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（七十五）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-60.html">
+    <link rel="canonical" href="/2019/06/post/php-section-75.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十)</h1>
+                    <h1>PHP专业笔记（七十五）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Thursday, June 13, 2019
+                    <span  class="meta">Posted by 怀府风 on Friday, June 14, 2019
                         
                     </span>
                 </div>
@@ -182,11 +182,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#一对多关系">一对多关系</a>
+<li><a href="#imagick">Imagick</a>
 <ul>
-<li><a href="#1-company表示例">1. Company表示例</a></li>
-<li><a href="#2-获取某个经理管理的雇员">2. 获取某个经理管理的雇员</a></li>
-<li><a href="#3-获取雇员的经历">3. 获取雇员的经历</a></li>
+<li><a href="#1-第一步">1. 第一步</a></li>
+<li><a href="#2-转换图片到base64字符串">2. 转换图片到base64字符串</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -194,57 +193,77 @@
         		
         		
 
-<h2 id="一对多关系">一对多关系</h2>
+<h2 id="imagick">Imagick</h2>
 
-<p>一对多(1:M)的概念涉及行之间的连接，特别是一个表中的一行对应另一个表中的多行的情况。</p>
+<h3 id="1-第一步">1. 第一步</h3>
 
-<p>1:M 是一种指向，也就是说查询1:M关系时，都可以使用&rdquo;一&rdquo;行在另一个表中找到&rdquo;多&rdquo;行，但不能使用单个&rdquo;多&rdquo;行找到多个&rdquo;单&rdquo;行。</p>
+<p><strong>安装</strong></p>
 
-<h3 id="1-company表示例">1. Company表示例</h3>
+<p><strong>基于Debian的系统使用apt</strong></p>
 
-<p>假设有一个企业表，其中每个雇员都有一个经理，这个经理关联一个或多个雇员，并且每个雇员都只有一个经理。</p>
-
-<p>两个表中有下面的数据：</p>
-
-<pre><code>EMPLOYEES
-EMP_ID FIRST_NAME LAST_NAME  MGR_ID
-E01    Johnny     Appleseed  M02
-E02    Erin       Macklemore M01
-E03    Colby      Paperwork  M03
-E04    Ron        Sonswan    M01
-       
-MANAGERS
-MGR_ID FIRST_NAME LAST_NAME
-M01    Loud       McQueen
-M02    Bossy      Pants
-M03    Barrel     Jones
+<pre><code class="language-shell">sudo apt-get install php5-imagick
 </code></pre>
 
-<h3 id="2-获取某个经理管理的雇员">2. 获取某个经理管理的雇员</h3>
+<p><strong>OSX/macOS上使用Homebrew</strong></p>
 
-<pre><code class="language-mysql">SELECT e.emp_id, e.first_name, e.last_name FROM employees e JOIN managers m ON m.mgr_id=e.mgr_id WHERE m.mgr_id = 'M01';
-
--- 结果
-EMP_ID FIRST_NAME LAST_NAME
-E02    Erin       Macklemore
-E04    Ron        Sonswan
+<pre><code class="language-shell"> brew install imagemagick
 </code></pre>
 
-<p>最后，对于我们查询的每个经理，我们将看到一个或多个员工返回。</p>
+<p>想要查看<code>brew</code>安装的依赖，查看<a href="https://brewformulas.org/Imagemagick">https://brewformulas.org/Imagemagick</a></p>
 
-<h3 id="3-获取雇员的经历">3. 获取雇员的经历</h3>
+<p><strong>使用二进制版本</strong></p>
 
-<p>查看此示例时，请参考上面的示例表。</p>
+<p><a href="https://imagemagick.org/script/download.php">Imagemagick网站</a>的说明。</p>
 
-<pre><code class="language-mysql">SELECT m.mgr_id, m.first_name, m.last_name FROM managers m INNER JOIN employees e ON e.mgr_id = m.mgr_id WHERE e.emp_id = 'E03';
+<p><strong>用例</strong></p>
 
-MGR_ID FIRST_NAME LAST_NAME
-M03    Barrel     Jones
+<pre><code class="language-php">&lt;?php
+$imagen = new Imagick('imagen.jpg'); 
+$imagen-&gt;thumbnailImage(100, 0);
+//if you put 0 in the parameter aspect ratio is maintained
+echo $imagen; 
+?&gt;
 </code></pre>
 
-<p>因为这与上面的例子相反，我们知道对应我们查询的每个员工，我们只会看到一个对应的经理。</p>
+<h3 id="2-转换图片到base64字符串">2. 转换图片到base64字符串</h3>
 
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>下面的例子展示了怎么把图片转换为base64字符串(你可以在<code>img</code>表的<code>src</code>属性中使用的字符串)。这个例子使用<a href="https://www.php.net/manual/zh/intro.imagick.php">Imagick扩展</a>(其他的也是有效的，像GD扩展)。</p>
+
+<pre><code class="language-php">&lt;?php
+/**
+ * 这加载了图片image.jpg进行操作。
+ * 这个图片的路径是包含代码的php文件的相对地址, 所以在这个例子中，图片需要和代码在一个目录中
+ */
+$img = new Imagick('image.jpg');
+
+/**
+ * 这缩放图片，提供目标的长宽。如果你想要改变图片的分辨率，使用$img-&gt;resampleimage(320, 240)
+ *
+ * 注意第二个参数可以为0，保持原图片的长宽比
+ */
+$img-&gt;resizeImage(320, 240);
+
+/**
+ * 这返回图片未编码的字符串内容
+*/
+$imgBuff = $img-&gt;getimageblob();
+
+/**
+ * 浙江清理image.jpg图片资源的对象，并销毁对象。因此会释放系统的资源
+ * 
+ */
+$img-&gt;clear();
+
+/**
+ * 这创建base64编码的字符串，可以用来后面的输出
+ *
+ * 注意在src属性中，image/jpeg根据图片类型修改
+ */
+$img = base64_encode($imgBuff);
+echo &quot;&lt;img alt='Embedded Image' src='data:image/jpeg;base64,$img' /&gt;&quot;;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -253,12 +272,12 @@ M03    Barrel     Jones
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/php-section-74.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七十四）">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-60.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/php-section-75.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七十五）">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-61.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十一)">Next Post &rarr;</a>
                   </li>
                   
               </ul>

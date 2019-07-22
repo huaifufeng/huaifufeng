@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="一对多关系">
+    <meta name="description" content="SOP服务器">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>MySQL专业笔记(六十)-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（七十六）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/06/post/mysql-section-60.html">
+    <link rel="canonical" href="/2019/06/post/php-section-76.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -145,14 +145,14 @@
                 <div class="post-heading">
                     <div class="tags">
                        
-                       <a class="tag" href="/tags/mysql" title="MySQL">
-                           MySQL
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
                         </a>
                        
                     </div>
-                    <h1>MySQL专业笔记(六十)</h1>
+                    <h1>PHP专业笔记（七十六）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Thursday, June 13, 2019
+                    <span  class="meta">Posted by 怀府风 on Saturday, June 15, 2019
                         
                     </span>
                 </div>
@@ -182,11 +182,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#一对多关系">一对多关系</a>
+<li><a href="#sop服务器">SOP服务器</a>
 <ul>
-<li><a href="#1-company表示例">1. Company表示例</a></li>
-<li><a href="#2-获取某个经理管理的雇员">2. 获取某个经理管理的雇员</a></li>
-<li><a href="#3-获取雇员的经历">3. 获取雇员的经历</a></li>
+<li><a href="#1-基础sop服务器">1. 基础SOP服务器</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -194,57 +192,20 @@
         		
         		
 
-<h2 id="一对多关系">一对多关系</h2>
+<h2 id="sop服务器">SOP服务器</h2>
 
-<p>一对多(1:M)的概念涉及行之间的连接，特别是一个表中的一行对应另一个表中的多行的情况。</p>
+<h3 id="1-基础sop服务器">1. 基础SOP服务器</h3>
 
-<p>1:M 是一种指向，也就是说查询1:M关系时，都可以使用&rdquo;一&rdquo;行在另一个表中找到&rdquo;多&rdquo;行，但不能使用单个&rdquo;多&rdquo;行找到多个&rdquo;单&rdquo;行。</p>
+<pre><code class="language-php">function test($x) {
+    return $x; 
+}
 
-<h3 id="1-company表示例">1. Company表示例</h3>
-
-<p>假设有一个企业表，其中每个雇员都有一个经理，这个经理关联一个或多个雇员，并且每个雇员都只有一个经理。</p>
-
-<p>两个表中有下面的数据：</p>
-
-<pre><code>EMPLOYEES
-EMP_ID FIRST_NAME LAST_NAME  MGR_ID
-E01    Johnny     Appleseed  M02
-E02    Erin       Macklemore M01
-E03    Colby      Paperwork  M03
-E04    Ron        Sonswan    M01
-       
-MANAGERS
-MGR_ID FIRST_NAME LAST_NAME
-M01    Loud       McQueen
-M02    Bossy      Pants
-M03    Barrel     Jones
+$server = new SoapServer(null, array('uri' =&gt; &quot;http://test-uri/&quot;)); 
+$server-&gt;addFunction(&quot;test&quot;);
+$server-&gt;handle();
 </code></pre>
 
-<h3 id="2-获取某个经理管理的雇员">2. 获取某个经理管理的雇员</h3>
-
-<pre><code class="language-mysql">SELECT e.emp_id, e.first_name, e.last_name FROM employees e JOIN managers m ON m.mgr_id=e.mgr_id WHERE m.mgr_id = 'M01';
-
--- 结果
-EMP_ID FIRST_NAME LAST_NAME
-E02    Erin       Macklemore
-E04    Ron        Sonswan
-</code></pre>
-
-<p>最后，对于我们查询的每个经理，我们将看到一个或多个员工返回。</p>
-
-<h3 id="3-获取雇员的经历">3. 获取雇员的经历</h3>
-
-<p>查看此示例时，请参考上面的示例表。</p>
-
-<pre><code class="language-mysql">SELECT m.mgr_id, m.first_name, m.last_name FROM managers m INNER JOIN employees e ON e.mgr_id = m.mgr_id WHERE e.emp_id = 'E03';
-
-MGR_ID FIRST_NAME LAST_NAME
-M03    Barrel     Jones
-</code></pre>
-
-<p>因为这与上面的例子相反，我们知道对应我们查询的每个员工，我们只会看到一个对应的经理。</p>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -253,12 +214,12 @@ M03    Barrel     Jones
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/06/post/php-section-74.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七十四）">&larr; Previous Post</a>
+                      <a href="/2019/06/post/mysql-section-61.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十一)">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/06/post/php-section-75.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（七十五）">Next Post &rarr;</a>
+                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">Next Post &rarr;</a>
                   </li>
                   
               </ul>
