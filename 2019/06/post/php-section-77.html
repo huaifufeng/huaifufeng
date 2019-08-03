@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="机器学习">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（七十七）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/php-section-77.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（七十七）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, June 16, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#机器学习">机器学习</a>
+<ul>
+<li><a href="#1-php-ml分类">1. PHP-ML分类</a></li>
+<li><a href="#2-回归">2. 回归</a></li>
+<li><a href="#3-聚类分析">3. 聚类分析</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="机器学习">机器学习</h2>
+
+<h3 id="1-php-ml分类">1. PHP-ML分类</h3>
+
+<p>机器学习中的分类是确定新观察数据属于哪个类别的问题。分类属于监督机器学习的范畴。</p>
+
+<blockquote>
+<p>任何实现分类的算法叫做分类器。</p>
+</blockquote>
+
+<p>PHP-ML支持的分类器是：</p>
+
+<ul>
+<li>SVC(支持向量分类)</li>
+<li>k-最近的邻居</li>
+<li>朴素的贝叶斯</li>
+</ul>
+
+<p>对所有的分类器来说，<code>train</code>和<code>predict</code>是相同的。唯一的区别是使用的底层算法。</p>
+
+<p><strong>SVC(支持向量分类)</strong></p>
+
+<p>在我们开始测试新的观察之前，我们需要训练分类器。考虑下面的代码：</p>
+
+<pre><code class="language-php">// Import library
+use Phpml\Classification\SVC;
+use Phpml\SupportVectorMachine\Kernel;
+// Data for training classifier
+$samples = [[1, 3], [1, 4], [2, 4], [3, 1], [4, 1], [4, 2]]; 
+
+// Training samples 
+$labels = ['a', 'a', 'a', 'b', 'b', 'b'];
+
+// Initialize the classifier
+$classifier = new SVC(Kernel::LINEAR, $cost = 1000); 
+// Train the classifier
+$classifier-&gt;train($samples, $labels);
+</code></pre>
+
+<p>这个代码非常直接。上面说的<code>$cost</code>是一个衡量我们如何避免错误分类的每个培训示例的指标。设置更小的<code>$cost</code>值，你可以获得错误分类的示例。默认设置为1.0。</p>
+
+<p>现在我们已经训练好分类器，接下来我们就可以做实际的预测了。假设我们有下面进行预测的代码：</p>
+
+<pre><code class="language-php">$classifier-&gt;predict([3, 2]); // return 'b' 
+$classifier-&gt;predict([[3, 2], [1, 5]]); // return ['b', 'a']
+</code></pre>
+
+<p>在上述情况下，分类器可以提取未分类的样本并预测这些标签。预测方法可以提取单个样本，也可以提取一组样本。</p>
+
+<p><strong>k-近邻法</strong></p>
+
+<p>这个算法的分类器接受两个参数，可以像下面这样初始化：</p>
+
+<pre><code class="language-php">$classifier = new KNearestNeighbors($neighbor_num = 4);
+$classifier = new KNearestNeighbors($neighbor_num = 3, new Minkowski($lambda = 4));
+</code></pre>
+
+<p><code>$neighbor_num</code>是knn算法中最近邻居的数量，第二个参数是距离的度量，这里默认是<code>Euclidean</code>。</p>
+
+<p>下面是怎么使用这个分类器的例子：</p>
+
+<pre><code class="language-php">//训练数据
+$samples = [[1, 3], [1, 4], [2, 4], [3, 1], [4, 1], [4, 2]];
+$labels = ['a', 'a', 'a', 'b', 'b', 'b'];
+
+//初始化 classifier
+$classifier = new KNearestNeighbors(); 
+//训练 classifier 
+$classifier-&gt;train($samples, $labels);
+
+//进行预测
+$classifier-&gt;predict([3, 2]); // return 'b' 
+$classifier-&gt;predict([[3, 2], [1, 5]]); // return ['b', 'a']
+</code></pre>
+
+<p><strong>朴素贝叶斯分类器</strong></p>
+
+<p><code>NaiveBayes Classifier</code>是基于Bayes的定理，在构造函数中不需要任何参数。</p>
+
+<p>下面的代码介绍了一种简单的预测实现：</p>
+
+<pre><code class="language-php">//训练数据
+$samples = [[5, 1, 1], [1, 5, 1], [1, 1, 5]];
+$labels = ['a', 'b', 'c'];
+
+//初始化分类器
+$classifier = new NaiveBayes();
+//训练分类器
+$classifer-&gt;train($samples, $labels);
+
+//进行预测
+$classifier-&gt;predict([3, 1, 1]);  //返回 'a'
+$classifier-&gt;predict([3, 1, 1], [1, 4, 1]); // 返回 ['a', ['b']]
+</code></pre>
+
+<p><strong>实际案例</strong></p>
+
+<p>到现在为止，我们的例子中使用的都是整数的数组，但是真是世界不是这个样子的。因此我们描述一下一个分类器的实际使用：</p>
+
+<blockquote>
+<p>假设你有一个存储自然界中华的特性的应用。为了简单起见，我们只考虑花的颜色和长度。所有有两个特性来训练我们的数据，<code>color</code>是简单一点的只是一个整数值，而对于长度你可以有一个范围值像<code>(0mm, 10mm) = 1, (10mm, 20mm) = 2</code>。使用这些初始化数据训练你的分类器。现在你的一个用户需要区分他后院的花的种类。你的分类器可以检测花的类型。</p>
+</blockquote>
+
+<h3 id="2-回归">2. 回归</h3>
+
+<p>我们使用<code>PHP-ML</code>进行分类的时候，我们为新观察指定了标签。回归几乎相同，区别在于输出值不是类标签而是连续值。它广泛用于预测和预报。PHP-ML支持以下回归算法：</p>
+
+<ul>
+<li>Support Vector Regression</li>
+<li>LeastSquares Linear Regression</li>
+</ul>
+
+<p>回归在分类时有相同的<code>train</code>和<code>predict</code>方法。</p>
+
+<p><strong>支持向量机回归</strong></p>
+
+<p>这个是支持向量机的回归版本。首先向分类一样训练我们的数据：</p>
+
+<pre><code class="language-php">//加载库
+use Phpml\Regression\SVR;
+use Phpml\SupportVectorMachine\Kernel;
+
+//训练数据
+$samples = [[60], [61], [62], [63], [65]];
+$targets = [3.1, 3.6, 3.8, 4, 4.1];
+
+//初始化回归引擎
+$regression = new SVR(Kernel::LINEAR);
+//训练回归引擎
+$regression-&gt;train($samples, $targets);
+</code></pre>
+
+<p>在回归中，<code>$targets</code>和分类不同不是标签。这是两者一个不同之处。在使用数据训练我们的模型之后，我们就可以开始实际的预测了：</p>
+
+<pre><code class="language-php">$regression-&gt;predict([64]); //返回 4.03
+</code></pre>
+
+<p>注意，这个预测返回来目标之外的值。</p>
+
+<p><strong>最小二乘线性回归</strong></p>
+
+<p>该算法采用最小二乘法近似求解。下面演示了一个简单的训练和预测代码：</p>
+
+<pre><code class="language-php">// Training data
+$samples = [[60], [61], [62], [63], [65]];
+$targets = [3.1, 3.6, 3.8, 4, 4.1];
+
+// Initialize regression engine
+$regression = new LeastSquares();
+// Train engine 
+$regression-&gt;train($samples, $targets);
+// Predict using trained engine 
+$regression-&gt;predict([64]); // return 4.06
+</code></pre>
+
+<p>PHP-ML还提供了多重线性回归选项。相同的示例代码可以如下所示:</p>
+
+<pre><code class="language-php">$samples = [[73676, 1996], [77006, 1998], [10565, 2000], [146088, 1995], [15000, 2001], [65940, 2000], [9300, 2000], [93739, 1996], [153260, 1994], [17764, 2002], [57000, 1998], [15000, 2000]];
+$targets = [2000, 2750, 15500, 960, 4400, 8800, 7100, 2550, 1025, 5900, 4600, 4400];
+
+$regression = new LeastSquares(); 
+$regression-&gt;train($samples, $targets); 
+$regression-&gt;predict([60000, 1996]) // return 4094.82
+</code></pre>
+
+<p>当多个因素或特征识别结果时，多元线性回归特别有用。</p>
+
+<p><strong>实际案例</strong></p>
+
+<p>现在让我们来看看回归在现实生活场景中的应用。</p>
+
+<blockquote>
+<p>假设你运行一个非常流行的网站，但是流量不断变化。您需要一个能够预测在任何给定时间实例上需要部署的服务器数量的解决方案。为了您的主机提供商提供一个API来生成服务器，让我们假设每个服务器需要15分钟才能启动。根据以前的流量数据和回归，您可以预测在任何时间都会影响应用程序的流量。使用这些知识，您可以在激增前15分钟启动服务器，从而防止应用程序脱机。</p>
+</blockquote>
+
+<h3 id="3-聚类分析">3. 聚类分析</h3>
+
+<p>聚类是把相同的对象组织在一起。它广泛用于模式识别。聚类是在无监督的机器学习下进行的，因此不需要培训。PHP-ML支持以下聚类算法：</p>
+
+<ul>
+<li>k-Means</li>
+<li>dbscan</li>
+</ul>
+
+<p><strong>k-Means</strong></p>
+
+<p>k-Means将数据分入等方差的<code>n</code>组。这意味我们需要传入一个代表我们解决方案中需要的聚类的数量<code>n</code>。下面的代码有助于理解：</p>
+
+<pre><code class="language-php">// Our data set
+$samples = [[1, 1], [8, 7], [1, 2], [7, 8], [2, 1], [8, 9]];
+
+// Initialize clustering with parameter `n`
+$kmeans = new KMeans(3);
+$kmeans-&gt;cluster($samples); // return [0=&gt;[[7, 8]], 1=&gt;[[8, 7]], 2=&gt;[[1,1]]]
+</code></pre>
+
+<p>注意这个输出包含3个数组，因为我们在KMeans的构造函数中传入的值<code>n</code>。在构造函数中可以传入可选你的第二个参数作为初始化方法。例如：</p>
+
+<pre><code class="language-php">$kmeans = new KMeans(4, KMeans::INIT_RANDOM);
+</code></pre>
+
+<p><code>INIT_RANDOM</code>尝试在决定聚类时使用一个随心的钜心。但是为了避免钜心离数据太远，它收到数据边界的约束。</p>
+
+<p>默认的构造函数初始化方法是kmeans++，这以智能的方式选择钜心加快进程。</p>
+
+<p><strong>DBSCAN</strong></p>
+
+<p>和KMeans相反，DBSCAN是基于密度的算法，这意味着我们不需要传入决定聚类数量的参数n。另外，这需要两个参数：</p>
+
+<ul>
+<li>$minSamples： 聚类中应该存在的最新对象数</li>
+<li>$epsilon: 被视为同一个聚类的两个对象的最大距离</li>
+</ul>
+
+<p>下面是一个快速的例子：</p>
+
+<pre><code class="language-php">// Our sample data set
+$samples = [[1, 1], [8, 7], [1, 2], [7, 8], [2, 1], [8, 9]];
+
+$dbscan = new DBSCAN($epsilon = 2, $minSamples = 3);
+$dbscan-&gt;cluster($samples); // return [0=&gt;[[1, 1]], 1=&gt;[[8, 7]]]
+</code></pre>
+
+<p>这个代码几乎是不言自明的。一个和KMeans的主要区别是，没有办法知道输出数组中元素的数量。</p>
+
+<p><strong>实际案例</strong></p>
+
+<p>现在我们看下聚类的实际使用：</p>
+
+<blockquote>
+<p>聚类在<code>模式识别</code>和<code>数据挖掘</code>中有广泛应用。假设你有一个内容发布应用。现在为了留下你的用户，他们应该看到它们喜欢的内容。为了简单起见，我们假设一个用户在页面停留了一分钟，并且它们到了底部，那么他们喜欢这个页面的内容。现在你每个内容有一个唯一的标识，每个用户有一个唯一的标识。在此基础上构建聚类，您将了解哪些用户具有类似的内容品味。这反过来也可以用在推荐系统中，在推荐系统中，您可以假设如果同一集群的一些用户喜欢本文，那么其他用户也会喜欢本文，这可以作为您的应用程序上的推荐显示出来。</p>
+</blockquote>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/mysql-section-62.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十二)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/mysql-section-63.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十三)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
