@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="Docker部署">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（八十五）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/php-section-85.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（八十五）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Monday, June 24, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#docker部署">Docker部署</a>
+<ul>
+<li><a href="#1-获取php的docker镜像">1. 获取PHP的docker镜像</a></li>
+<li><a href="#2-编写dockerfile">2. 编写dockerfile</a></li>
+<li><a href="#3-创建镜像">3. 创建镜像</a></li>
+<li><a href="#4-启动一个应用容器">4. 启动一个应用容器</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="docker部署">Docker部署</h2>
+
+<p><a href="https://www.docker.com/">Docker</a>是非常出名的容器解决方案，被广泛用来在生产环境部署代码。这让管理和扩展web应用和微服务变得很简单。</p>
+
+<h3 id="1-获取php的docker镜像">1. 获取PHP的docker镜像</h3>
+
+<p>为了在docker上部署应用，首先我们需要充注册获取镜像。</p>
+
+<pre><code class="language-shell">docket pull php
+</code></pre>
+
+<p>这会从官方的php仓库中获取到最新版本的镜像。一般说来，PHP通常用来部署web服务器，所以需要一个包含HTTP服务器的镜像。<code>php:7.0-apache</code>镜像预装了Apache，这让部署变得更加简单。</p>
+
+<h3 id="2-编写dockerfile">2. 编写dockerfile</h3>
+
+<p><code>dockerfile</code>用来配置我们构建web应用代码的自定义镜像。在你的项目根目录创建一个新的<code>Dockerfile</code>文件，然后把下面的代码放到文件里面：</p>
+
+<pre><code class="language-dockerfile">FROM php:7.0-apache
+COPY /etc/php/php.ini /usr/local/etc/php/ 
+COPY . /var/www/html/
+EXPOSE 80
+</code></pre>
+
+<p>第一行非常明显，用来描述从哪个镜像来创建一个新的镜像。这里可以修改为其他注册中的指定PHP版本。</p>
+
+<p>第二行只是把<code>php.ini</code>文件上传到我们的镜像中。你也可以把这个文件放到其他的自定义的地址。</p>
+
+<p>第三行将当前目录的代码复制到<code>/var/www/html</code>中，这就是我们的项目根目录。记住<code>/var/www/html</code>是在镜像里面的。</p>
+
+<p>最后一行将docker容器的80端口打开。</p>
+
+<p><strong>忽略文件</strong></p>
+
+<p>在一些情况下，你不想在你的服务器上面保存某些文件，就像环境配置文件等等。假设我们有一个环境配置文件<code>.env</code>。为了忽略这个文件，我们在代码根目录的<code>.dockerignore</code>中把这个文件添加进来。</p>
+
+<h3 id="3-创建镜像">3. 创建镜像</h3>
+
+<p>创建镜像对于PHP并没有什么特别的，但是为了构建上面描述的镜像，我们简单的使用：</p>
+
+<pre><code class="language-shell">docker build -t &lt;Image name&gt; .
+</code></pre>
+
+<p>一旦镜像构建了，你可以验证：</p>
+
+<pre><code class="language-shell">docker images
+</code></pre>
+
+<p>这将会列出你系统安装的所有的镜像。</p>
+
+<h3 id="4-启动一个应用容器">4. 启动一个应用容器</h3>
+
+<p>一旦我们有了一个精选，我们可以启动并运行这个镜像。为了从镜像创建一个<code>容器</code>，使用：</p>
+
+<pre><code>docker run -p 80:80 -d &lt;Image name&gt;
+</code></pre>
+
+<p>在上面的命令中，<code>-p 80:80</code>将会把你服务器的80端口指向到容器的80端口。标识<code>-d</code>说明容器作为后台工作运行。最后指明了哪个镜像用来创建容器。</p>
+
+<p><strong>检查容器</strong></p>
+
+<p>为了检查运行的容器，简单的运行：</p>
+
+<pre><code>docker ps
+</code></pre>
+
+<p>这将会列出所有在docker守护进程上运行的容器。</p>
+
+<p><strong>应用日志</strong></p>
+
+<p>日志对于测试应用是非常重要的。为了检查日志：</p>
+
+<pre><code>docker logs &lt;Container id&gt;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/php-section-84.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（八十四）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/php-section-86.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（八十六）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="SPL数据结构">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（八十）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/php-section-80.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（八十）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, June 19, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#spl数据结构">SPL数据结构</a>
+<ul>
+<li><a href="#1-splfixedarray">1. SplFixedArray</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="spl数据结构">SPL数据结构</h2>
+
+<h3 id="1-splfixedarray">1. SplFixedArray</h3>
+
+<p><strong>和PHP数组的不同</strong></p>
+
+<p>PHP默认的数组类型实际是排序的hash数组，这允许我们创建包含键值对的数组，这个数组中值可以是任何类型，键可以是数字或字符串。然而，这不是传统数组的创建方式。</p>
+
+<p><img src="/img/php/vWcnk.png" alt="数组" /></p>
+
+<p>就像你看到的，普通的PHP数组可以看起来像是键值对的有序集合，这里每个key指向一个值。注意，这个数组我们的key是数组和字符串，以及不同类型的值，并且键和元素的顺序没有关系。</p>
+
+<pre><code class="language-php">$arr = [
+    9 =&gt; &quot;foo&quot;,
+    1 =&gt; &quot;4.2&quot;,
+    &quot;bar&quot; =&gt; null,
+];
+
+foreach ($arr as $key =&gt; $value) {
+    echo &quot;$key =&gt; $value&quot;;
+}
+</code></pre>
+
+<p>上面的例子会给我们希望的结果：</p>
+
+<p>9 =&gt; foo 1 =&gt; 4.2 bar =&gt;</p>
+
+<p>常规的PHP数组也为我们动态调整大小。当我们像数组推送或取出值时，它们会自动的增长和收缩。</p>
+
+<p>然而，在传统的数组中，数组的大小是固定的并且里面保存相同类型的值。并且，每个值都是通过索引访问的，而不是通过键。索引可以通过数组的偏移量来推导。</p>
+
+<p><img src="/img/php/rW8gh.png" alt="传统数组" /></p>
+
+<p>因为我们知道给定类型的大小，所以一个固定大小数组的偏移量可以通过<code>type size * n</code>来计算，其中<code>n</code>是这个值在数组中的位置。在这个例子中<code>$arr[0]</code>结果是<code>1</code>，数组的第一个元素<code>$arr[1]</code>的结果是<code>2</code>，等等。</p>
+
+<p>但是SplFixedArray没有严格限制值的类型。它只限制键的类型是数字。这也是一个固定的大小。</p>
+
+<p>这让SplFixedArray在某些场景下比PHP的普通数组性能更好。因为它们需要的内容更少，所以它们更加紧凑。</p>
+
+<p><strong>实例数组</strong></p>
+
+<p>SplFixedArray是作为一个对象实现的，但是因为它实现了<code>ArrayAccess</code>接口，所以你可以像访问普通PHP数组一样访问它的元素。它同样实现了<code>Countable</code>和<code>Iterator</code>接口，所以可以像PHP数组的行为一样。（使用<code>count($arr）和foreach($arr as $k =&gt; $v)</code>)这时SplFixedArray和PHP普通数组一样。</p>
+
+<p>SplFixedArray要求一个参数，这个参数表示数组的大小：</p>
+
+<pre><code class="language-php">$arr = new SplFixedArray(4);
+
+$arr[0] = &quot;foo&quot;;
+$arr[1] = &quot;bar&quot;;
+$arr[2] = &quot;baz&quot;;
+
+foreach($arr as $key =&gt; $value) {
+    echo &quot;$key =&gt; $value\n&quot;;
+}
+</code></pre>
+
+<p>这将会获得下面的内容：</p>
+
+<p>0 =&gt; foo 1 =&gt; bar 2 =&gt; baz 3 =&gt;</p>
+
+<p>也可以使用var_dump：</p>
+
+<pre><code class="language-php">var_dump(count($arr));
+</code></pre>
+
+<p>这将会输出：</p>
+
+<p>int(4)</p>
+
+<p>注意SplFixedArray和普通的PHP数组不同，它的键描述了数组元素的顺序，因为它是一个真正的索引，而不仅仅是一个映射。</p>
+
+<p><strong>调整数组大小</strong></p>
+
+<p>注意因为数组大小是固定的，所以count方法将会一个相同的值。所以<code>unset($arr[1])</code>将会导致<code>$arr[1] === null</code>，但是<code>count($arr)</code>依然会返回4。</p>
+
+<p>所以想要改变数组的大小，需要使用<code>setSize</code>方法：</p>
+
+<pre><code class="language-php">$arr-&gt;setSize(3);
+
+var_dump(count($arr));
+
+foreach($arr as $key =&gt; $value) {
+    echo &quot;$key =&gt; $value&quot;;
+}
+</code></pre>
+
+<p>现在我们会获得下面的结果：</p>
+
+<p>int(3) 0 =&gt; foo 1 =&gt; 2 =&gt; baz</p>
+
+<p><strong>导入到SplFixedArray和从SplFixedArray导出</strong></p>
+
+<p>你可以使用<code>fromArray</code>将PHP的普通数组导入的SplFixedArray，使用<code>toArray</code>从SplFixedArray导出普通的PHP数组。</p>
+
+<pre><code class="language-php">$array = [1, 2, 3, 4, 5];
+$fixedArray = SplFixedArray::fromArray($array);
+
+foreach($fixedArray as $value) {
+    echo $value . &quot;\n&quot;;
+}
+
+//1 2 3 4 5
+</code></pre>
+
+<p>看看另外的例子：</p>
+
+<pre><code class="language-php">$fixedArray = new SplFixedArray(5);
+
+$fixedArray[0] = 1;
+$fixedArray[1] = 2;
+$fixedArray[2] = 3;
+$fixedArray[3] = 4;
+$fixedArray[4] = 5;
+
+$array = $fixedArray-&gt;toArray();
+
+foreach($array as $value) {
+    echo $value, &quot;\n&quot;;
+}
+
+// 1 2 3 4 5
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/mysql-section-65.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十五)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/mysql-section-66.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十六)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

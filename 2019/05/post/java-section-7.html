@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="命令行参数处理">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Java专业笔记（七）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/05/post/java-section-7.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/java" title="Java">
+                           Java
+                        </a>
+                       
+                    </div>
+                    <h1>Java专业笔记（七）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, May 1, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#java代码文档化">Java代码文档化</a>
+<ul>
+<li><a href="#1-使用gwt的toolbase进行参数处理">1. 使用GWT的ToolBase进行参数处理</a></li>
+<li><a href="#2-手动处理参数">2. 手动处理参数</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="java代码文档化">Java代码文档化</h2>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>详情</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>args</td>
+<td>命令行的参数。假设<code>main</code>方法是被java的launcher调用的，<code>args</code>将不会是null，将会有非<code>null</code>的值</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="1-使用gwt的toolbase进行参数处理">1. 使用GWT的ToolBase进行参数处理</h3>
+
+<p>如果你想要解析更复杂的命令行参数(例如可选参数)，最好的方法就是使用Google的GWT方法，所有公开分类都在：<a href="https://gwt.googlesource.com/gwt/+/2.8.0-beta1/dev/core/src/com/google/gwt/util/tools/ToolBase.java">https://gwt.googlesource.com/gwt/+/2.8.0-beta1/dev/core/src/com/google/gwt/util/tools/ToolBase.java</a></p>
+
+<p>一个处理命令行<code>myprogram -dir &quot;~/Documents&quot; -port 8888</code>的例子：</p>
+
+<pre><code class="language-java">public class MyProgramHanlder extends ToolBase {
+    protected File dir;
+    protected int port;
+    //dir和port的getter和setter
+    ...
+    
+    public MyProgramHandler() {
+        this.registerHandler(new ArgHandlerDir() {
+            @Override
+            public void setDir(File dir) {
+                this.dir = dir;
+            }
+        });
+        
+        this.registerHandler(new ArgHandlerInt() {
+            @Override
+            public String[] getTagArgs() {
+                return new String[]{&quot;port&quot;};
+            }
+            @Override
+            public void setInt(int value) {
+                this.port = value;
+            }
+        });
+    }
+    
+    public static void main(String[] args) {
+        MyProgramHandler myShell = new MyProgramHandler();
+        if (myShell.processArgs(args)) {
+            System.out.println(String.format(&quot;port: %d; dir: %s&quot;, myShell.getPort(), myShell.getDir()));
+        }
+        System.exit(1);
+    }
+}
+</code></pre>
+
+<p><code>ArgHandler</code>也有一个方法<code>isRequired()</code>，这可以重写来说明这个命令行参数是必须的（默认返回<code>false</code>，所以这个参数是可选的）。</p>
+
+<h3 id="2-手动处理参数">2. 手动处理参数</h3>
+
+<p>当应用的命令行的语法很简单的时候，完全使用自己的代码进行参数的处理是合理的。</p>
+
+<p>在这个例子中，我们将展示一系列简单的案例进行研究。在每个案例中，如果参数是不能接受的，代码就会产生一个错误信息，并且调用<code>System.exit(1)</code>来通知shell这个命令执行失败了。(在每种情况下，我们假设使用一个名为&rdquo;myapp&rdquo;的包装器来调用Java代码)。</p>
+
+<p><strong>没有参数的命令</strong></p>
+
+<p>在这个案例中，这个命令不需要参数。这个代码通过<code>args.length</code>来获取命令行的参数数量。</p>
+
+<pre><code class="language-java">public class Main {
+    public static void main(String[] args) {
+        if (args.length &gt; 0) {
+            System.err.println(&quot;usage: myapp&quot;);
+            System.exit(1);
+        }
+        
+        System.out.println(&quot;It worked&quot;);
+    }
+}
+</code></pre>
+
+<p><strong>两个参数的命令</strong></p>
+
+<p>在这个例子中，命令要求有两个参数。</p>
+
+<pre><code class="language-java">public class Main {
+    public static void main(String[] args) {
+        if (args.length != 2) {
+            System.err.println(&quot;usage: myapp &lt;arg1&gt; &lt;arg2&gt;&quot;);
+            System.exit(1);
+        }
+        
+        System.out.println(&quot;It worked: &quot; + args[0] + &quot;, &quot; + args[1]);
+    }
+}
+</code></pre>
+
+<p>注意，如果我们没有进行<code>args.length</code>的检查，如果用户使用太少的参数运行程序，这个命令就会崩溃。</p>
+
+<p><strong>带有&rdquo;flag&rdquo;选项和至少一个参数的命令</strong></p>
+
+<p>在这个案例中，这个命令有两个(可选)标志选项，并且在选项之后至少有一个参数。</p>
+
+<pre><code class="language-java">package tommy;
+public class Main {
+    public static void main(String[] args) {
+        boolean feelMe = false;
+        boolean seeMe = false;
+        int index;
+        loop: for(index = 0; index &lt; args.length; index++) {
+            String opt = args[index];
+            switch(opt) {
+                case &quot;-c&quot; :
+                    seeMe = true;
+                    break;
+                case &quot;-f&quot;:
+                    feelMe = true;
+                    break;
+                default:
+                    if (!opts.isEmpty() &amp;&amp; opts.charAt(0) == '-') {
+                        error(&quot;Unknown option: '&quot; + opt + &quot;'&quot;);
+                    }
+                    break loop;
+            }
+        }
+        
+        if (index &gt;= args.length) {
+            error(&quot;Missing argument(s)&quot;);
+        }
+    }
+    
+    private static void error(String message) {
+        if (message != null) {
+            System.err.println(message);
+        }
+        
+        System.err.println(&quot;usage: myapp [-f] [-c] [&lt;arg&gt; ...]&quot;);
+        System.exit(1);
+    }
+}
+</code></pre>
+
+<p>正如你看到的，如果命令语法复杂，处理参数和选项会变得很麻烦。简写使用&rdquo;命令行分享&rdquo;库。查看其它例子。</p>
+
+<p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/05/post/mysql-section-17.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(十七)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/05/post/php-section-32.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（三十二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

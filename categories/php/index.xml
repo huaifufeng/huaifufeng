@@ -6,10 +6,223 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 17 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/php/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP专业笔记（九十二）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-92.html</link>
+      <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-92.html</guid>
+      <description>常见错误 1. call fetch_assoc on boolean 如果你获得一个类似下面的错误：
+Fatal error: Call to a member function fetch_assoc() on boolean in C:\xampp\htdocs\stack\index.php on line 7  其他类似的错误包括：
+mysql_fetch_assoc() expects parameter 1 to be resource, boolean given...  这些错误意味着要么你的查询有错误(这是一个PHP/Mysql错误)或引用错误。下面的代码就可以产生上面的错误：
+$mysqli = new mysqli(&amp;quot;localhost&amp;quot;, &amp;quot;root&amp;quot;, &amp;quot;&amp;quot;); $query = &amp;quot;SELCT * FROM db&amp;quot;; //注意这里的错误 $result = $mysqli-&amp;gt;query($query); $row = $result-&amp;gt;fetch_assoc();  为了&amp;rdquo;修正&amp;rdquo;这个错误，推荐设置mysql抛出异常：
+//在脚本的开头添加下面的内容 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);  这将会抛出一个带有更加详细的异常信息：
+You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near &#39;SELCT * FROM db&#39; at line 1  另一个会产生相似错误的是你只是简单的将错误信息提供给mysql_fetch_assoc方法或相似的：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十一）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-91.html</link>
+      <pubDate>Sun, 30 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-91.html</guid>
+      <description>编译PHP扩展 1. Linux编译 想要在典型的Linux环境编译PHP，有一些前置条件：
+ 基本的Unix能力(可以执行&amp;rdquo;make&amp;rdquo;和一个C的编译器) ANSI编译器 你想要编译的PHP扩展源码  通常有两种方式来编译PHP的扩展。你可以静态地将扩展编译为PHP的二进制文件，或者将其编译为由PHP二进制文件启动时加载的共享模块。共享模块是更加合适的，因为这允许你添加或移除扩展而不用重新编译PHP。这个例子主要是共享模块的。
+如果你使用包管理器安装你的PHP(像apt-get install, yum install)。你需要安装PHP的-dev包，这里面包含着必须的PHP头文件和用来让构造环境正常工作的phpize脚本。这个包可能名字是php5-dev或php7-dev，但是需要使用包管理器来搜索你发行版中的适当名称。他们可能是不同的。
+如果你是从源码编译PHP，那些头文件大多数情况下已经存在你的系统上面（通常在/usr/include，或/usr/local/include）。
+编译步骤
+在你已经检查后确定已经安装所有依赖之后，为了编译，你可以查看http://pecl.php.net/ 来寻找想要编译的扩展，然后下载tar包。
+ 解压tar包(例如tar xfvz yaml-2.0.0RC8.tgz) 进入到压缩包解压的目录，然后执行phpize 如果一切正常的话，你可以看到新创建的configure脚本，然后执行./configure 现在你需要运行make，这会编译扩展 最后，使用make install命令将编译好的扩展移动到扩展目录  make install这步会为你提供复制扩展的安装路径。这通常是/usr/lib，例如可能是/usr/lib/php5/20131226/yaml.so，但是这依赖于你的PHP配置(例如--with-prefix)和指定的API版本。路径中的API数字用来把扩展创建到不同的API版本的目录中。
+加载PHP扩展
+要做PHP中加载扩展，需要为相应的SAPI查找已经加载的php.ini文件，然后在其中添加extension=yaml.so。然后重新启动PHP。当然，将yaml.so修改为你实际安装的扩展名。
+对于Zend扩展，你需要提供共享对象文件的完整路径。但是对于普通的PHP扩展，这个路径从extension_dir中获取，或者在初始化期间从$PATH获取。
+参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-90.html</link>
+      <pubDate>Sat, 29 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-90.html</guid>
+      <description>设计模式 这个主题经典设计模式的PHP实现的例子。
+1. PHP中方法链 方法链是Martin Fowler&amp;rsquo;s book Domain Specific Languages介绍的技术。方法链总结为：
+ Makes modifier methods return the host object, so that multiple modifiers can be invoked in a single expression。
+ 考虑下这段非连接/常规代码（从前面书中移植到PHP）。
+$hardDrive = new HardDrive; $hardDrive-&amp;gt;setCapacity(150); $hardDrive-&amp;gt;external(); $hardDrive-&amp;gt;setSpeed(7200);  方法链允许你以更加紧凑的方式编写上面的代码：
+$hardDrive = (new HardDrive) -&amp;gt;setCapacity(150) -&amp;gt;external() -&amp;gt;setSpeed(7200);  为了这个，你需要做的事情就是在所有想要链接的方法后面添加一个return $this。
+class HardDrive { protected $isExternal = false; protected $capacity = 0; protected $speed = 0; public function external($isExternal = true) { $this-&amp;gt;isExternal = $isExternal; return $this; // returns the current class instance to allow method chaining } public function setCapacity($capacity) { $this-&amp;gt;capacity = $capacity; return $this; // returns the current class instance to allow method chaining } public function setSpeed($speed) { $this-&amp;gt;speed = $speed; return $this; // returns the current class instance to allow method chaining } }  什么时候使用</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十九）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-89.html</link>
+      <pubDate>Fri, 28 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-89.html</guid>
+      <description>PHPDoc 1. 描述变量 @var关键字用来描述一个类型和用法：
+ 类属性 本地或全局变量 类或者全局常量  class Example { /** @var string 常量*/ const UNCHANGING = &#39;Untouchable&#39;; /** @var string $some_str 字符串 */ public $some_str; /** * @var array $stuff stuff集合 * @var array $nonsense 是nonsense集合 */ private $stuff, $nonsense; ... }  类型这里可以是PHP内建的类型，也可以是包含命名空间的用户定义的类
+变量名应该包含，但是如果只有一个元素的话可以省略。
+2. 添加方法的元信息 函数级注释有助于IDE识别返回值或潜在的危险代码。
+/** * 两个元素加在一起 * * @param Int $a 第一个求和的元素 * @param Int $b 第二个求和的元素 * @return Int */ function sum($a, $b) { return (int) $a + $b; } /** * 不用运行这个方法，会抛出异常 * * @throws Exception 一直 */ function dangerousCode() { throw new Exception(&#39;注意，这里有风险&#39;); } /** * 老结构不使用了，这里的代码不使用 * * @deprecated */ function oldCode() { mysql_connect(/* .</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十八）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-88.html</link>
+      <pubDate>Thu, 27 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-88.html</guid>
+      <description>PSR PSR（PHP标准建议）是有FIG（框架互操作组）组合在一起的一系列建议。
+&amp;ldquo;该小组的想法是让项目代表讨论我们的项目之间的共性，并找到我们可以合作的方法。&amp;rdquo; - FIG FAQ
+PSRs有下面的状态：Accepted, Review, Draft or Deprecated.
+1. PSR-4：Autoloader PSR-4是一个已接受的建议。它描述了通过文件名自动加载类的标准。这个建议是作为早起(已经废弃)PSR-0的替代方案。
+完全限定的类名需要符合下面的要求：
+ \&amp;lt;NamespaceName&amp;gt;(\&amp;lt;SubNamespaceNames&amp;gt;)*\&amp;lt;ClassName&amp;gt;   它必须包含一个定义的第三方命名空间(例如Alphabet) 它可能包含一个或多个子命名空间(例如Google\AdWord) 它必须包含一个结尾的类名(例如KeywordPlanner)  最后的类名就是Alphabet\Google\AdWord\KeywordPlanner。完全先定的类名应该也是有意义的文件路径，因此Alphabet\Google\AdWord\KeywordPlanner应该保存在Alphabet\Google\AdWord\KeywordPlanner.php中。
+从PHP5.3开始，自定义加载器方法可以用来定义基于你定义的路径和文件名格式来来加载文件的方法。
+spl_autoload_register(function ($class) { include &#39;classes/&#39; . $class . &#39;.class.php&#39;;});  替换其中路径classes/和文件扩展.class.php为你自己的结构。
+Composer包管理器支持PSR-4，这意味着，如果你遵循这个标准的话，使用Composer的第三方加载器自动加载你的项目的类。
+//修改composer.json文件 { &amp;quot;autoload&amp;quot;: { &amp;quot;psr-4&amp;quot;: { &amp;quot;Alphabet\\&amp;quot;: &amp;quot;[path_to_source]&amp;quot; } } }  重新生成加载器文件：
+$ composer dump-autoload  现在你的代码你可以像下面这样：
+&amp;lt;?php require __DIR__ . &#39;/vendor/autoload.php&#39;; $KeywordPlanner = new Alphabet\Google\AdWord\KeywordPlanner();  2. PSR-1 基本代码标准 PSR-1是已经接受的建议，介绍代码应该怎么编写的基本建议标准。</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十七）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-87.html</link>
+      <pubDate>Wed, 26 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-87.html</guid>
+      <description>PHP内建服务器    列 描述     -S 告诉PHP我们想要一个服务器   &amp;lt;hostname&amp;gt;:&amp;lt;port&amp;gt; 使用的主机名和端口号   -t 公共目录   &amp;lt;filename&amp;gt; 路由脚本    学习怎么使用内建的服务器来开发和测试你的应用，而不需要安装像xamp，wamp等工具。
+1. 运行内建服务器 php -S localhost:80   PHP 7.1.7 Development Server started at Fri Jul 14 15:11:05 2017 Listening on http://localhost:80 Document root is C:\projetos\repgeral Press Ctrl-C to quit.
+ 这是最简单的启动PHP服务器的方法，所有的请求都定位为到localhost的80端口。
+-S说明我们想要启动一个服务器。
+localhost:80说明我们使用的主机和端口。你可以使用另外的组合：
+ mymachine:80 将会监听自己机器的地址和80端口 127.0.0.1:8080 将会监听127.0.0.1和端口8080  2. 使用指定的目录和路由脚本 php -S localhost:80 -t project/public router.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十六）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-86.html</link>
+      <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-86.html</guid>
+      <description>APCu APCu是PHP的共享内存键值对存储。这个内存是被相同池子中的PHP-FPM进程共享的。存储的数据在不同的请求之间保持不变。
+1. 迭代条目 APCUIterator允许迭代缓存中的条目：
+foreach (new APCUIterator() as $entry) { print_r($entry); }  这个迭代器可以使用可选的正则表达式来初始化，这样可以选择匹配某些条目：
+foreach (new APCUIterator($regex) as $entry) { print_r($entry); }  关于单个缓存条目可以使用下面的方法获取：
+$key = &#39;...&#39;; $regex = &#39;(^&#39;. preg_quote($key) . &#39;$)&#39;; print_r((new APCUIterator($regex))-&amp;gt;current());  2. 简单的存储和获取 apcu_store可以用来存储，apcu_fetch可以用来获取数据：
+$key = &amp;quot;Hello&amp;quot;; $value = &#39;World&#39;; apcu_store($key, $value); print_r($apcu_fetch(&#39;Hello&#39;)); //&#39;World&#39;  3. 存储的信息 apcu_cache_info可以用来获取存储的信息和它的条目：
+print_r(apcu_cache_info());   注意不限制的调用apcu_cache_info()或返货当前存储的所有数据。值获取元信息的话，使用apcu_cache_info(true)。获取整个缓存的信息条目比APCUIterator更好。
+ 参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十五）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-85.html</link>
+      <pubDate>Mon, 24 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-85.html</guid>
+      <description>Docker部署 Docker是非常出名的容器解决方案，被广泛用来在生产环境部署代码。这让管理和扩展web应用和微服务变得很简单。
+1. 获取PHP的docker镜像 为了在docker上部署应用，首先我们需要充注册获取镜像。
+docket pull php  这会从官方的php仓库中获取到最新版本的镜像。一般说来，PHP通常用来部署web服务器，所以需要一个包含HTTP服务器的镜像。php:7.0-apache镜像预装了Apache，这让部署变得更加简单。
+2. 编写dockerfile dockerfile用来配置我们构建web应用代码的自定义镜像。在你的项目根目录创建一个新的Dockerfile文件，然后把下面的代码放到文件里面：
+FROM php:7.0-apache COPY /etc/php/php.ini /usr/local/etc/php/ COPY . /var/www/html/ EXPOSE 80  第一行非常明显，用来描述从哪个镜像来创建一个新的镜像。这里可以修改为其他注册中的指定PHP版本。
+第二行只是把php.ini文件上传到我们的镜像中。你也可以把这个文件放到其他的自定义的地址。
+第三行将当前目录的代码复制到/var/www/html中，这就是我们的项目根目录。记住/var/www/html是在镜像里面的。
+最后一行将docker容器的80端口打开。
+忽略文件
+在一些情况下，你不想在你的服务器上面保存某些文件，就像环境配置文件等等。假设我们有一个环境配置文件.env。为了忽略这个文件，我们在代码根目录的.dockerignore中把这个文件添加进来。
+3. 创建镜像 创建镜像对于PHP并没有什么特别的，但是为了构建上面描述的镜像，我们简单的使用：
+docker build -t &amp;lt;Image name&amp;gt; .  一旦镜像构建了，你可以验证：
+docker images  这将会列出你系统安装的所有的镜像。
+4. 启动一个应用容器 一旦我们有了一个精选，我们可以启动并运行这个镜像。为了从镜像创建一个容器，使用：
+docker run -p 80:80 -d &amp;lt;Image name&amp;gt;  在上面的命令中，-p 80:80将会把你服务器的80端口指向到容器的80端口。标识-d说明容器作为后台工作运行。最后指明了哪个镜像用来创建容器。
+检查容器
+为了检查运行的容器，简单的运行：
+docker ps  这将会列出所有在docker守护进程上运行的容器。
+应用日志
+日志对于测试应用是非常重要的。为了检查日志：
+docker logs &amp;lt;Container id&amp;gt;  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十四）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-84.html</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-84.html</guid>
+      <description>BC Math(二进制计算)    bcadd 添加两个任意精度的数字     left_operand 左操作数，是一个字符串   right_operand 右操作数，是一个字符串   scale 可选参数，设置结果中小数点后面的位数       bccomp 比较两个任意精度的数字     left_operand 左操作数，是一个字符串   right_operand 右操作数，是一个字符串   scale 可选的参数，用来设置用来比较的小数点后面的位数       bcdiv 两个任意精度数字的除法     left_operand 左操作数，是一个字符串   right_operand 右操作数，是一个字符串   scale 可选参数，用来设置结果中小数点后面的 位数       bcmod 对任意精度数字取模     left_operand 左操作数，是一个字符串   modulus 字符串类型的系数       bcmul 2个任意精度数字的乘法     left_operand 字符串类型的左操作数   right_operand 字符串类型的右操作数   scale 可选参数，设置结果中小数点后面的位数       bcpow 任意精度的乘方     left_operand 字符串类型的左操作数   right_operand 字符串类型的右操作数   scale 可选参数，结果中小数点后面的位数       bcpowmod 对任意精度数字乘方，然后取模     left_operand 整形字符串类型的操作数，scale必须是0   right_operand 指数，非负的整形字符串，scale必须是0   modulus 整形字符串，scale必须是0   scale 可选，设置结果中的小数点后位数       bcscale 为所有的bc方法设置默认的scale值     scale scale值       bcsqrt 任意精度数字的二次方根     operand 字符串类型   scale 可选参数，结果中小数点后面的位数       bcsub      left_operand 字符串类型参数   right_operand 字符串类型参数   scale 可选参数，设置结果中小数点后面的位数    对于任意精度的数学，PHP提供了支持用字符串表示的任意大小和精度的数字的二进制计算，最多为2147483647-1（或0x7FFFFFFF-1）。二进制计算是比PHP的浮点计算更加精确的。</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十三）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-83.html</link>
+      <pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-83.html</guid>
+      <description>WebSocket socket扩展实现了基于流行BSD socket的套接字通信功能的低级接口，提供了充当套接字服务器和客户端的可能性。
+1. 建的TCP/IP服务器 PHP手册中最小的例子：https://www.php.net/manual/zh/sockets.examples.php
+创建监听5000端口的websocket脚本，使用putty。在终端中执行 telnet 127.0.0.1 5000（localhost）。这个脚本使用你发生的消息(作为ping返回)进行答复：
+&amp;lt;?php set_time_limit(0); //禁用超时 ob_implicit_flush(); //禁止刷新缓存 //设置 $address = &#39;127.0.0.1&#39;; $port = 5000; /* 函数 socket_create (int $domain, int $type, int $protocol) $domain 可以是AF_INET，AF_INET6对于IPV6 AF_UNIX对本地 $protocol 可以是SOL_TCP，SOL_UDP @return 成功时返回 套接字 */ if (($socket = socket_create(AF_INET, SOCKET_STREAM, SOL_TCP)) === false) { echo &amp;quot;无法创建socket&amp;quot; . socket_strerror(socket_last_error()) . &amp;quot;\n&amp;quot;; } /* socket_bind(resource $socket, string $address, [, int $port = 0]) 绑定socket到地址和端口 */ if (socket_bind($socket, $address, $port) === false) { echo &amp;quot;绑定失败 &amp;quot; .</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十二）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-82.html</link>
+      <pubDate>Fri, 21 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-82.html</guid>
+      <description>HTTP认证 在这个主题中我们做一个简单的HTTP认证脚本。
+1. HTTP认证 注意：只把这个代码放到页面的header部分，否则代码将不会有效果。
+&amp;lt;?php if (!isset($_SERVER[&#39;PHP_AUTH_USER&#39;])) { header(&#39;WWW-Authenticate: Basic realm=&amp;quot;My Realm&amp;quot;&#39;); header(&#39;HTTP/1.0 401 Unauthorized&#39;); echo &#39;Text to send if user hits Cancel button&#39;; exit; } echo &amp;quot;&amp;lt;p&amp;gt;Hello {$_SERVER[&#39;PHP_AUTH_USER&#39;]}.&amp;lt;/p&amp;gt;&amp;quot;; $user = $_SERVER[&#39;PHP_AUTH_USER&#39;]; //Lets save the information echo &amp;quot;&amp;lt;p&amp;gt;You entered {$_SERVER[&#39;PHP_AUTH_PW&#39;]} as your password.&amp;lt;/p&amp;gt;&amp;quot;; $pass = $_SERVER[&#39;PHP_AUTH_PW&#39;]; //Save the password(optionally add encryption)! ?&amp;gt; //You html page  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十一）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-81.html</link>
+      <pubDate>Thu, 20 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-81.html</guid>
+      <description>IMAP 1. 连接到mailbox 在使用一个IMAP账号做任何事情之前你第一件需要做的就是连接到它。要做到这个你需要指定下面的参数：
+ mail服务器的服务器名称或IP地址 你想要连接的端口号  IMAP是143或993(安全) POP是110或995(安全) SMTP是25或465(安全) NNTP是119或563(安全)  下面的连接标志     Flag 描述 选项 默认值     /service=service 使用什么服务 imap,pop3,nntp,smtp imap   /user=user 用来登录服务器的远端用户名     /authuser=user 远端认证用户；如果指定了这个，将会使用这个的密码     /anonymous 作为匿名用户访问     /debug 在应用程序的调试日志中记录协议遥测  disabled   /secure 不在网络中传输文本密码     /norsh 不要使用rsh或ssh建立预验证的IMAP会话     /ssl 使用SSL来加密会话     /validate-cert 来自TLS/SSL服务器的证书  enabled   novalidate-cert 如果服务器使用自签名证书，不验证来自TLS/SSL服务器的证书，谨慎使用  disabled   /tls 强制使用start-TLS加密会话，并拒绝不支持该会话的服务器连接     /notls 不使用start-TLS加密会话，即使服务器支持     /readonly 请求打开只读邮箱(仅限IMAP；在NNTP上面忽略，并且SMTP和POP3出错)      你的连接字符串像下面这样：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（八十）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-80.html</link>
+      <pubDate>Wed, 19 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-80.html</guid>
+      <description>SPL数据结构 1. SplFixedArray 和PHP数组的不同
+PHP默认的数组类型实际是排序的hash数组，这允许我们创建包含键值对的数组，这个数组中值可以是任何类型，键可以是数字或字符串。然而，这不是传统数组的创建方式。
+就像你看到的，普通的PHP数组可以看起来像是键值对的有序集合，这里每个key指向一个值。注意，这个数组我们的key是数组和字符串，以及不同类型的值，并且键和元素的顺序没有关系。
+$arr = [ 9 =&amp;gt; &amp;quot;foo&amp;quot;, 1 =&amp;gt; &amp;quot;4.2&amp;quot;, &amp;quot;bar&amp;quot; =&amp;gt; null, ]; foreach ($arr as $key =&amp;gt; $value) { echo &amp;quot;$key =&amp;gt; $value&amp;quot;; }  上面的例子会给我们希望的结果：
+9 =&amp;gt; foo 1 =&amp;gt; 4.2 bar =&amp;gt;
+常规的PHP数组也为我们动态调整大小。当我们像数组推送或取出值时，它们会自动的增长和收缩。
+然而，在传统的数组中，数组的大小是固定的并且里面保存相同类型的值。并且，每个值都是通过索引访问的，而不是通过键。索引可以通过数组的偏移量来推导。
+因为我们知道给定类型的大小，所以一个固定大小数组的偏移量可以通过type size * n来计算，其中n是这个值在数组中的位置。在这个例子中$arr[0]结果是1，数组的第一个元素$arr[1]的结果是2，等等。
+但是SplFixedArray没有严格限制值的类型。它只限制键的类型是数字。这也是一个固定的大小。
+这让SplFixedArray在某些场景下比PHP的普通数组性能更好。因为它们需要的内容更少，所以它们更加紧凑。
+实例数组
+SplFixedArray是作为一个对象实现的，但是因为它实现了ArrayAccess接口，所以你可以像访问普通PHP数组一样访问它的元素。它同样实现了Countable和Iterator接口，所以可以像PHP数组的行为一样。（使用count($arr）和foreach($arr as $k =&amp;gt; $v))这时SplFixedArray和PHP普通数组一样。
+SplFixedArray要求一个参数，这个参数表示数组的大小：
+$arr = new SplFixedArray(4); $arr[0] = &amp;quot;foo&amp;quot;; $arr[1] = &amp;quot;bar&amp;quot;; $arr[2] = &amp;quot;baz&amp;quot;; foreach($arr as $key =&amp;gt; $value) { echo &amp;quot;$key =&amp;gt; $value\n&amp;quot;; }  这将会获得下面的内容：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（七十九）</title>
+      <link>http://blog.huaifufeng.com/2019/06/post/php-section-79.html</link>
+      <pubDate>Tue, 18 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-79.html</guid>
+      <description>自动加载初探 1. 作为框架解决方案的一部分自动加载 // autoload.php spl_autoload_register(function ($class) { require_once &amp;quot;$class.php&amp;quot;; }); // Animal.php class Animal { public function eats($food) { echo &amp;quot;Yum, $food!&amp;quot;; } } // Ruminant.php class Ruminant extends Animal { public function eats($food) { if (&#39;grass&#39; === $food) { parent::eats($food); } else { echo &amp;quot;Yuck, $food!&amp;quot;; } } } // Cow.php class Cow extends Ruminant { } // pasture.php require &#39;autoload.php&#39;; $animal = new Cow; $animal-&amp;gt;eats(&#39;grass&#39;);  因为我们的自动加载器，我们可以访问任何符合我们自动加载器规则的类。在这个例子中，规则很简单，所需的类必须在为该类命名并以“.</description>
+    </item>
     
     <item>
       <title>PHP专业笔记（七十八）</title>
@@ -57,7 +270,7 @@ SVC(支持向量分类)
       <pubDate>Sat, 15 Jun 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/06/post/php-section-76.html</guid>
-      <description>SOP服务器 1. 基础SOP服务器 function test($x) { return $x; } $server = new SoapServer(null, array(&#39;uri&#39; =&amp;gt; &amp;quot;http://test-uri/&amp;quot;)); $server-&amp;gt;addFunction(&amp;quot;test&amp;quot;); $server-&amp;gt;handle();  参考：PHP® Notes for Professionals book</description>
+      <description>SOAP服务器 1. 基础SOAP服务器 function test($x) { return $x; } $server = new SoapServer(null, array(&#39;uri&#39; =&amp;gt; &amp;quot;http://test-uri/&amp;quot;)); $server-&amp;gt;addFunction(&amp;quot;test&amp;quot;); $server-&amp;gt;handle();  参考：PHP® Notes for Professionals book</description>
     </item>
     
     <item>

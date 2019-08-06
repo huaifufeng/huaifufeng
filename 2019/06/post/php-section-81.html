@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="IMAP">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（八十一）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/php-section-81.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（八十一）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, June 20, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#imap">IMAP</a>
+<ul>
+<li><a href="#1-连接到mailbox">1. 连接到mailbox</a></li>
+<li><a href="#2-安装imap扩展">2. 安装IMAP扩展</a></li>
+<li><a href="#3-列出mailbox中的所有目录">3. 列出mailbox中的所有目录</a></li>
+<li><a href="#4-返回mailbox中的信息">4. 返回mailbox中的信息</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="imap">IMAP</h2>
+
+<h3 id="1-连接到mailbox">1. 连接到mailbox</h3>
+
+<p>在使用一个IMAP账号做任何事情之前你第一件需要做的就是连接到它。要做到这个你需要指定下面的参数：</p>
+
+<ul>
+<li>mail服务器的服务器名称或IP地址</li>
+<li>你想要连接的端口号
+
+<ul>
+<li>IMAP是143或993(安全)</li>
+<li>POP是110或995(安全)</li>
+<li>SMTP是25或465(安全)</li>
+<li>NNTP是119或563(安全)</li>
+</ul></li>
+<li>下面的连接标志</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>描述</th>
+<th>选项</th>
+<th>默认值</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>/service=service</code></td>
+<td>使用什么服务</td>
+<td>imap,pop3,nntp,smtp</td>
+<td>imap</td>
+</tr>
+
+<tr>
+<td><code>/user=user</code></td>
+<td>用来登录服务器的远端用户名</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>/authuser=user</code></td>
+<td>远端认证用户；如果指定了这个，将会使用这个的密码</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>/anonymous</code></td>
+<td>作为匿名用户访问</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>/debug</code></td>
+<td>在应用程序的调试日志中记录协议遥测</td>
+<td></td>
+<td>disabled</td>
+</tr>
+
+<tr>
+<td><code>/secure</code></td>
+<td>不在网络中传输文本密码</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>/norsh</code></td>
+<td>不要使用rsh或ssh建立预验证的IMAP会话</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>/ssl</code></td>
+<td>使用SSL来加密会话</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>/validate-cert</code></td>
+<td>来自TLS/SSL服务器的证书</td>
+<td></td>
+<td>enabled</td>
+</tr>
+
+<tr>
+<td><code>novalidate-cert</code></td>
+<td>如果服务器使用自签名证书，不验证来自TLS/SSL服务器的证书，<strong>谨慎使用</strong></td>
+<td></td>
+<td>disabled</td>
+</tr>
+
+<tr>
+<td><code>/tls</code></td>
+<td>强制使用start-TLS加密会话，并拒绝不支持该会话的服务器连接</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>/notls</code></td>
+<td>不使用start-TLS加密会话，即使服务器支持</td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td><code>/readonly</code></td>
+<td>请求打开只读邮箱(仅限IMAP；在NNTP上面忽略，并且SMTP和POP3出错)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>你的连接字符串像下面这样：</p>
+
+<pre><code>{imap.example.com:993/imap/tls/secure}
+</code></pre>
+
+<p>注意如果你连接字符串中的任何字符不是ASCII的，必须使用<a href="https://www.php.net/manual/zh/function.imap-utf7-encode.php">utf7-encode($string)</a>进行加密。</p>
+
+<p>想要连接到一个邮箱，我们使用<a href="https://www.php.net/manual/zh/function.imap-open.php">imap_open</a>命令，这将会返回一个指向流的资源：</p>
+
+<pre><code class="language-php">&lt;?php
+$mailbox = imap_open(&quot;{imap.example.com:993/imap/tls/secure}&quot;, &quot;username&quot;, &quot;password&quot;);
+if($mailbox === false) {
+    echo &quot;连接失败！&quot;;
+}
+</code></pre>
+
+<h3 id="2-安装imap扩展">2. 安装IMAP扩展</h3>
+
+<p>想要在PHP中使用<a href="https://www.php.net/imap">IMAP方法</a>，你需要按照IMAP的扩展。</p>
+
+<p><strong>Debian/Ubuntu的PHP5</strong></p>
+
+<pre><code class="language-shell">sudo apt-get install php5-imap
+sudo php5enmod imap
+</code></pre>
+
+<p><strong>Debian/Ubuntu的PHP7</strong></p>
+
+<pre><code class="language-shell">sudo apt-get install php7.0-imap
+</code></pre>
+
+<p><strong>使用YUM的发行版</strong></p>
+
+<pre><code class="language-shell">sudo yum install php-imap
+</code></pre>
+
+<p><strong>Mac OS X的PHP5</strong></p>
+
+<pre><code class="language-shell">brew reinstall php5.6 --with-imap
+</code></pre>
+
+<h3 id="3-列出mailbox中的所有目录">3. 列出mailbox中的所有目录</h3>
+
+<p>一旦你已经连接到你的mailbox，你会想要看看里面的内容。第一个非常有用的命令是<a href="https://www.php.net/manual/zh/function.imap-list.php">imap_list</a>。方法的第一个参数是从<code>imap_open</code>方法获取的资源，第二个参数是你的mailbox字符串，第三个参数是模糊搜索字符串(<code>*</code>用来匹配所有模式)。</p>
+
+<pre><code class="language-php">$folders = imap_list($mailbox, &quot;{imap.example.com:993/imap/tls/secure}&quot;, &quot;*&quot;);
+if ($folders === false) {
+    echo &quot;获取mailbox的列表失败&quot;;
+} else {
+    print_r($folders);
+}
+</code></pre>
+
+<p>这个输出和下面是相似的：</p>
+
+<pre><code>Array
+(
+    [0] =&gt; {imap.example.com:993/imap/tls/secure}INBOX
+    [1] =&gt; {imap.example.com:993/imap/tls/secure}INBOX.Sent
+    [2] =&gt; {imap.example.com:993/imap/tls/secure}INBOX.Drafts
+    [3] =&gt; {imap.example.com:993/imap/tls/secure}INBOX.Junk
+    [4] =&gt; {imap.example.com:993/imap/tls/secure}INBOX.Trash
+)
+</code></pre>
+
+<p>你可以使用下面格式的第三个参数，来筛选相应的结果：</p>
+
+<pre><code class="language-php">$folders = imap_list($mailbox, &quot;{imap.example.com:993/imap/tls/secure}&quot;, &quot;*.Sent&quot;);
+</code></pre>
+
+<p>这将会只返回在名字中包含<code>.Sent</code>的结果：</p>
+
+<pre><code>Array
+(
+    [0] =&gt; {imap.example.com:993/imap/tls/secure}INBOX.Sent
+)
+</code></pre>
+
+<p><strong>注意：</strong>使用<code>*</code>做模糊搜索将会返回所有递归匹配的结果。如果你使用<code>%</code>将会只返回当前指定目录匹配的结果。</p>
+
+<h3 id="4-返回mailbox中的信息">4. 返回mailbox中的信息</h3>
+
+<p>你可以返回一个mailbox中所有的信息列表，使用<a href="https://www.php.net/manual/zh/function.imap-headers.php">imap_headers方法</a>。</p>
+
+<pre><code class="language-php">&lt;?php
+$headers = imap_headers($mailbox);
+</code></pre>
+
+<p>结果是返回下面这种模式的字符串数组：</p>
+
+<pre><code>[FLAG] [MESSAGE-ID])[DD-MM-YYY] [FROM ADDRESS] [SUBJECT TRUNCATED TO 25 CHAR] ([SIZE] chars)
+</code></pre>
+
+<p>下面是一些例子：</p>
+
+<pre><code>A     1)19-Aug-2016 someone@example.com Message Subject (1728 chars)
+D     2)19-Aug-2016 someone@example.com RE: Message Subject (22840 chars)
+U     3)19-Aug-2016 someone@example.com RE: RE: Message Subject (1876 chars)
+N     4)19-Aug-2016 someone@example.com RE: RE: RE: Message Subje (1741 chars)
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>symbol</th>
+<th>Flag</th>
+<th>Meaning</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>A</td>
+<td>Answered</td>
+<td>已经答复给的邮件</td>
+</tr>
+
+<tr>
+<td>D</td>
+<td>Deleted</td>
+<td>邮件被删除了(但没有移除)</td>
+</tr>
+
+<tr>
+<td>F</td>
+<td>Flagged</td>
+<td>邮件被标记/加星以引起注意</td>
+</tr>
+
+<tr>
+<td>N</td>
+<td>New</td>
+<td>新的没有被看到的邮件</td>
+</tr>
+
+<tr>
+<td>R</td>
+<td>Recent</td>
+<td>新的已经被看到的邮件</td>
+</tr>
+
+<tr>
+<td>U</td>
+<td>Unread</td>
+<td>没有读的邮件</td>
+</tr>
+
+<tr>
+<td>X</td>
+<td>Draft</td>
+<td>邮件草案</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>注意，这个调用可能需要很长的时间来运行，并可能返回一个非常大的列表。</strong></p>
+
+<p>另一种方法是根据需要加载单独的邮件。你的每封邮件都被分配一个ID，从1（最老的）到<code>imap_num_msg($mailbox)</code>。</p>
+
+<p>有多重方法来直接访问电子邮件，但最简单的方式是使用<code>imap_header</code>，返回结构化的邮件头信息：</p>
+
+<pre><code>&lt;?php
+$header = imap_headerinfo($mailbox, 1);
+
+stdClass Object
+(
+    
+    [date] =&gt; Wed, 19 Oct 2011 17:34:52 +0000
+    [subject] =&gt; Message Subject
+    [message_id] =&gt; &lt;04b80ceedac8e74$51a8d50dd$0206600a@user1687763490&gt;
+    [references] =&gt; &lt;ec129beef8a113c941ad68bdaae9@example.com&gt;
+    [toaddress] =&gt; Some One Else &lt;someoneelse@example.com&gt;
+    [to] =&gt; Array
+        (
+            [0] =&gt; stdClass Object
+                (
+                    [personal] =&gt; Some One Else
+                    [mailbox] =&gt; someonelse
+                    [host] =&gt; example.com
+                )
+        )
+    [fromaddress] =&gt; Some One &lt;someone@example.com&gt;
+    [from] =&gt; Array
+        (
+            [0] =&gt; stdClass Object
+                (
+                    [personal] =&gt; Some One
+                    [mailbox] =&gt; someone
+                    [host] =&gt; example.com
+                )
+        )
+    [reply_toaddress] =&gt; Some One &lt;someone@example.com&gt;
+    [reply_to] =&gt; Array
+        (
+            [0] =&gt; stdClass Object
+                (
+                    [personal] =&gt; Some One
+                    [mailbox] =&gt; someone
+                    [host] =&gt; example.com
+                )
+        )
+    [senderaddress] =&gt; Some One &lt;someone@example.com&gt;
+    [sender] =&gt; Array
+        (
+            [0] =&gt; stdClass Object
+                (
+                    [personal] =&gt; Some One
+                    [mailbox] =&gt; someone
+                    [host] =&gt; example.com
+                )
+        )
+    [Recent] =&gt;
+    [Unseen] =&gt;
+    [Flagged] =&gt;
+    [Answered] =&gt;
+    [Deleted] =&gt;
+    [Draft] =&gt;
+    [Msgno] =&gt;    1
+    [MailDate] =&gt; 19-Oct-2011 17:34:48 +0000
+    [Size] =&gt; 1728
+    [udate] =&gt; 1319038488
+)
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/mysql-section-66.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十六)">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/mysql-section-67.html" data-toggle="tooltip" data-placement="top" title="MySQL专业笔记(六十七)">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

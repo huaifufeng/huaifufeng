@@ -6,10 +6,45 @@
     <description>Recent content in Java on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 30 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/java/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Java专业笔记（八）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/java-section-8.html</link>
+      <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/java-section-8.html</guid>
+      <description>Java命令 1. 入口点类 一个Java的入口点类有一个具有下面签名和修饰符的主要方法：
+public static void main(String[] args)   旁注：由于数组的工作方式，这里也可以是String args[]
+ 当java命令开启一个虚拟机的时候，它将会家长指定的入口点类并且寻找main方法。如果找到了，命令行的参数将会转换为一个String对象并且赋值到数组中。如果main像这样调用，这个数组将不会是null，并且不会包含null的值。
+一个有效的入口点类方法必须做下面的事情：
+ 必须名称是main(区分大小写) 是public和static 拥有一个void返回类型 拥有一个单独的字符串数组参数String[] args。这个参数必须存在，并且不能有多个参数 泛型：不允许使用类型参数 具有非泛型，顶级（非嵌套或内部）封闭类  通常将类声明为public，但是这并非是绝对的。从Java5开始，main方法的参数类型可以是String 可变参数，而不会字符串数组。main可以选择性的抛出异常，它的参数可以命名为任何值，但是通常是args。
+JavaFx入口点
+从Java8开始，java命令亏直接开启一个JavaFX应用。JavaFX标记有JavaFX标签，但是一个JavaFX的入口点必须有下面的内容：
+ 继承javafx.application.Application 需要是public并且不是abstract 不是泛型或嵌套的 有一个显式或隐式 public的无参数构造函数  2. &amp;lsquo;java&amp;rsquo;命令故障排除 下面的例子介绍使用&amp;rsquo;java&amp;rsquo;命令场景的错误。
+&amp;ldquo;命令未找到&amp;rdquo;
+如果你碰到类似下面的错误信息：
+java: command not found  当你试着运行java命令的时候，这意味在你的shell命令查找地址中没有java命令。这可能的原因是：
+ 你还没有安装Java的JRE或JDK 你还没有更新你的PATH环境变量（正确的）在你的shell初始化文件 你没有在当前的shell中source你的shell初始文件  查看&amp;rdquo;安装Java&amp;rdquo;的部分。
+&amp;ldquo;Could not find or load main Class&amp;rdquo;
+当java命令找不到或者无法家长你指定的入口点类，将会输出这个错误信息。一般来说有三种可能出现这个错误：
+ 你指定了一个不存在的入口点类 类存在，但是没有正确的指定这个类 类存在并且你正确指定了，但是Java没有找到因为classpath不正确  下面是诊断和解决问题的办法：
+ 找到入口点类的完整名称  如果你有类的源代码，完整的名称包含包名和简单类名。&amp;rdquo;Main&amp;rdquo;类的试了在包&amp;rdquo;com.</description>
+    </item>
+    
+    <item>
+      <title>Java专业笔记（七）</title>
+      <link>http://blog.huaifufeng.com/2019/05/post/java-section-7.html</link>
+      <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/05/post/java-section-7.html</guid>
+      <description>Java代码文档化    参数 详情     args 命令行的参数。假设main方法是被java的launcher调用的，args将不会是null，将会有非null的值    1. 使用GWT的ToolBase进行参数处理 如果你想要解析更复杂的命令行参数(例如可选参数)，最好的方法就是使用Google的GWT方法，所有公开分类都在：https://gwt.googlesource.com/gwt/+/2.8.0-beta1/dev/core/src/com/google/gwt/util/tools/ToolBase.java
+一个处理命令行myprogram -dir &amp;quot;~/Documents&amp;quot; -port 8888的例子：
+public class MyProgramHanlder extends ToolBase { protected File dir; protected int port; //dir和port的getter和setter ... public MyProgramHandler() { this.registerHandler(new ArgHandlerDir() { @Override public void setDir(File dir) { this.dir = dir; } }); this.registerHandler(new ArgHandlerInt() { @Override public String[] getTagArgs() { return new String[]{&amp;quot;port&amp;quot;}; } @Override public void setInt(int value) { this.</description>
+    </item>
     
     <item>
       <title>Java专业笔记（六）</title>

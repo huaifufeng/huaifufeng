@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="PHPDoc">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（八十九）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/php-section-89.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（八十九）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, June 28, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#phpdoc">PHPDoc</a>
+<ul>
+<li><a href="#1-描述变量">1. 描述变量</a></li>
+<li><a href="#2-添加方法的元信息">2. 添加方法的元信息</a></li>
+<li><a href="#3-描述参数">3. 描述参数</a></li>
+<li><a href="#4-集合">4. 集合</a></li>
+<li><a href="#5-添加文件元数据">5. 添加文件元数据</a></li>
+<li><a href="#6-从父结构继承元数据">6. 从父结构继承元数据</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="phpdoc">PHPDoc</h2>
+
+<h3 id="1-描述变量">1. 描述变量</h3>
+
+<p><code>@var</code>关键字用来描述一个类型和用法：</p>
+
+<ul>
+<li>类属性</li>
+<li>本地或全局变量</li>
+<li>类或者全局常量</li>
+</ul>
+
+<pre><code class="language-php">class Example {
+    /** @var string 常量*/
+    const UNCHANGING = 'Untouchable';
+    
+    /** @var string $some_str 字符串 */
+    public $some_str;
+    
+    /**
+    * @var array $stuff  stuff集合
+    * @var array $nonsense 是nonsense集合
+    */
+    private $stuff, $nonsense;
+    
+    ...
+}
+</code></pre>
+
+<p>类型这里可以是PHP内建的类型，也可以是包含命名空间的用户定义的类</p>
+
+<p>变量名应该包含，但是如果只有一个元素的话可以省略。</p>
+
+<h3 id="2-添加方法的元信息">2. 添加方法的元信息</h3>
+
+<p>函数级注释有助于IDE识别返回值或潜在的危险代码。</p>
+
+<pre><code class="language-php">/**
+ * 两个元素加在一起
+ *
+ * @param Int $a 第一个求和的元素
+ * @param Int $b 第二个求和的元素
+ * @return Int
+ */
+function sum($a, $b) {
+    return (int) $a + $b;
+}
+
+/**
+ * 不用运行这个方法，会抛出异常
+ * 
+ * @throws Exception 一直
+ */
+function dangerousCode() {
+    throw new Exception('注意，这里有风险');
+}
+/**
+ * 老结构不使用了，这里的代码不使用
+ * 
+ * @deprecated
+ */
+function oldCode() {
+    mysql_connect(/* ... */);
+}
+</code></pre>
+
+<h3 id="3-描述参数">3. 描述参数</h3>
+
+<pre><code class="language-php">/**
+ * 参数
+ * 
+ * @param int     $int
+ * @param string  $string
+ * @param array   $array
+ * @param bool    $bool
+ */
+function demo_param($int, $string, $array, $bool) {
+
+}
+
+/**
+ * 参数 - 可选/默认
+ *
+ * @param int     $int
+ * @param string  $string
+ * @param array   $array
+ * @param bool    $bool
+ */
+ function demo_param_optional($int = 5, $string = 'foo', $array = [], $bool = false) {
+ 
+ }
+ 
+ /**
+  * 参数 - 数组
+  * 
+  * @param array           $mixed
+  * @param int[]           $integers   
+  * @param string[]        $strings 
+  * @param bool[]          $bools
+  * @param string[]|int[]  $strings_or_integers
+  */
+ function demo_param_arrays($mixed, $integers, $strings, $bools, $strings_or_integers) {
+ 
+ }
+ 
+ /**
+  * 参数 - 复杂
+  *  
+  * @param array $config
+  * &lt;pre&gt;
+  * $params = [
+  *     'hostname' =&gt; (string) DB hostname, 必须
+  *     'database' =&gt; (string) DB name 必须    
+  *     'username' =&gt; (string) DB username 必须
+  * ]
+  * &lt;/pre&gt;
+  */
+function demo_param_complex($config) {
+
+}
+</code></pre>
+
+<h3 id="4-集合">4. 集合</h3>
+
+<p>PSR-5为集合提供了一种通用样式的表示方式。</p>
+
+<p><strong>通用语法</strong></p>
+
+<pre><code>Type[]
+Type&lt;Type&gt;
+Type&lt;Type[, Type]...&gt;
+Type&lt;Type[|Type]...&gt;
+</code></pre>
+
+<p>集合的值也可以是另外的数组和集合。</p>
+
+<pre><code>Type&lt;Type&lt;Type&gt;&gt;
+Type&lt;Type&lt;Type[, Type]...&gt;&gt;
+Type&lt;Type&lt;Type[|Type]...&gt;&gt;
+</code></pre>
+
+<p><strong>例子</strong></p>
+
+<pre><code class="language-php">&lt;?php
+/**
+ * @var ArrayObject&lt;string&gt; $name
+ */
+$name = new ArrayObject(['a', 'b']);
+
+/**
+ * @var ArrayObject&lt;int&gt; $name
+ */
+$name = new ArrayObject([1, 2]);
+
+/**
+ * @var ArrayObject&lt;stdClass&gt; $name
+ */
+$name = new ArrayObject([ 
+    new stdClass(),
+    new stdClass() 
+]);
+
+/**
+ * @var ArrayObject&lt;string|int|stdClass|bool&gt; $name
+ */
+$name = new ArrayObject([ 'a',
+    true,
+    1,
+    'b',
+    new stdClass(), 
+    'c',
+    2 
+]);
+
+/**
+ * @var ArrayObject&lt;ArrayObject&lt;int&gt;&gt; $name
+ */
+$name = new ArrayObject([ 
+    new ArrayObject([1, 2]), 
+    new ArrayObject([1, 2])
+]);
+
+/**
+ * @var ArrayObject&lt;int, string&gt; $name
+*/
+$name = new ArrayObject([ 
+    1 =&gt; 'a',
+    2 =&gt; 'b' 
+]);
+
+/**
+ * @var ArrayObject&lt;string, int&gt; $name
+ */
+$name = new ArrayObject([ 
+    'a' =&gt; 1,
+    'b' =&gt; 2 
+]);
+
+/**
+ * @var ArrayObject&lt;string, stdClass&gt; $name
+ */
+$name = new ArrayObject([ 
+    'a' =&gt; new stdClass(), 
+    'b' =&gt; new stdClass()
+]);
+</code></pre>
+
+<h3 id="5-添加文件元数据">5. 添加文件元数据</h3>
+
+<p>文件级元数据应用于文件中的所有代码，并应放在文件的顶部：</p>
+
+<pre><code class="language-php">&lt;?php
+
+/**
+ * @author John Doe (jdoe@example.com)
+ * @copyright MIT
+ */
+</code></pre>
+
+<h3 id="6-从父结构继承元数据">6. 从父结构继承元数据</h3>
+
+<p>如果一个类扩展了另外一个类，并将使用相同的元数据，那么提供<code>@inheritDoc</code>是使用相同文件的简单方式。如果多个类继承自一个基类，则只有基类需要更改才能影响子类：</p>
+
+<pre><code class="language-php">abstract class FooBase {
+    /**
+     * @param Int $a First parameter to add
+     * @param Int $b Second parameter to add
+     * @return Int
+     */
+    public function sum($a, $b) {} 
+}
+
+class ConcreteFoo extends FooBase 
+{
+    /**
+     * @inheritDoc
+     */
+    public function sum($a, $b) {
+        return $a + $b;
+    }
+}
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/php-section-88.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（八十八）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/php-section-90.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九十）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="PSR">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（八十八）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/06/post/php-section-88.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（八十八）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Thursday, June 27, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#psr">PSR</a>
+<ul>
+<li><a href="#1-psr-4-autoloader">1. PSR-4：Autoloader</a></li>
+<li><a href="#2-psr-1-基本代码标准">2. PSR-1 基本代码标准</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="psr">PSR</h2>
+
+<p><a href="https://www.php-fig.org/psr/">PSR</a>（PHP标准建议）是有<a href="https://www.php-fig.org/">FIG</a>（框架互操作组）组合在一起的一系列建议。</p>
+
+<p>&ldquo;该小组的想法是让项目代表讨论我们的项目之间的共性，并找到我们可以合作的方法。&rdquo; - <a href="https://www.php-fig.org/faqs/">FIG FAQ</a></p>
+
+<p>PSRs有下面的状态：Accepted, Review, Draft or Deprecated.</p>
+
+<h3 id="1-psr-4-autoloader">1. PSR-4：Autoloader</h3>
+
+<p><a href="https://www.php-fig.org/psr/psr-4/">PSR-4</a>是一个已接受的建议。它描述了通过文件名自动加载类的标准。这个建议是作为早起(已经废弃)<a href="https://www.php-fig.org/psr/psr-0/">PSR-0</a>的替代方案。</p>
+
+<p>完全限定的类名需要符合下面的要求：</p>
+
+<pre><code>  \&lt;NamespaceName&gt;(\&lt;SubNamespaceNames&gt;)*\&lt;ClassName&gt;
+</code></pre>
+
+<ul>
+<li>它必须包含一个定义的第三方命名空间(例如<code>Alphabet</code>)</li>
+<li>它可能包含一个或多个子命名空间(例如<code>Google\AdWord</code>)</li>
+<li>它必须包含一个结尾的类名(例如<code>KeywordPlanner</code>)</li>
+</ul>
+
+<p>最后的类名就是<code>Alphabet\Google\AdWord\KeywordPlanner</code>。完全先定的类名应该也是有意义的文件路径，因此<code>Alphabet\Google\AdWord\KeywordPlanner</code>应该保存在<code>Alphabet\Google\AdWord\KeywordPlanner.php</code>中。</p>
+
+<p>从PHP5.3开始，<a href="https://www.php.net/manual/zh/function.spl-autoload-register.php">自定义加载器方法</a>可以用来定义基于你定义的路径和文件名格式来来加载文件的方法。</p>
+
+<pre><code>spl_autoload_register(function ($class) { include 'classes/' . $class . '.class.php';});
+</code></pre>
+
+<p>替换其中路径<code>classes/</code>和文件扩展<code>.class.php</code>为你自己的结构。</p>
+
+<p>Composer包管理器<a href="https://getcomposer.org/doc/01-basic-usage.md#autoloading">支持PSR-4</a>，这意味着，如果你遵循这个标准的话，使用Composer的第三方加载器自动加载你的项目的类。</p>
+
+<pre><code class="language-json">//修改composer.json文件
+{
+    &quot;autoload&quot;: {
+        &quot;psr-4&quot;: {
+            &quot;Alphabet\\&quot;: &quot;[path_to_source]&quot;
+        }
+    }
+}
+</code></pre>
+
+<p>重新生成加载器文件：</p>
+
+<pre><code>$ composer dump-autoload
+</code></pre>
+
+<p>现在你的代码你可以像下面这样：</p>
+
+<pre><code class="language-php">&lt;?php
+require __DIR__ . '/vendor/autoload.php';
+$KeywordPlanner = new Alphabet\Google\AdWord\KeywordPlanner();
+</code></pre>
+
+<h3 id="2-psr-1-基本代码标准">2. PSR-1 基本代码标准</h3>
+
+<p><a href="http://www.php-fig.org/psr/psr-1/">PSR-1</a>是已经接受的建议，介绍代码应该怎么编写的基本建议标准。</p>
+
+<ul>
+<li>它说明了类，方法和常量的命名规则</li>
+<li>它要求采用PSR-0或PSR-4</li>
+<li>它说明了应该使用什么PHP标签：<code>&lt;?php</code>和<code>&lt;?=</code>，但不是<code>&lt;?</code></li>
+<li>它指明了应该使用什么文件编码(UTF8)</li>
+<li>它还指出，文件应该声明新的符号（类，函数，常量等），并且没有造成其他的副作用，或者执行带有副作用的逻辑，而不是定义符号，但两者都做。</li>
+</ul>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/06/post/php-section-87.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（八十七）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/06/post/php-section-89.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（八十九）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>
