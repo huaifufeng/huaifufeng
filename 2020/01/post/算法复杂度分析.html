@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="算法时间复杂度分析">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>算法时间复杂度分析-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2020/01/post/%e7%ae%97%e6%b3%95%e5%a4%8d%e6%9d%82%e5%ba%a6%e5%88%86%e6%9e%90.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/algorithms">algorithms</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/algorithms" title="Algorithms">
+                           Algorithms
+                        </a>
+                       
+                    </div>
+                    <h1>算法时间复杂度分析</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, January 1, 2020
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#算法时间复杂度分析">算法时间复杂度分析</a>
+<ul>
+<li><a href="#大o时间复杂度分析">大O时间复杂度分析</a></li>
+<li><a href="#常见的复杂度">常见的复杂度</a></li>
+<li><a href="#最好-最坏-平均时间复杂度">最好，最坏，平均时间复杂度</a>
+<ul>
+<li><a href="#最好时间复杂度">最好时间复杂度</a></li>
+<li><a href="#最坏时间复杂度">最坏时间复杂度</a></li>
+<li><a href="#平均时间复杂度">平均时间复杂度</a></li>
+</ul></li>
+<li><a href="#总结">总结</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="算法时间复杂度分析">算法时间复杂度分析</h2>
+
+<p>当我们实现完我们的代码时，我们需要对代码效率进行评估。常用的方法就是对代码的执行时间进行测试，这也是我们常用的方法，其中性能测试就是这样的方式。但是，这种方法有两个缺点：</p>
+
+<ol>
+<li>代码的执行效果受到硬件的影响。同样的代码在不同的机器上面执行的效果是不一样的，可能在一个机器上面a比b执行的快，但是在另一个机器上却相反。</li>
+<li>代码的执行效果受到数据规模的影响。同样的代码在不同数据上的执行效果各不相同，也许O(n)的程序会比O(logn)的执行效果更好。</li>
+</ol>
+
+<p>所以，我们就是用一种估算的方式来计算代码的执行效果，这样不会受到硬件和数据的影响，这就是大O时间分析法.</p>
+
+<h3 id="大o时间复杂度分析">大O时间复杂度分析</h3>
+
+<p>大O时间复杂度分析就是一种评估程序随数据规模增长的趋势，详细名称是渐进式时间复杂度，检查时间复杂度。</p>
+
+<p>我们看下下面代码的时间复杂度：</p>
+
+<pre><code class="language-go">1 func sum(nums []int) int {
+2   res := 0
+3   n := len(nums)
+4   for i :0 ; i &lt; n; i++ {
+5     res += nums[i]
+6   }
+7   
+8   return res
+9 }
+</code></pre>
+
+<p>这里我们假设每行代码执行的时间是相同的(因为是预估的时间，这里可以这样假设)。</p>
+
+<p>其中2、3、8行的复杂度分别是 1，4、5行的复杂度是n，这样我们中的复杂度就是n+2，表示起来就是O(n+2)因为常量的复杂度不会随n值得增加而变化，所以这里常量是可以省略的，这样这个方法的复杂度就是O(n)，其中n表示的是数组的长度。</p>
+
+<p>这样我们就知道了大O时间复杂度的计算方法：就是统计方法每行代码的执行时间次数之和。就像上面一样，大O时间复杂度分析有一些规则：</p>
+
+<ul>
+<li>只关注执行次数最多的代码</li>
+</ul>
+
+<p>就像上面，我们关系的是循环的代码，单独的一行代码可以不用考虑。具体到时间复杂度就是不需要关系常量执行次数的代码，不管是一次还是多次，只要不随n的值发生变化，都可以不考虑。</p>
+
+<p>如果只有常量执行次数的代码，那么大O时间复杂度就是O(1)，这表示代码的执行和n没有任何关系，我们不需要关系执行多少次，只需要标记是常量次数就可以。</p>
+
+<ul>
+<li>只需要关注执行次数量级最多的代码</li>
+</ul>
+
+<p>比如下面的代码：</p>
+
+<pre><code class="language-go">  for a:= 0; a &lt; n; a++ {
+     sum += a
+  }
+  
+  for i := 0; i &lt; n; i++ {
+    for j := 0; j &lt; n; j++ {
+       sum += i
+    }
+  }
+</code></pre>
+
+<p>这段代码的时间复杂度安装之前的方法就是O(n²+n)。这里因为复杂度随n的变化，n²变化幅度比n大的多，所以我们只需要关系n²就可以，这就可以代表代码的效率变化了，也就是大O时间复杂度是O(n²)</p>
+
+<ul>
+<li>嵌套的代码的复杂度是复杂度的乘积</li>
+</ul>
+
+<p>就像上面的代码，i和j可以看做是两段代码，它的复杂度是i的复杂度和j的复杂度的乘积，也就是n*n=n²</p>
+
+<h3 id="常见的复杂度">常见的复杂度</h3>
+
+<p>我们常见的复杂度有O(1)，O(n)，O(logn)，O(nlogn)，O(n²)，O(2n次方)，O(n!)。代码的执行效率也按照这个顺序，随着n值的增加，代码的效率越差，其中后两者的执行效率非常差。</p>
+
+<p><strong>O(1)</strong></p>
+
+<p>常量时间复杂度，表示代码的执行效率不随着n的变化而变化。不管代码执行的次数是多少，这里都是O(1)</p>
+
+<p><strong>O(logn) O(nlogn)</strong></p>
+
+<p>对数时间复杂度非常常见，但也是最难分析的一种时间复杂度。常见的二分法就是对数阶的复杂度。</p>
+
+<pre><code class="language-go">for i &lt;= n {
+    i *= 2
+}
+</code></pre>
+
+<p>这里i每次乘以2，直到结果大于n结束。所以执行次数就是n的2的对数。因为对数是可以进行转换的，所以对数这里我们统一使用logn表示，也就是O(logn)</p>
+
+<p><strong>O(m+n) O(m*n)</strong></p>
+
+<p>有时候代码中有两个变量m和n，我们不知道两个变量哪个更大，所以就按照前面的教程，同时保留这两个变量，其他方面是不变的。</p>
+
+<h3 id="最好-最坏-平均时间复杂度">最好，最坏，平均时间复杂度</h3>
+
+<p>上面只是对复杂度进行了简单的分析，但是时间的代码执行期间，数据的不同代码的时间复杂度是不一样的。比如下面的代码，要找到比0大的值：</p>
+
+<pre><code class="language-go">for i := 0; i &lt; n; i++ {
+	if i &gt; 0 {
+	   break 
+	}
+}
+</code></pre>
+
+<p>这里虽然代码的大O复杂度是O(n)，但是实际执行时，复杂度是O(1)，代码只执行了一次。所以我们这里就将复杂度分为：最好、最坏、平均的时间复杂度</p>
+
+<h4 id="最好时间复杂度">最好时间复杂度</h4>
+
+<p>最好时间复杂度是指代码执行时效果最好，执行的次数最少，比如第一次就找到了结果，后面的循环就不需要进行了，像上面的代码就是O(1)</p>
+
+<h4 id="最坏时间复杂度">最坏时间复杂度</h4>
+
+<p>最坏的时间复杂度是指代码执行时一直到最后才找到或者一直都没有找到的情况，像上面直到执行完n次的循环，才获取了最终的结果，也就是最坏的时间复杂度O(n)</p>
+
+<h4 id="平均时间复杂度">平均时间复杂度</h4>
+
+<p>平均时间复杂度就是不考虑最好也不考虑最坏这样的极端情况，而是平均下来的时间，就是各种可能的情况平均下来的时间复杂度(1+2+3+&hellip;.n)/n = O(n)</p>
+
+<h3 id="总结">总结</h3>
+
+<p>上面就是时间复杂度的简单计算方法和常见的时间复杂度，后续就需要我们常用常练习，自然就会逐渐融汇贯通。</p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/07/post/php-section-105.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百零五）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/algorithms" title="algorithms">
+                        algorithms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2020
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

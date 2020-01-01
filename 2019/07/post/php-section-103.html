@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="密码hash函数">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（一百零三）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/07/post/php-section-103.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/algorithms">algorithms</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（一百零三）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, July 12, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#密码hash函数">密码hash函数</a>
+<ul>
+<li><a href="#1-创建一个密码hash">1. 创建一个密码hash</a></li>
+<li><a href="#2-确定是否将现有的密码hash函数升级为更强大的算法">2. 确定是否将现有的密码hash函数升级为更强大的算法</a></li>
+<li><a href="#3-验证密码的hash值">3. 验证密码的hash值</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="密码hash函数">密码hash函数</h2>
+
+<p>更安全的web服务器应该避免存储文本格式的密码，像PHP这样的语言提供了(非解密)的hash函数来支持更加安全的工业标准。这个主题主要介绍PHP的hash函数。</p>
+
+<h3 id="1-创建一个密码hash">1. 创建一个密码hash</h3>
+
+<p>使用<a href="https://www.php.net/manual/zh/function.password-hash.php">password_hash()</a>生成密码的hash，使用当前工业最佳实践的标准hash或key派生。在编写时，标准是<a href="https://en.wikipedia.org/wiki/Bcrypt">bcrypt</a>。所以，<code>PASSWORD_DEFAULT</code>意味着<code>PASSWORD_BCRYPT</code>。</p>
+
+<pre><code class="language-php">$options = [
+    'cost' =&gt; 12,
+];
+
+$hashedPassword = password_hash($plaintextPassword, PASSWORD_DEFAULT, $options);
+</code></pre>
+
+<p>第三个参数是<strong>非必须的</strong>。</p>
+
+<p>这个<code>cost</code>的值根据你生产服务器的硬件决定。增加这个值在生成密码是花费更多的资源。生产的成本越高，任何试图破解的人花费的成本越高。理想情况下，cost应该越高越好，但是实际它应该设置不是任何事情变太慢。通常0.1~0.4秒就可以了。如果有疑问就是用默认值。</p>
+
+<p>Version &lt; 5.5</p>
+
+<p>在PHP低于5.5.0时，<code>passowrd_*</code>函数是无效的。你可以使用<a href="https://github.com/ircmaxell/password_compat来替代这些方法。注意这个兼容包要求PHP">https://github.com/ircmaxell/password_compat来替代这些方法。注意这个兼容包要求PHP</a> 5.3.7或者更高版本或者将<code>$y2</code>反向安装在其中的版本(如Redhat提供的版本)。</p>
+
+<p>当你不能使用那些的时候，你可以使用<a href="https://www.php.net/manual/zh/function.crypt.php">crypt()</a>函数实现一个密码hash方法。<code>password_hash()</code>是实现的<code>crypt()</code>函数的一个封装，你需要丢失一些功能。</p>
+
+<pre><code class="language-php">// this is a simple implementation of a bcrypt hash otherwise compatible
+// with `password_hash()`
+// not guaranteed to maintain the same cryptographic strength of the full `password_hash()`
+// implementation
+// if `CRYPT_BLOWFISH` is 1, that means bcrypt (which uses blowfish) is available // on your system
+if (CRYPT_BLOWFISH == 1) {
+    $salt = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM);
+    $salt = base64_encode($salt);
+    
+    // crypt uses a modified base64 variant
+    $source = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'; 
+    $dest = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; 
+    $salt = strtr(rtrim($salt, '='), $source, $dest);
+    $salt = substr($salt, 0, 22);
+    
+    // `crypt()` determines which hashing algorithm to use by the form of the salt string 
+    // that is passed in
+    $hashedPassword = crypt($plaintextPassword, '$2y$10$'.$salt.'$');
+}
+</code></pre>
+
+<p><strong>密码hash的盐</strong></p>
+
+<p>尽管密码算法的可靠性很高，但仍然存在针对<a href="https://en.wikipedia.org/wiki/Rainbow_table">彩虹表</a>的漏洞。这就是为什么建议使用盐的原因。</p>
+
+<p>salt是在散列前附加到密码后使源字符串唯一的东西。给定两个相同的密码，得到的哈希值也将是唯一的，因为它们的盐是唯一的。</p>
+
+<p>随机盐是密码安全中最重要的部分之一。这意味着即使使用已知密码哈希的查找表，攻击者也无法将用户的密码哈希与数据库密码哈希进行匹配，因为已经使用了随机salt。您应该始终使用随机和密码安全的盐。<a href="https://www.springer.com/us/book/9781484221198">阅读更多信息</a></p>
+
+<p>使用<a href="https://www.php.net/manual/zh/function.password-hash.php">password_hash()</a>的<code>bcrypt</code>算法，纯文本salt与生成的哈希一起存储，这意味着哈希可以跨不同的系统和平台传输，并且仍然与原始密码匹配。</p>
+
+<p>Version &lt; 7.0</p>
+
+<p>即使不鼓励这样做，也可以使用salt选项定义自己的随机salt。</p>
+
+<pre><code class="language-php">$options = [
+    'salt' =&gt; $salt, //see example below
+];
+</code></pre>
+
+<p><strong>重要：</strong>如果你忽略这个选项的话，password_hash()会为每个密码hash产生一个随机的盐。这是预期的操作方式。</p>
+
+<p>Version &gt;= 7.0</p>
+
+<p>这个盐选项在PHP7.0中已经不推荐使用了。简单的使用默认生成的盐是更好的方式。</p>
+
+<h3 id="2-确定是否将现有的密码hash函数升级为更强大的算法">2. 确定是否将现有的密码hash函数升级为更强大的算法</h3>
+
+<p>如果您使用密码默认方法让系统选择最好的算法来散列您的密码，随着默认强度的增加，您可能希望在用户登录时重新刷新旧密码。</p>
+
+<pre><code class="language-php">&lt;?php
+// first determine if a supplied password is valid
+if (password_verify($plaintextPassword, $hashedPassword)) {
+// now determine if the existing hash was created with an algorithm that is // no longer the default
+    if (password_needs_rehash($hashedPassword, PASSWORD_DEFAULT)) {
+        // create a new hash with the new default
+        $newHashedPassword = password_hash($plaintextPassword, PASSWORD_DEFAULT);
+        // and then save it to your data store
+        //$db-&gt;update(...);
+    } 
+}
+?&gt;
+</code></pre>
+
+<p>如果你的系统上面<code>password_*</code>函数是无效的(并且不能使用备注中的兼容包)，你可以决定hash的算法，并使用下面类似的方式创建一个方法：</p>
+
+<pre><code class="language-php">&lt;?php
+if (substr($hashedPassword, 0, 4) == '$2y$' &amp;&amp; strlen($hashedPassword) == 60) { 
+    echo 'Algorithm is Bcrypt';
+    // the &quot;cost&quot; determines how strong this version of Bcrypt is     
+    preg_match('/\$2y\$(\d+)\$/', $hashedPassword, $matches);
+    $cost = $matches[1];
+    echo 'Bcrypt cost is '.$cost;
+}
+?&gt;
+</code></pre>
+
+<h3 id="3-验证密码的hash值">3. 验证密码的hash值</h3>
+
+<p><code>password_verify()</code>是PHP内建的函数(从PHP5.5)，用来根据已知hash验证密码的有效性：</p>
+
+<pre><code class="language-php">&lt;?php
+if (password_verify($plaintextPassword, $hashedPassword)) {
+    echo 'Valid Password';
+} else {
+    echo 'Invalid Password.';
+}
+?&gt;
+</code></pre>
+
+<p>所有支持的哈希算法都存储信息，以标识哈希本身中使用的哈希，因此无需指示使用哪种算法对明文密码进行编码。</p>
+
+<p>如果你的系统上面<code>password_*</code>函数是无效的(并且不能使用备注中的兼容包)，你可以使用<code>crypt()</code>函数实现密码验证方法。请注意，必须采取特定的预防措施以避免定时攻击。</p>
+
+<pre><code class="language-php">&lt;?php
+// not guaranteed to maintain the same cryptographic strength of the full `password_hash()` // implementation
+if (CRYPT_BLOWFISH == 1) {
+     // `crypt()` discards all characters beyond the salt length, so we can pass in 
+     // the full hashed password
+    $hashedCheck = crypt($plaintextPassword, $hashedPassword);
+    
+    // this a basic constant-time comparison based on the full implementation used 
+    // in `password_hash()`
+    $status = 0;
+    for ($i=0; $i&lt;strlen($hashedCheck); $i++) {
+        $status |= (ord($hashedCheck[$i]) ^ ord($hashedPassword[$i]));
+    }
+    if ($status === 0) {
+        echo 'Valid Password';
+    } else {
+        echo 'Invalid Password';
+    }
+}
+?&gt;
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/07/post/php-section-99.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九十九）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/07/post/php-section-104.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百零四）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/algorithms" title="algorithms">
+                        algorithms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

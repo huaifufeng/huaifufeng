@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="多进程">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（九十八）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/07/post/php-section-98.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/algorithms">algorithms</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（九十八）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Sunday, July 7, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#多进程">多进程</a>
+<ul>
+<li><a href="#1-内建的fork函数实现多进程">1. 内建的fork函数实现多进程</a></li>
+<li><a href="#2-使用fork创建子进程">2. 使用fork创建子进程</a></li>
+<li><a href="#3-进程间通信">3. 进程间通信</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="多进程">多进程</h2>
+
+<h3 id="1-内建的fork函数实现多进程">1. 内建的fork函数实现多进程</h3>
+
+<p>你可以使用内置函数以fork的形式来运行PHP进程。如果不需要线程进行通信，这是实现并行工作的最简单的方法。</p>
+
+<p>这允许你将时间密集型任务(如将文件上传到另一个服务器或发送电子邮件)放到另一个线程，这样你的脚本加载更快，可以使用多核心，但是注意，这不是真正的多线程，你的主线程将不知道子线程在做什么。</p>
+
+<p>注意 ，在Windows下面，这将使你启动的每个分叉都弹出另一个命令提示。</p>
+
+<p>master.php</p>
+
+<pre><code class="language-php">$cmd = 'php worker.php 10';
+if (strtoupper(substr(PHPP_OS, 0, 3)) === 'WIN') {
+    //windows使用popen和pclose
+    pclose(popen($cmd, 'r'));
+} else {
+    //unix使用shell命令，&amp;结尾
+    exec('bash -c &quot;exec nohup setsid '. $cmd . ' &gt; /dev/null 2&gt;&amp;1 &amp;&quot;');
+}
+</code></pre>
+
+<p>worker.php</p>
+
+<pre><code class="language-php">//发送邮件，上传文件，分析日志等等
+$sleeptime = $argv[1];
+sleep($sleeptime);
+</code></pre>
+
+<h3 id="2-使用fork创建子进程">2. 使用fork创建子进程</h3>
+
+<p>PHP有内建的函数<code>pcntl_fork</code>来创建子进程。<code>pcntl_forl</code>和unix的<code>fork</code>是相同的。它没有任何参数，然后一个用来区分父子进程的证书。下面是一个展示的例子：</p>
+
+<pre><code class="language-php">&lt;?php
+    //$pid是子进程的PID
+    $pid = pcntl_fork();
+    if ($pid == -1) {
+        die(&quot;创建子进程失败&quot;);
+    } else if ($pid) {
+        //父进程
+    } else {
+        //子进程
+    }
+?&gt;
+</code></pre>
+
+<p>正如展示的，<code>-1</code>是fork的一个错误，并且没有创建子进程。一旦创建了子进程，我们有两个不同<code>PID</code>的进程在运行。</p>
+
+<p>另外需要注意的事<code>zombie_process</code>或<code>defunct_process</code>，当父进程比子进程提前结束了。为了避免僵尸子进程，只需要在父进程 的末尾添加<code>pcntl_wait($status)</code>。</p>
+
+<blockquote>
+<p><strong>pnctl_wait</strong>挂起父进程，直到子进程退出。</p>
+</blockquote>
+
+<p>统一值得注意的事，使用<code>SIGKILL</code>信号不能杀死<code>zombie process</code>。</p>
+
+<h3 id="3-进程间通信">3. 进程间通信</h3>
+
+<p>进程间通信运行开发人员在不同进程之间进行通信。例如假设我们需要写一个运行bash命令并且打印输出的PHP应用程序。我们可以使用<code>proc_open</code>，这将执行这个命令，然后返回我们可以通信的资源。下面的例子显示了php中<code>bash</code>的<code>pwd</code>的基本用法。</p>
+
+<pre><code class="language-php">&lt;?php
+     $descriptor = [
+         0 =&gt; ['pipe', 'r'], //子进程的输入管道
+         1 =&gt; ['pipe', 'w']  //子进程的输出管道
+     ];
+     
+     $process = proc_open(&quot;bash&quot;, $descriptor, $pipes);
+     if (is_resource($process)) {
+          fwrite($pipes[0], &quot;pwd&quot;.&quot;\n&quot;);
+          fclose($pipes[0]);
+          echo stream_get_contents($pipes[1]);
+          fclose($pipes[1]);
+          $return_value = proc_close($process);
+     }
+?&gt;
+</code></pre>
+
+<p><code>proc_open</code>运行<code>bash</code>命令，以<code>$descriptor</code>为描述符规范。之后我们使用<code>is_resource</code>来验证进程。一切妥当之后，我们开始使用描述符规范生成的<strong>$pipes</strong>来与子进程进行通信。</p>
+
+<p>我们简单的使用<code>fwrite</code>来像子进程的stdin写入内容。在这个例子是<code>pwd</code>后面跟上换行。最后使用<code>stream_get_contents</code>用来从子进程中获取内容。</p>
+
+<blockquote>
+<p>请始终记得使用<code>proc_close()</code>来关闭子进程，它将终止子进程并且返回退出状态码。</p>
+</blockquote>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/07/post/php-section-97.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九十七）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/07/post/php-section-99.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九十九）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/algorithms" title="algorithms">
+                        algorithms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

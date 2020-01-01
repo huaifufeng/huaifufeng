@@ -6,17 +6,170 @@
     <description>Recent content in PHP on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 01 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 14 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/tags/php/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>PHP专业笔记（一百零五）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-105.html</link>
+      <pubDate>Sun, 14 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-105.html</guid>
+      <description>为PHP核心做贡献 1. 配置基本的开发环境 PHP的源码保存在GitHub上面。想要从源码构建，你首先要从代码复制一份。
+mkdir /usr/local/src/php-7.0/ cd /usr/local/src/php-7.0/ git clone -b PHP-7.0 https://github.com/php/php-src .  如果你想要添加一个特性，最好是在自己的分支上面进行：
+git checkout -b my_private_branch  最后，configure然后build：
+./buildconf ./configure make make test make install  如果因为缺少依赖而configure失败，你需要使用你系统的包管理工具来安装依赖(yum， apt等)，或者下载从源码进行编译。
+参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（一百零四）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-104.html</link>
+      <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-104.html</guid>
+      <description>为PHP手册做贡献 PHP手册包含解释PHP主要特性的函数引用和语言引用。PHP手册不像大多数的语言手册，允许PHP开发者在手册的每一页添加它们自己的例子和注释。本主题解释了对PHP手册的贡献，以及最佳实践的提示、技巧和指南。
+1. 改进官方文档 PHP有一个非常好的官方文档，在https://www.php.net/manual/zh/index.php。PHP手册记录了几乎所有的语言特性，核心库和大多数可用的扩展。有很多例子可以学习。PHP手册有多种语言和格式。
+最重要的是，文档是免费的，允许任何人编辑。
+PHP手册团队提供了一个PHP手册的在线编辑器，地址是https://edit.php.net。它支持多个单一登录服务，包括使用Stack Overflow账号。你可以在https://wiki.php.net/doc/editor 找到编辑器的介绍。
+对PHP手册的更改需要得到拥有*Doc Karma*的PHP手册团队人员批准。Doc Karma有点像荣誉，但是很难获得。每个审查过程都只是要确保正确的信息进入手册。
+这个手册是使用DocBook编写的，这是非常容易学习的编写图书的标记语言。乍一看，它可能有点复杂，但有一些模板可以让您开始。你当然不需要成为一个DocBook专家来做出贡献。
+2. 为手册作出贡献的提示 以下是希望为PHP手册做出贡献的人员的提示列表：
+ 遵守手册的样式指南。确保始终遵循手册的样式指南，以保持一致性。 执行拼写和语法检查。确保使用正确的拼写和语法 - 否则提供的信息可能更难被接受，内容看起来也不专业。 解释要简明扼要。避免冗长，清楚简明的像查询手册的开发人员提供信息。 将代码和输出分开。这为开发人员提供了更清晰、更简单的代码示例。 检查页面章节的顺序。确保手册中页面所有的章节被以正确的顺序编写。手册的统一性使快速阅读和查找信息变得更加容易。 溢出PHP 4相关内容。考虑到PHP4的例子，关于它的特定提示不在需要。应将其从手册中删除，以防将其与不必要的信息混淆。 正确的版本文件。在文档中创建新文件的时候，确保文件的revision ID设置为nothing。像&amp;lt;!-- $Revision$ --&amp;gt; 把有用的注释合并到手册中。一些评论提供了手册可能从中受益的有用信息。这些应该合并到主页的内容中。 不要破坏文件的构建。在提交更改之前，一定要确保正确地构建PHP手册。  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（一百零三）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-103.html</link>
+      <pubDate>Fri, 12 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-103.html</guid>
+      <description>密码hash函数 更安全的web服务器应该避免存储文本格式的密码，像PHP这样的语言提供了(非解密)的hash函数来支持更加安全的工业标准。这个主题主要介绍PHP的hash函数。
+1. 创建一个密码hash 使用password_hash()生成密码的hash，使用当前工业最佳实践的标准hash或key派生。在编写时，标准是bcrypt。所以，PASSWORD_DEFAULT意味着PASSWORD_BCRYPT。
+$options = [ &#39;cost&#39; =&amp;gt; 12, ]; $hashedPassword = password_hash($plaintextPassword, PASSWORD_DEFAULT, $options);  第三个参数是非必须的。
+这个cost的值根据你生产服务器的硬件决定。增加这个值在生成密码是花费更多的资源。生产的成本越高，任何试图破解的人花费的成本越高。理想情况下，cost应该越高越好，但是实际它应该设置不是任何事情变太慢。通常0.1~0.4秒就可以了。如果有疑问就是用默认值。
+Version &amp;lt; 5.5
+在PHP低于5.5.0时，passowrd_*函数是无效的。你可以使用https://github.com/ircmaxell/password_compat来替代这些方法。注意这个兼容包要求PHP 5.3.7或者更高版本或者将$y2反向安装在其中的版本(如Redhat提供的版本)。
+当你不能使用那些的时候，你可以使用crypt()函数实现一个密码hash方法。password_hash()是实现的crypt()函数的一个封装，你需要丢失一些功能。
+// this is a simple implementation of a bcrypt hash otherwise compatible // with `password_hash()` // not guaranteed to maintain the same cryptographic strength of the full `password_hash()` // implementation // if `CRYPT_BLOWFISH` is 1, that means bcrypt (which uses blowfish) is available // on your system if (CRYPT_BLOWFISH == 1) { $salt = mcrypt_create_iv(16, MCRYPT_DEV_URANDOM); $salt = base64_encode($salt); // crypt uses a modified base64 variant $source = &#39;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#39;; $dest = &#39;.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十九）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-99.html</link>
+      <pubDate>Mon, 08 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-99.html</guid>
+      <description>多线程扩展 1. 开始 想要开启多线程，你需要安装php的pthreads-ext扩展。可以使用下面的命令：
+pecl install ptheads  然后在php.ini中添加条目。
+简单的例子：
+&amp;lt;?php //代码使用php7语法 class MyThead extends Thread { /** * @var string * 包含要显示信息的变量 */ private $message; public function __construct(string $message) { //设置信息内容 $this-&amp;gt;message = $message; } //另个线程中执行的方法 public function run() { echo $this-&amp;gt;message; } } //实例化MyThead $myThead = new MyThead(&amp;quot;来自另一个线程的问候&amp;quot;); //开启线程。始终显式的join线程是一个好实践 //Thread::start()用来初始化线程 $myThead-&amp;gt;start(); //Thread::join()通知环境等待线程执行结束 $myThead-&amp;gt;join();  2. 使用pool和worker  Pooling提供了更高级的Worker功能的抽象，包括pthreads所需的方式管理引用。https://www.php.net/manual/zh/class.pool.php
+ Pools和Workers提供了更高级别的控制，并易于创建多线程。
+&amp;lt;?php //这是被worker运行的 Work //这是你希望在worker中运行的work //这个类需要继承 \Threaded 或 \Collectable 或 \Thread类 class AwesomeWork extends Thread { private $workName; /** * @param string workName * 提供给每个work的名称 */ public function __construct(string $workName) { //你work的构造代码块，当work被添加到pool的时候执行 $this-&amp;gt;workName = $workName; printf(&amp;quot;新提交的work的名称是：%s\n&amp;quot;, $workName); } public function run() { //这个方法应该被worker调用 //所有这个方法的代码被另一个线程执行 $workName = $this-&amp;gt;workName; printf(&amp;quot;Work的名称%s开启.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十八）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-98.html</link>
+      <pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-98.html</guid>
+      <description>多进程 1. 内建的fork函数实现多进程 你可以使用内置函数以fork的形式来运行PHP进程。如果不需要线程进行通信，这是实现并行工作的最简单的方法。
+这允许你将时间密集型任务(如将文件上传到另一个服务器或发送电子邮件)放到另一个线程，这样你的脚本加载更快，可以使用多核心，但是注意，这不是真正的多线程，你的主线程将不知道子线程在做什么。
+注意 ，在Windows下面，这将使你启动的每个分叉都弹出另一个命令提示。
+master.php
+$cmd = &#39;php worker.php 10&#39;; if (strtoupper(substr(PHPP_OS, 0, 3)) === &#39;WIN&#39;) { //windows使用popen和pclose pclose(popen($cmd, &#39;r&#39;)); } else { //unix使用shell命令，&amp;amp;结尾 exec(&#39;bash -c &amp;quot;exec nohup setsid &#39;. $cmd . &#39; &amp;gt; /dev/null 2&amp;gt;&amp;amp;1 &amp;amp;&amp;quot;&#39;); }  worker.php
+//发送邮件，上传文件，分析日志等等 $sleeptime = $argv[1]; sleep($sleeptime);  2. 使用fork创建子进程 PHP有内建的函数pcntl_fork来创建子进程。pcntl_forl和unix的fork是相同的。它没有任何参数，然后一个用来区分父子进程的证书。下面是一个展示的例子：
+&amp;lt;?php //$pid是子进程的PID $pid = pcntl_fork(); if ($pid == -1) { die(&amp;quot;创建子进程失败&amp;quot;); } else if ($pid) { //父进程 } else { //子进程 } ?</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十七）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-97.html</link>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-97.html</guid>
+      <description>性能 1. Xdebug分析 一个叫做Xdebug的PHP扩展用来帮助分析PHP英语程序以及运行时调试。当运行这个分析器的时候，输出将会以二进制格式写入到cachegrind文件中。每个平台都有应用程序来分析这个文件。
+想要启用分析的话，需要安装这个扩展并且修改php.ini的配置。在我们的例子中，我们根据请求的参数允许分析。这允许我们保持配置静态，只在需要的时候启用分析。
+// Set to 1 to turn it on for every request xdebug.profiler_enable = 0 // Let&#39;s use a GET/POST parameter to turn on the profiler xdebug.profiler_enable_trigger = 1 // The GET/POST value we will pass; empty for any value xdebug.profiler_enable_trigger_value = &amp;quot;&amp;quot; // Output cachegrind files to /tmp so our system cleans them up later xdebug.profiler_output_dir = &amp;quot;/tmp&amp;quot; xdebug.profiler_output_name = &amp;quot;cachegrind.out.%p&amp;quot;  然后在客户端中发起你希望进行分析的应用地址的请求：
+http://example.com/article/1?XDEBUG_PROFILE=1  这个请求将会在类似下面名称的文件中写入数据：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十六）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-96.html</link>
+      <pubDate>Fri, 05 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-96.html</guid>
+      <description>单元测试 1. 测试类规则 例如，我们有一个简单的LoginForm类，这个类有一个方法rules()（在登录页面中用作框架的模板）：
+class LoginForm { public $email; public $rememberMe; public $password; /** * rules()方法返回一个字段是否需要的数组 * 登录表格使用email和password来登录 */ public function rules() { return [ //email和password是必须的 [[&#39;email&#39;, &#39;password&#39;], &#39;required&#39;], //email必须是email格式的 [&#39;email&#39;, &#39;email&#39;], //rememberMe必须是布尔值 [&#39;rememberMe&#39;, &#39;boolean&#39;], //password必须匹配正则 必须只包含字母和数字 [&#39;password&#39;, &#39;match&#39;, &#39;pattern&#39; =&amp;gt; &#39;/^[a-z0-9]+$/&#39;], ]; } /** 验证规则正确性的方法 */ public function validate($rule) { $success = true; list($vars, $type) = $rule; foreach((array) $vars as $var) { switch($type) { case &#39;required&#39;: $success = $success &amp;amp;&amp;amp; $var !</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十五）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-95.html</link>
+      <pubDate>Thu, 04 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-95.html</guid>
+      <description>调试 1. 输出变量 var_dump方法允许你输出变量的内容(类型和值)，来进行调试：
+例子：
+$array = [3.7, &amp;quot;string&amp;quot;, 10, [&amp;quot;hello&amp;quot; =&amp;gt; &amp;quot;world&amp;quot;], false, new DateTime()]; var_dump($array);  输出
+array(6) { [0]=&amp;gt; float(3.7) [1]=&amp;gt; string(6) &amp;quot;string&amp;quot; [2]=&amp;gt; int(10) [3]=&amp;gt; array(1) { [&amp;quot;hello&amp;quot;]=&amp;gt; string(5) &amp;quot;world&amp;quot; } [4]=&amp;gt; bool(false) [5]=&amp;gt; object(DateTime)#1 (3) { [&amp;quot;date&amp;quot;]=&amp;gt; string(26) &amp;quot;2016-07-24 13:51:07.000000&amp;quot; [&amp;quot;timezone_type&amp;quot;]=&amp;gt; int(3) [&amp;quot;timezone&amp;quot;]=&amp;gt; string(13) &amp;quot;Europe/Berlin&amp;quot; } }  2. 显示错误 如果你想要PHP在页面中输出运行时错误，你必须启用display_errors，或者是在php.ini文件中或者是使用ini_set方法。
+你可以选择显示什么错误，使用error_reporting方法(或者ini文件)，这接收E_*常量，二进制位运算符的组合。
+PHP可以显示text或HTML格式的错误，依赖于html_errors的配置。
+例子：
+ini_set(&amp;quot;display_errors&amp;quot;, true); ini_set(&amp;quot;html_errors&amp;quot;, false); // Display errors in plain text error_reporting(E_ALL &amp;amp; ~E_USER_NOTICE); // Display everything except E_USER_NOTICE trigger_error(&amp;quot;Pointless error&amp;quot;); // E_USER_NOTICE echo $nonexistentVariable; // E_NOTICE nonexistentFunction(); // E_ERROR  文本输出:（HTML的格式不同）</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十四）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-94.html</link>
+      <pubDate>Wed, 03 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-94.html</guid>
+      <description>异常处理和错误报告 1. 设置错误报告和在哪里显示 如果没有在php.ini中设置，错误报告可以动态设置，应该允许显示大多数的错误。
+语法
+int error_reporting([int $level])  例子：
+//在5.4之前使用 error_reporting(E_ALL); //-1 将会显示任何可能的错误，即使在之后的PHP版本添加新的等级和常量 E_ALL和5.4之前一样 error_reporting(-1); //处理注意 error_reporting(E_ALL &amp;amp; ~E_NOTICE); //只有警告和注意 //这只是展示，不应该只显示这些 error_reporting(E_WARNING | E_NOTIICE);  错误默认会被PHP记录日志，通常是记录在和运行脚本同级别的error.log文件中。
+在开发环境中，也可以把错误输出到显示中：
+ini_set(&#39;display_errors&#39;, 1);  在生产环境：
+ini_set(&#39;display_errors&#39;, 0);  并且使用异常或错误产生一个友好的错误信息。
+2. 记录致命错误日志 在PHP中，致命错误是一种不可以被捕获的错误，也就是，在遇到致命错误后，程序无法恢复执行。但是要记录这个错误或以某种方式崩溃，可以使用register_shutdown_function来注册shutdown函数。
+function fatalErrorHandler() { //获取最后的致命错误 $error = error_get_last(); //这只是一个展示的错误处理器，没有错误意味着没有错误或崩溃发生。也确保只处理致命错误 if (null === $error || E_ERROR != $error[&#39;type&#39;]) { return ; } //把最后的错误记录到日志 //我们假设日志在app的目录 $logFile = fopen(&amp;quot;./app/logs/error.log&amp;quot;, &amp;quot;a+&amp;quot;); //获取有用的错误信息 $type = $error[&amp;quot;type&amp;quot;]; $file = $error[&amp;quot;file&amp;quot;]; $line = $error[&amp;quot;line&amp;quot;]; $message = $error[&amp;quot;message&amp;quot;]; fprintf( $logFile, &amp;quot;[%s] %s: %s in %s:%d\n&amp;quot;, date(&amp;quot;Y-m-d H:i:s&amp;quot;), $type, $message, $file, $line); fclose($logFile); } register_shutdown_function(&amp;quot;fatalErrorHandler&amp;quot;);  引用：</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（九十三）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-93.html</link>
+      <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-93.html</guid>
+      <description>编译错误和警告 1. Parse error: 语法错误，意外的T_PAAMAYIM_NEKUDOTAYIM 出现
+&amp;ldquo;Paamayim Nekudotayim&amp;rdquo;在Hebrew中意味着&amp;rdquo;双引号&amp;rdquo;；因此，这个错误是指不正确的使用了双冒号运算符(::)。这个错误通常是视图静态调用一个不是静态的方法造成的。
+可能的解决办法
+$classname::$doMethod();  如果上面的代码产生了这个错误，你大多数去情况下简单的修改调用方法：
+$classname-&amp;gt;doMethod();  下面的例子假设$classname是一个类的实例，并且doMethod()是这个类的非静态方法。
+2. Notice: 未定义的引用 出现：
+试着访问一个数组中不存在的键。
+可能的解决方法
+在访问键之前检查键是否存在：
+ isset() array_key_exists()  3. Warning: 不能修改header信息 - header已经发送了 出现：
+在你向客户端发送HTTP头信息之前你的脚本已经输出了，这将会导致已经将头信息发送给客户端。
+可能的原因
+ print, echo: print和echo语句的输出将终止发送HTTP头的机会。必须重新构造应用程序的执行流程，避免这样的情况。
+ 原生HTML区域：.php文件中未解析的HTML部分也是直接输出的。触发header()方法的脚本部分必须在HTML内容前面。
+  &amp;lt;!DOCTYPE html&amp;gt; &amp;lt;?php //太晚了发送header信息   在&amp;lt;?php之前的空白，导致script.php line 1：然后经过引用第一行的输出，很可能是空白，文本或HTML在&amp;lt;?php之前了  &amp;lt;?php //&amp;lt;?php之前有单行或空白  引用Mario的回答。
+参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（九十二）</title>
-      <link>http://blog.huaifufeng.com/2019/06/post/php-section-92.html</link>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-92.html</link>
       <pubDate>Mon, 01 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.huaifufeng.com/2019/06/post/php-section-92.html</guid>
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-92.html</guid>
       <description>常见错误 1. call fetch_assoc on boolean 如果你获得一个类似下面的错误：
 Fatal error: Call to a member function fetch_assoc() on boolean in C:\xampp\htdocs\stack\index.php on line 7  其他类似的错误包括：
 mysql_fetch_assoc() expects parameter 1 to be resource, boolean given...  这些错误意味着要么你的查询有错误(这是一个PHP/Mysql错误)或引用错误。下面的代码就可以产生上面的错误：
