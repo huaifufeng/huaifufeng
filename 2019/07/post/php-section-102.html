@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="多线程扩展">
+    <meta name="description" content="密码学">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（九十九）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（一百零二）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/07/post/php-section-99.html">
+    <link rel="canonical" href="/2019/07/post/php-section-102.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -154,9 +154,9 @@
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（九十九）</h1>
+                    <h1>PHP专业笔记（一百零二）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, July 8, 2019
+                    <span  class="meta">Posted by 怀府风 on Thursday, July 11, 2019
                         
                     </span>
                 </div>
@@ -186,10 +186,10 @@
 <ul>
 <li>
 <ul>
-<li><a href="#多线程扩展">多线程扩展</a>
+<li><a href="#密码学">密码学</a>
 <ul>
-<li><a href="#1-开始">1. 开始</a></li>
-<li><a href="#2-使用pool和worker">2. 使用pool和worker</a></li>
+<li><a href="#1-使用openssl对大型文件进行对称加密和解密">1. 使用OpenSSL对大型文件进行对称加密和解密</a></li>
+<li><a href="#2-对称密码">2. 对称密码</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -197,101 +197,154 @@
         		
         		
 
-<h2 id="多线程扩展">多线程扩展</h2>
+<h2 id="密码学">密码学</h2>
 
-<h3 id="1-开始">1. 开始</h3>
+<h3 id="1-使用openssl对大型文件进行对称加密和解密">1. 使用OpenSSL对大型文件进行对称加密和解密</h3>
 
-<p>想要开启多线程，你需要安装php的<code>pthreads-ext</code>扩展。可以使用下面的命令：</p>
+<p>PHP缺少加密和解密大文件的内建函数。<code>openssl_encrypt</code>可以被用来加密字符串，但是把大文件加载到内存中是一个坏主意。</p>
 
-<pre><code>pecl install ptheads
+<p>所以我们必须编写一个userland函数来实现这个。这个例子使用对称<a href="https://stackoverflow.com/questions/33121619/is-there-any-difference-between-aes-128-cbc-and-aes-128-encryption/33124706#33124706">aes-128-cbc</a>算法来对大文件中的小块进行加密，并将其写入另一个文件。</p>
+
+<p><strong>加密文件</strong></p>
+
+<pre><code class="language-php">/**
+ * Define the number of blocks that should be read from the source file for each chunk.
+ * For 'AES-128-CBC' each block consist of 16 bytes.
+ * So if we read 10,000 blocks we load 160kb into memory. You may adjust this value
+ * to read/write shorter or longer chunks.
+ */
+define('FILE_ENCRYPTION_BLOCKS', 10000);
+/**
+ * Encrypt the passed file and saves the result in a new file with &quot;.enc&quot; as suffix.
+ *
+ * @param string $source Path to file that should be encrypted
+ * @param string $key    The key used for the encryption
+ * @param string $dest   File name where the encryped file should be written to.
+ * @return string|false  Returns the file name that has been created or FALSE if an error occurred
+ */
+function encryptFile($source, $key, $dest) {
+    $key = substr(sha1($key, true), 0, 16); 
+    $iv = openssl_random_pseudo_bytes(16);
+    
+    $error = false;
+    if ($fpOut = fopen($dest, 'w')) {
+        // Put the initialzation vector to the beginning of the file
+        fwrite($fpOut, $iv);
+        if ($fpIn = fopen($source, 'rb')) {
+            while (!feof($fpIn)) {
+            $plaintext = fread($fpIn, 16 * FILE_ENCRYPTION_BLOCKS);
+            $ciphertext = openssl_encrypt($plaintext, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $iv);
+            // Use the first 16 bytes of the ciphertext as the next initialization vector
+            $iv = substr($ciphertext, 0, 16);
+            fwrite($fpOut, $ciphertext);
+        }
+        fclose($fpOut);
+    } else {
+        $error = true; 
+    }
+    
+    return $error ? false : $dest; 
+}
 </code></pre>
 
-<p>然后在<code>php.ini</code>中添加条目。</p>
+<p><strong>解密文件</strong></p>
 
-<p>简单的例子：</p>
+<p>解密已经使用上面函数加密的文件：</p>
 
-<pre><code class="language-php">&lt;?php
-//代码使用php7语法
-class MyThead extends Thread {
-    /**
-     * @var string
-     * 包含要显示信息的变量
-     */
-    private $message;
-    
-    public function __construct(string $message) {
-        //设置信息内容
-        $this-&gt;message = $message;
+<pre><code class="language-php">/**
+ * Dencrypt the passed file and saves the result in a new file, removing the
+ * last 4 characters from file name.
+ *
+ * @param string $source Path to file that should be decrypted
+ * @param string $key    The key used for the decryption (must be the same as for encryption)
+ * @param string $dest   File name where the decryped file should be written to.
+ * @return string|false  Returns the file name that has been created or FALSE if an error occurred
+ */
+function decryptFile($source, $key, $dest) {
+    $key = substr(sha1($key, true), 0, 16);
+
+    $error = false;
+    if ($fpOut = fopen($dest, 'w')) {
+        if ($fpIn = fopen($source, 'rb')) {
+            // Get the initialzation vector from the beginning of the file 
+            $iv = fread($fpIn, 16);
+            while (!feof($fpIn)) {
+                $ciphertext = fread($fpIn, 16 * (FILE_ENCRYPTION_BLOCKS + 1)); // we have to read one block more for decrypting than for encrypting
+                $plaintext = openssl_decrypt($ciphertext, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $iv);
+                // Use the first 16 bytes of the ciphertext as the next initialization vector
+                $iv = substr($ciphertext, 0, 16);
+                fwrite($fpOut, $plaintext);
+            }
+            fclose($fpIn);
+        } else {
+        fclose($fpOut);
+    } else {
+        $error = true; 
     }
     
-    //另个线程中执行的方法
-    public function run() {
-        echo $this-&gt;message;
-    }
+    return $error ? false : $dest; 
 }
-
-//实例化MyThead
-$myThead = new MyThead(&quot;来自另一个线程的问候&quot;);
-//开启线程。始终显式的join线程是一个好实践
-//Thread::start()用来初始化线程
-$myThead-&gt;start();
-//Thread::join()通知环境等待线程执行结束
-$myThead-&gt;join();
 </code></pre>
 
-<h3 id="2-使用pool和worker">2. 使用pool和worker</h3>
+<p><strong>如何使用</strong></p>
 
-<blockquote>
-<p>Pooling提供了更高级的Worker功能的抽象，包括pthreads所需的方式管理引用。<a href="https://www.php.net/manual/zh/class.pool.php">https://www.php.net/manual/zh/class.pool.php</a></p>
-</blockquote>
+<p>如果你想要小段代码查看这如何使用或者测试上面的函数，可以使用下面的代码：</p>
 
-<p>Pools和Workers提供了更高级别的控制，并易于创建多线程。</p>
+<pre><code class="language-php">$fileName = __DIR__.'/testfile.txt';
+$key = 'my secret key';
+file_put_contents($fileName, 'Hello World, here I am.');
+encryptFile($fileName, $key, $fileName . '.enc');
+decryptFile($fileName . '.enc', $key, $fileName . '.dec');
+</code></pre>
 
-<pre><code class="language-php">&lt;?php
-//这是被worker运行的 Work
-//这是你希望在worker中运行的work
-//这个类需要继承 \Threaded 或 \Collectable 或 \Thread类
-class AwesomeWork extends Thread {
-    private $workName;
-    
-    /**
-     * @param string workName
-     * 提供给每个work的名称
-     */
-    public function __construct(string $workName) {
-        //你work的构造代码块，当work被添加到pool的时候执行
-        $this-&gt;workName = $workName;
-        printf(&quot;新提交的work的名称是：%s\n&quot;, $workName);
-    }
-    
-    public function run() {
-        //这个方法应该被worker调用
-        //所有这个方法的代码被另一个线程执行
-        $workName = $this-&gt;workName;
-        printf(&quot;Work的名称%s开启...\n&quot;, $workName);
-        printf(&quot;新的随机数：%d\n&quot;, mt_rand());
-    }
+<p>这将会创建3个文件：</p>
+
+<ol>
+<li>testfile.txt 文本文件</li>
+<li>testfile.txt.enc  加密文件</li>
+<li>testfile.txt.dec 解密文件。这个应该和testfile.txt内容相同。</li>
+</ol>
+
+<h3 id="2-对称密码">2. 对称密码</h3>
+
+<p>这个例子说明了CBC模式下AES256对称密码。需要一个初始化向量，所以我们使用openssl函数生成了一个。变量<code>$strong</code>用于确定生成的IV是否加密。</p>
+
+<p><strong>加密</strong></p>
+
+<pre><code class="language-php">$method = &quot;aes-256-cbc&quot;; // cipher method
+$iv_length = openssl_cipher_iv_length($method); // obtain required IV length
+$strong = false; // set to false for next line
+$iv = openssl_random_pseudo_bytes($iv_length, $strong); // generate initialization vector
+
+/* NOTE: The IV needs to be retrieved later, so store it in a database.
+However, do not reuse the same IV to encrypt the data again. */
+if(!$strong) { // throw exception if the IV is not cryptographically strong 
+    throw new Exception(&quot;IV not cryptographically strong!&quot;);
 }
 
-//为了简单创建一个空worker
-class AwesomeWorker extends Worker {
-    public function run() {
-        //你可以在这里放一些在work启动之前执行的代码
-    }
-}
+$data = &quot;This is a message to be secured.&quot;; // Our secret message
+$pass = &quot;Stack0verfl0w&quot;; // Our password
 
-//创建一个新的Pool实例
-//\Pool接收两个参数
-// 第一个最大的worker数量， 第二个worker的名称类
-$pool = new \Pool(1, \AwesomeWorker::class);
+/* NOTE: Password should be submitted through POST over an HTTPS session.
+Here, it's being stored in a variable for demonstration purposes. */
 
-// 你需要submit你的工作，而不是继承Threaded的类
-$pool-&gt;submit(new \AwesomeWork(&quot;DeadlyWork&quot;)); 
-$pool-&gt;submit(new \AwesomeWork(&quot;FatalWork&quot;));
+$enc_data = openssl_encrypt($data, $method, $password, true, $iv); // Encrypt
+</code></pre>
 
-//我们需要显示的关闭pool，否则不希望的事情会发送
-// See: http://stackoverflow.com/a/23600861/23602185 
-$pool-&gt;shutdown();
+<p><strong>解密</strong></p>
+
+<pre><code class="language-php">//从数据库获取IV，从POST请求获取password
+$dec_data = openssl_decrypt($enc_data, $method, $pass, true, $iv); // Decrypt
+</code></pre>
+
+<p><strong>Base64加密和解密</strong></p>
+
+<p>如果加密数据需要发送或存储在纯文本中，可以使用<code>base64_encode()</code>和<code>base64_decode()</code>函数。</p>
+
+<pre><code class="language-php">/* Base64 Encoded Encryption */
+$enc_data = base64_encode(openssl_encrypt($data, $method, $password, true, $iv));
+/* Decode and Decrypt */
+$dec_data = openssl_decrypt(base64_decode($enc_data), $method, $password, true, $iv);
 </code></pre>
 
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
@@ -303,12 +356,12 @@ $pool-&gt;shutdown();
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/07/post/php-section-98.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九十八）">&larr; Previous Post</a>
+                      <a href="/2019/07/post/php-section-101.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百零一）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/07/post/php-section-100.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百）">Next Post &rarr;</a>
+                      <a href="/2019/07/post/php-section-103.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百零三）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

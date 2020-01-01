@@ -8,14 +8,14 @@
     <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <meta name="description" content="多线程扩展">
+    <meta name="description" content="安全的记住我">
     
     <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>PHP专业笔记（九十九）-怀府风的博客 | Arvin&#39;s Blog</title>
+    <title>PHP专业笔记（一百）-怀府风的博客 | Arvin&#39;s Blog</title>
 
-    <link rel="canonical" href="/2019/07/post/php-section-99.html">
+    <link rel="canonical" href="/2019/07/post/php-section-100.html">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -154,9 +154,9 @@
                         </a>
                        
                     </div>
-                    <h1>PHP专业笔记（九十九）</h1>
+                    <h1>PHP专业笔记（一百）</h1>
                     <h2 class="subheading"></h2>
-                    <span  class="meta">Posted by 怀府风 on Monday, July 8, 2019
+                    <span  class="meta">Posted by 怀府风 on Tuesday, July 9, 2019
                         
                     </span>
                 </div>
@@ -186,10 +186,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#多线程扩展">多线程扩展</a>
+<li><a href="#安全的记住我">安全的记住我</a>
 <ul>
-<li><a href="#1-开始">1. 开始</a></li>
-<li><a href="#2-使用pool和worker">2. 使用pool和worker</a></li>
+<li><a href="#1-保持登录-最好方法">1. &ldquo;保持登录&rdquo; - 最好方法</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -197,101 +196,39 @@
         		
         		
 
-<h2 id="多线程扩展">多线程扩展</h2>
+<h2 id="安全的记住我">安全的记住我</h2>
 
-<h3 id="1-开始">1. 开始</h3>
+<p>我已经找了这个主题很久了，知道我找到<a href="https://stackoverflow.com/a/17266448/4535386这个问题。我想它值得更多人知道。">https://stackoverflow.com/a/17266448/4535386这个问题。我想它值得更多人知道。</a></p>
 
-<p>想要开启多线程，你需要安装php的<code>pthreads-ext</code>扩展。可以使用下面的命令：</p>
+<h3 id="1-保持登录-最好方法">1. &ldquo;保持登录&rdquo; - 最好方法</h3>
 
-<pre><code>pecl install ptheads
+<p>使用三部分存储cookie：</p>
+
+<pre><code class="language-php">function onLogin($user) {
+    $token = GenerateRandomToken(); //产生一个token，应该是128-256字符
+    storeTokenForUser($user, $token);
+    $cookie = $user . &quot;:&quot; . $token;
+    $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
+    $cookie .= &quot;:&quot; . $mac;
+    setcookie(&quot;rememberme&quot;, $cookie);
+}
 </code></pre>
 
-<p>然后在<code>php.ini</code>中添加条目。</p>
+<p>然后，进行验证：</p>
 
-<p>简单的例子：</p>
-
-<pre><code class="language-php">&lt;?php
-//代码使用php7语法
-class MyThead extends Thread {
-    /**
-     * @var string
-     * 包含要显示信息的变量
-     */
-    private $message;
-    
-    public function __construct(string $message) {
-        //设置信息内容
-        $this-&gt;message = $message;
-    }
-    
-    //另个线程中执行的方法
-    public function run() {
-        echo $this-&gt;message;
+<pre><code class="language-php">functiom rememberMe() {
+    $cookie = isset($_COOKIE['rememberme']) ? $_COOKIE['rememberme'] : &quot;&quot;;
+    if ($cookie) {
+        list($user, $token, $mac) = explode(&quot;:&quot;, $cookie);
+        if (!hash_equals(hash_hmac('sha256', $user . &quot;:&quot; . $token, SECRET_KEY), $mac)) {
+            return false;
+        }
+        $usertoken = fetchTokenByUserName($user);
+        if (hash_equals($usertoken, $token)) {
+            logUserIn($user);
+        }
     }
 }
-
-//实例化MyThead
-$myThead = new MyThead(&quot;来自另一个线程的问候&quot;);
-//开启线程。始终显式的join线程是一个好实践
-//Thread::start()用来初始化线程
-$myThead-&gt;start();
-//Thread::join()通知环境等待线程执行结束
-$myThead-&gt;join();
-</code></pre>
-
-<h3 id="2-使用pool和worker">2. 使用pool和worker</h3>
-
-<blockquote>
-<p>Pooling提供了更高级的Worker功能的抽象，包括pthreads所需的方式管理引用。<a href="https://www.php.net/manual/zh/class.pool.php">https://www.php.net/manual/zh/class.pool.php</a></p>
-</blockquote>
-
-<p>Pools和Workers提供了更高级别的控制，并易于创建多线程。</p>
-
-<pre><code class="language-php">&lt;?php
-//这是被worker运行的 Work
-//这是你希望在worker中运行的work
-//这个类需要继承 \Threaded 或 \Collectable 或 \Thread类
-class AwesomeWork extends Thread {
-    private $workName;
-    
-    /**
-     * @param string workName
-     * 提供给每个work的名称
-     */
-    public function __construct(string $workName) {
-        //你work的构造代码块，当work被添加到pool的时候执行
-        $this-&gt;workName = $workName;
-        printf(&quot;新提交的work的名称是：%s\n&quot;, $workName);
-    }
-    
-    public function run() {
-        //这个方法应该被worker调用
-        //所有这个方法的代码被另一个线程执行
-        $workName = $this-&gt;workName;
-        printf(&quot;Work的名称%s开启...\n&quot;, $workName);
-        printf(&quot;新的随机数：%d\n&quot;, mt_rand());
-    }
-}
-
-//为了简单创建一个空worker
-class AwesomeWorker extends Worker {
-    public function run() {
-        //你可以在这里放一些在work启动之前执行的代码
-    }
-}
-
-//创建一个新的Pool实例
-//\Pool接收两个参数
-// 第一个最大的worker数量， 第二个worker的名称类
-$pool = new \Pool(1, \AwesomeWorker::class);
-
-// 你需要submit你的工作，而不是继承Threaded的类
-$pool-&gt;submit(new \AwesomeWork(&quot;DeadlyWork&quot;)); 
-$pool-&gt;submit(new \AwesomeWork(&quot;FatalWork&quot;));
-
-//我们需要显示的关闭pool，否则不希望的事情会发送
-// See: http://stackoverflow.com/a/23600861/23602185 
-$pool-&gt;shutdown();
 </code></pre>
 
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
@@ -303,12 +240,12 @@ $pool-&gt;shutdown();
               <ul class="pager">
                   
                   <li class="previous">
-                      <a href="/2019/07/post/php-section-98.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九十八）">&larr; Previous Post</a>
+                      <a href="/2019/07/post/php-section-99.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（九十九）">&larr; Previous Post</a>
                   </li>
                   
                   
                   <li class="next">
-                      <a href="/2019/07/post/php-section-100.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百）">Next Post &rarr;</a>
+                      <a href="/2019/07/post/php-section-101.html" data-toggle="tooltip" data-placement="top" title="PHP专业笔记（一百零一）">Next Post &rarr;</a>
                   </li>
                   
               </ul>

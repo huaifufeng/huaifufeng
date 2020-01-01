@@ -76,6 +76,60 @@ Version &amp;lt; 5.5
     </item>
     
     <item>
+      <title>PHP专业笔记（一百零二）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-102.html</link>
+      <pubDate>Thu, 11 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-102.html</guid>
+      <description>密码学 1. 使用OpenSSL对大型文件进行对称加密和解密 PHP缺少加密和解密大文件的内建函数。openssl_encrypt可以被用来加密字符串，但是把大文件加载到内存中是一个坏主意。
+所以我们必须编写一个userland函数来实现这个。这个例子使用对称aes-128-cbc算法来对大文件中的小块进行加密，并将其写入另一个文件。
+加密文件
+/** * Define the number of blocks that should be read from the source file for each chunk. * For &#39;AES-128-CBC&#39; each block consist of 16 bytes. * So if we read 10,000 blocks we load 160kb into memory. You may adjust this value * to read/write shorter or longer chunks. */ define(&#39;FILE_ENCRYPTION_BLOCKS&#39;, 10000); /** * Encrypt the passed file and saves the result in a new file with &amp;quot;.</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（一百零一）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-101.html</link>
+      <pubDate>Wed, 10 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-101.html</guid>
+      <description>安全 由于大多数网址使用PHP，因此应用安全性是PHP开发人员保护其网站、数据和客户端的一个重要主题。本主题主要介绍PHP中的最佳安全事件，以及PHP修复的常见漏洞和弱点。
+1. PHP版本泄露 默认情况下，PHP会告诉世界当前你使用的PHP版本：
+X-Powered-By: PHP/5.3.8  要修复这个你需要修改php.ini中的配置：
+expose_php = off  或者修改这个头信息：
+header(&amp;quot;X-Powered-By: Magic&amp;quot;);  或者你使用一个htaccess方法：
+Header unset X-Powered-By  如果上面的方法都没有效果，有一个header_remove()函数可以用来删除头：
+header_remove(&amp;quot;X-Powered-By&amp;quot;);  如果攻击者知道你使用的是PHP和你使用的PHP版本，那么他们很容易攻击你的服务器。
+2. 跨站脚本(XSS) 问题
+跨站脚本是web客户端意外执行远程代码。如果任何Web应用程序从用户处获得输入并直接在网页上输出，那么它可能向XSS公开自己。如果输入包含HTML或JavaScript，当这些内容被显示在客户端上时，远程的代码可能被执行。
+例如，如果一个第三方包含一个JavaScript文件：
+// http://example.com/runme.js document.write(&amp;quot;我在运行&amp;quot;);  一个PHP程序直接把一个字符串输出到客户端：
+&amp;lt;?php echo &amp;quot;&amp;lt;div&amp;gt;&amp;quot; . $_GET[&#39;input&#39;] . &amp;quot;&amp;lt;/div&amp;gt;&amp;quot;;  如果一个没有检查的GET参数包含&amp;lt;script src=&amp;quot;http://example.com/runme.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;，那么PHP脚本的输出就是：
+&amp;lt;div&amp;gt;&amp;lt;script src=&amp;quot;http://example.com/runme.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;/div&amp;gt;  第三方的JavaScript将会执行，用户会在web页面上面看到&amp;rdquo;我在运行&amp;rdquo;。
+解决
+不信任任何客户端的输入，这是一个基本规则。每个GET，POST，cookie的值都可能是任何内容，都应该进行验证。当输出这些值的时候，进行转义，避免这些内容以不希望的方式执行。
+请记住，即使最简单的应用中，数据也可以移动，很难追踪所有来源。因此最后始终转义输出。
+PHP提供了一些方法来根据环境转义输出内容。
+过滤函数
+PHP过滤函数运行输入到PHP脚本的数据在很多类型中是净化的，有效的。他们在保存或输出客户端输入时很有效果。
+HTML加密
+htmlspecialchars将会转换任何HTML特殊字符为其HTML编码，这意味着他们将不会作为标准HTML进行处理。用这个方法修复之前的问题：
+&amp;lt;?php echo &#39;&amp;lt;div&amp;gt;&#39; . htmlspecialchars($_GET[&#39;input&#39;]) . &#39;&amp;lt;/div&amp;gt;&#39;; // or echo &#39;&amp;lt;div&amp;gt;&#39; .</description>
+    </item>
+    
+    <item>
+      <title>PHP专业笔记（一百）</title>
+      <link>http://blog.huaifufeng.com/2019/07/post/php-section-100.html</link>
+      <pubDate>Tue, 09 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2019/07/post/php-section-100.html</guid>
+      <description>安全的记住我 我已经找了这个主题很久了，知道我找到https://stackoverflow.com/a/17266448/4535386这个问题。我想它值得更多人知道。
+1. &amp;ldquo;保持登录&amp;rdquo; - 最好方法 使用三部分存储cookie：
+function onLogin($user) { $token = GenerateRandomToken(); //产生一个token，应该是128-256字符 storeTokenForUser($user, $token); $cookie = $user . &amp;quot;:&amp;quot; . $token; $mac = hash_hmac(&#39;sha256&#39;, $cookie, SECRET_KEY); $cookie .= &amp;quot;:&amp;quot; . $mac; setcookie(&amp;quot;rememberme&amp;quot;, $cookie); }  然后，进行验证：
+functiom rememberMe() { $cookie = isset($_COOKIE[&#39;rememberme&#39;]) ? $_COOKIE[&#39;rememberme&#39;] : &amp;quot;&amp;quot;; if ($cookie) { list($user, $token, $mac) = explode(&amp;quot;:&amp;quot;, $cookie); if (!hash_equals(hash_hmac(&#39;sha256&#39;, $user . &amp;quot;:&amp;quot; . $token, SECRET_KEY), $mac)) { return false; } $usertoken = fetchTokenByUserName($user); if (hash_equals($usertoken, $token)) { logUserIn($user); } } }  参考：PHP® Notes for Professionals book</description>
+    </item>
+    
+    <item>
       <title>PHP专业笔记（九十九）</title>
       <link>http://blog.huaifufeng.com/2019/07/post/php-section-99.html</link>
       <pubDate>Mon, 08 Jul 2019 00:00:00 +0000</pubDate>
