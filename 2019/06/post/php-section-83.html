@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,93 +187,82 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#websocket">WebSocket</a>
-<ul>
-<li><a href="#1-建的tcp-ip服务器">1. 建的TCP/IP服务器</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#websocket">WebSocket</a>
+      <ul>
+        <li><a href="#1-建的tcpip服务器">1. 建的TCP/IP服务器</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="websocket">WebSocket</h2>
-
+        		<h2 id="websocket">WebSocket</h2>
 <p>socket扩展实现了基于流行BSD socket的套接字通信功能的低级接口，提供了充当套接字服务器和客户端的可能性。</p>
-
-<h3 id="1-建的tcp-ip服务器">1. 建的TCP/IP服务器</h3>
-
-<p>PHP手册中最小的例子：<a href="https://www.php.net/manual/zh/sockets.examples.php">https://www.php.net/manual/zh/sockets.examples.php</a></p>
-
+<h3 id="1-建的tcpip服务器">1. 建的TCP/IP服务器</h3>
+<p>PHP手册中最小的例子：https://www.php.net/manual/zh/sockets.examples.php</p>
 <p>创建监听5000端口的websocket脚本，使用putty。在终端中执行 <code>telnet 127.0.0.1 5000</code>（localhost）。这个脚本使用你发生的消息(作为ping返回)进行答复：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#a6e22e">set_time_limit</span>(<span style="color:#ae81ff">0</span>); <span style="color:#75715e">//禁用超时
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">ob_implicit_flush</span>(); <span style="color:#75715e">//禁止刷新缓存
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">//设置
+</span><span style="color:#75715e"></span>$address <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;127.0.0.1&#39;</span>;
+$port <span style="color:#f92672">=</span> <span style="color:#ae81ff">5000</span>;
 
-<pre><code class="language-php">&lt;?php
-set_time_limit(0); //禁用超时
-ob_implicit_flush(); //禁止刷新缓存
-
-//设置
-$address = '127.0.0.1';
-$port = 5000;
-
-/*
-    函数 socket_create (int $domain, int $type, int $protocol)
-    $domain 可以是AF_INET，AF_INET6对于IPV6 AF_UNIX对本地
-    $protocol 可以是SOL_TCP，SOL_UDP
-    @return 成功时返回 套接字
-*/
-if (($socket = socket_create(AF_INET, SOCKET_STREAM, SOL_TCP)) === false) {
-    echo &quot;无法创建socket&quot; . socket_strerror(socket_last_error()) . &quot;\n&quot;;
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">    函数 socket_create (int $domain, int $type, int $protocol)
+</span><span style="color:#75715e">    $domain 可以是AF_INET，AF_INET6对于IPV6 AF_UNIX对本地
+</span><span style="color:#75715e">    $protocol 可以是SOL_TCP，SOL_UDP
+</span><span style="color:#75715e">    @return 成功时返回 套接字
+</span><span style="color:#75715e">*/</span>
+<span style="color:#66d9ef">if</span> (($socket <span style="color:#f92672">=</span> <span style="color:#a6e22e">socket_create</span>(<span style="color:#a6e22e">AF_INET</span>, <span style="color:#a6e22e">SOCKET_STREAM</span>, <span style="color:#a6e22e">SOL_TCP</span>)) <span style="color:#f92672">===</span> <span style="color:#66d9ef">false</span>) {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;无法创建socket&#34;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">socket_strerror</span>(<span style="color:#a6e22e">socket_last_error</span>()) <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
 }
 
-/*
-    socket_bind(resource $socket, string $address, [, int $port = 0])
-    绑定socket到地址和端口
-*/
-if (socket_bind($socket, $address, $port) === false) {
-    echo &quot;绑定失败 &quot; . socket_strerror(socket_last_error($socket));
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">    socket_bind(resource $socket, string $address, [, int $port = 0])
+</span><span style="color:#75715e">    绑定socket到地址和端口
+</span><span style="color:#75715e">*/</span>
+<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">socket_bind</span>($socket, $address, $port) <span style="color:#f92672">===</span> <span style="color:#66d9ef">false</span>) {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;绑定失败 &#34;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">socket_strerror</span>(<span style="color:#a6e22e">socket_last_error</span>($socket));
 }
 
-if (socket_listen($socket, 5) === false) {
-    echo &quot;监听失败 &quot; . socket_strerror(socket_last_error($socket));
+<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">socket_listen</span>($socket, <span style="color:#ae81ff">5</span>) <span style="color:#f92672">===</span> <span style="color:#66d9ef">false</span>) {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;监听失败 &#34;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">socket_strerror</span>(<span style="color:#a6e22e">socket_last_error</span>($socket));
 }
 
-do {
-    if (($msgsock = socket_accept($socket)) === false) {
-        echo &quot;错误：socket_accept: &quot;. socket_strerror(socket_last_error($socket)) . &quot;\n&quot;;
-        break;
+<span style="color:#66d9ef">do</span> {
+    <span style="color:#66d9ef">if</span> (($msgsock <span style="color:#f92672">=</span> <span style="color:#a6e22e">socket_accept</span>($socket)) <span style="color:#f92672">===</span> <span style="color:#66d9ef">false</span>) {
+        <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;错误：socket_accept: &#34;</span><span style="color:#f92672">.</span> <span style="color:#a6e22e">socket_strerror</span>(<span style="color:#a6e22e">socket_last_error</span>($socket)) <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        <span style="color:#66d9ef">break</span>;
     }
   
-    /*发送欢迎信息*/
-    $msg = &quot;\n PHP Websocket \n&quot;;
+    <span style="color:#75715e">/*发送欢迎信息*/</span>
+    $msg <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74"> PHP Websocket </span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
   
-    //监听用户输入
-    do {
-        if (false === ($buf = socket_read($msgsock, 2048, PHP_NORMAL_READ))) {
-            echo &quot;socket read error: &quot; . socket_strerror(socket_last_error($msgsock)) . &quot;\n&quot;;
-            break 2;
+    <span style="color:#75715e">//监听用户输入
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">do</span> {
+        <span style="color:#66d9ef">if</span> (<span style="color:#66d9ef">false</span> <span style="color:#f92672">===</span> ($buf <span style="color:#f92672">=</span> <span style="color:#a6e22e">socket_read</span>($msgsock, <span style="color:#ae81ff">2048</span>, <span style="color:#a6e22e">PHP_NORMAL_READ</span>))) {
+            <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;socket read error: &#34;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">socket_strerror</span>(<span style="color:#a6e22e">socket_last_error</span>($msgsock)) <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+            <span style="color:#66d9ef">break</span> <span style="color:#ae81ff">2</span>;
         }
-        if (!$buf = trim($buf)) {
-            continue;
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>$buf <span style="color:#f92672">=</span> <span style="color:#a6e22e">trim</span>($buf)) {
+            <span style="color:#66d9ef">continue</span>;
         }
       
-        //回复用户
-        $talkback = &quot;PHP: 你说了'$buf' .\n&quot;;
-        socket_write($msgsock, $talkback, strlen($talkback));
+        <span style="color:#75715e">//回复用户
+</span><span style="color:#75715e"></span>        $talkback <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;PHP: 你说了&#39;</span><span style="color:#e6db74">$buf</span><span style="color:#e6db74">&#39; .</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        <span style="color:#a6e22e">socket_write</span>($msgsock, $talkback, <span style="color:#a6e22e">strlen</span>($talkback));
       
-        //终端输出信息
-        echo &quot;$buf\n&quot;;
-    } while(true);
-    socket_close($msgsock);
-} while(true);
+        <span style="color:#75715e">//终端输出信息
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$buf\n</span><span style="color:#e6db74">&#34;</span>;
+    } <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>);
+    <span style="color:#a6e22e">socket_close</span>($msgsock);
+} <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>);
 
-socket_close($socket);
-?&gt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<span style="color:#a6e22e">socket_close</span>($socket);
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -341,6 +334,12 @@ socket_close($socket);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,263 +187,141 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#操作远端">操作远端</a>
-<ul>
-<li><a href="#删除远端分支">删除远端分支</a></li>
-<li><a href="#修改远端地址">修改远端地址</a></li>
-<li><a href="#远端列表">远端列表</a></li>
-<li><a href="#删除分支">删除分支</a></li>
-<li><a href="#获取远端修改">获取远端修改</a></li>
-<li><a href="#ls-remote">ls-remote</a></li>
-<li><a href="#增加新的远端库">增加新的远端库</a></li>
-<li><a href="#为新分支设置远端">为新分支设置远端</a></li>
-<li><a href="#开始">开始</a></li>
-<li><a href="#重命名远端">重命名远端</a></li>
-<li><a href="#远端信息">远端信息</a></li>
-<li><a href="#设置远端url">设置远端url</a></li>
-<li><a href="#获取远端url">获取远端url</a></li>
-<li><a href="#修改远端仓库">修改远端仓库</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#操作远端">操作远端</a>
+      <ul>
+        <li><a href="#删除远端分支">删除远端分支</a></li>
+        <li><a href="#修改远端地址">修改远端地址</a></li>
+        <li><a href="#远端列表">远端列表</a></li>
+        <li><a href="#删除分支">删除分支</a></li>
+        <li><a href="#获取远端修改">获取远端修改</a></li>
+        <li><a href="#ls-remote">ls-remote</a></li>
+        <li><a href="#增加新的远端库">增加新的远端库</a></li>
+        <li><a href="#为新分支设置远端">为新分支设置远端</a></li>
+        <li><a href="#开始">开始</a></li>
+        <li><a href="#重命名远端">重命名远端</a></li>
+        <li><a href="#远端信息">远端信息</a></li>
+        <li><a href="#设置远端url">设置远端url</a></li>
+        <li><a href="#获取远端url">获取远端url</a></li>
+        <li><a href="#修改远端仓库">修改远端仓库</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="操作远端">操作远端</h2>
-
+        		<h2 id="操作远端">操作远端</h2>
 <h3 id="删除远端分支">删除远端分支</h3>
-
 <p>想要删除一个远端的分支：</p>
-
 <pre><code>$ git push [remote-name] --delete [branch-name]
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><p>或者</p>
 <pre><code>$ git push [remote-name] :[branch-name]
-</code></pre>
-
-<h3 id="修改远端地址">修改远端地址</h3>
-
+</code></pre><h3 id="修改远端地址">修改远端地址</h3>
 <p>查看已经存在的远端地址：</p>
-
 <pre><code>$ git remote -v
 # origin https://github.com/username/repo.git (fetch) 
 # origin https://github.com/usernam/repo.git (push)
-</code></pre>
-
-<p>修改仓库的地址：</p>
-
+</code></pre><p>修改仓库的地址：</p>
 <pre><code>$ git remote set-url origin https://github.com/username/repo2.git 
 # Change the 'origin' remote's URL
-</code></pre>
-
-<p>查看验证新的远端地址：</p>
-
+</code></pre><p>查看验证新的远端地址：</p>
 <pre><code>$ git remote -v
 # origin https://github.com/username/repo2.git (fetch) 
 # origin https://github.com/username/repo2.git (push)
-</code></pre>
-
-<h3 id="远端列表">远端列表</h3>
-
+</code></pre><h3 id="远端列表">远端列表</h3>
 <p>查看这个仓库关联的远端列表：</p>
-
 <pre><code>$ git remote
-</code></pre>
-
-<p>查看这个仓库关联的远端列表，包括这些远端的<code>fetch</code>和<code>push</code>的Url地址。</p>
-
+</code></pre><p>查看这个仓库关联的远端列表，包括这些远端的<code>fetch</code>和<code>push</code>的Url地址。</p>
 <pre><code>$ git remote --verbose
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><p>或者</p>
 <pre><code>$ git remote -v
-</code></pre>
-
-<h3 id="删除分支">删除分支</h3>
-
+</code></pre><h3 id="删除分支">删除分支</h3>
 <p>当远端分支被删除了，你本地仓库必须删除对这个分支的引用。</p>
-
 <p>删除一个远端的已被删除的分支：</p>
-
 <pre><code>$ git fetch [remote-name] --prune
-</code></pre>
-
-<p>删除所有远端的已删除分支：</p>
-
+</code></pre><p>删除所有远端的已删除分支：</p>
 <pre><code>$ git fetch --all --prune
-</code></pre>
-
-<h3 id="获取远端修改">获取远端修改</h3>
-
+</code></pre><h3 id="获取远端修改">获取远端修改</h3>
 <p>假设你已经设置的远端上游：</p>
-
 <pre><code>$ git fetch remote-name
 $ git merge remote-name/branch-name
-</code></pre>
-
-<p><code>pull</code>命令包含了<code>fetch</code>和<code>merge</code>两个命令</p>
-
+</code></pre><p><code>pull</code>命令包含了<code>fetch</code>和<code>merge</code>两个命令</p>
 <pre><code>$ git pull
-</code></pre>
-
-<p><code>pull</code>命令的<code>--rebase</code>标识包含了<code>fetch</code>和<code>rebase</code>。</p>
-
+</code></pre><p><code>pull</code>命令的<code>--rebase</code>标识包含了<code>fetch</code>和<code>rebase</code>。</p>
 <pre><code>$ git pull --rebase remote-name branch-name
-</code></pre>
-
-<h3 id="ls-remote">ls-remote</h3>
-
+</code></pre><h3 id="ls-remote">ls-remote</h3>
 <p><code>git ls-remote</code>是唯一一个允许你在还没有<code>clone/fetch</code>仓库的情况下查看仓库。</p>
-
 <p>这个命令将列出远端仓库的refs/heads 和 refs/tags。</p>
-
 <p>你将看到几个<code>refs/tags/v0.1.6</code>和<code>refs/tags/v0.1.6^{}</code>：其中<code>^{}</code>表示解除引用的标签（这个标签所引用的提交）。</p>
-
 <p>从Git2.8（2016年3月），你可以避免一个标签有两个入口，直接列出那些取消引用的标签：</p>
-
 <pre><code>$ git ls-remote --ref
-</code></pre>
-
-<p>当你使用<code>url.&lt;base&gt;.insteadOf</code>的配置的时候，可以用来获取远端库使用的实际网址。</p>
-
-<p>如果<code>git remote --get-url &lt;aremotename&gt;</code>返回<a href="https://server.com/user/repo。">https://server.com/user/repo。</a> 并且你已经设置了<code>git config url.ssh://git@server.com:.insteadOf https://server.com/</code>：</p>
-
+</code></pre><p>当你使用<code>url.&lt;base&gt;.insteadOf</code>的配置的时候，可以用来获取远端库使用的实际网址。</p>
+<p>如果<code>git remote --get-url &lt;aremotename&gt; </code>返回https://server.com/user/repo。 并且你已经设置了<code>git config url.ssh://git@server.com:.insteadOf https://server.com/</code>：</p>
 <pre><code> $ git ls-remote --get-url &lt;aremotename&gt; 
  ssh://git@server.com:user/repo
-</code></pre>
-
-<h3 id="增加新的远端库">增加新的远端库</h3>
-
+</code></pre><h3 id="增加新的远端库">增加新的远端库</h3>
 <pre><code>$ git remote add upstream git-repository-url
-</code></pre>
-
-<p>为当前的Git库添加<code>git-respository-url</code>代表的远端库，这个新远端库的名称是<code>upstream</code>。</p>
-
+</code></pre><p>为当前的Git库添加<code>git-respository-url</code>代表的远端库，这个新远端库的名称是<code>upstream</code>。</p>
 <h3 id="为新分支设置远端">为新分支设置远端</h3>
-
 <p>你可以创建一个新分支，并且切换到这个分支去使用它：</p>
-
 <pre><code>$ git checkout -b AP-57
-</code></pre>
-
-<p>切换到这个分支之后，你需要为这个设置远端origin用来push和fetch。</p>
-
+</code></pre><p>切换到这个分支之后，你需要为这个设置远端origin用来push和fetch。</p>
 <pre><code>$ git push --set-upstream origin AP-57
-</code></pre>
-
-<p>当你在这个分支的时候，可以使用git来push修改了。</p>
-
+</code></pre><p>当你在这个分支的时候，可以使用git来push修改了。</p>
 <h3 id="开始">开始</h3>
-
 <p>推送修改到远端分支的语法：</p>
-
 <pre><code>$ git push &lt;remote_name&gt; &lt;branch_name&gt;
-</code></pre>
-
-<p>例如：</p>
-
+</code></pre><p>例如：</p>
 <pre><code>$ git push origin master
-</code></pre>
-
-<h3 id="重命名远端">重命名远端</h3>
-
+</code></pre><h3 id="重命名远端">重命名远端</h3>
 <p>重命名远端，使用<code>git remote rename</code>命令。这个命令有两个参数：</p>
-
 <ol>
 <li>一个已经存在的远端名称，比如：origin</li>
 <li>已经新的远端名称，比如：destination</li>
 </ol>
-
 <p>查看仓库已经存在的远端：</p>
-
 <pre><code>$ git remote
 # origin
-</code></pre>
-
-<p>查看已经存在的远端地址：</p>
-
+</code></pre><p>查看已经存在的远端地址：</p>
 <pre><code>$ git remote -v 
 # origin https://github.com/username/repo.git (fetch) 
 # origin https://github.com/usernam/repo.git (push)
-</code></pre>
-
-<p>修改远端名称：</p>
-
+</code></pre><p>修改远端名称：</p>
 <pre><code>$ git remote rename origin destination
 # Change remote name from 'origin' to 'destination'
-</code></pre>
-
-<p>验证远端：</p>
-
+</code></pre><p>验证远端：</p>
 <pre><code>$ git remote -v
 # destination https://github.com/username/repo.git (fetch) 
 # destination https://github.com/usernam/repo.git (push)
-</code></pre>
-
-<p>===可能的错误===</p>
-
+</code></pre><p>===可能的错误===</p>
 <ol>
-<li>Could not rename config section &lsquo;remote.[old name]&rsquo; to &lsquo;remote.[new name]&rsquo;</li>
-</ol>
-
+<li>
+<p>Could not rename config section &lsquo;remote.[old name]&rsquo; to &lsquo;remote.[new name]&rsquo;</p>
 <p>这个错误意味你这想要修改的旧远端名(origin)不存在</p>
-
-<ol>
-<li>Remote [new name] already exists.</li>
-</ol>
-
+</li>
+<li>
+<p>Remote [new name] already exists.</p>
 <p>这个错误意味远端名称已经存在了。</p>
-
+</li>
+</ol>
 <h3 id="远端信息">远端信息</h3>
-
 <p>输出一个知道名称的远端的信息：</p>
-
 <pre><code>$ git remote show origin
-</code></pre>
-
-<p>只获取远端的网址：</p>
-
+</code></pre><p>只获取远端的网址：</p>
 <pre><code>$ git config --get remote.origin.url
-</code></pre>
-
-<p>从2.7+开始，有比上面用<code>config</code>更好的命令：</p>
-
+</code></pre><p>从2.7+开始，有比上面用<code>config</code>更好的命令：</p>
 <pre><code>$ git remote get-url origin
-</code></pre>
-
-<h3 id="设置远端url">设置远端url</h3>
-
+</code></pre><h3 id="设置远端url">设置远端url</h3>
 <p>你可以使用命令修改远端的地址：</p>
-
 <pre><code>$ git remote set-url remote-name url
-</code></pre>
-
-<h3 id="获取远端url">获取远端url</h3>
-
+</code></pre><h3 id="获取远端url">获取远端url</h3>
 <p>你可以使用命令<code>git remote get-url &lt;remote-name&gt;</code>获取已存在远端的Url地址。</p>
-
 <p>默认它是<code>git remote get-url origin</code></p>
-
 <h3 id="修改远端仓库">修改远端仓库</h3>
-
 <p>修改你本地仓库指向的远端的地址，你可以使用下面的命令：</p>
-
 <pre><code>$ git remote set-url &lt;remote_name&gt; &lt;remote_repository_url&gt;
-</code></pre>
-
-<p>例如：</p>
-
+</code></pre><p>例如：</p>
 <pre><code>$ git remote set-url heroku https://git.heroku.com/fictional-remote-repository.git
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -511,6 +393,12 @@ $ git merge remote-name/branch-name
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

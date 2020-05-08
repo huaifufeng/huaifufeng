@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,55 +187,31 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#拆分文件">拆分文件</a>
-<ul>
-<li><a href="#拆分一个文件">拆分一个文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#拆分文件">拆分文件</a>
+      <ul>
+        <li><a href="#拆分一个文件">拆分一个文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="拆分文件">拆分文件</h2>
-
+        		<h2 id="拆分文件">拆分文件</h2>
 <p>有时候把一个文件分成多个文件时很有用的。如果你有一个大文件，把它分成多个小块是很有用的。</p>
-
 <h3 id="拆分一个文件">拆分一个文件</h3>
-
 <p>直接不带参数的运行<code>spilt</code>命令，将会把一个文件分为1个或多个文件，每个文件最多包含1000行。</p>
-
 <pre><code>split file
-</code></pre>
-
-<p>这将会创建文件<code>xaa xab xac …</code>，每个文件最多1000行。这里你注意到，所有的文件都是<code>x</code>开头的。如果文件没有1000行，只有创建一个这样的文件。</p>
-
+</code></pre><p>这将会创建文件<code>xaa xab xac …</code>，每个文件最多1000行。这里你注意到，所有的文件都是<code>x</code>开头的。如果文件没有1000行，只有创建一个这样的文件。</p>
 <p>想要修改文件名前缀的话，在命令的后面添加你想要的文件前缀：</p>
-
 <pre><code>split file customprefix
-</code></pre>
-
-<p>现在将会创建<code>customprefixaa, customprefixab, customprefixac...</code>这些文件。</p>
-
+</code></pre><p>现在将会创建<code>customprefixaa, customprefixab, customprefixac...</code>这些文件。</p>
 <p>指定每个文件的行数，可以使用<code>-l</code>选项。下面的命令将会拆分文件，每个文件最多5000行。</p>
-
 <pre><code>split -l5000 file
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><p>或者</p>
 <pre><code>split --lines=5000 file
-</code></pre>
-
-<p>另外你可以指定文件的最大大小而不是行数。这可以通过使用<code>-b</code>或<code>—bytes</code>选项来实现。例如，每个文件最大1M：</p>
-
+</code></pre><p>另外你可以指定文件的最大大小而不是行数。这可以通过使用<code>-b</code>或<code>—bytes</code>选项来实现。例如，每个文件最大1M：</p>
 <pre><code>split --bytes=1MB file
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -303,6 +283,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

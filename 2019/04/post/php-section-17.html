@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,135 +187,73 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#datetime类">Datetime类</a>
-<ul>
-<li><a href="#可变到不可变">可变到不可变</a></li>
-<li><a href="#加减日期间隔">加减日期间隔</a></li>
-<li><a href="#gettimestamp">getTimestamp</a></li>
-<li><a href="#setdate">setDate</a></li>
-<li><a href="#从自定义格式创建datetime">从自定义格式创建DateTime</a>
-<ul>
-<li><a href="#面向对象">面向对象</a></li>
-<li><a href="#函数形式">函数形式</a></li>
-</ul></li>
-<li><a href="#输出datetime">输出DateTime</a>
-<ul>
-<li><a href="#格式">格式</a></li>
-<li><a href="#使用">使用</a></li>
-<li><a href="#函数方式">函数方式</a></li>
-<li><a href="#面向对象方法">面向对象方法</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#datetime类">Datetime类</a>
+      <ul>
+        <li><a href="#可变到不可变">可变到不可变</a></li>
+        <li><a href="#加减日期间隔">加减日期间隔</a></li>
+        <li><a href="#gettimestamp">getTimestamp</a></li>
+        <li><a href="#setdate">setDate</a></li>
+        <li><a href="#从自定义格式创建datetime">从自定义格式创建DateTime</a></li>
+        <li><a href="#输出datetime">输出DateTime</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="datetime类">Datetime类</h2>
-
+        		<h2 id="datetime类">Datetime类</h2>
 <h3 id="可变到不可变">可变到不可变</h3>
-
 <p>从PHP5.6之前的可变版本到现在的不可变版本。</p>
-
 <p>在PHP5.6之后创建一个<code>\DateTimeImmutable</code>类：</p>
-
 <pre><code>\DateTimeImmutable::createFromMutable($concrete);
-</code></pre>
-
-<p>在PHP5.6之前：</p>
-
+</code></pre><p>在PHP5.6之前：</p>
 <pre><code>\DateTimeImmutable::createFromFormat(\DateTime::ISO8601, $mutable-&gt;format(\DateTime::ISO8601), $mutable-&gt;getTimezone());
-</code></pre>
-
-<h3 id="加减日期间隔">加减日期间隔</h3>
-
+</code></pre><h3 id="加减日期间隔">加减日期间隔</h3>
 <p>我们可以使用<a href="https://php.net/manual/pt_BR/class.dateinterval.php">DateInterval</a>在DateTime对象上增加或减少一定时间间隔。</p>
-
 <p>下面的例子，我们在对象上增加7天，然后打印输出到屏幕上面：</p>
-
 <pre><code>$now = new DateTime();// empty argument returns the current date
 $interval = new DateInterval('P7D');//this objet represents a 7 days interval
 $lastDay = $now-&gt;add($interval); //this will return a DateTime object
 $formatedLastDay = $lastDay-&gt;format('Y-m-d');//this method format the DateTime object and returns a String
 echo &quot;Samara says: Seven Days. You'll be happy on $formatedLastDay.&quot;;
-</code></pre>
-
-<p>这将会输出(在2019-04-29时运行)：</p>
-
+</code></pre><p>这将会输出(在2019-04-29时运行)：</p>
 <blockquote>
 <p> Samara says: Seven Days. You&rsquo;ll be happy on 2019-05-06.</p>
 </blockquote>
-
 <p>我们可以使用sub方法来减少日期：</p>
-
 <pre><code>$now-&gt;sub($interval);
 echo &quot;Samara says: Seven Days. You were happy last on $formatedLastDay.&quot;;
-</code></pre>
-
-<p>这将会输出(在2019-04-29时运行)：</p>
-
+</code></pre><p>这将会输出(在2019-04-29时运行)：</p>
 <blockquote>
 <p>Samara says: Seven Days. You&rsquo;ll be happy on 2019-04-22.</p>
 </blockquote>
-
 <h3 id="gettimestamp">getTimestamp</h3>
-
 <p><a href="https://www.php.net/manual/zh/datetime.gettimestamp.php">getTimestamp</a>获取DateTime对象的unix时间戳格式：</p>
-
 <pre><code> $date = new DateTime(); 
  echo $date-&gt;getTimestamp();
-</code></pre>
-
-<p>这将会输出从00:00:00 UTC, Thursday, 1 January 1970到现在的以秒为单位的整数时间戳。</p>
-
+</code></pre><p>这将会输出从00:00:00 UTC, Thursday, 1 January 1970到现在的以秒为单位的整数时间戳。</p>
 <h3 id="setdate">setDate</h3>
-
 <p>setDate设置DateTime对象的date时间。</p>
-
 <pre><code>$date = new DateTime(); 
 $date-&gt;setDate(2016, 7, 25);
-</code></pre>
-
-<p>上面的例子将日期设置为2016-07-25，这将会输出：</p>
-
+</code></pre><p>上面的例子将日期设置为2016-07-25，这将会输出：</p>
 <pre><code>2016-07-25 17:52:15.819442
-</code></pre>
-
-<h3 id="从自定义格式创建datetime">从自定义格式创建DateTime</h3>
-
+</code></pre><h3 id="从自定义格式创建datetime">从自定义格式创建DateTime</h3>
 <p>PHP可以解析一些<a href="https://secure.php.net/manual/en/datetime.formats.php">时间格式</a>。如果你想要解析非标准的格式，或者你想要显示使用某种格式，你可以使用静态方法<a href="https://php.net/manual/en/datetime.createfromformat.php">DateTime::createFromFormat</a>：</p>
-
 <h4 id="面向对象">面向对象</h4>
-
 <pre><code>$format = &quot;Y,m,d&quot;;
 $time = &quot;2009,2,26&quot;;
 $date = DateTime::createFromFormat($format, $time);
-</code></pre>
-
-<h4 id="函数形式">函数形式</h4>
-
+</code></pre><h4 id="函数形式">函数形式</h4>
 <pre><code>$format = &quot;Y,m,d&quot;;
 $time = &quot;2009,2,26&quot;;
 $date = date_create_from_format($format, $time);
-</code></pre>
-
-<h3 id="输出datetime">输出DateTime</h3>
-
+</code></pre><h3 id="输出datetime">输出DateTime</h3>
 <p>PHP4提供了一个格式化输出DateTime内容的方法。如手册所说，下面是面向对象的方法：</p>
-
 <pre><code>public string DateTime::format ( string $format )
-</code></pre>
-
-<p>方法<a href="https://www.php.net/manual/zh/datetime.format.php">format()</a>有一个字符串格式的参数format：</p>
-
+</code></pre><p>方法<a href="https://www.php.net/manual/zh/datetime.format.php">format()</a>有一个字符串格式的参数format：</p>
 <h4 id="格式">格式</h4>
-
 <p>format参数是一个字符串，使用单个字符来定义格式：</p>
-
 <ul>
 <li>Y：四位数字表示的年份(2019)</li>
 <li>y：两位数字表示的年份(19)</li>
@@ -326,11 +268,8 @@ $date = date_create_from_format($format, $time);
 <li>s：带有前导零的秒(00-59)</li>
 <li>完整的列表查看<a href="https://www.php.net/manual/zh/function.date.php">这里</a></li>
 </ul>
-
 <h4 id="使用">使用</h4>
-
 <p>上面的字符可以用来显示任何格式的时间下面是一些例子：</p>
-
 <pre><code>$date = new DateTime('2000-05-26T13:30:20'); /* Friday, May 26, 2000 at 1:30:20 PM */ 
 
 $date-&gt;format(&quot;H:i&quot;);
@@ -340,20 +279,11 @@ $date-&gt;format(&quot;h:i:s A&quot;); /* Returns 01:30:20 PM */
 $date-&gt;format(&quot;j/m/Y&quot;); /* Returns 26/05/2000 */
 $date-&gt;format(&quot;D, M j 'y - h:i A&quot;);
 /* Returns Fri, May 26 '00 - 01:30 PM */
-</code></pre>
-
-<h4 id="函数方式">函数方式</h4>
-
+</code></pre><h4 id="函数方式">函数方式</h4>
 <pre><code>date_format($date, $format)
-</code></pre>
-
-<h4 id="面向对象方法">面向对象方法</h4>
-
+</code></pre><h4 id="面向对象方法">面向对象方法</h4>
 <pre><code>$date-&gt;format($format)
-</code></pre>
-
-<p>这两种方式是等价的。</p>
-
+</code></pre><p>这两种方式是等价的。</p>
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -426,6 +356,12 @@ $date-&gt;format(&quot;D, M j 'y - h:i A&quot;);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

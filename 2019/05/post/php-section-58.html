@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,134 +187,96 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#pdo">PDO</a>
-<ul>
-<li><a href="#1-使用参数化查询避免sql注入">1. 使用参数化查询避免SQL注入</a></li>
-<li><a href="#2-基本的pdo连接和检索">2.  基本的PDO连接和检索</a></li>
-<li><a href="#3-pdo事务">3. PDO事务</a></li>
-<li><a href="#4-pdo连接mysql-mariadb服务器">4. PDO连接MySQL/MariaDB服务器</a></li>
-<li><a href="#5-pdo-获取一个查询影响的行数">5. PDO：获取一个查询影响的行数</a></li>
-<li><a href="#6-pdo-lastinsertid">6. PDO::lastInsertId();</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#pdo">PDO</a>
+      <ul>
+        <li><a href="#1-使用参数化查询避免sql注入">1. 使用参数化查询避免SQL注入</a></li>
+        <li><a href="#2--基本的pdo连接和检索">2.  基本的PDO连接和检索</a></li>
+        <li><a href="#3-pdo事务">3. PDO事务</a></li>
+        <li><a href="#4-pdo连接mysqlmariadb服务器">4. PDO连接MySQL/MariaDB服务器</a></li>
+        <li><a href="#5-pdo获取一个查询影响的行数">5. PDO：获取一个查询影响的行数</a></li>
+        <li><a href="#6-pdolastinsertid">6. PDO::lastInsertId();</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="pdo">PDO</h2>
-
+        		<h2 id="pdo">PDO</h2>
 <p><a href="https://www.php.net/manual/zh/book.pdo.php">PDO</a>(PHP数据对象)扩展允许开发人员连接到不同类型的数据库，并以统一的、面向对象的方式对他们进行查询。</p>
-
 <h3 id="1-使用参数化查询避免sql注入">1. 使用参数化查询避免SQL注入</h3>
-
 <p>SQL注入是一种攻击方式：允许任意用户修改SQL查询，在其中添加不希望的命令。例如，下面的代码是很脆弱的：</p>
-
-<pre><code class="language-mysql">$sql = &quot;SELECT name, email, user_level FROM users WHERE userID=&quot; . $_GET['user'];
-$conn-&gt;query($sql);
-</code></pre>
-
-<p>这允许脚本的任何用户随意的修改我们的数据库。例如，下面的查询字符串：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#960050;background-color:#1e0010">$</span><span style="color:#66d9ef">sql</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SELECT name, email, user_level FROM users WHERE userID=&#34;</span> . <span style="color:#960050;background-color:#1e0010">$</span>_GET[<span style="color:#e6db74">&#39;user&#39;</span>];
+<span style="color:#960050;background-color:#1e0010">$</span>conn<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">query</span>(<span style="color:#960050;background-color:#1e0010">$</span><span style="color:#66d9ef">sql</span>);
+</code></pre></div><p>这允许脚本的任何用户随意的修改我们的数据库。例如，下面的查询字符串：</p>
 <pre><code>page.php?user=0;%20TRUNCATE%20TABLE%20users;
-</code></pre>
-
-<p>这就会把我们的查询修改为：</p>
-
-<pre><code class="language-mysql">SELECT name, email, user_level FROM users WHERE userID = 0; TRUNCATE TABLE users;
-</code></pre>
-
-<p>虽然这是一个极端的例子（大多数SQL注入的攻击不是为了删除数据，也不是大多数的PHP查询支持多查询），这是一个说明通过不小心组装查询来实现SQL注入攻击的例子。不幸的是，这样的攻击非常常见，而且由于编码人员未能采取适当的预防措施来包含他们的数据，这种攻击非常有效。</p>
-
+</code></pre><p>这就会把我们的查询修改为：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> name, email, user_level <span style="color:#66d9ef">FROM</span> users <span style="color:#66d9ef">WHERE</span> userID <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; TRUNCATE <span style="color:#66d9ef">TABLE</span> users;
+</code></pre></div><p>虽然这是一个极端的例子（大多数SQL注入的攻击不是为了删除数据，也不是大多数的PHP查询支持多查询），这是一个说明通过不小心组装查询来实现SQL注入攻击的例子。不幸的是，这样的攻击非常常见，而且由于编码人员未能采取适当的预防措施来包含他们的数据，这种攻击非常有效。</p>
 <p>要避免SQL注入的发送，prepare语句是推荐的解决办法。不是将用户的数据直接拼接到查询语句中，在查询中使用占位符。然后单独发送数据，这意味着SQL引擎不会混淆命令和用户数据。</p>
-
 <blockquote>
 <p>虽然这里介绍的事PDO，但是要注意PHP的MySQLi扩展也是支持prepare语句的。</p>
 </blockquote>
-
 <p>PDO支持两种类型的占位符（占位符不能用于列名或表名，只适用于值）</p>
-
 <ol>
-<li>命名的占位符。一个冒号(:)，后面跟上一个唯一的名称(例如：<code>:user</code>)</li>
+<li>
+<p>命名的占位符。一个冒号(:)，后面跟上一个唯一的名称(例如：<code>:user</code>)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$sql = &#34;SELECT name,email,user_level FROM users WHERE userID=:user&#34;;
+$prep = $conn-&gt;prepare($sql);
+$prep-&gt;execute([&#39;:user&#39; =&gt; $_GET[&#39;user&#39;]]);
+$result = $prep-&gt;fetchAll();
+</code></pre></div></li>
+<li>
+<p>传统的SQL位置占位符，就是<code>?</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$sql = &#39;SELECT name, user_level FROM users WHERE userID = ? AND user_level = ?&#39;;
+$prep = $conn-&gt;prepare($sql);
+$prep-&gt;execute([$_GET[&#39;user&#39;], $_GET[&#39;user_level&#39;]]);
+$result = $prep-&gt;fetchAll();
+</code></pre></div></li>
 </ol>
-
-<pre><code class="language-php">   $sql = &quot;SELECT name,email,user_level FROM users WHERE userID=:user&quot;;
-   $prep = $conn-&gt;prepare($sql);
-   $prep-&gt;execute([':user' =&gt; $_GET['user']]);
-   $result = $prep-&gt;fetchAll();
-</code></pre>
-
-<ol>
-<li>传统的SQL位置占位符，就是<code>?</code>:</li>
-</ol>
-
-<pre><code class="language-php">   $sql = 'SELECT name, user_level FROM users WHERE userID = ? AND user_level = ?';
-   $prep = $conn-&gt;prepare($sql);
-   $prep-&gt;execute([$_GET['user'], $_GET['user_level']]);
-   $result = $prep-&gt;fetchAll();
-</code></pre>
-
 <p>如果你需要动态的修改表名和列名，注意这是你自己制造的安全风险，这是一个不好的做法。不过，这可以通过字符串拼接来完成。提高这类查询安全性的一个方法是设置允许的表名，并比较要连接到这个表的值。</p>
-
 <p>要注意最好只在DSN中设置连接的编码，否则当其他奇怪的编码使用的时候你的应用会出现<a href="https://stackoverflow.com/questions/134099/are-pdo-prepared-statements-sufficient-to-prevent-sql-injection/12202218#12202218">不明确的问题</a>。在5.3.6之前的PDO版本中，通过DSN设置的字符集是没有效果的，所以在连接创建之后<code>PDO::ATTR_EMULATE_PREPARES</code>属性只能够设置为false。</p>
-
-<pre><code class="language-php">$conn-&gt;setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-</code></pre>
-
-<p>这会导致PDO使用DBMS元素的prepare语句，而不是模拟它。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn-&gt;setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+</code></pre></div><p>这会导致PDO使用DBMS元素的prepare语句，而不是模拟它。</p>
 <p>但是注意当MySQL不能使用元素的prepare语句是，PDO将会<a href="https://github.com/php/php-src/blob/master/ext/pdo_mysql/mysql_driver.c#L210">默默的返回</a>模拟的语句。就是<a href="https://dev.mysql.com/doc/refman/8.0/en/sql-syntax-prepared-statements.html">手册</a>中列出来的这些。(<a href="https://stackoverflow.com/questions/134099/are-pdo-prepared-statements-sufficient-to-prevent-sql-injection/12202218#12202218">来源</a>)</p>
-
-<h3 id="2-基本的pdo连接和检索">2.  基本的PDO连接和检索</h3>
-
+<h3 id="2--基本的pdo连接和检索">2.  基本的PDO连接和检索</h3>
 <p>从PHP5.0开始，<a href="https://www.php.net/manual/zh/intro.pdo.php">PDO</a>已经是一个有效的数据库访问抽象层。它是数据库无关的，下面例子的代码对<a href="https://www.php.net/manual/zh/pdo.drivers.php">任何支持的数据库</a>都是有效的，只需要修改DSN中的配置。</p>
-
-<pre><code class="language-php">//首先，创建数据库句柄
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//首先，创建数据库句柄
 //MySQL 本地
-$dsn = &quot;mysql:host=localhost;dbname=testdb;charset=utf8&quot;;
+$dsn = &#34;mysql:host=localhost;dbname=testdb;charset=utf8&#34;;
 
 //MySQL网络连接，可选的端口
-//$dsn = &quot;mysql:host=127.0.0.1;port=3306;dbname=testdb;charset=utf8&quot;;
+//$dsn = &#34;mysql:host=127.0.0.1;port=3306;dbname=testdb;charset=utf8&#34;;
 
 //Postgre
-//$dsn = &quot;pgsql:host=localhost;port=5432;dbname=testdb&quot;;
+//$dsn = &#34;pgsql:host=localhost;port=5432;dbname=testdb&#34;;
 
 //SQLite
-//$dsn = &quot;sqlite:/path/to/database&quot;;
+//$dsn = &#34;sqlite:/path/to/database&#34;;
 
-$username = &quot;user&quot;;
-$password = &quot;pass&quot;;
+$username = &#34;user&#34;;
+$password = &#34;pass&#34;;
 $db = new PDO($dsn, $username, $password);
 
 //设置PDO当提供无效查询是抛出异常
 $db-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 //使用单个占位符的prepare语句
-$query = &quot;SELECT * FROM users WHERE class=?&quot;;
+$query = &#34;SELECT * FROM users WHERE class=?&#34;;
 $statement = $db-&gt;prepare($query);
 
 //创建占位符的值
-$parameters = ['221B'];
+$parameters = [&#39;221B&#39;];
 $statement-&gt;execute($parameters);
 
 //循环关联数组的结果
 while($row = $statement-&gt;fetch(PDO::FETCH_ASSOC)) {
     do_stuff($row);
 }
-</code></pre>
-
-<p><code>prepare</code>函数使用查询字符串创建一个<code>PDOStatement</code>对象。在这个返回对象上面，查询的执行和结果的检索是很高效的。如果执行失败了，这个函数返回一个<code>false</code>或者抛出一个异常（根据PDO连接的配置）</p>
-
+</code></pre></div><p><code>prepare</code>函数使用查询字符串创建一个<code>PDOStatement</code>对象。在这个返回对象上面，查询的执行和结果的检索是很高效的。如果执行失败了，这个函数返回一个<code>false</code>或者抛出一个异常（根据PDO连接的配置）</p>
 <h3 id="3-pdo事务">3. PDO事务</h3>
-
 <p>数据库的事务确保只有当每条语句都执行成功的时候，这个数据的修改才会保存。事务期间的任何查询或代码错误都可以捕获，然后你可以选择回滚这些修改。</p>
-
 <p>下面是PDO事务的一个简单例子，包括开启事务，提交事务和回滚事务。</p>
-
-<pre><code class="language-php">$pdo = new PDO(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$pdo = new PDO(
     $dsn,
     $username,
     $password,
@@ -318,10 +284,10 @@ while($row = $statement-&gt;fetch(PDO::FETCH_ASSOC)) {
 );
 
 try {
-    $statement = $pdo-&gt;prepare(&quot;UPDATE user SET name=:name&quot;);
+    $statement = $pdo-&gt;prepare(&#34;UPDATE user SET name=:name&#34;);
     $pdo-&gt;beginTransaction();
-    $statement-&gt;execute(['name' =&gt; 'Bob']);
-    $statement-&gt;execute(['name' =&gt; 'Joe']);
+    $statement-&gt;execute([&#39;name&#39; =&gt; &#39;Bob&#39;]);
+    $statement-&gt;execute([&#39;name&#39; =&gt; &#39;Joe&#39;]);
     $pdo-&gt;commit();
 } catch (\Exception $e) {
     if ($pdo-&gt;inTransaction()) {
@@ -330,49 +296,39 @@ try {
     
     throw $e;
 }
-</code></pre>
-
-<p>在事务的执行期间，任何数据修改都只会在当前的连接中有效。<code>SELECT</code>语句可以返回修改之后的更改结果，即使他们尚未提交到数据库中。</p>
-
+</code></pre></div><p>在事务的执行期间，任何数据修改都只会在当前的连接中有效。<code>SELECT</code>语句可以返回修改之后的更改结果，即使他们尚未提交到数据库中。</p>
 <p>注意：有关事务支持的详细信息，阅读数据库供应商的文档。一些系统不支持事务。有些支持嵌套事务，另外的不支持。</p>
-
 <p><strong>PDO事务的使用示例</strong></p>
-
 <p>下面的部分显示了显示世界中的实际例子，其中事务保证数据库的一致性。</p>
-
 <p>想象有下面的场景，你要为电子商务网站实现一个购物车功能，你决定将订单的数据保存在两个数据库表中。一个表名为<code>orders</code>，其中有<code>order_id, name, address, telephone, created_at</code>这些字段。另一个表叫做<code>orders_products</code>，有<code>order_id, product_id, quantity</code>这几个字段。第一个表包含订单的原始信息，第二个表包含订单中实际包含的商品信息。</p>
-
 <p><strong>在数据库中插入订单记录</strong></p>
-
 <p>想要在数据库中插入新的订单记录，你需要做两件事情。首先，你要在<code>orders</code>表中插入一条新的记录，这个记录包含领导的元素信息：name，address等。然后你需要在<code>orders_products</code>表中插入订单中每个商品的信息。</p>
-
 <p>你实现这个功能，像下面一样：</p>
-
-<pre><code class="language-php">//在数据库中插入订单的原始信息
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//在数据库中插入订单的原始信息
 $preparedStatement = $db-&gt;prepare(
-    &quot;INSERT INTO `orders` (`name`, `address`, `telephone`, `created_at`)
-    VALUES (:name, :address, :telephone, :created_at)&quot;
+    &#34;INSERT INTO `orders` (`name`, `address`, `telephone`, `created_at`)
+    VALUES (:name, :address, :telephone, :created_at)&#34;
 );
 
 $preparedStatement-&gt;execute([
-    &quot;:name&quot; =&gt; $name,
-    &quot;:address&quot; =&gt; $address,
-    &quot;:telephone&quot; =&gt; $telephone,
-    &quot;:created_at&quot; =&gt; time(),
+    &#34;:name&#34; =&gt; $name,
+    &#34;:address&#34; =&gt; $address,
+    &#34;:telephone&#34; =&gt; $telephone,
+    &#34;:created_at&#34; =&gt; time(),
 ]);
 
 //获取产生的order_id
 $orderId = $db-&gt;lastInsertId();
 
 //构造插入订单商品信息的语句
-$insertProductsQuery = &quot;INSERT INTO `orders_products` (`order_id`, `product_id`, `quantity`) VALUES&quot;;
+$insertProductsQuery = &#34;INSERT INTO `orders_products` (`order_id`, `product_id`, `quantity`) VALUES&#34;;
 
 $count = 0;
 foreach($products as $productId =&gt; $quantity) {
-    $insertProductsQuery .= &quot; (:order_id&quot;. $count . &quot;, :product_id&quot; . $count . &quot;, :quantity&quot;. $count .&quot;)&quot;;
-    $inserProductsParams['order_id' . $count] = $orderId;
-    $inserProductsParams['product_id' . $count] = $productId;
-    $inserProductsParams['quantity' . $count] = $quantiry;
+    $insertProductsQuery .= &#34; (:order_id&#34;. $count . &#34;, :product_id&#34; . $count . &#34;, :quantity&#34;. $count .&#34;)&#34;;
+    $inserProductsParams[&#39;order_id&#39; . $count] = $orderId;
+    $inserProductsParams[&#39;product_id&#39; . $count] = $productId;
+    $inserProductsParams[&#39;quantity&#39; . $count] = $quantiry;
     
     $count++;
 }
@@ -380,16 +336,10 @@ foreach($products as $productId =&gt; $quantity) {
 //插入订单商品信息
 $preparedStatement = $db-&gt;prepare($insertProductsQuery);
 $preparedStatement-&gt;execute($insertProductsParams);
-</code></pre>
-
-<p>这对于数据库中插入订单是可以正常工作额，知道因为一些原因第二个<code>INSERT</code>语句出现错误了。如果这种情况发生了，在<code>orders</code>表中将会有一条新的订单记录，但是在<code>orders_products</code>表中将没有订单关联的商品信息。幸运的是，要修复这个问题很简单，只需要把这些语句放入到一个数据库事务中。</p>
-
+</code></pre></div><p>这对于数据库中插入订单是可以正常工作额，知道因为一些原因第二个<code>INSERT</code>语句出现错误了。如果这种情况发生了，在<code>orders</code>表中将会有一条新的订单记录，但是在<code>orders_products</code>表中将没有订单关联的商品信息。幸运的是，要修复这个问题很简单，只需要把这些语句放入到一个数据库事务中。</p>
 <p><strong>带事务的插入新订单</strong></p>
-
 <p>想要使用<code>PDO</code>开启一个事务，你需要做的事情就是在数据库上进行查询之前，首先调用<code>beginTransaction</code>方法。然后你就可以执行对数据的修改操作，不管是<code>INSERT</code>操作还是<code>UPDATE</code>操作。最后你在<code>PDO</code>对象上面执行<code>commit</code>方法来保存这些修改。除非你调用了<code>commit</code>方法，否则你的任何修改都可以使用<code>PDO</code>对象上面的<code>rollback</code>方法撤销。</p>
-
 <p>下面的例子显示了在数据库上面通过食物来创建一个新的order记录，这会保证数据库数据的一致性。如果两个查询中的任何一个出现问题，所有的修改将会撤销。</p>
-
 <pre><code>//这里我们使用MySQL，但是和其他支持事务的数据库是一样的
 $db = new PDO('mysql:host=' . $host . ';dbname=' . $dbname . ';charset=utf8', $username, $password);
 
@@ -437,89 +387,63 @@ try {
     $db-&gt;rollback();
     $throw $e;
 }
-</code></pre>
-
-<h3 id="4-pdo连接mysql-mariadb服务器">4. PDO连接MySQL/MariaDB服务器</h3>
-
+</code></pre><h3 id="4-pdo连接mysqlmariadb服务器">4. PDO连接MySQL/MariaDB服务器</h3>
 <p>根据基础设施的不同，你有两种方式连接到MySQL/MariaDB服务器。</p>
-
 <p><strong>标准(TCP/IP)连接</strong></p>
-
-<pre><code class="language-php">$dsn = 'mysql:dbname=demo;host=server;port=3306;charset=utf8';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$dsn = &#39;mysql:dbname=demo;host=server;port=3306;charset=utf8&#39;;
 $connection = new \PDO($dsn, $username, $password);
 
 $connection-&gt;setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 $connection-&gt;setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-</code></pre>
-
-<p>因为PDO被设计是兼容老版本的MySQL服务器的（这些版本不支持prepare语句），所以你需要明确禁止这种模拟。否则你将失去额外的注入预防好处，这通常是通过使用prepare语句实现的。</p>
-
+</code></pre></div><p>因为PDO被设计是兼容老版本的MySQL服务器的（这些版本不支持prepare语句），所以你需要明确禁止这种模拟。否则你将失去额外的注入预防好处，这通常是通过使用prepare语句实现的。</p>
 <p>另外的折中方案是默认的错误处理行为，你必须注意这点。如果没有其他的配置，PDO不会显示任何SQL的错误行为。</p>
-
-<p>强烈建议设置为&rdquo;Exception模式&rdquo;，因为这样在编写持久性抽象（例如：在违反UNIQUE约束时出现异常）时可以获得额外的功能。</p>
-
+<p>强烈建议设置为&quot;Exception模式&rdquo;，因为这样在编写持久性抽象（例如：在违反UNIQUE约束时出现异常）时可以获得额外的功能。</p>
 <p><strong>Socket连接</strong></p>
-
-<pre><code class="language-php">$dsn = 'mysql:unix_socket=/tmp/mysql.sock;dbname=demo;charset=utf8';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$dsn = &#39;mysql:unix_socket=/tmp/mysql.sock;dbname=demo;charset=utf8&#39;;
 $connection = new \PDO($dsn, $username, $password);
 
 //SQL错误出现时，抛出异常
 $connection-&gt;setAttribute(\PDO::ATTR_ERRMODE, \POD::ERRMODE_EXCEPTION);
 //避免prepare语句模拟
 $connection-&gt;setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
-</code></pre>
-
-<p>在类Unix机器上面，如果主机名是&rdquo;localhost&rdquo;，则通过socket连接到服务器。</p>
-
-<h3 id="5-pdo-获取一个查询影响的行数">5. PDO：获取一个查询影响的行数</h3>
-
+</code></pre></div><p>在类Unix机器上面，如果主机名是&quot;localhost&rdquo;，则通过socket连接到服务器。</p>
+<h3 id="5-pdo获取一个查询影响的行数">5. PDO：获取一个查询影响的行数</h3>
 <p>我们从<code>$db</code>开始，这是一个PDO类的实例。在执行完查询之后，我们通常希望确定受其影响的行数。PDOStatement的<code>rowCount()</code>方法可以很好的获取这个结果：</p>
-
-<pre><code class="language-php">$query = $db-&gt;query(&quot;DELETE FROM table WHERE name='John'&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$query = $db-&gt;query(&#34;DELETE FROM table WHERE name=&#39;John&#39;&#34;);
 $count = $query-&gt;rowCount();
-echo &quot;Deleted $count rows named John&quot;;
-</code></pre>
-
-<p>注意：这个方法只能用来获取受<code>INSERT, DELETE, UPDATE</code>语句影响的行数。尽管这个语句对SELECT语句也是有效果的，但是不是对所有的数据库有效果。</p>
-
-<h3 id="6-pdo-lastinsertid">6. PDO::lastInsertId();</h3>
-
+echo &#34;Deleted $count rows named John&#34;;
+</code></pre></div><p>注意：这个方法只能用来获取受<code>INSERT, DELETE, UPDATE</code>语句影响的行数。尽管这个语句对SELECT语句也是有效果的，但是不是对所有的数据库有效果。</p>
+<h3 id="6-pdolastinsertid">6. PDO::lastInsertId();</h3>
 <p>你经常会需要获取你刚插入数据库表中的一行的递增ID的值。lastInsertId()方法可以获取这个结果：</p>
-
-<pre><code class="language-php">//建立连接
-$host = &quot;localhost&quot;;
-$database = 'foo';
-$user = 'root';
-$password = '';
-$dsn = &quot;mysql:host=$host;dbname=$dbname;charsset=utf8&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//建立连接
+$host = &#34;localhost&#34;;
+$database = &#39;foo&#39;;
+$user = &#39;root&#39;;
+$password = &#39;&#39;;
+$dsn = &#34;mysql:host=$host;dbname=$dbname;charsset=utf8&#34;;
 $pdo = new PDO($dsn, $user, $password);
 
 //插入语句
-$query = &quot;INSERT INTO foo_user(pseudo, email) VALUES ('anonymous', 'anonymous@example.com')&quot;;
+$query = &#34;INSERT INTO foo_user(pseudo, email) VALUES (&#39;anonymous&#39;, &#39;anonymous@example.com&#39;)&#34;;
 $query_success = $pdo-&gt;query($query);
 
 //返回最后的id
 $id = $pdo-&gt;lastInsertId();  //整数值
-</code></pre>
-
-<p>在postgresql和oracle数据库中，有一个RETURNING关键字，这将会返回当前插入或修改的行。下面是一个例子：</p>
-
-<pre><code class="language-php">//建立连接
-$host = 'localhost';
-$database = 'foo';
-$user = 'root'
-$password = '';
-$dsn = &quot;pgsql:host=$host;dbname=$database;charset=utf8&quot;; $pdo = new PDO($dsn, $user, $password);
+</code></pre></div><p>在postgresql和oracle数据库中，有一个RETURNING关键字，这将会返回当前插入或修改的行。下面是一个例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//建立连接
+$host = &#39;localhost&#39;;
+$database = &#39;foo&#39;;
+$user = &#39;root&#39;
+$password = &#39;&#39;;
+$dsn = &#34;pgsql:host=$host;dbname=$database;charset=utf8&#34;; $pdo = new PDO($dsn, $user, $password);
 
 //插入记录
-$query = &quot;INSERT INTO foo_user(pseudo, email) VALUES ('anonymous', 'anonymous@example.com') RETURNING id&quot;;
+$query = &#34;INSERT INTO foo_user(pseudo, email) VALUES (&#39;anonymous&#39;, &#39;anonymous@example.com&#39;) RETURNING id&#34;;
 $statement = $pdo-&gt;query($query);
 
 //获取id
 $id = $statement-&gt;fetchColumn();
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -591,6 +515,12 @@ $id = $statement-&gt;fetchColumn();
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,50 +187,34 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#myisam转换为innodb">MyISAM转换为InnoDB</a>
-<ul>
-<li><a href="#1-基本转换">1. 基本转换</a></li>
-<li><a href="#2-转换一个数据库的所有表">2. 转换一个数据库的所有表</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#myisam转换为innodb">MyISAM转换为InnoDB</a>
+      <ul>
+        <li><a href="#1-基本转换">1. 基本转换</a></li>
+        <li><a href="#2-转换一个数据库的所有表">2. 转换一个数据库的所有表</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="myisam转换为innodb">MyISAM转换为InnoDB</h2>
-
+        		<h2 id="myisam转换为innodb">MyISAM转换为InnoDB</h2>
 <h3 id="1-基本转换">1. 基本转换</h3>
-
-<pre><code class="language-mysql">ALTER TABLE ENGINE=InnoDB;
-</code></pre>
-
-<p>这个操作转换了两个数据表的引擎，但是不关心这两种引擎之间的差异。大部分差别是没有影响的，特别是对小表来说。但是多于常用的表来说，还要考虑其他的因素。<a href="http://mysql.rjweb.org/doc.php/myisam2innodb">转换注意点</a>。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB;
+</code></pre></div><p>这个操作转换了两个数据表的引擎，但是不关心这两种引擎之间的差异。大部分差别是没有影响的，特别是对小表来说。但是多于常用的表来说，还要考虑其他的因素。<a href="http://mysql.rjweb.org/doc.php/myisam2innodb">转换注意点</a>。</p>
 <h3 id="2-转换一个数据库的所有表">2. 转换一个数据库的所有表</h3>
-
 <p>使用下面的命令可以方便的吧一个数据库中所有的表进行转换。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>DB_NAME <span style="color:#f92672">=</span> <span style="color:#66d9ef">DATABASE</span>();
 
-<pre><code class="language-mysql">SET @DB_NAME = DATABASE();
-
-SELECT CONCAT('ALTER TABLE `', table_name, '` ENGINE=InnoDB;') AS sql_statements
-FROM information_schema.tables
-WHERE table_schema = @DB_NAME
-AND 'ENGINE' = 'MyISAM'
-AND 'TABLE_TYPE' = 'BASE TABLE';
-</code></pre>
-
-<blockquote>
-<p><strong>注意：</strong>你应该连接上数据让<code>DATABASE()</code>正常工作，否则这个方法将会返回NULL。这主要适用于随服务器提供的标准MySQL客户机，因为它允许在不指定数据库的情况下进行连接。</p>
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">CONCAT</span>(<span style="color:#e6db74">&#39;ALTER TABLE `&#39;</span>, table_name, <span style="color:#e6db74">&#39;` ENGINE=InnoDB;&#39;</span>) <span style="color:#66d9ef">AS</span> sql_statements
+<span style="color:#66d9ef">FROM</span> information_schema.<span style="color:#66d9ef">tables</span>
+<span style="color:#66d9ef">WHERE</span> table_schema <span style="color:#f92672">=</span> <span style="color:#f92672">@</span>DB_NAME
+<span style="color:#66d9ef">AND</span> <span style="color:#e6db74">&#39;ENGINE&#39;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;MyISAM&#39;</span>
+<span style="color:#66d9ef">AND</span> <span style="color:#e6db74">&#39;TABLE_TYPE&#39;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;BASE TABLE&#39;</span>;
+</code></pre></div><blockquote>
+<p>**注意：**你应该连接上数据让<code>DATABASE()</code>正常工作，否则这个方法将会返回NULL。这主要适用于随服务器提供的标准MySQL客户机，因为它允许在不指定数据库的情况下进行连接。</p>
 </blockquote>
-
 <p>运行这个表获取你数据库中所有的MyISAM表。</p>
-
 <p>最后，复制输出的SQL然后执行他们。</p>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -299,6 +287,12 @@ AND 'TABLE_TYPE' = 'BASE TABLE';
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

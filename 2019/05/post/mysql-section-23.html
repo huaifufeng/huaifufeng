@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,29 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#正则表达式">正则表达式</a>
-<ul>
-<li><a href="#regexp-rlike">REGEXP / RLIKE</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#正则表达式">正则表达式</a>
+      <ul>
+        <li><a href="#regexp--rlike">REGEXP / RLIKE</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="正则表达式">正则表达式</h2>
-
+        		<h2 id="正则表达式">正则表达式</h2>
 <p>正则表达式是为复杂搜索指定模式的一种强大方法。</p>
-
-<h3 id="regexp-rlike">REGEXP / RLIKE</h3>
-
+<h3 id="regexp--rlike">REGEXP / RLIKE</h3>
 <p><code>REGEXP</code>或者别名RLIKE运算符允许基于正则表达式的模式匹配。</p>
-
 <p>假设有下面的<code>employee</code>的表：</p>
-
 <pre><code>+-------------+-------------+-------------+--------------+----------+
 | EMPLOYEE_ID | FIRST_NAME  | LAST_NAME   | PHONE_NUMBER | SALARY   |
 +-------------+-------------+-------------+--------------+----------+
@@ -220,88 +215,45 @@
 |         108 | Nancy       | Greenberg   | 515.124.4569 | 12000.00 |
 |         109 | Daniel      | Faviet      | 515.124.4169 |  9000.00 |
 |         110 | John        | Chen        | 515.124.4269 |  8200.00 |
-</code></pre>
-
-<p><strong>模式 ^</strong></p>
-
+</code></pre><p><strong>模式 ^</strong></p>
 <p>查找所有<code>FIRST_NAME</code>是以<code>N</code>开始的所有的employee。</p>
-
 <p><strong>查询</strong></p>
-
-<pre><code class="language-mysql">SELECT * FROM employees WHERE FIRST_NAME REGEXP '^N';
-</code></pre>
-
-<p><strong>模式 $</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> employees <span style="color:#66d9ef">WHERE</span> FIRST_NAME <span style="color:#66d9ef">REGEXP</span> <span style="color:#e6db74">&#39;^N&#39;</span>;
+</code></pre></div><p><strong>模式 $</strong></p>
 <p>查找所有<code>PHONE_NUMBER</code>以4569结束的employee记录。</p>
-
 <p><strong>查询</strong></p>
-
-<pre><code class="language-mysql">SELECT * FROM employees WHERE PHONE_NUMBER REGEXP '4569$';
-</code></pre>
-
-<p><strong>NOT REGEXP</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> employees <span style="color:#66d9ef">WHERE</span> PHONE_NUMBER <span style="color:#66d9ef">REGEXP</span> <span style="color:#e6db74">&#39;4569$&#39;</span>;
+</code></pre></div><p><strong>NOT REGEXP</strong></p>
 <p>查找所有<code>FIRST_NAME</code>不是以<code>N</code>开头的employees记录。</p>
-
 <p><strong>查询</strong></p>
-
-<pre><code class="language-mysql">SELECT * FROM employees WHERE FIRST_NAME NOT REGEXP '^N';
-</code></pre>
-
-<p><strong>REGEXP contain</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> employees <span style="color:#66d9ef">WHERE</span> FIRST_NAME <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">REGEXP</span> <span style="color:#e6db74">&#39;^N&#39;</span>;
+</code></pre></div><p><strong>REGEXP contain</strong></p>
 <p>查找所有<code>LAST_NAME</code>包含<code>in</code>并且<code>FIRST_NAME</code>包含<code>a</code>的employees记录。</p>
-
 <p><strong>查询</strong></p>
-
 <pre><code>SELECT * FROM employees WHERE FIRST_NAME REGEXP 'a' AND LAST_NAME REGEXP 'in';
-</code></pre>
-
-<p><strong>任何一个字符[]</strong></p>
-
+</code></pre><p><strong>任何一个字符[]</strong></p>
 <p>查找所有<code>FIRST_NAME</code>以A或B或C开头的employees记录。</p>
-
 <p><strong>查询</strong></p>
-
-<pre><code class="language-mysql">SELECT * FROM employees WHERE FIRST_NAME REGEXP '^[ABC]';
-</code></pre>
-
-<p><strong>模式或</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> employees <span style="color:#66d9ef">WHERE</span> FIRST_NAME <span style="color:#66d9ef">REGEXP</span> <span style="color:#e6db74">&#39;^[ABC]&#39;</span>;
+</code></pre></div><p><strong>模式或</strong></p>
 <p>查找所有<code>FIRST_NAME</code>以A或B或C开头或者以r或e或i结尾的employees记录。</p>
-
 <p><strong>查询</strong></p>
-
-<pre><code class="language-mysql">SELECT * FROM employees WHERE FIRST_NAME REGEXP '^[ABC]|[rei]$';
-</code></pre>
-
-<p><strong>计数正则表达式匹配项</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> employees <span style="color:#66d9ef">WHERE</span> FIRST_NAME <span style="color:#66d9ef">REGEXP</span> <span style="color:#e6db74">&#39;^[ABC]|[rei]$&#39;</span>;
+</code></pre></div><p><strong>计数正则表达式匹配项</strong></p>
 <p>假设有下面的查询：</p>
-
-<pre><code class="language-mysql">SELECT FIRST_NAME, FIRST_NAME REGEXP '^N' as matching FROM employees;
-</code></pre>
-
-<p><code>FIRST_NAME REGEXP '^N'</code>根据FIRST_NAME是否匹配到<code>^N</code>来返回1或者0。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> FIRST_NAME, FIRST_NAME <span style="color:#66d9ef">REGEXP</span> <span style="color:#e6db74">&#39;^N&#39;</span> <span style="color:#66d9ef">as</span> matching <span style="color:#66d9ef">FROM</span> employees;
+</code></pre></div><p><code>FIRST_NAME REGEXP '^N'</code>根据FIRST_NAME是否匹配到<code>^N</code>来返回1或者0。</p>
 <p>让结果更加清晰一些：</p>
-
-<pre><code class="language-mysql">SELECT
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span>
 FIRST_NAME,
-IF(FIRST_NAME REGEXP '^N', 'matches ^N', 'does not match ^N') as matching 
-FROM employees
-</code></pre>
-
-<p>最后，计算匹配和不匹配的总数：</p>
-
-<pre><code class="language-mysql">SELECT
-IF(FIRST_NAME REGEXP '^N', 'matches ^N', 'does not match ^N') as matching, COUNT(*)
-FROM employees
-GROUP BY matching
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<span style="color:#66d9ef">IF</span>(FIRST_NAME <span style="color:#66d9ef">REGEXP</span> <span style="color:#e6db74">&#39;^N&#39;</span>, <span style="color:#e6db74">&#39;matches ^N&#39;</span>, <span style="color:#e6db74">&#39;does not match ^N&#39;</span>) <span style="color:#66d9ef">as</span> matching 
+<span style="color:#66d9ef">FROM</span> employees
+</code></pre></div><p>最后，计算匹配和不匹配的总数：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span>
+<span style="color:#66d9ef">IF</span>(FIRST_NAME <span style="color:#66d9ef">REGEXP</span> <span style="color:#e6db74">&#39;^N&#39;</span>, <span style="color:#e6db74">&#39;matches ^N&#39;</span>, <span style="color:#e6db74">&#39;does not match ^N&#39;</span>) <span style="color:#66d9ef">as</span> matching, <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>)
+<span style="color:#66d9ef">FROM</span> employees
+<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> matching
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -373,6 +325,12 @@ GROUP BY matching
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

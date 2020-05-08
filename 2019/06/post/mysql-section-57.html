@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,132 +187,102 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#处理稀疏或丢失的数据">处理稀疏或丢失的数据</a>
-<ul>
-<li><a href="#1-处理包含null值的列">1.  处理包含NULL值的列</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#处理稀疏或丢失的数据">处理稀疏或丢失的数据</a>
+      <ul>
+        <li><a href="#1--处理包含null值的列">1.  处理包含NULL值的列</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="处理稀疏或丢失的数据">处理稀疏或丢失的数据</h2>
-
-<h3 id="1-处理包含null值的列">1.  处理包含NULL值的列</h3>
-
+        		<h2 id="处理稀疏或丢失的数据">处理稀疏或丢失的数据</h2>
+<h3 id="1--处理包含null值的列">1.  处理包含NULL值的列</h3>
 <p>在MySQL和其他的SQL语言中，NULL是一个特殊的属性。</p>
-
 <p>考虑有下面的表，其中包括求职者信息、他们的公司以及他们离开公司的时间。NULL值表示这个人还在公司中工作:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">example</span>
+(<span style="color:#f92672">`</span>applicant_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">INT</span>, <span style="color:#f92672">`</span>company_name<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">255</span>), <span style="color:#f92672">`</span>end_date<span style="color:#f92672">`</span> <span style="color:#66d9ef">DATE</span>);
 
-<pre><code class="language-mysql">CREATE TABLE example
-(`applicant_id` INT, `company_name` VARCHAR(255), `end_date` DATE);
-
- +--------------+-----------------+------------+
- | applicant_id | company_name    | end_date   |
- +--------------+-----------------+------------+
- |            1 | Google          | NULL       |
- |            1 | Initech         | 2013-01-31 |
- |            2 | Woodworking.com | 2016-08-25 |
- |            2 | NY Times        | 2013-11-10 |
- |            3 | NFL.com         | 2014-04-13 |
- +--------------+-----------------+------------+
-</code></pre>
-
-<p>你的任务是使用一个查询获取所有在<code>2016-01-01</code>之后的记录，包括还在公司工作的员工记录(那些NULL的值)，下面这个查询语句：</p>
-
-<pre><code class="language-mysql">SELECT * FROM example WHERE end_date &gt; '2016-01-01';
-</code></pre>
-
-<p>将不会包含<code>NULL</code>值的记录：</p>
-
+ <span style="color:#f92672">+--------------+-----------------+------------+</span>
+ <span style="color:#f92672">|</span> applicant_id <span style="color:#f92672">|</span> company_name    <span style="color:#f92672">|</span> end_date   <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+--------------+-----------------+------------+</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> Google          <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>       <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> Initech         <span style="color:#f92672">|</span> <span style="color:#ae81ff">2013</span><span style="color:#f92672">-</span><span style="color:#ae81ff">01</span><span style="color:#f92672">-</span><span style="color:#ae81ff">31</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> Woodworking.com <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">08</span><span style="color:#f92672">-</span><span style="color:#ae81ff">25</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> NY Times        <span style="color:#f92672">|</span> <span style="color:#ae81ff">2013</span><span style="color:#f92672">-</span><span style="color:#ae81ff">11</span><span style="color:#f92672">-</span><span style="color:#ae81ff">10</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> NFL.com         <span style="color:#f92672">|</span> <span style="color:#ae81ff">2014</span><span style="color:#f92672">-</span><span style="color:#ae81ff">04</span><span style="color:#f92672">-</span><span style="color:#ae81ff">13</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+--------------+-----------------+------------+</span>
+</code></pre></div><p>你的任务是使用一个查询获取所有在<code>2016-01-01</code>之后的记录，包括还在公司工作的员工记录(那些NULL的值)，下面这个查询语句：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> example <span style="color:#66d9ef">WHERE</span> end_date <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#39;2016-01-01&#39;</span>;
+</code></pre></div><p>将不会包含<code>NULL</code>值的记录：</p>
 <pre><code>+--------------+-----------------+------------+
 | applicant_id | company_name    | end_date   |
 +--------------+-----------------+------------+
 |            2 | Woodworking.com | 2016-08-25 |
 +--------------+-----------------+------------+
-</code></pre>
-
-<p>在<a href="https://dev.mysql.com/doc/refman/5.7/en/working-with-null.html">Mysql手册</a>中，当使用比较运算符<code>&lt;, &gt;, =, &lt;&gt;</code>的时候，返回NULL而不是<code>TRUE</code>或<code>FALSE</code>。因此一个<code>NULL</code>不会大于<code>2016-01-01</code>，也不会小于<code>2016-01-01</code>。</p>
-
+</code></pre><p>在<a href="https://dev.mysql.com/doc/refman/5.7/en/working-with-null.html">Mysql手册</a>中，当使用比较运算符<code>&lt;, &gt;, =, &lt;&gt;</code>的时候，返回NULL而不是<code>TRUE</code>或<code>FALSE</code>。因此一个<code>NULL</code>不会大于<code>2016-01-01</code>，也不会小于<code>2016-01-01</code>。</p>
 <p>这可以通过使用<code>IS NULL</code>来解决：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> example <span style="color:#66d9ef">WHERE</span> end_date <span style="color:#f92672">&gt;</span> <span style="color:#e6db74">&#39;2016-01-01&#39;</span> <span style="color:#66d9ef">OR</span> end_date <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span>;
 
-<pre><code class="language-mysql">SELECT * FROM example WHERE end_date &gt; '2016-01-01' OR end_date IS NULL;
+ <span style="color:#f92672">+--------------+-----------------+------------+</span>
+ <span style="color:#f92672">|</span> applicant_id <span style="color:#f92672">|</span> company_name    <span style="color:#f92672">|</span> end_date   <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+--------------+-----------------+------------+</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> Google          <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>       <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> Woodworking.com <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">08</span><span style="color:#f92672">-</span><span style="color:#ae81ff">25</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+--------------+-----------------+------------+</span>
+</code></pre></div><p>当语句包含聚合函数像<code>MAX()</code>和<code>GROUP BY</code>语句的时候，如果列中包含NULL将会变得复杂。如果您的任务是为每个申请人选择最新雇用日期，则以下查询似乎是合乎逻辑的首次尝试：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> applicant_id, <span style="color:#a6e22e">MAX</span>(end_date) <span style="color:#66d9ef">FROM</span> example <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> applicant_id;
 
- +--------------+-----------------+------------+
- | applicant_id | company_name    | end_date   |
- +--------------+-----------------+------------+
- |            1 | Google          | NULL       |
- |            2 | Woodworking.com | 2016-08-25 |
- +--------------+-----------------+------------+
-</code></pre>
-
-<p>当语句包含聚合函数像<code>MAX()</code>和<code>GROUP BY</code>语句的时候，如果列中包含NULL将会变得复杂。如果您的任务是为每个申请人选择最新雇用日期，则以下查询似乎是合乎逻辑的首次尝试：</p>
-
-<pre><code class="language-mysql">SELECT applicant_id, MAX(end_date) FROM example GROUP BY applicant_id;
-
- +--------------+---------------+
- | applicant_id | MAX(end_date) |
- +--------------+---------------+
- |            1 | 2013-01-31    |
- |            2 | 2016-08-25    |
- |            3 | 2014-04-13    |
- +--------------+---------------+
-</code></pre>
-
-<p>然而，我们知道<code>NULL</code>值表示这个申请人还在公司工作，结果的第一行是不准确的。使用<code>CASE WHEN</code>来解决<code>NULL</code>的问题：</p>
-
-<pre><code class="language-mysql">SELECT 
+ <span style="color:#f92672">+--------------+---------------+</span>
+ <span style="color:#f92672">|</span> applicant_id <span style="color:#f92672">|</span> <span style="color:#a6e22e">MAX</span>(end_date) <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+--------------+---------------+</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2013</span><span style="color:#f92672">-</span><span style="color:#ae81ff">01</span><span style="color:#f92672">-</span><span style="color:#ae81ff">31</span>    <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">08</span><span style="color:#f92672">-</span><span style="color:#ae81ff">25</span>    <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2014</span><span style="color:#f92672">-</span><span style="color:#ae81ff">04</span><span style="color:#f92672">-</span><span style="color:#ae81ff">13</span>    <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+--------------+---------------+</span>
+</code></pre></div><p>然而，我们知道<code>NULL</code>值表示这个申请人还在公司工作，结果的第一行是不准确的。使用<code>CASE WHEN</code>来解决<code>NULL</code>的问题：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> 
     applicant_id,
-    CASE WHEN MAX(end_date is null) = 1 THEN 'present' ELSE MAX(end_date) END
+    <span style="color:#66d9ef">CASE</span> <span style="color:#66d9ef">WHEN</span> <span style="color:#a6e22e">MAX</span>(end_date <span style="color:#66d9ef">is</span> <span style="color:#66d9ef">null</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">THEN</span> <span style="color:#e6db74">&#39;present&#39;</span> <span style="color:#66d9ef">ELSE</span> <span style="color:#a6e22e">MAX</span>(end_date) END
     max_date
-FROM example
-GROUP BY applicant_id;
+<span style="color:#66d9ef">FROM</span> example
+<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> applicant_id;
 
- +--------------+------------+
- | applicant_id | max_date   |
- +--------------+------------+
- |            1 |    present |
- |            2 | 2016-08-25 |
- |            3 | 2014-04-13 |
- +--------------+------------+
-</code></pre>
-
-<p>此结果可加入到原始示例表中，以确定申请人上次工作的公司：</p>
-
-<pre><code class="language-mysql">SELECT 
+ <span style="color:#f92672">+--------------+------------+</span>
+ <span style="color:#f92672">|</span> applicant_id <span style="color:#f92672">|</span> max_date   <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+--------------+------------+</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>    present <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">08</span><span style="color:#f92672">-</span><span style="color:#ae81ff">25</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>            <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2014</span><span style="color:#f92672">-</span><span style="color:#ae81ff">04</span><span style="color:#f92672">-</span><span style="color:#ae81ff">13</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+--------------+------------+</span>
+</code></pre></div><p>此结果可加入到原始示例表中，以确定申请人上次工作的公司：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> 
     data.applicant_id, 
     data.company_name, 
     data.max_date
-FROM ( 
-    SELECT
-      *,
-    CASE WHEN end_date is null THEN 'present' ELSE end_date END max_date 
-  FROM example
+<span style="color:#66d9ef">FROM</span> ( 
+    <span style="color:#66d9ef">SELECT</span>
+      <span style="color:#f92672">*</span>,
+    <span style="color:#66d9ef">CASE</span> <span style="color:#66d9ef">WHEN</span> end_date <span style="color:#66d9ef">is</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">THEN</span> <span style="color:#e6db74">&#39;present&#39;</span> <span style="color:#66d9ef">ELSE</span> end_date END max_date 
+  <span style="color:#66d9ef">FROM</span> example
 ) data
-INNER JOIN (
-   SELECT
+<span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> (
+   <span style="color:#66d9ef">SELECT</span>
    applicant_id,
-    CASE WHEN MAX(end_date is null) = 1 THEN 'present' ELSE MAX(end_date) END max_date FROM
+    <span style="color:#66d9ef">CASE</span> <span style="color:#66d9ef">WHEN</span> <span style="color:#a6e22e">MAX</span>(end_date <span style="color:#66d9ef">is</span> <span style="color:#66d9ef">null</span>) <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">THEN</span> <span style="color:#e6db74">&#39;present&#39;</span> <span style="color:#66d9ef">ELSE</span> <span style="color:#a6e22e">MAX</span>(end_date) END max_date <span style="color:#66d9ef">FROM</span>
     example
-GROUP BY applicant_id
+<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> applicant_id
 ) j
-ON data.applicant_id = j.applicant_id AND data.max_date = j.max_date;
+<span style="color:#66d9ef">ON</span> data.applicant_id <span style="color:#f92672">=</span> j.applicant_id <span style="color:#66d9ef">AND</span> data.max_date <span style="color:#f92672">=</span> j.max_date;
 
-+--------------+-----------------+------------+
-| applicant_id | company_name    | max_date   |
-+--------------+-----------------+------------+
-|            1 | Google          | present    |
-|            2 | Woodworking.com | 2016-08-25 |
-|            3 | NFL.com         | 2014-04-13 |
-+--------------+-----------------+------------+
-</code></pre>
-
-<p>这只是MySQL中关于<code>NULL</code>的很少的一部分例子。</p>
-
+<span style="color:#f92672">+--------------+-----------------+------------+</span>
+<span style="color:#f92672">|</span> applicant_id <span style="color:#f92672">|</span> company_name    <span style="color:#f92672">|</span> max_date   <span style="color:#f92672">|</span>
+<span style="color:#f92672">+--------------+-----------------+------------+</span>
+<span style="color:#f92672">|</span>            <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> Google          <span style="color:#f92672">|</span> present    <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>            <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> Woodworking.com <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">08</span><span style="color:#f92672">-</span><span style="color:#ae81ff">25</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>            <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> NFL.com         <span style="color:#f92672">|</span> <span style="color:#ae81ff">2014</span><span style="color:#f92672">-</span><span style="color:#ae81ff">04</span><span style="color:#f92672">-</span><span style="color:#ae81ff">13</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">+--------------+-----------------+------------+</span>
+</code></pre></div><p>这只是MySQL中关于<code>NULL</code>的很少的一部分例子。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -381,6 +355,12 @@ ON data.applicant_id = j.applicant_id AND data.max_date = j.max_date;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

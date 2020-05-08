@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,67 +187,42 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#gitattributes文件">.gitattributes文件</a>
-<ul>
-<li><a href="#自动行结束符标准化">自动行结束符标准化</a></li>
-<li><a href="#识别二进制文件">识别二进制文件</a></li>
-<li><a href="#gitattributes模板">.gitattributes模板</a></li>
-<li><a href="#进制行结束符标准化">进制行结束符标准化</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#gitattributes文件">.gitattributes文件</a>
+      <ul>
+        <li><a href="#自动行结束符标准化">自动行结束符标准化</a></li>
+        <li><a href="#识别二进制文件">识别二进制文件</a></li>
+        <li><a href="#gitattributes模板">.gitattributes模板</a></li>
+        <li><a href="#进制行结束符标准化">进制行结束符标准化</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="gitattributes文件">.gitattributes文件</h2>
-
+        		<h2 id="gitattributes文件">.gitattributes文件</h2>
 <h3 id="自动行结束符标准化">自动行结束符标准化</h3>
-
 <p>在项目的更目录创建<code>.gitattributes</code>文件，里面添加下面的内容：</p>
-
 <pre><code>* text=auto
-</code></pre>
-
-<p>这将导致所有文本文件（由Git标识的）使用LF提交，但根据操作系统的不同默认检出合适的格式。</p>
-
+</code></pre><p>这将导致所有文本文件（由Git标识的）使用LF提交，但根据操作系统的不同默认检出合适的格式。</p>
 <p>这等价于<code>core.autocrlf</code>配置项使用下面的配置：</p>
-
 <ul>
 <li>Linux/macOS里面是<code>input</code></li>
 <li>Windows里面是<code>true</code></li>
 </ul>
-
 <h3 id="识别二进制文件">识别二进制文件</h3>
-
 <p>Git非常擅长识别二进制文件，但是你可以指明哪些文件时二进制的。在项目的根目录创建<code>.gitattributes</code>文件，并添加下面的配置：</p>
-
 <pre><code>*.png binary
-</code></pre>
-
-<p><code>binary</code>是内建的宏命令，等价于<code>-diff -merge -text</code>。</p>
-
+</code></pre><p><code>binary</code>是内建的宏命令，等价于<code>-diff -merge -text</code>。</p>
 <h3 id="gitattributes模板">.gitattributes模板</h3>
-
 <p>如果你确定你的<code>.gitattributes</code>文件是否少了某些规则，或者你只是想给你的项目添加一个通用的配置，你可以在下面的地址中选择或生成一个<code>.gitattributes</code>文件：</p>
-
 <ul>
 <li><a href="https://gitattributes.io/">https://gitattributes.io/</a></li>
 <li><a href="https://github.com/alexkaratarakis/gitattributes">https://github.com/alexkaratarakis/gitattributes</a></li>
 </ul>
-
 <h3 id="进制行结束符标准化">进制行结束符标准化</h3>
-
 <p>在项目的根目录创建<code>.gitattributes</code>文件，并在里面添加：</p>
-
 <pre><code>* -text
-</code></pre>
-
-<p>这个配置等价于下面的配置<code>core.autocrlf = false</code>。</p>
-
+</code></pre><p>这个配置等价于下面的配置<code>core.autocrlf = false</code>。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -316,6 +295,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

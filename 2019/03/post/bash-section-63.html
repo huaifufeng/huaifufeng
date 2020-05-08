@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#parallel">Parallel</a>
-<ul>
-<li><a href="#文件列表上的并行任务">文件列表上的并行任务</a></li>
-<li><a href="#并行化标准输入">并行化标准输入</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#parallel">Parallel</a>
+      <ul>
+        <li><a href="#文件列表上的并行任务">文件列表上的并行任务</a></li>
+        <li><a href="#并行化标准输入">并行化标准输入</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="parallel">Parallel</h2>
-
+        		<h2 id="parallel">Parallel</h2>
 <table>
 <thead>
 <tr>
@@ -206,91 +205,71 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-j n</td>
 <td>同时运行n个任务</td>
 </tr>
-
 <tr>
 <td>-k</td>
 <td>保持相同的顺序</td>
 </tr>
-
 <tr>
 <td>-X</td>
 <td>上下文替换的多个参数</td>
 </tr>
-
 <tr>
 <td>—colsep regexp</td>
 <td>在regexp上拆分输入以进行位置替换</td>
 </tr>
-
 <tr>
 <td>{} {.} {/} {/.} {#}</td>
 <td>替换字符串</td>
 </tr>
-
 <tr>
 <td>{3} {3.} {3/} {3/.}</td>
 <td>位置替换字符串</td>
 </tr>
-
 <tr>
 <td>-S sshlogin</td>
 <td>例如 <code>foo@server.example.com</code></td>
 </tr>
-
 <tr>
 <td>—trc {} .bar</td>
 <td><code>—transfer —return {}.bar —cleanup</code>的简短格式</td>
 </tr>
-
 <tr>
 <td>&ndash;onall</td>
 <td>在所有sshlogins上运行带有参数的给定命令</td>
 </tr>
-
 <tr>
 <td>&ndash;nonall</td>
 <td>在所有sshlogins上运行没有带参数的给定命令</td>
 </tr>
-
 <tr>
 <td>&ndash;pipe</td>
 <td>将stdin（标准输入）拆分为多个任务</td>
 </tr>
-
 <tr>
 <td>—recend str</td>
 <td>记录&ndash;pipe的结束分隔符。</td>
 </tr>
-
 <tr>
 <td>—recstart str</td>
 <td>记录—pipe的开始分隔符。</td>
 </tr>
 </tbody>
 </table>
-
 <p>GUN Linux上面的任务可以使用GNU parallel并行执行。一个任务可以是一个命令或需要运行输入每行的小脚本。特别的输入就是一列文件，一列host，一列用户，一列URL，一列表等。一个任务也可以是从管道中读取的命令。</p>
-
 <h3 id="文件列表上的并行任务">文件列表上的并行任务</h3>
-
 <p>如果您使用更多的计算机资源（即CPU和RAM），则可以更有效地执行许多重复性任务。 以下是并行运行多个任务的示例。</p>
-
 <p>假设你有<code>&lt;一列文件&gt;</code>,来自<code>ls</code>命令。 并且这些文件时bz2压缩的，下面的一列任务就是需要对他们进行的操作。</p>
-
 <ol>
 <li>使用<code>bzcat</code>解压文件到标准输出</li>
 <li>使用指定的关键字筛选行<code>grep &lt;some key word&gt;</code></li>
 <li>管道输出这样内容，然后拼接放入一个<code>gzip</code>压缩的文件中</li>
 </ol>
-
 <p>使用while循环完成这个任务：</p>
-
 <pre><code>filenames=&quot;file_list.txt&quot; 
 while read -r line
 do
@@ -298,33 +277,17 @@ name=&quot;$line&quot;
      ## grab lines with puppies in them
 bzcat $line | grep puppies | gzip &gt;&gt; output.gz 
 done &lt; &quot;$filenames&quot;
-</code></pre>
-
-<p>使用GNU parallel，我们可以一次运行3个并行任务：</p>
-
+</code></pre><p>使用GNU parallel，我们可以一次运行3个并行任务：</p>
 <pre><code>parallel -j 3 &quot;bzcat {} | grep puppies&quot; ::: $( cat filelist.txt ) | gzip &gt; output.gz
-</code></pre>
-
-<p>当文件数量和文件大小很大时，这个命令是简单、高效、简洁的。任务有parallel启动，选项<code>-j 3</code>启动3个并行任务，并通过<code>:::</code>输入并且任务。输出最终通过管道输出到<code>gzip &gt; output.gz</code>。</p>
-
+</code></pre><p>当文件数量和文件大小很大时，这个命令是简单、高效、简洁的。任务有parallel启动，选项<code>-j 3</code>启动3个并行任务，并通过<code>:::</code>输入并且任务。输出最终通过管道输出到<code>gzip &gt; output.gz</code>。</p>
 <h3 id="并行化标准输入">并行化标准输入</h3>
-
 <p>现在假设我们有一个大文件(30GB)，需要一行行进行转化。我们有一个脚本<code>convert.sh</code>来处理这个任务。我们可以使用parallel吧文件分库输入进行处理</p>
-
 <pre><code>&lt;stdin&gt; | parallel --pipe --block &lt;block size&gt; -k &lt;task&gt; &gt; output.txt
-</code></pre>
-
-<p>这里<code>&lt;stdin&gt;</code>可以是来自<code>cat &lt;file&gt;</code>这样的操作。</p>
-
+</code></pre><p>这里<code>&lt;stdin&gt;</code>可以是来自<code>cat &lt;file&gt;</code>这样的操作。</p>
 <p>作为可以重复的例子，我们任务可以是<code>nl -n rz</code>。任务文件，我们这里是<code>data.bz</code>，都可以传入。</p>
-
 <pre><code>bzcat data.bz2 | nl | parallel --pipe --block 10M -k nl -n rz | gzip &gt; ouptput.gz
-</code></pre>
-
-<p>上面的例子从<code>bzcat data.bz2 | nl</code>获取内容，这里包含<code>nl</code>是为了让输出output.gz按照顺序保存。然后parallel将输入划分为10M的块，并把每个块传入<code>nl -n rz</code>，这里只是附加了一个正确对其的数字(查看nl的帮助信息)。选项&ndash;pipe告诉并行分割<stdin>到多个作业中&ndash;block指定块的大小。 选项-k指定必须维护排序。</p>
-
+</code></pre><p>上面的例子从<code>bzcat data.bz2 | nl</code>获取内容，这里包含<code>nl</code>是为了让输出output.gz按照顺序保存。然后parallel将输入划分为10M的块，并把每个块传入<code>nl -n rz</code>，这里只是附加了一个正确对其的数字(查看nl的帮助信息)。选项&ndash;pipe告诉并行分割<!-- raw HTML omitted -->到多个作业中&ndash;block指定块的大小。 选项-k指定必须维护排序。</p>
 <p>你最后的输出可能像下面这样：</p>
-
 <pre><code>000001 1 &lt;data&gt;
 000002 2 &lt;data&gt;
 000003 3 &lt;data&gt;
@@ -336,10 +299,7 @@ done &lt; &quot;$filenames&quot;
 000589 552411 &lt;data&gt; 
 000590 552412 &lt;data&gt; 
 000591 552413 &lt;data&gt;
-</code></pre>
-
-<p>我源文件有552413行。第一列代表parallel任务，第二列代表传给parallel的块的原本行号。你应该注意到第二列(以及文件其他部分)中的顺序是不变的。</p>
-
+</code></pre><p>我源文件有552413行。第一列代表parallel任务，第二列代表传给parallel的块的原本行号。你应该注意到第二列(以及文件其他部分)中的顺序是不变的。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -412,6 +372,12 @@ done &lt; &quot;$filenames&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,39 +187,30 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#密码学">密码学</a>
-<ul>
-<li><a href="#1-使用openssl对大型文件进行对称加密和解密">1. 使用OpenSSL对大型文件进行对称加密和解密</a></li>
-<li><a href="#2-对称密码">2. 对称密码</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#密码学">密码学</a>
+      <ul>
+        <li><a href="#1-使用openssl对大型文件进行对称加密和解密">1. 使用OpenSSL对大型文件进行对称加密和解密</a></li>
+        <li><a href="#2-对称密码">2. 对称密码</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="密码学">密码学</h2>
-
+        		<h2 id="密码学">密码学</h2>
 <h3 id="1-使用openssl对大型文件进行对称加密和解密">1. 使用OpenSSL对大型文件进行对称加密和解密</h3>
-
 <p>PHP缺少加密和解密大文件的内建函数。<code>openssl_encrypt</code>可以被用来加密字符串，但是把大文件加载到内存中是一个坏主意。</p>
-
 <p>所以我们必须编写一个userland函数来实现这个。这个例子使用对称<a href="https://stackoverflow.com/questions/33121619/is-there-any-difference-between-aes-128-cbc-and-aes-128-encryption/33124706#33124706">aes-128-cbc</a>算法来对大文件中的小块进行加密，并将其写入另一个文件。</p>
-
 <p><strong>加密文件</strong></p>
-
-<pre><code class="language-php">/**
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
  * Define the number of blocks that should be read from the source file for each chunk.
- * For 'AES-128-CBC' each block consist of 16 bytes.
+ * For &#39;AES-128-CBC&#39; each block consist of 16 bytes.
  * So if we read 10,000 blocks we load 160kb into memory. You may adjust this value
  * to read/write shorter or longer chunks.
  */
-define('FILE_ENCRYPTION_BLOCKS', 10000);
+define(&#39;FILE_ENCRYPTION_BLOCKS&#39;, 10000);
 /**
- * Encrypt the passed file and saves the result in a new file with &quot;.enc&quot; as suffix.
+ * Encrypt the passed file and saves the result in a new file with &#34;.enc&#34; as suffix.
  *
  * @param string $source Path to file that should be encrypted
  * @param string $key    The key used for the encryption
@@ -227,13 +222,13 @@ function encryptFile($source, $key, $dest) {
     $iv = openssl_random_pseudo_bytes(16);
     
     $error = false;
-    if ($fpOut = fopen($dest, 'w')) {
+    if ($fpOut = fopen($dest, &#39;w&#39;)) {
         // Put the initialzation vector to the beginning of the file
         fwrite($fpOut, $iv);
-        if ($fpIn = fopen($source, 'rb')) {
+        if ($fpIn = fopen($source, &#39;rb&#39;)) {
             while (!feof($fpIn)) {
             $plaintext = fread($fpIn, 16 * FILE_ENCRYPTION_BLOCKS);
-            $ciphertext = openssl_encrypt($plaintext, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $iv);
+            $ciphertext = openssl_encrypt($plaintext, &#39;AES-128-CBC&#39;, $key, OPENSSL_RAW_DATA, $iv);
             // Use the first 16 bytes of the ciphertext as the next initialization vector
             $iv = substr($ciphertext, 0, 16);
             fwrite($fpOut, $ciphertext);
@@ -245,13 +240,9 @@ function encryptFile($source, $key, $dest) {
     
     return $error ? false : $dest; 
 }
-</code></pre>
-
-<p><strong>解密文件</strong></p>
-
+</code></pre></div><p><strong>解密文件</strong></p>
 <p>解密已经使用上面函数加密的文件：</p>
-
-<pre><code class="language-php">/**
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
  * Dencrypt the passed file and saves the result in a new file, removing the
  * last 4 characters from file name.
  *
@@ -264,13 +255,13 @@ function decryptFile($source, $key, $dest) {
     $key = substr(sha1($key, true), 0, 16);
 
     $error = false;
-    if ($fpOut = fopen($dest, 'w')) {
-        if ($fpIn = fopen($source, 'rb')) {
+    if ($fpOut = fopen($dest, &#39;w&#39;)) {
+        if ($fpIn = fopen($source, &#39;rb&#39;)) {
             // Get the initialzation vector from the beginning of the file 
             $iv = fread($fpIn, 16);
             while (!feof($fpIn)) {
                 $ciphertext = fread($fpIn, 16 * (FILE_ENCRYPTION_BLOCKS + 1)); // we have to read one block more for decrypting than for encrypting
-                $plaintext = openssl_decrypt($ciphertext, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $iv);
+                $plaintext = openssl_decrypt($ciphertext, &#39;AES-128-CBC&#39;, $key, OPENSSL_RAW_DATA, $iv);
                 // Use the first 16 bytes of the ciphertext as the next initialization vector
                 $iv = substr($ciphertext, 0, 16);
                 fwrite($fpOut, $plaintext);
@@ -284,34 +275,23 @@ function decryptFile($source, $key, $dest) {
     
     return $error ? false : $dest; 
 }
-</code></pre>
-
-<p><strong>如何使用</strong></p>
-
+</code></pre></div><p><strong>如何使用</strong></p>
 <p>如果你想要小段代码查看这如何使用或者测试上面的函数，可以使用下面的代码：</p>
-
-<pre><code class="language-php">$fileName = __DIR__.'/testfile.txt';
-$key = 'my secret key';
-file_put_contents($fileName, 'Hello World, here I am.');
-encryptFile($fileName, $key, $fileName . '.enc');
-decryptFile($fileName . '.enc', $key, $fileName . '.dec');
-</code></pre>
-
-<p>这将会创建3个文件：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$fileName = __DIR__.&#39;/testfile.txt&#39;;
+$key = &#39;my secret key&#39;;
+file_put_contents($fileName, &#39;Hello World, here I am.&#39;);
+encryptFile($fileName, $key, $fileName . &#39;.enc&#39;);
+decryptFile($fileName . &#39;.enc&#39;, $key, $fileName . &#39;.dec&#39;);
+</code></pre></div><p>这将会创建3个文件：</p>
 <ol>
 <li>testfile.txt 文本文件</li>
 <li>testfile.txt.enc  加密文件</li>
 <li>testfile.txt.dec 解密文件。这个应该和testfile.txt内容相同。</li>
 </ol>
-
 <h3 id="2-对称密码">2. 对称密码</h3>
-
 <p>这个例子说明了CBC模式下AES256对称密码。需要一个初始化向量，所以我们使用openssl函数生成了一个。变量<code>$strong</code>用于确定生成的IV是否加密。</p>
-
 <p><strong>加密</strong></p>
-
-<pre><code class="language-php">$method = &quot;aes-256-cbc&quot;; // cipher method
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$method = &#34;aes-256-cbc&#34;; // cipher method
 $iv_length = openssl_cipher_iv_length($method); // obtain required IV length
 $strong = false; // set to false for next line
 $iv = openssl_random_pseudo_bytes($iv_length, $strong); // generate initialization vector
@@ -319,35 +299,26 @@ $iv = openssl_random_pseudo_bytes($iv_length, $strong); // generate initializati
 /* NOTE: The IV needs to be retrieved later, so store it in a database.
 However, do not reuse the same IV to encrypt the data again. */
 if(!$strong) { // throw exception if the IV is not cryptographically strong 
-    throw new Exception(&quot;IV not cryptographically strong!&quot;);
+    throw new Exception(&#34;IV not cryptographically strong!&#34;);
 }
 
-$data = &quot;This is a message to be secured.&quot;; // Our secret message
-$pass = &quot;Stack0verfl0w&quot;; // Our password
+$data = &#34;This is a message to be secured.&#34;; // Our secret message
+$pass = &#34;Stack0verfl0w&#34;; // Our password
 
 /* NOTE: Password should be submitted through POST over an HTTPS session.
-Here, it's being stored in a variable for demonstration purposes. */
+Here, it&#39;s being stored in a variable for demonstration purposes. */
 
 $enc_data = openssl_encrypt($data, $method, $password, true, $iv); // Encrypt
-</code></pre>
-
-<p><strong>解密</strong></p>
-
-<pre><code class="language-php">//从数据库获取IV，从POST请求获取password
+</code></pre></div><p><strong>解密</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//从数据库获取IV，从POST请求获取password
 $dec_data = openssl_decrypt($enc_data, $method, $pass, true, $iv); // Decrypt
-</code></pre>
-
-<p><strong>Base64加密和解密</strong></p>
-
+</code></pre></div><p><strong>Base64加密和解密</strong></p>
 <p>如果加密数据需要发送或存储在纯文本中，可以使用<code>base64_encode()</code>和<code>base64_decode()</code>函数。</p>
-
-<pre><code class="language-php">/* Base64 Encoded Encryption */
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/* Base64 Encoded Encryption */
 $enc_data = base64_encode(openssl_encrypt($data, $method, $password, true, $iv));
 /* Decode and Decrypt */
 $dec_data = openssl_decrypt(base64_decode($enc_data), $method, $password, true, $iv);
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -419,6 +390,12 @@ $dec_data = openssl_decrypt(base64_decode($enc_data), $method, $password, true, 
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

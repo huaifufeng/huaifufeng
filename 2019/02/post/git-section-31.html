@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,77 +187,44 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git-tfs">git-tfs</a>
-<ul>
-<li><a href="#git-tfs克隆">git-tfs克隆</a></li>
-<li><a href="#从裸git仓库克隆">从裸Git仓库克隆</a></li>
-<li><a href="#通过chocolatey安装">通过Chocolatey安装</a></li>
-<li><a href="#签入">签入</a></li>
-<li><a href="#推送">推送</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git-tfs">git-tfs</a>
+      <ul>
+        <li><a href="#git-tfs克隆">git-tfs克隆</a></li>
+        <li><a href="#从裸git仓库克隆">从裸Git仓库克隆</a></li>
+        <li><a href="#通过chocolatey安装">通过Chocolatey安装</a></li>
+        <li><a href="#签入">签入</a></li>
+        <li><a href="#推送">推送</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git-tfs">git-tfs</h2>
-
+        		<h2 id="git-tfs">git-tfs</h2>
 <h3 id="git-tfs克隆">git-tfs克隆</h3>
-
 <p>这将创建一个和项目名一样的目录，/My.Project.Name：</p>
-
 <pre><code>$ git tfs clone http://tfs:8080/tfs/DefaultCollection/ $/My.Project.Name
-</code></pre>
-
-<h3 id="从裸git仓库克隆">从裸Git仓库克隆</h3>
-
+</code></pre><h3 id="从裸git仓库克隆">从裸Git仓库克隆</h3>
 <p>从git仓库克隆比直接从TFV仓库克隆快10倍，并且在团队中工作的很好。至少有一个团队成员必须首先通过执行常规的git-tfs克隆来创建裸露的git存储库。然后可以引导新的存储库使用TFV。</p>
-
 <pre><code>$ git clone x:/fileshare/git/My.Project.Name.git 
 $ cd My.Project.Name
 $ git tfs bootstrap
 $ git tfs pull
-</code></pre>
-
-<h3 id="通过chocolatey安装">通过Chocolatey安装</h3>
-
+</code></pre><h3 id="通过chocolatey安装">通过Chocolatey安装</h3>
 <p>下面假设你使用kdiff3来进行文件差异，虽然不是必须的但是这是给好主意：</p>
-
 <pre><code>C:\&gt; choco install kdiff3
-</code></pre>
-
-<p>可以先安装Git，这样就可以说出你想要的任何参数。这里还安装了所有Unix工具，&rsquo;NoAutoCrlf&rsquo;表示按原样切换，按原样提交。</p>
-
+</code></pre><p>可以先安装Git，这样就可以说出你想要的任何参数。这里还安装了所有Unix工具，&lsquo;NoAutoCrlf'表示按原样切换，按原样提交。</p>
 <pre><code>C:\&gt; choco install git -params '&quot;/GitAndUnixToolsOnPath /NoAutoCrlf&quot;'
-</code></pre>
-
-<p>这是所有你使用Chocolatey安装git-tfs的所有事情：</p>
-
+</code></pre><p>这是所有你使用Chocolatey安装git-tfs的所有事情：</p>
 <pre><code>C:\&gt; choco install git-tfs
-</code></pre>
-
-<h3 id="签入">签入</h3>
-
+</code></pre><h3 id="签入">签入</h3>
 <p>启动TFVS的“检入”对话框。</p>
-
 <pre><code>$ git tfs checkintool
-</code></pre>
-
-<p>这将占用您所有的本地提交并创建一个单一的check-in。</p>
-
+</code></pre><p>这将占用您所有的本地提交并创建一个单一的check-in。</p>
 <h3 id="推送">推送</h3>
-
 <p>推送本地的所有提交到TFVS远端。</p>
-
 <pre><code>$ git tfs rcheckin
-</code></pre>
-
-<p>注意：如果需要签入备注，这将失败。 可以通过将<code>git-tfs-force：rcheckin</code>添加到提交消息来绕过这些。</p>
-
+</code></pre><p>注意：如果需要签入备注，这将失败。 可以通过将<code>git-tfs-force：rcheckin</code>添加到提交消息来绕过这些。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -326,6 +297,12 @@ $ git tfs pull
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

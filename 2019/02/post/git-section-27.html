@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,71 +187,45 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#子树">子树</a>
-<ul>
-<li><a href="#创建-拉入和反向端口子树">创建、拉入和反向端口子树</a>
-<ul>
-<li><a href="#创建子树">创建子树</a></li>
-<li><a href="#子树更新">子树更新</a></li>
-</ul></li>
-<li><a href="#反向端口子树更新">反向端口子树更新</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#子树">子树</a>
+      <ul>
+        <li><a href="#创建拉入和反向端口子树">创建、拉入和反向端口子树</a></li>
+        <li><a href="#反向端口子树更新">反向端口子树更新</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="子树">子树</h2>
-
-<h3 id="创建-拉入和反向端口子树">创建、拉入和反向端口子树</h3>
-
+        		<h2 id="子树">子树</h2>
+<h3 id="创建拉入和反向端口子树">创建、拉入和反向端口子树</h3>
 <h4 id="创建子树">创建子树</h4>
-
 <p>添加一个新的远端<code>plugin</code>指向组件的远端仓库：</p>
-
 <pre><code>git remote add plugin https://path.to/remotes/plugin.git
-</code></pre>
-
-<p>然后创建一个子树指定一个<code>plugins/demo</code>前缀的新目录。<code>plugin</code>是远端的名称，<code>master</code>是引用的子树仓库的master分支名。</p>
-
+</code></pre><p>然后创建一个子树指定一个<code>plugins/demo</code>前缀的新目录。<code>plugin</code>是远端的名称，<code>master</code>是引用的子树仓库的master分支名。</p>
 <pre><code>git subtree add --prefix=plugins/demo plugin master
-</code></pre>
-
-<h4 id="子树更新">子树更新</h4>
-
+</code></pre><h4 id="子树更新">子树更新</h4>
 <p>pull拉取plugin中正常的提交：</p>
-
 <pre><code>git subtree pull --prefix=plugins/demo plugin master
-</code></pre>
-
-<h3 id="反向端口子树更新">反向端口子树更新</h3>
-
+</code></pre><h3 id="反向端口子树更新">反向端口子树更新</h3>
 <ol>
-<li><p>指定在超级项目中进行的要进行反向移植的提交：</p>
-
+<li>
+<p>指定在超级项目中进行的要进行反向移植的提交：</p>
 <pre><code>git commit -am &quot;new changes to be backported&quot;
 </code></pre></li>
-
-<li><p>签出要合并的新分支，设置为跟踪子树存储库</p>
-
+<li>
+<p>签出要合并的新分支，设置为跟踪子树存储库</p>
 <pre><code>git checkout -b backport plugin/master
 </code></pre></li>
-
-<li><p>Cherry-pick backports</p>
-
+<li>
+<p>Cherry-pick backports</p>
 <pre><code>git cherry-pick -x --strategy=subtree master
 </code></pre></li>
-
-<li><p>推送修改到远端的plugin</p>
-
+<li>
+<p>推送修改到远端的plugin</p>
 <pre><code>git push plugin backport:master
 </code></pre></li>
 </ol>
-
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -320,6 +298,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

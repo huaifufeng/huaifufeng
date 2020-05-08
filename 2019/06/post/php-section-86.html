@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,69 +187,44 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#apcu">APCu</a>
-<ul>
-<li><a href="#1-迭代条目">1. 迭代条目</a></li>
-<li><a href="#2-简单的存储和获取">2. 简单的存储和获取</a></li>
-<li><a href="#3-存储的信息">3. 存储的信息</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#apcu">APCu</a>
+      <ul>
+        <li><a href="#1-迭代条目">1. 迭代条目</a></li>
+        <li><a href="#2-简单的存储和获取">2. 简单的存储和获取</a></li>
+        <li><a href="#3-存储的信息">3. 存储的信息</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="apcu">APCu</h2>
-
+        		<h2 id="apcu">APCu</h2>
 <p>APCu是PHP的共享内存键值对存储。这个内存是被相同池子中的PHP-FPM进程共享的。存储的数据在不同的请求之间保持不变。</p>
-
 <h3 id="1-迭代条目">1. 迭代条目</h3>
-
 <p><code>APCUIterator</code>允许迭代缓存中的条目：</p>
-
-<pre><code class="language-php">foreach (new APCUIterator() as $entry) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">foreach (new APCUIterator() as $entry) {
     print_r($entry);
 }
-</code></pre>
-
-<p>这个迭代器可以使用可选的正则表达式来初始化，这样可以选择匹配某些条目：</p>
-
-<pre><code class="language-php">foreach (new APCUIterator($regex) as $entry) {
+</code></pre></div><p>这个迭代器可以使用可选的正则表达式来初始化，这样可以选择匹配某些条目：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">foreach (new APCUIterator($regex) as $entry) {
     print_r($entry);
 }
-</code></pre>
-
-<p>关于单个缓存条目可以使用下面的方法获取：</p>
-
-<pre><code class="language-php">$key = '...';
-$regex = '(^'. preg_quote($key) . '$)';
+</code></pre></div><p>关于单个缓存条目可以使用下面的方法获取：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$key = &#39;...&#39;;
+$regex = &#39;(^&#39;. preg_quote($key) . &#39;$)&#39;;
 print_r((new APCUIterator($regex))-&gt;current());
-</code></pre>
-
-<h3 id="2-简单的存储和获取">2. 简单的存储和获取</h3>
-
+</code></pre></div><h3 id="2-简单的存储和获取">2. 简单的存储和获取</h3>
 <p><code>apcu_store</code>可以用来存储，<code>apcu_fetch</code>可以用来获取数据：</p>
-
-<pre><code class="language-php">$key = &quot;Hello&quot;;
-$value = 'World';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$key = &#34;Hello&#34;;
+$value = &#39;World&#39;;
 apcu_store($key, $value);
-print_r($apcu_fetch('Hello')); //'World'
-</code></pre>
-
-<h3 id="3-存储的信息">3. 存储的信息</h3>
-
+print_r($apcu_fetch(&#39;Hello&#39;)); //&#39;World&#39;
+</code></pre></div><h3 id="3-存储的信息">3. 存储的信息</h3>
 <p><code>apcu_cache_info</code>可以用来获取存储的信息和它的条目：</p>
-
-<pre><code class="language-php">print_r(apcu_cache_info());
-</code></pre>
-
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">print_r(apcu_cache_info());
+</code></pre></div><blockquote>
 <p>注意不限制的调用<code>apcu_cache_info()</code>或返货当前存储的所有数据。值获取元信息的话，使用<code>apcu_cache_info(true)</code>。获取整个缓存的信息条目比<code>APCUIterator</code>更好。</p>
 </blockquote>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -318,6 +297,12 @@ print_r($apcu_fetch('Hello')); //'World'
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

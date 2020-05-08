@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,47 +187,32 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#密码hash函数">密码hash函数</a>
-<ul>
-<li><a href="#1-创建一个密码hash">1. 创建一个密码hash</a></li>
-<li><a href="#2-确定是否将现有的密码hash函数升级为更强大的算法">2. 确定是否将现有的密码hash函数升级为更强大的算法</a></li>
-<li><a href="#3-验证密码的hash值">3. 验证密码的hash值</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#密码hash函数">密码hash函数</a>
+      <ul>
+        <li><a href="#1-创建一个密码hash">1. 创建一个密码hash</a></li>
+        <li><a href="#2-确定是否将现有的密码hash函数升级为更强大的算法">2. 确定是否将现有的密码hash函数升级为更强大的算法</a></li>
+        <li><a href="#3-验证密码的hash值">3. 验证密码的hash值</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="密码hash函数">密码hash函数</h2>
-
+        		<h2 id="密码hash函数">密码hash函数</h2>
 <p>更安全的web服务器应该避免存储文本格式的密码，像PHP这样的语言提供了(非解密)的hash函数来支持更加安全的工业标准。这个主题主要介绍PHP的hash函数。</p>
-
 <h3 id="1-创建一个密码hash">1. 创建一个密码hash</h3>
-
 <p>使用<a href="https://www.php.net/manual/zh/function.password-hash.php">password_hash()</a>生成密码的hash，使用当前工业最佳实践的标准hash或key派生。在编写时，标准是<a href="https://en.wikipedia.org/wiki/Bcrypt">bcrypt</a>。所以，<code>PASSWORD_DEFAULT</code>意味着<code>PASSWORD_BCRYPT</code>。</p>
-
-<pre><code class="language-php">$options = [
-    'cost' =&gt; 12,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$options = [
+    &#39;cost&#39; =&gt; 12,
 ];
 
 $hashedPassword = password_hash($plaintextPassword, PASSWORD_DEFAULT, $options);
-</code></pre>
-
-<p>第三个参数是<strong>非必须的</strong>。</p>
-
+</code></pre></div><p>第三个参数是<strong>非必须的</strong>。</p>
 <p>这个<code>cost</code>的值根据你生产服务器的硬件决定。增加这个值在生成密码是花费更多的资源。生产的成本越高，任何试图破解的人花费的成本越高。理想情况下，cost应该越高越好，但是实际它应该设置不是任何事情变太慢。通常0.1~0.4秒就可以了。如果有疑问就是用默认值。</p>
-
 <p>Version &lt; 5.5</p>
-
-<p>在PHP低于5.5.0时，<code>passowrd_*</code>函数是无效的。你可以使用<a href="https://github.com/ircmaxell/password_compat来替代这些方法。注意这个兼容包要求PHP">https://github.com/ircmaxell/password_compat来替代这些方法。注意这个兼容包要求PHP</a> 5.3.7或者更高版本或者将<code>$y2</code>反向安装在其中的版本(如Redhat提供的版本)。</p>
-
+<p>在PHP低于5.5.0时，<code>passowrd_*</code>函数是无效的。你可以使用https://github.com/ircmaxell/password_compat来替代这些方法。注意这个兼容包要求PHP 5.3.7或者更高版本或者将<code>$y2</code>反向安装在其中的版本(如Redhat提供的版本)。</p>
 <p>当你不能使用那些的时候，你可以使用<a href="https://www.php.net/manual/zh/function.crypt.php">crypt()</a>函数实现一个密码hash方法。<code>password_hash()</code>是实现的<code>crypt()</code>函数的一个封装，你需要丢失一些功能。</p>
-
-<pre><code class="language-php">// this is a simple implementation of a bcrypt hash otherwise compatible
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// this is a simple implementation of a bcrypt hash otherwise compatible
 // with `password_hash()`
 // not guaranteed to maintain the same cryptographic strength of the full `password_hash()`
 // implementation
@@ -233,113 +222,84 @@ if (CRYPT_BLOWFISH == 1) {
     $salt = base64_encode($salt);
     
     // crypt uses a modified base64 variant
-    $source = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'; 
-    $dest = './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; 
-    $salt = strtr(rtrim($salt, '='), $source, $dest);
+    $source = &#39;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#39;; 
+    $dest = &#39;./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#39;; 
+    $salt = strtr(rtrim($salt, &#39;=&#39;), $source, $dest);
     $salt = substr($salt, 0, 22);
     
     // `crypt()` determines which hashing algorithm to use by the form of the salt string 
     // that is passed in
-    $hashedPassword = crypt($plaintextPassword, '$2y$10$'.$salt.'$');
+    $hashedPassword = crypt($plaintextPassword, &#39;$2y$10$&#39;.$salt.&#39;$&#39;);
 }
-</code></pre>
-
-<p><strong>密码hash的盐</strong></p>
-
+</code></pre></div><p><strong>密码hash的盐</strong></p>
 <p>尽管密码算法的可靠性很高，但仍然存在针对<a href="https://en.wikipedia.org/wiki/Rainbow_table">彩虹表</a>的漏洞。这就是为什么建议使用盐的原因。</p>
-
 <p>salt是在散列前附加到密码后使源字符串唯一的东西。给定两个相同的密码，得到的哈希值也将是唯一的，因为它们的盐是唯一的。</p>
-
 <p>随机盐是密码安全中最重要的部分之一。这意味着即使使用已知密码哈希的查找表，攻击者也无法将用户的密码哈希与数据库密码哈希进行匹配，因为已经使用了随机salt。您应该始终使用随机和密码安全的盐。<a href="https://www.springer.com/us/book/9781484221198">阅读更多信息</a></p>
-
 <p>使用<a href="https://www.php.net/manual/zh/function.password-hash.php">password_hash()</a>的<code>bcrypt</code>算法，纯文本salt与生成的哈希一起存储，这意味着哈希可以跨不同的系统和平台传输，并且仍然与原始密码匹配。</p>
-
 <p>Version &lt; 7.0</p>
-
 <p>即使不鼓励这样做，也可以使用salt选项定义自己的随机salt。</p>
-
-<pre><code class="language-php">$options = [
-    'salt' =&gt; $salt, //see example below
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$options = [
+    &#39;salt&#39; =&gt; $salt, //see example below
 ];
-</code></pre>
-
-<p><strong>重要：</strong>如果你忽略这个选项的话，password_hash()会为每个密码hash产生一个随机的盐。这是预期的操作方式。</p>
-
+</code></pre></div><p>**重要：**如果你忽略这个选项的话，password_hash()会为每个密码hash产生一个随机的盐。这是预期的操作方式。</p>
 <p>Version &gt;= 7.0</p>
-
 <p>这个盐选项在PHP7.0中已经不推荐使用了。简单的使用默认生成的盐是更好的方式。</p>
-
 <h3 id="2-确定是否将现有的密码hash函数升级为更强大的算法">2. 确定是否将现有的密码hash函数升级为更强大的算法</h3>
-
 <p>如果您使用密码默认方法让系统选择最好的算法来散列您的密码，随着默认强度的增加，您可能希望在用户登录时重新刷新旧密码。</p>
-
-<pre><code class="language-php">&lt;?php
-// first determine if a supplied password is valid
-if (password_verify($plaintextPassword, $hashedPassword)) {
-// now determine if the existing hash was created with an algorithm that is // no longer the default
-    if (password_needs_rehash($hashedPassword, PASSWORD_DEFAULT)) {
-        // create a new hash with the new default
-        $newHashedPassword = password_hash($plaintextPassword, PASSWORD_DEFAULT);
-        // and then save it to your data store
-        //$db-&gt;update(...);
-    } 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">// first determine if a supplied password is valid
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">password_verify</span>($plaintextPassword, $hashedPassword)) {
+<span style="color:#75715e">// now determine if the existing hash was created with an algorithm that is // no longer the default
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">password_needs_rehash</span>($hashedPassword, <span style="color:#a6e22e">PASSWORD_DEFAULT</span>)) {
+        <span style="color:#75715e">// create a new hash with the new default
+</span><span style="color:#75715e"></span>        $newHashedPassword <span style="color:#f92672">=</span> <span style="color:#a6e22e">password_hash</span>($plaintextPassword, <span style="color:#a6e22e">PASSWORD_DEFAULT</span>);
+        <span style="color:#75715e">// and then save it to your data store
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//$db-&gt;update(...);
+</span><span style="color:#75715e"></span>    } 
 }
-?&gt;
-</code></pre>
-
-<p>如果你的系统上面<code>password_*</code>函数是无效的(并且不能使用备注中的兼容包)，你可以决定hash的算法，并使用下面类似的方式创建一个方法：</p>
-
-<pre><code class="language-php">&lt;?php
-if (substr($hashedPassword, 0, 4) == '$2y$' &amp;&amp; strlen($hashedPassword) == 60) { 
-    echo 'Algorithm is Bcrypt';
-    // the &quot;cost&quot; determines how strong this version of Bcrypt is     
-    preg_match('/\$2y\$(\d+)\$/', $hashedPassword, $matches);
-    $cost = $matches[1];
-    echo 'Bcrypt cost is '.$cost;
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>如果你的系统上面<code>password_*</code>函数是无效的(并且不能使用备注中的兼容包)，你可以决定hash的算法，并使用下面类似的方式创建一个方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">substr</span>($hashedPassword, <span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">4</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;$2y$&#39;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">strlen</span>($hashedPassword) <span style="color:#f92672">==</span> <span style="color:#ae81ff">60</span>) { 
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Algorithm is Bcrypt&#39;</span>;
+    <span style="color:#75715e">// the &#34;cost&#34; determines how strong this version of Bcrypt is     
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">preg_match</span>(<span style="color:#e6db74">&#39;/\$2y\$(\d+)\$/&#39;</span>, $hashedPassword, $matches);
+    $cost <span style="color:#f92672">=</span> $matches[<span style="color:#ae81ff">1</span>];
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Bcrypt cost is &#39;</span><span style="color:#f92672">.</span>$cost;
 }
-?&gt;
-</code></pre>
-
-<h3 id="3-验证密码的hash值">3. 验证密码的hash值</h3>
-
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><h3 id="3-验证密码的hash值">3. 验证密码的hash值</h3>
 <p><code>password_verify()</code>是PHP内建的函数(从PHP5.5)，用来根据已知hash验证密码的有效性：</p>
-
-<pre><code class="language-php">&lt;?php
-if (password_verify($plaintextPassword, $hashedPassword)) {
-    echo 'Valid Password';
-} else {
-    echo 'Invalid Password.';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">password_verify</span>($plaintextPassword, $hashedPassword)) {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Valid Password&#39;</span>;
+} <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Invalid Password.&#39;</span>;
 }
-?&gt;
-</code></pre>
-
-<p>所有支持的哈希算法都存储信息，以标识哈希本身中使用的哈希，因此无需指示使用哪种算法对明文密码进行编码。</p>
-
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>所有支持的哈希算法都存储信息，以标识哈希本身中使用的哈希，因此无需指示使用哪种算法对明文密码进行编码。</p>
 <p>如果你的系统上面<code>password_*</code>函数是无效的(并且不能使用备注中的兼容包)，你可以使用<code>crypt()</code>函数实现密码验证方法。请注意，必须采取特定的预防措施以避免定时攻击。</p>
-
-<pre><code class="language-php">&lt;?php
-// not guaranteed to maintain the same cryptographic strength of the full `password_hash()` // implementation
-if (CRYPT_BLOWFISH == 1) {
-     // `crypt()` discards all characters beyond the salt length, so we can pass in 
-     // the full hashed password
-    $hashedCheck = crypt($plaintextPassword, $hashedPassword);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">// not guaranteed to maintain the same cryptographic strength of the full `password_hash()` // implementation
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">CRYPT_BLOWFISH</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) {
+     <span style="color:#75715e">// `crypt()` discards all characters beyond the salt length, so we can pass in 
+</span><span style="color:#75715e"></span>     <span style="color:#75715e">// the full hashed password
+</span><span style="color:#75715e"></span>    $hashedCheck <span style="color:#f92672">=</span> <span style="color:#a6e22e">crypt</span>($plaintextPassword, $hashedPassword);
     
-    // this a basic constant-time comparison based on the full implementation used 
-    // in `password_hash()`
-    $status = 0;
-    for ($i=0; $i&lt;strlen($hashedCheck); $i++) {
-        $status |= (ord($hashedCheck[$i]) ^ ord($hashedPassword[$i]));
+    <span style="color:#75715e">// this a basic constant-time comparison based on the full implementation used 
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// in `password_hash()`
+</span><span style="color:#75715e"></span>    $status <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">for</span> ($i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>; $i<span style="color:#f92672">&lt;</span><span style="color:#a6e22e">strlen</span>($hashedCheck); $i<span style="color:#f92672">++</span>) {
+        $status <span style="color:#f92672">|=</span> (<span style="color:#a6e22e">ord</span>($hashedCheck[$i]) <span style="color:#f92672">^</span> <span style="color:#a6e22e">ord</span>($hashedPassword[$i]));
     }
-    if ($status === 0) {
-        echo 'Valid Password';
-    } else {
-        echo 'Invalid Password';
+    <span style="color:#66d9ef">if</span> ($status <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) {
+        <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Valid Password&#39;</span>;
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Invalid Password&#39;</span>;
     }
 }
-?&gt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -411,6 +371,12 @@ if (CRYPT_BLOWFISH == 1) {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

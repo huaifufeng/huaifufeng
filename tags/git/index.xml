@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Git on 怀府小阁</title>
@@ -18,7 +18,7 @@
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-61.html</guid>
       <description>diff-tree 比较通过两个树对象找到的blob的内容和模式。
-获取指定提交的文件修改 git diff-tree --no-commit-id --name-only -r COMMIT_ID  使用 git diff-tree [--stdin] [-m] [-c] [--cc] [-s] [-v] [--pretty] [-t] [-r] [--root] [&amp;lt;common-diff- options&amp;gt;] &amp;lt;tree-ish&amp;gt; [&amp;lt;tree-ish&amp;gt;] [&amp;lt;path&amp;gt;...]     选项 含义     -r 递归的进行diff   &amp;ndash;root 包括初始提交作为/dev/null的diff    选项    选项 详情     -z 输出diff-raw，以NUL结尾   -p 输出补丁格式   -u -p的别名   —patch-with-raw 输出补丁和diff-raw格式   &amp;ndash;stat 显示diffstat而不是patch。   &amp;ndash;numstat 显示数字diffstat而不是patch。   —patch-with-stat 输出一个补丁并预先准备其diffstat。   —name-only 显示修改文件的名称   —name-status 显示修改文件的名称和状态   —full-index 在索引行显示完整的对象名称   —abbrev= 在对象名称的缩写版本的树和区分RAW头。   -R 交换输入文件对。   -B 检测完全重写。   -M 检查重命名   -C 检查复制   —find-copies-harder 尝试将未更改的文件作为副本检测的候选文件。   -l 将重命名尝试限制为最多个路径。   -O 根据重新排序差异。   -S 查找仅一侧包含字符串的文件对。   —pickaxe-all 使用-s并找到hit时显示所有文件diff。   -a —text 把所有的文件当做字符串    参考：Git® Notes for Professionals book</description>
+获取指定提交的文件修改 git diff-tree --no-commit-id --name-only -r COMMIT_ID 使用 git diff-tree [--stdin] [-m] [-c] [--cc] [-s] [-v] [--pretty] [-t] [-r] [--root] [&amp;lt;common-diff- options&amp;gt;] &amp;lt;tree-ish&amp;gt; [&amp;lt;tree-ish&amp;gt;] [&amp;lt;path&amp;gt;...]    选项 含义     -r 递归的进行diff   &amp;ndash;root 包括初始提交作为/dev/null的diff    选项    选项 详情     -z 输出diff-raw，以NUL结尾   -p 输出补丁格式   -u -p的别名   —patch-with-raw 输出补丁和diff-raw格式   &amp;ndash;stat 显示diffstat而不是patch。   &amp;ndash;numstat 显示数字diffstat而不是patch。   —patch-with-stat 输出一个补丁并预先准备其diffstat。   —name-only 显示修改文件的名称   —name-status 显示修改文件的名称和状态   —full-index 在索引行显示完整的对象名称   —abbrev= 在对象名称的缩写版本的树和区分RAW头。   -R 交换输入文件对。   -B 检测完全重写。   -M 检查重命名   -C 检查复制   —find-copies-harder 尝试将未更改的文件作为副本检测的候选文件。   -l 将重命名尝试限制为最多个路径。   -O 根据重新排序差异。   -S 查找仅一侧包含字符串的文件对。   —pickaxe-all 使用-s并找到hit时显示所有文件diff。   -a —text 把所有的文件当做字符串    参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -28,11 +28,11 @@
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-60.html</guid>
       <description>整理本地和远程存储库 删除远端已删除的分支 要在本地和已删除的远程分支之间进行远程跟踪，请使用
-git fetch -p  然后你可以使用
-git branch -vv  来查看哪些分支没有被追踪。
+git fetch -p 然后你可以使用
+git branch -vv 来查看哪些分支没有被追踪。
 那些还没有被追踪的分支将会向下面这样，包含&amp;rsquo;gone&amp;rsquo;：
-branch 12345e6 [origin/branch: gone] Fixed bug  你可以组合使用上面的命令，查找git branch -vv中返回的gone的分支，并使用-d删除这些分支：
-git fetch -p &amp;amp;&amp;amp; git branch -vv | awk &#39;/: gone]/{print $1}&#39; | xargs git branch -d  参考：Git® Notes for Professionals book</description>
+branch 12345e6 [origin/branch: gone] Fixed bug 你可以组合使用上面的命令，查找git branch -vv中返回的gone的分支，并使用-d删除这些分支：
+git fetch -p &amp;amp;&amp;amp; git branch -vv | awk &#39;/: gone]/{print $1}&#39; | xargs git branch -d 参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -43,14 +43,14 @@ git fetch -p &amp;amp;&amp;amp; git branch -vv | awk &#39;/: gone]/{print $1}&#3
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-59.html</guid>
       <description>git标签 像大多数的版本控制工具，git可以把历史中某个提交定义为重要的。特别是用户使用这个功能来标记发版点(v1.0等)。
 列出所有的tag 使用git tag可以列出所有有效的tag：
-$ git tag &amp;lt;output follows&amp;gt; v0.1 v1.3   注意：这里tag是按照字符顺序输出的。
+$ git tag &amp;lt;output follows&amp;gt; v0.1 v1.3  **注意：**这里tag是按照字符顺序输出的。
  也可以搜索指定的tag：
-$ git tag -l &amp;quot;v1.8.5*&amp;quot; &amp;lt;output follows&amp;gt; v1.8.5 v1.8.5-rc0 v1.8.5-rc1 v1.8.5-rc2 v1.8.5-rc3 v1.8.5.1 v1.8.5.2 v1.8.5.3 v1.8.5.4 v1.8.5.5  创建并push标签 创建标签  在当前分支创建tag
-git tag &amp;lt;tagname&amp;gt;   这将在当前分支的当前状态创建一个tag
- 在某些提交上创建tag
-git tag tag-name commit-identifier   这将在commit-identifier的提交上创建tag。
-push tag  push单独的标签
-git push origin tag-name  一次push所有的tag
+$ git tag -l &amp;quot;v1.8.5*&amp;quot; &amp;lt;output follows&amp;gt; v1.8.5 v1.8.5-rc0 v1.8.5-rc1 v1.8.5-rc2 v1.8.5-rc3 v1.8.5.1 v1.8.5.2 v1.8.5.3 v1.8.5.4 v1.8.5.5 创建并push标签 创建标签   在当前分支创建tag
+git tag &amp;lt;tagname&amp;gt; 这将在当前分支的当前状态创建一个tag
+  在某些提交上创建tag
+git tag tag-name commit-identifier 这将在commit-identifier的提交上创建tag。
+  push tag   push单独的标签
+git push origin tag-name   一次push所有的tag
 git push origin --tags   参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -62,7 +62,7 @@ git push origin --tags   参考：Git® Notes for Professionals book</descriptio
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-58.html</guid>
       <description>修改git仓库名称 如果你在远端修改了仓库的名称，就像在github或bitbucket。当你推送已经存在的代码时，将会出现错误：Fatal error, repository not found**.
 修改本地仓库 在终端中：
-cd projectFolder git remote -v (it will show previous git url) git remote set-url origin https://username@bitbucket.org/username/newName.git git remote -v (double check, it will show new git url) git push (do whatever you want.)  参考：Git® Notes for Professionals book</description>
+cd projectFolder git remote -v (it will show previous git url) git remote set-url origin https://username@bitbucket.org/username/newName.git git remote -v (double check, it will show new git url) git push (do whatever you want.) 参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -73,7 +73,7 @@ cd projectFolder git remote -v (it will show previous git url) git remote set-ur
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-57.html</guid>
       <description>git重排 rerere(重复使用记录解决方案)允许你告诉git记住你是如何解决一个大块冲突的。这允许当下次遇到同样的冲突是可以自动的解决这个冲动。
 启用rerere 可以使用下面的命令启用rerere:
-$ git config --global rerere.enabled true  这个可以在指定仓库中运行，也可以在全局配置中。
+$ git config --global rerere.enabled true 这个可以在指定仓库中运行，也可以在全局配置中。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -86,9 +86,9 @@ $ git config --global rerere.enabled true  这个可以在指定仓库中运行�
       <description>git客户端的hooks 和很多其他的版本控制系统一样，Git有一种当某些重要行为发生的时候执行自定义脚本的功能。有两种这样的hooks：客户端的和服务器端的。客户端的hook通常当提交和合并的时候触发执行，而服务器端的hook通常当遇到网络操作(如接收到push的提交)触发。你可以出于各种原因使用这些钩子。
 pre-push hook pre-push脚本会在git push调用并且检查远端状态之后执行，但是在任何东西push之前。如果脚本存在，并且返回了一个非零的值，那么什么都不会push。
 这个hook使用下面的参数被调用：
-$1 -- Name of the remote to which the push is being done (Ex: origin) $2 -- URL to which the push is being done (Ex: https://://.git)  有关正在推送的提交的信息以行的形式提供给表单中的标准输入：
- &amp;lt;local_ref&amp;gt; &amp;lt;local_sha1&amp;gt; &amp;lt;remote_ref&amp;gt; &amp;lt;remote_sha1&amp;gt;  例子：
-local_ref = refs/heads/master local_sha1 = 68a07ee4f6af8271dc40caae6cc23f283122ed11 remote_ref = refs/heads/master remote_sha1 = efd4d512f34b11e3cf5c12433bbedd4b1532716f  下面的示例是从默认的pre-push.sample中获取的pre-push脚本，该脚本是在使用git init初始化新存储库时自动创建的。
+$1 -- Name of the remote to which the push is being done (Ex: origin) $2 -- URL to which the push is being done (Ex: https://://.git) 有关正在推送的提交的信息以行的形式提供给表单中的标准输入：
+ &amp;lt;local_ref&amp;gt; &amp;lt;local_sha1&amp;gt; &amp;lt;remote_ref&amp;gt; &amp;lt;remote_sha1&amp;gt; 例子：
+local_ref = refs/heads/master local_sha1 = 68a07ee4f6af8271dc40caae6cc23f283122ed11 remote_ref = refs/heads/master remote_sha1 = efd4d512f34b11e3cf5c12433bbedd4b1532716f 下面的示例是从默认的pre-push.sample中获取的pre-push脚本，该脚本是在使用git init初始化新存储库时自动创建的。
 # This sample shows how to prevent push of commits where the log message starts # with &amp;quot;WIP&amp;quot; (work in progress).</description>
     </item>
     
@@ -101,7 +101,7 @@ local_ref = refs/heads/master local_sha1 = 68a07ee4f6af8271dc40caae6cc23f283122e
       <description>Bash显示分支名 这个文档解决git的分支名称在Bash终端显示的问题。开发者经常需要查看当前的分支名称。我们可以显示当前目录中的git分支名称。
 终端的分支名 什么是PS1 PS1表示提示字符串1(Prompt String 1)。这是Linux/UNIX中shell的一个提示字符串。当你打开终端的时候，将会在你的bash提示中显示PS1中的内容。为了在bash提示中增加分支名称，我们需要修改PS1变量(在~/.bash_profile中设置PS1的值)。
 显示分支名 在~/.bash_profile中添加下面的内容：
-git_branch() { git branch 2&amp;gt; /dev/null | sed -e &#39;/^[^*]/d&#39; -e &#39;s/* \(.*\)/ (\1)/&#39; } export PS1=&amp;quot;\u@\h \[\033[32m\]\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ &amp;quot;  这个git_branch方法或拿到我们当前的分支名称。一但我们做了这个修改，我们切换到一个git仓库，我们就可以看到仓库当前的分支名称。
+git_branch() { git branch 2&amp;gt; /dev/null | sed -e &amp;#39;/^[^*]/d&amp;#39; -e &amp;#39;s/* \(.*\)/ (\1)/&amp;#39; } export PS1=&amp;#34;\u@\h \[\033[32m\]\w\[\033[33m\]\$(git_branch)\[\033[00m\] $&amp;#34; 这个git_branch方法或拿到我们当前的分支名称。一但我们做了这个修改，我们切换到一个git仓库，我们就可以看到仓库当前的分支名称。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -112,10 +112,10 @@ git_branch() { git branch 2&amp;gt; /dev/null | sed -e &#39;/^[^*]/d&#39; -e &#3
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-54.html</guid>
       <description>修改引用中对象名称 修改引用中对象名称 使用 修改引用中的对象名称
-语法 git update-ref [-m &amp;lt;reason&amp;gt;] (-d &amp;lt;ref&amp;gt; [&amp;lt;oldvalue&amp;gt;] | [--no-deref] [--create-reflog] &amp;lt;ref&amp;gt; &amp;lt;newvalue&amp;gt; [&amp;lt;oldvalue&amp;gt;] | --stdin [-z])  普通语法  取消符合引用，修改分支头到新的对象
-git update-ref HEAD &amp;lt;newvalue&amp;gt;  验证引用中当前只和oldvalue匹配后，修改newvalue到引用中
-git update-ref refs/head/master &amp;lt;newvalue&amp;gt; &amp;lt;oldvalue&amp;gt;   上面的语法只有咱当前的值是oldvalue的时候，修改master分支的头到newvalue。
-在验证引用还包含&amp;lt;oldvalue&amp;gt;之后，使用-d标识删除到命名的引用&amp;lt;ref&amp;gt;。
+语法 git update-ref [-m &amp;lt;reason&amp;gt;] (-d &amp;lt;ref&amp;gt; [&amp;lt;oldvalue&amp;gt;] | [--no-deref] [--create-reflog] &amp;lt;ref&amp;gt; &amp;lt;newvalue&amp;gt; [&amp;lt;oldvalue&amp;gt;] | --stdin [-z]) 普通语法   取消符合引用，修改分支头到新的对象
+git update-ref HEAD &amp;lt;newvalue&amp;gt;   验证引用中当前只和oldvalue匹配后，修改newvalue到引用中
+git update-ref refs/head/master &amp;lt;newvalue&amp;gt; &amp;lt;oldvalue&amp;gt; 上面的语法只有咱当前的值是oldvalue的时候，修改master分支的头到newvalue。
+  在验证引用还包含&amp;lt;oldvalue&amp;gt;之后，使用-d标识删除到命名的引用&amp;lt;ref&amp;gt;。
 使用—create-reflog之后，更新引用将会为每个引用创建一个reflog，即使通常不会创建reflog。
 使用-z标志以nul终止格式指定，该格式具有更新、创建、删除、验证等值。
 update 如果提供了，在验证&amp;lt;oldvalue&amp;gt;之后，修改引用&amp;lt;ref&amp;gt;的值为&amp;lt;newvalue&amp;gt;。指定零值&amp;lt;newvalue&amp;gt;确保引用更新之后不存在，或者一个零值&amp;lt;oldvalue&amp;gt;确保引用更新之前不存在。
@@ -132,8 +132,8 @@ verify 使用&amp;lt;oldvalue&amp;gt;验证&amp;lt;ref&amp;gt;中存在，但是
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-53.html</guid>
       <description>外部合并和diff工具 设置KDiff3作为合并工具 下面的配置添加到.gitconfig文件中：
-[merge] tool = kdiff3 [mergetool &amp;quot;kdiff3&amp;quot;] path = D:/Program Files (x86)/KDiff3/kdiff3.exe keepBackup = false keepbackup = false trustExitCode = false  注意设置path属性为你安装KDiff3的目录。
-设置KDiff3为diff工具 [diff] tool = kdiff3 guitool = kdiff3 [difftool &amp;quot;kdiff3&amp;quot;] path = D:/Program Files (x86)/KDiff3/kdiff3.exe cmd = \&amp;quot;D:/Program Files (x86)/KDiff3/kdiff3.exe\&amp;quot; \&amp;quot;$LOCAL\&amp;quot; \&amp;quot;$REMOTE\&amp;quot;  设置IntelliJ IDE为合并工具(Windows) [merge] tool = intellij [mergetool &amp;quot;intellij&amp;quot;] cmd = cmd \&amp;quot;/C D:\\workspace\\tools\\symlink\\idea\\bin\\idea.bat merge $(cd $(dirname &amp;quot;$LOCAL&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$LOCAL&amp;quot;) $(cd $(dirname &amp;quot;$REMOTE&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$REMOTE&amp;quot;) $(cd $(dirname &amp;quot;$BASE&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$BASE&amp;quot;) $(cd $(dirname &amp;quot;$MERGED&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$MERGED&amp;quot;)\&amp;quot; keepBackup = false keepbackup = false trustExitCode = true  这里需要注意的一点是，这个cmd属性不接受路径中任何奇怪的字符。如果您的IDE安装位置中有奇怪的字符（例如，它安装在Program Files (x86)中），则必须创建一个软连。</description>
+[merge] tool = kdiff3 [mergetool &amp;quot;kdiff3&amp;quot;] path = D:/Program Files (x86)/KDiff3/kdiff3.exe keepBackup = false keepbackup = false trustExitCode = false 注意设置path属性为你安装KDiff3的目录。
+设置KDiff3为diff工具 [diff] tool = kdiff3 guitool = kdiff3 [difftool &amp;quot;kdiff3&amp;quot;] path = D:/Program Files (x86)/KDiff3/kdiff3.exe cmd = \&amp;quot;D:/Program Files (x86)/KDiff3/kdiff3.exe\&amp;quot; \&amp;quot;$LOCAL\&amp;quot; \&amp;quot;$REMOTE\&amp;quot; 设置IntelliJ IDE为合并工具(Windows) [merge] tool = intellij [mergetool &amp;quot;intellij&amp;quot;] cmd = cmd \&amp;quot;/C D:\\workspace\\tools\\symlink\\idea\\bin\\idea.bat merge $(cd $(dirname &amp;quot;$LOCAL&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$LOCAL&amp;quot;) $(cd $(dirname &amp;quot;$REMOTE&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$REMOTE&amp;quot;) $(cd $(dirname &amp;quot;$BASE&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$BASE&amp;quot;) $(cd $(dirname &amp;quot;$MERGED&amp;quot;) &amp;amp;&amp;amp; pwd)/$(basename &amp;quot;$MERGED&amp;quot;)\&amp;quot; keepBackup = false keepbackup = false trustExitCode = true 这里需要注意的一点是，这个cmd属性不接受路径中任何奇怪的字符。如果您的IDE安装位置中有奇怪的字符（例如，它安装在Program Files (x86)中），则必须创建一个软连。</description>
     </item>
     
     <item>
@@ -144,10 +144,10 @@ verify 使用&amp;lt;oldvalue&amp;gt;验证&amp;lt;ref&amp;gt;中存在，但是
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-52.html</guid>
       <description>TortoiseGit 合并提交 简单方法 这将不会有效，当你选择的分支包含合并的分支时：
 高级方法 开启rebase：
-假设不变 如果一个文件修改了，但是你不想提交这个文件，把这个文件设置为&amp;rdquo;假设不变&amp;rdquo;：
+假设不变 如果一个文件修改了，但是你不想提交这个文件，把这个文件设置为&amp;quot;假设不变&amp;rdquo;：
 恢复假设不变 忽略文件和目录 使用TortioseGit UI 可以在文件或目录上面使用鼠标右键，想要忽略文件TortoiseGit -&amp;gt; Delete and add to ignore list，这里你可以选择忽略所有的某个类型的文件或者指定的文件，然后在弹窗中选择ok就可以了。
 分支 使用UI来选择分支，在仓库上面鼠标右键，然后Tortoise Git -&amp;gt; Create Branch…
-新的窗口会打开open -&amp;gt; Give branch a name -&amp;gt; Tick the box Switch to new branch(可能你希望在分支之后使用它)。点击&amp;rdquo;确定&amp;rdquo;，就可以完成操作。
+新的窗口会打开open -&amp;gt; Give branch a name -&amp;gt; Tick the box Switch to new branch (可能你希望在分支之后使用它)。点击&amp;quot;确定&amp;rdquo;，就可以完成操作。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -158,9 +158,9 @@ verify 使用&amp;lt;oldvalue&amp;gt;验证&amp;lt;ref&amp;gt;中存在，但是
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-51.html</guid>
       <description>git reflog 从坏rebase修复 假设你开启了一个交互rebase：
-git rebase --interactive HEAD~20  但是你犯了错误，你合并或丢掉了一些你不想要失去的提交。然后完成了rebase操作。想要修复的话，使用git reflog，你可以看到类似下面的内容：
-aaaaaaa HEAD@{0} rebase -i (finish): returning to refs/head/master bbbbbbb HEAD@{1} rebase -i (squash): Fix parse error ... ccccccc HEAD@{n} rebase -i (start): checkout HEAD~20 ddddddd HEAD@{n+1} ... ...  在这个例子里面，上个提交dddddd或(HEAD@{n+1})是你开始rebase的分支。因此想要恢复这个提交(和所有的父提交，包括那些合并或丢失的)：
-$ git checkout HEAD@{n+1}  然后你可以使用下面的命令git checkout -b [branch]来创建一个新分支。
+git rebase --interactive HEAD~20 但是你犯了错误，你合并或丢掉了一些你不想要失去的提交。然后完成了rebase操作。想要修复的话，使用git reflog，你可以看到类似下面的内容：
+aaaaaaa HEAD@{0} rebase -i (finish): returning to refs/head/master bbbbbbb HEAD@{1} rebase -i (squash): Fix parse error ... ccccccc HEAD@{n} rebase -i (start): checkout HEAD~20 ddddddd HEAD@{n+1} ... ... 在这个例子里面，上个提交dddddd或(HEAD@{n+1})是你开始rebase的分支。因此想要恢复这个提交(和所有的父提交，包括那些合并或丢失的)：
+$ git checkout HEAD@{n+1} 然后你可以使用下面的命令git checkout -b [branch]来创建一个新分支。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -173,11 +173,11 @@ $ git checkout HEAD@{n+1}  然后你可以使用下面的命令git checkout -b [
       <description>git可视客户端 gitk和git-gui 当你按照git的时候，也可以按照可视化的工具：gitk和git-gui。
 gitk是一个图形历史查看工具。把它想象成git log和git grep的强大GUI工具。这在你想要查看仓库历史发送的修改，或者查看仓库的历史很有用。
 Gitk很容易从命令行启动。只要cd到仓库的目录，然后输入：
-$ gitk [git log options]  Gitk接收很多的命令行选项，启动大部分是传给底层git log操作的。可能其中最有用的：—all标识，通知gitk显示所有引用的提交，不仅仅是HEAD。Gitk的界面可能想下面这样：
+$ gitk [git log options] Gitk接收很多的命令行选项，启动大部分是传给底层git log操作的。可能其中最有用的：—all标识，通知gitk显示所有引用的提交，不仅仅是HEAD。Gitk的界面可能想下面这样：
 上面图像中上部分就像是使用git log —graph的输出。每个点代表一个提交，每条线代表父关系，引用显示在带颜色的块内。黄点标识HEAD，红点表示还没有提交的修改。下部分就是显示指定提交的展示，注释和补丁在左边，右边是摘要视图。中间是一系列用来搜索历史的。
 你可以在分支名或提交信息上右键，可以使用很多git的方法。例如签出不同的分支或cherry pick一个提交，只要一个点击。
 git-gui主要是用于构建提交的工具，它也很容易从命令行启动：
-$ git gui  它的界面就像下面这样：
+$ git gui 它的界面就像下面这样：
 左边是索引，上边是未暂存的修改，暂存的修改在下吧。你可以点击文件的标识来交互文件的状态，或者选择一个文件点击查看它的名称。
 右上角是文件的diff，用来显示选择文件的修改。你可以在这个区域使用右键来暂存单独的块或者行。
 右下角是提交信息和操作的地方。在文本框中输入提交信息，然后点击Commit按键做和git commit一样的事情。你也可以使用Amend来提交，将会把暂存的修改提交到上次提交。然后，你可以暂存或取消暂存修改，添加提交信息，然后提交Commit来重新提交。
@@ -213,11 +213,11 @@ SmartGit 站点：https://www.syntevo.com/smartgit/
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-49.html</guid>
       <description>git发送邮件 使用Gmail 背景：如果你工作在像Linux内核这样的项目上面，你不是使用pull reques，而是要提交你到提交到服务器上等待review。这里介绍怎么使用git发送Gmail邮件。
 在.gitconfig中添加下面的配置：
-[sendemail] smtpserver = smtp.googlemail.com smtpencryption = tls smtpserverport = 587 smtpuser = name@gmail.com  然后在网页上面：Go to Google -&amp;gt; My Account -&amp;gt; Connected Apps &amp;amp; Sites -&amp;gt; Allow less secure apps -&amp;gt; Switch ON
+[sendemail] smtpserver = smtp.googlemail.com smtpencryption = tls smtpserverport = 587 smtpuser = name@gmail.com 然后在网页上面：Go to Google -&amp;gt; My Account -&amp;gt; Connected Apps &amp;amp; Sites -&amp;gt; Allow less secure apps -&amp;gt; Switch ON
 创建一个补丁集合：
-git format-patch HEAD~~~~ --subject-prefix=&amp;quot;PATCH &amp;lt;project-name&amp;gt;&amp;quot;  发送补丁到listserv:
-git send-email --annotate --to project-developers-list@listserve.example.com 00*.patch  创建并发送补丁已经更新的版本：
-git format-patch -v 2 HEAD~~~~ ...... git send-email --to project-developers-list@listserve.example.com v2-00*.patch  组合 --from * Email From: --[no-]to * Email To: --[no-]cc * Email Cc: --[no-]bcc * Email Bcc: --subject * Email &amp;quot;Subject:&amp;quot; --in-reply-to * Email &amp;quot;In-Reply-To:&amp;quot; --[no-]xmailer * Add &amp;quot;X-Mailer:&amp;quot; header (default).</description>
+git format-patch HEAD~~~~ --subject-prefix=&amp;quot;PATCH &amp;lt;project-name&amp;gt;&amp;quot; 发送补丁到listserv:
+git send-email --annotate --to project-developers-list@listserve.example.com 00*.patch 创建并发送补丁已经更新的版本：
+git format-patch -v 2 HEAD~~~~ ...... git send-email --to project-developers-list@listserve.example.com v2-00*.patch 组合 --from * Email From: --[no-]to * Email To: --[no-]cc * Email Cc: --[no-]bcc * Email Bcc: --subject * Email &amp;quot;Subject:&amp;quot; --in-reply-to * Email &amp;quot;In-Reply-To:&amp;quot; --[no-]xmailer * Add &amp;quot;X-Mailer:&amp;quot; header (default).</description>
     </item>
     
     <item>
@@ -235,7 +235,7 @@ git format-patch -v 2 HEAD~~~~ ...... git send-email --to project-developers-lis
       <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-47.html</guid>
-      <description>git补丁    参数 详情     `( )`&amp;hellip;   -s, —signoff 使用自己的提交者标识，在提交消息中添加一个签名人   -q, —quiet 安静模式。值打印错误信息   -u, -utf8 git mailinfo使用-u标识。这表明从邮箱获取的提交日志信息使用UTF-8重新编码(如果不是UTF-8的话，i18n.commitencoding可以用来指定项目的编码)。你可以使用—no-utf8来覆盖这个选项   —no-utf8 git mailinfo使用-n标识。   -3, —3way 如果补丁不干净地应用，那么如果补丁记录了它应该应用到的blob的标识，并且我们在本地有这些blob可用，那么返回到3路合并。   —ingore-date, —ignore-space-change, —ignore-whitespace, —whitespace=&amp;lt;option&amp;gt;, -C&amp;lt;n&amp;gt;, -p&amp;lt;n&amp;gt;, —directory=&amp;lt;dir&amp;gt;, —exclude=&amp;lt;path&amp;gt;, —include=&amp;lt;path&amp;gt;, —reject 这些标识传递给git apply来应用补丁   —patch-format 默认命令会试着自动进行补丁格式的解析。这个选项允许用户跳过自动解析，指定补丁的格式。有效的格式包括mbox, stgit stgit-series hg   -i, —interactive 运行交互模式   —committer-date-is-author-date 默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和作者日期一样的值来假装提交者日期。   —ignore-date 默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和提交者日期一样的值来假装作者日期。   —skip 跳过当前补丁。这只在重启一个终端的补丁时有意义。   -S[&amp;lt;keyid&amp;gt;], —gpg-sign[=&amp;lt;keyid&amp;gt;] GPG签名提交   —continue, -r, —resolved 修补程序失败后（例如尝试应用冲突的修补程序），用户已手动应用该修补程序，索引文件存储应用程序的结果。使用从电子邮件和当前索引文件中提取的作者身份和提交日志进行提交，然后继续。   —resolvemsg=&amp;lt;msg&amp;gt; 当补丁失败的时候，在退出之前，&amp;lt;msg&amp;gt;将会被输出到屏幕。这将会覆盖你使用—continue或—skip的时候的标准信息。这只限于git rebase和git am之间使用   —abort 终端补丁操作，返回原本的分支。    创建补丁 创建一个补丁，有两个步骤：</description>
+      <description>git补丁    参数 详情     (&amp;lt;mbox&amp;gt;|&amp;lt;Maildir&amp;gt;)&amp;hellip; 要从中读取修补程序的邮箱文件列表。如果你没有使用这个参数，命令将会从标准输入中读取。如果你使用了目录，将被认为是邮箱目录   -s, —signoff 使用自己的提交者标识，在提交消息中添加一个签名人   -q, —quiet 安静模式。值打印错误信息   -u, -utf8 git mailinfo使用-u标识。这表明从邮箱获取的提交日志信息使用UTF-8重新编码(如果不是UTF-8的话，i18n.commitencoding可以用来指定项目的编码)。你可以使用—no-utf8来覆盖这个选项   —no-utf8 git mailinfo使用-n标识。   -3, —3way 如果补丁不干净地应用，那么如果补丁记录了它应该应用到的blob的标识，并且我们在本地有这些blob可用，那么返回到3路合并。   —ingore-date, —ignore-space-change, —ignore-whitespace, —whitespace=&amp;lt;option&amp;gt;, -C&amp;lt;n&amp;gt;, -p&amp;lt;n&amp;gt;, —directory=&amp;lt;dir&amp;gt;, —exclude=&amp;lt;path&amp;gt;, —include=&amp;lt;path&amp;gt;, —reject 这些标识传递给git apply来应用补丁   —patch-format 默认命令会试着自动进行补丁格式的解析。这个选项允许用户跳过自动解析，指定补丁的格式。有效的格式包括mbox, stgit stgit-series hg   -i, —interactive 运行交互模式   —committer-date-is-author-date 默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和作者日期一样的值来假装提交者日期。   —ignore-date 默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和提交者日期一样的值来假装作者日期。   —skip 跳过当前补丁。这只在重启一个终端的补丁时有意义。   -S[&amp;lt;keyid&amp;gt;], —gpg-sign[=&amp;lt;keyid&amp;gt;] GPG签名提交   —continue, -r, —resolved 修补程序失败后（例如尝试应用冲突的修补程序），用户已手动应用该修补程序，索引文件存储应用程序的结果。使用从电子邮件和当前索引文件中提取的作者身份和提交日志进行提交，然后继续。   —resolvemsg=&amp;lt;msg&amp;gt; 当补丁失败的时候，在退出之前，&amp;lt;msg&amp;gt;将会被输出到屏幕。这将会覆盖你使用—continue或—skip的时候的标准信息。这只限于git rebase和git am之间使用   —abort 终端补丁操作，返回原本的分支。    创建补丁 创建一个补丁，有两个步骤：</description>
     </item>
     
     <item>
@@ -246,12 +246,12 @@ git format-patch -v 2 HEAD~~~~ ...... git send-email --to project-developers-lis
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-46.html</guid>
       <description>git大文件存储 声明额外存储的文件类型 一个通常使用Git LFS的方式是声明一个使用系统规则处理指定文件，就像.gitingnore这个文件一样。
 很多时候，通配符用于选择某些文件类型以覆盖跟踪。
-git lfs track &amp;quot;*.psd&amp;quot;  当一个匹配上面规则的文件被添加到提交中，当被推送到远端的时候，它将会被单独上次，使用一个指针替换远端仓库中的文件。
+git lfs track &amp;quot;*.psd&amp;quot; 当一个匹配上面规则的文件被添加到提交中，当被推送到远端的时候，它将会被单独上次，使用一个指针替换远端仓库中的文件。
 使用LFS追踪文件之后，你的.gitattributes文件也会被更新。Github建议你提交自己仓库本地的.gitattributes文件，而不是修改全局的.gitattributes文件，这样就不会再处理多个仓库时出现问题。
 为所有的副本设置LFS配置 想要设置在所有仓库副本都有效的LFS配置选项，要在仓库的根目录添加并提交一个.lfsconfig的文件。这个文件用来指定和.git/config中一样的配置文件。
 例如：要从LFS中排查某个文件，请创建并提交.lfsconfig文件，并添加下面的内容提交：
-[lfs] fetchexclude = ReallyBigFile.wav  按照LFS 下载和安装LFS，既可以使用Homebrew，也可以从这个网址。
-homebrew  brew install git-lfs git lfs install  通常你需要对托管的远端服务器进行一些设置，用来允许它和LFS一起使用。这对于每个主机是不同的，但很可能只是勾选了一个框，说明你想要使用git lfs。
+[lfs] fetchexclude = ReallyBigFile.wav 按照LFS 下载和安装LFS，既可以使用Homebrew，也可以从这个网址。
+homebrew  brew install git-lfs git lfs install 通常你需要对托管的远端服务器进行一些设置，用来允许它和LFS一起使用。这对于每个主机是不同的，但很可能只是勾选了一个框，说明你想要使用git lfs。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -270,9 +270,9 @@ homebrew  brew install git-lfs git lfs install  通常你需要对托管的远�
       <pubDate>Thu, 07 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-44.html</guid>
-      <description>git工作树    参数 详情     -f —force 默认情况下，当&amp;lt;branch&amp;gt;被另外的工作树使用，add拒绝添加新的工作树。这个选项将会强制创建。   -b  -B  当在添加或创建一个名字为&amp;lt; new-branch&amp;gt;的分支，将会在新的工作树上签出分支。如果忽略的话，默认是HEAD。默认-b当分支存在时，将不会创建新分支，但是-B会创建新的分支   &amp;ndash;detach 使用add，分类工作树中的HEAD   —[no-] checkout 默认add将会签出，然而—no-将会禁止签出，而使用自定义例如配置   -n —dry-run 使用prunce，这个选项将不会删除任何东西， 只是说明将会删除的内容。   &amp;ndash;porcelain 使用list，以易于解析的格式输出。无论用户怎么配置，都会在git中保持一致。   -v &amp;ndash;verbose 使用prune,的说明所有删除   —expire  使用prune，只会使早于的未使用的工作树过期。    使用工作树 你正在某个特性的开发工作中，这是你的老板来让你先修复一个问题。你通常会使用git stash来临时存储你的本地修改。然而，这时你的工作树处于混乱状态(新文件，移动文件，删除文件以及其他的一些文件)，你不想干扰你的进度。
+      <description>git工作树    参数 详情     -f —force 默认情况下，当&amp;lt;branch&amp;gt;被另外的工作树使用，add拒绝添加新的工作树。这个选项将会强制创建。   -b -B  当在添加或创建一个名字为&amp;lt; new-branch&amp;gt;的分支，将会在新的工作树上签出分支。如果忽略的话，默认是HEAD。默认-b当分支存在时，将不会创建新分支，但是-B会创建新的分支   &amp;ndash;detach 使用add，分类工作树中的HEAD   —[no-] checkout 默认add将会签出，然而—no-将会禁止签出，而使用自定义例如配置   -n —dry-run 使用prunce，这个选项将不会删除任何东西， 只是说明将会删除的内容。   &amp;ndash;porcelain 使用list，以易于解析的格式输出。无论用户怎么配置，都会在git中保持一致。   -v &amp;ndash;verbose 使用prune,的说明所有删除   —expire  使用prune，只会使早于的未使用的工作树过期。    使用工作树 你正在某个特性的开发工作中，这是你的老板来让你先修复一个问题。你通常会使用git stash来临时存储你的本地修改。然而，这时你的工作树处于混乱状态(新文件，移动文件，删除文件以及其他的一些文件)，你不想干扰你的进度。
 通过添加一个临时的工作树，你可以创建一个临时关联的工作树来保存这个紧急修改，然后在功能完成之后移出这个工作树，恢复之前的修改：
-$ git worktree add -b emergency-fix ../temp master $ pushd ../temp # .</description>
+$ git worktree add -b emergency-fix ../temp master $ pushd ../temp # ... work work work .</description>
     </item>
     
     <item>
@@ -281,11 +281,11 @@ $ git worktree add -b emergency-fix ../temp master $ pushd ../temp # .</descript
       <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-43.html</guid>
-      <description>git revisions的语法 通过对象名指定revision $ git show dae86e1950b1277e545cee180551750029cfe735 $ git show dae86e19  你可以使用SHA-1对象名称（完整的40位16进制字符串，或者在仓库中唯一的部分字符串）指定revision(或者任何的对象：tag，tree等待。目录内容，blob等等文件内容)。
-象征的引用名称：分支，tag，远端分支 $ git log master #指定分支 $ git show v1.0 #指定tag $ git show HEAD #指定当前分支 $ git show origin #指定远端Origin默认追踪的分支  你可以使用象征名称指定一个revision：例如分支(如 master next 等)，tag(如v1.0 v2.0等)，如远端追踪分支(例如 origin，origin/master等)，或者当前分支的特定名称HEAD。
+      <description>git revisions的语法 通过对象名指定revision $ git show dae86e1950b1277e545cee180551750029cfe735 $ git show dae86e19 你可以使用SHA-1对象名称（完整的40位16进制字符串，或者在仓库中唯一的部分字符串）指定revision(或者任何的对象：tag，tree等待。目录内容，blob等等文件内容)。
+象征的引用名称：分支，tag，远端分支 $ git log master #指定分支 $ git show v1.0 #指定tag $ git show HEAD #指定当前分支 $ git show origin #指定远端Origin默认追踪的分支 你可以使用象征名称指定一个revision：例如分支(如 master next 等)，tag(如v1.0 v2.0等)，如远端追踪分支(例如 origin，origin/master等)，或者当前分支的特定名称HEAD。
 如果符号引用名称不明确，例如，如果同时具有名为“fix”的分支和标记（不建议使用同名的分支和标记），则需要指定要使用的引用类型：
-$ git show heads/fix #或者 refs/heads/fix $ git show tags/fix #或者 refs/tags/fix  默认的revision:HEAD $ git show #等价于git show HEAD  HEAD是你当前工作树基于的提交所在的分支，通常是当前分支。很多(但不是全部)命令如果没有蚕食时都会使用HEAD作为默认的值。
-Reflog references: @{} $ git show @{1} #显示当前分支的reflog $ git show master@{1} #显示分支master的reflog $ git show HEAD@{1} #显示HEAD的reflog  一个引用(通常是一个分支或HEAD)后面跟着@之后一个{}包围的数字，指定当前仓库向前数第n个的提交。你可以使用git reflog命令或者使用git log的—walk-reflogs/ -g选项。</description>
+$ git show heads/fix #或者 refs/heads/fix $ git show tags/fix #或者 refs/tags/fix 默认的revision:HEAD $ git show #等价于git show HEAD HEAD是你当前工作树基于的提交所在的分支，通常是当前分支。很多(但不是全部)命令如果没有蚕食时都会使用HEAD作为默认的值。
+Reflog references: @{} $ git show @{1} #显示当前分支的reflog $ git show master@{1} #显示分支master的reflog $ git show HEAD@{1} #显示HEAD的reflog 一个引用(通常是一个分支或HEAD)后面跟着@之后一个{}包围的数字，指定当前仓库向前数第n个的提交。你可以使用git reflog命令或者使用git log的—walk-reflogs/ -g选项。</description>
     </item>
     
     <item>
@@ -305,8 +305,8 @@ Reflog references: @{} $ git show @{1} #显示当前分支的reflog $ git show m
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-41.html</guid>
       <description>搜索/查找错误提交 二进制搜索(git bisect) git bisect允许你使用二进制搜索查找哪个提交引入了错误。
 首先通过两个提交的引用来搜索：一个在bug之前的提交，一个在bug之后的提交。一般来说，错误的提交时HEAD。
-# start the git bisect session $ git bisect start # give a commit where the bug doesn&#39;t exist $ git bisect good 49c747d # give a commit where the bug exist $ git bisect bad HEAD  这里git开启了一个二进制搜索：这里把修订分为两个部分，并把仓库切换到中间的修订。检查代码确定这个修订是好的还是坏的：
-# tell git the revision is good, # which means it doesn&#39;t contain the bug $ git bisect good # if the revision contains the bug, # then tell git it&#39;s bad $ git bisect bad  git会根据你的操作对没有改包含错误修改的部分进行二进制的搜索。git最后只会有一个修改版本，除非你标记错误了，否则这个版本就是包含错误的版本。</description>
+# start the git bisect session $ git bisect start # give a commit where the bug doesn&amp;#39;t exist $ git bisect good 49c747d # give a commit where the bug exist $ git bisect bad HEAD 这里git开启了一个二进制搜索：这里把修订分为两个部分，并把仓库切换到中间的修订。检查代码确定这个修订是好的还是坏的：
+# tell git the revision is good, # which means it doesn&#39;t contain the bug $ git bisect good # if the revision contains the bug, # then tell git it&#39;s bad $ git bisect bad git会根据你的操作对没有改包含错误修改的部分进行二进制的搜索。git最后只会有一个修改版本，除非你标记错误了，否则这个版本就是包含错误的版本。</description>
     </item>
     
     <item>
@@ -315,9 +315,9 @@ Reflog references: @{} $ git show @{1} #显示当前分支的reflog $ git show m
       <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-40.html</guid>
-      <description>使用gitk图形化显示提交历史 显示一个文件的提交历史 gitk path/to/myfile  显示两个提交之间的提交 假设你有d9e1db9和5651067两个提交，然后想要看这两个提交之间的提交。d9e1db9是老提交，5651067是提交链上的末尾提交。
-gitk --ancestry-path d9e1db9 5651067  显示tag之后的提交 如果你有v2.3的tag，你可以获取这个tag之后的所有提交
-gitk v2.3..  参考：Git® Notes for Professionals book</description>
+      <description>使用gitk图形化显示提交历史 显示一个文件的提交历史 gitk path/to/myfile 显示两个提交之间的提交 假设你有d9e1db9和5651067两个提交，然后想要看这两个提交之间的提交。d9e1db9是老提交，5651067是提交链上的末尾提交。
+gitk --ancestry-path d9e1db9 5651067 显示tag之后的提交 如果你有v2.3的tag，你可以获取这个tag之后的所有提交
+gitk v2.3.. 参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -327,8 +327,8 @@ gitk v2.3..  参考：Git® Notes for Professionals book</description>
       
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-39.html</guid>
       <description>bundles 在本地创建一个bundle并应用到另一个 如果你想保持没有网络的机器上面的仓库的版本信息。 bundle允许你打包一台机器上这个仓库的对象和引用，然后应用到另一台机器的仓库上。
-git tag 2016_07_04 git bundle create changes_between_tags.bundle [some_previous_tag]..2016_07_24  以某种方式把changes_between_tags.bundle传到远端的机器上，例如：thumb drive。一旦你有了这个文件：
-git bundle verify changes_between_tags.bundle # make sure bundle arrived intact git checkout [some branch] # in the repo on the remote machine git bundle list-heads changes_between_tags.bundle # list the references in the bundle git pull changes_between_tags.bundle [reference from the bundle, e.g. last field from the previous output]  反过来也是可能的。一旦对远程存储库进行了更改，您就可以将增量放入bundle里面；将更改放在（例如）一个拇指驱动器上，然后将它们合并回本地存储库，这样两个存储库就可以保持同步，而不需要在计算机之间直接访问git、ssh、rsync或http协议。
+git tag 2016_07_04 git bundle create changes_between_tags.bundle [some_previous_tag]..2016_07_24 以某种方式把changes_between_tags.bundle传到远端的机器上，例如：thumb drive。一旦你有了这个文件：
+git bundle verify changes_between_tags.bundle # make sure bundle arrived intact git checkout [some branch] # in the repo on the remote machine git bundle list-heads changes_between_tags.bundle # list the references in the bundle git pull changes_between_tags.bundle [reference from the bundle, e.g. last field from the previous output] 反过来也是可能的。一旦对远程存储库进行了更改，您就可以将增量放入bundle里面；将更改放在（例如）一个拇指驱动器上，然后将它们合并回本地存储库，这样两个存储库就可以保持同步，而不需要在计算机之间直接访问git、ssh、rsync或http协议。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -340,7 +340,7 @@ git bundle verify changes_between_tags.bundle # make sure bundle arrived intact 
       <guid>http://blog.huaifufeng.com/2019/03/post/git-section-38.html</guid>
       <description>解决冲突 手动解决 当你在执行一个git merge命令的时候，你可能会发现一个“merge conflict”的错误。这将会告诉你哪些文件冲突了，你需要解决这些冲突。
 一个git status不管在什么时候都可以给你提供一个帮助信息，帮助你查看你需要做什么事情。
-On branch master You have unmerged paths. (fix conflicts and run &amp;quot;git commit&amp;quot;) Unmerged paths: (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to mark resolution) both modified: index.html no changes added to commit (use &amp;quot;git add&amp;quot; and/or &amp;quot;git commit -a&amp;quot;)  Git在冲突文件中添加了一些标识来告诉你哪些地方发生冲突了：
+On branch master You have unmerged paths. (fix conflicts and run &amp;quot;git commit&amp;quot;) Unmerged paths: (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to mark resolution) both modified: index.html no changes added to commit (use &amp;quot;git add&amp;quot; and/or &amp;quot;git commit -a&amp;quot;) Git在冲突文件中添加了一些标识来告诉你哪些地方发生冲突了：
 &amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD: index.html #indicates the state of your current branch &amp;lt;div id=&amp;quot;footer&amp;quot;&amp;gt;contact : email@somedomain.com&amp;lt;/div&amp;gt; ========= #indicates break between conflicts &amp;lt;div id=&amp;quot;footer&amp;quot;&amp;gt; please contact us at email@somedomain.</description>
     </item>
     
@@ -363,14 +363,14 @@ On branch master You have unmerged paths. (fix conflicts and run &amp;quot;git c
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-36.html</guid>
       <description>迁移到git subGit subGit可以用来把SVN仓库一次性导入到git仓库内。
-$ subgit import --non-interactive --svn-url http://svn.my.cm/repos/myproject myproject.git  使用Atlassian转换工具迁移SVN到GIT 从这里下载Atlassian转换工具。这个工具依赖于java，所以在你计划迁移之前确保你的本地安装有java运行环境JRE。
+$ subgit import --non-interactive --svn-url http://svn.my.cm/repos/myproject myproject.git 使用Atlassian转换工具迁移SVN到GIT 从这里下载Atlassian转换工具。这个工具依赖于java，所以在你计划迁移之前确保你的本地安装有java运行环境JRE。
 使用java -jar svn-migration-scripts.jar verify命令来检查你是否缺少完成迁移工作必须的程序。特别是这个命令会检查Git，subversion，git-svn工具。也会检查你的系统是否区分大小写。迁移到Git的工作应该在区分大小写的系统上进行，避免毁坏仓库。
 接下来你需要生成一个作者文件。Subversion只追踪提交者做的修改。然而Git使用两种信息来区分一个用户：真实名称和邮箱地址。下面的命令会生成一个txt文件，会把Subversion的用户名和Git等价起来：
-java -jar svn-migration-scripts.jar authors &amp;lt;svn-repo&amp;gt; authors.txt  这里是你想要进行转换的Subversion仓库的地址。运行这个命令只会，贡献者的身份信息会把映射到authors.txt中。邮箱地址会是下面这样的格式：@mycompany.com。在作者文件里面，你需要手动修改每一个人的默认名称（默认是他们的用户名）为他们的实际名称。在使用之前确保所有的邮箱地址是正确的。
+java -jar svn-migration-scripts.jar authors &amp;lt;svn-repo&amp;gt; authors.txt 这里是你想要进行转换的Subversion仓库的地址。运行这个命令只会，贡献者的身份信息会把映射到authors.txt中。邮箱地址会是下面这样的格式：@mycompany.com。在作者文件里面，你需要手动修改每一个人的默认名称（默认是他们的用户名）为他们的实际名称。在使用之前确保所有的邮箱地址是正确的。
 下面的命令会克隆一个SVN库到Git仓库：
-git svn clone --stdlayout --authors-file=authors.txt &amp;lt;svn-repo&amp;gt; &amp;lt;git-repo-name&amp;gt;  是像上面一样的仓库地址，是当前目录中用来克隆仓库的目录名称。在执行这个命令之前有一些需要注意的地方：
+git svn clone --stdlayout --authors-file=authors.txt &amp;lt;svn-repo&amp;gt; &amp;lt;git-repo-name&amp;gt; 是像上面一样的仓库地址，是当前目录中用来克隆仓库的目录名称。在执行这个命令之前有一些需要注意的地方：
  —stdlayout选项告诉Git使用trunk，branches，tags目录的标准布局。非标准的Subversion仓库的布局要求你指定trunk目录，branch目录，tag目录的本地路径。这可以使用下面的例子：git svn clone --trunk=/trunk --branches=/branches --branches=/bugfixes --tags=/tags --quthors-file=authors.txt &amp;lt;svn-repo&amp;gt; &amp;lt;git-repo-name&amp;gt; 这个命令执行多长时间依赖于你仓库的大小 要减少大仓库的转换时间，这个转换过程可以在Subversion仓库的服务器上运行，减少网络传输时间  git svn clone将Subversion的分支（包括trunk）导入为远端的分支，包括Subversion的tags（远端分支前缀为tags/）。要将它们转换为实际的分支和标记，请在Linux机器上按提供的顺序运行以下命令。运行这个命令之后，git branch -a显示所有正确的分支名称，git tag -l显示仓库的标记。
-git for-each-ref refs/remotes/origin/tags | cut -d / -f 5- | grep -v @ | while read tagname; do git tag $tagname origin/tags/$tagname; git branch -r -d origin/tags/$tagname; done git for-each-ref refs/remotes | cut -d / -f 4- | grep -v @ | while read branchname; do git branch &amp;quot;$branchname&amp;quot; &amp;quot;refs/remotes/origin/$branchname&amp;quot;; git branch -r -d &amp;quot;origin/$branchname&amp;quot;; done  这样从svn到Git的转换过程就完成了。可以使用push把本地的仓库推送到服务器。并且可以继续使用git来更新仓库，这个仓库包括svn的所有提交历史。</description>
+git for-each-ref refs/remotes/origin/tags | cut -d / -f 5- | grep -v @ | while read tagname; do git tag $tagname origin/tags/$tagname; git branch -r -d origin/tags/$tagname; done git for-each-ref refs/remotes | cut -d / -f 4- | grep -v @ | while read branchname; do git branch &amp;quot;$branchname&amp;quot; &amp;quot;refs/remotes/origin/$branchname&amp;quot;; git branch -r -d &amp;quot;origin/$branchname&amp;quot;; done 这样从svn到Git的转换过程就完成了。可以使用push把本地的仓库推送到服务器。并且可以继续使用git来更新仓库，这个仓库包括svn的所有提交历史。</description>
     </item>
     
     <item>
@@ -381,9 +381,9 @@ git for-each-ref refs/remotes/origin/tags | cut -d / -f 5- | grep -v @ | while r
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-35.html</guid>
       <description>filter-branch修改提交历史 修改提交作者 你可以使用环境筛选器修改提交的作者。只需要在修改提交作者的脚本中修改并导出$GIT_AUTHOR_NAME。
 创建一个包含下面内容的filter.sh脚本：
-if [ &amp;quot;$GIT_AUTHOR_NAME&amp;quot; = &amp;quot;Author to Change From&amp;quot; ] then export GIT_AUTHOR_NAME=&amp;quot;Author to Change To&amp;quot; export GIT_AUTHOR_EMAIL=&amp;quot;email.to.change.to@example.com&amp;quot; fi  然后在命令行中运行这个命令：
-chmod +x ./filter.sh git filter-branch --env-filter ./filter.sh  修改提交人为提交作者 下面的命令修改commit1..commit2之间提交的提交人为提交的作者。
-git filter-branch -f --commit-filter \ &#39;export GIT_COMMITER_NAME=\&amp;quot;$GIT_AUTHOR_NAME\&amp;quot;; export GIT_COMMITER_EMAIL=\&amp;quot;$GIT_AUTHOR_EMAIL\&amp;quot;; export GIT_COMMITER_DATE=\&amp;quot;$GIT_AUTHOR_DATE\&amp;quot;; git commit-tree $@&#39; \ -- commit1..commit2  参考：Git® Notes for Professionals book</description>
+if [ &amp;quot;$GIT_AUTHOR_NAME&amp;quot; = &amp;quot;Author to Change From&amp;quot; ] then export GIT_AUTHOR_NAME=&amp;quot;Author to Change To&amp;quot; export GIT_AUTHOR_EMAIL=&amp;quot;email.to.change.to@example.com&amp;quot; fi 然后在命令行中运行这个命令：
+chmod +x ./filter.sh git filter-branch --env-filter ./filter.sh 修改提交人为提交作者 下面的命令修改commit1..commit2之间提交的提交人为提交的作者。
+git filter-branch -f --commit-filter \ &#39;export GIT_COMMITER_NAME=\&amp;quot;$GIT_AUTHOR_NAME\&amp;quot;; export GIT_COMMITER_EMAIL=\&amp;quot;$GIT_AUTHOR_EMAIL\&amp;quot;; export GIT_COMMITER_DATE=\&amp;quot;$GIT_AUTHOR_DATE\&amp;quot;; git commit-tree $@&#39; \ -- commit1..commit2 参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -404,15 +404,17 @@ git archive --format tar HEAD | cat &amp;gt; archive-HEAD.</description>
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-33.html</guid>
       <description>git-svn 克隆一个SVN仓库 你需要使用下面的命令创建一个仓库的本地新副本。
-git svn clone SVN_REPO_ROOT_URL [DEST_FOLDER_PATH] -T TRUNK_REPO_PATH -t TAGS_REPO_PATH -b BRANCHES_REPO_PATH  如果你的SVN仓库在标准的模式下面（trunk，branchs，tags目录），你可以使用下面的命令。
-git svn clone -s SVN_REPO_ROOT_URL [DEST_FOLDER_PATH]  git svn clone命令一个接一个的切换成SVN的修改，在你的本地仓库新建一个Git提交来重建历史的提交。如果SVN仓库有很多的提交，这将会花费很多的时间。
+git svn clone SVN_REPO_ROOT_URL [DEST_FOLDER_PATH] -T TRUNK_REPO_PATH -t TAGS_REPO_PATH -b BRANCHES_REPO_PATH 如果你的SVN仓库在标准的模式下面（trunk，branchs，tags目录），你可以使用下面的命令。
+git svn clone -s SVN_REPO_ROOT_URL [DEST_FOLDER_PATH] git svn clone命令一个接一个的切换成SVN的修改，在你的本地仓库新建一个Git提交来重建历史的提交。如果SVN仓库有很多的提交，这将会花费很多的时间。
 当命令执行完毕之后，你会获得一个仓库的完整信息，本地的git分支名称叫做master，也就是SVN仓库的trunk分支。
 推送修改到SVN 下面的命令
-git svn dcommit  将会为你本地的每一个git提交创建一个SVN的修订历史。和svn一样，你的本地git仓库必须同步svn仓库的全部修改，所以如果这个命令失败了，就先尝试运行git svn rebase。
+git svn dcommit 将会为你本地的每一个git提交创建一个SVN的修订历史。和svn一样，你的本地git仓库必须同步svn仓库的全部修改，所以如果这个命令失败了，就先尝试运行git svn rebase。
 在本地工作 就像git仓库一样使用本地的git仓库，使用git常用的命令：
  git add FILE和git checkout — FILE暂存或取消暂存一个文件 git commit来提交修改。这些提交都是本地的，不会推送到SVN仓库，像普通的git仓库一样。 git stash和git stash pop暂存和应用暂存修改 git reset HEAD —hard恢复本地所有的修改 git log访问仓库的所有历史 git rebase -i可以自由的修改提交历史 git branch和git checkout -b创建新的本地分支  就像git-svn描述的：Subversion是一个远没有git复杂的系统。所以你不能在不毁坏Subversion服务的情况下使用过全部的git功能。幸运的是规则非常简单：保持线性的提交历史。
 这意味着你可以做几乎所有的git操作：创建分支，删除/重拍/压缩提交，改变提交历史，删除提交等等。除了merge操作。如果你要整合本地提交的历史，使用git rebase命令。
-当你进行merge操作的时候，一个merge提交就建立了。一个特别需要注意的事：merge提交拥有两个父提交，这样提交历史就不是线性的了。当你推送一个merge提交到这个仓库的时候，SVN会非常糊涂。</description>
+当你进行merge操作的时候，一个merge提交就建立了。一个特别需要注意的事：merge提交拥有两个父提交，这样提交历史就不是线性的了。当你推送一个merge提交到这个仓库的时候，SVN会非常糊涂。
+但是不用担心：推送一个merge提交并不会毁坏任何东西。当你把一个merge提交推送到SVN，svn会保存所有的修改，但是会丢掉这些提交的历史。
+从SVN回去最新修改 等价于git pull的命令是：</description>
     </item>
     
     <item>
@@ -422,11 +424,11 @@ git svn dcommit  将会为你本地的每一个git提交创建一个SVN的修订
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-32.html</guid>
       <description>空目录 假设你用下面的目录结构初始化了一个项目：
-/build app.js  然后你添加所有的文件并且提交：
-git init git add . git commit -m &amp;quot;Initial commit&amp;quot;  git将会值追踪app.js文件。
+/build app.js 然后你添加所有的文件并且提交：
+git init git add . git commit -m &amp;quot;Initial commit&amp;quot; git将会值追踪app.js文件。
 假设你想应用程序添加了一个构建步骤，并依赖“构建”目录作为输出目录（你不想让它成为每个人都必须遵循的安装命令），惯例是在目录中包含一个“.gitkeep”文件，并让git跟踪该文件。
-/build .gitkeep app.js  然后添加这个新文件：
-git add build/.gitkeep git commit -m &amp;quot;Keep the build directory around&amp;quot;  git现在追踪文件build/.gitkeep，因此build目录讲座签出时有效。同时这只是一个月的，而不是git的特性。
+/build .gitkeep app.js 然后添加这个新文件：
+git add build/.gitkeep git commit -m &amp;quot;Keep the build directory around&amp;quot; git现在追踪文件build/.gitkeep，因此build目录讲座签出时有效。同时这只是一个月的，而不是git的特性。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -437,14 +439,14 @@ git add build/.gitkeep git commit -m &amp;quot;Keep the build directory around&a
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-31.html</guid>
       <description>git-tfs git-tfs克隆 这将创建一个和项目名一样的目录，/My.Project.Name：
-$ git tfs clone http://tfs:8080/tfs/DefaultCollection/ $/My.Project.Name  从裸Git仓库克隆 从git仓库克隆比直接从TFV仓库克隆快10倍，并且在团队中工作的很好。至少有一个团队成员必须首先通过执行常规的git-tfs克隆来创建裸露的git存储库。然后可以引导新的存储库使用TFV。
-$ git clone x:/fileshare/git/My.Project.Name.git $ cd My.Project.Name $ git tfs bootstrap $ git tfs pull  通过Chocolatey安装 下面假设你使用kdiff3来进行文件差异，虽然不是必须的但是这是给好主意：
-C:\&amp;gt; choco install kdiff3  可以先安装Git，这样就可以说出你想要的任何参数。这里还安装了所有Unix工具，&amp;rsquo;NoAutoCrlf&amp;rsquo;表示按原样切换，按原样提交。
-C:\&amp;gt; choco install git -params &#39;&amp;quot;/GitAndUnixToolsOnPath /NoAutoCrlf&amp;quot;&#39;  这是所有你使用Chocolatey安装git-tfs的所有事情：
-C:\&amp;gt; choco install git-tfs  签入 启动TFVS的“检入”对话框。
-$ git tfs checkintool  这将占用您所有的本地提交并创建一个单一的check-in。
+$ git tfs clone http://tfs:8080/tfs/DefaultCollection/ $/My.Project.Name 从裸Git仓库克隆 从git仓库克隆比直接从TFV仓库克隆快10倍，并且在团队中工作的很好。至少有一个团队成员必须首先通过执行常规的git-tfs克隆来创建裸露的git存储库。然后可以引导新的存储库使用TFV。
+$ git clone x:/fileshare/git/My.Project.Name.git $ cd My.Project.Name $ git tfs bootstrap $ git tfs pull 通过Chocolatey安装 下面假设你使用kdiff3来进行文件差异，虽然不是必须的但是这是给好主意：
+C:\&amp;gt; choco install kdiff3 可以先安装Git，这样就可以说出你想要的任何参数。这里还安装了所有Unix工具，&amp;lsquo;NoAutoCrlf&#39;表示按原样切换，按原样提交。
+C:\&amp;gt; choco install git -params &#39;&amp;quot;/GitAndUnixToolsOnPath /NoAutoCrlf&amp;quot;&#39; 这是所有你使用Chocolatey安装git-tfs的所有事情：
+C:\&amp;gt; choco install git-tfs 签入 启动TFVS的“检入”对话框。
+$ git tfs checkintool 这将占用您所有的本地提交并创建一个单一的check-in。
 推送 推送本地的所有提交到TFVS远端。
-$ git tfs rcheckin  注意：如果需要签入备注，这将失败。 可以通过将git-tfs-force：rcheckin添加到提交消息来绕过这些。
+$ git tfs rcheckin 注意：如果需要签入备注，这将失败。 可以通过将git-tfs-force：rcheckin添加到提交消息来绕过这些。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -454,26 +456,26 @@ $ git tfs rcheckin  注意：如果需要签入备注，这将失败。 可以�
       <pubDate>Thu, 21 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-30.html</guid>
-      <description>内部概念 仓库 一个git repository就是硬盘上面存储了一系列的文件和目录信息的数据结构。
+      <description>内部概念 仓库 一个git repository 就是硬盘上面存储了一系列的文件和目录信息的数据结构。
 这些信息在你的.git/目录下面。每一次你使用git提交数据，它都会把数据存储在这里。反过来说，.git/目录保存了每一个单独提交。
 它基本的结构像下面一样：
-.git/ objects/ refs/  对象 Git从根本上说是一个键值存储。当你向git添加数据的时候，将会构建一个对象，并且使用对象内容的SHA-1值作为键值。
+.git/ objects/ refs/ 对象 Git从根本上说是一个键值存储。当你向git添加数据的时候，将会构建一个对象，并且使用对象内容的SHA-1值作为键值。
 因此，任何git里面的内容都可以通过hash值找到：
-git cat-file -p 4bb6f98  有四种类型的对象：
+git cat-file -p 4bb6f98 有四种类型的对象：
  blob tree commit tag  HEAD引用 HEAD是一个特殊的ref。它将会一直指向当前的对象。
 你可以查看.git/HEAD文件当前指向的内容。
 一般来说，HEAD指向另一个ref：
-$ cat .git/HEAD ref: refs/heads/mainline  但是它也可以指向另外的对象：
-$ cat .git/HEAD 4bb6f98a223abc9345a0cef9200562333  这就是所谓的“分离的头部”——因为HEAD不连接（指向）任何引用，而是直接指向一个对象。
+$ cat .git/HEAD ref: refs/heads/mainline 但是它也可以指向另外的对象：
+$ cat .git/HEAD 4bb6f98a223abc9345a0cef9200562333 这就是所谓的“分离的头部”——因为HEAD不连接（指向）任何引用，而是直接指向一个对象。
 引用 一个ref本质是一个指针，指向对象的名称。例如：
-&amp;quot;master&amp;quot; --&amp;gt; 1a410e...  他们都存储在.git/refs/heads/这个文本文件内。
-$ cat .git/refs/heads/mainline 4bb6f98a223abc9345a0cef9200562333  这通常被叫做分支。但是你要注意在Git里面没有分支，只有引用。
+&amp;quot;master&amp;quot; --&amp;gt; 1a410e... 他们都存储在.git/refs/heads/这个文本文件内。
+$ cat .git/refs/heads/mainline 4bb6f98a223abc9345a0cef9200562333 这通常被叫做分支。但是你要注意在Git里面没有分支，只有引用。
 现在完全可以通过hash值来跳转到不同的对象。但这会非常不方便。引用提供了一个便捷的名称来引用对象。要求Git按名称而不是哈希去特定的地方要容易得多。
 提交对象 提交可能是用户最熟悉的对象类型。因为这是他们使用git命令创建的对象类型。
 然后提交没有直接包含任何修改过的文件或数据。相反，它主要包括元数据和指向其他对象的指针，这些对象包含提交的实际内容。
 一个提交对象包含下面的内容：
  一个tree的hash值 父commit的hash值 作者的名称/邮箱，提交者的名称/邮箱 提交信息  你可以像下面一样查看任何提交的内容：
-$ git cat-file commit 5bac93 tree 04d1daef.</description>
+$ git cat-file commit 5bac93 tree 04d1daef... parent b7850ef5.</description>
     </item>
     
     <item>
@@ -483,12 +485,13 @@ $ git cat-file commit 5bac93 tree 04d1daef.</description>
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-29.html</guid>
       <description>push    参数 详情     &amp;ndash;force 强制重命名或移动一个文件，哪怕目标已经存在   —verbose 运行详细信息    将要push到的远端仓库   &amp;hellip; 指明将要使用本地ref或对象更新的远端引用    在Git修改，暂存和提交代码之后，接下来就需要push操作来把你本地的修改分享给其他人，把你本地的修改推送到仓库服务器。这个主题主要介绍如果使用Git来推送代码。
-推送指定对象到远端分支 一般语法 git push &amp;lt;remottename&amp;gt; &amp;lt;object&amp;gt;:&amp;lt;remotebranchname&amp;gt;  例子 git push origin master:wip-yourname  这个例子将会推送你本地的master分支到origin的wip-yourname分支上面（一般是你克隆的仓库）。
+推送指定对象到远端分支 一般语法 git push &amp;lt;remottename&amp;gt; &amp;lt;object&amp;gt;:&amp;lt;remotebranchname&amp;gt; 例子 git push origin master:wip-yourname 这个例子将会推送你本地的master分支到origin的wip-yourname分支上面（一般是你克隆的仓库）。
 删除远端分支 删除远端分支就等价于推送一个空对象到远端。
-git push &amp;lt;remotename&amp;gt; :&amp;lt;remotebranchname&amp;gt;  例子 git push origin :wip-yourname  将会删除你的远端分支wip-yourname。
+git push &amp;lt;remotename&amp;gt; :&amp;lt;remotebranchname&amp;gt; 例子 git push origin :wip-yourname 将会删除你的远端分支wip-yourname。
 除了使用冒号，你可以使用—delete选项来代替，在一些情况下是更加可读的。
-例子 git push origin --delete wip-yourname  推送单独提交 如果你本地有一个单独的提交，你想要推送到远端不推送其他的内容，你可以使用下面的命令：
-git push &amp;lt;remotename&amp;gt; &amp;lt;commit SHA&amp;gt;:&amp;lt;remotebrranchname&amp;gt;  例子 假设存在一个像下面一样的提交历史：</description>
+例子 git push origin --delete wip-yourname 推送单独提交 如果你本地有一个单独的提交，你想要推送到远端不推送其他的内容，你可以使用下面的命令：
+git push &amp;lt;remotename&amp;gt; &amp;lt;commit SHA&amp;gt;:&amp;lt;remotebrranchname&amp;gt; 例子 假设存在一个像下面一样的提交历史：
+eeb32bc Commit 1 - already pushed 347d700 Commit 2 - want to push e539af8 Commit 3 - only local 5d339db Commit 4 - only local 只想要吧提交347d700推送到远端的master分支，使用下面的命令：</description>
     </item>
     
     <item>
@@ -498,13 +501,14 @@ git push &amp;lt;remotename&amp;gt; &amp;lt;commit SHA&amp;gt;:&amp;lt;remotebrr
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-28.html</guid>
       <description>重命名    参数 详情     -f 或者&amp;ndash;force 强制重命名或移动一个文件，哪怕目标已经存在    重命名目录 重命名一个目录，从oldname到newname：
-git mv directoryToFolder/oldName directoryToFolder/newName  然后就可以git commit和git push了。
+git mv directoryToFolder/oldName directoryToFolder/newName 然后就可以git commit和git push了。
 如果出现了错误：
  fatal: renaming &amp;lsquo;directoryToFolder/oldName&amp;rsquo; failed: Invalid argument
  使用下面的命令：
-git mv directoryToFolder/oldName temp &amp;amp;&amp;amp; git mv temp directoryToFolder/newName  重命名本地和远端分支 最简单的方式是切换出本地的分支：
-git checkout old_branch  然后重命名本地分支，删除老分支，设置上游的新分支名称：
-git branch -m new_branch git push origin :old_branch git push --set-upstream origin new_branch  重命名本地分支 你可以使用下面的命令重命名本地分支：</description>
+git mv directoryToFolder/oldName temp &amp;amp;&amp;amp; git mv temp directoryToFolder/newName 重命名本地和远端分支 最简单的方式是切换出本地的分支：
+git checkout old_branch 然后重命名本地分支，删除老分支，设置上游的新分支名称：
+git branch -m new_branch git push origin :old_branch git push --set-upstream origin new_branch 重命名本地分支 你可以使用下面的命令重命名本地分支：
+git branch -m old_name new_name 参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -514,12 +518,12 @@ git branch -m new_branch git push origin :old_branch git push --set-upstream ori
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-27.html</guid>
       <description>子树 创建、拉入和反向端口子树 创建子树 添加一个新的远端plugin指向组件的远端仓库：
-git remote add plugin https://path.to/remotes/plugin.git  然后创建一个子树指定一个plugins/demo前缀的新目录。plugin是远端的名称，master是引用的子树仓库的master分支名。
-git subtree add --prefix=plugins/demo plugin master  子树更新 pull拉取plugin中正常的提交：
-git subtree pull --prefix=plugins/demo plugin master  反向端口子树更新  指定在超级项目中进行的要进行反向移植的提交：
-git commit -am &amp;quot;new changes to be backported&amp;quot;  签出要合并的新分支，设置为跟踪子树存储库
-git checkout -b backport plugin/master  Cherry-pick backports
-git cherry-pick -x --strategy=subtree master  推送修改到远端的plugin
+git remote add plugin https://path.to/remotes/plugin.git 然后创建一个子树指定一个plugins/demo前缀的新目录。plugin是远端的名称，master是引用的子树仓库的master分支名。
+git subtree add --prefix=plugins/demo plugin master 子树更新 pull拉取plugin中正常的提交：
+git subtree pull --prefix=plugins/demo plugin master 反向端口子树更新   指定在超级项目中进行的要进行反向移植的提交：
+git commit -am &amp;quot;new changes to be backported&amp;quot;   签出要合并的新分支，设置为跟踪子树存储库
+git checkout -b backport plugin/master   Cherry-pick backports
+git cherry-pick -x --strategy=subtree master   推送修改到远端的plugin
 git push plugin backport:master   参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -541,16 +545,18 @@ git push plugin backport:master   参考：Git® Notes for Professionals book</d
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-25.html</guid>
       <description>clone 浅克隆 克隆一个大项目（像已经有多年历史的项目）可能会花费很长的时间，或者因为需要传输太多的数据而出现问题。因此你不需要获取所有有效的历史，你可以使用一个浅克隆：
-git clone [repo_url] --depth 1  上面的命令只会获取远端仓库的最新提交。
+git clone [repo_url] --depth 1 上面的命令只会获取远端仓库的最新提交。
 注意你可能无法在浅克隆仓库中解析merge提交。获取足够解析merge提交的提交数是个好的主意。例如，获取至少50个提交：
-git clone [rrepo_url] --depth 50  之后如果需要的话，你可以fetch仓库其他的提交：
+git clone [rrepo_url] --depth 50 之后如果需要的话，你可以fetch仓库其他的提交：
 Version &amp;gt;= 1.8.3
-git fetch --unshallow # equivalent of git fetch -–depth=2147483647 # fetches the rest of the repository  Version &amp;lt; 1.8.3
-git fetch --depth=1000 # fetch the last 1000 commits  普通克隆 下载整个仓库包括所有的历史和所有的分支，输入：
-git clone &amp;lt;url&amp;gt;  上面的例子将会把仓库的信息放到一个和仓库名称一致的目录内。
+git fetch --unshallow # equivalent of git fetch -–depth=2147483647 # fetches the rest of the repository Version &amp;lt; 1.8.3
+git fetch --depth=1000 # fetch the last 1000 commits 普通克隆 下载整个仓库包括所有的历史和所有的分支，输入：
+git clone &amp;lt;url&amp;gt; 上面的例子将会把仓库的信息放到一个和仓库名称一致的目录内。
 下载一个仓库，并且把仓库的信息放到指定的目录内：
-git clone &amp;lt;url&amp;gt; [directory]  克隆指定分支 克隆一个仓库指定的分支，可以在仓库地址前面加上--branch选项：
-git clone --branch &amp;lt;branch_name&amp;gt; &amp;lt;url&amp;gt; [directory]  也可以使用—branch选项的简写格式-b。这个命令会下载整个仓库，并且切换到&amp;lt;branch_name&amp;gt;分支。</description>
+git clone &amp;lt;url&amp;gt; [directory] 克隆指定分支 克隆一个仓库指定的分支，可以在仓库地址前面加上--branch选项：
+git clone --branch &amp;lt;branch_name&amp;gt; &amp;lt;url&amp;gt; [directory] 也可以使用—branch选项的简写格式-b。这个命令会下载整个仓库，并且切换到&amp;lt;branch_name&amp;gt;分支。
+为了节省硬盘空间，你可以只克隆一个分支的历史：
+git clone --branch &amp;lt;branch_name&amp;gt; --single-branch &amp;lt;url&amp;gt; [directory] 如果没有指定--single-branch选项，仓库所有的分支历史都会被看了到[directory]里面。这对于大仓库是一个问题。</description>
     </item>
     
     <item>
@@ -564,7 +570,7 @@ Version&amp;gt;=1.8
 Pre-push钩子可以用来避免过度推送。这很有用，这是其中的一些原因：阻止意外的手动推送到指定分支，或者当遇到错误时阻止推送（单元检测，语法等）。
 创建一个Pre-push钩子是很贱的，只需要在.git/hooks/目录下面创建一个名为pre-push的文件，（警戒），并且确保这个文件有执行的权限：chmod +x ./git/hooks/pre-push。
 下面是Hannah Wolfe提供的一个阻止推送到master分支的钩子：
-#!/bin/bash protected_branch=&#39;master&#39; current_branch=$(git symbolic -ref HEAD | sed -e &#39;s,.*/\(.*\),\1,&#39;) if [$protected_branch = $current_branch] then read -p &amp;quot;You&#39;re about to push master, is that what you intended? [y|n] &amp;quot; -n 1 -r &amp;lt; /dev/tty echo if echo $REPLY | grep -E &#39;^[Yy]$&#39; &amp;gt; /dev/null then exit 0 #push 将会执行 fi exit 1 #push 将不会执行 else exit 0 #push 执行 fi  下面是Volkan Unsal提供的要求在push之前需要确保通过了RSpec的测试的例子：</description>
+#!/bin/bash protected_branch=&#39;master&#39; current_branch=$(git symbolic -ref HEAD | sed -e &#39;s,.*/\(.*\),\1,&#39;) if [$protected_branch = $current_branch] then read -p &amp;quot;You&#39;re about to push master, is that what you intended? [y|n] &amp;quot; -n 1 -r &amp;lt; /dev/tty echo if echo $REPLY | grep -E &#39;^[Yy]$&#39; &amp;gt; /dev/null then exit 0 #push 将会执行 fi exit 1 #push 将不会执行 else exit 0 #push 执行 fi 下面是Volkan Unsal提供的要求在push之前需要确保通过了RSpec的测试的例子：</description>
     </item>
     
     <item>
@@ -575,11 +581,11 @@ Pre-push钩子可以用来避免过度推送。这很有用，这是其中的一
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-23.html</guid>
       <description>Pull    Parameter Details     &amp;ndash;quiet 没有文本输出   -q —-quiet的短格式   &amp;ndash;verbose 详细文本输出。可以分别传给merge/rebase命令   -v —verbos的短格式   &amp;ndash;[no-]recurse-submodules[=yes|on-demand|no] 获取子模块的新提交？（注意这个不是pull/checkout）    不像push是把你本地的修改推到集中版本关联服务器，而是从代码仓库服务器获取服务器上当前的代码，并且把代码从远端服务器拉取到本地机器。本主题说明了使用Git从代码库中提取代码的过程，以及将不同代码提取到本地副本时可能遇到的情况。
 获取修改到本地代码库 简单pull 当你和其他人在一个远端仓库（例如Github）协同工作时，某些时候你想和其他人分享你的修改。当他们已经把自己的修改推送到这个仓库时，你可以使用pull命令从这个仓库获取这些修改。
-git pull  在大多数的情况下，这都会正常工作的。
+git pull 在大多数的情况下，这都会正常工作的。
 从不同的远端或分支获取 你可以通过指定远端或分支的名字来从远端仓库获取这些修改：
-git pull origin feature-A  将会从origin拉取分支feature-A的修改到本地分支。注意你可以直接使用远端url来代替远端名称，使用提交的SHA来代替分支名称。
+git pull origin feature-A 将会从origin拉取分支feature-A的修改到本地分支。注意你可以直接使用远端url来代替远端名称，使用提交的SHA来代替分支名称。
 手动pull 你可以使用git fetch和git merge模拟pull命令的行为：
-git fetch origin # retrieve objects and update refs from origin git merge origin/feature-A # actually perform the merge  这给与你更多的控制器，允许你在合并分支之前检查分支的内容。实际上，在fetch代码之后，你可以使用git branch -a命令来查看远端的分支，然后切换到这个分支：</description>
+git fetch origin # retrieve objects and update refs from origin git merge origin/feature-A # actually perform the merge 这给与你更多的控制器，允许你在合并分支之前检查分支的内容。实际上，在fetch代码之后，你可以使用 git branch -a命令来查看远端的分支，然后切换到这个分支：</description>
     </item>
     
     <item>
@@ -633,11 +639,11 @@ Fork工作流 这种工作流和其他提到的工作流有着根本的不同。
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-21.html</guid>
       <description>.mailmap文件 按别名合并贡献者以在短日志中显示提交计数 当贡献者从不同的机器或操作系统添加到一个项目中时，他们可能会为此使用不同的电子邮件或名称，这将分割贡献者列表和统计信息。
 git shortlog -sn命令可以获取贡献者的列表和他们各自的提交数量，具体的结果像下面这样：
-Patrick Rothfuss 871 Elizabeth Moon 762 E. Moon 184 Rothfuss, Patrick 90  可以通过提供包含电子邮件映射的纯文本文件.mailmap来调整此碎片/解除关联。
+Patrick Rothfuss 871 Elizabeth Moon 762 E. Moon 184 Rothfuss, Patrick 90 可以通过提供包含电子邮件映射的纯文本文件.mailmap来调整此碎片/解除关联。
 一行中列出的所有名称和电子邮件地址将分别与第一个命名实体关联。
 像上面的例子，一个map邮件像下面这样：
-Patrick Rothfuss &amp;lt;fussy@kingkiller.com&amp;gt; Rothfuss, Patrick &amp;lt;fussy@kingkiller.com&amp;gt; Elizabeth Moon &amp;lt;emoon@marines.mil&amp;gt; E. Moon &amp;lt;emoon@scifi.org&amp;gt;  如果这个文件在项目的根目录，运行git shortlog -sn命令将会返回缩减之后的结果：
-Patrick Rothfuss 961 Elizabeth Moon 946  参考：Git® Notes for Professionals book</description>
+Patrick Rothfuss &amp;lt;fussy@kingkiller.com&amp;gt; Rothfuss, Patrick &amp;lt;fussy@kingkiller.com&amp;gt; Elizabeth Moon &amp;lt;emoon@marines.mil&amp;gt; E. Moon &amp;lt;emoon@scifi.org&amp;gt; 如果这个文件在项目的根目录，运行git shortlog -sn命令将会返回缩减之后的结果：
+Patrick Rothfuss 961 Elizabeth Moon 946 参考：Git® Notes for Professionals book</description>
     </item>
     
     <item>
@@ -647,13 +653,13 @@ Patrick Rothfuss 961 Elizabeth Moon 946  参考：Git® Notes for Professionals 
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-20.html</guid>
       <description>.gitattributes文件 自动行结束符标准化 在项目的更目录创建.gitattributes文件，里面添加下面的内容：
-* text=auto  这将导致所有文本文件（由Git标识的）使用LF提交，但根据操作系统的不同默认检出合适的格式。
+* text=auto 这将导致所有文本文件（由Git标识的）使用LF提交，但根据操作系统的不同默认检出合适的格式。
 这等价于core.autocrlf配置项使用下面的配置：
  Linux/macOS里面是input Windows里面是true  识别二进制文件 Git非常擅长识别二进制文件，但是你可以指明哪些文件时二进制的。在项目的根目录创建.gitattributes文件，并添加下面的配置：
-*.png binary  binary是内建的宏命令，等价于-diff -merge -text。
+*.png binary binary是内建的宏命令，等价于-diff -merge -text。
 .gitattributes模板 如果你确定你的.gitattributes文件是否少了某些规则，或者你只是想给你的项目添加一个通用的配置，你可以在下面的地址中选择或生成一个.gitattributes文件：
  https://gitattributes.io/ https://github.com/alexkaratarakis/gitattributes  进制行结束符标准化 在项目的根目录创建.gitattributes文件，并在里面添加：
-* -text  这个配置等价于下面的配置core.autocrlf = false。
+* -text 这个配置等价于下面的配置core.autocrlf = false。
 参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -663,8 +669,9 @@ Patrick Rothfuss 961 Elizabeth Moon 946  参考：Git® Notes for Professionals 
       <pubDate>Sun, 10 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-19.html</guid>
-      <description>Git清理    Parameter Details     -d 除了未追踪的文件外，删除未追踪的文件夹。如果未追踪的文件夹由不同的Git仓库管理，默认是不删除的。如果你一定要删除，使用两次-f选项。   -f,&amp;ndash;force 如果Git的配置clean. requireForce配置为false，Git将不会删除任何文件或目录，除了提供-f，-n或-i选项。除非给出第二个-f，否则Git将拒绝删除有.git子目录的目录或文件。   -i,&amp;ndash;interactive 交互式操作删除每个文件   -n,&amp;ndash;dry-run 只显示将要被删除的文件列表，而不实际删除这些内容   -q,&amp;ndash;quiet 只显示删除出错的文件，不显示成功的文件    交互式清理 git clean -i  打印出将要被清理的文件，使用下面的命令进行确认：
-Would remove the following items: folder/file1.py folder/file2.py *** Commands *** 1: clean 2: filter by pattern 3: select by numbers 4: ask each 5: quit 6: help What now&amp;gt;  交互式选项-i可以和其他的选项-X，-d一起添加。</description>
+      <description>Git清理    Parameter Details     -d 除了未追踪的文件外，删除未追踪的文件夹。如果未追踪的文件夹由不同的Git仓库管理，默认是不删除的。如果你一定要删除，使用两次-f选项。   -f,&amp;ndash;force 如果Git的配置clean. requireForce配置为false，Git将不会删除任何文件或目录，除了提供-f，-n或-i选项。除非给出第二个-f，否则Git将拒绝删除有.git子目录的目录或文件。   -i,&amp;ndash;interactive 交互式操作删除每个文件   -n,&amp;ndash;dry-run 只显示将要被删除的文件列表，而不实际删除这些内容   -q,&amp;ndash;quiet 只显示删除出错的文件，不显示成功的文件    交互式清理 git clean -i 打印出将要被清理的文件，使用下面的命令进行确认：
+Would remove the following items: folder/file1.py folder/file2.py *** Commands *** 1: clean 2: filter by pattern 3: select by numbers 4: ask each 5: quit 6: help What now&amp;gt; 交互式选项-i可以和其他的选项-X，-d一起添加。
+强制清理未暂存文件 git clean -f 清理没有暂存的文件。</description>
     </item>
     
     <item>
@@ -675,11 +682,12 @@ Would remove the following items: folder/file1.py folder/file2.py *** Commands *
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-18.html</guid>
       <description>恢复 恢复reset操作 使用Git，你总是（几乎）可以把时钟倒转。
 不要害怕尝试重写历史的命令。Git默认不会删除你90天内的提交，在此期间你可以使用reflog轻松的恢复这些修改：
-$ git reset @~3 # go back 3 commits $ git reflog c4f708b HEAD@{0}: reset: moving to @~3 2c52489 HEAD@{1}: commit: more changes 4a5246d HEAD@{2}: commit: make important changes e8571e4 HEAD@{3}: commit: make some changes ... earlier commits ... $ git reset 2c52489 ... and you&#39;re back where you started  *注意像--hard和—force这样的选项：他们会丢弃修改
+$ git reset @~3 # go back 3 commits $ git reflog c4f708b HEAD@{0}: reset: moving to @~3 2c52489 HEAD@{1}: commit: more changes 4a5246d HEAD@{2}: commit: make important changes e8571e4 HEAD@{3}: commit: make some changes ... earlier commits ... $ git reset 2c52489 ... and you&#39;re back where you started *注意像--hard和—force这样的选项：他们会丢弃修改
 *另外，避免在协助的分支上面修改提交历史。
 恢复stash 获取你在执行git stash命令之后你最新的暂存修改，使用下面命令：
-git stash apply  查看你暂存的信息列表：
-git stash list  你可以获取像下面这样的修改：</description>
+git stash apply 查看你暂存的信息列表：
+git stash list 你可以获取像下面这样的修改：
+stash@{0}: WIP on master: 67a4e01 Merge tests into develop stash@{1}: WIP on master: 70f0d95 Add user role to localStorage on user login 选择一个不同的git stash，使用显示所需存储的数字进行恢复：</description>
     </item>
     
     <item>
@@ -690,11 +698,11 @@ git stash list  你可以获取像下面这样的修改：</description>
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-17.html</guid>
       <description>随意选取    Parameter Details     -e,&amp;ndash;edit 选择这个选项，使用git cherry-pick命令允许你在提交信息之前编辑提交信息   -x 记录提交时，在原始提交消息中附加一行（cherry picked from commit&amp;hellip;），以指示从哪个提交中挑选出这个更改。这个只适用于没有冲突的选取。   &amp;ndash;ff 如果当前的HEAD和cherry的提交的父提交同级，将会执行此提交的快进。   &amp;ndash;continue 使用.git/sequencer里面的信息继续进行当前的操作。可以在解决失败的挑选或恢复中的冲突后继续使用   &amp;ndash;quit 忘记当前的操作。在选取或恢复失败后，可以用来清除sequencer的信息   &amp;ndash;abort 取消当前操作，恢复之前的状态    一个随意选取获取提交中引入的补丁，并尝试在您当前所在的分支上重新应用它。
 Source：Git SCM Book
-从一个分支复制提交到另一个分支 git cherry-pick &amp;lt;commit-hash&amp;gt;会应用另一个分支上的已经存在的提交修改，将会记录一个新的修改。实际上，你可以把提交从分支复制到另一个分支。
+从一个分支复制提交到另一个分支 git cherry-pick &amp;lt;commit-hash&amp;gt; 会应用另一个分支上的已经存在的提交修改，将会记录一个新的修改。实际上，你可以把提交从分支复制到另一个分支。
 已经有下面的提交树(source)：
-dd2e86 - 946992 - 9143a9 - a6fd86 - 5a6057 [master] \ 76cada - 62ecb3 - b886a0 [feature]  我们想把b886a0这个分支的修改复制到master上（5a6057之上）：
+dd2e86 - 946992 - 9143a9 - a6fd86 - 5a6057 [master] \ 76cada - 62ecb3 - b886a0 [feature] 我们想把b886a0这个分支的修改复制到master上（5a6057之上）：
 我们使用下面的命令：
- git checkout master git cherry-pick b886a0  下面我们的提交树就变成下面这样：</description>
+ git checkout master git cherry-pick b886a0 下面我们的提交树就变成下面这样：</description>
     </item>
     
     <item>
@@ -704,18 +712,18 @@ dd2e86 - 946992 - 9143a9 - a6fd86 - 5a6057 [master] \ 76cada - 62ecb3 - b886a0 [
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-16.html</guid>
       <description>压缩 不使用rebase压缩提交 如果你想把之前的x个提交压缩到一个提交，你可以使用下面的命令：
-$ git reset --soft HEAD~x $ git commit  这里，你可以替换x为你想要压缩到一个提交的多个提交的数量。
+$ git reset --soft HEAD~x $ git commit 这里，你可以替换x为你想要压缩到一个提交的多个提交的数量。
 请记住这将会创建一个新的提交，基本上会丢掉之前x个提交包含的提交人，提交信息和提交日期。你可能需要首先复制粘贴现有的提交消息。
 merge时压缩提交 你可以使用git merge —squash命令把这个分支的修改压缩到一个提交。并不是实际的提交被创建了。
- git merge --squash &amp;lt;branch&amp;gt; git commit  这或多或少相当于使用git reset命令，但当合并更改具有符号名时更方便。比较：
-git checkout &amp;lt;branch&amp;gt; git reset --soft $(git merge-base master &amp;lt;branch&amp;gt;) git commit  rebase时压缩提交 在git rebase命令执行的时候可以压缩多个提交。建议您在尝试以这种方式压缩提交之前了解rebase命令。
- 确定要从哪个提交中rebase，并注意其提交的hash值。
- 执行git rebase -i [commit hash]
-  或者，你可以使用HEAD~4来代替提交的hash值，来查看最新的提交和最新之前4个提交
- 在运行这个命令打开的编辑器中，选择哪些提交你想要合并。替换这些行之前的pick为squash来吧这些提交压缩的签名的提交中。
- 在选择了压缩的提交之后，你需要编辑提交的信息
+ git merge --squash &amp;lt;branch&amp;gt; git commit 这或多或少相当于使用git reset命令，但当合并更改具有符号名时更方便。比较：
+git checkout &amp;lt;branch&amp;gt; git reset --soft $(git merge-base master &amp;lt;branch&amp;gt;) git commit rebase时压缩提交 在git rebase命令执行的时候可以压缩多个提交。建议您在尝试以这种方式压缩提交之前了解rebase命令。
+  确定要从哪个提交中rebase，并注意其提交的hash值。
+  执行git rebase -i [commit hash]
+或者，你可以使用HEAD~4来代替提交的hash值，来查看最新的提交和最新之前4个提交
+  在运行这个命令打开的编辑器中，选择哪些提交你想要合并。替换这些行之前的pick为squash来吧这些提交压缩的签名的提交中。
+  在选择了压缩的提交之后，你需要编辑提交的信息
   查看提交并且决定哪些提交要rebase:
-&amp;gt; git log --oneline 612f2f7 This commit should not be squashed d84b05d This commit should be squashed ac60234 Yet another commit 36d15de Rebase from here 17692d1 Did some more stuff e647334 Another Commit 2e30df6 Initial commit &amp;gt; git rebase -i 36d15de  这时你选择的编辑器就会打开，在这里你可以描述你想要这些提交做什么。Git在注释中提供了帮助信息。如果你退出了这个编辑器，什么都不会发生，因为每个提交都会保持和之前一样的顺序。在这个例子中，我们应用下面的命令：</description>
+&amp;gt; git log --oneline 612f2f7 This commit should not be squashed d84b05d This commit should be squashed ac60234 Yet another commit 36d15de Rebase from here 17692d1 Did some more stuff e647334 Another Commit 2e30df6 Initial commit &amp;gt; git rebase -i 36d15de 这时你选择的编辑器就会打开，在这里你可以描述你想要这些提交做什么。Git在注释中提供了帮助信息。如果你退出了这个编辑器，什么都不会发生，因为每个提交都会保持和之前一样的顺序。在这个例子中，我们应用下面的命令：</description>
     </item>
     
     <item>
@@ -724,7 +732,7 @@ git checkout &amp;lt;branch&amp;gt; git reset --soft $(git merge-base master &am
       <pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-15.html</guid>
-      <description>Rev-List    Parameter Detals     &amp;ndash;online 将提交显示为带有标题的单行。    列出在master不在远端master提交 git rev-list --oneline master ^origin/master  git rev-list命令会列出在一个分支不在另一个分支的提交。当您试图弄清楚代码是否已合并到分支中时，它是一个很好的工具。
+      <description>Rev-List    Parameter Detals     &amp;ndash;online 将提交显示为带有标题的单行。    列出在master不在远端master提交 git rev-list --oneline master ^origin/master git rev-list命令会列出在一个分支不在另一个分支的提交。当您试图弄清楚代码是否已合并到分支中时，它是一个很好的工具。
  使用--oneline选项显示每个提交的标题 ^操作符会在列表中过滤指定的分支 如果需要，可以传递两个以上的分支。git rev-list foo bar ^baz将会列出foo和bar的提交，不包括baz。  参考：Git® Notes for Professionals book</description>
     </item>
     
@@ -735,9 +743,10 @@ git checkout &amp;lt;branch&amp;gt; git reset --soft $(git merge-base master &am
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-14.html</guid>
       <description>分支    Parameter Detals     -d,&amp;ndash;delete 删除分支。这个分支必须合并到它的远端分支，如果设置了--track或--set-upstream的话，就需要在HEAD中   -D --delete --force强制删除的简称   -m,&amp;ndash;move 移动/重命名分支和相应的reflog   -M --move —force命令的简称   -r,&amp;ndash;remotes 列出或删除（使用-d）远端追踪的分支   -a,&amp;ndash;all 列出远端追踪分支和本地分支   &amp;ndash;list 激活列表模式。git branch &amp;lt;pattern&amp;gt;会试着新建分支。git branch -- list &amp;lt;pattern&amp;gt;列出所有匹配的分支   &amp;ndash;set-upstream 如果指定的分支不存在或者指定了--force参数，行为会和--track一样。否则在创建分支时设置像--track那样的配置，除了分支指向的地方没有改变    创建和切换新分支 创建一个新分支，并且保留在当前分支，执行下面的命令：
-$ git branch &amp;lt;name&amp;gt;  通常，分支名称不得包含空格，并且符合列出的这里列出的其他规范。切换到已经存在的分支：
-$ git checkout &amp;lt;name&amp;gt;  创建并且切换到新分支：
-$ git checkout -b &amp;lt;name&amp;gt;  在指定索引创建一个分支，而不是在当前分支的最后提交（就是HEAD），可以使用下面任何一个命令：</description>
+$ git branch &amp;lt;name&amp;gt; 通常，分支名称不得包含空格，并且符合列出的这里列出的其他规范。切换到已经存在的分支：
+$ git checkout &amp;lt;name&amp;gt; 创建并且切换到新分支：
+$ git checkout -b &amp;lt;name&amp;gt; 在指定索引创建一个分支，而不是在当前分支的最后提交（就是HEAD），可以使用下面任何一个命令：
+git branch &amp;lt;name&amp;gt; [&amp;lt;start-point&amp;gt;] git checkout -b &amp;lt;name&amp;gt; [&amp;lt;start-point&amp;gt;] 这里&amp;lt;start-point&amp;gt;可以是Git中任何的revision（包括：另外的分支名，提交的SHA，或者想HEAD或tag名的引用）：</description>
     </item>
     
     <item>
@@ -747,13 +756,13 @@ $ git checkout -b &amp;lt;name&amp;gt;  在指定索引创建一个分支，而�
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-13.html</guid>
       <description>配置    Parameter Detals     &amp;ndash;system 编辑为每个人使用的系统配置（在linux上，配置文件在$(prefix)/etc/gitconfig）   &amp;ndash;global 修改为你的每个仓库使用的全局配置文件（在linux上，配置文件在~/.gitconfig）   &amp;ndash;local 编辑指定仓库的配置文件，在你仓库的.git/config这个文件内，这个是默认的配置    配置编辑器 有多个方式来配置你commit和rebase的时候使用的编辑器：
- 修改core.editor配置项：
-$ git config --global core.editor nano  设置GIT_EDITOR环境变量：
-  举个例子，应用到一个命令：
- $ GIT_EDITOR=nano git commit  或者为终端执行的所有git命令。注意：直到你关闭了终端，这个配置才会生效：
- $ export GIT_EDITOR=nano   想要修改终端所有程序的编辑器，不仅仅是git，可以VISUAL或EDITOR环境变量（可以查看VISUAL vs EDITOR）:
-$ export EDITOR=nano   注意：像上面一样，这个命令只会应用到当前的终端页面。你的shell通常会有一个配置文件，允许你永远的设置你的配置。（比如在bash时，可以添加上面的配置到~/.bashrc获取~/.bash_profile配置文件）。
-一些文本编辑器（主要是GUI编辑器）一次只运行一个实例，如果你已经打开了一个实例，通常会退出。如果您的文本编辑器就是这种情况，Git将打印Aborting commit due to empty commit message。不允许你先编辑你的提交信息。如果你遇到了这种情况，检查你的编辑器文档是否有--wait这个配置项。允许你在文档关闭之前终端提交。
+  修改 core.editor配置项：
+$ git config --global core.editor nano   设置GIT_EDITOR环境变量：
+举个例子，应用到一个命令：
+$ GIT_EDITOR=nano git commit 或者为终端执行的所有git命令。**注意：**直到你关闭了终端，这个配置才会生效：
+$ export GIT_EDITOR=nano   想要修改终端所有程序的编辑器，不仅仅是git，可以VISUAL或EDITOR环境变量（可以查看VISUAL vs EDITOR）:
+$ export EDITOR=nano **注意：**像上面一样，这个命令只会应用到当前的终端页面。你的shell通常会有一个配置文件，允许你永远的设置你的配置。（比如在bash时，可以添加上面的配置到 ~/.bashrc获取~/.bash_profile配置文件）。
+  一些文本编辑器（主要是GUI编辑器）一次只运行一个实例，如果你已经打开了一个实例，通常会退出。如果您的文本编辑器就是这种情况，Git将打印Aborting commit due to empty commit message。不允许你先编辑你的提交信息。如果你遇到了这种情况，检查你的编辑器文档是否有--wait这个配置项。允许你在文档关闭之前终端提交。
 自动纠正错别字 $ git config --global help.</description>
     </item>
     
@@ -764,9 +773,10 @@ $ export EDITOR=nano   注意：像上面一样，这个命令只会应用到当
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-12.html</guid>
       <description>rebase    Parameter Detals     &amp;ndash;continue 在解决完merge冲突之后，重新开始执行rebase命令   &amp;ndash;abort 中断rebase操作之后，重新吧HEAD定位到原有分支上。如果在使用rebase命令的时候提供了分支名，HEAD将会被设置到这个分支上。否则HEAD将会重新设置到rebase操作开始的位置。   &amp;ndash;keep-empty 保留那些没有修改的提交   &amp;ndash;skip 重新开始rebase命令，忽略掉当前的补丁   -m,&amp;ndash;merge 在rebase的时候使用megre策略。当使用递归(默认)合并策略的话，这允许rebase知道上游的重命名。注意rebase合并的工作方式是从上游分支顶部的工作分支重放每个提交。因此，当合并冲突发生时，报告为我们的一方是迄今为止重新定位的系列，从上游开始，他们是工作分支。换句话说，双方交换。   &amp;ndash;stat 显示上次rebase之后，上游做的修改。这些不同将会有rebase.stat配置项控制   -x, &amp;ndash;exec command 执行交互式rebase，在每个提交和执行command之间暂停    本地分支rebase rebase在另外提交的顶部应用一系列的提交。rebase一个分支的话，首先切换到这个分支，然后rebase到另一个分支的顶部：
-$ git checkout topic $ git rebase master  这会导致：
-	A---B---C topic / D---E---F---G master  变成：
- A&#39;--B&#39;--C&#39; topic / D---E---F---G master  这些操作可以合并到一个简单命令上面：切换分支然后执行rebase命令</description>
+$ git checkout topic $ git rebase master 这会导致：
+	A---B---C topic / D---E---F---G master 变成：
+ A&#39;--B&#39;--C&#39; topic / D---E---F---G master 这些操作可以合并到一个简单命令上面：切换分支然后执行rebase命令
+$ git rebase master topic # rebase topic branch onto master branch **重要：**在rebase之后，这些被应用的提交将会有一个不同的hash值，所以你应该rebase那些你已经push到远端的分支。这种情况下你在本地分支使用git push命令是无效的，除非使用git pus --force。</description>
     </item>
     
     <item>
@@ -776,12 +786,12 @@ $ git checkout topic $ git rebase master  这会导致：
       
       <guid>http://blog.huaifufeng.com/2019/02/post/git-section-11.html</guid>
       <description>别名 简单别名 有两种方法来创建Git别名：
- 编辑~/.gitconfig文件：
-[alias] ci = commit st = status co = checkout  使用命令行：
+  编辑~/.gitconfig文件：
+[alias] ci = commit st = status co = checkout   使用命令行：
 git config --global alias.ci &amp;quot;commit&amp;quot; git config --global alias.st &amp;quot;status&amp;quot; git config --global alias.co &amp;quot;checkout&amp;quot;   在别名创建之后：
  git ci就是git commit git st就是git status git co就是git checkout  像正常的命令一样，别名也可以使用参数，例如：
- git ci -m &amp;quot;Commit message...&amp;quot; git co -b feature-42  显示搜索别名 你可以使用--get-regexp选项来列出所有的别名：
-$ git config --get-regexp &#39;^alias\.&#39;  搜索别名 想要搜索别名的话，在.gitconfig中添加下面的配置：
+ git ci -m &amp;quot;Commit message...&amp;quot; git co -b feature-42 显示搜索别名 你可以使用--get-regexp选项来列出所有的别名：
+$ git config --get-regexp &#39;^alias\.&#39; 搜索别名 想要搜索别名的话，在.gitconfig中添加下面的配置：
 aliases = !</description>
     </item>
     
@@ -803,14 +813,15 @@ $ git add README.</description>
       
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-9.html</guid>
       <description>submodule clone一个有子模块的仓库 当你克隆了一个有子模块的仓库时，你需要初始化和更新他们：
-$ git clone --recursive https://github.com/username/repo.git  这将会克隆关联的子模块，并且把子模块放到合适的位置上面（包括子模块关联的子模块）。这个命令等价于在仓库克隆之后立即执行git submodule update --init --recursive这个命令。
+$ git clone --recursive https://github.com/username/repo.git 这将会克隆关联的子模块，并且把子模块放到合适的位置上面（包括子模块关联的子模块）。这个命令等价于在仓库克隆之后立即执行git submodule update --init --recursive这个命令。
 更新子模块 如果一个子模块引用了另一个仓库中的子模块的特定提交。想要切换到所有引用子模块的特定状态的话，可以使用下面的命令：
-$ git submodule update --recursive  有时候为了替换引用子模块当前的状态，你想要把本地米宽的分支切换到远端的最新状态。使用下面的命令可以把所有引用的子模块切换到远端最新的分支：
-$ git submodule foreach git pull &amp;lt;remote&amp;gt; &amp;lt;branch&amp;gt;  或者使用默认的git pull参数：
-$ git submodule foreach git pull  注意：这将只会更新本地工作区副本。如果一个子模块用这个命令更新了，他将会出现在git status命令的文件列表内。如果你想要把你的引用更新到最新的状态，你可以提交这些修改：
- git add &amp;lt;submodule_directory&amp;gt; git commit  如果你使用git pull的话，这写修改可能会造成合并冲突。你可以使用git pull —rebase来把修改到会到最新。大多数情况下这会减少出现冲突的次数。这也会把所有的分支pull到本地：
-$ git submodule foreach git pull --rebase  想要把某个分支切换到最新的状态，可以使用：
-$ git submodule update --remote &amp;lt;submodule_directory&amp;gt;  添加子模块 你可以把另外的Git仓库当做你自己项目的一个文件夹，使用Git来追踪：</description>
+$ git submodule update --recursive 有时候为了替换引用子模块当前的状态，你想要把本地米宽的分支切换到远端的最新状态。使用下面的命令可以把所有引用的子模块切换到远端最新的分支：
+$ git submodule foreach git pull &amp;lt;remote&amp;gt; &amp;lt;branch&amp;gt; 或者使用默认的git pull参数：
+$ git submodule foreach git pull 注意：这将只会更新本地工作区副本。如果一个子模块用这个命令更新了，他将会出现在git status命令的文件列表内。如果你想要把你的引用更新到最新的状态，你可以提交这些修改：
+ git add &amp;lt;submodule_directory&amp;gt; git commit 如果你使用git pull的话，这写修改可能会造成合并冲突。你可以使用git pull —rebase来把修改到会到最新。大多数情况下这会减少出现冲突的次数。这也会把所有的分支pull到本地：
+$ git submodule foreach git pull --rebase 想要把某个分支切换到最新的状态，可以使用：
+$ git submodule update --remote &amp;lt;submodule_directory&amp;gt; 添加子模块 你可以把另外的Git仓库当做你自己项目的一个文件夹，使用Git来追踪：
+$ git submodule add https://github.com/jquery/jquery.git 你应该添加并且提交新的.</description>
     </item>
     
     <item>
@@ -820,7 +831,7 @@ $ git submodule update --remote &amp;lt;submodule_directory&amp;gt;  添加子�
       
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-8.html</guid>
       <description>merge    parameter Details     -m 在merge提交里使用的信息   -v 显示详细的输出   &amp;ndash;abort 中断把文件恢复到之前的状态   &amp;ndash;ff-only 当一个merge提交被要求的话立即中断   &amp;ndash;no-ff 强制创建一个merge提交，即使它不是强制的   &amp;ndash;no-commit 假装merge失败了，允许去检查和调整这个结果   &amp;ndash;stat merge合并之后，展示状态的不同   -n/&amp;ndash;no-stat 不显示状态的不同   &amp;ndash;sqaush 允许对这个分支的merge修改做一个单独的提交    自动合并 当两个分支的提交不冲突的话，Git可以自动的合并他们：
-~/Stack Overflow(branch:master) » git merge another_branch Auto-merging file_a Merge made by the &#39;recursive&#39; strategy. file_a | 2 +- 1 file changed, 1 insertion(+), 1 deletion(-)  找到没有merge提交的分支 有时候你有一些已经把修改merge到master上的分支。这将找出来所有不是master分支并且和master分支没有区别提交的分支。这用来查找在PR合并到master之后，没有删除的分支非常有帮助：</description>
+~/Stack Overflow(branch:master) » git merge another_branch Auto-merging file_a Merge made by the &#39;recursive&#39; strategy. file_a | 2 +- 1 file changed, 1 insertion(+), 1 deletion(-) 找到没有merge提交的分支 有时候你有一些已经把修改merge到master上的分支。这将找出来所有不是master分支并且和master分支没有区别提交的分支。这用来查找在PR合并到master之后，没有删除的分支非常有帮助：</description>
     </item>
     
     <item>
@@ -830,17 +841,20 @@ $ git submodule update --remote &amp;lt;submodule_directory&amp;gt;  添加子�
       
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-7.html</guid>
       <description>撤销修改 返回前一个提交 返回前一个提交，首先使用git log找到前一个提交的hash值。然后要临时返回那个提交的话，使用下面的命令：
-$ git checkout 789abcd  这将返回hash值为789abcd的提交。现在你可以在不影响你的HEAD的情况下，在这个老提交的基础上建立新的提交。你可以使用branch或checkout -b命令来建立一个分支，然后把这些修改放到这个分支上面。
+$ git checkout 789abcd 这将返回hash值为789abcd的提交。现在你可以在不影响你的HEAD的情况下，在这个老提交的基础上建立新的提交。你可以使用branch或checkout -b命令来建立一个分支，然后把这些修改放到这个分支上面。
 使用下面的命令返回上一个提交的话，会保留之前的修改：
-$ git reset --soft 789abcd  去返回上一个提交，可以使用下面的命令：
-$ git reset --soft HEAD~  想要抛弃某个提交之后的修改，可以使用下面的命令：
-$ git reset --hard 789abcd  想要抛弃上一个提交之后的修改，使用下面的命令：
-$ git reset --hard HEAD~  注意：你可以使用reflog和reset恢复丢弃的提交，但是没有提交的修改是无法恢复的。
+$ git reset --soft 789abcd 去返回上一个提交，可以使用下面的命令：
+$ git reset --soft HEAD~ 想要抛弃某个提交之后的修改，可以使用下面的命令：
+$ git reset --hard 789abcd 想要抛弃上一个提交之后的修改，使用下面的命令：
+$ git reset --hard HEAD~ **注意：**你可以使用reflog和reset恢复丢弃的提交，但是没有提交的修改是无法恢复的。
 撤销修改 撤消对工作副本中文件或目录的更改。
-$ git checkout -- file.txt  下面的命令将会递归的应用到当前目录的所有文件和文件夹上面，他将撤销工作区副本的所有修改：
-$ git checkout .  想要撤销部分修改的话，可以使用---patch选项。这样对每个修改，你都将被询问，是要撤销还是保留：
-$ git checkout --patch -- dir  想要撤销添加到index的修改，使用下面的命令：
-$ git reset --hard  如果没有—hard选项的话，这将会执行一个软reset命令。</description>
+$ git checkout -- file.txt 下面的命令将会递归的应用到当前目录的所有文件和文件夹上面，他将撤销工作区副本的所有修改：
+$ git checkout . 想要撤销部分修改的话，可以使用---patch选项。这样对每个修改，你都将被询问，是要撤销还是保留：
+$ git checkout --patch -- dir 想要撤销添加到index的修改，使用下面的命令：
+$ git reset --hard 如果没有—hard选项的话，这将会执行一个软reset命令。
+当你本地的修改还没有push到远端的时候，你可以执行一个软reset命令。因此你可以重新编辑这些文件，然后重新提交：
+$ git reset HEAD~2 上面的例子将会解除最后两次提交，并且将文件返回到工作区副本。然后你就可以做进一步的修改并重新提交这些修改。
+**注意：**除了软reset之外，所有这些修改都会永久性删除你的修改。为了安全起见，可以执行下面的命令的一个：git stash -p或者git stash。稍后你可以使用git stash pop取回这些修改，或者使用git stash drop命令删除这些修改。</description>
     </item>
     
     <item>
@@ -849,7 +863,7 @@ $ git reset --hard  如果没有—hard选项的话，这将会执行一个软re
       <pubDate>Mon, 28 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-6.html</guid>
-      <description>git diff    parameter details     -p, -u, &amp;ndash;patch 生成补丁。   -s, &amp;ndash;no-patch 取消差异的输出。对于像git diff这样显示补丁的命令非常有用。或者用来取消—patch选项的效果。   &amp;ndash;raw 输出原生格式信息的文件差异信息。   &amp;ndash;diff-algorithm= 选择差异对比的算法。可选的算法有：myers，minimal，patience，histogram   &amp;ndash;summary 输出一个压缩的扩展头信息，包括（创建，重命名和模式修改等）   &amp;ndash;name-only 只展示修改文件的名称   &amp;ndash;name-status 展示已修改文件的名称和状态，常见的状态有：M 修改 A 添加 D 删除   &amp;ndash;check 如果修改出现了标记冲突和空白错误会发出警告。被视作空白错误的信息是由core.whitespace控制的。默认情况下，尾随空格（包括仅由空格组成的行）和空格字符（在行的初始缩进内紧跟制表符）被视为空格错误。如果出现问题就会以非0的退出码退出。不和--exit-code兼容。   &amp;ndash;full-index 当想产生补丁格式的输出时，取代最开始的几个字符，将会把完整的pre-和post-image二进制对象显示在索引行中。   &amp;ndash;binary 除了像--full-index外，还会输出一个可以用于git apply命令的二进制差异文件。   -a, &amp;ndash;text 把所有的文件视作文本。   &amp;ndash;color 设置颜色模式：如果要将diff设置为较小并保持git的颜色，请使用--color=always    展示工作区差异 $ git diff  这将展示当前分支未暂存的修改和之前的提交的差异。这只展示相对于索引的差异，也就是只展示你可以在下次提交的，但是还没有提交的修改。想要添加这些修改，可以使用git add。</description>
+      <description>git diff    parameter details     -p, -u, &amp;ndash;patch 生成补丁。   -s, &amp;ndash;no-patch 取消差异的输出。对于像git diff这样显示补丁的命令非常有用。或者用来取消—patch选项的效果。   &amp;ndash;raw 输出原生格式信息的文件差异信息。   &amp;ndash;diff-algorithm= 选择差异对比的算法。可选的算法有：myers，minimal，patience，histogram   &amp;ndash;summary 输出一个压缩的扩展头信息，包括（创建，重命名和模式修改等）   &amp;ndash;name-only 只展示修改文件的名称   &amp;ndash;name-status 展示已修改文件的名称和状态，常见的状态有：M 修改 A 添加 D 删除   &amp;ndash;check 如果修改出现了标记冲突和空白错误会发出警告。被视作空白错误的信息是由core.whitespace控制的。默认情况下，尾随空格（包括仅由空格组成的行）和空格字符（在行的初始缩进内紧跟制表符）被视为空格错误。如果出现问题就会以非0的退出码退出。不和--exit-code兼容。   &amp;ndash;full-index 当想产生补丁格式的输出时，取代最开始的几个字符，将会把完整的pre-和post-image二进制对象显示在索引行中。   &amp;ndash;binary 除了像--full-index外，还会输出一个可以用于git apply命令的二进制差异文件。   -a, &amp;ndash;text 把所有的文件视作文本。   &amp;ndash;color 设置颜色模式：如果要将diff设置为较小并保持git的颜色，请使用--color=always    展示工作区差异 $ git diff 这将展示当前分支未暂存的修改和之前的提交的差异。这只展示相对于索引的差异，也就是只展示你可以在下次提交的，但是还没有提交的修改。想要添加这些修改，可以使用git add。</description>
     </item>
     
     <item>
@@ -875,13 +889,13 @@ $ git reset --hard  如果没有—hard选项的话，这将会执行一个软re
       
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-4.html</guid>
       <description>暂存区 暂存所有文件 想要删除一个远端的分支：
-$ git add -A  在Git 2.0+之后的版本
-$ git add .  在版本2.x时，git add .命令将会添加当前目录及其子目录下的所有修改的文件。但是在1.x的版本，只会暂存新建或修改的文件，不会暂存删除的文件。
+$ git add -A 在Git 2.0+之后的版本
+$ git add . 在版本2.x时，git add .命令将会添加当前目录及其子目录下的所有修改的文件。但是在1.x的版本，只会暂存新建或修改的文件，不会暂存删除的文件。
 使用git add -A或者git add --all来存储所有修改的文件，不管在哪个版本都是有效的。
-取消存储的修改文件 $ git reset &amp;lt;filePath&amp;gt;  添加大片修改 你可以看到大片的选项是怎么被存储的，通过使用patch选项：
-$ git add -p  或者
-$ git add --patch  这个命令将会打开一个交互界面，允许你查看修改，并且决定哪些内容去被存储起来：
-Stage this hunk [y,n,q,a,d,/,s,e,?]?   y stage this hunk for the next commit n do not stage this hunk for the next commit q quit; do not stage this hunk or any of the remaining hunks a stage this hunk and all later hunks in the file d do not stage this hunk or any of the later hunks in the file g select a hunk to go to / search for a hunk matching the given regex j leave this hunk undecided, see next undecided hunk J leave this hunk undecided, see next hunk k leave this hunk undecided, see previous undecided hunk K leave this hunk undecided, see previous hunk s split the current hunk into smaller hunks e manually edit the current hunk ?</description>
+取消存储的修改文件 $ git reset &amp;lt;filePath&amp;gt; 添加大片修改 你可以看到大片的选项是怎么被存储的，通过使用patch选项：
+$ git add -p 或者
+$ git add --patch 这个命令将会打开一个交互界面，允许你查看修改，并且决定哪些内容去被存储起来：
+Stage this hunk [y,n,q,a,d,/,s,e,?]?  y stage this hunk for the next commit n  do not stage this hunk for the next commit q quit; do not stage this hunk or any of the remaining hunks a stage this hunk and all later hunks in the file d do not stage this hunk or any of the later hunks in the file g select a hunk to go to / search for a hunk matching the given regex j leave this hunk undecided, see next undecided hunk J leave this hunk undecided, see next hunk k leave this hunk undecided, see previous undecided hunk K leave this hunk undecided, see previous hunk s split the current hunk into smaller hunks e manually edit the current hunk ?</description>
     </item>
     
     <item>
@@ -891,13 +905,14 @@ Stage this hunk [y,n,q,a,d,/,s,e,?]?   y stage this hunk for the next commit n d
       
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-3.html</guid>
       <description>操作远端 删除远端分支 想要删除一个远端的分支：
-$ git push [remote-name] --delete [branch-name]  或者
-$ git push [remote-name] :[branch-name]  修改远端地址 查看已经存在的远端地址：
-$ git remote -v # origin https://github.com/username/repo.git (fetch) # origin https://github.com/usernam/repo.git (push)  修改仓库的地址：
-$ git remote set-url origin https://github.com/username/repo2.git # Change the &#39;origin&#39; remote&#39;s URL  查看验证新的远端地址：
-$ git remote -v # origin https://github.com/username/repo2.git (fetch) # origin https://github.com/username/repo2.git (push)  远端列表 查看这个仓库关联的远端列表：
-$ git remote  查看这个仓库关联的远端列表，包括这些远端的fetch和push的Url地址。
-$ git remote --verbose  或者</description>
+$ git push [remote-name] --delete [branch-name] 或者
+$ git push [remote-name] :[branch-name] 修改远端地址 查看已经存在的远端地址：
+$ git remote -v # origin https://github.com/username/repo.git (fetch) # origin https://github.com/usernam/repo.git (push) 修改仓库的地址：
+$ git remote set-url origin https://github.com/username/repo2.git # Change the &#39;origin&#39; remote&#39;s URL 查看验证新的远端地址：
+$ git remote -v # origin https://github.com/username/repo2.git (fetch) # origin https://github.com/username/repo2.git (push) 远端列表 查看这个仓库关联的远端列表：
+$ git remote 查看这个仓库关联的远端列表，包括这些远端的fetch和push的Url地址。
+$ git remote --verbose 或者
+$ git remote -v 删除分支 当远端分支被删除了，你本地仓库必须删除对这个分支的引用。</description>
     </item>
     
     <item>
@@ -906,7 +921,7 @@ $ git remote --verbose  或者</description>
       <pubDate>Fri, 18 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-2.html</guid>
-      <description>查看历史    Parameter Explanation     -q, &amp;ndash;quiet Quiet, suppresses diff output   &amp;ndash;source Shows source of commit   &amp;ndash;use-mailmap Use mail map file (changes user info for committing user)   &amp;ndash;decorate[=&amp;hellip;] Decorate options   &amp;ndash;L &amp;lt; n,m:file&amp;gt; Show log for specific range of lines in a file, counting from 1. Starts from line n, goes to line m. Also shows diff.</description>
+      <description>查看历史    Parameter Explanation     -q, &amp;ndash;quiet Quiet, suppresses diff output   &amp;ndash;source Shows source of commit   &amp;ndash;use-mailmap Use mail map file (changes user info for committing user)   &amp;ndash;decorate[=&amp;hellip;] Decorate options   &amp;ndash;L &amp;lt; n,m:file&amp;gt; Show log for specific range of lines in a file, counting from 1. Starts from line n, goes to line m. Also shows diff.   &amp;ndash;show-signature Display signatures of signed commits   -i, &amp;ndash;regexp-ignore-case Match the regular expression limiting patterns without regard to letter case    Git log $ git log commit ca82a6dff817ec66f44342007202690a93763949 Author: Scott Chacon &amp;lt;schacon@gee-mail.</description>
     </item>
     
     <item>
@@ -917,21 +932,23 @@ $ git remote --verbose  或者</description>
       <guid>http://blog.huaifufeng.com/2019/01/post/git-section-1.html</guid>
       <description>开始学习Git 创建自己的项目，并添加、提交文件 首页在终端验证你是否已经安装有Git：
 在所有的操作系统上，都可以使用下面的命令：
-$ git --version  在类Unix系统还可以使用下面的命令：
-$ which git  如果什么都没有返回，或者没有通过验证，这就表明你需要通过下载并运行安装程序，在你的系统上安装Git。查看Git官网，上面有特别详细和容易的安装教程。
+$ git --version 在类Unix系统还可以使用下面的命令：
+$ which git 如果什么都没有返回，或者没有通过验证，这就表明你需要通过下载并运行安装程序，在你的系统上安装Git。查看Git官网，上面有特别详细和容易的安装教程。
 安装完Git之后，在你真正的提交之前，还需要配置好你的名称和邮件地址。
 一旦安装成功Git，你就可以到你希望进行版本管理的文件夹下，初始化一个空的Git仓库：
-$ git init  这会创建一个隐藏的.git文件夹，用来存放Git工作需要的信息。
+$ git init 这会创建一个隐藏的.git文件夹，用来存放Git工作需要的信息。
 接下来检查下Git将把什么文件加入到仓库内，这是非常值得注意的，也是在添加、提交文件之前的必要操作：
-$ git status  检查文件的列表，你可以告诉Git哪些文件你想进行版本的管理（避免将像密码这样的重要信息或者污染仓库的信息添加到Git仓库里面）：
-$ git add &amp;lt;file/directory name #1&amp;gt; &amp;lt;file/directory name #2&amp;gt; &amp;lt; ... &amp;gt;  如果所有的文件你都想和能访问这个仓库的人分享，有一个简单的命令可以添加当前目录和当前目录子目录内的所有文件：
-$ git add .  这将“暂存”所有的文件，等待将这些文件加入版本管理，准备在你的第一次提交中提交它们。
+$ git status 检查文件的列表，你可以告诉Git哪些文件你想进行版本的管理（避免将像密码这样的重要信息或者污染仓库的信息添加到Git仓库里面）：
+$ git add &amp;lt;file/directory name #1&amp;gt; &amp;lt;file/directory name #2&amp;gt; &amp;lt; ... &amp;gt; 如果所有的文件你都想和能访问这个仓库的人分享，有一个简单的命令可以添加当前目录和当前目录子目录内的所有文件：
+$ git add . 这将“暂存”所有的文件，等待将这些文件加入版本管理，准备在你的第一次提交中提交它们。
 对于你不想添加到版本管理的文件，你可以在执行add之前命令创建一个名.gitignore的文件，并且填写里面的内容。
 提交所有已经添加的文件，同时填写一个提交的注释信息：
-$ git commit -m &amp;quot;Initial commit&amp;quot;  这使用提供的信息创建了一个新的提交。一个提交就像你整个项目的一个快照。现在你就可以把本地的文件push到远端的仓库内，如果有需要的时候，你可以重新返回这里。
+$ git commit -m &amp;#34;Initial commit&amp;#34; 这使用提供的信息创建了一个新的提交。一个提交就像你整个项目的一个快照。现在你就可以把本地的文件push到远端的仓库内，如果有需要的时候，你可以重新返回这里。
 如果你忽略了-m参数，你默认的编辑器将会打开，你可以在编辑器里面编辑并且保存提交信息。
 添加远端仓库 想要添加一个新的远端仓库地址，你可以在你仓库所在的文件夹内，在终端内执行git remote add命令。
-1. 一个远端的名称，比如```origin``` 2. 一个远端的URL地址，比如```https://&amp;lt;your-git-service-address&amp;gt;/user/repo.git``` ```shell $ git remote add origin https://&amp;lt;your-git-service-address&amp;gt;/owner/repository.</description>
+git add remote这个命令需要两个参数：
+ 一个远端的名称，比如origin 一个远端的URL地址，比如https://&amp;lt;your-git-service-address&amp;gt;/user/repo.git  $ git remote add origin https://&amp;lt;your-git-service-address&amp;gt;/owner/repository.git 注意：在添加远端仓库之前，你需要确定已经在你的git服务上建好了需要的仓库了，在你添加号远端仓库之后，你就可以push/pull你本地的提交了
+克隆一个仓库 git clone是用来从服务器上复制一个已经存在的远端仓库到本地机器上的命令。</description>
     </item>
     
   </channel>

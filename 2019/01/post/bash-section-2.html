@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,82 +187,46 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#脚本shebang">脚本shebang</a>
-<ul>
-<li><a href="#环境shebang">环境shebang</a></li>
-<li><a href="#直接shebang">直接shebang</a></li>
-<li><a href="#其他的shebang">其他的shebang</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#脚本shebang">脚本shebang</a>
+      <ul>
+        <li><a href="#环境shebang">环境shebang</a></li>
+        <li><a href="#直接shebang">直接shebang</a></li>
+        <li><a href="#其他的shebang">其他的shebang</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="脚本shebang">脚本shebang</h2>
-
+        		<h2 id="脚本shebang">脚本shebang</h2>
 <h3 id="环境shebang">环境shebang</h3>
-
 <p>想要使用<code>bash</code>命令执行一个脚本文件，可以使用可以执行的<code>env</code>来指定<code>PATH</code>环境变量中的<code>bash</code>命令。脚本文件的第一行需要是：带有<code>bash</code>参数的绝对路径的<code>env</code>可执行文件：</p>
-
 <pre><code>#!/usr/bin/env bash
-</code></pre>
-
-<p>只有在使用下面这样的方式执行脚本的时候，shebang里面的<code>env</code>命令才会被解析：</p>
-
+</code></pre><p>只有在使用下面这样的方式执行脚本的时候，shebang里面的<code>env</code>命令才会被解析：</p>
 <pre><code>script.sh
-</code></pre>
-
-<p>当然，这个脚本必须有执行权限。</p>
-
+</code></pre><p>当然，这个脚本必须有执行权限。</p>
 <p>当直接指明<code>bash</code>解析器来执行脚本的时候，这个shebang是被忽略的：</p>
-
 <pre><code>bash script.sh
-</code></pre>
-
-<h3 id="直接shebang">直接shebang</h3>
-
+</code></pre><h3 id="直接shebang">直接shebang</h3>
 <p>想要用<code>bash</code>来执行一个脚本，也可以定义一个可以执行的<code>bash</code>路径：</p>
-
 <pre><code>#!/bin/bash
-</code></pre>
-
-<p>当直接执行脚本的时候，shebang将会被解析并执行：</p>
-
+</code></pre><p>当直接执行脚本的时候，shebang将会被解析并执行：</p>
 <pre><code>./script.sh
-</code></pre>
-
-<p>脚本需要可以执行的权限。</p>
-
+</code></pre><p>脚本需要可以执行的权限。</p>
 <p>当<code>bash</code>解析器直接指明来执行这个脚本的时候，这个shebang不会被执行：</p>
-
 <pre><code>bash script.sh
-</code></pre>
-
-<h3 id="其他的shebang">其他的shebang</h3>
-
+</code></pre><h3 id="其他的shebang">其他的shebang</h3>
 <p>操作系统内核能识别的有两种程序：一种是用ELF (ExtenableLoadableFormat)头声明的二进制程序，通常是编译生成的；另一种就是各种的脚本。</p>
-
 <p>如果一个文件的第一行以<code>#!</code>开头，下一个字符串必须是一个解析器的路径。如果操作系统内核读到了这行，会调用路径指向的解析器，然后把后面的字符都传给这个解析器作为参数。如果没有文件焦作<code>something</code>或者<code>wrong</code>：</p>
-
 <pre><code>#!/bin/bash something wrong
 echo &quot;This line never gets printed&quot;
-</code></pre>
-
-<p>bash执行的时候，参数<code>something wrong</code>是不存在的。脚本文件的名称也会被添加。下面看下直接声明<code>echo</code>命令的shebang：</p>
-
+</code></pre><p>bash执行的时候，参数<code>something wrong</code>是不存在的。脚本文件的名称也会被添加。下面看下直接声明<code>echo</code>命令的shebang：</p>
 <pre><code>#&quot;/bin/echo something wrong
 # and now call this script named &quot;thisscript&quot; like so: 
 # thisscript one two
 # the output will be:
 something wrong ./thisscript one two
-</code></pre>
-
-<p>一些想<code>awk</code>的程序就用这种技术来运行长时间留在硬盘上的脚本。</p>
-
+</code></pre><p>一些想<code>awk</code>的程序就用这种技术来运行长时间留在硬盘上的脚本。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -331,6 +299,12 @@ something wrong ./thisscript one two
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

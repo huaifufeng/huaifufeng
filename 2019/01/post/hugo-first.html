@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -187,68 +191,38 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#环境搭建">环境搭建</a>
-<ul>
-<li><a href="#hugo环境搭建">Hugo环境搭建</a></li>
-<li><a href="#github环境配置">GitHub环境配置</a></li>
-</ul></li>
-<li><a href="#更进一步">更进一步</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#环境搭建">环境搭建</a>
+      <ul>
+        <li><a href="#hugo环境搭建">Hugo环境搭建</a></li>
+        <li><a href="#github环境配置">GitHub环境配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#更进一步">更进一步</a></li>
+  </ul>
 </nav>
         		
-        		
-
-<p>2019年新的开始，新年第一天的首个工作就是把blog搭了起来，之后就要坚持做下去了，保证一周能有一篇有货的文章，这个也是给自己提的一个邀请，每周要学习至少一个知识点，可以分享的知识点。</p>
-
+        		<p>2019年新的开始，新年第一天的首个工作就是把blog搭了起来，之后就要坚持做下去了，保证一周能有一篇有货的文章，这个也是给自己提的一个邀请，每周要学习至少一个知识点，可以分享的知识点。</p>
 <p>这个blog是用hugo搭建的，因为最近在学习go语言，所以就挑选了这个以go语音实现的静态网站生成工具，在以后就要看下hugo的源码了，希望能够学习并升级这个工具。下面就介绍一下hugo+github搭建自己的blog。</p>
-
 <h2 id="环境搭建">环境搭建</h2>
-
 <p>这里涉及到两个环境的配置Hugo静态网站生成器和GitHub代码托管网站的配置，下面分别介绍两个环境的配置过程。</p>
-
 <h3 id="hugo环境搭建">Hugo环境搭建</h3>
-
 <p>Hugo是一个用golang语言实现的一个静态网站生成器，不只是用来生成blog，还可以用来生成商城，信息网站等。它最主要的特性就是快，安全。这里就介绍下安装方法。</p>
-
 <p>Hugo支持目前市面上的操作系统，包括：Mac，Windows，Linux，OpenBSD，FreeBSD。我这里用的Mac电脑，就介绍下Mac的安装，其他的环境可以到<a href="https://gohugo.io/getting-started/installing/">Hugo安装</a>页面查看相应的安装步骤。</p>
-
 <p>1、首先确定你的电脑是否安装有Homebrew，这是一个mac的安装包管理工具，可以用来安装软件。</p>
-
-<pre><code class="language-shell">brew --version
-</code></pre>
-
-<p>如果输出了版本号，说明你的电脑已经安装了这个软件，否则就需要执行下面的命令进行安装。</p>
-
-<pre><code class="language-shell">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
-</code></pre>
-
-<p>然后重新输入上面的命令进行安装。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew --version
+</code></pre></div><p>如果输出了版本号，说明你的电脑已经安装了这个软件，否则就需要执行下面的命令进行安装。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">/usr/bin/ruby -e <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</code></pre></div><p>然后重新输入上面的命令进行安装。</p>
 <p>2、使用Homebrew安装Hugo</p>
-
-<pre><code class="language-shell">brew install hugo
-</code></pre>
-
-<p>安装完毕之后使用下面的命令验证：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">brew install hugo
+</code></pre></div><p>安装完毕之后使用下面的命令验证：</p>
 <pre><code>hugo version
-</code></pre>
-
-<p>获取到版本号说明安装成功。</p>
-
+</code></pre><p>获取到版本号说明安装成功。</p>
 <p>3、然后就可以使用过hugo的命令来生成网站，生成页面了。</p>
-
 <p>首先生成网址，先到达你存放网站信息的地方，使用下面的命令生成网站的根目录文件夹example(替换为你自己的项目目录)：</p>
-
-<pre><code class="language-shell">hugo new site example
-</code></pre>
-
-<p>生成网站的目录结构如下：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hugo new site example
+</code></pre></div><p>生成网站的目录结构如下：</p>
 <pre><code>.
 ├── archetypes
 ├── assets
@@ -258,55 +232,30 @@
 ├── layouts
 ├── static
 └── themes    //网站的模板文件
-</code></pre>
-
-<p>其他的我们暂时不关心，目前用到的是content，themes，config.toml</p>
-
+</code></pre><p>其他的我们暂时不关心，目前用到的是content，themes，config.toml</p>
 <p>首先需要把我们的项目变成一个git项目，才可以进行下面的操作：</p>
-
 <pre><code>git init
 git add .
 git commit -m 'init'
-</code></pre>
-
-<p>Hugo目前已经有了一批的<a href="https://themes.gohugo.io/">模板</a>，只需要到这个地址，就可以找到需要的模板了，我这个blog就是从中使用的模板。使用下面的命令就可以把一个模板下载到本地：</p>
-
+</code></pre><p>Hugo目前已经有了一批的<a href="https://themes.gohugo.io/">模板</a>，只需要到这个地址，就可以找到需要的模板了，我这个blog就是从中使用的模板。使用下面的命令就可以把一个模板下载到本地：</p>
 <pre><code>git submodule add https://github.com/panr/hugo-theme-hello-friend.git themes/hello-friend
-</code></pre>
-
-<p>修改config.toml文件，配置里面使用的模板：</p>
-
+</code></pre><p>修改config.toml文件，配置里面使用的模板：</p>
 <pre><code>baseUrl = &quot;https://example.com/&quot;
 languageCode = &quot;en-us&quot;
 title = &quot;Your site title&quot; 
 theme = &quot;hello-friend&quot;    #使用的模板的文件夹名
-</code></pre>
-
-<p>然后在项目的根目录中执行</p>
-
+</code></pre><p>然后在项目的根目录中执行</p>
 <pre><code>hugo
-</code></pre>
-
-<p>然后就会增加public/目录，也就是我们之后要放到github的目录。执行下面的命令，就可以看到网站的情况了：</p>
-
+</code></pre><p>然后就会增加public/目录，也就是我们之后要放到github的目录。执行下面的命令，就可以看到网站的情况了：</p>
 <pre><code>hugo server -D
-</code></pre>
-
-<p>在浏览器中打开<code>localhost:1313</code>，就可以看到网站的首页了。</p>
-
-<p><img src="/img/hugo_first_begin.png" alt="WX20190101-172935@2x" /></p>
-
+</code></pre><p>在浏览器中打开<code>localhost:1313</code>，就可以看到网站的首页了。</p>
+<p><img src="/img/hugo_first_begin.png" alt="WX20190101-172935@2x"></p>
 <p>因为我们还没有写任何东西，所以网站是空荡荡的。让我们增加第一个信息。</p>
-
 <p>在content/目录下可以新建新的目录，也可以不新建目录，我们在content下新建posts目录，用存放文件。</p>
-
 <pre><code>cd content
 mkdir posts
 vi hello.md     //这里的内容需要使用markdown格式
-</code></pre>
-
-<p>在hello.md中增加如下的内容：</p>
-
+</code></pre><p>在hello.md中增加如下的内容：</p>
 <pre><code>+++
 title = &quot;Hello Friend&quot;
 date = &quot;1986-09-17&quot;
@@ -325,31 +274,17 @@ description = &quot;\&quot;Hello, friend?\&quot; That's lame. Maybe I should giv
 &gt; I'm talking to an imaginary person.
 &gt;
 &gt; **— Mr. Robot S01E01**
-</code></pre>
-
-<p>然后保存这个文件，在项目的根目录执行上面的命令：</p>
-
+</code></pre><p>然后保存这个文件，在项目的根目录执行上面的命令：</p>
 <pre><code>hugo server -D
-</code></pre>
-
-<p>然后就可以看到网站的首个页面了：</p>
-
-<p><img src="/img/hugo_first_first.png" alt="WX20190101-174639@2x" /></p>
-
+</code></pre><p>然后就可以看到网站的首个页面了：</p>
+<p><img src="/img/hugo_first_first.png" alt="WX20190101-174639@2x"></p>
 <p>自此，我们的网站就搭建起来了。但是这个网站目前只能在本地访问，也就是通过<code>hugo server -D</code>，然后在浏览器中通过<code>localhost:1313</code>访问。在github和gitee上面，提供了免费的静态网页访问支持，我们可以把我们的网站放到上面，这样就可以让其他人访问了。</p>
-
 <p>这里挑选的是github，接下来就看下如果配置github，让其他人可以访问我们的网站。</p>
-
 <h3 id="github环境配置">GitHub环境配置</h3>
-
 <p><a href="https://github.com/">github</a>是一个代码托管网站，可以在上面放自己的代码，但是目前免费的只支持公共版本，不支持私有版本。首先就是在上面注册一个账号，这个就不说了。</p>
-
 <p>为了便于使用git命令访问自己的项目，需要在个人配置中增加sshKey，这个这里不细说了，百度一下就可以。</p>
-
 <p>然后就可以新建一个项目了，我们这里的项目命名为和自己的用户名一，或者命名为你喜欢的其他名称也可以。</p>
-
-<p>现在需要把我们本地的git项目和github这个新项目关联起来，把我们的项目代码放置到github上面去，从项目中获取项目的地址 git@gitee.com:example/example.git，用下面的命令绑定项目：</p>
-
+<p>现在需要把我们本地的git项目和github这个新项目关联起来，把我们的项目代码放置到github上面去，从项目中获取项目的地址 <a href="mailto:git@gitee.com">git@gitee.com</a>:example/example.git，用下面的命令绑定项目：</p>
 <pre><code># 因为在github上面想要访问的话，只需要public文件夹，所以我们在public文件夹当单独建一个项目
 cd public
 git init
@@ -357,20 +292,12 @@ git add .
 git commit -m &quot;init&quot;
 git remote set-url origin git@gitee.com:example/example.git
 git push origin master
-</code></pre>
-
-<p>这样我们本地修改之后，只需要把代码发布到github上面就自动可以访问了。</p>
-
+</code></pre><p>这样我们本地修改之后，只需要把代码发布到github上面就自动可以访问了。</p>
 <p>然后在项目的settings中可以配置网站的各种信息，如下图：</p>
-
-<p><img src="/img/github-pages.png" alt="g-pages配置" /></p>
-
+<p><img src="/img/github-pages.png" alt="g-pages配置"></p>
 <p>这里我们直接选择master分支就可以，因为我们使用的是hugo，所以目标这里就不能选择了。在往下的<code>custom domain</code>就是可以配自己的域名，在这里填入你自己的域名，比如<code>www.blog.com</code>，然后在你自己的域名解析工具内，解析你的域名到<code>example.github.io</code>上面，就可以通过你的域名访问了。</p>
-
 <h2 id="更进一步">更进一步</h2>
-
 <p>我们整体的环境已经搭建完成了，也绑定了自己的域名，接下来就可以在content中添加自己的内容，在发布到github上面就可以了。github上面的网站访问只使用了public文件夹，但是我们其他的文件夹就不要了吗？不，这里推荐还是在建一个项目，把这个根项目放到保存起来，避免我们的电脑如果处理文件，就找不回来原来的内容了。</p>
-
 <p>接下来就尝试一下吧！</p>
 
         
@@ -378,6 +305,10 @@ git push origin master
         
               <hr>
               <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/some/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="">&larr; Previous Post</a>
+                  </li>
                   
                   
                   <li class="next">
@@ -439,6 +370,12 @@ git push origin master
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,73 +187,44 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#gd处理图片">GD处理图片</a>
-<ul>
-<li><a href="#1-图片输出">1. 图片输出</a></li>
-<li><a href="#2-创建图片">2. 创建图片</a></li>
-<li><a href="#3-图片裁剪和缩放">3. 图片裁剪和缩放</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#gd处理图片">GD处理图片</a>
+      <ul>
+        <li><a href="#1-图片输出">1. 图片输出</a></li>
+        <li><a href="#2-创建图片">2. 创建图片</a></li>
+        <li><a href="#3-图片裁剪和缩放">3. 图片裁剪和缩放</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="gd处理图片">GD处理图片</h2>
-
+        		<h2 id="gd处理图片">GD处理图片</h2>
 <h3 id="1-图片输出">1. 图片输出</h3>
-
 <p>可以使用<code>image*函数</code>创建图片，这里<code>*</code>是指文件的格式。</p>
-
 <p>它们具有相同的语法：</p>
-
-<pre><code class="language-php">bool image___(resource $im [, mixed $to [ other parameters]] )
-</code></pre>
-
-<p><strong>保存到一个文件</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">bool image___(resource $im [, mixed $to [ other parameters]] )
+</code></pre></div><p><strong>保存到一个文件</strong></p>
 <p>如果你想把一个图片保存为一个文件，可以在<code>$to</code>中传入一个图片的地址或者打开的流。如果传入了一个流，你不需要自己关闭，因为GD会自动的关闭它。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">imagepng($image, &#34;/path/to/target/file.png&#34;);
 
-<pre><code class="language-php">imagepng($image, &quot;/path/to/target/file.png&quot;);
-
-$stream = fopen(&quot;phar://path/to/target.phar/file.png&quot;, &quot;wb&quot;); 
+$stream = fopen(&#34;phar://path/to/target.phar/file.png&#34;, &#34;wb&#34;); 
 imagepng($image2, $stream);
-// Don't fclose($stream)
-</code></pre>
-
-<p>当使用<code>fopen</code>的时候，这里使用<code>b</code>而不是<code>t</code>，因为文件是二进制输出的。</p>
-
+// Don&#39;t fclose($stream)
+</code></pre></div><p>当使用<code>fopen</code>的时候，这里使用<code>b</code>而不是<code>t</code>，因为文件是二进制输出的。</p>
 <p>不要试着传入<code>fopen(&quot;php://temp&quot;, $f)</code>或<code>fopen(&quot;php://memory&quot;, $f)</code>。因为这个流会在执行完毕后关闭，你就不能继续使用这个流了，比如获取流的内容。</p>
-
 <p><strong>输出HTTP响应</strong></p>
-
 <p>如果你想要图片作为图片的响应(例如创建一个动态的证章)，不需要在第二个参数传入任何信息(或者传入null)。然后在HTTP响应中需要制定内容类型：</p>
-
-<pre><code class="language-php">header(&quot;Content-Type: $mimeType&quot;);
-</code></pre>
-
-<p><code>$mimeType</code>是你返回的MIME格式化类型。例子中包含<code>image/png</code>，<code>image/gif</code>，<code>image/jpeg</code>。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">header(&#34;Content-Type: $mimeType&#34;);
+</code></pre></div><p><code>$mimeType</code>是你返回的MIME格式化类型。例子中包含<code>image/png</code>，<code>image/gif</code>，<code>image/jpeg</code>。</p>
 <p><strong>写入变量</strong></p>
-
 <p>有两种方式写入一个变量中：</p>
-
 <p><strong>使用OB(输出缓存)</strong></p>
-
-<pre><code class="language-php">ob_start();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">ob_start();
 imagepng($image, null, $quality); // pass null to supposedly write to stdout 
 $binary = ob_get_clean();
-</code></pre>
-
-<p><strong>使用流封装</strong></p>
-
+</code></pre></div><p><strong>使用流封装</strong></p>
 <p>你可能有很多理由不适用输出缓存。例如：你可能已经开启了OB。因此，另外的选项就可以使用了。</p>
-
 <p>使用<code>stream_wrapper_register</code>方法，可以注册一个新的流封装。因此你可以把这个流传入一个图片输出函数，之后就可以获取这个流。</p>
-
 <pre><code>&lt;?php
 class GlobalStream {
     private $var;
@@ -273,104 +248,63 @@ imagefill($image, 0, 0, imagecolorallocate($image, 0, 0, 0));
 $stream = fopen(&quot;global://myImage&quot;, &quot;&quot;);
 imagepng($image, $stream);
 echo base64_encode($myImage);
-</code></pre>
-
-<p>在这个例子中<code>GlobalStream</code>将任何输入写入到一个引用变量中（直接写入提供名字的引用变量中）。这个全局变量之后可以获取。</p>
-
+</code></pre><p>在这个例子中<code>GlobalStream</code>将任何输入写入到一个引用变量中（直接写入提供名字的引用变量中）。这个全局变量之后可以获取。</p>
 <p>有几点需要注意：</p>
-
 <ul>
 <li>一个完全实现的流封装类需要像<a href="https://www.php.net/manual/zh/stream.streamwrapper.example-1.php">这样</a>一样。但是根据<code>__call</code>魔术方法的测试，只有<code>stream_open</code>，<code>stream_write</code>，<code>stream_close</code>从内部调用的</li>
 <li><code>fopen</code>不需要任何标记，但是你至少要传入一个空字符串。这是因为<code>fopen</code>需要这样的参数，即使在你的<code>stream_open</code>中没有使用，你也需要一个虚拟的实现</li>
 <li>根据测试，<code>stream_write</code>调用了多次。记得使用<code>.=拼接赋值</code>而不是<code>=赋值</code>。</li>
 </ul>
-
 <p><strong>用例</strong></p>
-
 <p>在HTML的<code>&lt;img&gt;</code>标签中，一个图片可以直接使用而不是外部链接：</p>
-
-<pre><code class="language-php">echo '&lt;img src=&quot;data:image/png;base64,' . base64_encode($binary) . '&quot;&gt;';
-</code></pre>
-
-<h3 id="2-创建图片">2. 创建图片</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">echo &#39;&lt;<span style="color:#f92672">img</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;data:image/png;base64,&#39; . base64_encode($binary) . &#39;&#34;</span>&gt;&#39;;
+</code></pre></div><h3 id="2-创建图片">2. 创建图片</h3>
 <p>创建一个空白图片，使用<code>imagecreatetruecolor</code>函数：</p>
-
-<pre><code class="language-php">$img = imagecreatetruecolor($width, $height);
-</code></pre>
-
-<p><code>$img</code>现在是一个<code>$width$height</code>像素的图片的图片资源变量。注意宽度是从左到右，高度是从上到下。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$img = imagecreatetruecolor($width, $height);
+</code></pre></div><p><code>$img</code>现在是一个<code>$width$height</code>像素的图片的图片资源变量。注意宽度是从左到右，高度是从上到下。</p>
 <p>图片资源也可以使用<a href="https://www.php.net/manual/zh/ref.image.php">图片创建方法</a>创建：</p>
-
 <ul>
 <li>imagecreatefrompng</li>
 <li>imagecreatefromjpeg</li>
 <li>其他的<code>imagecreatefrom*</code>方法</li>
 </ul>
-
 <p>当没有引用到图片资源时，图片资源可以被释放。当图片不在使用的时候，使用<code>imagedestroy</code>来释放图片的内存是一个很好的做法(如果你处理多个图片，这非常重要)。</p>
-
-<pre><code class="language-php">imagedestroy($image);
-</code></pre>
-
-<p><strong>转换图片</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">imagedestroy($image);
+</code></pre></div><p><strong>转换图片</strong></p>
 <p>由图像转换创建的图像在输出之前不会修改图像。因此，图像转换器可以简单到三行代码：</p>
-
-<pre><code class="language-php">function convertJpegToPng(string $filename, string $outputFile) { 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function convertJpegToPng(string $filename, string $outputFile) { 
     $im = imagecreatefromjpeg($filename);
     imagepng($im, $outputFile);
     imagedestroy($im);
 }
-</code></pre>
-
-<h3 id="3-图片裁剪和缩放">3. 图片裁剪和缩放</h3>
-
+</code></pre></div><h3 id="3-图片裁剪和缩放">3. 图片裁剪和缩放</h3>
 <p>如果你有一个图片，想要创建新尺寸的图片，可以使用<code>imagecopyresampled</code>方法。</p>
-
 <p>首先创建一个期望尺寸的图片：</p>
-
-<pre><code class="language-php"> // new image
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"> // new image
 $dst_img = imagecreatetruecolor($width, $height);
-</code></pre>
-
-<p>然后把原本的图片传入一个变量。这可以通过<code>createimagefrom*</code>方法来实现，这里<code>*</code>代表：</p>
-
+</code></pre></div><p>然后把原本的图片传入一个变量。这可以通过<code>createimagefrom*</code>方法来实现，这里<code>*</code>代表：</p>
 <ul>
 <li>jpeg</li>
 <li>gif</li>
 <li>png</li>
 <li>string</li>
 </ul>
-
 <p>例如：</p>
-
-<pre><code class="language-php">//original image
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//original image
 $src_img=imagecreatefromstring(file_get_contents($original_image_path));
-</code></pre>
-
-<p>现在使用<code>imagecopyresampled</code>方法从原图片复制全部或者部分内容到新图片中：</p>
-
-<pre><code class="language-php">imagecopyresampled($dst_img, $src_img,
+</code></pre></div><p>现在使用<code>imagecopyresampled</code>方法从原图片复制全部或者部分内容到新图片中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">imagecopyresampled($dst_img, $src_img,
     $dst_x ,$dst_y, $src_x, $src_y,
     $dst_width, $dst_height, $src_width, $src_height);
-</code></pre>
-
-<p>要设置<code>set_*</code>和<code>src_*</code>，看下面的图片：</p>
-
-<p><img src="/img/php/6MFxN.jpg" alt="src" /></p>
-
+</code></pre></div><p>要设置<code>set_*</code>和<code>src_*</code>，看下面的图片：</p>
+<p><img src="/img/php/6MFxN.jpg" alt="src"></p>
 <p>现在，你想要把整个原图片复制到目标图片中：</p>
-
-<pre><code class="language-php">$src_x = $src_y = $dst_x = $dst_y = 0;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$src_x = $src_y = $dst_x = $dst_y = 0;
 $dst_width = $width;// width of new image
 $dst_height = $height; //height of new image
 $src_width = imagesx($src_img); //width of initial image 
 $src_height = imagesy($src_img); //height of initial image
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -442,6 +376,12 @@ $src_height = imagesy($src_img); //height of initial image
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

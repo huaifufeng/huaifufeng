@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,73 +187,53 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#分区">分区</a>
-<ul>
-<li><a href="#1-范围分区">1. 范围分区</a></li>
-<li><a href="#2-列表分区">2. 列表分区</a></li>
-<li><a href="#3-hash分区">3. HASH分区</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#分区">分区</a>
+      <ul>
+        <li><a href="#1-范围分区">1. 范围分区</a></li>
+        <li><a href="#2-列表分区">2. 列表分区</a></li>
+        <li><a href="#3-hash分区">3. HASH分区</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="分区">分区</h2>
-
+        		<h2 id="分区">分区</h2>
 <h3 id="1-范围分区">1. 范围分区</h3>
-
 <p>按照范围分区的表是指每个分区包含按照指定分区表达式在某个范围内的行。范围应该是连续但不重叠的，使用<code>VALUES LESS THAN</code>运算符获得。在下面的例子中，假设你创建了包含下面20加连锁视频店(从1到20)的人事记录。</p>
-
-<pre><code class="language-mysql">CREATE TABLE employees(
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT NOT NULL,
-    store_id INT NOT NULL
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">employees</span>(
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    fname <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>),
+    lname <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>),
+    hired <span style="color:#66d9ef">DATE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;1970-01-01&#39;</span>,
+    separated <span style="color:#66d9ef">DATE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;9999-12-31&#39;</span>,
+    job_code <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    store_id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
 );
-</code></pre>
-
-<p>这个表可以根据你的需要，按照不同的范围分为几个区。一种方法是使用<code>store_id</code>列。例如，你可以把表分为4个部分，使用<code>PARTITION BY RANGE</code>语句：</p>
-
-<pre><code class="language-mysql">ALTER TABLE employees PARTITION BY RANGE (store_id) (
-    PARTITION p0 VALUES LESS THAN (6),
-    PARTITION p1 VALUES LESS THAN (11),
-    PARTITION p2 VALUES LESS THAN (16),
-    PARTITION p3 VALUES LESS THAN MAXVALUE
+</code></pre></div><p>这个表可以根据你的需要，按照不同的范围分为几个区。一种方法是使用<code>store_id</code>列。例如，你可以把表分为4个部分，使用<code>PARTITION BY RANGE</code>语句：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> employees PARTITION <span style="color:#66d9ef">BY</span> <span style="color:#a6e22e">RANGE</span> (store_id) (
+    PARTITION p0 <span style="color:#66d9ef">VALUES</span> LESS <span style="color:#a6e22e">THAN</span> (<span style="color:#ae81ff">6</span>),
+    PARTITION p1 <span style="color:#66d9ef">VALUES</span> LESS <span style="color:#a6e22e">THAN</span> (<span style="color:#ae81ff">11</span>),
+    PARTITION p2 <span style="color:#66d9ef">VALUES</span> LESS <span style="color:#a6e22e">THAN</span> (<span style="color:#ae81ff">16</span>),
+    PARTITION p3 <span style="color:#66d9ef">VALUES</span> LESS THAN MAXVALUE
 );
-</code></pre>
-
-<blockquote>
+</code></pre></div><blockquote>
 <p><code>MAXVALUE</code>表示一个始终大于最大可能整数值的整数值。(在数学中，用作最小上界。)</p>
 </blockquote>
-
 <p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-range.html">手册</a>。</p>
-
 <h3 id="2-列表分区">2. 列表分区</h3>
-
 <p>列表分区和范围分区在很多地方都很相似。在范围分区中，每个分区都是显示定义的。两种分区类型之间的主要区别在于：在列表分区中，每个分区都是根据一组值列表中的某个列值的成员资格而不是一组连续值范围中的某个列值的成员资格来定义和选择的。这是通过<code>PARTITION BY LIST(expr)</code>来实现的，其中<code>expr</code>是一组列值或者是基于列值的返回整数的表达式，然后通过<code>VALUES IN (value_list)</code>来定义分区，其中<code>value_list</code>是逗号分隔的整数列表。</p>
-
 <p>像下面的例子，我们假设要分区的表就是想下面<code>CREAETE TABLE</code>语句显示的一样：</p>
-
-<pre><code class="language-mysql">CREATE TABLE employees (
-    id INT NOT NULL,
-    fname VARCHAR(30),
-    lname VARCHAR(30),
-    hired DATE NOT NULL DEFAULT '1970-01-01',
-    separated DATE NOT NULL DEFAULT '9999-12-31',
-    job_code INT,
-    store_id INT
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">employees</span> (
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    fname <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>),
+    lname <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>),
+    hired <span style="color:#66d9ef">DATE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;1970-01-01&#39;</span>,
+    separated <span style="color:#66d9ef">DATE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;9999-12-31&#39;</span>,
+    job_code <span style="color:#66d9ef">INT</span>,
+    store_id <span style="color:#66d9ef">INT</span>
 );
-</code></pre>
-
-<p>假设有20个视频商店分步在下面4个特许经营中，如下表所示：</p>
-
+</code></pre></div><p>假设有20个视频商店分步在下面4个特许经营中，如下表所示：</p>
 <table>
 <thead>
 <tr>
@@ -257,67 +241,51 @@
 <th>视频商店id列表</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>North</td>
 <td>3,5,6,9,7</td>
 </tr>
-
 <tr>
 <td>East</td>
 <td>1,2,10,11,19,20</td>
 </tr>
-
 <tr>
 <td>West</td>
 <td>4,12,13,14,18</td>
 </tr>
-
 <tr>
 <td>Central</td>
 <td>7,8,15,16</td>
 </tr>
 </tbody>
 </table>
-
 <p>对该表进行分区，使属于同一区域的存储的行存储在同一分区中。</p>
-
-<pre><code class="language-mysql">ALTER TABLE employees PARTITION BY LIST(store_id) ( 
-		PARTITION pNorth VALUES IN (3,5,6,9,17), 
-		PARTITION pEast VALUES IN (1,2,10,11,19,20), 
-		PARTITION pWest VALUES IN (4,12,13,14,18), 
-		PARTITION pCentral VALUES IN (7,8,15,16)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> employees PARTITION <span style="color:#66d9ef">BY</span> <span style="color:#a6e22e">LIST</span>(store_id) ( 
+		PARTITION pNorth <span style="color:#66d9ef">VALUES</span> <span style="color:#66d9ef">IN</span> (<span style="color:#ae81ff">3</span>,<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">6</span>,<span style="color:#ae81ff">9</span>,<span style="color:#ae81ff">17</span>), 
+		PARTITION pEast <span style="color:#66d9ef">VALUES</span> <span style="color:#66d9ef">IN</span> (<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">11</span>,<span style="color:#ae81ff">19</span>,<span style="color:#ae81ff">20</span>), 
+		PARTITION pWest <span style="color:#66d9ef">VALUES</span> <span style="color:#66d9ef">IN</span> (<span style="color:#ae81ff">4</span>,<span style="color:#ae81ff">12</span>,<span style="color:#ae81ff">13</span>,<span style="color:#ae81ff">14</span>,<span style="color:#ae81ff">18</span>), 
+		PARTITION pCentral <span style="color:#66d9ef">VALUES</span> <span style="color:#66d9ef">IN</span> (<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">8</span>,<span style="color:#ae81ff">15</span>,<span style="color:#ae81ff">16</span>)
 );
-</code></pre>
-
-<p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-list.html">MySQL的手册</a>。</p>
-
+</code></pre></div><p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-list.html">MySQL的手册</a>。</p>
 <h3 id="3-hash分区">3. HASH分区</h3>
-
 <p>哈希分区主要用于确保数据在预定数量的分区之间均匀分布。范围分区和列表分区，你需要明确指定某个分区哪些列和记录会存储在其中；对于HASH分区，MySQL完成这些工作，你只需要指定将要进行HASH操作的列或作用在列上的表达式和指明想要将表分区的数量。</p>
-
 <p>下面创建了一张表，使用hash分区根据store_id列来吧这个表分为4个区：</p>
-
-<pre><code class="language-mysql">CREATE TABLE employees (
-		id INT NOT NULL,
-		fname VARCHAR(30),
-		lname VARCHAR(30),
-		hired DATE NOT NULL DEFAULT '1970-01-01', 
-  	separated DATE NOT NULL DEFAULT '9999-12-31', 
-  	job_code INT,
-		store_id INT
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">employees</span> (
+		id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+		fname <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>),
+		lname <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>),
+		hired <span style="color:#66d9ef">DATE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;1970-01-01&#39;</span>, 
+  	separated <span style="color:#66d9ef">DATE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#39;9999-12-31&#39;</span>, 
+  	job_code <span style="color:#66d9ef">INT</span>,
+		store_id <span style="color:#66d9ef">INT</span>
 )
-PARTITION BY HASH(store_id)
-PARTITIONS 4;
-</code></pre>
-
-<blockquote>
+PARTITION <span style="color:#66d9ef">BY</span> <span style="color:#a6e22e">HASH</span>(store_id)
+PARTITIONS <span style="color:#ae81ff">4</span>;
+</code></pre></div><blockquote>
 <p>如果你没有指定<code>PARTITIONS</code>，默认的分区数量是1</p>
 </blockquote>
-
 <p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/partitioning-hash.html">MySQL手册</a>。</p>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -390,6 +358,12 @@ PARTITIONS 4;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,71 +187,50 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#本地化">本地化</a>
-<ul>
-<li><a href="#1-gettext-获取本地字符串">1. gettext()获取本地字符串</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#本地化">本地化</a>
+      <ul>
+        <li><a href="#1-gettext获取本地字符串">1. gettext()获取本地字符串</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="本地化">本地化</h2>
-
-<h3 id="1-gettext-获取本地字符串">1. gettext()获取本地字符串</h3>
-
+        		<h2 id="本地化">本地化</h2>
+<h3 id="1-gettext获取本地字符串">1. gettext()获取本地字符串</h3>
 <p>GNU<code>gettext</code>是一个必须包含在PHP的<code>php.ini</code>文件中扩展。</p>
-
 <pre><code>extension=php_gettext.dll #Windows 
 extension=gettext.so #Linux
-</code></pre>
+</code></pre><p><code>gettext</code>实现一个NLS（非语言支持）APi，这被用来国际化你的PHP应用。在PHP中你可以通过设置语言环境，设置翻译表，和在想要翻译的字符串上调用<code>gettext()</code>方法来获取字符串的翻译。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">// Set language to French
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">putenv</span>(<span style="color:#e6db74">&#39;LC_ALL=    fr_FR&#39;</span>);
+<span style="color:#a6e22e">setlocale</span>(<span style="color:#a6e22e">LC_ALL</span>, <span style="color:#e6db74">&#39;fr_FR&#39;</span>);
 
-<p><code>gettext</code>实现一个NLS（非语言支持）APi，这被用来国际化你的PHP应用。在PHP中你可以通过设置语言环境，设置翻译表，和在想要翻译的字符串上调用<code>gettext()</code>方法来获取字符串的翻译。</p>
+<span style="color:#75715e">// Specify location of translation tables for &#39;myPHPApp&#39; domain
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">bindtextdomain</span>(<span style="color:#e6db74">&#34;myPHPApp&#34;</span>, <span style="color:#e6db74">&#34;./locale&#34;</span>);
 
-<pre><code class="language-php">&lt;?php
-// Set language to French
-putenv('LC_ALL=    fr_FR');
-setlocale(LC_ALL, 'fr_FR');
-
-// Specify location of translation tables for 'myPHPApp' domain
-bindtextdomain(&quot;myPHPApp&quot;, &quot;./locale&quot;);
-
-// Select 'myPHPApp' domain
-textdomain(&quot;myPHPApp&quot;);
-</code></pre>
-
-<p><strong>myPHPApp.po</strong></p>
-
+<span style="color:#75715e">// Select &#39;myPHPApp&#39; domain
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">textdomain</span>(<span style="color:#e6db74">&#34;myPHPApp&#34;</span>);
+</code></pre></div><p><strong>myPHPApp.po</strong></p>
 <pre><code>#: /Hello_world.php:56
 msgid &quot;Hello&quot;
 msgstr &quot;Bonjour&quot;
 #: /Hello_world.php:242
 msgid &quot;How are you?&quot;
 msgstr &quot;Comment allez-vous?&quot;
-</code></pre>
-
-<p><code>gettext()</code>加载一个给定的<code>post-componed.po</code>，一个<code>.mo</code>文件，它将您的要翻译的字符串映射为如上所述。</p>
-
+</code></pre><p><code>gettext()</code>加载一个给定的<code>post-componed.po</code>，一个<code>.mo</code>文件，它将您的要翻译的字符串映射为如上所述。</p>
 <p>在这一小段设置代码之后，将在以下文件中查找翻译：</p>
-
 <ul>
 <li>./locale/fr_FR/LC_MESSAGES/myPHPApp.mo</li>
 </ul>
-
 <p>每当你调用<code>gettext('some string')</code>，如果翻译文件<code>.mo</code>中已经翻译了<code>some string</code>，那么翻译将会被返回。否则，没有翻译的<code>some string</code>将会被返回。</p>
-
-<pre><code class="language-php">// Print the translated version of 'Welcome to My PHP Application'
-echo gettext(&quot;Welcome to My PHP Application&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// Print the translated version of &#39;Welcome to My PHP Application&#39;
+echo gettext(&#34;Welcome to My PHP Application&#34;);
 
 // Or use the alias _() for gettext()
-echo _(&quot;Have a nice day&quot;);
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+echo _(&#34;Have a nice day&#34;);
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -319,6 +302,12 @@ echo _(&quot;Have a nice day&quot;);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

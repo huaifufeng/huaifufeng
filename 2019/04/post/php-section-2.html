@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,61 +187,24 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#变量">变量</a>
-<ul>
-<li><a href="#变量的变量">变量的变量</a>
-<ul>
-<li><a href="#php5和php7的不同">PHP5和PHP7的不同</a></li>
-</ul></li>
-<li><a href="#数据类型">数据类型</a>
-<ul>
-<li><a href="#null">Null</a></li>
-<li><a href="#boolean">Boolean</a></li>
-<li><a href="#整数">整数</a></li>
-<li><a href="#浮点数">浮点数</a></li>
-<li><a href="#数组">数组</a></li>
-<li><a href="#字符串">字符串</a></li>
-<li><a href="#对象">对象</a></li>
-<li><a href="#资源">资源</a></li>
-</ul></li>
-<li><a href="#全局变量">全局变量</a>
-<ul>
-<li><a href="#我们怎么避免使用全局变量">我们怎么避免使用全局变量？</a></li>
-<li><a href="#超全局变量">超全局变量</a></li>
-</ul></li>
-<li><a href="#未初始化变量的默认值">未初始化变量的默认值</a>
-<ul>
-<li><a href="#未设置和未引用">未设置和未引用</a></li>
-<li><a href="#boolean-1">Boolean</a></li>
-<li><a href="#string">String</a></li>
-<li><a href="#integer">Integer</a></li>
-<li><a href="#float-double">Float/double</a></li>
-<li><a href="#array">Array</a></li>
-<li><a href="#object">Object</a></li>
-</ul></li>
-<li><a href="#变量值真实性和全等运算符">变量值真实性和全等运算符</a>
-<ul>
-<li><a href="#全等运算符">全等运算符</a></li>
-</ul></li>
-<li><a href="#strpos的用例">strpos的用例</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#变量">变量</a>
+      <ul>
+        <li><a href="#变量的变量">变量的变量</a></li>
+        <li><a href="#数据类型">数据类型</a></li>
+        <li><a href="#全局变量">全局变量</a></li>
+        <li><a href="#未初始化变量的默认值">未初始化变量的默认值</a></li>
+        <li><a href="#变量值真实性和全等运算符">变量值真实性和全等运算符</a></li>
+        <li><a href="#strpos的用例">strpos的用例</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="变量">变量</h2>
-
+        		<h2 id="变量">变量</h2>
 <h3 id="变量的变量">变量的变量</h3>
-
 <p>可以通过动态的变量名字访问变量。任务允许被动态访问的变量的名字都可以放到另一个变量内。这样的变量就叫做变量的变量。</p>
-
 <p>想要把一个变量放到另一个变量里面，可以在变量的前面添加一个额外的$符。</p>
-
 <pre><code>$variableName = 'foo';
 $foo = 'bar';
 
@@ -254,19 +221,13 @@ $$variableName = 'bar';
 echo $foo;
 echo ${$variableName};
 echo $$variableName;
-</code></pre>
-
-<p>变量的变量对于映射函数/方法非常有用。</p>
-
+</code></pre><p>变量的变量对于映射函数/方法非常有用。</p>
 <pre><code>function add($a, $b) { 
 		return $a + $b;
 }
 $funcName = 'add';
 echo $funcName(1, 2); // outputs 3
-</code></pre>
-
-<p>这在PHP的类里面是特别有用的：</p>
-
+</code></pre><p>这在PHP的类里面是特别有用的：</p>
 <pre><code>class myClass {
     public function __construct() {
         $functionName = 'doSomething';
@@ -276,109 +237,65 @@ echo $funcName(1, 2); // outputs 3
         echo $string; // Outputs &quot;Hello World&quot;
     } 
 }
-</code></pre>
-
-<p>可以单并不要求把变量<code>$variableName</code>放到{}里面：</p>
-
+</code></pre><p>可以单并不要求把变量<code>$variableName</code>放到{}里面：</p>
 <pre><code>${$variableName} = $value;
-</code></pre>
-
-<p>下面的例子是等价的，并且都会输出<code>baz</code>:</p>
-
+</code></pre><p>下面的例子是等价的，并且都会输出<code>baz</code>:</p>
 <pre><code>$fooBar = 'baz';
 $varPrefix = 'foo';
 
 echo $fooBar; // Outputs &quot;baz&quot;
 echo ${$varPrefix . 'Bar'}; // Also outputs &quot;baz&quot;
-</code></pre>
-
-<p>只有当变量本身是一个表达式的时候，{}才是必须的，就像下面这样：</p>
-
+</code></pre><p>只有当变量本身是一个表达式的时候，{}才是必须的，就像下面这样：</p>
 <pre><code>${$variableNamePart1 . $variableNamePart2} = $value;
-</code></pre>
-
-<p>但是建议始终使用{}，因为这更加易于阅读。</p>
-
+</code></pre><p>但是建议始终使用{}，因为这更加易于阅读。</p>
 <p>虽然不建议这么做，但是可以连接多个变量：</p>
-
 <pre><code> $$$$$$$$DoNotTryThisAtHomeKids = $value;
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>重点注意：变量的变量被过渡使用被许多开发者认为是一种坏的开发习惯。由于它们不太适合现代IDE进行静态分析，因此具有许多变量的变量（或动态方法调用）的大型代码很快就会变得难以维护。</p>
 </blockquote>
-
 <h4 id="php5和php7的不同">PHP5和PHP7的不同</h4>
-
 <p>另外一个使用{}或()的原因是，PHP5和PHP7在处理动态变量时会有细微的不同，同一个表达式会有不同的结果。</p>
-
 <p>在PHP7中，动态变量、属性和方法会严格按照从左到右的顺序解析，而不会出现PHP5混合使用的情况。</p>
-
 <p>Case 1：<code>$$foo['bar']['baz']</code></p>
-
 <ul>
 <li>PHP5解析结果：<code>${$foo['bar']['baz']}</code></li>
 <li>PHP7解析结果：<code>($$foo)['bar']['baz']</code></li>
 </ul>
-
 <p>Case 2: <code>$foo-&gt;$bar['baz']</code></p>
-
 <ul>
 <li>PHP5解析结果：<code>$foo-&gt;{$bar['baz']}</code></li>
 <li>PHP7解析结果：<code>($foo-&gt;$bar)['baz']</code></li>
 </ul>
-
 <p>Case 3: <code>$foo-&gt;$bar['baz']()</code></p>
-
 <ul>
 <li>PHP5解析结果：<code>$foo-&gt;{$bar['baz']}()</code></li>
 <li>PHP7解析结果：<code>($foo-&gt;$bar)['baz']()</code></li>
 </ul>
-
 <p>Case 4: <code>Foo::$bar['baz']</code></p>
-
 <ul>
 <li>PHP5解析结果：<code>Foo::{$bar['baz']}()</code></li>
 <li>PHP7解析结果：<code>(Foo::$bar)['baz']()</code></li>
 </ul>
-
 <h3 id="数据类型">数据类型</h3>
-
-<p>为了不同的目的有不同的数据类型。PHP没有显示类型定义，但是变量的类型是由赋值给这个变量的值的类型决定的，或者是强制转换的类型。这里只是类型的简单介绍，详细的文档和例子可以看&rdquo;PHP类型&rdquo;章节。</p>
-
+<p>为了不同的目的有不同的数据类型。PHP没有显示类型定义，但是变量的类型是由赋值给这个变量的值的类型决定的，或者是强制转换的类型。这里只是类型的简单介绍，详细的文档和例子可以看&quot;PHP类型&quot;章节。</p>
 <p>PHP有下面几种类型：字符串，整数，浮点数，Null，布尔值，资源，数组，对象。</p>
-
 <h4 id="null">Null</h4>
-
 <p>Null可以赋值给任何变量。这就表示这个变量没有值。</p>
-
 <pre><code>$foo = null;
-</code></pre>
-
-<p>这注销这个变量，这个变量的值是未定义的或void的。这个变量将会从内存中清理，并被GC删除掉。</p>
-
+</code></pre><p>这注销这个变量，这个变量的值是未定义的或void的。这个变量将会从内存中清理，并被GC删除掉。</p>
 <h4 id="boolean">Boolean</h4>
-
 <p>这是只有两个值的最简单的类型。</p>
-
 <pre><code>$foo = true;
 $bar = false;
-</code></pre>
-
-<p>布尔值可以用来控制代码流。</p>
-
+</code></pre><p>布尔值可以用来控制代码流。</p>
 <pre><code>$foo = true;
 if ($foo) {
     echo &quot;true&quot;;
 } else {
     echo &quot;false&quot;;
 }
-</code></pre>
-
-<h4 id="整数">整数</h4>
-
+</code></pre><h4 id="整数">整数</h4>
 <p>一个整数就是一个正整数或负整数。可以使用任何进制的数字。整数的大小是依赖于操作系统的。PHP不支持非负整数。</p>
-
 <pre><code>$foo = -3; // negative
 $foo = 0; // zero (can also be null or false (as boolean)
 $foo = 123; // positive decimal
@@ -386,32 +303,21 @@ $bar = 0123; // octal = 83 decimal
 $bar = 0xAB; // hexadecimal = 171 decimal
 $bar = 0b1010; // binary = 10 decimal
 var_dump(0123, 0xAB, 0b1010); // output: int(83) int(171) int(10)
-</code></pre>
-
-<h4 id="浮点数">浮点数</h4>
-
+</code></pre><h4 id="浮点数">浮点数</h4>
 <p>浮点数，“双精度”或简称“浮点数”是十进制数。</p>
-
 <pre><code>$foo = 1.23;
 $foo = 10.0;
 $bar = -INF;
 $bar = NAN;
-</code></pre>
-
-<h4 id="数组">数组</h4>
-
+</code></pre><h4 id="数组">数组</h4>
 <p>一个数组就像值的一个列表。最简单的数组是数字索引的，并按照索引排序的，第一个值的索引是0。</p>
-
 <pre><code>$foo = array(1, 2, 3); // An array of integers
 $bar = [&quot;A&quot;, true, 123 =&gt; 5]; // Short array syntax, PHP 5.4+
 echo $bar[0]; // Returns &quot;A&quot; 
 echo $bar[1]; // Returns true 
 echo $bar[123]; // Returns 5 
 echo $bar[1234]; // Returns null
-</code></pre>
-
-<p>数组也可以是关联数组，使用一个键而不是数字做索引。在PHP里面，数组底层都是关联数组实现的。但当我们明确说&rdquo;关联数组&rdquo;的时候，通常指包含一个或多个非整数键的数组。</p>
-
+</code></pre><p>数组也可以是关联数组，使用一个键而不是数字做索引。在PHP里面，数组底层都是关联数组实现的。但当我们明确说&quot;关联数组&quot;的时候，通常指包含一个或多个非整数键的数组。</p>
 <pre><code>$array = array();
 $array[&quot;foo&quot;] = &quot;bar&quot;;
 $array[&quot;baz&quot;] = &quot;quux&quot;;
@@ -419,80 +325,47 @@ $array[42] = &quot;hello&quot;;
 echo $array[&quot;foo&quot;]; // Outputs &quot;bar&quot; 
 echo $array[&quot;bar&quot;]; // Outputs &quot;quux&quot; 
 echo $array[42]; // Outputs &quot;hello&quot;
-</code></pre>
-
-<h4 id="字符串">字符串</h4>
-
+</code></pre><h4 id="字符串">字符串</h4>
 <p>一个字符串就是一个字符的数组。</p>
-
 <pre><code>$foo = 'bar';
-</code></pre>
-
-<p>像数组一样，字符串可以使用索引获取单个字符的值。</p>
-
+</code></pre><p>像数组一样，字符串可以使用索引获取单个字符的值。</p>
 <pre><code>$foo = &quot;bar&quot;;
 echo $foo[0]; // Prints 'b', the first character of the string in $foo.
-</code></pre>
-
-<h4 id="对象">对象</h4>
-
+</code></pre><h4 id="对象">对象</h4>
 <p>对象是一个类的实例。它的变量和方法可以通过<code>-&gt;</code>访问。</p>
-
 <pre><code>$foo = new stdClass(); // create new object of class stdClass, which a predefined, empty class $foo-&gt;bar = &quot;baz&quot;;
 echo $foo-&gt;bar; // Outputs &quot;baz&quot;
 // Or we can cast an array to an object:
 $quux = (object) [&quot;foo&quot; =&gt; &quot;bar&quot;];
 echo $quux-&gt;foo; // This outputs &quot;bar&quot;.
-</code></pre>
-
-<h4 id="资源">资源</h4>
-
+</code></pre><h4 id="资源">资源</h4>
 <p>资源变量保存着贷款的文件，数据库连接，流，图像画布区域这类句柄的信息(像<a href="https://secure.php.net/manual/en/language.types.resource.php#language.types.resource.casting">手册</a>描述的一样)。</p>
-
 <pre><code>$fp = fopen('file.ext', 'r'); //// fopen() is the function to open a file on disk as a resource.
 var_dump($fp); //// output: resource(2) of type (stream)
-</code></pre>
-
-<p>获取变量类型的字符串表示，使用<code>gettype()</code>函数：</p>
-
+</code></pre><p>获取变量类型的字符串表示，使用<code>gettype()</code>函数：</p>
 <pre><code>echo gettype(1); //输出&quot;integer&quot;
 echo gettype(true); //输出 &quot;boolean&quot;
-</code></pre>
-
-<h3 id="全局变量">全局变量</h3>
-
+</code></pre><h3 id="全局变量">全局变量</h3>
 <p>我们用下面的伪代码来说明这个问题：</p>
-
 <pre><code>function foo() {
     global $bob;
     $bob-&gt;doSomething();
 }
-</code></pre>
-
-<p>这里很明显你会有一个问题：</p>
-
+</code></pre><p>这里很明显你会有一个问题：</p>
 <blockquote>
 <p>这个变量<code>$bob</code>从哪里来？</p>
 </blockquote>
-
 <p>你是不是感到困惑了？很好。你刚刚了解到全局变量是令人困惑的，并且这是一个不好的开发方式。</p>
-
 <p>如果这是一个真实的项目，接下来你要做的就是寻找所有的<code>$bob</code>实例，然后找到哪个是正确的那个(如果<code>$bob</code>被到处用的话，就更加麻烦了)。更坏的情况是，其他人也定义了这个变量<code>$bob</code>(或者你忘记了，然后重用了这个变量)你的代码就会出问题(在上面的例子中，获取错误的对象或者就不是一个对象，将会引发致命错误)。</p>
-
 <p>因为所有的PHP程序都使用<code>include(&quot;file.php&quot;)</code>来加载文件，因此添加的文件越多，你维护代码就越来越困难。</p>
-
 <p>另外这也让你进行项目的测试工作特别麻烦。假设你用一个全局变量来存储你的数据库连接：</p>
-
 <pre><code>$dbConnector = new DBConnector(...);
 
 function doSomething(){
     global $dbConnector;
     $dbConnector-&gt;execute(&quot;...&quot;);
 }
-</code></pre>
-
-<p>为了对这个函数进行单元测试，你需要复写全局变量<code>$dbConnector</code>，运行单元测试之后把这个变量赋值回原来的值，这是非常容易出错的。</p>
-
+</code></pre><p>为了对这个函数进行单元测试，你需要复写全局变量<code>$dbConnector</code>，运行单元测试之后把这个变量赋值回原来的值，这是非常容易出错的。</p>
 <pre><code>/**
 * test
 */
@@ -506,29 +379,17 @@ function testSomething() {
     
     $dbConnector = $bkp;
 }
-</code></pre>
-
-<h4 id="我们怎么避免使用全局变量">我们怎么避免使用全局变量？</h4>
-
+</code></pre><h4 id="我们怎么避免使用全局变量">我们怎么避免使用全局变量？</h4>
 <p>最好的避免使用全局变量的方法叫做DI(依赖注入)。这就是我们将需要的工具传入函数或者类中。</p>
-
 <pre><code>function foo(\Bar $bob) {
   $bob-&gt;doSomething();
 }
-</code></pre>
-
-<p>这样将更加易于理解和维护。这样就不用疑惑<code>$bob</code>是从哪里设置的，因为这个调用方法很明确(这里直接传递了这个值)。最好一直使用<a href="http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration">类型定义</a>来严格限制传入的值。</p>
-
+</code></pre><p>这样将更加易于理解和维护。这样就不用疑惑<code>$bob</code>是从哪里设置的，因为这个调用方法很明确(这里直接传递了这个值)。最好一直使用<a href="http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration">类型定义</a>来严格限制传入的值。</p>
 <p>现在我们知道<code>$bob</code>要不是<code>Bar</code>类的实例，要不是<code>Bar</code>子类的实例，这样我们就知道我们可以使用这个类的方法。结合标准加载器(PHP5.3之后有效)，我们可以追踪这个类是哪里定义的。在PHP 7.0之后，我们可以使用标量类型的类型定义(像 <code>int</code>和<code>string</code>)。</p>
-
 <h4 id="超全局变量">超全局变量</h4>
-
 <p>PHP中超全局变量是预先定义的变量，在整个脚本的任何地方都可以访问这个变量。</p>
-
 <p>没有必要在函数/方法，类或者文件中使用<code>global $vaiable;</code>这语法来访问它们。</p>
-
 <p>下面是超全局变量的列表：</p>
-
 <ul>
 <li><a href="http://php.net/manual/en/reserved.variables.globals.php">$GLOBALS</a></li>
 <li><a href="https://www.php.net/manual/en/reserved.variables.server.php">$_SERVER</a></li>
@@ -540,68 +401,37 @@ function testSomething() {
 <li><a href="https://www.php.net/manual/en/reserved.variables.cookies.php">$_COOKIE</a></li>
 <li><a href="https://www.php.net/manual/en/reserved.variables.session.php">$_SESSION</a></li>
 </ul>
-
 <h3 id="未初始化变量的默认值">未初始化变量的默认值</h3>
-
 <p>尽管在PHP中变量初始化时非必须的，但是初始化变量是一个好的开发习惯。未初始化的变量根据变量使用的环境有一个默认值。</p>
-
 <h4 id="未设置和未引用">未设置和未引用</h4>
-
 <pre><code>var_dump($unset_var);  //Null
-</code></pre>
-
-<h4 id="boolean-1">Boolean</h4>
-
+</code></pre><h4 id="boolean-1">Boolean</h4>
 <pre><code>echo($unset_bool ? &quot;true\n&quot; : &quot;false\n&quot;);  //false
-</code></pre>
-
-<h4 id="string">String</h4>
-
+</code></pre><h4 id="string">String</h4>
 <pre><code>$unset_str .= 'abc';
 var_dump($unset_str);  //'string(3) &quot;abc&quot;'
-</code></pre>
-
-<h4 id="integer">Integer</h4>
-
+</code></pre><h4 id="integer">Integer</h4>
 <pre><code>$unset_int += 25;
 var_dump($unset_int);   //'int(25)'
-</code></pre>
-
-<h4 id="float-double">Float/double</h4>
-
+</code></pre><h4 id="floatdouble">Float/double</h4>
 <pre><code>$unset_float += 1.25;
 var_dump($unset_float); //'float(1.25)'
-</code></pre>
-
-<h4 id="array">Array</h4>
-
+</code></pre><h4 id="array">Array</h4>
 <pre><code>$unset_arr[3] = 'def';
 var_dump($unset_arr);  //array(1) {[3] =&gt; string(3) &quot;def&quot; }
-</code></pre>
-
-<h4 id="object">Object</h4>
-
+</code></pre><h4 id="object">Object</h4>
 <pre><code>$unset_obj-&gt;foo = 'bar';
 var_dump($unset_obj);  //object(stdClass)#1 (1) { [&quot;foo&quot;] =&gt; string(3) &quot;bar&quot; }
-</code></pre>
-
-<p>将一个文件引入到包含相同变量名的文件中时，未初始化的变量的默认值是有问题的。</p>
-
+</code></pre><p>将一个文件引入到包含相同变量名的文件中时，未初始化的变量的默认值是有问题的。</p>
 <h3 id="变量值真实性和全等运算符">变量值真实性和全等运算符</h3>
-
-<p>在PHP里面，变量值有这关联的&rdquo;真实性&rdquo;，所以即使不是布尔值也可以等于<code>true</code>或<code>false</code>。这允许任何变量用到条件表达式中。</p>
-
+<p>在PHP里面，变量值有这关联的&quot;真实性&rdquo;，所以即使不是布尔值也可以等于<code>true</code>或<code>false</code>。这允许任何变量用到条件表达式中。</p>
 <pre><code>if ($var == true) {}
 if ($var) {}
-</code></pre>
-
-<p>这里对于不同类型的变量有一些基本的规则：</p>
-
+</code></pre><p>这里对于不同类型的变量有一些基本的规则：</p>
 <ul>
 <li><code>字符串</code>长度不为0就是<code>true</code>，包括只有空格的字符串</li>
-
-<li><p><code>空字符串</code>等于<code>false</code>。</p>
-
+<li><code>空字符串</code>等于<code>false</code>。</li>
+</ul>
 <pre><code>$var = '';
 $var_is_true = ($var == true); //false
 $var_is_false = ($var == false); //true
@@ -609,27 +439,24 @@ $var_is_false = ($var == false); //true
 $var = ' ';
 $var_is_true = ($var == true); //true
 $var_Is_false = ($var == false); //false
-</code></pre></li>
-
-<li><p><code>整数</code>除了0等于<code>false</code>，其他值都等于<code>true</code></p>
-
+</code></pre><ul>
+<li><code>整数</code>除了0等于<code>false</code>，其他值都等于<code>true</code></li>
+</ul>
 <pre><code>$var = -1;
 $var_is_true = ($var == true); //true
 $var = 99;
 $var_is_true = ($var == true); //true
 $var = 0;
 $var_is_true = ($var == true); //false
-</code></pre></li>
-
-<li><p><code>null</code>等于<code>false</code></p>
-
+</code></pre><ul>
+<li><code>null</code>等于<code>false</code></li>
+</ul>
 <pre><code>$var = null;
 $var_is_true = ($var == true); //false
 $var_is_false = ($var == false); //true
-</code></pre></li>
-
-<li><p>空字符串&rdquo;和字符串&rsquo;0&rsquo;等于<code>false</code></p>
-
+</code></pre><ul>
+<li>空字符串'&lsquo;和字符串&rsquo;0'等于<code>false</code></li>
+</ul>
 <pre><code>$var = '';
 $var_is_true = ($var == true); //false
 $var_is_false = ($var == false); //true
@@ -637,17 +464,19 @@ $var_is_false = ($var == false); //true
 $var = '0';
 $var_is_true = ($var == true); //false
 $var_is_true = ($var == false); //true
-</code></pre></li>
-
-<li><p>浮点数非0的值等于<code>true</code>，0值等于<code>false</code></p>
-
+</code></pre><ul>
+<li>浮点数非0的值等于<code>true</code>，0值等于<code>false</code>
 <ul>
 <li><code>NAN</code>等于<code>true</code>：<code>NAN==true</code>等于true，因为NAN是一个非零的浮点数</li>
-<li>0值包括+0和-0。PHP在双精度浮点数中不区分+0和-0，所有<code>floatval('0')== floatval('-0')</code>等于true。</li>
+<li>0值包括+0和-0。PHP在双精度浮点数中不区分+0和-0，所有<code>floatval('0')== floatval('-0')</code>等于true。
+<ul>
 <li>实际上，<code>floatval('0') === floatval('-0')</code></li>
-
-<li><p>另外，<code>floatval('0') == false</code>和<code>floatval('-0') == false</code></p>
-
+<li>另外，<code>floatval('0') == false</code>和<code>floatval('-0') == false</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <pre><code>$var = NAN;
 $var_is_true = ($var == true); //true
 $var_is_false = ($var == false); //false
@@ -659,65 +488,42 @@ $var_is_false = ($var == false); //true
 $var = floatval('-0') == floatval('-0');
 $var_is_true = ($var == true); //false
 $var_is_false = ($var == false); //true
-</code></pre></li>
-</ul></li>
-</ul>
-
-<h4 id="全等运算符">全等运算符</h4>
-
+</code></pre><h4 id="全等运算符">全等运算符</h4>
 <p>在<a href="http://php.net/manual/en/language.operators.comparison.php">PHP比较运算符</a>中，有一个全等运算符<code>===</code>。这可以用来比较变量是不是引用的值完全相等。</p>
-
 <pre><code>$var = null;
 $var_is_null = $var === null; // true 
 $var_is_true = $var === true; // false 
 $var_is_false = $var === false; // false
-</code></pre>
-
-<p>还有一个相对应的不全等运算符<code>!==</code>。</p>
-
+</code></pre><p>还有一个相对应的不全等运算符<code>!==</code>。</p>
 <pre><code>$var = null;
 $var_is_null = $var !== null; // false 
 $var_is_true = $var !== true; // true 
 $var_is_false = $var !== false; // true
-</code></pre>
-
-<p>这个运算符可以作为函数<code>is_null()</code>的一个候选方案。</p>
-
+</code></pre><p>这个运算符可以作为函数<code>is_null()</code>的一个候选方案。</p>
 <h3 id="strpos的用例">strpos的用例</h3>
-
 <p>PHP的函数<code>strpos($haystack, $needle)</code>用例查看<code>$needle</code>在<code>$haystack</code>中出现的位置，或者它是否出现。这个函数<code>strpos()</code>是区分大小写，如果不需要区分大小写的话，可以使用<code>stripos($haystack, $needle)</code>。</p>
-
 <p>函数<code>strpos</code>和<code>stripos</code>包括第三个参数<code>offset(int)</code>，将会从这个位置开始搜索。不像strrpos和strripos一样，这个offset参数不能是负数。</p>
-
 <p>这个函数将会返回：</p>
-
 <ul>
 <li>0：如果<code>$needle</code>在<code>$haystack</code>的开头就找到了</li>
 <li>一个非零值：如果<code>$needle</code>在<code>$haystack</code>的其他地方找到了</li>
 <li>false：如果<code>$needle</code>没有在<code>$haystack</code>中找到。</li>
 </ul>
-
 <p>因为0和false拥有相同的真实性<code>false</code>，但是又在strpos中代表不同的含义，所以要区分这两个值。这里要使用全等来判断是不是<code>false</code>，而不能使用等。</p>
-
 <pre><code>$idx = strpos($haystack, $needle);
 if ($idx === false) {
   
 } else {
   
 }
-</code></pre>
-
-<p>可以选择使用非全等操作符：</p>
-
+</code></pre><p>可以选择使用非全等操作符：</p>
 <pre><code>$idx = strpos($haystack, $needle);
 if ($idx !== false) {
   
 } else {
   
 }
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -789,6 +595,12 @@ if ($idx !== false) {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,45 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#bash显示分支名">Bash显示分支名</a>
-<ul>
-<li><a href="#终端的分支名">终端的分支名</a>
-<ul>
-<li><a href="#什么是ps1">什么是PS1</a></li>
-<li><a href="#显示分支名">显示分支名</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#bash显示分支名">Bash显示分支名</a>
+      <ul>
+        <li><a href="#终端的分支名">终端的分支名</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="bash显示分支名">Bash显示分支名</h2>
-
+        		<h2 id="bash显示分支名">Bash显示分支名</h2>
 <p>这个文档解决git的分支名称在Bash终端显示的问题。开发者经常需要查看当前的分支名称。我们可以显示当前目录中的git分支名称。</p>
-
 <h3 id="终端的分支名">终端的分支名</h3>
-
 <h4 id="什么是ps1">什么是PS1</h4>
-
 <p>PS1表示提示字符串1(Prompt String 1)。这是Linux/UNIX中shell的一个提示字符串。当你打开终端的时候，将会在你的bash提示中显示PS1中的内容。为了在bash提示中增加分支名称，我们需要修改PS1变量(在<code>~/.bash_profile</code>中设置PS1的值)。</p>
-
 <h4 id="显示分支名">显示分支名</h4>
-
 <p>在<code>~/.bash_profile</code>中添加下面的内容：</p>
-
-<pre><code class="language-shell">git_branch() {
-		git branch 2&gt; /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
-export PS1=&quot;\u@\h \[\033[32m\]\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ &quot;
-</code></pre>
-
-<p>这个<code>git_branch</code>方法或拿到我们当前的分支名称。一但我们做了这个修改，我们切换到一个git仓库，我们就可以看到仓库当前的分支名称。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git_branch<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+		git branch 2&gt; /dev/null | sed -e <span style="color:#e6db74">&#39;/^[^*]/d&#39;</span> -e <span style="color:#e6db74">&#39;s/* \(.*\)/ (\1)/&#39;</span>
+<span style="color:#f92672">}</span>
+export PS1<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\u@\h \[\033[32m\]\w\[\033[33m\]\$(git_branch)\[\033[00m\] </span>$<span style="color:#e6db74"> &#34;</span>
+</code></pre></div><p>这个<code>git_branch</code>方法或拿到我们当前的分支名称。一但我们做了这个修改，我们切换到一个git仓库，我们就可以看到仓库当前的分支名称。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -294,6 +280,12 @@ export PS1=&quot;\u@\h \[\033[32m\]\w\[\033[33m\]\$(git_branch)\[\033[00m\] $ &q
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

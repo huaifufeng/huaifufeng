@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,34 +187,21 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#json">JSON</a>
-<ul>
-<li><a href="#解码json字符串">解码JSON字符串</a></li>
-<li><a href="#编码json字符串">编码JSON字符串</a>
-<ul>
-<li><a href="#参数">参数</a></li>
-</ul></li>
-<li><a href="#调试json错误">调试JSON错误</a></li>
-<li><a href="#对象使用jsonserializable">对象使用JsonSerializable</a>
-<ul>
-<li><a href="#属性值例子">属性值例子</a></li>
-<li><a href="#json-encode使用private和protected属性">json_encode使用private和protected属性</a></li>
-</ul></li>
-<li><a href="#json头和响应">Json头和响应</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#json">JSON</a>
+      <ul>
+        <li><a href="#解码json字符串">解码JSON字符串</a></li>
+        <li><a href="#编码json字符串">编码JSON字符串</a></li>
+        <li><a href="#调试json错误">调试JSON错误</a></li>
+        <li><a href="#对象使用jsonserializable">对象使用JsonSerializable</a></li>
+        <li><a href="#json头和响应">Json头和响应</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="json">JSON</h2>
-
+        		<h2 id="json">JSON</h2>
 <p><strong>json_encode</strong></p>
-
 <table>
 <thead>
 <tr>
@@ -218,27 +209,22 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>value</td>
 <td>进行编码的值。除了资源类型外其他都可以。所有字符串数据必须是UTF-8的格式。</td>
 </tr>
-
 <tr>
 <td>options</td>
 <td>二进制位标识符，包括JSON_HEX_QUOT,JSON_HET_TAG,JSON_HEX_AMP,JSON_HEX_APOS,JSON_NUMERIC_CHECK,JSON_PRETTY_PRINT,JSON_UNESCAPED_SLASHES,JSON_FORCE_OBJECT,JSON_PRESERVE_ZERO_FRACTION,JSON_UNESCAPED_UNICODE,JSON_PARTIAL_OUTPUT_ON_ERROR.这些常量的行为在<a href="https://www.php.net/manual/zh/json.constants.php">jSON常量页</a>有详细描述。</td>
 </tr>
-
 <tr>
 <td>depth</td>
 <td>设置最大的深度。必须是一个大于0的数</td>
 </tr>
 </tbody>
 </table>
-
 <p>json_decode</p>
-
 <table>
 <thead>
 <tr>
@@ -246,131 +232,89 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>json</td>
 <td>需要被解码的json字符串。这个函数只能处理UTF-8编码的字符串。</td>
 </tr>
-
 <tr>
 <td>assoc</td>
 <td>函数返回关联数组而不是对象</td>
 </tr>
-
 <tr>
 <td>options</td>
 <td>JSON解码的二进制标识选项。当前只支持JSON_BIGINT_AS_STRING(默认会把大数字处理为浮点数)</td>
 </tr>
 </tbody>
 </table>
-
 <p><a href="http://www.json.org/">JSON</a>(JavaScript对象表示法)是一个平台和语言无关的将对象序列化到一个字符串的方法。因为这经常被用到web中，所以PHP中上线了一个JSON的<a href="https://www.php.net/manual/zh/book.json.php">基本扩展</a>。</p>
-
 <h3 id="解码json字符串">解码JSON字符串</h3>
-
 <p><a href="https://www.php.net/manual/zh/function.json-decode.php">json_decode()</a>函数获取一个JSON编码的字符串作为第一个参数，将这个值解码到一个PHP变量中。</p>
-
-<p>通常，<code>json_decode()</code>函数根据参数的不同会返回不同的结果，如果JSON对象的顶层元素是一个字典，将会返回一个<a href="https://php.net/manual/en/reserved.classes.php">\stdClass</a>的对象；如果是一个数组，将会返回一个索引数组。对于某些标量值，像一些简单字符串&rdquo;true&rdquo;, &ldquo;false&rdquo;,&ldquo;null&rdquo;，将会返回标量值或NULL。在错误的时候将会返回Null。</p>
-
-<pre><code class="language-php">$json_string = '{&quot;name&quot;:&quot;Jeff&quot;, &quot;age&quot;:20, &quot;active&quot;:true, &quot;colors&quot;:[&quot;red&quot;, &quot;blue&quot;]}';
+<p>通常，<code>json_decode()</code>函数根据参数的不同会返回不同的结果，如果JSON对象的顶层元素是一个字典，将会返回一个<a href="https://php.net/manual/en/reserved.classes.php">\stdClass</a>的对象；如果是一个数组，将会返回一个索引数组。对于某些标量值，像一些简单字符串&quot;true&rdquo;, &ldquo;false&rdquo;,&ldquo;null&rdquo;，将会返回标量值或NULL。在错误的时候将会返回Null。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$json_string = &#39;{&#34;name&#34;:&#34;Jeff&#34;, &#34;age&#34;:20, &#34;active&#34;:true, &#34;colors&#34;:[&#34;red&#34;, &#34;blue&#34;]}&#39;;
 $object = json_decode($json_string);  //返回一个对象
-printf(&quot;Hello %s, You are %s years old.&quot;, $object-&gt;name, $object-&gt;age);
+printf(&#34;Hello %s, You are %s years old.&#34;, $object-&gt;name, $object-&gt;age);
 
 //返回数组
-$json_string = '[&quot;Jeff&quot;, 20, true, [&quot;red&quot;, &quot;blue&quot;]]';
+$json_string = &#39;[&#34;Jeff&#34;, 20, true, [&#34;red&#34;, &#34;blue&#34;]]&#39;;
 $array = json_decode($json_string);
-printf(&quot;Hello %s, You are %s years old.&quot;, $array[0], $array[1]);
-</code></pre>
-
-<p>使用<code>var_dump()</code>函数获取上面我们解码出来的对象的类型和属性值：</p>
-
-<pre><code class="language-php">var_dump($object);
-</code></pre>
-
-<p>输出(注意变量的类型):</p>
-
-<pre><code class="language-php">class stdClass#2 (4) {
-    [&quot;name&quot;] =&gt; string(4) &quot;Jeff&quot;,
-    [&quot;age&quot;] =&gt; int(20),
-    [&quot;active&quot;] =&gt; bool(true),
-    [&quot;colors&quot;] =&gt; 
+printf(&#34;Hello %s, You are %s years old.&#34;, $array[0], $array[1]);
+</code></pre></div><p>使用<code>var_dump()</code>函数获取上面我们解码出来的对象的类型和属性值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump($object);
+</code></pre></div><p>输出(注意变量的类型):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class stdClass#2 (4) {
+    [&#34;name&#34;] =&gt; string(4) &#34;Jeff&#34;,
+    [&#34;age&#34;] =&gt; int(20),
+    [&#34;active&#34;] =&gt; bool(true),
+    [&#34;colors&#34;] =&gt; 
         array(2) {
-            [0] =&gt; string(3) &quot;red&quot;,
-            [1] =&gt; string(4) &quot;blue&quot;
+            [0] =&gt; string(3) &#34;red&#34;,
+            [1] =&gt; string(4) &#34;blue&#34;
         }
 }
-</code></pre>
-
-<p><strong>注意：</strong>JSON中变量的类型将会转换为PHP等价的类型</p>
-
+</code></pre></div><p>**注意：**JSON中变量的类型将会转换为PHP等价的类型</p>
 <p>想要返回一个JSON对象的<a href="https://php.net/manual/en/language.types.array.php">关联数组</a>的格式而不是一个对象，为<code>json_decode()</code>方法传入<a href="https://www.php.net/manual/zh/function.json-decode.php">第二个参数</a><code>true</code>。</p>
-
-<pre><code class="language-php">$json_string = '{&quot;name&quot;:&quot;Jeff&quot;, &quot;age&quot;:20, &quot;active&quot;:true, &quot;colors&quot;: [&quot;red&quot;, &quot;blue&quot;]}';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$json_string = &#39;{&#34;name&#34;:&#34;Jeff&#34;, &#34;age&#34;:20, &#34;active&#34;:true, &#34;colors&#34;: [&#34;red&#34;, &#34;blue&#34;]}&#39;;
 $array = json_encode($json_string, true);  //注意第二个参数
 var_dump($array);
-</code></pre>
-
-<p>输出(注意关联数组的结构)：</p>
-
-<pre><code class="language-php">array(4) {
-    [&quot;name&quot;] =&gt; string(4) &quot;jeff&quot;
-    [&quot;age&quot;] =&gt; int(20)
-    [&quot;active&quot;] =&gt; bool(true)
-    [&quot;colors&quot;] =&gt;
+</code></pre></div><p>输出(注意关联数组的结构)：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">array(4) {
+    [&#34;name&#34;] =&gt; string(4) &#34;jeff&#34;
+    [&#34;age&#34;] =&gt; int(20)
+    [&#34;active&#34;] =&gt; bool(true)
+    [&#34;colors&#34;] =&gt;
         array(2) {
-            [0] =&gt; string(3) &quot;red&quot;
-            [1] =&gt; string(4) &quot;blue&quot;
+            [0] =&gt; string(3) &#34;red&#34;
+            [1] =&gt; string(4) &#34;blue&#34;
         }
 }
-</code></pre>
-
-<p>第二个参数(<code>$object</code>)将会没有效果，如果变量不返回一个对象的话。</p>
-
-<p><strong>注意：</strong>如果你使用了<code>$assoc</code>这个选项，你将会失去空对象和空数组之间的区别。    这意味中，如果你再次运行<code>json_decode()</code>，将会返回不同的JSON结构。</p>
-
-<p>如果你的字符串拥有大于512个元素的&rdquo;深度&rdquo;(PHP5.2.3之前是20个元素，PHP5.2.3是128)，这个函数<code>json_encode()</code>将会返回NULL。在PHP5.3及之后的版本，这个限制可以使用第三个参数(<code>$depth</code>)进行修改，像下面说的。</p>
-
+</code></pre></div><p>第二个参数(<code>$object</code>)将会没有效果，如果变量不返回一个对象的话。</p>
+<p>**注意：**如果你使用了<code>$assoc</code>这个选项，你将会失去空对象和空数组之间的区别。	这意味中，如果你再次运行<code>json_decode()</code>，将会返回不同的JSON结构。</p>
+<p>如果你的字符串拥有大于512个元素的&quot;深度&rdquo;(PHP5.2.3之前是20个元素，PHP5.2.3是128)，这个函数<code>json_encode()</code>将会返回NULL。在PHP5.3及之后的版本，这个限制可以使用第三个参数(<code>$depth</code>)进行修改，像下面说的。</p>
 <p>根据手册：</p>
-
 <blockquote>
-<p>PHP实现了<a href="http://www.faqs.org/rfcs/rfc4627.html">RFC 4627</a>中指定的JSON定义的一个超集：将会编码和解码标量类型和NULL。RFC 4627只支持被嵌套到数组或对象中的数据。尽管这个超集包含了<a href="http://www.faqs.org/rfcs/rfc7159.html">RFC 7159</a>（用来取代RFC 4627）和<a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf">ECMA-404</a> 中包含的&rdquo;Json字符串&rdquo;的新扩展定义，当那些老的实现RFC 4627的解析器在处理有一个标量值时，会出现兼容问题。</p>
+<p>PHP实现了<a href="http://www.faqs.org/rfcs/rfc4627.html">RFC 4627</a>中指定的JSON定义的一个超集：将会编码和解码标量类型和NULL。RFC 4627只支持被嵌套到数组或对象中的数据。尽管这个超集包含了<a href="http://www.faqs.org/rfcs/rfc7159.html">RFC 7159</a>（用来取代RFC 4627）和<a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf">ECMA-404</a> 中包含的&quot;Json字符串&quot;的新扩展定义，当那些老的实现RFC 4627的解析器在处理有一个标量值时，会出现兼容问题。</p>
 </blockquote>
-
 <p>这意味着，在PHP中一个简单的字符串会被认为是一个有效的JSON对象：</p>
-
-<pre><code class="language-php">$json = json_decode('&quot;some string&quot;', true);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$json = json_decode(&#39;&#34;some string&#34;&#39;, true);
 var_dump($json, json_last_error_msg());
-</code></pre>
-
-<p>输出：</p>
-
-<pre><code class="language-php">string(11) &quot;some string&quot;
-string(8) &quot;No error&quot;
-</code></pre>
-
-<p>但是简单字符串，不是一个对象或数组，不是RFC 4627的一部分。这些在线检查器（<a href="http://www.jslint.com/">JSLint</a>, <a href="https://jsonformatter.curiousconcept.com/">JSON Formatter &amp; Validator</a>）将会返回一个错误。</p>
-
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">string(11) &#34;some string&#34;
+string(8) &#34;No error&#34;
+</code></pre></div><p>但是简单字符串，不是一个对象或数组，不是RFC 4627的一部分。这些在线检查器（<a href="http://www.jslint.com/">JSLint</a>, <a href="https://jsonformatter.curiousconcept.com/">JSON Formatter &amp; Validator</a>）将会返回一个错误。</p>
 <p>第三个参数<code>$depth</code>表示递归的深度(默认是512)，这意味中原本对象的多少嵌套对象将会被解码。</p>
-
 <p>有第四个参数<code>$options</code>。目前只接受一个值<code>JSON_BIGINT_AS_STRING</code>。没有提供这个选项的话，大整数将会转换为浮点数，否则将会被转换为字符串。</p>
-
 <blockquote>
 <p>无效的非小写的<code>true</code>, <code>false</code>, <code>null</code>不在被认为是有效的输入。</p>
 </blockquote>
-
 <p>看下面这个例子：</p>
-
-<pre><code class="language-php">var_dump(json_decode('tRue'), json_last_error_msg());
-var_dump(json_decode('tRUe'), json_last_error_msg());
-var_dump(json_decode('tRUE'), json_last_error_msg());
-var_dump(json_decode('TRUe'), json_last_error_msg());
-var_dump(json_decode('TRUE'), json_last_error_msg());
-var_dump(json_decode('true'), json_last_error_msg());
-</code></pre>
-
-<p>在PHP5.6之前：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(json_decode(&#39;tRue&#39;), json_last_error_msg());
+var_dump(json_decode(&#39;tRUe&#39;), json_last_error_msg());
+var_dump(json_decode(&#39;tRUE&#39;), json_last_error_msg());
+var_dump(json_decode(&#39;TRUe&#39;), json_last_error_msg());
+var_dump(json_decode(&#39;TRUE&#39;), json_last_error_msg());
+var_dump(json_decode(&#39;true&#39;), json_last_error_msg());
+</code></pre></div><p>在PHP5.6之前：</p>
 <pre><code>bool(true)
 string(8) &quot;No error&quot;
 bool(true)
@@ -383,10 +327,7 @@ bool(true)
 string(8) &quot;No error&quot; 
 bool(true)
 string(8) &quot;No error&quot;
-</code></pre>
-
-<p>在这之后：</p>
-
+</code></pre><p>在这之后：</p>
 <pre><code>NULL
 string(12) &quot;Syntax error&quot; 
 NULL
@@ -399,73 +340,43 @@ NULL
 string(12) &quot;Syntax error&quot; 
 bool(true)
 string(8) &quot;No error&quot;
-</code></pre>
-
-<p>相似的行为也会出现在<code>false</code>和<code>null</code>中。</p>
-
+</code></pre><p>相似的行为也会出现在<code>false</code>和<code>null</code>中。</p>
 <p>注意<code>json_decode()</code>在解码失败的时候会返回<code>NULL</code>。</p>
-
-<pre><code class="language-php">$json = &quot;{'name':'Jeff', 'age': 20}&quot;;  //无效json
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$json = &#34;{&#39;name&#39;:&#39;Jeff&#39;, &#39;age&#39;: 20}&#34;;  //无效json
 
 $person = json_decode($json);
 echo $person-&gt;name;  //返回null
 echo json_last_error();
 # 4 (JSON_ERROR_SYNTAX)
 echo json_last_error_msg();  //无效字符
-</code></pre>
-
-<p>依靠返回值是不是<code>NULL</code>，来判断解码失败是不安全的。例如字符串只包含了<code>&quot;null&quot;</code>，<code>json_decode()</code>将会返回<code>null</code>，但并没有失败。</p>
-
+</code></pre></div><p>依靠返回值是不是<code>NULL</code>，来判断解码失败是不安全的。例如字符串只包含了<code>&quot;null&quot;</code>，<code>json_decode()</code>将会返回<code>null</code>，但并没有失败。</p>
 <h3 id="编码json字符串">编码JSON字符串</h3>
-
-<p>[json_encode()](<a href="https://www.php.net/manual/zh/function.json-encode.php将会转换一个PHP数组(或者从PHP5.4开始，一个实现了`JsonSerializable`接口的对象)到一个JSON编码字符串中。成功的时候返回一个JSON编码的字符串，失败返回FALSE。">https://www.php.net/manual/zh/function.json-encode.php将会转换一个PHP数组(或者从PHP5.4开始，一个实现了`JsonSerializable`接口的对象)到一个JSON编码字符串中。成功的时候返回一个JSON编码的字符串，失败返回FALSE。</a></p>
-
-<pre><code class="language-php">$array = [
-    'name' =&gt; 'Jeff',
-    'age' =&gt; 20,
-    'active' =&gt; true,
-    'colors' =&gt; ['red', 'blue'],
-    'values' =&gt; [0 =&gt; 'foo', 3 =&gt; 'bar'],
+<p>[json_encode()](<a href="https://www.php.net/manual/zh/function.json-encode.php">https://www.php.net/manual/zh/function.json-encode.php</a>将会转换一个PHP数组(或者从PHP5.4开始，一个实现了<code>JsonSerializable</code>接口的对象)到一个JSON编码字符串中。成功的时候返回一个JSON编码的字符串，失败返回FALSE。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [
+    &#39;name&#39; =&gt; &#39;Jeff&#39;,
+    &#39;age&#39; =&gt; 20,
+    &#39;active&#39; =&gt; true,
+    &#39;colors&#39; =&gt; [&#39;red&#39;, &#39;blue&#39;],
+    &#39;values&#39; =&gt; [0 =&gt; &#39;foo&#39;, 3 =&gt; &#39;bar&#39;],
 ];
-</code></pre>
-
-<p>在编码过程中，PHP的数据类型字符串，整数，布尔值将会转换为等级的JSON格式。关联数组像JSON对象一个编码，当使用默认参数调用的时候，索引数组将会编码为JSON数组(除非数组的键值不是从0开始连续的数组，将会被编码为一个JSON对象)。</p>
-
-<pre><code class="language-php">echo json_encode($array);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>在编码过程中，PHP的数据类型字符串，整数，布尔值将会转换为等级的JSON格式。关联数组像JSON对象一个编码，当使用默认参数调用的时候，索引数组将会编码为JSON数组(除非数组的键值不是从0开始连续的数组，将会被编码为一个JSON对象)。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">echo json_encode($array);
+</code></pre></div><p>输出：</p>
 <pre><code>{&quot;name&quot;:&quot;Jeff&quot;,&quot;age&quot;:20,&quot;active&quot;:true,&quot;colors&quot;:[&quot;red&quot;,&quot;blue&quot;],&quot;values&quot;:{&quot;0&quot;:&quot;foo&quot;,&quot;3&quot;:&quot;bar&quot;}}
-</code></pre>
-
-<h4 id="参数">参数</h4>
-
+</code></pre><h4 id="参数">参数</h4>
 <p>从PHP5.3开始，<code>json_encode</code>使用一个或多个下面的二进制标识位作为第二个参数。</p>
-
 <p>使用二进制位，可以使用<code>|</code>组合多个二进制位掩码。</p>
-
 <p>PHP5.x Version&gt;=5.3</p>
-
 <p><a href="https://php.net/manual/zh/json.constants.php#constant.json-force-object">JSON_FORCE_OBJECT</a></p>
-
 <p>强制创建一个对象而不是数组：</p>
-
-<pre><code class="language-php">$array = ['Jeff', 23, true, ['red', 'blue']];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [&#39;Jeff&#39;, 23, true, [&#39;red&#39;, &#39;blue&#39;]];
 echo json_encode($array);
 echo json_encode($array, JSON_FORCE_OBJECT);
-</code></pre>
-
-<p>输出：</p>
-
-<pre><code class="language-php">[&quot;Jeff&quot;, 23, true, ['red', 'blue']]
-{&quot;0&quot;: &quot;Jeff&quot;, &quot;1&quot;: 23, &quot;2&quot;: true, &quot;3&quot;: {&quot;0&quot;: &quot;red&quot;, &quot;1&quot;: &quot;blue&quot;}}
-</code></pre>
-
-<p><a href="https://www.php.net/manual/zh/json.constants.php">JSON_HEX_TAG</a>, <a href="https://www.php.net/manual/zh/json.constants.php">JSON_HEX_AMP</a>, <a href="https://www.php.net/manual/zh/json.constants.php">JSON_HEX_APOS</a>, <a href="https://www.php.net/manual/zh/json.constants.php">JSON_HEX_QUOT</a></p>
-
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">[&#34;Jeff&#34;, 23, true, [&#39;red&#39;, &#39;blue&#39;]]
+{&#34;0&#34;: &#34;Jeff&#34;, &#34;1&#34;: 23, &#34;2&#34;: true, &#34;3&#34;: {&#34;0&#34;: &#34;red&#34;, &#34;1&#34;: &#34;blue&#34;}}
+</code></pre></div><p><a href="https://www.php.net/manual/zh/json.constants.php">JSON_HEX_TAG</a>, <a href="https://www.php.net/manual/zh/json.constants.php">JSON_HEX_AMP</a>, <a href="https://www.php.net/manual/zh/json.constants.php">JSON_HEX_APOS</a>, <a href="https://www.php.net/manual/zh/json.constants.php">JSON_HEX_QUOT</a></p>
 <p>确保在编码过程中进行以下转换：</p>
-
 <table>
 <thead>
 <tr>
@@ -474,81 +385,56 @@ echo json_encode($array, JSON_FORCE_OBJECT);
 <th>输出</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>JSON_HEX_TAG</td>
 <td>&lt;</td>
 <td>\u003C</td>
 </tr>
-
 <tr>
 <td>JSON_HEX_TAG</td>
 <td>&gt;</td>
 <td>\u003E</td>
 </tr>
-
 <tr>
 <td>JSON_HEX_AMP</td>
 <td>&amp;</td>
 <td>\u0026</td>
 </tr>
-
 <tr>
 <td>JSON_HEX_APOS</td>
-<td>&lsquo;</td>
+<td>'</td>
 <td>\u0027</td>
 </tr>
-
 <tr>
 <td>JSON_HEX_QUOT</td>
-<td>&ldquo;</td>
+<td>&quot;</td>
 <td>\u0022</td>
 </tr>
 </tbody>
 </table>
-
-<pre><code class="language-php">$array = [&quot;tag&quot; =&gt; &quot;&lt;&gt;&quot;, &quot;amp&quot; =&gt; &quot;&amp;&quot;, &quot;apos&quot; =&gt; &quot;'&quot;, &quot;quot&quot; =&gt; &quot;\&quot;&quot;];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [&#34;tag&#34; =&gt; &#34;<span style="color:#960050;background-color:#1e0010">&lt;</span>&gt;&#34;, &#34;amp&#34; =&gt; &#34;<span style="color:#960050;background-color:#1e0010">&amp;</span>&#34;, &#34;apos&#34; =&gt; &#34;&#39;&#34;, &#34;quot&#34; =&gt; &#34;\&#34;&#34;];
 echo json_encode($array);
 echo json_encode($array, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
-</code></pre>
-
-<p>输出：</p>
-
-<pre><code class="language-php">{&quot;tag&quot;:&quot;&lt;&gt;&quot;, &quot;amp&quot;:&quot;&amp;&quot;, &quot;apos&quot;:&quot;'&quot;, &quot;quot&quot;:&quot;\&quot;&quot;}
-{&quot;tag&quot;:&quot;\u003C\u003E&quot;, &quot;amp&quot;:&quot;\u0026&quot;, &quot;apos&quot;:&quot;\u0027&quot;, &quot;quot&quot;:&quot;\u0022&quot;}
-</code></pre>
-
-<p>PHP 5.x Version&gt;=5.3</p>
-
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">{&#34;tag&#34;:&#34;<span style="color:#960050;background-color:#1e0010">&lt;</span>&gt;&#34;, &#34;amp&#34;:&#34;<span style="color:#960050;background-color:#1e0010">&amp;</span>&#34;, &#34;apos&#34;:&#34;&#39;&#34;, &#34;quot&#34;:&#34;\&#34;&#34;}
+{&#34;tag&#34;:&#34;\u003C\u003E&#34;, &#34;amp&#34;:&#34;\u0026&#34;, &#34;apos&#34;:&#34;\u0027&#34;, &#34;quot&#34;:&#34;\u0022&#34;}
+</code></pre></div><p>PHP 5.x Version&gt;=5.3</p>
 <p><a href="https://php.net/manual/zh/json.constants.php#constant.json-numeric-check">JSON_NUMERIC_CHECK</a></p>
-
 <p>将数字字符串转换为整数：</p>
-
-<pre><code class="language-php">$array = ['23542', 23452];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [&#39;23542&#39;, 23452];
 echo json_encode($array);
 echo json_encode($array, JSON_NUMERIC_CHECK);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>输出：</p>
 <pre><code>[&quot;23452&quot;, 23452]
 [23452, 23452]
-</code></pre>
-
-<p>PHP 5.x Version&gt;=5.4</p>
-
+</code></pre><p>PHP 5.x Version&gt;=5.4</p>
 <p><a href="https://php.net/manual/zh/json.constants.php#constant.json-pretty-print">JSON_PRETTY_PRINT</a></p>
-
 <p>让JSON更加可读。</p>
-
-<pre><code class="language-php">$array = ['a' =&gt; 1, 'b' =&gt; 2, 'c' =&gt; 3, 'd' =&gt; 4];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [&#39;a&#39; =&gt; 1, &#39;b&#39; =&gt; 2, &#39;c&#39; =&gt; 3, &#39;d&#39; =&gt; 4];
 echo json_encode($array);
 echo json_encode($array, JSON_PRETTY_PRINT);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>输出：</p>
 <pre><code>{&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3,&quot;d&quot;:4}
 {
     &quot;a&quot;: 1,
@@ -556,150 +442,94 @@ echo json_encode($array, JSON_PRETTY_PRINT);
     &quot;c&quot;: 3,
     &quot;d&quot;: 4
 }
-</code></pre>
-
-<p><a href="https://php.net/manual/zh/json.constants.php#constant.json-unescaped-slashes">JSON_UNESCAPED_SLASHES</a></p>
-
+</code></pre><p><a href="https://php.net/manual/zh/json.constants.php#constant.json-unescaped-slashes">JSON_UNESCAPED_SLASHES</a></p>
 <p>在输出中包括未转义<code>/</code>正斜杠。</p>
-
-<pre><code class="language-php">$array = ['filename' =&gt; 'example.txt', 'path' =&gt; '/full/path/to/file/'];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [&#39;filename&#39; =&gt; &#39;example.txt&#39;, &#39;path&#39; =&gt; &#39;/full/path/to/file/&#39;];
 echo json_encode($array);
 echo json_encode($array, JSON_UNESCAPED_SLASHES);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>输出：</p>
 <pre><code>{&quot;filename&quot;:&quot;example.txt&quot;,&quot;path&quot;:&quot;\/full\/path\/to\/file&quot;}
 {&quot;filename&quot;:&quot;example.txt&quot;,&quot;path&quot;:&quot;/full/path/to/file&quot;}
-</code></pre>
-
-<p><a href="https://php.net/manual/zh/json.constants.php#constant.json-unescaped-unicode">JSON_UNESCAPED_UNICODE</a></p>
-
+</code></pre><p><a href="https://php.net/manual/zh/json.constants.php#constant.json-unescaped-unicode">JSON_UNESCAPED_UNICODE</a></p>
 <p>输出UTF-8编码的字符串，而不是使用<code>\u</code>开头的编码值。</p>
-
-<pre><code class="language-php">$blues = [&quot;english&quot;=&gt;&quot;blue&quot;, &quot;norwegian&quot;=&gt;&quot;blå&quot;, &quot;german&quot;=&gt;&quot;blau&quot;]; 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$blues = [&#34;english&#34;=&gt;&#34;blue&#34;, &#34;norwegian&#34;=&gt;&#34;blå&#34;, &#34;german&#34;=&gt;&#34;blau&#34;]; 
 echo json_encode($blues);
 echo json_encode($blues, JSON_UNESCAPED_UNICODE);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>输出：</p>
 <pre><code>{&quot;english&quot;:&quot;blue&quot;,&quot;norwegian&quot;:&quot;bl\u00e5&quot;,&quot;german&quot;:&quot;blau&quot;} {&quot;english&quot;:&quot;blue&quot;,&quot;norwegian&quot;:&quot;blå&quot;,&quot;german&quot;:&quot;blau&quot;}
-</code></pre>
-
-<p>PHP 5.x Version&gt;=5.5</p>
-
+</code></pre><p>PHP 5.x Version&gt;=5.5</p>
 <p><a href="https://php.net/manual/zh/json.constants.php#constant.json-partial-output-on-error">JSON_PARTIAL_OUTPUT_ON_ERROR</a></p>
-
 <p>遇到不能编码的字符时允许继续编码。</p>
-
-<pre><code class="language-php">$fp = fopen(&quot;foo.txt&quot;, &quot;r&quot;);
-$array = [&quot;file&quot;=&gt;$fp, &quot;name&quot;=&gt;&quot;foo.txt&quot;];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$fp = fopen(&#34;foo.txt&#34;, &#34;r&#34;);
+$array = [&#34;file&#34;=&gt;$fp, &#34;name&#34;=&gt;&#34;foo.txt&#34;];
 echo json_encode($array); // no output
 echo json_encode($array, JSON_PARTIAL_OUTPUT_ON_ERROR);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>输出：</p>
 <pre><code>{&quot;file&quot;:null,&quot;name&quot;:&quot;foo.txt&quot;}
-</code></pre>
-
-<p>PHP 5.x Version &gt;= 5.6</p>
-
+</code></pre><p>PHP 5.x Version &gt;= 5.6</p>
 <p><a href="https://php.net/manual/zh/json.constants.php#constant.json-preserve-zero-fraction">JSON_PRESERVE_ZERO_FRACTION</a></p>
-
 <p>确保浮点数一直保持浮点数。</p>
-
-<pre><code class="language-php">$array = [5.0, 5.5];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [5.0, 5.5];
 echo json_encode($array);
 echo json_encode($array, JSON_PRESERVE_ZERO_FRACTION);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>输出：</p>
 <pre><code>[5, 5.5]
 [5.0, 5.5]
-</code></pre>
-
-<p>PHP7.x Version&gt;= 7.1</p>
-
+</code></pre><p>PHP7.x Version&gt;= 7.1</p>
 <p><a href="https://php.net/manual/zh/json.constants.php#constant.json-unescaped-line-terminators">JSON_UNESCAPED_LINE_TERMINATORS</a></p>
-
 <p>当和JSON_UNESCAPED_UNICODE一起使用的时候，将会恢复旧版本PHP的行为，不会转移U+2028 LINE SEPARATOR 和U+ 2029 PARAGRAPH SEPARATOR。尽管在JSON中有效，但是这些字符在JavaScript中是无效的，所以在PHP7.1中修改了JSON_UNESCAPED_UNICODE的默认行为。</p>
-
-<pre><code class="language-php">$array = [&quot;line&quot; =&gt; &quot;\xe2\x80\xa8&quot;, &quot;paragraph&quot; =&gt; &quot;\x32\x80\xa9&quot;];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [&#34;line&#34; =&gt; &#34;\xe2\x80\xa8&#34;, &#34;paragraph&#34; =&gt; &#34;\x32\x80\xa9&#34;];
 echo json_encode($array, JSON_UNESCAPED_UNICODE);
 echo json_encode($array, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_LINE_TERMINATORS);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>输出：</p>
 <pre><code>{&quot;line&quot;:&quot;\u2028&quot;,&quot;paragraph&quot;:&quot;\u2029&quot;}
 {&quot;line&quot;:&quot; &quot;,&quot;paragraph&quot;:&quot; &quot;}
-</code></pre>
-
-<h3 id="调试json错误">调试JSON错误</h3>
-
+</code></pre><h3 id="调试json错误">调试JSON错误</h3>
 <p>当<code>json_encode</code>或<code>json_decode</code>解析字符串出现错误的时候，将会返回<code>false</code>。当发生的时候，PHP不会产生一个错误或异常，这依赖于用户通过<code>json_last_error</code>和<code>json_last_error_msg</code>函数来检查，判断你的应用程序是否出现问题(调试，显示错误信息)。</p>
-
 <p>下面这个例子显示了编码/解码JSOn字符串时，场景的一些错误(因为传入了一个错误的UTF-8编码的字符串)：</p>
-
-<pre><code class="language-php">$jsonString = json_encode(&quot;{'BadJson':\xB1\x31}&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$jsonString = json_encode(&#34;{&#39;BadJson&#39;:\xB1\x31}&#34;);
 
 if (json_last_error() != JSON_ERROR_NONE) {
-    printf(&quot;JSON Error: %s&quot;, json_last_error_msg());
+    printf(&#34;JSON Error: %s&#34;, json_last_error_msg());
 }
 #&gt; JSON Error: Malformed UTF-8 characters, possibly incorrectly encoded
-</code></pre>
-
-<p><a href="https://php.net/manual/zh/function.json-last-error-msg.php">json_last_error_msg</a></p>
-
+</code></pre></div><p><a href="https://php.net/manual/zh/function.json-last-error-msg.php">json_last_error_msg</a></p>
 <p><code>json_last_error_msg</code>在试着编码/解码一个字符串时遇到错误的时候，返回一个用户可读的错误信息：</p>
-
 <ul>
 <li>这个函数总会返回一个字符串，即使没有出现错误。默认的<code>non-error</code>字符串是<code>No Error</code>。</li>
 <li>如果一些其他(未知)的错误发生了，将会返回<code>false</code></li>
 <li>当在循环中使用的时候，需要特别小心，因为<code>json_last_error_msg</code>将在每个循环中被覆盖</li>
 </ul>
-
 <p>你应该只用这个函数来显示错误信息，而不能用在控制语句中：</p>
-
-<pre><code class="language-php">//不要想下面这样
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//不要想下面这样
 if (json_last_error_msg()) {  //一直是true
 }
 
-if (json_last_error_msg() != &quot;No Error&quot;) {  //错误的使用
+if (json_last_error_msg() != &#34;No Error&#34;) {  //错误的使用
 } 
 
 //像下面这样
 if (json_last_error() != JSON_ERROR_NONE) {
-    printf('JSON Error: %s', json_last_error_msg());
+    printf(&#39;JSON Error: %s&#39;, json_last_error_msg());
 }
-</code></pre>
-
-<p>在PHP5.5之前这个函数是不存在的，下面是兼容实现：</p>
-
-<pre><code class="language-php">if (!function_exists('json_last_error_msg')) {
+</code></pre></div><p>在PHP5.5之前这个函数是不存在的，下面是兼容实现：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if (!function_exists(&#39;json_last_error_msg&#39;)) {
     function json_last_error_msg() {
         static $ERROR = [
-            JSON_ERROR_NONE =&gt; 'No Error',
-            JSON_ERROR_DEPTH =&gt; 'Maximum stack depth exceeded',
-            JSON_ERROR_STATE_MISMATCH =&gt; 'State mismatch (invalid or malformed JSON)',
-            JSON_ERROR_CTRL_CHAR = 'Control character error, possibly incorrectly encoded',
-            JSON_ERROR_SYNTAX =&gt; 'Syntax error',
-            JSON_ERROR_UTF* =&gt; 'Malformed UTF-8 characters, possibly incorrectly encoded'
+            JSON_ERROR_NONE =&gt; &#39;No Error&#39;,
+            JSON_ERROR_DEPTH =&gt; &#39;Maximum stack depth exceeded&#39;,
+            JSON_ERROR_STATE_MISMATCH =&gt; &#39;State mismatch (invalid or malformed JSON)&#39;,
+            JSON_ERROR_CTRL_CHAR = &#39;Control character error, possibly incorrectly encoded&#39;,
+            JSON_ERROR_SYNTAX =&gt; &#39;Syntax error&#39;,
+            JSON_ERROR_UTF* =&gt; &#39;Malformed UTF-8 characters, possibly incorrectly encoded&#39;
         ];
         
         $error = json_last_error();
-        return isset($ERRORS[$error]) ? $ERRORS[$error] : &quot;Unknown error&quot;;
+        return isset($ERRORS[$error]) ? $ERRORS[$error] : &#34;Unknown error&#34;;
     }
 }
-</code></pre>
-
-<p><a href="https://php.net/manual/zh/function.json-last-error.php">json_last_error</a></p>
-
+</code></pre></div><p><a href="https://php.net/manual/zh/function.json-last-error.php">json_last_error</a></p>
 <p><code>json_last_error()</code>将会返回PHP预定义常量的整数值。</p>
-
 <table>
 <thead>
 <tr>
@@ -707,64 +537,50 @@ if (json_last_error() != JSON_ERROR_NONE) {
 <th>含义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>JSON_ERROR_NONE</td>
 <td>没有出现错误</td>
 </tr>
-
 <tr>
 <td>JSON_ERROR_DEPTH</td>
 <td>已经执行的最大堆栈层</td>
 </tr>
-
 <tr>
 <td>JSON_ERROR_STATE_MISMATCH</td>
 <td>无效或格式错误的JSON</td>
 </tr>
-
 <tr>
 <td>JSON_ERROR_CTRL_CHAR</td>
 <td>控制字符错误，可能不正确的编码</td>
 </tr>
-
 <tr>
 <td>JSON_ERROR_SYNTAX</td>
 <td>语法错误(PHP5.3之后)</td>
 </tr>
-
 <tr>
 <td>JSON_ERROR_UTF8</td>
 <td>错误的UTF-8编码，可能是不正确的编码(从PHP5.5.0之后)</td>
 </tr>
-
 <tr>
 <td>JSON_ERROR_RECURSION</td>
 <td>值中一个或多个递归的引用编码</td>
 </tr>
-
 <tr>
 <td>JSON_ERROR_INF_OR_NAN</td>
 <td>一个或多个NAN或INF的值要被编码</td>
 </tr>
-
 <tr>
 <td>JSON_ERROR_UNSUPPORTED_TYPE</td>
 <td>提供一个不能被编码的一个类型的值</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="对象使用jsonserializable">对象使用JsonSerializable</h3>
-
 <p>PHP5.x Version&gt;=5.4</p>
-
 <p>当你构建一个REST的API时，你可能需要建设传递给客户端的对象的信息。为了这个目的，下面这个例子介绍了怎么使用<code>JsonSerializable</code>接口。</p>
-
 <p>在这个例子中，<code>User</code>类继承一个下级ORM的DB模型对象。</p>
-
-<pre><code class="language-php">class User extends Model implements JsonSerializable {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class User extends Model implements JsonSerializable {
     public $id;
     public $name;
     public $surname;
@@ -778,100 +594,67 @@ if (json_last_error() != JSON_ERROR_NONE) {
     
     public function jsonSerialize() {
         return [
-            'name' =&gt; $this-&gt;name,
-            'surname' =&gt; $this-&gt;surname,
-            'username' =&gt; $this-&gt;username
+            &#39;name&#39; =&gt; $this-&gt;name,
+            &#39;surname&#39; =&gt; $this-&gt;surname,
+            &#39;username&#39; =&gt; $this-&gt;username
         ];
     }
 }
-</code></pre>
-
-<p>这个类实现了<code>JsonSerializable</code>接口，提供了一个<code>jsonSerialize</code>方法。</p>
-
-<pre><code class="language-php">public function jsonSerialize()
-</code></pre>
-
-<p>现在当你的应用控制或脚本汇总，你可以把<code>User</code>对象传递给<code>json_encode()</code>函数，你将会使用<code>jsonSerialize</code>方法返回一个数组而不是对象。</p>
-
-<pre><code class="language-php">json_encode($User);
-</code></pre>
-
-<p>将会返回：</p>
-
+</code></pre></div><p>这个类实现了<code>JsonSerializable</code>接口，提供了一个<code>jsonSerialize</code>方法。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">public function jsonSerialize()
+</code></pre></div><p>现在当你的应用控制或脚本汇总，你可以把<code>User</code>对象传递给<code>json_encode()</code>函数，你将会使用<code>jsonSerialize</code>方法返回一个数组而不是对象。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">json_encode($User);
+</code></pre></div><p>将会返回：</p>
 <pre><code>{&quot;name&quot;:&quot;John&quot;, &quot;surname&quot;:&quot;Doe&quot;, &quot;username&quot; : &quot;TestJson&quot;}
-</code></pre>
-
-<h4 id="属性值例子">属性值例子</h4>
-
+</code></pre><h4 id="属性值例子">属性值例子</h4>
 <p>这既减少了从RESTful终端返回的数据数量，又可以扩展json的属性。</p>
-
-<h4 id="json-encode使用private和protected属性">json_encode使用private和protected属性</h4>
-
+<h4 id="json_encode使用private和protected属性">json_encode使用private和protected属性</h4>
 <p>为了避免使用JsonSerializable，可以在<code>json_encode()</code>输出使用private或protected来隐藏类信息。这个类就不用实现<code>\JsonSerializable</code>。</p>
-
 <blockquote>
 <p>json_encode()将只会吧public属性放入JSON对象中。</p>
 </blockquote>
-
-<pre><code class="language-php">&lt;?php
-class User {
-    //私有属性
-    private $id;
-    private $date_created;
-    private $date_edit;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span> {
+    <span style="color:#75715e">//私有属性
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $id;
+    <span style="color:#66d9ef">private</span> $date_created;
+    <span style="color:#66d9ef">private</span> $date_edit;
   
-    //protected属性
-    protected $password;
-    protected $email;
-    protected $role;
-    protected $status;
+    <span style="color:#75715e">//protected属性
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">protected</span> $password;
+    <span style="color:#66d9ef">protected</span> $email;
+    <span style="color:#66d9ef">protected</span> $role;
+    <span style="color:#66d9ef">protected</span> $status;
   
-    public $name;
-    public $surname;
+    <span style="color:#66d9ef">public</span> $name;
+    <span style="color:#66d9ef">public</span> $surname;
     $public $username
 }
 
-$theUser = new User();
-var_dump(json_encode($theUser));
-</code></pre>
-
-<p>输出：</p>
-
+$theUser <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">User</span>();
+<span style="color:#a6e22e">var_dump</span>(<span style="color:#a6e22e">json_encode</span>($theUser));
+</code></pre></div><p>输出：</p>
 <pre><code>string(44) &quot;{&quot;name&quot;:null,&quot;surname&quot;:null,&quot;username&quot;:null}&quot;
-</code></pre>
-
-<h3 id="json头和响应">Json头和响应</h3>
-
+</code></pre><h3 id="json头和响应">Json头和响应</h3>
 <p>增加一个JSON类型的值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$result <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;menu1&#34;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;home&#39;</span>, <span style="color:#e6db74">&#39;menu2&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;code php&#39;</span>, <span style="color:#e6db74">&#39;menu3&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;about&#39;</span>];
 
-<pre><code class="language-php">&lt;?php
-$result = [&quot;menu1&quot; =&gt; 'home', 'menu2' =&gt; 'code php', 'menu3' =&gt; 'about'];
-
-header('Content-Type: application/json');
-echo json_encode($result, true);
-exit();
-</code></pre>
-
-<p>这里头你的应用可以获取返回的数据，并且能够处理这个数据。</p>
-
-<p><strong>注意：</strong>这个content头只是用户确定返回信息的值。</p>
-
+<span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span>);
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">json_encode</span>($result, <span style="color:#66d9ef">true</span>);
+<span style="color:#66d9ef">exit</span>();
+</code></pre></div><p>这里头你的应用可以获取返回的数据，并且能够处理这个数据。</p>
+<p>**注意：**这个content头只是用户确定返回信息的值。</p>
 <p>如果使用UTF-8，你可以使用</p>
-
-<pre><code class="language-php">header('Content-Type: application/json;charset=utf-8');
-</code></pre>
-
-<p>例如客户端为JQuery:</p>
-
-<pre><code class="language-javascript">$.ajax({
-    url : 'url_your_page_php_that_return_json'
-}).done(function(data) {
-    console.table('json', data);
-    console.log('Menu1', data.menu1)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">header(&#39;Content-Type: application/json;charset=utf-8&#39;);
+</code></pre></div><p>例如客户端为JQuery:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">$</span>.<span style="color:#a6e22e">ajax</span>({
+    <span style="color:#a6e22e">url</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;url_your_page_php_that_return_json&#39;</span>
+}).<span style="color:#a6e22e">done</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">data</span>) {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">table</span>(<span style="color:#e6db74">&#39;json&#39;</span>, <span style="color:#a6e22e">data</span>);
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Menu1&#39;</span>, <span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">menu1</span>)
 });
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -943,6 +726,12 @@ exit();
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

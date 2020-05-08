@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,29 +187,24 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#字符串运算符">字符串运算符</a>
-<ul>
-<li><a href="#length">LENGTH()</a></li>
-<li><a href="#char-length">CHAR_LENGTH()</a></li>
-<li><a href="#hex-str">HEX(str)</a></li>
-<li><a href="#substring">SUBSTRING()</a></li>
-<li><a href="#upper-ucase">UPPER()/UCASE()</a></li>
-<li><a href="#str-to-date">STR_TO_DATE</a></li>
-<li><a href="#lower-lcase">LOWER() / LCASE()</a></li>
-<li><a href="#replace">REPLACE()</a></li>
-<li><a href="#查找分号分隔的元素">查找分号分隔的元素</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#字符串运算符">字符串运算符</a>
+      <ul>
+        <li><a href="#length">LENGTH()</a></li>
+        <li><a href="#char_length">CHAR_LENGTH()</a></li>
+        <li><a href="#hexstr">HEX(str)</a></li>
+        <li><a href="#substring">SUBSTRING()</a></li>
+        <li><a href="#upperucase">UPPER()/UCASE()</a></li>
+        <li><a href="#str_to_date">STR_TO_DATE</a></li>
+        <li><a href="#lower--lcase">LOWER() / LCASE()</a></li>
+        <li><a href="#replace">REPLACE()</a></li>
+        <li><a href="#查找分号分隔的元素">查找分号分隔的元素</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="字符串运算符">字符串运算符</h2>
-
+        		<h2 id="字符串运算符">字符串运算符</h2>
 <table>
 <thead>
 <tr>
@@ -213,404 +212,295 @@
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>ASCII()</td>
 <td>返回最左侧字符的数值</td>
 </tr>
-
 <tr>
 <td>BIN()</td>
 <td>返回包含数字的二进制表示的字符串</td>
 </tr>
-
 <tr>
 <td>BIT_LENGTH()</td>
 <td>返回以位为单位的参数长度</td>
 </tr>
-
 <tr>
 <td>CHAR()</td>
 <td>返回整数参数对应的字符</td>
 </tr>
-
 <tr>
 <td>CHAR_LENGTH()</td>
 <td>返回参数中的字符数量</td>
 </tr>
-
 <tr>
 <td>CONCAT()</td>
 <td>返回拼接的字符串</td>
 </tr>
-
 <tr>
 <td>CONCAT_WS()</td>
 <td>返回指定分隔符拼接的字符串</td>
 </tr>
-
 <tr>
 <td>ELT()</td>
 <td>返回指定索引位置的字符串</td>
 </tr>
-
 <tr>
 <td>EXPORT_SET()</td>
 <td>返回一个字符串，使得对于值位中设置的每个位，您获得一个on字符串，并且对于每个未设置的位，您将获得一个off字符串</td>
 </tr>
-
 <tr>
 <td>FIELD()</td>
 <td>返回第一个参数在随后参数中的索引位置</td>
 </tr>
-
 <tr>
 <td>FIELD_IN_SET()</td>
 <td>返回第一个参数在第二个参数中的索引位置</td>
 </tr>
-
 <tr>
 <td>FORMAT()</td>
 <td>返回一个指定数量小数位格式化的数字</td>
 </tr>
-
 <tr>
 <td>FROM_BASE64()</td>
 <td>解码一个base64字符串并且返回结果</td>
 </tr>
-
 <tr>
 <td>HEX()</td>
 <td>返回十进制或字符串的十六进制表示</td>
 </tr>
-
 <tr>
 <td>INSERT()</td>
 <td>在指定位置插入一个子字符串，最多可插入指定的字符数</td>
 </tr>
-
 <tr>
 <td>INSTR()</td>
 <td>返回子字符串第一次出现的位置</td>
 </tr>
-
 <tr>
 <td>LCASE()</td>
 <td>LOWER()的别名</td>
 </tr>
-
 <tr>
 <td>LEFT()</td>
 <td>返回指定的最左边的字符数</td>
 </tr>
-
 <tr>
 <td>LENGH()</td>
 <td>返回字符串的字节数量</td>
 </tr>
-
 <tr>
 <td>LIKE</td>
 <td>简单的模式匹配</td>
 </tr>
-
 <tr>
 <td>LOAD_FILE()</td>
 <td>加载命名的文件</td>
 </tr>
-
 <tr>
 <td>LOCATE()</td>
 <td>返回子串第一次初夏你的位置</td>
 </tr>
-
 <tr>
 <td>LOWER()</td>
 <td>返回参数的小写格式</td>
 </tr>
-
 <tr>
 <td>LPAD()</td>
 <td>返回字符串参数，用指定的字符串左填充</td>
 </tr>
-
 <tr>
 <td>LTRIM()</td>
 <td>删除前导空格</td>
 </tr>
-
 <tr>
 <td>MAKE_SET()</td>
 <td>返回一组逗号分隔的字符串，这些字符串在位集中具有相应的位</td>
 </tr>
-
 <tr>
 <td>MATCH</td>
 <td>全文本搜索</td>
 </tr>
-
 <tr>
 <td>MID()</td>
 <td>返回指定位置开始的子字符串</td>
 </tr>
-
 <tr>
 <td>NOT LIKE</td>
 <td>简单模式匹配的否定</td>
 </tr>
-
 <tr>
 <td>NOT REGEXP</td>
 <td>正则表达式的否定</td>
 </tr>
-
 <tr>
 <td>OCT()</td>
 <td>返回包含数字的八进制表示形式的字符串</td>
 </tr>
-
 <tr>
 <td>OCT_LENGTH()</td>
 <td>LENGTH()方法的别名</td>
 </tr>
-
 <tr>
 <td>ORD()</td>
 <td>返回参数最左边的字符的字符代码</td>
 </tr>
-
 <tr>
 <td>POSITION()</td>
 <td>LOCATE()的别名</td>
 </tr>
-
 <tr>
 <td>QUOTE()</td>
 <td>对SQL中的参数进行转义</td>
 </tr>
-
 <tr>
 <td>REGEXP</td>
 <td>正则表达式模式</td>
 </tr>
-
 <tr>
 <td>REPEAT()</td>
 <td>重复一个字符串指定的次数</td>
 </tr>
-
 <tr>
 <td>REPLACE()</td>
 <td>替换指定字符串的出现次数</td>
 </tr>
-
 <tr>
 <td>REVERSE()</td>
 <td>反转一个字符串的字符</td>
 </tr>
-
 <tr>
 <td>RIGHT()</td>
 <td>返回字符串指定最右边的值</td>
 </tr>
-
 <tr>
 <td>RILIKE</td>
 <td>REGEXP 的别名</td>
 </tr>
-
 <tr>
 <td>RPAD()</td>
 <td>附加字符串指定的次数</td>
 </tr>
-
 <tr>
 <td>RTRIM()</td>
 <td>移除尾部的空格</td>
 </tr>
-
 <tr>
 <td>SOUNDEX()</td>
 <td>返回Soundex字符串</td>
 </tr>
-
 <tr>
 <td>SOUNDS LIKE</td>
 <td>比较读音</td>
 </tr>
-
 <tr>
 <td>SPACE()</td>
 <td>返回指定空格数的字符串</td>
 </tr>
-
 <tr>
 <td>STRCMP()</td>
 <td>比较两个字符串</td>
 </tr>
-
 <tr>
 <td>SUBSTR()</td>
 <td>返回指定的子字符串</td>
 </tr>
-
 <tr>
 <td>SUBSTRING()</td>
 <td>返回指定的子字符串</td>
 </tr>
-
 <tr>
 <td>SUBSTRING_INDEX()</td>
 <td>在指定的分隔符出现次数之前从字符串返回子字符串</td>
 </tr>
-
 <tr>
 <td>TO_BASE64()</td>
 <td>将参数转换为base64位字符串</td>
 </tr>
-
 <tr>
 <td>TRIM()</td>
 <td>移除开头和末尾的字符串</td>
 </tr>
-
 <tr>
 <td>UCASE()</td>
 <td>UPPER()的别名</td>
 </tr>
-
 <tr>
 <td>UNHEX()</td>
 <td>返回一个包含数字十六进制表示的字符串</td>
 </tr>
-
 <tr>
 <td>UPPER()</td>
 <td>返回参数的大写格式</td>
 </tr>
-
 <tr>
 <td>WEIGHT_STRING()</td>
 <td>返回字符串的权重字符串</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="length">LENGTH()</h3>
-
 <p>返回字符串的字节数量。因为字符串的字符可能编码超过一个字节，所以想要获取字符的数量使用CHAR_LENGTH()。</p>
-
 <p>语法：LENGTH()</p>
-
-<pre><code class="language-mysql">LENGTH('foobar')  -- 6
-LENGTH('fööbar')  --8
--- CHAR_LENGTH('fööbar') -- 6  这个和数据库编码有关系
-</code></pre>
-
-<h3 id="char-length">CHAR_LENGTH()</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#a6e22e">LENGTH</span>(<span style="color:#e6db74">&#39;foobar&#39;</span>)  <span style="color:#75715e">-- 6
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">LENGTH</span>(<span style="color:#e6db74">&#39;fööbar&#39;</span>)  <span style="color:#f92672">--</span><span style="color:#ae81ff">8</span>
+<span style="color:#75715e">-- CHAR_LENGTH(&#39;fööbar&#39;) -- 6  这个和数据库编码有关系
+</span></code></pre></div><h3 id="char_length">CHAR_LENGTH()</h3>
 <p>返回一个字符串的字符数量。</p>
-
 <p>语法：CHAR_LENGTH()</p>
-
-<pre><code class="language-mysql">CHAR_LENGTH('foobar') -- 6
-CHAR_LENGTH('fööbar') -- 6
-</code></pre>
-
-<h3 id="hex-str">HEX(str)</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#a6e22e">CHAR_LENGTH</span>(<span style="color:#e6db74">&#39;foobar&#39;</span>) <span style="color:#75715e">-- 6
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">CHAR_LENGTH</span>(<span style="color:#e6db74">&#39;fööbar&#39;</span>) <span style="color:#75715e">-- 6
+</span></code></pre></div><h3 id="hexstr">HEX(str)</h3>
 <p>把参数转换为16进制格式。这是用来处理字符串的。</p>
-
 <p>语法：HEX(str)</p>
-
-<pre><code class="language-mysql">HEX('fööbar') -- 66F6F6626172  in &quot;CHARACTER SET latin1&quot; because &quot;F6&quot; is hex for ö  
-HEX('fööbar') -- 66C3B6C3B6626172 in &quot;CHARACTER SET utf8 or utf8mb4&quot; because &quot;C3B6&quot; is hex for ö
-</code></pre>
-
-<h3 id="substring">SUBSTRING()</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#a6e22e">HEX</span>(<span style="color:#e6db74">&#39;fööbar&#39;</span>) <span style="color:#75715e">-- 66F6F6626172  in &#34;CHARACTER SET latin1&#34; because &#34;F6&#34; is hex for ö  
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">HEX</span>(<span style="color:#e6db74">&#39;fööbar&#39;</span>) <span style="color:#75715e">-- 66C3B6C3B6626172 in &#34;CHARACTER SET utf8 or utf8mb4&#34; because &#34;C3B6&#34; is hex for ö
+</span></code></pre></div><h3 id="substring">SUBSTRING()</h3>
 <p>SUBSTRING(别名 SUBSTR)返回字符串从指定位置开始，可选的子字符串长度的子字符串。</p>
-
 <p>语法：SUBSTRING(str, start_position)</p>
-
-<pre><code class="language-mysql">SELECT SUBSTRING('foobarbaz', 4); -- barbaz
-SELECT SUBSTRING('foobarbaz' FROM 4) -- barbaz
-
---使用负数索引
-SELECT SUBSTRING('foobarbaz', -6) -- barbaz
-SELECT SUBSTRING('foobarbaz' FROM -6) -- barbaz
-</code></pre>
-
-<p>语法：SUBSTRING(str, start_position, length)</p>
-
-<pre><code class="language-mysql">SELECT SUBSTRING('foobarbaz', 4, 3) -- bar
-SELECT SUBSTRING('foobarbaz' FROM 4 FOR 3) -- bar
-
---使用负数索引
-SELECT SUBSTRING('foobarbaz', -6, 3) -- bar
-SELECT SUBSTRING('foobarbaz' FROM -6 FOR 3) -- bar
-</code></pre>
-
-<h3 id="upper-ucase">UPPER()/UCASE()</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SUBSTRING</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span>, <span style="color:#ae81ff">4</span>); <span style="color:#75715e">-- barbaz
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SUBSTRING</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span> <span style="color:#66d9ef">FROM</span> <span style="color:#ae81ff">4</span>) <span style="color:#75715e">-- barbaz
+</span><span style="color:#75715e"></span>
+<span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">使用负数索引</span>
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SUBSTRING</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>) <span style="color:#75715e">-- barbaz
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SUBSTRING</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>) <span style="color:#75715e">-- barbaz
+</span></code></pre></div><p>语法：SUBSTRING(str, start_position, length)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SUBSTRING</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>) <span style="color:#75715e">-- bar
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SUBSTRING</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span> <span style="color:#66d9ef">FROM</span> <span style="color:#ae81ff">4</span> <span style="color:#66d9ef">FOR</span> <span style="color:#ae81ff">3</span>) <span style="color:#75715e">-- bar
+</span><span style="color:#75715e"></span>
+<span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">使用负数索引</span>
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SUBSTRING</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">3</span>) <span style="color:#75715e">-- bar
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SUBSTRING</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">6</span> <span style="color:#66d9ef">FOR</span> <span style="color:#ae81ff">3</span>) <span style="color:#75715e">-- bar
+</span></code></pre></div><h3 id="upperucase">UPPER()/UCASE()</h3>
 <p>返回字符串参数的大写格式。</p>
-
 <p>语法：UPPER(str)</p>
-
-<pre><code class="language-mysql">UPPER('fOoBar') -- FOOBAR
-UCASE('fOoBar') -- FOORBAR
-</code></pre>
-
-<h3 id="str-to-date">STR_TO_DATE</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#a6e22e">UPPER</span>(<span style="color:#e6db74">&#39;fOoBar&#39;</span>) <span style="color:#75715e">-- FOOBAR
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">UCASE</span>(<span style="color:#e6db74">&#39;fOoBar&#39;</span>) <span style="color:#75715e">-- FOORBAR
+</span></code></pre></div><h3 id="str_to_date">STR_TO_DATE</h3>
 <p>转换一个字符串为日期格式。如果一个字符串列叫做<code>my_date_field</code>，并且它的值都是类似<code>07/25/2016</code>这样的格式，下面的语句说明了<code>STR_TO_DATE</code>的用法。</p>
-
-<pre><code class="language-mysql">SELECT STR_TO_DATE(my_date_field, '%m/%d/%Y') FROM my_table;
-</code></pre>
-
-<p>你可以在WHERE语句中使用这个方法。</p>
-
-<h3 id="lower-lcase">LOWER() / LCASE()</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">STR_TO_DATE</span>(my_date_field, <span style="color:#e6db74">&#39;%m/%d/%Y&#39;</span>) <span style="color:#66d9ef">FROM</span> my_table;
+</code></pre></div><p>你可以在WHERE语句中使用这个方法。</p>
+<h3 id="lower--lcase">LOWER() / LCASE()</h3>
 <p>获取参数的小写格式。</p>
-
 <p>语法：LOWER(str)</p>
-
-<pre><code class="language-mysql">LOWER('fOoBar') -- foobar
-LCASE('fOoBar') -- foobar
-</code></pre>
-
-<h3 id="replace">REPLACE()</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#a6e22e">LOWER</span>(<span style="color:#e6db74">&#39;fOoBar&#39;</span>) <span style="color:#75715e">-- foobar
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">LCASE</span>(<span style="color:#e6db74">&#39;fOoBar&#39;</span>) <span style="color:#75715e">-- foobar
+</span></code></pre></div><h3 id="replace">REPLACE()</h3>
 <p>替换字符串中的指定子字符串为指定的字符串。</p>
-
 <p>语法：REPLACE(str, from_str, to_str)</p>
-
-<pre><code class="language-mysql">REPLACE('foobarbaz', 'bar', 'BAR') -- foorBARbaz
-REPLACE('foobarbaz', 'zzz', 'ZZZ') -- foobarbaz
-</code></pre>
-
-<h3 id="查找分号分隔的元素">查找分号分隔的元素</h3>
-
-<pre><code class="language-mysql">SELECT FIND_IN_SET('b','a,b,c');
-</code></pre>
-
-<p>返回值</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">REPLACE</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span>, <span style="color:#e6db74">&#39;bar&#39;</span>, <span style="color:#e6db74">&#39;BAR&#39;</span>) <span style="color:#75715e">-- foorBARbaz
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">REPLACE</span>(<span style="color:#e6db74">&#39;foobarbaz&#39;</span>, <span style="color:#e6db74">&#39;zzz&#39;</span>, <span style="color:#e6db74">&#39;ZZZ&#39;</span>) <span style="color:#75715e">-- foobarbaz
+</span></code></pre></div><h3 id="查找分号分隔的元素">查找分号分隔的元素</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">FIND_IN_SET</span>(<span style="color:#e6db74">&#39;b&#39;</span>,<span style="color:#e6db74">&#39;a,b,c&#39;</span>);
+</code></pre></div><p>返回值</p>
 <blockquote>
 <p>2</p>
 </blockquote>
-
-<pre><code class="language-mysql">SELECT FIND_IN_SET('d', 'a,b,c');
-</code></pre>
-
-<p>返回值：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">FIND_IN_SET</span>(<span style="color:#e6db74">&#39;d&#39;</span>, <span style="color:#e6db74">&#39;a,b,c&#39;</span>);
+</code></pre></div><p>返回值：</p>
 <blockquote>
 <p>0</p>
 </blockquote>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -683,6 +573,12 @@ REPLACE('foobarbaz', 'zzz', 'ZZZ') -- foobarbaz
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

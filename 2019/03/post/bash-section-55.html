@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,24 +187,19 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#cut命令">cut命令</a>
-<ul>
-<li><a href="#只有一个分隔符">只有一个分隔符</a></li>
-<li><a href="#重复分隔符任务是空字符">重复分隔符任务是空字符</a></li>
-<li><a href="#无引用">无引用</a></li>
-<li><a href="#提取而不是操作">提取而不是操作</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#cut命令">cut命令</a>
+      <ul>
+        <li><a href="#只有一个分隔符">只有一个分隔符</a></li>
+        <li><a href="#重复分隔符任务是空字符">重复分隔符任务是空字符</a></li>
+        <li><a href="#无引用">无引用</a></li>
+        <li><a href="#提取而不是操作">提取而不是操作</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="cut命令">cut命令</h2>
-
+        		<h2 id="cut命令">cut命令</h2>
 <table>
 <thead>
 <tr>
@@ -208,84 +207,57 @@
 <th>含义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-f, —fields</td>
 <td>基于字段的选择</td>
 </tr>
-
 <tr>
 <td>-d, —delimiter</td>
 <td>基于字段选择的分隔符</td>
 </tr>
-
 <tr>
 <td>-c, —characters</td>
 <td>基于字符选择，分隔符忽略或者错误</td>
 </tr>
-
 <tr>
 <td>-s, —only-delimited</td>
 <td>禁止使用不带分隔符的行（按其他方式打印）</td>
 </tr>
-
 <tr>
 <td>—complemment</td>
 <td>反向选择（提取除指定字段/字符之外的所有字段/字符</td>
 </tr>
-
 <tr>
 <td>—output-delimiter</td>
 <td>指定它必须与输入分隔符不同的时间</td>
 </tr>
 </tbody>
 </table>
-
 <p><code>cut</code>命令是快速提前文本文件行的部分的方法。这是最老的Unix命令之一。它最流行的实现是Linux上的GUN版本，MacOS的FreeBSD版本。但是Unix的每种风格都有自己的特色。查看下面的不同。输入的行或者从标准输入读取，或者从命令行的参数列出的文件的读取。</p>
-
 <h3 id="只有一个分隔符">只有一个分隔符</h3>
-
 <p>你不能拥有大于一个的的分隔符。如果你指定了像<code>-d &quot;,;:&quot;</code>，一些实现中只会使用第一个字符作为分隔符(这里，是逗号)。其他的一些实现(像GNU cut)会出现错误信息。</p>
-
 <pre><code>$ cut -d &quot;,;:&quot; -f2 &lt;&lt;&lt;&quot;J.Smith,1 Main Road,cell:1234567890;land:4081234567&quot; 
 cut: the delimiter must be a single character
 Try `cut --help' for more information.
-</code></pre>
-
-<h3 id="重复分隔符任务是空字符">重复分隔符任务是空字符</h3>
-
+</code></pre><h3 id="重复分隔符任务是空字符">重复分隔符任务是空字符</h3>
 <pre><code>$ cut -d, -f1,3 &lt;&lt;&lt;&quot;a,,b,c,d,e&quot;
 a,b		
-</code></pre>
-
-<p>是相当明显的，但是使用空格分隔符，对某些人来说可能不太明显。</p>
-
+</code></pre><p>是相当明显的，但是使用空格分隔符，对某些人来说可能不太明显。</p>
 <pre><code>$ cut -d ' ' -f1,3 &lt;&lt;&quot;a  b c d e&quot;
 a b
-</code></pre>
-
-<p><code>cut</code>不能用来像shell和其他程序语言解析参数。</p>
-
+</code></pre><p><code>cut</code>不能用来像shell和其他程序语言解析参数。</p>
 <h3 id="无引用">无引用</h3>
-
 <p>没有办法保护分隔符。电子表格和相似的CSV处理软件可以识别文本引用字符，从而可以定义包含分隔符的字符串。但是<code>cut</code>就不行</p>
-
 <pre><code>cut -d, -f3 &lt;&lt;&lt;'John,Smith,&quot;1, Main Street&quot;'
 &quot;1
-</code></pre>
-
-<h3 id="提取而不是操作">提取而不是操作</h3>
-
+</code></pre><h3 id="提取而不是操作">提取而不是操作</h3>
 <p>你只能提取行的部分，而不是重新拍下或重复字符。</p>
-
 <pre><code>$ cut -d, -f2,1 &lt;&lt;&lt;'John,Smith,USA' ##像 -f1,2
 John,Smith
 $ cut -d, -f2,2 &lt;&lt;&lt;'John,Smith,USA'  # 像-f2
 Smith
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -357,6 +329,12 @@ Smith
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,74 +187,52 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#prepare语句">PREPARE语句</a>
-<ul>
-<li><a href="#1-prepare-execute和deallocate-prepare语句">1. PREPARE, EXECUTE和DEALLOCATE PREPARE语句</a></li>
-<li><a href="#2-修改表增加列">2. 修改表增加列</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#prepare语句">PREPARE语句</a>
+      <ul>
+        <li><a href="#1-prepare-execute和deallocate-prepare语句">1. PREPARE, EXECUTE和DEALLOCATE PREPARE语句</a></li>
+        <li><a href="#2-修改表增加列">2. 修改表增加列</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="prepare语句">PREPARE语句</h2>
-
+        		<h2 id="prepare语句">PREPARE语句</h2>
 <h3 id="1-prepare-execute和deallocate-prepare语句">1. PREPARE, EXECUTE和DEALLOCATE PREPARE语句</h3>
-
 <p><a href="https://dev.mysql.com/doc/refman/5.7/en/prepare.html">PREPARE</a>准备一个将要执行的语句。</p>
-
 <p><a href="http://dev.mysql.com/doc/refman/5.7/en/execute.html">EXECUTE</a>执行一个准备好的语句。</p>
-
 <p><a href="http://dev.mysql.com/doc/refman/5.7/en/deallocate-prepare.html">DEALLOCATE PREPARE</a>释放一个准备好的语句。</p>
-
-<pre><code class="language-mysql">SET @s = 'SELECT SQRT(POW(?,2) + POW(?, 2)) AS hypotenuse';
-PREPARE stmt2 FROM @s;
-SET @a = 6;
-SET @b = 8;
-EXECUTE stmt2 USING @a, @b;
-</code></pre>
-
-<p>结果：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;SELECT SQRT(POW(?,2) + POW(?, 2)) AS hypotenuse&#39;</span>;
+PREPARE stmt2 <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">@</span>s;
+<span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>a <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>;
+<span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>b <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>;
+EXECUTE stmt2 <span style="color:#66d9ef">USING</span> <span style="color:#f92672">@</span>a, <span style="color:#f92672">@</span>b;
+</code></pre></div><p>结果：</p>
 <pre><code>+------------+
 | hypotenuse |
 +------------+
 |         10 |
 +------------+
-</code></pre>
-
-<p>最后：</p>
-
-<pre><code class="language-mysql">DEALLOCATE PREPARE stmt2;
-</code></pre>
-
-<p>注意：</p>
-
+</code></pre><p>最后：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">DEALLOCATE PREPARE stmt2;
+</code></pre></div><p>注意：</p>
 <ul>
 <li>你必须使用@variable，而不是声明的变量，对于<code>FROM @s</code>语句</li>
 <li>PREPARE的主要用途是构造一种情况的查询（绑定但是还不能工作的），然后插入表名之后就可以执行</li>
 </ul>
-
 <h3 id="2-修改表增加列">2. 修改表增加列</h3>
-
-<pre><code class="language-mysql">SET v_column_definition := CONCAT(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> v_column_definition :<span style="color:#f92672">=</span> <span style="color:#a6e22e">CONCAT</span>(
     v_column_name
-    , &quot; &quot;, v_column_type
-    , ' ', v_column_options
+    , <span style="color:#e6db74">&#34; &#34;</span>, v_column_type
+    , <span style="color:#e6db74">&#39; &#39;</span>, v_column_options
 );
 
-SET @stmt := CONCAT('ALTER TABLE ADD COLUMN ', v_column_definition);
+<span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>stmt :<span style="color:#f92672">=</span> <span style="color:#a6e22e">CONCAT</span>(<span style="color:#e6db74">&#39;ALTER TABLE ADD COLUMN &#39;</span>, v_column_definition);
 
-PREPARE stmt FROM @stmt;
+PREPARE stmt <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">@</span>stmt;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -322,6 +304,12 @@ DEALLOCATE PREPARE stmt;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,33 +187,26 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#魔术方法">魔术方法</a>
-<ul>
-<li><a href="#call-和-callstatic"><code>__call()</code>和<code>__callStatic()</code></a></li>
-<li><a href="#get-set-isset-unset"><code>__get()</code> <code>__set()</code> <code>__isset()</code> <code>__unset()</code></a></li>
-<li><a href="#construct-和-destruct"><code>__construct()</code>和<code>__destruct()</code></a></li>
-<li><a href="#tostring">__toString()</a></li>
-<li><a href="#clone">__clone()</a></li>
-<li><a href="#invoke">__invoke()</a></li>
-<li><a href="#sleep-和-wakeup"><code>__sleep()</code>和<code>__wakeup()</code></a></li>
-<li><a href="#debuginfo">__debugInfo()</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#魔术方法">魔术方法</a>
+      <ul>
+        <li><a href="#__call和__callstatic"><code>__call()</code>和<code>__callStatic()</code></a></li>
+        <li><a href="#__get--__set-__isset-__unset"><code>__get() </code> <code>__set()</code> <code>__isset()</code> <code>__unset()</code></a></li>
+        <li><a href="#__construct和__destruct"><code>__construct()</code>和<code>__destruct()</code></a></li>
+        <li><a href="#__tostring">__toString()</a></li>
+        <li><a href="#__clone">__clone()</a></li>
+        <li><a href="#__invoke">__invoke()</a></li>
+        <li><a href="#__sleep和__wakeup"><code>__sleep()</code>和<code>__wakeup()</code></a></li>
+        <li><a href="#__debuginfo">__debugInfo()</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="魔术方法">魔术方法</h2>
-
-<h3 id="call-和-callstatic"><code>__call()</code>和<code>__callStatic()</code></h3>
-
+        		<h2 id="魔术方法">魔术方法</h2>
+<h3 id="__call和__callstatic"><code>__call()</code>和<code>__callStatic()</code></h3>
 <p><code>__call()</code>和<code>__callStatic()</code>将会在某些人调用不存在的对象方法或者静态方法的时候调用。</p>
-
-<pre><code class="language-php">class Foo
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Foo
 {
     /**
     * 这个方法将会在某些人调用对象不存在的方法时调用，像
@@ -226,15 +223,15 @@
         $propertyName = substr($snakeName, 4);
       
         switch($subMethod) {
-            case 'get':
+            case &#39;get&#39;:
                 return $this-&gt;data[$propertyName];
-	          case 'set':
+	          case &#39;set&#39;:
                 $this-&gt;data[$propertyName] = $arguments[0];
             		break;
-	          case 'has':
+	          case &#39;has&#39;:
             		return isset($this-&gt;data[$propertyName]);
 	          default:
-            		throw new BadMethodCallException(&quot;Undefined method $method&quot;);
+            		throw new BadMethodCallException(&#34;Undefined method $method&#34;);
         }
     }
   
@@ -243,59 +240,36 @@
         print_r(func_get_args());
     }
 }
-</code></pre>
+</code></pre></div><p>例子</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$instance = new Foo();
 
-<p>例子</p>
-
-<pre><code class="language-php">$instance = new Foo();
-
-$instance-&gt;setSomeState('foo');
+$instance-&gt;setSomeState(&#39;foo&#39;);
 var_dump($instance-&gt;hasSomeState());  //bool(true)
-var_dump($instance-&gt;getSomeState());  //string &quot;foo&quot;
+var_dump($instance-&gt;getSomeState());  //string &#34;foo&#34;
 
-Foo::exampleStaticCall(&quot;test&quot;);
+Foo::exampleStaticCall(&#34;test&#34;);
 //输出
 Array
 (
     [0] =&gt; exampleCallStatic
     [1] =&gt; test
 )
-</code></pre>
-
-<h3 id="get-set-isset-unset"><code>__get()</code> <code>__set()</code> <code>__isset()</code> <code>__unset()</code></h3>
-
+</code></pre></div><h3 id="__get--__set-__isset-__unset"><code>__get() </code> <code>__set()</code> <code>__isset()</code> <code>__unset()</code></h3>
 <p>任何时候你企图像下面这样获取一个类的字段：</p>
-
-<pre><code class="language-php">$animal = new Animal();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$animal = new Animal();
 $height = $animal-&gt;height;
-</code></pre>
-
-<p>在这个例子中，将会调用<code>__get($name)</code>方法，这里<code>$name</code>是<code>height</code>。</p>
-
+</code></pre></div><p>在这个例子中，将会调用<code>__get($name)</code>方法，这里<code>$name</code>是<code>height</code>。</p>
 <p>像下面这样设置类属性的值：</p>
-
-<pre><code class="language-php">$animal-&gt;height = 10;
-</code></pre>
-
-<p>将会调用<code>__set($name, $value)</code>来进行设置，这里<code>$name</code>是<code>height</code>，<code>$value</code>的值是10。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$animal-&gt;height = 10;
+</code></pre></div><p>将会调用<code>__set($name, $value)</code>来进行设置，这里<code>$name</code>是<code>height</code>，<code>$value</code>的值是10。</p>
 <p>PHP有一个内建的方法<code>isset()</code>，用来检测一个变量是否存在。<code>unset()</code>用来销毁一个变量。检测对象的字段是否存在使用：</p>
-
-<pre><code class="language-php">isset($animal-&gt;height);
-</code></pre>
-
-<p>将会调用对象的<code>__isset($name)</code>方法。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">isset($animal-&gt;height);
+</code></pre></div><p>将会调用对象的<code>__isset($name)</code>方法。</p>
 <p>销毁一个变量使用：</p>
-
-<pre><code class="language-php">unset($animal-&gt;height);
-</code></pre>
-
-<p>将会调用对象的<code>__unset($name)</code>方法。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">unset($animal-&gt;height);
+</code></pre></div><p>将会调用对象的<code>__unset($name)</code>方法。</p>
 <p>通常，当你没有在类中定义这些方法时，PHP只获取类中实际存储的字段。然而，你可以复写这些方法来重建类，这些类可以像数组一样保存数据，但是可以像对象一样访问。</p>
-
-<pre><code class="language-php">calss Example {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">calss Example {
     private $data = [];
     
     public function __set($name, $value) {
@@ -327,23 +301,16 @@ echo $example-&gt;b;
 if (isset($example-&gt;a)) {
     unset($example-&gt;b);
 }
-</code></pre>
-
-<p><strong>empty()和魔术方法</strong></p>
-
+</code></pre></div><p><strong>empty()和魔术方法</strong></p>
 <p>注意：在类的属性上调用<code>empty()</code>将会调用<code>__isset()</code>方法，因为PHP手册说的：</p>
-
 <blockquote>
 <p>empty()实际上等价于 <code>!isset($var) || $var = false</code></p>
 </blockquote>
-
-<h3 id="construct-和-destruct"><code>__construct()</code>和<code>__destruct()</code></h3>
-
+<h3 id="__construct和__destruct"><code>__construct()</code>和<code>__destruct()</code></h3>
 <p><code>__construct()</code>是PHP中最常见的魔术方法，用来在初始化对象的时候创建一个类。和<code>__construct()</code>方法相对的是<code>__destruct()</code>。这个类当对象没有在使用时或者强制销毁一个对象的时候调用。PHP的垃圾回收将会首先调用这个类的析构方法，然后将对象从内容删除。</p>
-
-<pre><code class="language-php">class Shape{
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Shape{
     public function __construct() {
-        echo &quot;Shape created!\n&quot;;
+        echo &#34;Shape created!\n&#34;;
     }
 }
 
@@ -356,90 +323,75 @@ class Rectangle extends Shape {
         
         $this-&gt;width = $width;
         $this-&gt;height = $height;
-        echo &quot;Created {$this-&gt;width}x{$this-&gt;height} Rectangle\n&quot;;
+        echo &#34;Created {$this-&gt;width}x{$this-&gt;height} Rectangle\n&#34;;
     }
     
     public function __destruct() {
-        echo &quot;Destroying {$this-&gt;width}x{$this-&gt;height} Rectangle\n&quot;;
+        echo &#34;Destroying {$this-&gt;width}x{$this-&gt;height} Rectangle\n&#34;;
     }
 }
 
 function createRectangle() {
     $rectangle = new Rectangle(20, 50);
     
-    // 'Shape Created' will be printed
-    // 'Created 20x50 Rectangle' will be printed
+    // &#39;Shape Created&#39; will be printed
+    // &#39;Created 20x50 Rectangle&#39; will be printed
 }
 
 createRectangle();
-//Destroying 20x50 Rectangle'
+//Destroying 20x50 Rectangle&#39;
 
 unset(new Rectangle(20, 50));
 //将会再次调用析构函数
-</code></pre>
-
-<h3 id="tostring">__toString()</h3>
-
+</code></pre></div><h3 id="__tostring">__toString()</h3>
 <p>无论什么时候把一个对象当做字符串处理的时候，都会调用<code>__toString()</code>方法。这个方法应该返回一个类的字符串描述。</p>
-
-<pre><code class="language-php">class User {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class User {
     public $first_name;
     public $last_name;
     public $age;
     
     public function __toString() {
-        return &quot;{$this-&gt;first_name} {$this-&gt;last_name} {$this-&gt;age}&quot;;
+        return &#34;{$this-&gt;first_name} {$this-&gt;last_name} {$this-&gt;age}&#34;;
     }
 }
 
 $user = new User();
-$user-&gt;first_name = 'Chuck';
-$user-&gt;last_name = 'Norris';
+$user-&gt;first_name = &#39;Chuck&#39;;
+$user-&gt;last_name = &#39;Norris&#39;;
 $user-&gt;age = 76;
 
 echo $user;  //输出 Chuck Norris (76)
 
-//'Selected user: Chuck Norris (76)'
-$selected_user_string = sprintf('Selected user: %s', $user);
+//&#39;Selected user: Chuck Norris (76)&#39;
+$selected_user_string = sprintf(&#39;Selected user: %s&#39;, $user);
 
 //调用__toString()
 $user_as_string = (string)$user;
-</code></pre>
-
-<h3 id="clone">__clone()</h3>
-
+</code></pre></div><h3 id="__clone">__clone()</h3>
 <p>当调用clone关键字克隆一个对象的时候，调用<code>__clone()</code>方法。它用于在对象实际克隆后，在克隆时操纵对象状态。</p>
-
-<pre><code class="language-php">class CloneableUser
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class CloneableUser
 {
     public $name;
     public $lastName;
     
     public function __clone()
     {
-        $this-&gt;name = &quot;Copy &quot; . $this-&gt;name;
-        $this-&gt;lastName = &quot;Copy &quot; . $this-&gt;lastName;
+        $this-&gt;name = &#34;Copy &#34; . $this-&gt;name;
+        $this-&gt;lastName = &#34;Copy &#34; . $this-&gt;lastName;
     }
 }
-</code></pre>
-
-<p>例子：</p>
-
-<pre><code class="language-php">$user1 = new CloneableUser();
-$user1-&gt;name = &quot;John&quot;;
-$user1-&gt;lastName = &quot;Doe&quot;;
+</code></pre></div><p>例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$user1 = new CloneableUser();
+$user1-&gt;name = &#34;John&#34;;
+$user1-&gt;lastName = &#34;Doe&#34;;
 
 $user2 = clone $user1;
 
 echo $user2-&gt;name;   //Copy John
 echo $user2-&gt;lastName;  //Copy Doe
-</code></pre>
-
-<h3 id="invoke">__invoke()</h3>
-
+</code></pre></div><h3 id="__invoke">__invoke()</h3>
 <p>当用户像方法一样使用一个对象时调用这个方法。可能的用例可能包括一些方法，比如函数式编程或者一些回调。</p>
-
-<pre><code class="language-php">class Invokable {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Invokable {
     /**
      * This method will be called if object will be executed like a function:
      *
@@ -463,15 +415,10 @@ Array
     [1] =&gt; 2
     [2] =&gt; 3 
 )
-</code></pre>
-
-<h3 id="sleep-和-wakeup"><code>__sleep()</code>和<code>__wakeup()</code></h3>
-
+</code></pre></div><h3 id="__sleep和__wakeup"><code>__sleep()</code>和<code>__wakeup()</code></h3>
 <p><code>__sleep()</code>和<code>__wakeup()</code>是和序列话有关的方法。<code>serialize</code>方法会检查类有没有<code>__sleep</code>方法。如果有的话，这将在序列号之前执行。<code>_ sleep</code>应该返回一个对象所有变量的名称数组，这些变量应该被序列化。</p>
-
 <p>当执行反序列化方法<code>unserialize</code>的时候，如果类中有<code>__wakeup</code>，就会执行这个方法。它的目的是重新建立资源和其他在反序列化时需要初始化的东西。</p>
-
-<pre><code class="language-php">class Sleepy {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Sleepy {
 		public $tableName; public $tableFields; public $dbConnection;
     /**
      * This magic method will be invoked by serialize function.
@@ -479,7 +426,7 @@ Array
      */
 		public function __sleep() {
         // Only $this-&gt;tableName and $this-&gt;tableFields will be serialized.
-        return ['tableName', 'tableFields'];
+        return [&#39;tableName&#39;, &#39;tableFields&#39;];
     }
     /**
      * This magic method will be called by unserialize function.
@@ -492,40 +439,25 @@ Array
 		$this-&gt;dbConnection = DB::connect();
 		} 
 }
-</code></pre>
-
-<h3 id="debuginfo">__debugInfo()</h3>
-
+</code></pre></div><h3 id="__debuginfo">__debugInfo()</h3>
 <blockquote>
 <p>这个方法在当使用<code>var_dump()</code>对一个对象进行处理，想要显示对象应该显示的属性。如果类里面没有定义这个方法话，所有public，protected和private的属性豆浆显示。</p>
 </blockquote>
-
-<pre><code class="language-php">class DeepThought {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class DeepThought {
 		public function __debugInfo() {
         return [42];
     }
 }
-</code></pre>
-
-<p>例子：</p>
-
-<pre><code class="language-php">var_dump(new DeepThought());
-</code></pre>
-
-<p>在PHP5.6之前，上面的例子将会输出：</p>
-
+</code></pre></div><p>例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(new DeepThought());
+</code></pre></div><p>在PHP5.6之前，上面的例子将会输出：</p>
 <pre><code>class DeepThought#1 (0) { }
-</code></pre>
-
-<p>在PHP5.6之后，上面的例子将会输出：</p>
-
-<pre><code class="language-php">class DeepThought#1 (1) { 
+</code></pre><p>在PHP5.6之后，上面的例子将会输出：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class DeepThought#1 (1) { 
 public ${0} =&gt;
     int(42) 
 }
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -597,6 +529,12 @@ public ${0} =&gt;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

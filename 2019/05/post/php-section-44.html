@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,21 +187,16 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#流">流</a>
-<ul>
-<li><a href="#1-注册流包装器">1. 注册流包装器</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#流">流</a>
+      <ul>
+        <li><a href="#1-注册流包装器">1. 注册流包装器</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="流">流</h2>
-
+        		<h2 id="流">流</h2>
 <table>
 <thead>
 <tr>
@@ -205,7 +204,6 @@
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>流资源</td>
@@ -213,27 +211,23 @@
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-注册流包装器">1. 注册流包装器</h3>
-
 <p>流包装器可以为一个或多个特定方案提供处理程序。</p>
-
 <p>下面的例子显示了一个简单的流包装器，当流关闭的的时候发送一个<code>PATCH</code>的HTTP请求。</p>
-
-<pre><code class="language-php">//注册FooWrapper类作为 foo://URL
-stream_wrapper_register(&quot;foo&quot;, FooWrapper::class, STREAM_IS_URL) or die(&quot;Duplicate stream wrwapper registered&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//注册FooWrapper类作为 foo://URL
+stream_wrapper_register(&#34;foo&#34;, FooWrapper::class, STREAM_IS_URL) or die(&#34;Duplicate stream wrwapper registered&#34;);
 
 class FooWrapper {
     public $context;
     private $url;
   
-    public function stream_open(string $path, string $mode, int $options, string &amp;$openedPath) : bool {
+    public function stream_open(string $path, string $mode, int $options, string <span style="color:#960050;background-color:#1e0010">&amp;</span>$openedPath) : bool {
         $url = parse_url($path);
         if ($url === false) {
             return false;
         }
         
-        $this-&gt;url = $url['host'] . '/' . $url['path'];
+        $this-&gt;url = $url[&#39;host&#39;] . &#39;/&#39; . $url[&#39;path&#39;];
         return true;
     }
   
@@ -243,30 +237,27 @@ class FooWrapper {
     }
   
     public function stream_close() {
-        $curl = curl_init(&quot;http://&quot; . $this-&gt;url);
+        $curl = curl_init(&#34;http://&#34; . $this-&gt;url);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $this-&gt;buffer);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, &quot;PATCH&quot;);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, &#34;PATCH&#34;);
         curl_exec($curl);
         curl_close($curl);
-        $this-&gt;buffer = '';
+        $this-&gt;buffer = &#39;&#39;;
     }
   
     public function __call($name, $args) {
-        throw new \RuntimeException(&quot;This wrapper does not support $name&quot;);
+        throw new \RuntimeException(&#34;This wrapper does not support $name&#34;);
     }
   
     public function unlink(string $path) {
         $url = parse_url($path);
-        $curl = curl_init(&quot;http://&quot; . $url['host'] . &quot;/&quot; . $url['path']);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        $curl = curl_init(&#34;http://&#34; . $url[&#39;host&#39;] . &#34;/&#34; . $url[&#39;path&#39;]);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, &#39;DELETE&#39;);
         curl_exec($curl);
         curl_close($curl);
     }
 }
-</code></pre>
-
-<p>这个例子只是展示了一个普通的流包装器包含的内容。这并不是所有的有效的方法。一个完整的方法列表在<a href="https://php.net/streamWrapper">PHP的手册</a>。</p>
-
+</code></pre></div><p>这个例子只是展示了一个普通的流包装器包含的内容。这并不是所有的有效的方法。一个完整的方法列表在<a href="https://php.net/streamWrapper">PHP的手册</a>。</p>
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -339,6 +330,12 @@ class FooWrapper {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

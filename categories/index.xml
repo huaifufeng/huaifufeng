@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 怀府小阁</title>
@@ -6,10 +6,28 @@
     <description>Recent content in Categories on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 08 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PHP</title>
+      <link>http://blog.huaifufeng.com/categories/php/</link>
+      <pubDate>Fri, 08 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/categories/php/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>http://blog.huaifufeng.com/categories/linux/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/categories/linux/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Algorithms</title>
@@ -17,15 +35,6 @@
       <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>http://blog.huaifufeng.com/categories/algorithms/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>PHP</title>
-      <link>http://blog.huaifufeng.com/categories/php/</link>
-      <pubDate>Sun, 14 Jul 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://blog.huaifufeng.com/categories/php/</guid>
       <description></description>
     </item>
     

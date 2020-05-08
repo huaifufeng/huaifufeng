@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,104 +187,80 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#closure">Closure</a>
-<ul>
-<li><a href="#1-闭包的基本用法">1. 闭包的基本用法</a></li>
-<li><a href="#2-使用外部变量">2. 使用外部变量</a></li>
-<li><a href="#3-基本闭包绑定">3. 基本闭包绑定</a></li>
-<li><a href="#4-闭包绑定和作用域">4. 闭包绑定和作用域</a></li>
-<li><a href="#5-一次调用时绑定闭包">5. 一次调用时绑定闭包</a></li>
-<li><a href="#6-闭包实现观察者模式">6. 闭包实现观察者模式</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#closure">Closure</a>
+      <ul>
+        <li><a href="#1-闭包的基本用法">1. 闭包的基本用法</a></li>
+        <li><a href="#2-使用外部变量">2. 使用外部变量</a></li>
+        <li><a href="#3-基本闭包绑定">3. 基本闭包绑定</a></li>
+        <li><a href="#4-闭包绑定和作用域">4. 闭包绑定和作用域</a></li>
+        <li><a href="#5-一次调用时绑定闭包">5. 一次调用时绑定闭包</a></li>
+        <li><a href="#6-闭包实现观察者模式">6. 闭包实现观察者模式</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="closure">Closure</h2>
-
+        		<h2 id="closure">Closure</h2>
 <h3 id="1-闭包的基本用法">1. 闭包的基本用法</h3>
-
 <p>一个<code>closure</code>等价于PHP中的匿名函数，例如一个没有名称的方法。即使这在技术上不正确，闭包的行为仍然与函数的行为相同，只有一些额外的特性。</p>
-
 <p>一个闭包就是一个Closure类的对象，通过创建一个没有名称的方法实现。例如：</p>
-
-<pre><code class="language-php">&lt;?php
-$myClosure = function() {
-    echo 'Hello world!';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$myClosure <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Hello world!&#39;</span>;
 };
-$myClosure(); // Shows &quot;Hello world!&quot;
-</code></pre>
-
-<p>注意<code>$myClosure</code>就是Closure的一个实例，让你知道你做了什么。(<a href="https://www.php.net/manual/zh/class.closure.php">https://www.php.net/manual/zh/class.closure.php</a>)</p>
-
+$myClosure(); <span style="color:#75715e">// Shows &#34;Hello world!&#34;
+</span></code></pre></div><p>注意<code>$myClosure</code>就是Closure的一个实例，让你知道你做了什么。(<a href="https://www.php.net/manual/zh/class.closure.php">https://www.php.net/manual/zh/class.closure.php</a>)</p>
 <p>Closure的经典用法就是在你必须使用一个<code>callable</code>的方法，例如<a href="https://www.php.net/manual/zh/function.usort.php">usort</a>。</p>
-
 <p>下面是一个示例，其中数组按每个人的兄弟姐妹数排序：</p>
-
-<pre><code class="language-php">&lt;?php
-$data = [ 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$data <span style="color:#f92672">=</span> [ 
     [
-        'name' =&gt; 'John',
-        'nbrOfSiblings' =&gt; 2,
+        <span style="color:#e6db74">&#39;name&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;John&#39;</span>,
+        <span style="color:#e6db74">&#39;nbrOfSiblings&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">2</span>,
     ],
     [
-        'name' =&gt; 'Stan',
-        'nbrOfSiblings' =&gt; 1,
+        <span style="color:#e6db74">&#39;name&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Stan&#39;</span>,
+        <span style="color:#e6db74">&#39;nbrOfSiblings&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">1</span>,
     ], 
     [
-        'name' =&gt; 'Tom',
-        'nbrOfSiblings' =&gt; 3,
+        <span style="color:#e6db74">&#39;name&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Tom&#39;</span>,
+        <span style="color:#e6db74">&#39;nbrOfSiblings&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">3</span>,
     ]
 ];
 
-usort($data, function($e1, $e2) {
-    if ($e1['nbrOfSiblings'] == $e2['nbrOfSiblings']) {
-        return 0; 
+<span style="color:#a6e22e">usort</span>($data, <span style="color:#66d9ef">function</span>($e1, $e2) {
+    <span style="color:#66d9ef">if</span> ($e1[<span style="color:#e6db74">&#39;nbrOfSiblings&#39;</span>] <span style="color:#f92672">==</span> $e2[<span style="color:#e6db74">&#39;nbrOfSiblings&#39;</span>]) {
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>; 
     }
   
-    return $e1['nbrOfSiblings'] &lt; $e2['nbrOfSiblings'] ? -1 : 1;
+    <span style="color:#66d9ef">return</span> $e1[<span style="color:#e6db74">&#39;nbrOfSiblings&#39;</span>] <span style="color:#f92672">&lt;</span> $e2[<span style="color:#e6db74">&#39;nbrOfSiblings&#39;</span>] <span style="color:#f92672">?</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#f92672">:</span> <span style="color:#ae81ff">1</span>;
 });
 
-var_dump($data); // Will show Stan first, then John and finally Tom
-</code></pre>
-
-<h3 id="2-使用外部变量">2. 使用外部变量</h3>
-
+<span style="color:#a6e22e">var_dump</span>($data); <span style="color:#75715e">// Will show Stan first, then John and finally Tom
+</span></code></pre></div><h3 id="2-使用外部变量">2. 使用外部变量</h3>
 <p>想要在一个闭包里面使用外部的变量，你可以使用<code>use</code>关键字。例如：</p>
-
-<pre><code class="language-php">&lt;?php
-$quantity = 1;
-$calculator = function($number) use($quantity) { 
-    return $number + $quantity;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$quantity <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+$calculator <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>($number) <span style="color:#66d9ef">use</span>($quantity) { 
+    <span style="color:#66d9ef">return</span> $number <span style="color:#f92672">+</span> $quantity;
 };
-var_dump($calculator(2)); // Shows &quot;3&quot;
-</code></pre>
-
-<p>你可以进一步的创建&rdquo;动态&rdquo;闭包。可以创建返回特定计算器的函数，具体取决于要添加的数量。例如：</p>
-
-<pre><code class="language-php">&lt;?php
-function createCalculator($quantity) {
-    return function($number) use($quantity) {
-        return $number + $quantity;
+<span style="color:#a6e22e">var_dump</span>($calculator(<span style="color:#ae81ff">2</span>)); <span style="color:#75715e">// Shows &#34;3&#34;
+</span></code></pre></div><p>你可以进一步的创建&quot;动态&quot;闭包。可以创建返回特定计算器的函数，具体取决于要添加的数量。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">createCalculator</span>($quantity) {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">function</span>($number) <span style="color:#66d9ef">use</span>($quantity) {
+        <span style="color:#66d9ef">return</span> $number <span style="color:#f92672">+</span> $quantity;
     }
 }
 
-$calculator1 = createCalculator(1);
-$calculator1 = createCalculator(1);
+$calculator1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">createCalculator</span>(<span style="color:#ae81ff">1</span>);
+$calculator1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">createCalculator</span>(<span style="color:#ae81ff">1</span>);
 
-var_dump($calculator1(2)); //返回 3
-var_dump($calculator2(2)); //返回 4
-</code></pre>
-
-<h3 id="3-基本闭包绑定">3. 基本闭包绑定</h3>
-
+<span style="color:#a6e22e">var_dump</span>($calculator1(<span style="color:#ae81ff">2</span>)); <span style="color:#75715e">//返回 3
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>($calculator2(<span style="color:#ae81ff">2</span>)); <span style="color:#75715e">//返回 4
+</span></code></pre></div><h3 id="3-基本闭包绑定">3. 基本闭包绑定</h3>
 <p>就像前面看到的，闭包就是Closure类的一个实例，可以对其调用不同的方法。其中一个是<code>bindTo</code>，对闭包调用这个方法，将会返回一个绑定在另外对象的新闭包方法。例如：</p>
-
 <pre><code>&lt;?php
 $myClosure = fuction() {
     echo $this-&gt;property;
@@ -298,102 +278,81 @@ $myInstance = new MyClass('Hello World!');
 $myBoundClosure = $myClosure-&gt;bindTo($myInstance);
 
 $myBoundClosure();  // &quot;Hello World!&quot;
-</code></pre>
-
-<h3 id="4-闭包绑定和作用域">4. 闭包绑定和作用域</h3>
-
+</code></pre><h3 id="4-闭包绑定和作用域">4. 闭包绑定和作用域</h3>
 <p>让我们想象一下有下面的例子：</p>
-
-<pre><code class="language-php">&lt;?php
-$myClosure = function() {
-    echo $this-&gt;property;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$myClosure <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+    <span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">property</span>;
 }
 
-class MyClass
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span>
 {
-    public $property;
+    <span style="color:#66d9ef">public</span> $property;
     
-    public function __construct($propertyValue) {
-        $this-&gt;property = $propertyValue;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($propertyValue) {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">property</span> <span style="color:#f92672">=</span> $propertyValue;
     }
 }
 
-$myInstance = new MyClass('Hello world!');
-$myBoundClosure = $myClosure-&gt;bindTo($myInstance); 
-$myBoundClosure(); // 显示 &quot;Hello world!&quot;
-</code></pre>
-
-<p>试着把<code>property</code>的可见性修改为protected或private。你将会遇到一个致命错误：你没有访问这个属性的权限。实际上，即使闭包已经绑定到对象，调用闭包的范围也不是拥有该访问权限所需的范围。这就是<code>bindTo</code>第二个参数的作用。</p>
-
+$myInstance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MyClass</span>(<span style="color:#e6db74">&#39;Hello world!&#39;</span>);
+$myBoundClosure <span style="color:#f92672">=</span> $myClosure<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">bindTo</span>($myInstance); 
+$myBoundClosure(); <span style="color:#75715e">// 显示 &#34;Hello world!&#34;
+</span></code></pre></div><p>试着把<code>property</code>的可见性修改为protected或private。你将会遇到一个致命错误：你没有访问这个属性的权限。实际上，即使闭包已经绑定到对象，调用闭包的范围也不是拥有该访问权限所需的范围。这就是<code>bindTo</code>第二个参数的作用。</p>
 <p>如果属性是<code>private</code>的，唯一访问这个属性的方法就是允许访问这个属性的类的作用域。在前面的例子中，没有指定作业区间，这意味着闭包是在闭包创建的作用域内调用的，让我们修改一下：</p>
-
-<pre><code class="language-php">&lt;?php
-$myClosure = function() {
-    echo $this-&gt;property;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$myClosure <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+    <span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">property</span>;
 };
 
-class MyClass {
-    private $property; // $property is now private
-    public function __construct($propertyValue) {
-        $this-&gt;property = $propertyValue;
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span> {
+    <span style="color:#66d9ef">private</span> $property; <span style="color:#75715e">// $property is now private
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($propertyValue) {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">property</span> <span style="color:#f92672">=</span> $propertyValue;
     }
 }
 
-$myInstance = new MyClass('Hello world!');
-$myBoundClosure = $myClosure-&gt;bindTo($myInstance, MyClass::class); 
-$myBoundClosure(); // Shows &quot;Hello world!&quot;
-</code></pre>
-
-<p>就像上面说的，如果没有指定第二个参数的 话，这个闭包是在创建这个闭包的作用域内调用的。例如，一个闭包是在一个方法的类的内部创建的，这个闭包是在这个方面的相同的作用域环境的对象调用的：</p>
-
-<pre><code class="language-php">&lt;?php
-class MyClass {
-    private $property;
-    public function __construct($propertyValue)
+$myInstance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MyClass</span>(<span style="color:#e6db74">&#39;Hello world!&#39;</span>);
+$myBoundClosure <span style="color:#f92672">=</span> $myClosure<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">bindTo</span>($myInstance, <span style="color:#a6e22e">MyClass</span><span style="color:#f92672">::</span><span style="color:#a6e22e">class</span>); 
+$myBoundClosure(); <span style="color:#75715e">// Shows &#34;Hello world!&#34;
+</span></code></pre></div><p>就像上面说的，如果没有指定第二个参数的 话，这个闭包是在创建这个闭包的作用域内调用的。例如，一个闭包是在一个方法的类的内部创建的，这个闭包是在这个方面的相同的作用域环境的对象调用的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span> {
+    <span style="color:#66d9ef">private</span> $property;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($propertyValue)
     {
-        $this-&gt;property = $propertyValue;
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">property</span> <span style="color:#f92672">=</span> $propertyValue;
     }
     
-    public function getDisplayer() {
-        return function() {
-            echo $this-&gt;property;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getDisplayer</span>() {
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">function</span>() {
+            <span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">property</span>;
         }; 
     }
 }
 
-$myInstance = new MyClass('Hello world!');
-$displayer = $myInstance-&gt;getDisplayer(); 
-$displayer(); // 显示 &quot;Hello world!&quot;
-</code></pre>
-
-<h3 id="5-一次调用时绑定闭包">5. 一次调用时绑定闭包</h3>
-
+$myInstance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MyClass</span>(<span style="color:#e6db74">&#39;Hello world!&#39;</span>);
+$displayer <span style="color:#f92672">=</span> $myInstance<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getDisplayer</span>(); 
+$displayer(); <span style="color:#75715e">// 显示 &#34;Hello world!&#34;
+</span></code></pre></div><h3 id="5-一次调用时绑定闭包">5. 一次调用时绑定闭包</h3>
 <p>从PHP7开始，提供了<a href="https://www.php.net/manual/en/closure.call.php">call</a>方法，允许为一次调用对闭包进行绑定。例如：</p>
-
-<pre><code class="language-php">&lt;?php
-class MyClass {
-    private $property;
-    public function __construct($propertyValue) {
-        $this-&gt;property = $propertyValue;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyClass</span> {
+    <span style="color:#66d9ef">private</span> $property;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($propertyValue) {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">property</span> <span style="color:#f92672">=</span> $propertyValue;
     }
 }
 
-$myClosure = function() { 
-    echo $this-&gt;property;
+$myClosure <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() { 
+    <span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">property</span>;
 };
 
-$myInstance = new MyClass('Hello world!');
-$myClosure-&gt;call($myInstance); // 显示 &quot;Hello world!&quot;
-</code></pre>
-
-<p>相对于<code>bindTo</code>方法，我们不需要担心作用域的问题。这个调用使用的作用域和访问或调用<code>$myInstance</code>的作用域相同。</p>
-
+$myInstance <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MyClass</span>(<span style="color:#e6db74">&#39;Hello world!&#39;</span>);
+$myClosure<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">call</span>($myInstance); <span style="color:#75715e">// 显示 &#34;Hello world!&#34;
+</span></code></pre></div><p>相对于<code>bindTo</code>方法，我们不需要担心作用域的问题。这个调用使用的作用域和访问或调用<code>$myInstance</code>的作用域相同。</p>
 <h3 id="6-闭包实现观察者模式">6. 闭包实现观察者模式</h3>
-
 <p>通常来说，一个观察者就是包含当被观察对象触发指定行为时要执行的方法的类。在某些情况下，闭包足以实现观察者模式。</p>
-
 <p>下面是这样实现的一个详细例子。让我们实现一个类，目的是在属性修改时通知观察者。</p>
-
 <pre><code>&lt;?php
 class ObservedStuff implents SplSubject
 {
@@ -431,49 +390,40 @@ class ObservedStuff implents SplSubject
         $this-&gt;notify();
     }
 }
-</code></pre>
-
-<p>然后让我们声明代表不同观察者的类：</p>
-
-<pre><code class="language-php">&lt;?php
-class NamedObserver implements SplObserver {
-    protected $name; 
-    protected $closure;
-    public function __construct(Closure $closure, $name) {
-        $this-&gt;closure = $closure-&gt;bindTo($this, $this);
-        $this-&gt;name = $name;
+</code></pre><p>然后让我们声明代表不同观察者的类：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NamedObserver</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">SplObserver</span> {
+    <span style="color:#66d9ef">protected</span> $name; 
+    <span style="color:#66d9ef">protected</span> $closure;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct(<span style="color:#a6e22e">Closure</span> $closure, $name) {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">closure</span> <span style="color:#f92672">=</span> $closure<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">bindTo</span>($this, $this);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> $name;
     }
     
-    public function update(SplSubject $subject) {
-        $closure = $this-&gt;closure;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">update</span>(<span style="color:#a6e22e">SplSubject</span> $subject) {
+        $closure <span style="color:#f92672">=</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">closure</span>;
         $closure($subject);
     }
 }
-</code></pre>
+</code></pre></div><p>最后，让我们测试一下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$o <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ObservedStuff</span>();
 
-<p>最后，让我们测试一下：</p>
-
-<pre><code class="language-php">&lt;?php
-$o = new ObservedStuff();
-
-$observer1 = function(SplSubject $subject) {
-    echo $this-&gt;name . &quot; has been notified! New property value: &quot;, $subject-&gt;getProperty(), &quot;\n&quot;;
+$observer1 <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">SplSubject</span> $subject) {
+    <span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34; has been notified! New property value: &#34;</span>, $subject<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getProperty</span>(), <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
 }
 
-$observer2 = function(SplSubject $subject) {
-    echo $this-&gt;name, ' has been notified! New property value: ', $subject-&gt;getProperty(), &quot;\n&quot;;
+$observer2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">SplSubject</span> $subject) {
+    <span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">name</span>, <span style="color:#e6db74">&#39; has been notified! New property value: &#39;</span>, $subject<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getProperty</span>(), <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
 };
 
-$o-&gt;attach(new NamedObserver($observer1, 'Observer1'))
--&gt;attach(new NamedObserver($observer2, 'Observer2'));
+$o<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">attach</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">NamedObserver</span>($observer1, <span style="color:#e6db74">&#39;Observer1&#39;</span>))
+<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">attach</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">NamedObserver</span>($observer2, <span style="color:#e6db74">&#39;Observer2&#39;</span>));
 
-$o-&gt;setProperty('Hello world!');
-// Shows:
-// Observer1 has been notified! New property value: Hello world! // Observer2 has been notified! New property value: Hello world!
-</code></pre>
-
-<p>注意，这个例子有效是因为观察者具有相同的性质(他们都是&rdquo;NamedObserver&rdquo;)。</p>
-
+$o<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setProperty</span>(<span style="color:#e6db74">&#39;Hello world!&#39;</span>);
+<span style="color:#75715e">// Shows:
+</span><span style="color:#75715e">// Observer1 has been notified! New property value: Hello world! // Observer2 has been notified! New property value: Hello world!
+</span></code></pre></div><p>注意，这个例子有效是因为观察者具有相同的性质(他们都是&quot;NamedObserver&rdquo;)。</p>
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -546,6 +496,12 @@ $o-&gt;setProperty('Hello world!');
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

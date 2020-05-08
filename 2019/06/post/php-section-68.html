@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,34 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#header操作">header操作</a>
-<ul>
-<li><a href="#1-设置header">1. 设置header</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#header操作">header操作</a>
+      <ul>
+        <li><a href="#1-设置header">1. 设置header</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="header操作">header操作</h2>
-
+        		<h2 id="header操作">header操作</h2>
 <h3 id="1-设置header">1. 设置header</h3>
-
 <p>下面是一个设置header的基本操作，用来在点击按钮的时候跳转到新的页面：</p>
-
-<pre><code class="language-php">if(isset($_REQUEST['action']))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if(isset($_REQUEST[&#39;action&#39;]))
 {
-    switch($_REQUEST['action']){ //Setting the Header based on which button is clicked
-        case 'getState':
-            header(&quot;Location: http://NewPageForState.com/getState.php?search=&quot; . $_POST['search']);
+    switch($_REQUEST[&#39;action&#39;]){ //Setting the Header based on which button is clicked
+        case &#39;getState&#39;:
+            header(&#34;Location: http://NewPageForState.com/getState.php?search=&#34; . $_POST[&#39;search&#39;]);
             break;
-        case 'getProject':
-            header(&quot;Location: http://NewPageForProject.com/getProject.php?search=&quot; .
-$_POST['search']);
+        case &#39;getProject&#39;:
+            header(&#34;Location: http://NewPageForProject.com/getProject.php?search=&#34; .
+$_POST[&#39;search&#39;]);
             break;
     }
 } else {
@@ -221,27 +218,25 @@ $_POST['search']);
 function GetSearchTerm($success) {
     if (is_null($success))
     {
-        echo &quot;&lt;h4&gt;You must enter a state or project number&lt;/h4&gt;&quot;;
+        echo &#34;&lt;<span style="color:#f92672">h4</span>&gt;You must enter a state or project number&lt;/<span style="color:#f92672">h4</span>&gt;&#34;;
     }
-    echo &quot;&lt;center&gt;&lt;strong&gt;Enter the State to search for&lt;/strong&gt;&lt;/center&gt;&lt;p&gt;&lt;/p&gt;&quot;;
-    //Using the $_SERVER['PHP_SELF'] keeps us on this page till the switch above determines where to go
-    echo &quot;&lt;form action='&quot; . $_SERVER['PHP_SELF'] . &quot;' enctype='multipart/form-data' method='POST'&gt; &lt;input type='hidden' name='action' value='getState'&gt;
-&lt;center&gt;State: &lt;input type='text' name='search' size='10'&gt;&lt;/center&gt;&lt;p&gt;&lt;/p&gt; &lt;center&gt;&lt;input type='submit' name='submit' value='Search State'&gt;&lt;/center&gt;
-            &lt;/form&gt;&quot;;
+    echo &#34;&lt;<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">strong</span>&gt;Enter the State to search for&lt;/<span style="color:#f92672">strong</span>&gt;&lt;/<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&#34;;
+    //Using the $_SERVER[&#39;PHP_SELF&#39;] keeps us on this page till the switch above determines where to go
+    echo &#34;&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#34; . $_SERVER[&#39;</span><span style="color:#a6e22e">PHP_SELF</span><span style="color:#960050;background-color:#1e0010">&#39;]</span> <span style="color:#960050;background-color:#1e0010">.</span> <span style="color:#960050;background-color:#1e0010">&#34;&#39;</span> <span style="color:#a6e22e">enctype</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;multipart/form-data&#39;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;POST&#39;</span>&gt; &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;hidden&#39;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;action&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;getState&#39;</span>&gt;
+&lt;<span style="color:#f92672">center</span>&gt;State: &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;text&#39;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;search&#39;</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;10&#39;</span>&gt;&lt;/<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt; &lt;<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Search State&#39;</span>&gt;&lt;/<span style="color:#f92672">center</span>&gt;
+            &lt;/<span style="color:#f92672">form</span>&gt;&#34;;
     GetSearchTermProject($success);
 }
 
 function GetSearchTermProject($success) {
-    echo &quot;&lt;center&gt;&lt;br&gt;&lt;strong&gt;Enter the Project to search for&lt;/strong&gt;&lt;/center&gt;&lt;p&gt;&lt;/p&gt;&quot;;
-    echo &quot;&lt;form action='&quot; . $_SERVER['PHP_SELF'] . &quot;' enctype='multipart/form-data' method='POST'&gt;&lt;input type='hidden' name='action' value='getProject'&gt;
-&lt;center&gt;Project Number: &lt;input type='text' name='search' size='10'&gt;&lt;/center&gt;&lt;p&gt;&lt;/p&gt;
-&lt;center&gt;&lt;input type='submit' name='submit' value='Search Project'&gt;&lt;/center&gt;
-&lt;/form&gt;&quot;;
+    echo &#34;&lt;<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">br</span>&gt;&lt;<span style="color:#f92672">strong</span>&gt;Enter the Project to search for&lt;/<span style="color:#f92672">strong</span>&gt;&lt;/<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&#34;;
+    echo &#34;&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#34; . $_SERVER[&#39;</span><span style="color:#a6e22e">PHP_SELF</span><span style="color:#960050;background-color:#1e0010">&#39;]</span> <span style="color:#960050;background-color:#1e0010">.</span> <span style="color:#960050;background-color:#1e0010">&#34;&#39;</span> <span style="color:#a6e22e">enctype</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;multipart/form-data&#39;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;POST&#39;</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;hidden&#39;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;action&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;getProject&#39;</span>&gt;
+&lt;<span style="color:#f92672">center</span>&gt;Project Number: &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;text&#39;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;search&#39;</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;10&#39;</span>&gt;&lt;/<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+&lt;<span style="color:#f92672">center</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;submit&#39;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Search Project&#39;</span>&gt;&lt;/<span style="color:#f92672">center</span>&gt;
+&lt;/<span style="color:#f92672">form</span>&gt;&#34;;
 }
 
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -313,6 +308,12 @@ function GetSearchTermProject($success) {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

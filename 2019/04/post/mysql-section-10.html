@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,193 +187,144 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#insert">INSERT</a>
-<ul>
-<li><a href="#on-duplicate-key-update">ON DUPLICATE KEY UPDATE</a></li>
-<li><a href="#插入多个行">插入多个行</a></li>
-<li><a href="#基本用法">基本用法</a></li>
-<li><a href="#auto-increment-和-last-insert-id">AUTO_INCREMENT 和 LAST_INSERT_ID()</a></li>
-<li><a href="#insert-select">INSERT SELECT</a></li>
-<li><a href="#丢失auto-increment-id">丢失AUTO_INCREMENT id</a></li>
-<li><a href="#last-insert-id">LAST_INSERT_ID</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#insert">INSERT</a>
+      <ul>
+        <li><a href="#on-duplicate-key-update">ON DUPLICATE KEY UPDATE</a></li>
+        <li><a href="#插入多个行">插入多个行</a></li>
+        <li><a href="#基本用法">基本用法</a></li>
+        <li><a href="#auto_increment-和-last_insert_id">AUTO_INCREMENT 和 LAST_INSERT_ID()</a></li>
+        <li><a href="#insert-select">INSERT SELECT</a></li>
+        <li><a href="#丢失auto_increment-id">丢失AUTO_INCREMENT id</a></li>
+        <li><a href="#last_insert_id">LAST_INSERT_ID</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="insert">INSERT</h2>
-
+        		<h2 id="insert">INSERT</h2>
 <h3 id="on-duplicate-key-update">ON DUPLICATE KEY UPDATE</h3>
-
-<pre><code class="language-mysql">INSERT INTO `table_name`
-    (`index_field`, `other_field_1`, `other_filed_2`)
-    VALUES
-    (`index_value`, `insert_value`, `other_value`)
-    ON DUPLICATE KEY UPDATE 
-    `other_field_1` = 'update_value',
-    `other_field_2` = VALUES(`other_field_2`);
-</code></pre>
-
-<p>这将会在<code>table_name</code>中插入指定的值，但是当唯一键存在的时候，将会更新<code>other_field_1</code>的值为一个新值。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>table_name<span style="color:#f92672">`</span>
+    (<span style="color:#f92672">`</span>index_field<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>other_field_1<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>other_filed_2<span style="color:#f92672">`</span>)
+    <span style="color:#66d9ef">VALUES</span>
+    (<span style="color:#f92672">`</span>index_value<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>insert_value<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>other_value<span style="color:#f92672">`</span>)
+    <span style="color:#66d9ef">ON</span> DUPLICATE <span style="color:#66d9ef">KEY</span> <span style="color:#66d9ef">UPDATE</span> 
+    <span style="color:#f92672">`</span>other_field_1<span style="color:#f92672">`</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;update_value&#39;</span>,
+    <span style="color:#f92672">`</span>other_field_2<span style="color:#f92672">`</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">VALUES</span>(<span style="color:#f92672">`</span>other_field_2<span style="color:#f92672">`</span>);
+</code></pre></div><p>这将会在<code>table_name</code>中插入指定的值，但是当唯一键存在的时候，将会更新<code>other_field_1</code>的值为一个新值。</p>
 <p>有时候，但重复主键时使用<code>VALUES()</code>来获取原本的值，而不是更新为一个新值。这种方式下，你可以使用<code>INSERT</code>和<code>UPDATE</code>设置不同的值。在上面的例子中，<code>other_field_1</code>在<code>INSERT</code>的时候设置为<code>insert_value</code>或者在<code>UPDATE</code>的时候设置为<code>update_value</code>。但是<code>other_field_2</code>将一直设置为<code>other_value</code>。</p>
-
 <p>对于插入重复Key更新(IODKU)工作的至关重要的一样就是表 包含唯一的键，这将会是造成重复的原因。这个唯一的键可以是主键，也可以不是。它可以是单列的唯一键，也可以是多了的组合键。</p>
-
 <h3 id="插入多个行">插入多个行</h3>
-
 <pre><code>INSERT INTO `my_table` (`field_1`, `field_2`) VALUES
     ('data_1', 'data_2'),
     ('data_1', 'data_3'),
     ('data_4', 'data_5');
-</code></pre>
-
-<p>这是一次性添加多条记录的<code>INSERT</code>语句。</p>
-
+</code></pre><p>这是一次性添加多条记录的<code>INSERT</code>语句。</p>
 <p>这种匹配插入数据的操作比一条一条的插入数据快的多。特别是一次插入100条数据是单条数据插入的10倍。</p>
-
 <p><strong>忽略已存在的行</strong></p>
-
 <p>在插入大行数据集时，在某些情况下，最好跳过通常由于列限制(如重复主键)而导致插入失败的情况。这可以通过<code>INSERT IGNORE</code>来实现这个功能。</p>
-
 <p>假设有下面这样的数据：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>people<span style="color:#f92672">`</span>;
+<span style="color:#f92672">-</span><span style="color:#75715e">-- Produces:
+</span><span style="color:#75715e"></span><span style="color:#f92672">+----+------+</span>
+<span style="color:#f92672">|</span> id <span style="color:#f92672">|</span> name <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----+------+</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> john <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>  <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> anna <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----+------+</span>
 
-<pre><code class="language-mysql">SELECT * FROM `people`;
---- Produces:
-+----+------+
-| id | name |
-+----+------+
-| 1 | john |
-|  2 | anna |
-+----+------+
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">IGNORE</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>people<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>name<span style="color:#f92672">`</span>) <span style="color:#66d9ef">VALUES</span>
+(<span style="color:#e6db74">&#39;2&#39;</span>, <span style="color:#e6db74">&#39;anna&#39;</span>), <span style="color:#75715e">-- 没有IGNORE的话，这行将会产生错误
+</span><span style="color:#75715e"></span>(<span style="color:#e6db74">&#39;3&#39;</span><span style="color:#960050;background-color:#1e0010">，</span> <span style="color:#e6db74">&#39;mike&#39;</span>);
 
-INSERT IGNORE INTO `people` (`id`, `name`) VALUES
-('2', 'anna'), -- 没有IGNORE的话，这行将会产生错误
-('3'， 'mike');
-
-SELECT * FROM `people`;
---- Produces:
-+----+--------+
-| id |  name  |
-+----+--------+
-|  1 |  john  |
-|  2 |  anna  |
-|  3 |  mike  |
-+----+--------+
-</code></pre>
-
-<p>最重要的事是记住<code>INSERT IGNORE</code>也会静静的跳过那些错误，下面是MySQL文档的说明：</p>
-
+<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>people<span style="color:#f92672">`</span>;
+<span style="color:#f92672">-</span><span style="color:#75715e">-- Produces:
+</span><span style="color:#75715e"></span><span style="color:#f92672">+----+--------+</span>
+<span style="color:#f92672">|</span> id <span style="color:#f92672">|</span>  name  <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----+--------+</span>
+<span style="color:#f92672">|</span>  <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>  john  <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>  <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>  anna  <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>  <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>  mike  <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----+--------+</span>
+</code></pre></div><p>最重要的事是记住<code>INSERT IGNORE</code>也会静静的跳过那些错误，下面是MySQL文档的说明：</p>
 <blockquote>
 <p>如果没有指定<code>IGNORE</code>关键字，数据转换将会触发一个错误并且终端语句的执行。当有<code>IGNORE</code>的时候，无效的值将会转换为最近格式的值并且插入数据表，会产生警告但不会中断语句的的执行。</p>
 </blockquote>
-
 <p><strong>注意：下面这部分是为了完整性添加的，但不认为是最佳实践(例如，如果在表中添加另外一列，这将会失败。)</strong></p>
-
 <p>如果你为这个表所有的列都指定了合适的值的话，你可以在<code>INSERT</code>语句中忽略列的列表：</p>
-
-<pre><code class="language-mysql">INSERT INTO `my_table` VALUES
-    ('data_1', 'data_2'),
-    ('data_1', 'data_3'),
-    ('data_4', 'data_5');
-</code></pre>
-
-<h3 id="基本用法">基本用法</h3>
-
-<pre><code class="language-mysql">INSERT INTO `table_name` (`field_one`, `field_two`) VALUES ('value_one', 'value_two');
-</code></pre>
-
-<p>在上面的例子中，<code>table_name</code>是将要插入数据的表，<code>field_one</code>和<code>field_two</code>是将要设置值的字段，<code>value_one</code>和<code>value_two</code>是字段<code>field_one</code>和<code>field_two</code>的相应的值。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>my_table<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span>
+    (<span style="color:#e6db74">&#39;data_1&#39;</span>, <span style="color:#e6db74">&#39;data_2&#39;</span>),
+    (<span style="color:#e6db74">&#39;data_1&#39;</span>, <span style="color:#e6db74">&#39;data_3&#39;</span>),
+    (<span style="color:#e6db74">&#39;data_4&#39;</span>, <span style="color:#e6db74">&#39;data_5&#39;</span>);
+</code></pre></div><h3 id="基本用法">基本用法</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>table_name<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>field_one<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>field_two<span style="color:#f92672">`</span>) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;value_one&#39;</span>, <span style="color:#e6db74">&#39;value_two&#39;</span>);
+</code></pre></div><p>在上面的例子中，<code>table_name</code>是将要插入数据的表，<code>field_one</code>和<code>field_two</code>是将要设置值的字段，<code>value_one</code>和<code>value_two</code>是字段<code>field_one</code>和<code>field_two</code>的相应的值。</p>
 <p>在的暧昧中列出要插入数据的字段是一种好的做法，就像当对表进行了修改或添加了新列，如果没有这些字段，插入操作将会中断。</p>
-
-<h3 id="auto-increment-和-last-insert-id">AUTO_INCREMENT 和 LAST_INSERT_ID()</h3>
-
+<h3 id="auto_increment-和-last_insert_id">AUTO_INCREMENT 和 LAST_INSERT_ID()</h3>
 <p>当一个表有一个自增主键时<code>AUTO_INCREMENT PRIMARY KEY</code>，通常不会插入这列。相反，指定所有其他的列，然后询问新的id是多少：</p>
-
-<pre><code class="language-mysql">CREATE TABLE t(
-    id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">t</span>(
+    id <span style="color:#66d9ef">SMALLINT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">AUTO_INCREMENT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
     this ...
     that ...
-    PRIMARY KEY(id)
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>(id)
 );
 
-INSERT INTO t (this, that) VALUES (..., ...);
-SELECT LAST_INSERT_ID() INTO @id;
-INSERT INTO another_table(..., t_id, ...) VALUES (..., @id, ...);
-</code></pre>
-
-<p>注意<code>LAST_INSERT_ID()</code>是绑定到这个会话下面的，所以即使多个连接同时插入相同的表，每个都会获取自己的id。</p>
-
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">t</span> (this, that) <span style="color:#66d9ef">VALUES</span> (..., ...);
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>() <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">@</span>id;
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">another_table</span>(..., t_id, ...) <span style="color:#66d9ef">VALUES</span> (..., <span style="color:#f92672">@</span>id, ...);
+</code></pre></div><p>注意<code>LAST_INSERT_ID()</code>是绑定到这个会话下面的，所以即使多个连接同时插入相同的表，每个都会获取自己的id。</p>
 <p>你客户端的API可能有另外的方法来获取<code>LAST_INSERT_ID()</code>的值，而不是实际执行一个SELECT并且把结果返回给客户端，而不是把结果放入<code>@variable</code>中。这样通常更好。</p>
-
 <p><strong>更长、更详细的例子</strong></p>
+<p>之前结束的IODKU是触发了基于<code>UNIQUE key</code>的&quot;重复键&rdquo;，而不是<code>AUTO_INCREMENT</code>的主键。下面就是介绍这种例子，注意这里没有把id放到INSERT中。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">iodku</span>(
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">AUTO_INCREMENT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    name <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">99</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    misc <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>(id),
+    <span style="color:#66d9ef">UNIQUE</span>(name)
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB;
 
-<p>之前结束的IODKU是触发了基于<code>UNIQUE key</code>的&rdquo;重复键&rdquo;，而不是<code>AUTO_INCREMENT</code>的主键。下面就是介绍这种例子，注意这里没有把id放到INSERT中。</p>
-
-<pre><code class="language-mysql">CREATE TABLE iodku(
-    id INT AUTO_INCREMENT NOT NULL,
-    name VARCHAR(99) NOT NULL,
-    misc INT NOT NULL,
-    PRIMARY KEY(id),
-    UNIQUE(name)
-) ENGINE=InnoDB;
-
-INSERT INTO iodku(name, misc) VALUES 
-    ('Leslie', 123),
-    ('Sally', 456);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">iodku</span>(name, misc) <span style="color:#66d9ef">VALUES</span> 
+    (<span style="color:#e6db74">&#39;Leslie&#39;</span>, <span style="color:#ae81ff">123</span>),
+    (<span style="color:#e6db74">&#39;Sally&#39;</span>, <span style="color:#ae81ff">456</span>);
     
-Query OK, 2 rows affected (0.00 sec)
- Records: 2  Duplicates: 0  Warnings: 0
- +----+--------+------+
- | id | name   | misc |
- +----+--------+------+
- |  1 | Leslie |  123 |
- |  2 | Sally  |  456 |
- +----+--------+------+
-</code></pre>
+Query OK, <span style="color:#ae81ff">2</span> rows <span style="color:#a6e22e">affected</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+ Records: <span style="color:#ae81ff">2</span>  Duplicates: <span style="color:#ae81ff">0</span>  Warnings: <span style="color:#ae81ff">0</span>
+ <span style="color:#f92672">+----+--------+------+</span>
+ <span style="color:#f92672">|</span> id <span style="color:#f92672">|</span> name   <span style="color:#f92672">|</span> misc <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+----+--------+------+</span>
+ <span style="color:#f92672">|</span>  <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> Leslie <span style="color:#f92672">|</span>  <span style="color:#ae81ff">123</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span>  <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> Sally  <span style="color:#f92672">|</span>  <span style="color:#ae81ff">456</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+----+--------+------+</span>
+</code></pre></div><p>下面的IODKU执行了一个&quot;update&quot;操作，所以<code>LAST_INSERT_ID()</code>将会返回关联的id：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">iodku</span>(name, misc) <span style="color:#66d9ef">VALUES</span>
+    (<span style="color:#e6db74">&#39;Sally&#39;</span>, <span style="color:#ae81ff">3333</span>) <span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">会更新</span>
+    <span style="color:#66d9ef">ON</span> DUPLICATE <span style="color:#66d9ef">KEY</span> <span style="color:#66d9ef">UPDATE</span>
+    id <span style="color:#f92672">=</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>(id),
+    misc <span style="color:#f92672">=</span> <span style="color:#66d9ef">VALUES</span>(misc);
 
-<p>下面的IODKU执行了一个&rdquo;update&rdquo;操作，所以<code>LAST_INSERT_ID()</code>将会返回关联的id：</p>
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>();
 
-<pre><code class="language-mysql">INSERT INTO iodku(name, misc) VALUES
-    ('Sally', 3333) --会更新
-    ON DUPLICATE KEY UPDATE
-    id = LAST_INSERT_ID(id),
-    misc = VALUES(misc);
-
-SELECT LAST_INSERT_ID();
-
-+------------------+ 
-| LAST_INSERT_ID() |
-+------------------+ 
-|                2 | 
-+------------------+
-</code></pre>
-
-<p>下面这个IODKU例子将会执行&rdquo;insert&rdquo;操作，<code>LAST_INSERT_ID()</code>获取新的id：</p>
-
-<pre><code class="language-mysql">INSERT INTO iodku (name, misc) VALUES
-    ('Dana', 789) --插入
-    ON DUPLICATE KEY UPDATE
-    id = LAST_INSERT_ID(),
-    misc = VALUES(misc);
+<span style="color:#f92672">+------------------+</span> 
+<span style="color:#f92672">|</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>() <span style="color:#f92672">|</span>
+<span style="color:#f92672">+------------------+</span> 
+<span style="color:#f92672">|</span>                <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+------------------+</span>
+</code></pre></div><p>下面这个IODKU例子将会执行&quot;insert&quot;操作，<code>LAST_INSERT_ID()</code>获取新的id：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">iodku</span> (name, misc) <span style="color:#66d9ef">VALUES</span>
+    (<span style="color:#e6db74">&#39;Dana&#39;</span>, <span style="color:#ae81ff">789</span>) <span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">插入</span>
+    <span style="color:#66d9ef">ON</span> DUPLICATE <span style="color:#66d9ef">KEY</span> <span style="color:#66d9ef">UPDATE</span>
+    id <span style="color:#f92672">=</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>(),
+    misc <span style="color:#f92672">=</span> <span style="color:#66d9ef">VALUES</span>(misc);
     
-SELECT LAST_INSERT_ID();
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>();
 
-+------------------+
-| LAST_INSERT_ID() | 
-+------------------+ 
-|                3 | 
-+------------------+
-</code></pre>
-
-<p>获取表的数据：</p>
-
+<span style="color:#f92672">+------------------+</span>
+<span style="color:#f92672">|</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>() <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+------------------+</span> 
+<span style="color:#f92672">|</span>                <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+------------------+</span>
+</code></pre></div><p>获取表的数据：</p>
 <pre><code>SELECT * FROM iodku;
 +----+--------+------+
 | id | name   | misc |
@@ -378,75 +333,55 @@ SELECT LAST_INSERT_ID();
 |  2 | Sally  | 3333 |  -- IODKU changed this
 |  3 | Dana   |  789 |  -- IODKU added this
 +----+--------+------+
-</code></pre>
-
-<h3 id="insert-select">INSERT SELECT</h3>
-
+</code></pre><h3 id="insert-select">INSERT SELECT</h3>
 <p>这是使用从另一个表中SELECT语句获取数据插入到这个表中：</p>
-
-<pre><code class="language-mysql">INSERT INTO `tableA`(`field_one`, `field_two`)
-SELECT `tableB`.`field_one`, `tableB`.`field_two` FROM `tableB` 
-WHERE `tableB`.clmn &lt;&gt; 'someValue' ORDER BY `tableB`.`sorting_clmn`;
-</code></pre>
-
-<p>你可以使用<code>SELECT *</code>，但是<code>tableA</code>和<code>tableB</code>的字段数量和类型需要一致。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tableA<span style="color:#f92672">`</span>(<span style="color:#f92672">`</span>field_one<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>field_two<span style="color:#f92672">`</span>)
+<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">`</span>tableB<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>field_one<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>tableB<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>field_two<span style="color:#f92672">`</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>tableB<span style="color:#f92672">`</span> 
+<span style="color:#66d9ef">WHERE</span> <span style="color:#f92672">`</span>tableB<span style="color:#f92672">`</span>.clmn <span style="color:#f92672">&lt;&gt;</span> <span style="color:#e6db74">&#39;someValue&#39;</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#f92672">`</span>tableB<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>sorting_clmn<span style="color:#f92672">`</span>;
+</code></pre></div><p>你可以使用<code>SELECT *</code>，但是<code>tableA</code>和<code>tableB</code>的字段数量和类型需要一致。</p>
 <p><code>AUTO_INCREMENT</code>的列将会被视为<code>VALUES</code>语句的插入语。</p>
-
 <p>这个语句用来从一个表数据迁移到另一个表是很有用的，即使在迁移时对数据做过滤。</p>
+<h3 id="丢失auto_increment-id">丢失AUTO_INCREMENT id</h3>
+<p>一些<code>INSERT</code>语句将会&quot;毁坏&quot;id。下面就是一个例子，使用InnoDB(不同的引擎情况不一样)：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Burn</span>(
+    id <span style="color:#66d9ef">SMALLINT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">AUTO_INCREMENT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    name <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">99</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>(id),
+    <span style="color:#66d9ef">UNIQUE</span>(name)
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB;
 
-<h3 id="丢失auto-increment-id">丢失AUTO_INCREMENT id</h3>
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">IGNORE</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">Burn</span>(name) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;first&#39;</span>), (<span style="color:#e6db74">&#39;second&#39;</span>);
+SELCT <span style="color:#a6e22e">LAST_INSERT_ID</span>();
+<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> Burn <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id;
 
-<p>一些<code>INSERT</code>语句将会&rdquo;毁坏&rdquo;id。下面就是一个例子，使用InnoDB(不同的引擎情况不一样)：</p>
+<span style="color:#f92672">+----+--------+</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">|</span>first <span style="color:#f92672">|</span> 
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">|</span>second<span style="color:#f92672">|</span> 
+<span style="color:#f92672">+----+--------+</span>
 
-<pre><code class="language-mysql">CREATE TABLE Burn(
-    id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL,
-    name VARCHAR(99) NOT NULL,
-    PRIMARY KEY(id),
-    UNIQUE(name)
-) ENGINE=InnoDB;
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">IGNORE</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">Burn</span>(name) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;second&#39;</span>);  <span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">触发了忽略，但是</span>id<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span><span style="color:#960050;background-color:#1e0010">被毁坏</span>
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>();  <span style="color:#f92672">--</span><span style="color:#ae81ff">1</span> <span style="color:#960050;background-color:#1e0010">不要信任这个语句</span>
+<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> Burn <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id;
+<span style="color:#f92672">+----+--------+</span> 
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">|</span>first <span style="color:#f92672">|</span> 
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">|</span>second<span style="color:#f92672">|</span> 
+<span style="color:#f92672">+----+--------+</span>
 
-INSERT IGNORE INTO Burn(name) VALUES ('first'), ('second');
-SELCT LAST_INSERT_ID();
-SELECT * FROM Burn ORDER BY id;
-
-+----+--------+
-| 1|first | 
-| 2|second| 
-+----+--------+
-
-INSERT IGNORE INTO Burn(name) VALUES ('second');  --触发了忽略，但是id=3被毁坏
-SELECT LAST_INSERT_ID();  --1 不要信任这个语句
-SELECT * FROM Burn ORDER BY id;
-+----+--------+ 
-| 1|first | 
-| 2|second| 
-+----+--------+
-
-INSERT IGNORE INTO Burn (name) VALUES (&quot;third&quot;);
-SELECT LAST_INSERT_ID();  -- 4
-SELECT * FROM Burn ORDER BY id;
-+----+--------+
-| 1|first |
-| 2|second|
-| 4|third | -- 注意id=3不存在
-+----+--------+
-</code></pre>
-
-<p>认真考虑下这个：第一个insert查看可能有多少行被插入。然后从这个表的自增中获取许多值。最后，插入行，更加需要使用的ID，毁掉剩下的部分。</p>
-
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">IGNORE</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">Burn</span> (name) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#34;third&#34;</span>);
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">LAST_INSERT_ID</span>();  <span style="color:#75715e">-- 4
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> Burn <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> id;
+<span style="color:#f92672">+----+--------+</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">|</span>first <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">|</span>second<span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">|</span>third <span style="color:#f92672">|</span> <span style="color:#75715e">-- 注意id=3不存在
+</span><span style="color:#75715e"></span><span style="color:#f92672">+----+--------+</span>
+</code></pre></div><p>认真考虑下这个：第一个insert查看可能有多少行被插入。然后从这个表的自增中获取许多值。最后，插入行，更加需要使用的ID，毁掉剩下的部分。</p>
 <p>唯一可以修复剩余部分的时间是系统关闭并重启。重新启动时，有效的执行<code>MAX(id)</code>，这可以重用被毁掉或删除掉的ID。</p>
-
 <p>注意，任何风格的INSERT(REPLACE就是 DELETE+INSERT)都会毁坏id。全局变量(不是会话的)<code>innodb_autoinc_lock_mode</code>可以被用来控制正在发生的事情。</p>
-
-<p>当&rdquo;规范化&rdquo;的长字符串为<code>AUTO_INCREMENT</code>id时，很容易发生毁坏。这可能导致超出所选INT类型的大小。</p>
-
-<h3 id="last-insert-id">LAST_INSERT_ID</h3>
-
+<p>当&quot;规范化&quot;的长字符串为<code>AUTO_INCREMENT</code>id时，很容易发生毁坏。这可能导致超出所选INT类型的大小。</p>
+<h3 id="last_insert_id">LAST_INSERT_ID</h3>
 <p>插入多行时，只返回id+1，这个不正确。</p>
-
 <p>自己设置自增的值时，这个值还是旧值。</p>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -519,6 +454,12 @@ SELECT * FROM Burn ORDER BY id;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

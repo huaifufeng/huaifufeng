@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git工作树">git工作树</a>
-<ul>
-<li><a href="#使用工作树">使用工作树</a></li>
-<li><a href="#移动工作树">移动工作树</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git工作树">git工作树</a>
+      <ul>
+        <li><a href="#使用工作树">使用工作树</a></li>
+        <li><a href="#移动工作树">移动工作树</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git工作树">git工作树</h2>
-
+        		<h2 id="git工作树">git工作树</h2>
 <table>
 <thead>
 <tr>
@@ -206,56 +205,44 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-f —force</td>
 <td>默认情况下，当<code>&lt;branch&gt;</code>被另外的工作树使用，add拒绝添加新的工作树。这个选项将会强制创建。</td>
 </tr>
-
 <tr>
-<td>-b <new-branch> -B <new-branch></td>
-<td>当在<branch>添加或创建一个名字为&lt; new-branch&gt;的分支，将会在新的工作树上签出分支<new-branch>。如果忽略<branch>的话，默认是HEAD。默认<code>-b</code>当分支存在时，将不会创建新分支，但是<code>-B</code>会创建新的分支</td>
+<td>-b <!-- raw HTML omitted --> -B <!-- raw HTML omitted --></td>
+<td>当在<!-- raw HTML omitted -->添加或创建一个名字为&lt; new-branch&gt;的分支，将会在新的工作树上签出分支<!-- raw HTML omitted -->。如果忽略<!-- raw HTML omitted -->的话，默认是HEAD。默认<code>-b</code>当分支存在时，将不会创建新分支，但是<code>-B</code>会创建新的分支</td>
 </tr>
-
 <tr>
 <td>&ndash;detach</td>
 <td>使用add，分类工作树中的HEAD</td>
 </tr>
-
 <tr>
 <td>—[no-] checkout</td>
-<td>默认add将会签出<branch>，然而<code>—no-</code>将会禁止签出，而使用自定义例如配置</td>
+<td>默认add将会签出<!-- raw HTML omitted -->，然而<code>—no-</code>将会禁止签出，而使用自定义例如配置</td>
 </tr>
-
 <tr>
 <td>-n —dry-run</td>
 <td>使用prunce，这个选项将不会删除任何东西， 只是说明将会删除的内容。</td>
 </tr>
-
 <tr>
 <td>&ndash;porcelain</td>
 <td>使用list，以易于解析的格式输出。无论用户怎么配置，都会在git中保持一致。</td>
 </tr>
-
 <tr>
 <td>-v &ndash;verbose</td>
 <td>使用prune,的说明所有删除</td>
 </tr>
-
 <tr>
-<td>—expire <time></td>
-<td>使用prune，只会使早于<time>的未使用的工作树过期。</td>
+<td>—expire <!-- raw HTML omitted --></td>
+<td>使用prune，只会使早于<!-- raw HTML omitted -->的未使用的工作树过期。</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="使用工作树">使用工作树</h3>
-
 <p>你正在某个特性的开发工作中，这是你的老板来让你先修复一个问题。你通常会使用<code>git stash</code>来临时存储你的本地修改。然而，这时你的工作树处于混乱状态(新文件，移动文件，删除文件以及其他的一些文件)，你不想干扰你的进度。</p>
-
 <p>通过添加一个临时的工作树，你可以创建一个临时关联的工作树来保存这个紧急修改，然后在功能完成之后移出这个工作树，恢复之前的修改：</p>
-
 <pre><code>$ git worktree add -b emergency-fix ../temp master 
 $ pushd ../temp
 # ... work work work ...
@@ -263,51 +250,35 @@ $ git commit -a -m 'emergency fix for boss'
 $ popd
 $ rm -rf ../temp
 $ git worktree prune
-</code></pre>
-
-<p>注意：在这个例子中，这个fix将会在emergency-fix这个分支上面。现在你可以使用<code>git merge</code>或<code>git format-patch</code>来保存修改，然后移除这个分支。</p>
-
+</code></pre><p>注意：在这个例子中，这个fix将会在emergency-fix这个分支上面。现在你可以使用<code>git merge</code>或<code>git format-patch</code>来保存修改，然后移除这个分支。</p>
 <h3 id="移动工作树">移动工作树</h3>
-
 <p>当前(2.11.0)没有一个内建的功能来移动已经存在的工作树。这被认为是一个官方的<a href="https://git-scm.com/docs/git-worktree#_bugs">bug</a>)。</p>
-
 <p>为了解决这个限制，可以直接在.git文件夹中手动进行修改。</p>
-
 <p>在这个例子中，仓库的主要copy在<code>/home/user/project-main</code>，第二级的工作树在<code>/home/user/project-1</code>，我们想要把它移动到<code>/home/user/project-2</code>。</p>
-
 <p>在这些步骤之间不要使用任何git的命令，否则可能会触发垃圾回收操作，然后二级工作树的引用可能就丢失了。不要中断的从头执行到尾：</p>
-
 <ol>
-<li><p>修改工作树的<code>.git</code>文件，指向main工作树中的新地址中。文件<code>/home/user/project-1/.git</code>应该包含下面的内容：</p>
-
+<li>
+<p>修改工作树的<code>.git</code>文件，指向main工作树中的新地址中。文件<code>/home/user/project-1/.git</code>应该包含下面的内容：</p>
 <pre><code>gitdir: /home/user/project-main/.git/worktrees/project-2
 </code></pre></li>
-
-<li><p>重命名main项目中的<code>.git</code>目录中的工作树，将已经存在的工作树目录移动到新的位置：</p>
-
+<li>
+<p>重命名main项目中的<code>.git</code>目录中的工作树，将已经存在的工作树目录移动到新的位置：</p>
 <pre><code>$ mv /home/user/project-main/.git/worktrees/project-1 /home/user/project- main/.git/worktrees/project-2
 </code></pre></li>
-
-<li><p>修改<code>inside /home/user/project-main/.git/worktrees/project-2/gitdir</code>中的引用，指向新的位置。在这个例子中，文件将会有下面的内容：</p>
-
+<li>
+<p>修改<code> inside /home/user/project-main/.git/worktrees/project-2/gitdir</code>中的引用，指向新的位置。在这个例子中，文件将会有下面的内容：</p>
 <pre><code>/home/user/project-2/.git
 </code></pre></li>
-
-<li><p>最后，将你的工作树移动到新的地址：</p>
-
+<li>
+<p>最后，将你的工作树移动到新的地址：</p>
 <pre><code>$ mv /home/user/project-1 /home/user/project-2
 </code></pre></li>
 </ol>
-
 <p>如果上面的步骤都没有问题，列出已经存在的工作树将会引用到新的地址：</p>
-
 <pre><code>$ git worktree list
 /home/user/project-main 23f78ad [master] 
 /home/user/project-2 78ac3f3 [branch-name]
-</code></pre>
-
-<p>现在执行<code>git worktree prune</code>也是安全的。</p>
-
+</code></pre><p>现在执行<code>git worktree prune</code>也是安全的。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -380,6 +351,12 @@ $ git worktree prune
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

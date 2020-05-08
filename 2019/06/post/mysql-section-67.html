@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,56 +187,32 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#忘记密码恢复">忘记密码恢复</a>
-<ul>
-<li><a href="#1-设置root密码-运行root使用socket和http访问">1. 设置root密码，运行root使用socket和http访问</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#忘记密码恢复">忘记密码恢复</a>
+      <ul>
+        <li><a href="#1-设置root密码运行root使用socket和http访问">1. 设置root密码，运行root使用socket和http访问</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="忘记密码恢复">忘记密码恢复</h2>
-
-<h3 id="1-设置root密码-运行root使用socket和http访问">1. 设置root密码，运行root使用socket和http访问</h3>
-
+        		<h2 id="忘记密码恢复">忘记密码恢复</h2>
+<h3 id="1-设置root密码运行root使用socket和http访问">1. 设置root密码，运行root使用socket和http访问</h3>
 <p>解决问题：access denied for user root using password YES Stop mySQL:</p>
-
-<pre><code class="language-shell">sudo systemctl stop mysql
-</code></pre>
-
-<p>重启MySQL，忽略授权表：</p>
-
-<pre><code class="language-shell">sudo mysqld_safe --skip-grant-tables
-</code></pre>
-
-<p>登录：</p>
-
-<pre><code class="language-shell">mysql -u root
-</code></pre>
-
-<p>在SQL shell中，查看用户是否存在：</p>
-
-<pre><code class="language-mysql">SELECT User, password, plugin FROM mysql.user;
-</code></pre>
-
-<p>更新用户信息(plugin为null，表示启用所有的组件)：</p>
-
-<pre><code class="language-mysql">update mysql.user set password=PASSWORD('mypassword'), plugin=NULL WHERE User='root';
-exit;
-</code></pre>
-
-<p>在Unix的shell终止不带验证的MySQL，然后重启带有验证的MySQL：</p>
-
-<pre><code class="language-shell">sudo service mysql stop
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo systemctl stop mysql
+</code></pre></div><p>重启MySQL，忽略授权表：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mysqld_safe --skip-grant-tables
+</code></pre></div><p>登录：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql -u root
+</code></pre></div><p>在SQL shell中，查看用户是否存在：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">User</span>, password, plugin <span style="color:#66d9ef">FROM</span> mysql.<span style="color:#66d9ef">user</span>;
+</code></pre></div><p>更新用户信息(plugin为null，表示启用所有的组件)：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">update</span> mysql.<span style="color:#66d9ef">user</span> <span style="color:#66d9ef">set</span> password<span style="color:#f92672">=</span><span style="color:#a6e22e">PASSWORD</span>(<span style="color:#e6db74">&#39;mypassword&#39;</span>), plugin<span style="color:#f92672">=</span><span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">User</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;root&#39;</span>;
+<span style="color:#66d9ef">exit</span>;
+</code></pre></div><p>在Unix的shell终止不带验证的MySQL，然后重启带有验证的MySQL：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo service mysql stop
 sudo service mysql start
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -304,6 +284,12 @@ sudo service mysql start
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,41 +187,28 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#编译php扩展">编译PHP扩展</a>
-<ul>
-<li><a href="#1-linux编译">1. Linux编译</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#编译php扩展">编译PHP扩展</a>
+      <ul>
+        <li><a href="#1-linux编译">1. Linux编译</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="编译php扩展">编译PHP扩展</h2>
-
+        		<h2 id="编译php扩展">编译PHP扩展</h2>
 <h3 id="1-linux编译">1. Linux编译</h3>
-
 <p>想要在典型的Linux环境编译PHP，有一些前置条件：</p>
-
 <ul>
-<li>基本的Unix能力(可以执行&rdquo;make&rdquo;和一个C的编译器)</li>
+<li>基本的Unix能力(可以执行&quot;make&quot;和一个C的编译器)</li>
 <li>ANSI编译器</li>
 <li>你想要编译的PHP扩展源码</li>
 </ul>
-
 <p>通常有两种方式来编译PHP的扩展。你可以静态地将扩展编译为PHP的二进制文件，或者将其编译为由PHP二进制文件启动时加载的共享模块。共享模块是更加合适的，因为这允许你添加或移除扩展而不用重新编译PHP。这个例子主要是共享模块的。</p>
-
 <p>如果你使用包管理器安装你的PHP(像<code>apt-get install</code>, <code>yum install</code>)。你需要安装PHP的<code>-dev</code>包，这里面包含着必须的PHP头文件和用来让构造环境正常工作的phpize脚本。这个包可能名字是<code>php5-dev</code>或<code>php7-dev</code>，但是需要使用包管理器来搜索你发行版中的适当名称。他们可能是不同的。</p>
-
 <p>如果你是从源码编译PHP，那些头文件大多数情况下已经存在你的系统上面（通常在<code>/usr/include</code>，或<code>/usr/local/include</code>）。</p>
-
 <p><strong>编译步骤</strong></p>
-
-<p>在你已经检查后确定已经安装所有依赖之后，为了编译，你可以查看<a href="http://pecl.php.net/">http://pecl.php.net/</a> 来寻找想要编译的扩展，然后下载tar包。</p>
-
+<p>在你已经检查后确定已经安装所有依赖之后，为了编译，你可以查看http://pecl.php.net/ 来寻找想要编译的扩展，然后下载tar包。</p>
 <ul>
 <li>解压tar包(例如<code>tar xfvz yaml-2.0.0RC8.tgz</code>)</li>
 <li>进入到压缩包解压的目录，然后执行<code>phpize</code></li>
@@ -225,15 +216,10 @@
 <li>现在你需要运行<code>make</code>，这会编译扩展</li>
 <li>最后，使用<code>make install</code>命令将编译好的扩展移动到扩展目录</li>
 </ul>
-
 <p><code>make install</code>这步会为你提供复制扩展的安装路径。这通常是<code>/usr/lib</code>，例如可能是<code>/usr/lib/php5/20131226/yaml.so</code>，但是这依赖于你的PHP配置(例如<code>--with-prefix</code>)和指定的API版本。路径中的API数字用来把扩展创建到不同的API版本的目录中。</p>
-
 <p><strong>加载PHP扩展</strong></p>
-
 <p>要做PHP中加载扩展，需要为相应的SAPI查找已经加载的php.ini文件，然后在其中添加<code>extension=yaml.so</code>。然后重新启动PHP。当然，将yaml.so修改为你实际安装的扩展名。</p>
-
 <p>对于Zend扩展，你需要提供共享对象文件的完整路径。但是对于普通的PHP扩展，这个路径从<code>extension_dir</code>中获取，或者在初始化期间从<code>$PATH</code>获取。</p>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -306,6 +292,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

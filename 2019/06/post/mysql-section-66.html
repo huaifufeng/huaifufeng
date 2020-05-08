@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,148 +187,91 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mysql5-7之后恢复和重置默认root密码">MySQL5.7之后恢复和重置默认root密码</a>
-<ul>
-<li><a href="#1-当服务器初始启动时发生什么">1. 当服务器初始启动时发生什么？</a></li>
-<li><a href="#2-怎么使用默认密码修改root的密码">2. 怎么使用默认密码修改root的密码？</a></li>
-<li><a href="#3-当unix的sock文件-var-run-mysqld-不存在是-修改root密码">3. 当Unix的sock文件&rdquo;/var/run/mysqld&rdquo;不存在是，修改root密码</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mysql57之后恢复和重置默认root密码">MySQL5.7之后恢复和重置默认root密码</a>
+      <ul>
+        <li><a href="#1-当服务器初始启动时发生什么">1. 当服务器初始启动时发生什么？</a></li>
+        <li><a href="#2-怎么使用默认密码修改root的密码">2. 怎么使用默认密码修改root的密码？</a></li>
+        <li><a href="#3-当unix的sock文件varrunmysqld不存在是修改root密码">3. 当Unix的sock文件&rdquo;/var/run/mysqld&quot;不存在是，修改root密码</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mysql5-7之后恢复和重置默认root密码">MySQL5.7之后恢复和重置默认root密码</h2>
-
+        		<h2 id="mysql57之后恢复和重置默认root密码">MySQL5.7之后恢复和重置默认root密码</h2>
 <p>在MySQL5.7之后，我们不需要再按照MySQL的时候创建一个root账户或者提供一个root密码。默认当我们启动mysql服务器的时候，默认的密码会存储在<code>mysqld.log</code>文件中。我们需要使用这个密码登录，并且我们需要修改密码。</p>
-
 <h3 id="1-当服务器初始启动时发生什么">1. 当服务器初始启动时发生什么？</h3>
-
 <p>假设服务器的数据目录是空的：</p>
-
 <ul>
 <li>服务器初始化</li>
 <li>SSL整数和密钥文件生成在数据目录</li>
 <li>validate_password组件安装和启用</li>
-<li>超级用户&rsquo;root&rsquo;@&lsquo;localhost&rsquo;创建。设置root的密码并且存储在错误log文件内</li>
+<li>超级用户&rsquo;root&rsquo;@&lsquo;localhost'创建。设置root的密码并且存储在错误log文件内</li>
 </ul>
-
 <h3 id="2-怎么使用默认密码修改root的密码">2. 怎么使用默认密码修改root的密码？</h3>
-
-<p>显示默认的&rdquo;root&rdquo;的密码：</p>
-
-<pre><code class="language-shell">shell&gt; sudo grep 'temporary password' /var/log/mysqld.log
-</code></pre>
-
-<p>修改root的密码，首先使用这个临时密码登录，然后设置用户的密码：</p>
-
+<p>显示默认的&quot;root&quot;的密码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">shell&gt; sudo grep <span style="color:#e6db74">&#39;temporary password&#39;</span> /var/log/mysqld.log
+</code></pre></div><p>修改root的密码，首先使用这个临时密码登录，然后设置用户的密码：</p>
 <pre><code>shell&gt; mysql -uroot -p
 mysql&gt; ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass5!';
-</code></pre>
-
-<p><strong>注意：</strong>MySQL的validate_password组件默认是现在的。这要求密码需要包含至少一个大写字母，一个小写字母，一个数字，一个特殊字符，并且密码的长度大于8个字符。</p>
-
-<h3 id="3-当unix的sock文件-var-run-mysqld-不存在是-修改root密码">3. 当Unix的sock文件&rdquo;/var/run/mysqld&rdquo;不存在是，修改root密码</h3>
-
+</code></pre><p>**注意：**MySQL的validate_password组件默认是现在的。这要求密码需要包含至少一个大写字母，一个小写字母，一个数字，一个特殊字符，并且密码的长度大于8个字符。</p>
+<h3 id="3-当unix的sock文件varrunmysqld不存在是修改root密码">3. 当Unix的sock文件&rdquo;/var/run/mysqld&quot;不存在是，修改root密码</h3>
 <p>如果我忘记了密码，我将会获取一个错误：</p>
-
-<pre><code class="language-shell">$ mysql -u root -p
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysql -u root -p
 输出密码：
-ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
-</code></pre>
-
-<p>我试着解决这个问题，首先确认服务的状态：</p>
-
-<pre><code class="language-shell">$ systemctl status mysql.service
-mysql.service - MySQL Community Server Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: en Active: active (running) since Thu 2017-06-08 14:31:33 IST; 38s ago
-</code></pre>
-
-<p>然后我使用<code>mysqld_safe —skip-grant-tables &amp;</code>，但是我遇到一个错误：</p>
-
+ERROR <span style="color:#ae81ff">1045</span> <span style="color:#f92672">(</span>28000<span style="color:#f92672">)</span>: Access denied <span style="color:#66d9ef">for</span> user <span style="color:#e6db74">&#39;root&#39;</span>@<span style="color:#e6db74">&#39;localhost&#39;</span> <span style="color:#f92672">(</span>using password: YES<span style="color:#f92672">)</span>
+</code></pre></div><p>我试着解决这个问题，首先确认服务的状态：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ systemctl status mysql.service
+mysql.service - MySQL Community Server Loaded: loaded <span style="color:#f92672">(</span>/lib/systemd/system/mysql.service; enabled; vendor preset: en Active: active <span style="color:#f92672">(</span>running<span style="color:#f92672">)</span> since Thu 2017-06-08 14:31:33 IST; 38s ago
+</code></pre></div><p>然后我使用<code>mysqld_safe —skip-grant-tables &amp;</code>，但是我遇到一个错误：</p>
 <blockquote>
 <p>mysqld_safe Directory &lsquo;/var/run/mysqld&rsquo; for UNIX socket file don&rsquo;t exists.</p>
 </blockquote>
-
 <pre><code>$ systemctl stop mysql.service
 $ ps -eaf|grep mysql
 $ mysqld_safe --skip-grant-tables &amp;
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>我解决：</p>
 </blockquote>
-
 <pre><code>$ mkdir -p /var/run/mysqld
 $ chown mysql:mysql /var/run/mysqld
-</code></pre>
-
-<p>现在我使用相同的代码<code>mysqld_safe —skip-grant-tables &amp;</code>，获得</p>
-
+</code></pre><p>现在我使用相同的代码<code>mysqld_safe —skip-grant-tables &amp;</code>，获得</p>
 <blockquote>
 <p>mysqld_safe Starting mysqld daemon with databases from /var/lib/mysql</p>
 </blockquote>
-
 <p>如果我使用<code>mysql -u root</code>我将获得：</p>
-
 <pre><code>Server version: 5.7.18-0ubuntu0.16.04.1 (Ubuntu)
 Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
 Oracle is a registered trademark of Oracle Corporation and/or its affiliates. Other names may be trademarks of their respective owners.
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql&gt;
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>现在可以修改密码了：</p>
 </blockquote>
-
 <pre><code> mysql&gt; use mysql 
  mysql&gt; describe user;
-</code></pre>
-
-<p>读取表信息以完成表名和列名，您可以关闭此功能以使用-a更快地启动</p>
-
+</code></pre><p>读取表信息以完成表名和列名，您可以关闭此功能以使用-a更快地启动</p>
 <p>数据库修改：</p>
-
 <pre><code>mysql&gt; FLUSH PRIVILEGES;
 mysql&gt; SET PASSWORD FOR root@'localhost' = PASSWORD('newpwd');
-</code></pre>
-
-<p>或者如果你有一个可以从任何地方连接的root账号，你也可以：</p>
-
+</code></pre><p>或者如果你有一个可以从任何地方连接的root账号，你也可以：</p>
 <pre><code>UPDATE mysql.user SET Password=PASSWORD('newpwd') WHERE User='root';
-</code></pre>
-
-<p>可选的方法：</p>
-
+</code></pre><p>可选的方法：</p>
 <pre><code>USE mysql
 UPDATE user SET Password = PASSWORD('newpwd') 
 WHERE Host = 'localhost' AND User = 'root';
-</code></pre>
-
-<p>如果你有一个可以从任何地方访问的root账户：</p>
-
-<pre><code class="language-mysql">USE mysql
-UPDATE user SET Password = PASSWORD('newpwd')
-WHERE Host = '%' AND User = 'root';`enter code here
-</code></pre>
-
-<p>现在需要从mysql中<code>quit</code>，并且停止/启动:</p>
-
+</code></pre><p>如果你有一个可以从任何地方访问的root账户：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">USE</span> mysql
+<span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">user</span> <span style="color:#66d9ef">SET</span> Password <span style="color:#f92672">=</span> <span style="color:#a6e22e">PASSWORD</span>(<span style="color:#e6db74">&#39;newpwd&#39;</span>)
+<span style="color:#66d9ef">WHERE</span> Host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;%&#39;</span> <span style="color:#66d9ef">AND</span> <span style="color:#66d9ef">User</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;root&#39;</span>;<span style="color:#f92672">`</span>enter code here
+</code></pre></div><p>现在需要从mysql中<code>quit</code>，并且停止/启动:</p>
 <pre><code>FLUSH PRIVILEGES;
 sudo /etc/init.d/mysql stop 
 sudo /etc/init.d/mysql start
-</code></pre>
-
-<p>现在重新输入<code>mysql -u root -p</code>，然后输入密码会获得：</p>
-
+</code></pre><p>现在重新输入<code>mysql -u root -p</code>，然后输入密码会获得：</p>
 <blockquote>
 <p>mysql&gt;</p>
 </blockquote>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -397,6 +344,12 @@ sudo /etc/init.d/mysql start
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

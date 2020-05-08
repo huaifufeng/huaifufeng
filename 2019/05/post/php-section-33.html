@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,34 +187,23 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#curl扩展">cURL扩展</a>
-<ul>
-<li><a href="#基本用法-get请求">基本用法(GET请求)</a></li>
-<li><a href="#post请求">POST请求</a></li>
-<li><a href="#使用cookie">使用cookie</a></li>
-<li><a href="#multi-curl发起多个post请求">multi_curl发起多个post请求</a></li>
-<li><a href="#一次请求发送多维数据和多个文件">一次请求发送多维数据和多个文件</a></li>
-<li><a href="#使用自定义方法创建并发送请求">使用自定义方法创建并发送请求</a></li>
-<li><a href="#在php中获取和设置http头">在php中获取和设置http头</a>
-<ul>
-<li><a href="#发送请求头">发送请求头</a></li>
-<li><a href="#读取自定义头">读取自定义头</a></li>
-<li><a href="#输出">输出</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#curl扩展">cURL扩展</a>
+      <ul>
+        <li><a href="#基本用法get请求">基本用法(GET请求)</a></li>
+        <li><a href="#post请求">POST请求</a></li>
+        <li><a href="#使用cookie">使用cookie</a></li>
+        <li><a href="#multi_curl发起多个post请求">multi_curl发起多个post请求</a></li>
+        <li><a href="#一次请求发送多维数据和多个文件">一次请求发送多维数据和多个文件</a></li>
+        <li><a href="#使用自定义方法创建并发送请求">使用自定义方法创建并发送请求</a></li>
+        <li><a href="#在php中获取和设置http头">在php中获取和设置http头</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="curl扩展">cURL扩展</h2>
-
+        		<h2 id="curl扩展">cURL扩展</h2>
 <p>curl_init 初始化一个cURL</p>
-
 <table>
 <thead>
 <tr>
@@ -218,7 +211,6 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>url</td>
@@ -226,9 +218,7 @@
 </tr>
 </tbody>
 </table>
-
 <p>curl_setopt  设置cURL传输的选项</p>
-
 <table>
 <thead>
 <tr>
@@ -236,27 +226,22 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>ch</td>
 <td>cURL处理的对象(curl_inti()返回的值)</td>
 </tr>
-
 <tr>
 <td>option</td>
 <td>CURLOPT_XXX将用来设置选项，查看<a href="https://www.php.net/manual/zh/function.curl-setopt.php">PHP手册</a>查看选项和接受值的列表</td>
 </tr>
-
 <tr>
 <td>value</td>
 <td>设置cURL选项的值</td>
 </tr>
 </tbody>
 </table>
-
 <p>curl_exec 执行以cURL请求</p>
-
 <table>
 <thead>
 <tr>
@@ -264,7 +249,6 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>ch</td>
@@ -272,9 +256,7 @@
 </tr>
 </tbody>
 </table>
-
 <p>curl_close 结束一个cURL请求</p>
-
 <table>
 <thead>
 <tr>
@@ -282,7 +264,6 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>ch</td>
@@ -290,14 +271,11 @@
 </tr>
 </tbody>
 </table>
-
-<h3 id="基本用法-get请求">基本用法(GET请求)</h3>
-
+<h3 id="基本用法get请求">基本用法(GET请求)</h3>
 <p>cURL是一个使用URL语法传输数据的工具。支持HTTP，FTP，SCP和其他的类型(curl&gt;=7.19.4)。记住在使用之前需要首先<a href="https://php.net/manual/zh/curl.installation.php">安装和启用cURL扩展</a>。</p>
-
-<pre><code class="language-php">// a little script check is the cURL extension loaded or not
-if(!extension_loaded(&quot;curl&quot;)) {
-    die(&quot;cURL extension not loaded! Quit Now.&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// a little script check is the cURL extension loaded or not
+if(!extension_loaded(&#34;curl&#34;)) {
+    die(&#34;cURL extension not loaded! Quit Now.&#34;);
 }
 
 // Actual script start
@@ -307,31 +285,27 @@ if(!extension_loaded(&quot;curl&quot;)) {
 $curl = curl_init();
 
 // set the URL and other options
-curl_setopt($curl, CURLOPT_URL, &quot;http://www.example.com&quot;);
+curl_setopt($curl, CURLOPT_URL, &#34;http://www.example.com&#34;);
 
 // execute and pass the result to browser
 curl_exec($curl);
 
 // close the cURL resource
 curl_close($curl);
-</code></pre>
-
-<h3 id="post请求">POST请求</h3>
-
+</code></pre></div><h3 id="post请求">POST请求</h3>
 <p>如果你想要魔方HTML表格的POST请求，你可以使用cURL</p>
-
-<pre><code class="language-php">// POST data in array
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// POST data in array
 $post = [
-    'a' =&gt; 'apple',
-    'b' =&gt; 'banana'
+    &#39;a&#39; =&gt; &#39;apple&#39;,
+    &#39;b&#39; =&gt; &#39;banana&#39;
 ];
 // Create a new cURL resource with URL to POST
-$ch = curl_init('http://www.example.com');
+$ch = curl_init(&#39;http://www.example.com&#39;);
 
 // We set parameter CURLOPT_RETURNTRANSFER to read output
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-// Let's pass POST data
+// Let&#39;s pass POST data
 curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 
 // We execute our request, and get output in a $response variable
@@ -339,70 +313,46 @@ $response = curl_exec($ch);
 
 // Close the connection
 curl_close($ch);
-</code></pre>
-
-<h3 id="使用cookie">使用cookie</h3>
-
+</code></pre></div><h3 id="使用cookie">使用cookie</h3>
 <p>cURL可以保存响应中获取的cookie，并且在之后的请求中使用。对于简单的内存中处理session和cookie，使用下面的一行代码：</p>
-
-<pre><code class="language-php">curl_setopt($ch, CURLOPT_COOKIEFILE, '');
-</code></pre>
-
-<p>如果在销毁curl句柄之后响应保留cookie，可以把cookie保存到文件中：</p>
-
-<pre><code class="language-php">curl_setopt($ch, CURLOPT_COOKIEJAR, &quot;/tmp/cookies.txt&quot;);
-</code></pre>
-
-<p>当你想要再次使用的时候，把这些数据存放到cookie文件中：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">curl_setopt($ch, CURLOPT_COOKIEFILE, &#39;&#39;);
+</code></pre></div><p>如果在销毁curl句柄之后响应保留cookie，可以把cookie保存到文件中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">curl_setopt($ch, CURLOPT_COOKIEJAR, &#34;/tmp/cookies.txt&#34;);
+</code></pre></div><p>当你想要再次使用的时候，把这些数据存放到cookie文件中：</p>
 <pre><code>curl_setopt($ch, CURLOPT_COOKIEFILE, &quot;/tmp/cookies.txt&quot;);
-</code></pre>
-
-<p>记住，这两步不是必须的，触发你想要在不同的cURL句柄中处理这些cookie。在大多数情况下，你只需要把<code>CURLOPT_COOKIEFILE</code>设置为空字符串。</p>
-
+</code></pre><p>记住，这两步不是必须的，触发你想要在不同的cURL句柄中处理这些cookie。在大多数情况下，你只需要把<code>CURLOPT_COOKIEFILE</code>设置为空字符串。</p>
 <p>例如，cookie处理被使用了，当从网站获取数据需要首先登陆。这就是一个常见的两步操作。首先，POST到登陆页面：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$ch <span style="color:#f92672">=</span> <span style="color:#a6e22e">curl_init</span>();
 
-<pre><code class="language-php">&lt;?php
-$ch = curl_init();
+<span style="color:#a6e22e">curl_setopt</span>($ch, <span style="color:#a6e22e">CURLOPT_URL</span>, <span style="color:#e6db74">&#39;https://www.example.com/login.php&#39;</span>);
 
-curl_setopt($ch, CURLOPT_URL, 'https://www.example.com/login.php');
+<span style="color:#a6e22e">curl_setopt</span>($ch, <span style="color:#a6e22e">CURLOPT_POST</span>, <span style="color:#66d9ef">true</span>);
 
-curl_setopt($ch, CURLOPT_POST, true);
+<span style="color:#a6e22e">curl_setopt</span>($ch, <span style="color:#a6e22e">CURLOPT_COOKIEFILE</span>, <span style="color:#e6db74">&#34;&#34;</span>);
 
-curl_setopt($ch, CURLOPT_COOKIEFILE, &quot;&quot;);
-
-curl_setopt($ch, CURLOPT_POSTFIELDS, [
-    'username' =&gt; 'jos_bloggs',
-    'password' =&gt; '$up34_$3cr3t',
+<span style="color:#a6e22e">curl_setopt</span>($ch, <span style="color:#a6e22e">CURLOPT_POSTFIELDS</span>, [
+    <span style="color:#e6db74">&#39;username&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;jos_bloggs&#39;</span>,
+    <span style="color:#e6db74">&#39;password&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;$up34_$3cr3t&#39;</span>,
 ]);
 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+<span style="color:#a6e22e">curl_setopt</span>($ch, <span style="color:#a6e22e">CURLOPT_RETURNTRANSFER</span>, <span style="color:#66d9ef">true</span>);
 
-$result = curl_exec($ch);
-</code></pre>
-
-<p>第二步(在标准错误处理之后的)通常是一个GET请求。这里最重要的事是在第二个请求中重用已经存在的cURL句柄。这确保第二个请求自动从第一个响应中获取cookie：</p>
-
-<pre><code class="language-php">curl_setopt($ch, CURLOPT_URL, 'https://www.example.com/show_me_the_foo.php');
+$result <span style="color:#f92672">=</span> <span style="color:#a6e22e">curl_exec</span>($ch);
+</code></pre></div><p>第二步(在标准错误处理之后的)通常是一个GET请求。这里最重要的事是在第二个请求中重用已经存在的cURL句柄。这确保第二个请求自动从第一个响应中获取cookie：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">curl_setopt($ch, CURLOPT_URL, &#39;https://www.example.com/show_me_the_foo.php&#39;);
 
 curl_setopt($ch, CURLOPT_HTTPGET, true);
 
 $result = curl_exec($ch);
 
 curl_close($ch);
-</code></pre>
-
-<p>这里是cookie处理的一个例子。在真实场景，这将会更加复杂。通常你必须在登录页面中初始化GET，并将登录令牌放入POST。其他站点可能会阻止cURL客户端，要求你修改这个值。</p>
-
-<h3 id="multi-curl发起多个post请求">multi_curl发起多个post请求</h3>
-
+</code></pre></div><p>这里是cookie处理的一个例子。在真实场景，这将会更加复杂。通常你必须在登录页面中初始化GET，并将登录令牌放入POST。其他站点可能会阻止cURL客户端，要求你修改这个值。</p>
+<h3 id="multi_curl发起多个post请求">multi_curl发起多个post请求</h3>
 <p>有时候我们需要对一个或多个终端发送很多的post请求。为了解决这个问题，我们可以使用<code>multi_curl</code>。</p>
-
 <p>首先像之前一样，我们创建很多请求的对象，并把他们放到一个数组里面。</p>
-
 <p>我们使用curl_multi_init让后增加每一个句柄。例如，我们有两个需要请求的终端：</p>
-
-<pre><code class="language-php">//array of data to POST
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//array of data to POST
 $request_contents = array(); 
 
 //array of URLs
@@ -413,19 +363,19 @@ $chs = array();
 
 //first POST content
 $request_contents[] = [
-    'a' =&gt; 'apple',
-    'b' =&gt; 'banana'
+    &#39;a&#39; =&gt; &#39;apple&#39;,
+    &#39;b&#39; =&gt; &#39;banana&#39;
 ];
 
 //second POST content
 $request_contents[] = [
-    'a' =&gt; 'fish',
-    'b' =&gt; 'shrimp'
+    &#39;a&#39; =&gt; &#39;fish&#39;,
+    &#39;b&#39; =&gt; &#39;shrimp&#39;
 ];
 
 //set the urls
-$urls[] = 'http://www.example.com';
-$urls[] = 'http://www.example2.com';
+$urls[] = &#39;http://www.example.com&#39;;
+$urls[] = &#39;http://www.example2.com&#39;;
 
 //create the array of cURL handles and add to a multi_curl
 $mh = curl_multi_init();
@@ -435,11 +385,8 @@ foreach ($urls as $key =&gt; $url) {
     curl_setopt($chs[$key], CURLOPT_POSTFIELDS, $request_contents[$key]);
     curl_multi_add_handle($mh, $chs[$key]);
 }
-</code></pre>
-
-<p>然后我们使用curl_multi_exec来发送请求：</p>
-
-<pre><code class="language-php">//running the requests
+</code></pre></div><p>然后我们使用curl_multi_exec来发送请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//running the requests
 $running = null; 
 do {
   curl_multi_exec($mh, $running);
@@ -452,34 +399,24 @@ foreach(array_keys($chs) as $key){
     $time = curl_getinfo($chs[$key], CURLINFO_TOTAL_TIME);
     $response = curl_multi_getcontent($chs[$key]); // get results
     if (!empty($error)) {
-        echo &quot;The request $key return a error: $error&quot; . &quot;\n&quot;; 
+        echo &#34;The request $key return a error: $error&#34; . &#34;\n&#34;; 
     } else {
-        echo &quot;The request to '$last_effective_URL' returned '$response' in $time seconds.&quot; . &quot;\n&quot;;
+        echo &#34;The request to &#39;$last_effective_URL&#39; returned &#39;$response&#39; in $time seconds.&#34; . &#34;\n&#34;;
     }
     curl_multi_remove_handle($mh, $chs[$key]);
 }
 // close current handler
 curl_multi_close($mh);
-</code></pre>
-
-<p>可能有下面的输出：</p>
-
+</code></pre></div><p>可能有下面的输出：</p>
 <blockquote>
 <p>对<a href="http://www.example.com/">http://www.example.com/</a>请求可能返回<code>fruits</code>在2秒内</p>
-
 <p>对<a href="http://www.example2.com/">http://www.example2.com/</a>的请求可能返回<code>seafood</code>在5秒内</p>
 </blockquote>
-
 <h3 id="一次请求发送多维数据和多个文件">一次请求发送多维数据和多个文件</h3>
-
 <p>我们有一个下面这样的表格，我们想要使用Ajax发送数据到我们的服务器上面，其上有一个在外部机器运行的脚本。</p>
-
-<p><img src="/img/php/55fQ6.png" alt="表格" /></p>
-
+<p><img src="/img/php/55fQ6.png" alt="表格"></p>
 <p>我们有普通的输入，多选字段，可以上传多个文件的上传区域。</p>
-
 <p>假设AJAX的POST请求成功了，我们也获得了数据：</p>
-
 <pre><code>// print_r($_POST)
 Array
 (
@@ -491,10 +428,7 @@ Array
             [1] =&gt; hiking
         )
 )
-</code></pre>
-
-<p>文件像下面这样：</p>
-
+</code></pre><p>文件像下面这样：</p>
 <pre><code>// print_r($_FILES)
 Array
 (
@@ -527,14 +461,9 @@ Array
                 )
         )
 )          
-</code></pre>
-
-<p>到现在为止，一切都正常。现在我们想要把这些数据和文件使用cURL发送到外部的服务器上面。</p>
-
+</code></pre><p>到现在为止，一切都正常。现在我们想要把这些数据和文件使用cURL发送到外部的服务器上面。</p>
 <p>因为cURL值接收一个简单的数组，不能接收多维数组，我们首先处理$_POST数组。</p>
-
 <p>这么做，我们使用<a href="http://codereview.stackexchange.com/a/14685">示例方法</a>获取下面的返回值：</p>
-
 <pre><code>// print_r($new_post_array)
 Array
 (
@@ -543,78 +472,52 @@ Array
     [activities[0]] =&gt; soccer
     [activities[1]] =&gt; hiking
 )
-</code></pre>
-
-<p>下面就是创建上传文件的CurlFile的对象，可以像下面循环处理：</p>
-
+</code></pre><p>下面就是创建上传文件的CurlFile的对象，可以像下面循环处理：</p>
 <pre><code>$files = array();
 foreach ($_FILES[&quot;upload&quot;][&quot;error&quot;] as $key =&gt; $error) {
     if ($error == UPLOAD_ERR_OK) {
       $files[&quot;upload[$key]&quot;] = curl_file_create( $_FILES['upload']['tmp_name'][$key], $_FILES['upload']['type'][$key], $_FILES['upload']['name'][$key]); 
     }
 }
-</code></pre>
-
-<p>curl_file_create是CurlFile类创建CurlFile对象的帮助方法。我们把对象放到$files数组中，键名分别是&rdquo;upload[0]&ldquo;和&rdquo;upload[1]&ldquo;。</p>
-
+</code></pre><p>curl_file_create是CurlFile类创建CurlFile对象的帮助方法。我们把对象放到$files数组中，键名分别是&quot;upload[0]&ldquo;和&quot;upload[1]&quot;。</p>
 <p>现在还需要把数据数组和文件数组组合起来放到$data数组中：</p>
-
 <pre><code>$data = $new_post_array + $files;
-</code></pre>
-
-<p>最后就是发生curl请求了。</p>
-
-<pre><code class="language-php">$ch = curl_init();
+</code></pre><p>最后就是发生curl请求了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$ch = curl_init();
 curl_setopt_array($ch, array(
     CURLOPT_POST =&gt; 1,
-    CURLOPT_URL =&gt; &quot;https://api.externalserver.com/upload.php&quot;,
+    CURLOPT_URL =&gt; &#34;https://api.externalserver.com/upload.php&#34;,
     CURLOPT_RETURNTRANSFER =&gt; 1,
     CURLINFO_HEADER_OUT =&gt; 1,
     CURLOPT_POSTFIELDS =&gt; $data
 ));
 $result = curl_exec($ch);
 curl_close ($ch);
-</code></pre>
-
-<p>因为现在$data是一个简单数组，cURL可以使用<code>Content Type: multipart/form-data</code>来发送POST请求。</p>
-
+</code></pre></div><p>因为现在$data是一个简单数组，cURL可以使用<code>Content Type: multipart/form-data</code>来发送POST请求。</p>
 <p>在另外一台服务器上面的upload.php文件中，你可以使用<code>$_POST</code>和<code>$_GET</code>来获取数据。</p>
-
 <h3 id="使用自定义方法创建并发送请求">使用自定义方法创建并发送请求</h3>
-
 <p>默认，PHP的CURL使用GET和POST发送请求。也可以发送自定义的请求，像DELETE，PUT或者PATCH(甚至非标准方法)使用CURLOPT_CUSTOMREQUEST参数。</p>
-
-<pre><code class="language-php">$method = 'DELETE'; // Create a DELETE request
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$method = &#39;DELETE&#39;; // Create a DELETE request
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 $content = curl_exec($ch);
 curl_close($ch);
-</code></pre>
-
-<h3 id="在php中获取和设置http头">在php中获取和设置http头</h3>
-
+</code></pre></div><h3 id="在php中获取和设置http头">在php中获取和设置http头</h3>
 <h4 id="发送请求头">发送请求头</h4>
-
-<pre><code class="language-php">$uri = 'http://localhost/http.php';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$uri = &#39;http://localhost/http.php&#39;;
 $ch = curl_init($uri);
 curl_setopt_array($ch, array(
-    CURLOPT_HTTPHEADER =&gt; array('X-User: admin', 'X-Authorization: 123456'), 
+    CURLOPT_HTTPHEADER =&gt; array(&#39;X-User: admin&#39;, &#39;X-Authorization: 123456&#39;), 
     CURLOPT_RETURNTRANSFER =&gt;true,
     CURLOPT_VERBOSE
 ));
 $out = curl_exec($ch); 
 curl_close($ch);
 // echo response output echo $out;
-</code></pre>
-
-<h4 id="读取自定义头">读取自定义头</h4>
-
+</code></pre></div><h4 id="读取自定义头">读取自定义头</h4>
 <pre><code>print_r(apache_request_headers());
-</code></pre>
-
-<h4 id="输出">输出</h4>
-
+</code></pre><h4 id="输出">输出</h4>
 <pre><code>Array
 (
     [Host] =&gt; localhost
@@ -624,14 +527,9 @@ curl_close($ch);
     [Content-Length] =&gt; 9
     [Content-Type] =&gt; application/x-www-form-urlencoded
 )
-</code></pre>
-
-<p>也可以使用下面的语法发送头：</p>
-
+</code></pre><p>也可以使用下面的语法发送头：</p>
 <pre><code>curl --header &quot;X-MyHeader: 123&quot; www.google.com
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -703,6 +601,12 @@ curl_close($ch);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

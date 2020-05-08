@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,43 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#自定义ps1">自定义PS1</a>
-<ul>
-<li><a href="#1-自定义当前数据库的mysql-ps1">1.  自定义当前数据库的MySQL PS1</a></li>
-<li><a href="#2-使用mysql配置文件配置ps1">2. 使用MySQL配置文件配置PS1</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#自定义ps1">自定义PS1</a>
+      <ul>
+        <li><a href="#1--自定义当前数据库的mysql-ps1">1.  自定义当前数据库的MySQL PS1</a></li>
+        <li><a href="#2-使用mysql配置文件配置ps1">2. 使用MySQL配置文件配置PS1</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="自定义ps1">自定义PS1</h2>
-
-<h3 id="1-自定义当前数据库的mysql-ps1">1.  自定义当前数据库的MySQL PS1</h3>
-
+        		<h2 id="自定义ps1">自定义PS1</h2>
+<h3 id="1--自定义当前数据库的mysql-ps1">1.  自定义当前数据库的MySQL PS1</h3>
 <p>在.bashrc或.bash_profile中添加下面的内容：</p>
-
-<pre><code class="language-shell">export MYSQL_PS1=&quot;\u@\h [\d]&quot;
-</code></pre>
-
-<p>这会让MySQL客户端提示当前的 user@host [database]</p>
-
-<p><img src="/img/mysql/lHXU6.png" alt="提示" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">export MYSQL_PS1<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\u@\h [\d]&#34;</span>
+</code></pre></div><p>这会让MySQL客户端提示当前的 user@host [database]</p>
+<p><img src="/img/mysql/lHXU6.png" alt="提示"></p>
 <h3 id="2-使用mysql配置文件配置ps1">2. 使用MySQL配置文件配置PS1</h3>
-
 <p>在<code>mysqld.cnf</code>或者等价的文件中添加下面的内容：</p>
-
-<pre><code class="language-shell">[mysql]
-prompt = '\u@\h [\d] '
-</code></pre>
-
-<p>这将会获得相同的功能，但是不需要处理<code>.bashrc</code>这样的文件。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>mysql<span style="color:#f92672">]</span>
+prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;\u@\h [\d] &#39;</span>
+</code></pre></div><p>这将会获得相同的功能，但是不需要处理<code>.bashrc</code>这样的文件。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -292,6 +280,12 @@ prompt = '\u@\h [\d] '
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

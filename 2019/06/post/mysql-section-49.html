@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,188 +187,105 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#复制">复制</a>
-<ul>
-<li><a href="#1-主从配置复制">1. 主从配置复制</a></li>
-<li><a href="#2-复制错误">2. 复制错误</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#复制">复制</a>
+      <ul>
+        <li><a href="#1-主从配置复制">1. 主从配置复制</a></li>
+        <li><a href="#2-复制错误">2. 复制错误</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="复制">复制</h2>
-
+        		<h2 id="复制">复制</h2>
 <h3 id="1-主从配置复制">1. 主从配置复制</h3>
-
 <p>假设有两个MySQL服务器进行复制配置，其中一台是主库，一台是从库。</p>
-
 <p>我们需要配置主库记录在其上执行的每个操作的日志。我们需要配置从库监控主库的日志，一旦主库做了一些修改操作，从库就需要执行同样的操作。</p>
-
 <p><strong>主库配置</strong></p>
-
 <p>首先，我们需要为主库设置一个用户。这个用户用来给从库建立到主库的连接使用。</p>
-
-<pre><code class="language-mysql">CREATE USER 'user_name'@'%' IDENTIFIED BY 'user_password'; 
-GRANT REPLICATION SLAVE ON *.* TO 'user_name'@'%';
-FLUSH PRIVILEGES;
-</code></pre>
-
-<p>修改上面代码中的<code>user_name</code>和<code>user_password</code>为你自己的用户名和密码。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;user_name&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;%&#39;</span> <span style="color:#66d9ef">IDENTIFIED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;user_password&#39;</span>; 
+<span style="color:#66d9ef">GRANT</span> REPLICATION SLAVE <span style="color:#66d9ef">ON</span> <span style="color:#f92672">*</span>.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> <span style="color:#e6db74">&#39;user_name&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;%&#39;</span>;
+<span style="color:#66d9ef">FLUSH</span> <span style="color:#66d9ef">PRIVILEGES</span>;
+</code></pre></div><p>修改上面代码中的<code>user_name</code>和<code>user_password</code>为你自己的用户名和密码。</p>
 <p>现在<code>my.inf</code>(Linux中是my.cnf)需要被修改了，在<code>[mysqld]</code>部分添加下面的内容：</p>
-
-<pre><code class="language-mysql">server-id = 1
-log-bin = mysql-bin.log
-binlog-do-db = your_database
-</code></pre>
-
-<p>第一行用来为这个MySQL服务器设置一个ID。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">server<span style="color:#f92672">-</span>id <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+log<span style="color:#f92672">-</span>bin <span style="color:#f92672">=</span> mysql<span style="color:#f92672">-</span>bin.log
+binlog<span style="color:#f92672">-</span>do<span style="color:#f92672">-</span>db <span style="color:#f92672">=</span> your_database
+</code></pre></div><p>第一行用来为这个MySQL服务器设置一个ID。</p>
 <p>第二行告诉MySQL开始在指定的log文件中开始写入日志。在Linux机器上，这个需要被设置为<code>log-bin=/home/mysql/logs/mysql-bin.log</code>。如果您正在已使用复制的MySQL服务器中启动复制，请确保此目录中没有复制日志。</p>
-
 <p>第三行用来说明我们想要哪个数据库去写日志。你需要替换其中的<code>your_database</code>为你自己的数据库名。</p>
-
 <p>确保<code>ship-networking</code>没有开启，重启主库。</p>
-
 <p><strong>从库配置</strong></p>
-
 <p>从库的<code>my.inf</code>也需要修改。需要在<code>[mysqld]</code>部分包含下面的内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">server<span style="color:#f92672">-</span>id <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+master<span style="color:#f92672">-</span>host <span style="color:#f92672">=</span> master_ip_address
+master<span style="color:#f92672">-</span>connect<span style="color:#f92672">-</span>retry <span style="color:#f92672">=</span> <span style="color:#ae81ff">60</span>
 
-<pre><code class="language-mysql">server-id = 2
-master-host = master_ip_address
-master-connect-retry = 60
+master<span style="color:#f92672">-</span><span style="color:#66d9ef">user</span> <span style="color:#f92672">=</span> user_name
+master<span style="color:#f92672">-</span>password <span style="color:#f92672">=</span> user_password
+replicate<span style="color:#f92672">-</span>do<span style="color:#f92672">-</span>db <span style="color:#f92672">=</span> your_database
 
-master-user = user_name
-master-password = user_password
-replicate-do-db = your_database
-
-relay-log = slave-relay.log
-relay-log-index = slave-relay-log.index
-</code></pre>
-
-<p>第一行用来设置这个从库的ID，这个ID应该是唯一的。</p>
-
+relay<span style="color:#f92672">-</span>log <span style="color:#f92672">=</span> slave<span style="color:#f92672">-</span>relay.log
+relay<span style="color:#f92672">-</span>log<span style="color:#f92672">-</span><span style="color:#66d9ef">index</span> <span style="color:#f92672">=</span> slave<span style="color:#f92672">-</span>relay<span style="color:#f92672">-</span>log.<span style="color:#66d9ef">index</span>
+</code></pre></div><p>第一行用来设置这个从库的ID，这个ID应该是唯一的。</p>
 <p>第二行是主库服务器的IP地址。修改这个值为你的主库服务器的IP。</p>
-
 <p>第三行以秒为单位，限制重试的次数。</p>
-
 <p>下面两行是从库的用户名和密码，用来连接主库。</p>
-
 <p>下面的一行设置要复制的数据库的名称。</p>
-
 <p>最后两行设置<code>relay-log</code>和<code>relay-log-index</code>两个文件的名称。</p>
-
 <p>确保<code>skip-networking</code>没有开启，重启从库服务器。</p>
-
 <p><strong>向从库复制数据</strong></p>
-
 <p>如果数据不断的被添加到主库，没有就必须要限制主库数据库的访问，避免任何东西添加到主库中。这可以通过在主库中执行下面的命令实现：</p>
-
-<pre><code class="language-mysql">FLUSH TABLES WITH READ LOCK;
-</code></pre>
-
-<p>如果没有数据添加到主库，你可以省略掉上面的操作。</p>
-
+<pre><code class="language- mysql" data-lang=" mysql">FLUSH TABLES WITH READ LOCK;
+</code></pre><p>如果没有数据添加到主库，你可以省略掉上面的操作。</p>
 <p>我们使用<code>mysqldump</code>来备份主库上面的数据。</p>
-
-<pre><code class="language-mysql">mysqldump your_database -u root -p &gt; D://Backup/backup.sql;
-</code></pre>
-
-<p>根据你的配置修改上面代码中的<code>your_database</code>和备份文件路径。你现在在指定的路径下有<code>backup.sql</code>的文件。如果从库中没有这个数据库，使用下面的命令创建这个数据库：</p>
-
-<pre><code class="language-mysql">CREATE DATABASE `your_database`;
-</code></pre>
-
-<p>现在我们需要把备份数据导入到从库中：</p>
-
-<pre><code class="language-mysql">mysql -u root -p your_database &lt;D://Backup/backup.sql
----&gt;修改 `your_database` and 备份文件目录
-</code></pre>
-
-<p><strong>开始复制</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqldump your_database <span style="color:#f92672">-</span>u root <span style="color:#f92672">-</span>p <span style="color:#f92672">&gt;</span> D:<span style="color:#f92672">//</span>Backup<span style="color:#f92672">/</span>backup.<span style="color:#66d9ef">sql</span>;
+</code></pre></div><p>根据你的配置修改上面代码中的<code>your_database</code>和备份文件路径。你现在在指定的路径下有<code>backup.sql</code>的文件。如果从库中没有这个数据库，使用下面的命令创建这个数据库：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">DATABASE</span> <span style="color:#f92672">`</span>your_database<span style="color:#f92672">`</span>;
+</code></pre></div><p>现在我们需要把备份数据导入到从库中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql <span style="color:#f92672">-</span>u root <span style="color:#f92672">-</span>p your_database <span style="color:#f92672">&lt;</span>D:<span style="color:#f92672">//</span>Backup<span style="color:#f92672">/</span>backup.<span style="color:#66d9ef">sql</span>
+<span style="color:#f92672">---&gt;</span><span style="color:#960050;background-color:#1e0010">修改</span> <span style="color:#f92672">`</span>your_database<span style="color:#f92672">`</span> <span style="color:#66d9ef">and</span> <span style="color:#960050;background-color:#1e0010">备份文件目录</span>
+</code></pre></div><p><strong>开始复制</strong></p>
 <p>要开启复制，我们需要找到主库中的log文件名称和位置。我们在主库执行下面的命令：</p>
-
 <pre><code>SHOW MASTER STATUS;
-</code></pre>
-
-<p>将会获得下面的输出内容：</p>
-
-<pre><code class="language-mysql">+---------------------+----------+-------------------------------+------------------+
-| File                | Position | Binlog_Do_DB                  | Binlog_Ignore_DB |
-+---------------------+----------+-------------------------------+------------------+
-| mysql-bin.000001    | 130      | your_database                 |                  |
-+---------------------+----------+-------------------------------+------------------+
-</code></pre>
-
-<p>在从库执行下面的命令：</p>
-
-<pre><code class="language-mysql">SLAVE STOP;
-CHANGE MASTER TO MASTER_HOST='master_ip_address', MASTER_USER='user_name', MASTER_PASSWORD='user_password', MASTER_LOG_FILE='mysql-bin.000001', MASTER_LOG_POS=130; 
+</code></pre><p>将会获得下面的输出内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#f92672">+---------------------+----------+-------------------------------+------------------+</span>
+<span style="color:#f92672">|</span> File                <span style="color:#f92672">|</span> Position <span style="color:#f92672">|</span> Binlog_Do_DB                  <span style="color:#f92672">|</span> Binlog_Ignore_DB <span style="color:#f92672">|</span>
+<span style="color:#f92672">+---------------------+----------+-------------------------------+------------------+</span>
+<span style="color:#f92672">|</span> mysql<span style="color:#f92672">-</span>bin.<span style="color:#ae81ff">000001</span>    <span style="color:#f92672">|</span> <span style="color:#ae81ff">130</span>      <span style="color:#f92672">|</span> your_database                 <span style="color:#f92672">|</span>                  <span style="color:#f92672">|</span>
+<span style="color:#f92672">+---------------------+----------+-------------------------------+------------------+</span>
+</code></pre></div><p>在从库执行下面的命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">SLAVE STOP;
+<span style="color:#66d9ef">CHANGE</span> MASTER <span style="color:#66d9ef">TO</span> MASTER_HOST<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;master_ip_address&#39;</span>, MASTER_USER<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_name&#39;</span>, MASTER_PASSWORD<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;user_password&#39;</span>, MASTER_LOG_FILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;mysql-bin.000001&#39;</span>, MASTER_LOG_POS<span style="color:#f92672">=</span><span style="color:#ae81ff">130</span>; 
 SLAVE START;
-</code></pre>
-
-<p>首先我们停止从库。然后我们告诉从库从哪里寻找主库日志文件。对于<code>MASTER_LOG_FILE</code>和<code>MASTER_LOG_POS</code>的值，从我们在主库中执行<code>SHOW MASTER STATUS</code>的结果中查找。</p>
-
+</code></pre></div><p>首先我们停止从库。然后我们告诉从库从哪里寻找主库日志文件。对于<code>MASTER_LOG_FILE</code>和<code>MASTER_LOG_POS</code>的值，从我们在主库中执行<code>SHOW MASTER STATUS</code>的结果中查找。</p>
 <p>你按照自己的配置修改上面代码中的IP地址，用户名和密码。</p>
-
 <p>从库现在等待中。我们可以在从库中执行下面的命令查看从库的状态：</p>
-
-<pre><code class="language-mysql">SHOW SLAVE STATUS;
-</code></pre>
-
-<p>如果前面你在主库中执行了<code>FLUSH TABLES WITH READ LOCK</code>命令，现在执行下面的命令解锁：</p>
-
-<pre><code class="language-mysql">UNLOCK TABLES;
-</code></pre>
-
-<p>现在主库执行的每个操作都会写入到日志中，从库会监控主库的日志文件。一旦主库日志文件做了修改，从库将会同步修改操作。</p>
-
+<pre><code class="language- mysql" data-lang=" mysql">SHOW SLAVE STATUS;
+</code></pre><p>如果前面你在主库中执行了<code>FLUSH TABLES WITH READ LOCK</code>命令，现在执行下面的命令解锁：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UNLOCK</span> <span style="color:#66d9ef">TABLES</span>;
+</code></pre></div><p>现在主库执行的每个操作都会写入到日志中，从库会监控主库的日志文件。一旦主库日志文件做了修改，从库将会同步修改操作。</p>
 <h3 id="2-复制错误">2. 复制错误</h3>
-
 <p>当在slave上运行查询时出现错误时，mysql会自动停止复制以识别问题并进行修复。这主要是因为事件导致了重复的键或找不到行，并且无法更新或删除。虽然不建议这样做，但你也可以跳过这些错误。</p>
-
 <p>要跳过从库中挂起的一个查询，使用下面的语法：</p>
-
-<pre><code class="language-mysql">SET GLOBAL sql_slave_skip_counter = N;
-</code></pre>
-
-<p>这个语句将会跳过主库下N次的操作。这个语句只有在从库线程没有执行的情况下才有效。否则，将会产生一个错误：</p>
-
-<pre><code class="language-mysql">STOP SLAVE;
-SET GLOBAL sql_slave_skip_counter=1; 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> GLOBAL sql_slave_skip_counter <span style="color:#f92672">=</span> N;
+</code></pre></div><p>这个语句将会跳过主库下N次的操作。这个语句只有在从库线程没有执行的情况下才有效。否则，将会产生一个错误：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">STOP SLAVE;
+<span style="color:#66d9ef">SET</span> GLOBAL sql_slave_skip_counter<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>; 
 START SLAVE;
-</code></pre>
-
-<p>在一些情况下，这是有用的。如果这个语句是事务中的一部分，这将会更加复杂，跳过产生错误的语句将会导致整个事务被跳过。</p>
-
+</code></pre></div><p>在一些情况下，这是有用的。如果这个语句是事务中的一部分，这将会更加复杂，跳过产生错误的语句将会导致整个事务被跳过。</p>
 <p>如果你想跳过包含相同错误码的更多的查询，并且你确定跳过这些错误不会导致主从不一致的问题，你希望跳过所有这些错误，那么你可以在<code>my.cnf</code>中添加下面一行。</p>
-
 <p>假设你想要跳过重复错误：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#ae81ff">1062</span> <span style="color:#f92672">|</span> Error <span style="color:#e6db74">&#39;Duplicate entry &#39;</span>xyz<span style="color:#e6db74">&#39; for key 1&#39;</span> <span style="color:#66d9ef">on</span> query
+</code></pre></div><p>就在<code>my.cnf</code>中添加下面一行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">slave<span style="color:#f92672">-</span>skip<span style="color:#f92672">-</span>errors <span style="color:#f92672">=</span> <span style="color:#ae81ff">1062</span>
+</code></pre></div><p>你可以跳过其他类型或者所有类型的错误，但是需要确保跳过这些错误不会导致主从不一致。下面是语法和例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">slave<span style="color:#f92672">-</span>skip<span style="color:#f92672">-</span>errors<span style="color:#f92672">=</span>[err_code1,err_code2,...<span style="color:#f92672">|</span><span style="color:#66d9ef">all</span>]
 
-<pre><code class="language-mysql">1062 | Error 'Duplicate entry 'xyz' for key 1' on query
-</code></pre>
-
-<p>就在<code>my.cnf</code>中添加下面一行：</p>
-
-<pre><code class="language-mysql">slave-skip-errors = 1062
-</code></pre>
-
-<p>你可以跳过其他类型或者所有类型的错误，但是需要确保跳过这些错误不会导致主从不一致。下面是语法和例子：</p>
-
-<pre><code class="language-mysql">slave-skip-errors=[err_code1,err_code2,...|all]
-
-slave-skip-errors=1062,1053 
-slave-skip-errors=all 
-slave-skip-errors=ddl_exist_errors
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+slave<span style="color:#f92672">-</span>skip<span style="color:#f92672">-</span>errors<span style="color:#f92672">=</span><span style="color:#ae81ff">1062</span>,<span style="color:#ae81ff">1053</span> 
+slave<span style="color:#f92672">-</span>skip<span style="color:#f92672">-</span>errors<span style="color:#f92672">=</span><span style="color:#66d9ef">all</span> 
+slave<span style="color:#f92672">-</span>skip<span style="color:#f92672">-</span>errors<span style="color:#f92672">=</span>ddl_exist_errors
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -436,6 +357,12 @@ slave-skip-errors=ddl_exist_errors
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

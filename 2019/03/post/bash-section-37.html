@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,77 +187,48 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#任务管理">任务管理</a>
-<ul>
-<li><a href="#显示后台进程">显示后台进程</a></li>
-<li><a href="#从后台取一个进程到前台">从后台取一个进程到前台</a></li>
-<li><a href="#重启以停止的命令">重启以停止的命令</a></li>
-<li><a href="#运行后台命令">运行后台命令</a></li>
-<li><a href="#终止一个前台进程">终止一个前台进程</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#任务管理">任务管理</a>
+      <ul>
+        <li><a href="#显示后台进程">显示后台进程</a></li>
+        <li><a href="#从后台取一个进程到前台">从后台取一个进程到前台</a></li>
+        <li><a href="#重启以停止的命令">重启以停止的命令</a></li>
+        <li><a href="#运行后台命令">运行后台命令</a></li>
+        <li><a href="#终止一个前台进程">终止一个前台进程</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="任务管理">任务管理</h2>
-
+        		<h2 id="任务管理">任务管理</h2>
 <h3 id="显示后台进程">显示后台进程</h3>
-
 <pre><code>$ jobs
 [1]  Running   sleep 500 &amp; (wd: ~)
 [2]- Running   sleep 600 &amp; (wd: ~)
 [3]+ Running   ./Fritzing &amp;
-</code></pre>
-
-<p>第一个字段是任务的id。<code>+</code>和<code>-</code>表示当前任务结束时的默认任务和下一个候选任务。当在没有任何参数的情况下使用fg或bg命令时，将使用默认作业。</p>
-
+</code></pre><p>第一个字段是任务的id。<code>+</code>和<code>-</code>表示当前任务结束时的默认任务和下一个候选任务。当在没有任何参数的情况下使用fg或bg命令时，将使用默认作业。</p>
 <p>第二个字段是当前任务的状态。第三个字段时用来启动这个进程的命令。</p>
-
 <p>最后一个字段（wd：~）表示sleep命令是从工作目录（home）启动的。</p>
-
 <h3 id="从后台取一个进程到前台">从后台取一个进程到前台</h3>
-
 <pre><code> $ fg %2 
  sleep 600
-</code></pre>
-
-<p><code>%2</code>意味着第2个进程。如果fg命令没有带参数，将会把最后一个命令取到前台。</p>
-
+</code></pre><p><code>%2</code>意味着第2个进程。如果fg命令没有带参数，将会把最后一个命令取到前台。</p>
 <pre><code> $ fg %?sle 
  sleep 500
-</code></pre>
-
-<p><code>?sle</code>意味着取出包含<code>sle</code>的命令。如果有多个后台命令匹配，将会出现一个错误。</p>
-
+</code></pre><p><code>?sle</code>意味着取出包含<code>sle</code>的命令。如果有多个后台命令匹配，将会出现一个错误。</p>
 <h3 id="重启以停止的命令">重启以停止的命令</h3>
-
 <pre><code>$ bg
 [8]+ sleep 600 &amp;
-</code></pre>
-
-<h3 id="运行后台命令">运行后台命令</h3>
-
+</code></pre><h3 id="运行后台命令">运行后台命令</h3>
 <pre><code> $ sleep 500 &amp; 
  [1] 7582
-</code></pre>
-
-<p>把sleep命令放到后台执行。7582就是这个进程的id。</p>
-
+</code></pre><p>把sleep命令放到后台执行。7582就是这个进程的id。</p>
 <h3 id="终止一个前台进程">终止一个前台进程</h3>
-
 <p><code>Ctrl+Z</code>终止前台进程，并放入到后台执行。</p>
-
 <pre><code>$ sleep 600
 ^Z
 [8]+ Stopped sleep 600
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -325,6 +300,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

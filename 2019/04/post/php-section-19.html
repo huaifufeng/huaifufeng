@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,81 +187,48 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#控制结构">控制结构</a>
-<ul>
-<li><a href="#if-else">if else</a>
-<ul>
-<li><a href="#三元运算符是if-else的短语法">三元运算符是if-else的短语法</a></li>
-</ul></li>
-<li><a href="#控制结构备用语法">控制结构备用语法</a></li>
-<li><a href="#while">while</a></li>
-<li><a href="#do-while">do-while</a></li>
-<li><a href="#goto">goto</a></li>
-<li><a href="#declare">declare</a></li>
-<li><a href="#include-require">include&amp;require</a>
-<ul>
-<li><a href="#require">require</a></li>
-<li><a href="#include">include</a></li>
-</ul></li>
-<li><a href="#return">return</a></li>
-<li><a href="#for">for</a></li>
-<li><a href="#foreach">foreach</a></li>
-<li><a href="#if-elseif-else">if elseif else</a>
-<ul>
-<li><a href="#elseif">elseif</a></li>
-<li><a href="#多个elseif语句">多个elseif语句</a></li>
-</ul></li>
-<li><a href="#if">if</a></li>
-<li><a href="#switch">switch</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#控制结构">控制结构</a>
+      <ul>
+        <li><a href="#if-else">if else</a></li>
+        <li><a href="#控制结构备用语法">控制结构备用语法</a></li>
+        <li><a href="#while">while</a></li>
+        <li><a href="#do-while">do-while</a></li>
+        <li><a href="#goto">goto</a></li>
+        <li><a href="#declare">declare</a></li>
+        <li><a href="#includerequire">include&amp;require</a></li>
+        <li><a href="#return">return</a></li>
+        <li><a href="#for">for</a></li>
+        <li><a href="#foreach">foreach</a></li>
+        <li><a href="#if-elseif-else">if elseif else</a></li>
+        <li><a href="#if">if</a></li>
+        <li><a href="#switch">switch</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="控制结构">控制结构</h2>
-
+        		<h2 id="控制结构">控制结构</h2>
 <h3 id="if-else">if else</h3>
-
 <p><code>if</code>语句允许当满足条件时，执行一段代码。当你想条件不满足时执行另外的代码可以使用<code>if else</code>。</p>
-
 <pre><code>if ($a &gt; $b) {
     echo &quot;a is greater than b&quot;;
 } else {
     echo &quot;a is not greater than b&quot;;
 }
-</code></pre>
-
-<p>查看<a href="https://php.net/manual/zh/control-structures.else.php">PHP手册</a>。</p>
-
+</code></pre><p>查看<a href="https://php.net/manual/zh/control-structures.else.php">PHP手册</a>。</p>
 <h4 id="三元运算符是if-else的短语法">三元运算符是if-else的短语法</h4>
-
 <p><a href="https://php.net/manual/zh/language.operators.comparison.php#language.operators.comparison.ternary">三元预算符</a>根据条件是true还是false来执行一些条件。这是一个比较预算符，通常用来将if-else语句变成简单的格式。这允许快速测试一个条件，然后通常用来替换多行的if语句，让你的代码更加紧凑。</p>
-
 <p>下面就是一个三元运算符的例子，这里<code>$a=1,$b=2</code>:</p>
-
 <pre><code>echo ($a &gt; $b) ? &quot;a is greated than b&quot; : &quot;a is not greater than b&quot;;
-</code></pre>
-
-<p>输出：<code>a is not greater than b</code></p>
-
+</code></pre><p>输出：<code>a is not greater than b</code></p>
 <h3 id="控制结构备用语法">控制结构备用语法</h3>
-
 <p>PHP提供了控制结构备用的语法：<code>if while for foreach switch</code>。</p>
-
 <p>和普通的语法相比，不同的地方在于：这里使用<code>:</code>来代替开始花括号，使用<code>endif; endwhile; endfor; endforeach; endswitch;</code>来代替结束花括号。有关各个示例，请参阅有关控制结构的备用语法的主题。</p>
-
 <pre><code>if ($a == 42):
     echo &quot;The answer to life, the universe and everything is 42.&quot;;
 endif;
-</code></pre>
-
-<p>多个elseif语句使用短语法：</p>
-
+</code></pre><p>多个elseif语句使用短语法：</p>
 <pre><code>if ($a == 5):
     echo &quot;a equals 5&quot;;
 elseif ($a == 6):
@@ -265,211 +236,126 @@ elseif ($a == 6):
 else:
     echo &quot;a is neither 5 nor 6&quot;;
 endif;
-</code></pre>
-
-<p>PHP手册：<a href="https://www.php.net/manual/zh/control-structures.alternative-syntax.php">控制结构备用语法</a>。</p>
-
+</code></pre><p>PHP手册：<a href="https://www.php.net/manual/zh/control-structures.alternative-syntax.php">控制结构备用语法</a>。</p>
 <h3 id="while">while</h3>
-
 <p>当指定的条件为真时，就循环处理代码块。</p>
-
 <pre><code>$i = 1;
 while ($i &lt; 10) {
     echo $i;
     $i++; 
 }
-</code></pre>
-
-<p>将会输出：</p>
-
+</code></pre><p>将会输出：</p>
 <pre><code>123456789
-</code></pre>
-
-<p>更详细的信息，查看循环那部分内容。</p>
-
+</code></pre><p>更详细的信息，查看循环那部分内容。</p>
 <h3 id="do-while">do-while</h3>
-
 <p><code>do-while</code>首先执行一遍代码块，然后根据指定条件是不是true来决定是否执行：</p>
-
 <pre><code>$i = 0; do {
 $i++;
     echo $i;
 } while ($i &lt; 10);
 Output: `12345678910`
-</code></pre>
-
-<h3 id="goto">goto</h3>
-
+</code></pre><h3 id="goto">goto</h3>
 <p>PHP5.3开始提供了goto操作符，允许跳转到程序另外的部分。</p>
-
 <p>goto的使用方法就是<code>goto MyLabel</code>。</p>
-
 <p>想要跳转的地方，需要使用<code>MyLabel</code>标记。</p>
-
 <p>下面的例子会输出<code>Hello World!</code>。</p>
-
 <pre><code>&lt;?php
 goto MyLabel:
 echo &quot;This text will be skipped, because of the jump.&quot;;
 
 MyLabel:
 echo 'Hello World!';
-</code></pre>
-
-<h3 id="declare">declare</h3>
-
+</code></pre><h3 id="declare">declare</h3>
 <p>declare用于为代码块设置执行指令。</p>
-
 <p>下面是有效的指令：</p>
-
 <ul>
 <li><a href="https://php.net/manual/zh/control-structures.declare.php#control-structures.declare.ticks">ticks</a></li>
 <li><a href="https://php.net/manual/zh/control-structures.declare.php#control-structures.declare.encoding">encoding</a></li>
 <li><a href="https://php.net/manual/zh/functions.arguments.php#functions.arguments.type-declaration.strict">strict_types</a></li>
 </ul>
-
 <p>例如，设置ticks为1：</p>
-
 <pre><code>declare(ticks=1);
-</code></pre>
-
-<p>想要启动严格模式，就使用<code>declare</code>语句开启严格模式<code>strict_types</code>。</p>
-
+</code></pre><p>想要启动严格模式，就使用<code>declare</code>语句开启严格模式<code>strict_types</code>。</p>
 <pre><code>declare(strict_types);
-</code></pre>
-
-<h3 id="include-require">include&amp;require</h3>
-
+</code></pre><h3 id="includerequire">include&amp;require</h3>
 <h4 id="require">require</h4>
-
 <p><code>require</code>和<code>include</code>是相似的，除了它会产生一个<code>E_COMPLIE_ERROR</code>级别的错误。当<code>require</code>失败的时候，将会中断脚本的执行。当<code>include</code>失败的时候，不会中断脚本的执行，会报一个<code>E_WARING</code>级别的错误。</p>
-
 <pre><code>require 'file.php';
-</code></pre>
-
-<p>PHP手册：<a href="https://www.php.net/manual/zh/function.require.php">require</a></p>
-
+</code></pre><p>PHP手册：<a href="https://www.php.net/manual/zh/function.require.php">require</a></p>
 <h4 id="include">include</h4>
-
 <p><code>include</code>包含并执行一个文件。</p>
-
 <blockquote>
 <p>./variables.php</p>
 </blockquote>
-
 <pre><code>$a = 'Hello World!';
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>./main.php</p>
 </blockquote>
-
 <pre><code>include 'variables.php';
 echo $a;
 //输出：Hello World
-</code></pre>
-
-<p>要小心这个，因为这将造成代码异味。因为包含文件将会改变变量范围内的变量数量和内容。</p>
-
+</code></pre><p>要小心这个，因为这将造成代码异味。因为包含文件将会改变变量范围内的变量数量和内容。</p>
 <p>你也可以包含返回值的文件。这在处理配置文件时非常有用。</p>
-
 <blockquote>
 <p>configuration.php</p>
 </blockquote>
-
 <pre><code>&lt;?php
 return [
     'dbname' =&gt; 'my db',
     'user' =&gt; 'admin',
     'pass' =&gt; 'password'
 ];
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>main.php</p>
 </blockquote>
-
 <pre><code>&lt;?php
 $config = include &quot;configuration.php&quot;;
-</code></pre>
-
-<p>这种方式就会避免包含文件引入变量或修改变量。</p>
-
+</code></pre><p>这种方式就会避免包含文件引入变量或修改变量。</p>
 <p>PHP手册：<a href="https://www.php.net/manual/zh/function.include.php">include</a></p>
-
 <p>如果文件返回一个值的话，<code>require &amp; include</code>也可以用来给变量赋值。例如:</p>
-
 <p>include1.php</p>
-
 <pre><code>&lt;?php  
     $a = &quot;This is to be returned&quot;;
     return $a;
 ?&gt;
-</code></pre>
-
-<p>index.php</p>
-
+</code></pre><p>index.php</p>
 <pre><code> $value = include 'include1.php';
 // Here, $value = &quot;This is to be returned&quot;
-</code></pre>
-
-<h3 id="return">return</h3>
-
+</code></pre><h3 id="return">return</h3>
 <p><code>return</code>语句返回程序的控制给调用函数。</p>
-
 <p>当函数里面使用了<code>return</code>语句，这个函数就结束了。</p>
-
 <pre><code>function returnEndsFunctions() {
    echo 'This is executed';
    return;
    echo 'This is not executed.';
 }
-</code></pre>
-
-<p>当你执行这个函数的时候，将会输出<code>This is executed</code>。</p>
-
+</code></pre><p>当你执行这个函数的时候，将会输出<code>This is executed</code>。</p>
 <p>当函数内部调用<code>return</code>，并且带有参数时，这个函数的执行就结束了，并且将参数返回给调用函数。</p>
-
 <h3 id="for">for</h3>
-
 <p><code>for</code>循环用来循环执行一段代码一定次数，这时候非常有用。</p>
-
 <pre><code>for ($i = 1; $i &lt; 10; $i++) {
     echo $i;
 }
 //输出 123456789
-</code></pre>
-
-<h3 id="foreach">foreach</h3>
-
+</code></pre><h3 id="foreach">foreach</h3>
 <p><code>foreach</code>是语言结构，这可以让你循环数组和对象很简单。</p>
-
 <pre><code>$array = [1, 2, 3];
 foreach ($array as $value) {
     echo $value;
 }
 
 //输出： 1 2 3
-</code></pre>
-
-<p>想要对一个对象使用<code>foreach</code>函数，这个对象必须首先<code>Iterator</code>接口。</p>
-
+</code></pre><p>想要对一个对象使用<code>foreach</code>函数，这个对象必须首先<code>Iterator</code>接口。</p>
 <pre><code>$array = ['color'=&gt;'red'];
 foreach($array as $key =&gt; $value){
     echo $key . ': ' . $value;
 }
 
 //输出 color: red
-</code></pre>
-
-<h3 id="if-elseif-else">if elseif else</h3>
-
+</code></pre><h3 id="if-elseif-else">if elseif else</h3>
 <h4 id="elseif">elseif</h4>
-
 <p><code>elseif</code>是<code>if</code>和<code>else</code>的组合。<code>if</code>语句被扩展在不满足原本if语句的情况下执行不同的语句。但是只有在满足<code>elseif</code>语句的条件时才会执行。</p>
-
 <p>下面的例子会按照条件，返回其中的一个：</p>
-
 <pre><code>if ($a &gt; $b) {
     echo &quot;a is bigger than b&quot;;
 } elseif ($a == $b) {
@@ -477,12 +363,8 @@ foreach($array as $key =&gt; $value){
 } else {
     echo &quot;a is smaller than b&quot;;
 }
-</code></pre>
-
-<h4 id="多个elseif语句">多个elseif语句</h4>
-
+</code></pre><h4 id="多个elseif语句">多个elseif语句</h4>
 <p>一个<code>if</code>语句，你可以使用多个<code>elseif</code>语句：</p>
-
 <pre><code>if ($a == 1) {
     echo &quot;a is One&quot;;
 } elseif ($a == 2) {
@@ -492,27 +374,16 @@ foreach($array as $key =&gt; $value){
 } else {
     echo &quot;a is not One, not Two nor Three&quot;;
 }
-</code></pre>
-
-<h3 id="if">if</h3>
-
+</code></pre><h3 id="if">if</h3>
 <p><code>if</code>语句允许你有条件的执行代码片段：</p>
-
 <pre><code>if ($a &gt; $b) {
   echo &quot;a is bigger than b&quot;;
 }
-</code></pre>
-
-<p>PHP手册：<a href="https://www.php.net/manual/zh/control-structures.if.php">if</a></p>
-
+</code></pre><p>PHP手册：<a href="https://www.php.net/manual/zh/control-structures.if.php">if</a></p>
 <h3 id="switch">switch</h3>
-
 <p><code>switch</code>可以用更少的代码执行和一系列<code>if</code>语句相同的功能。</p>
-
 <p><code>switch</code>语句中值将会被测试，和每一个<code>case</code>语句的值进行比较，匹配到的<code>case</code>语句的代码将会被执行。如果没有匹配到结果，并且<code>default</code>语句存在，就会执行<code>default</code>语句。</p>
-
 <p>每一个<code>case</code>语句和<code>default</code>语句都要使用<code>break</code>结束。这将会中断<code>switch</code>语句的执行，跳过后面的代码。如果<code>break</code>语句被忽略了，下一个<code>case</code>语句将会被执行，哪怕没有匹配。忘记<code>break</code>将会造成不希望的代码的执行，当然这种多个<code>case</code>匹配时很有用。</p>
-
 <pre><code>switch ($colour) {
 case &quot;red&quot;:
     echo &quot;the colour is red&quot;;
@@ -531,10 +402,7 @@ default:
     echo &quot;the colour is something else&quot;;
     break;
 }
-</code></pre>
-
-<p>处理比较固定的值，也可以比较动态的语句(在switch语句提供布尔值，语句表达式返回布尔值)。注意只有第一个匹配的case会输出，所以下面会输出<code>more than 100</code>：</p>
-
+</code></pre><p>处理比较固定的值，也可以比较动态的语句(在switch语句提供布尔值，语句表达式返回布尔值)。注意只有第一个匹配的case会输出，所以下面会输出<code>more than 100</code>：</p>
 <pre><code>$i = 1048; 
 switch (true) { 
 case ($i &gt; 0):
@@ -547,10 +415,7 @@ case ($i &gt; 1000):
     echo &quot;more than 1000&quot;;
     break;
 }
-</code></pre>
-
-<p>这个语句使用弱类型比较，这可能造成问题。查看Switch警告部分。</p>
-
+</code></pre><p>这个语句使用弱类型比较，这可能造成问题。查看Switch警告部分。</p>
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -623,6 +488,12 @@ case ($i &gt; 1000):
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,45 +187,29 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git-reflog">git reflog</a>
-<ul>
-<li><a href="#从坏rebase修复">从坏rebase修复</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git-reflog">git reflog</a>
+      <ul>
+        <li><a href="#从坏rebase修复">从坏rebase修复</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git-reflog">git reflog</h2>
-
+        		<h2 id="git-reflog">git reflog</h2>
 <h3 id="从坏rebase修复">从坏rebase修复</h3>
-
 <p>假设你开启了一个交互rebase：</p>
-
 <pre><code>git rebase --interactive HEAD~20
-</code></pre>
-
-<p>但是你犯了错误，你合并或丢掉了一些你不想要失去的提交。然后完成了rebase操作。想要修复的话，使用<code>git reflog</code>，你可以看到类似下面的内容：</p>
-
+</code></pre><p>但是你犯了错误，你合并或丢掉了一些你不想要失去的提交。然后完成了rebase操作。想要修复的话，使用<code>git reflog</code>，你可以看到类似下面的内容：</p>
 <pre><code>aaaaaaa HEAD@{0} rebase -i (finish): returning to refs/head/master
 bbbbbbb HEAD@{1} rebase -i (squash): Fix parse error
 ...
 ccccccc HEAD@{n} rebase -i (start): checkout HEAD~20
 ddddddd HEAD@{n+1} ...
 ...
-</code></pre>
-
-<p>在这个例子里面，上个提交<code>dddddd</code>或(HEAD@{n+1})是你开始rebase的分支。因此想要恢复这个提交(和所有的父提交，包括那些合并或丢失的)：</p>
-
+</code></pre><p>在这个例子里面，上个提交<code>dddddd</code>或(HEAD@{n+1})是你开始rebase的分支。因此想要恢复这个提交(和所有的父提交，包括那些合并或丢失的)：</p>
 <pre><code>$ git checkout HEAD@{n+1}
-</code></pre>
-
-<p>然后你可以使用下面的命令<code>git checkout -b [branch]</code>来创建一个新分支。</p>
-
+</code></pre><p>然后你可以使用下面的命令<code>git checkout -b [branch]</code>来创建一个新分支。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -294,6 +282,12 @@ ddddddd HEAD@{n+1} ...
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

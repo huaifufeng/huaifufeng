@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,79 +187,51 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#全文搜索">全文搜索</a>
-<ul>
-<li><a href="#1-简单的全文搜索">1. 简单的全文搜索</a></li>
-<li><a href="#2-简单的布尔值搜索">2. 简单的布尔值搜索</a></li>
-<li><a href="#3-多列全文搜索">3. 多列全文搜索</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#全文搜索">全文搜索</a>
+      <ul>
+        <li><a href="#1-简单的全文搜索">1. 简单的全文搜索</a></li>
+        <li><a href="#2-简单的布尔值搜索">2. 简单的布尔值搜索</a></li>
+        <li><a href="#3-多列全文搜索">3. 多列全文搜索</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="全文搜索">全文搜索</h2>
-
+        		<h2 id="全文搜索">全文搜索</h2>
 <p>MySQL提供有全文搜索。它在包含文本的列的表中搜索单词和短语的最佳匹配项。</p>
-
 <h3 id="1-简单的全文搜索">1. 简单的全文搜索</h3>
-
-<pre><code class="language-mysql">SET @searchTerm = 'Database Programming';
-SELECT MATCH (Title) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) SCORE,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>searchTerm <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Database Programming&#39;</span>;
+<span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">MATCH</span> (Title) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> <span style="color:#66d9ef">NATURAL</span> LANGUAGE MODE) SCORE,
     ISBN, Author, Title
-FROM book
-WHERE MATCH (TITLE) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE)
-ORDER BY MATCH (Titile) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) DESC;
-</code></pre>
-
-<p>有一个名叫<code>book</code>的表，这个表里面有<code>ISBN</code>, <code>TITLE</code>, <code>Author</code>这几个列。这个语句搜索匹配到<code>Database Programming</code>的记录。这首先显示匹配最好的记录。</p>
-
+<span style="color:#66d9ef">FROM</span> book
+<span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">MATCH</span> (TITLE) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> <span style="color:#66d9ef">NATURAL</span> LANGUAGE MODE)
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">MATCH</span> (Titile) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> <span style="color:#66d9ef">NATURAL</span> LANGUAGE MODE) <span style="color:#66d9ef">DESC</span>;
+</code></pre></div><p>有一个名叫<code>book</code>的表，这个表里面有<code>ISBN</code>, <code>TITLE</code>, <code>Author</code>这几个列。这个语句搜索匹配到<code>Database Programming</code>的记录。这首先显示匹配最好的记录。</p>
 <p>想要这个正常工作的话，一个<code>Title</code>列的全文索引必须是有效的：</p>
-
-<pre><code class="language-mysql">ALTER TABLE book ADD FULLTEXT INDEX Fulltext_title_index(Title);
-</code></pre>
-
-<h3 id="2-简单的布尔值搜索">2. 简单的布尔值搜索</h3>
-
-<pre><code class="language-mysql">SET  @searchTerm = 'Database Programming =Java';
-SELECT MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE) Score,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> book <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">FULLTEXT</span> <span style="color:#66d9ef">INDEX</span> <span style="color:#a6e22e">Fulltext_title_index</span>(Title);
+</code></pre></div><h3 id="2-简单的布尔值搜索">2. 简单的布尔值搜索</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span>  <span style="color:#f92672">@</span>searchTerm <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Database Programming =Java&#39;</span>;
+<span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">MATCH</span> (Title) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> BOOLEAN MODE) Score,
     ISBN, Author, Title
-FROM book
-WHERE MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE)
-ORDER BY MATCH (Title) AGAINST (@searchTerm IN BOOLEAN MODE) DESC;
-</code></pre>
-
-<p>表名为<code>book</code>的表有<code>ISBN</code>, <code>Title</code>, <code>Author</code>，这将会搜索数据标题中有<code>Database</code>和<code>Programming</code>但是不包含<code>Java</code>的书籍。</p>
-
+<span style="color:#66d9ef">FROM</span> book
+<span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">MATCH</span> (Title) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> BOOLEAN MODE)
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">MATCH</span> (Title) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> BOOLEAN MODE) <span style="color:#66d9ef">DESC</span>;
+</code></pre></div><p>表名为<code>book</code>的表有<code>ISBN</code>, <code>Title</code>, <code>Author</code>，这将会搜索数据标题中有<code>Database</code>和<code>Programming</code>但是不包含<code>Java</code>的书籍。</p>
 <p>想要这个可以工作的话，Title列上面必须有有一个全文索引：</p>
-
-<pre><code class="language-mysql">ALTER TABLE book ADD FULLTEXT INDEX Fulltext_title_index (Title);
-</code></pre>
-
-<h3 id="3-多列全文搜索">3. 多列全文搜索</h3>
-
-<pre><code class="language-mysql">SET  @searchTerm = 'Date Database Programming';
-SELECT MATCH (Title, Author) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) Score,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> book <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">FULLTEXT</span> <span style="color:#66d9ef">INDEX</span> <span style="color:#a6e22e">Fulltext_title_index</span> (Title);
+</code></pre></div><h3 id="3-多列全文搜索">3. 多列全文搜索</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span>  <span style="color:#f92672">@</span>searchTerm <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Date Database Programming&#39;</span>;
+<span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">MATCH</span> (Title, Author) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> <span style="color:#66d9ef">NATURAL</span> LANGUAGE MODE) Score,
     ISBN, Author, Title
-FROM book
-WHERE MATCH (Title, Author) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE)
-ORDER BY MATCH (Title, Author) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) DESC;
-</code></pre>
-
-<p>名字为book的表有<code>ISBN</code>, <code>Title</code>和<code>Author</code>这三个列，这将会查找匹配到<code>Date Database Programming</code>的书籍。这将会显示匹配到的最好的结果。最好匹配结果包括Prof. C.J. Date写的书。</p>
-
+<span style="color:#66d9ef">FROM</span> book
+<span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">MATCH</span> (Title, Author) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> <span style="color:#66d9ef">NATURAL</span> LANGUAGE MODE)
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">MATCH</span> (Title, Author) <span style="color:#a6e22e">AGAINST</span> (<span style="color:#f92672">@</span>searchTerm <span style="color:#66d9ef">IN</span> <span style="color:#66d9ef">NATURAL</span> LANGUAGE MODE) <span style="color:#66d9ef">DESC</span>;
+</code></pre></div><p>名字为book的表有<code>ISBN</code>, <code>Title</code>和<code>Author</code>这三个列，这将会查找匹配到<code>Date Database Programming</code>的书籍。这将会显示匹配到的最好的结果。最好匹配结果包括Prof. C.J. Date写的书。</p>
 <p>(但是，匹配到的其中的一个是<code>The Date Doctor's Guide to Dating : How to Get from First Date to Perfect Mate</code>。这展示了全文搜索的限制：它并不假装理解诸如词类或索引词的含义等事物。)</p>
-
 <p>想要正常执行的话，Title和Author列上的全文索引必须是有效的：</p>
-
-<pre><code class="language-mysql">ALTER TABLE book ADD FULLTEXT INDEX Fulltext_title_author_index (Title, Author);
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> book <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">FULLTEXT</span> <span style="color:#66d9ef">INDEX</span> <span style="color:#a6e22e">Fulltext_title_author_index</span> (Title, Author);
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -327,6 +303,12 @@ ORDER BY MATCH (Title, Author) AGAINST (@searchTerm IN NATURAL LANGUAGE MODE) DE
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

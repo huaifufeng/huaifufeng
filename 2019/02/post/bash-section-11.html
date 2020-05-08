@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,46 +187,31 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#true-false和-命令">true，false和：命令</a>
-<ul>
-<li><a href="#无限循环">无限循环</a></li>
-<li><a href="#函数返回">函数返回</a></li>
-<li><a href="#一直或从不执行的代码">一直或从不执行的代码</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#truefalse和命令">true，false和：命令</a>
+      <ul>
+        <li><a href="#无限循环">无限循环</a></li>
+        <li><a href="#函数返回">函数返回</a></li>
+        <li><a href="#一直或从不执行的代码">一直或从不执行的代码</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="true-false和-命令">true，false和：命令</h2>
-
+        		<h2 id="truefalse和命令">true，false和：命令</h2>
 <h3 id="无限循环">无限循环</h3>
-
 <pre><code>while true; do
     echo ok
 done
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><p>或者</p>
 <pre><code>while :; do
     echo ok
 done
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><p>或者</p>
 <pre><code>until false; do
     echo ok
 done
-</code></pre>
-
-<h3 id="函数返回">函数返回</h3>
-
+</code></pre><h3 id="函数返回">函数返回</h3>
 <pre><code>function positive() {
     return 0
 }
@@ -230,19 +219,14 @@ done
 function negative() {
     return 1
 }
-</code></pre>
-
-<h3 id="一直或从不执行的代码">一直或从不执行的代码</h3>
-
+</code></pre><h3 id="一直或从不执行的代码">一直或从不执行的代码</h3>
 <pre><code>if true; then
     echo Always executed
 fi
 if false; then
     echo Never executed
 fi
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -314,6 +298,12 @@ fi
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

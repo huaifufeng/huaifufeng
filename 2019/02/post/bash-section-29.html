@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,24 +187,18 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#可编程补全">可编程补全</a>
-<ul>
-<li><a href="#函数实现补全">函数实现补全</a></li>
-<li><a href="#选项和文件名的简单补全">选项和文件名的简单补全</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#可编程补全">可编程补全</a>
+      <ul>
+        <li><a href="#函数实现补全">函数实现补全</a></li>
+        <li><a href="#选项和文件名的简单补全">选项和文件名的简单补全</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="可编程补全">可编程补全</h2>
-
+        		<h2 id="可编程补全">可编程补全</h2>
 <h3 id="函数实现补全">函数实现补全</h3>
-
 <pre><code>_mycompletion(){
     local command_name=&quot;$1&quot;
     local current_word=&quot;$2&quot;
@@ -210,18 +208,12 @@
     COMPREPLY==( $(compgen -W 'hello world' -- &quot;$current_word&quot;) )
 }
 complette -F _mycompletion mycommand
-</code></pre>
-
-<p>使用例子：</p>
-
+</code></pre><p>使用例子：</p>
 <pre><code>$ mycommand [TAB][TAB]
 hello world
 $ mycommand h[TAB][TAB]
 $ mycommand hello
-</code></pre>
-
-<h3 id="选项和文件名的简单补全">选项和文件名的简单补全</h3>
-
+</code></pre><h3 id="选项和文件名的简单补全">选项和文件名的简单补全</h3>
 <pre><code># The following shell function will be used to generate completions for 
 # the &quot;nuance_tune&quot; command.
 _nuance_tune_opts ()
@@ -246,9 +238,7 @@ _nuance_tune_opts ()
 
 # The -o parameter tells Bash to process completions as filenames, where applicable.
 complete -o filenames -F _nuance_tune_opts nuance_tune
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -320,6 +310,12 @@ complete -o filenames -F _nuance_tune_opts nuance_tune
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

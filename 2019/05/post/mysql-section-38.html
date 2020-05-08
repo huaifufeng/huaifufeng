@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,96 +187,56 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#配置和调整">配置和调整</a>
-<ul>
-<li><a href="#1-innodb性能">1. InnoDB性能</a></li>
-<li><a href="#2-允许大数据插入的参数">2. 允许大数据插入的参数</a></li>
-<li><a href="#3-增加group-concat的字符串限制">3. 增加group_concat的字符串限制</a></li>
-<li><a href="#4-最小innodb配置项">4. 最小InnoDB配置项</a></li>
-<li><a href="#5-mysql安全加密">5. MySQL安全加密</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#配置和调整">配置和调整</a>
+      <ul>
+        <li><a href="#1-innodb性能">1. InnoDB性能</a></li>
+        <li><a href="#2-允许大数据插入的参数">2. 允许大数据插入的参数</a></li>
+        <li><a href="#3-增加group_concat的字符串限制">3. 增加group_concat的字符串限制</a></li>
+        <li><a href="#4-最小innodb配置项">4. 最小InnoDB配置项</a></li>
+        <li><a href="#5-mysql安全加密">5. MySQL安全加密</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="配置和调整">配置和调整</h2>
-
+        		<h2 id="配置和调整">配置和调整</h2>
 <h3 id="1-innodb性能">1. InnoDB性能</h3>
-
-<p>在my.cnf中有几百个配置项。对于MySQL的&rdquo;普通&rdquo;用户来说，他们并不关心这个。</p>
-
+<p>在my.cnf中有几百个配置项。对于MySQL的&quot;普通&quot;用户来说，他们并不关心这个。</p>
 <p>一旦你的数据库变得重要了，非常建议设置下面的参数：</p>
-
-<pre><code class="language-mysql">innodb_buffer_pool_size
-</code></pre>
-
-<p>这应该被设置为有效RAM的70%(如果你至少有4GB的内存；如果你的内存较小或机器比较老，这个值还有更小一些。)这个配置控制这InnoDB引擎使用的缓存数量。因此这个配置对于InnoDB的性能是非常重要的。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">innodb_buffer_pool_size
+</code></pre></div><p>这应该被设置为有效RAM的70%(如果你至少有4GB的内存；如果你的内存较小或机器比较老，这个值还有更小一些。)这个配置控制这InnoDB引擎使用的缓存数量。因此这个配置对于InnoDB的性能是非常重要的。</p>
 <h3 id="2-允许大数据插入的参数">2. 允许大数据插入的参数</h3>
-
 <p>如果我们需要在一个列中存储图片或视频这种大文件，我们需要修改下面的配置项，用来满足我们应用的需要：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">max_allowed_packet <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>M
 
-<pre><code class="language-mysql">max_allowed_packet = 10M
-
-M is Mb, G in Gb, K in Kb
-</code></pre>
-
-<h3 id="3-增加group-concat的字符串限制">3. 增加group_concat的字符串限制</h3>
-
+M <span style="color:#66d9ef">is</span> Mb, G <span style="color:#66d9ef">in</span> Gb, K <span style="color:#66d9ef">in</span> Kb
+</code></pre></div><h3 id="3-增加group_concat的字符串限制">3. 增加group_concat的字符串限制</h3>
 <p><code>group_concat</code>用来将一个分组的非NULL的值的拼接组合。这个的结果字符串的最大长度可以使用<code>group_concat_max_len</code>选项来控制：</p>
-
-<pre><code class="language-mysql">SET [GLOBAL | SESSION] group_concat_max_len = val;
-</code></pre>
-
-<p>设置变量的<code>GLOBAL</code>模式，将会设置一个永久的值，而设置<code>SESSION</code>模式，将会只在这个这个会话下有效果。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> [GLOBAL <span style="color:#f92672">|</span> SESSION] group_concat_max_len <span style="color:#f92672">=</span> val;
+</code></pre></div><p>设置变量的<code>GLOBAL</code>模式，将会设置一个永久的值，而设置<code>SESSION</code>模式，将会只在这个这个会话下有效果。</p>
 <h3 id="4-最小innodb配置项">4. 最小InnoDB配置项</h3>
-
 <p>这是使用InnoDB表的MySQL服务器的最低配置。使用InnoDB使用查询缓存。删除表或数据时收回硬盘空间。当使用SSD时，刷新是一个冗余的操作(SSD不是连续的)。</p>
-
-<pre><code class="language-mysql">default_storage_engine = InnoDB 
-query_cache_type = 0 
-innodb_file_per_table = 1 
-innodb_flush_neighbors = 0
-</code></pre>
-
-<p><strong>并发</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">default_storage_engine <span style="color:#f92672">=</span> InnoDB 
+query_cache_type <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> 
+innodb_file_per_table <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> 
+innodb_flush_neighbors <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</code></pre></div><p><strong>并发</strong></p>
 <p>通过将<code>innodb_thread_concurrency</code>设置为0，确保我们可以创建超过默认4个线程。这使用InnoDB可以根据最佳执行情况进行设置。</p>
-
-<pre><code class="language-mysql">innodb_thread_concurrency = 0
-innodb_read_io_threads = 64
-innodb_write_io_threads = 64
-</code></pre>
-
-<p><strong>硬盘利用率</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">innodb_thread_concurrency <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+innodb_read_io_threads <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
+innodb_write_io_threads <span style="color:#f92672">=</span> <span style="color:#ae81ff">64</span>
+</code></pre></div><p><strong>硬盘利用率</strong></p>
 <p>设置MySQL的IOPS的容量(平均负载)和最大容量(最大负载)。对于HDD，默认200是可以的。但是现在，对于SSD可以达到数千的IOPS，你可能需要设置这个值。可以运行很多的测试来确定IOPS。如果您运行的是一个专用的mysql服务器，上面的值应该接近这个限制。如果您在同一台机器上运行任何其他服务，则应根据需要进行分配。</p>
-
-<pre><code class="language-mysql">innodb_io_capacity = 2500
-innodb_io_capacity_max = 3000
-</code></pre>
-
-<p><strong>RAM利用率</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">innodb_io_capacity <span style="color:#f92672">=</span> <span style="color:#ae81ff">2500</span>
+innodb_io_capacity_max <span style="color:#f92672">=</span> <span style="color:#ae81ff">3000</span>
+</code></pre></div><p><strong>RAM利用率</strong></p>
 <p>设置MySQL有效的RAM。虽然经验上决定是70%-80%，但是这个依赖于这个实例是否专门用于MySQL，并且有多少可用的RAM。如果你有很多可用的资源，不要浪费RAM（即资源）。</p>
-
-<pre><code class="language-mysql">innodb_buffer_pool_size = 10G
-</code></pre>
-
-<h3 id="5-mysql安全加密">5. MySQL安全加密</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">innodb_buffer_pool_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>G
+</code></pre></div><h3 id="5-mysql安全加密">5. MySQL安全加密</h3>
 <p>默认的加密<code>aes-128-ecb</code>使用的是ECB模式，这个不安全并且不应该在使用了。在配置文件中增加下面的选项：</p>
-
-<pre><code class="language-mysql"> block_encryption_mode = aes-256-cbc
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"> block_encryption_mode <span style="color:#f92672">=</span> aes<span style="color:#f92672">-</span><span style="color:#ae81ff">256</span><span style="color:#f92672">-</span>cbc
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -344,6 +308,12 @@ innodb_io_capacity_max = 3000
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

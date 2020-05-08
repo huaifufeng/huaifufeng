@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,43 +187,29 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#解码url">解码URL</a>
-<ul>
-<li><a href="#简单例子">简单例子</a></li>
-<li><a href="#使用printf解码字符串">使用printf解码字符串</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#解码url">解码URL</a>
+      <ul>
+        <li><a href="#简单例子">简单例子</a></li>
+        <li><a href="#使用printf解码字符串">使用printf解码字符串</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="解码url">解码URL</h2>
-
+        		<h2 id="解码url">解码URL</h2>
 <h3 id="简单例子">简单例子</h3>
-
 <p>编码URL</p>
-
 <blockquote>
 <p>http%3A%2F%2Fwww.foo.com%2Findex.php%3Fid%3Dqwerty</p>
 </blockquote>
-
 <p>使用命令解码URL</p>
-
 <pre><code>echo &quot;http%3A%2F%2Fwww.foo.com%2Findex.php%3Fid%3Dqwerty&quot; | sed -e &quot;s/%\([0-9A-F][0-9A- F]\)/\\\\\x\1/g&quot; | xargs -0 echo -e
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <blockquote>
 <p><a href="http://www.foo.com/index.php?id=qwerty">http://www.foo.com/index.php?id=qwerty</a></p>
 </blockquote>
-
 <h3 id="使用printf解码字符串">使用printf解码字符串</h3>
-
 <pre><code>#!bin/bash
 
 $ string='Question%20- %20%22how%20do%20I%20decode%20a%20percent%20encoded%20string%3F%22%0AAnswer%20%20%20- %20Use%20printf%20%3A)'
@@ -228,9 +218,7 @@ $ printf '%b\n' &quot;${string//%/\\x}&quot;
 # the result
 Question - &quot;how do I decode a percent encoded string?&quot; 
 Answer - Use printf :)
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -302,6 +290,12 @@ Answer - Use printf :)
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,97 +187,54 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#docker部署">Docker部署</a>
-<ul>
-<li><a href="#1-获取php的docker镜像">1. 获取PHP的docker镜像</a></li>
-<li><a href="#2-编写dockerfile">2. 编写dockerfile</a></li>
-<li><a href="#3-创建镜像">3. 创建镜像</a></li>
-<li><a href="#4-启动一个应用容器">4. 启动一个应用容器</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#docker部署">Docker部署</a>
+      <ul>
+        <li><a href="#1-获取php的docker镜像">1. 获取PHP的docker镜像</a></li>
+        <li><a href="#2-编写dockerfile">2. 编写dockerfile</a></li>
+        <li><a href="#3-创建镜像">3. 创建镜像</a></li>
+        <li><a href="#4-启动一个应用容器">4. 启动一个应用容器</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="docker部署">Docker部署</h2>
-
+        		<h2 id="docker部署">Docker部署</h2>
 <p><a href="https://www.docker.com/">Docker</a>是非常出名的容器解决方案，被广泛用来在生产环境部署代码。这让管理和扩展web应用和微服务变得很简单。</p>
-
 <h3 id="1-获取php的docker镜像">1. 获取PHP的docker镜像</h3>
-
 <p>为了在docker上部署应用，首先我们需要充注册获取镜像。</p>
-
-<pre><code class="language-shell">docket pull php
-</code></pre>
-
-<p>这会从官方的php仓库中获取到最新版本的镜像。一般说来，PHP通常用来部署web服务器，所以需要一个包含HTTP服务器的镜像。<code>php:7.0-apache</code>镜像预装了Apache，这让部署变得更加简单。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docket pull php
+</code></pre></div><p>这会从官方的php仓库中获取到最新版本的镜像。一般说来，PHP通常用来部署web服务器，所以需要一个包含HTTP服务器的镜像。<code>php:7.0-apache</code>镜像预装了Apache，这让部署变得更加简单。</p>
 <h3 id="2-编写dockerfile">2. 编写dockerfile</h3>
-
 <p><code>dockerfile</code>用来配置我们构建web应用代码的自定义镜像。在你的项目根目录创建一个新的<code>Dockerfile</code>文件，然后把下面的代码放到文件里面：</p>
-
-<pre><code class="language-dockerfile">FROM php:7.0-apache
-COPY /etc/php/php.ini /usr/local/etc/php/ 
-COPY . /var/www/html/
-EXPOSE 80
-</code></pre>
-
-<p>第一行非常明显，用来描述从哪个镜像来创建一个新的镜像。这里可以修改为其他注册中的指定PHP版本。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> php:7.0-apache</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> /etc/php/php.ini /usr/local/etc/php/ <span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . /var/www/html/<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 80</span><span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><p>第一行非常明显，用来描述从哪个镜像来创建一个新的镜像。这里可以修改为其他注册中的指定PHP版本。</p>
 <p>第二行只是把<code>php.ini</code>文件上传到我们的镜像中。你也可以把这个文件放到其他的自定义的地址。</p>
-
 <p>第三行将当前目录的代码复制到<code>/var/www/html</code>中，这就是我们的项目根目录。记住<code>/var/www/html</code>是在镜像里面的。</p>
-
 <p>最后一行将docker容器的80端口打开。</p>
-
 <p><strong>忽略文件</strong></p>
-
 <p>在一些情况下，你不想在你的服务器上面保存某些文件，就像环境配置文件等等。假设我们有一个环境配置文件<code>.env</code>。为了忽略这个文件，我们在代码根目录的<code>.dockerignore</code>中把这个文件添加进来。</p>
-
 <h3 id="3-创建镜像">3. 创建镜像</h3>
-
 <p>创建镜像对于PHP并没有什么特别的，但是为了构建上面描述的镜像，我们简单的使用：</p>
-
-<pre><code class="language-shell">docker build -t &lt;Image name&gt; .
-</code></pre>
-
-<p>一旦镜像构建了，你可以验证：</p>
-
-<pre><code class="language-shell">docker images
-</code></pre>
-
-<p>这将会列出你系统安装的所有的镜像。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker build -t &lt;Image name&gt; .
+</code></pre></div><p>一旦镜像构建了，你可以验证：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker images
+</code></pre></div><p>这将会列出你系统安装的所有的镜像。</p>
 <h3 id="4-启动一个应用容器">4. 启动一个应用容器</h3>
-
 <p>一旦我们有了一个精选，我们可以启动并运行这个镜像。为了从镜像创建一个<code>容器</code>，使用：</p>
-
 <pre><code>docker run -p 80:80 -d &lt;Image name&gt;
-</code></pre>
-
-<p>在上面的命令中，<code>-p 80:80</code>将会把你服务器的80端口指向到容器的80端口。标识<code>-d</code>说明容器作为后台工作运行。最后指明了哪个镜像用来创建容器。</p>
-
+</code></pre><p>在上面的命令中，<code>-p 80:80</code>将会把你服务器的80端口指向到容器的80端口。标识<code>-d</code>说明容器作为后台工作运行。最后指明了哪个镜像用来创建容器。</p>
 <p><strong>检查容器</strong></p>
-
 <p>为了检查运行的容器，简单的运行：</p>
-
 <pre><code>docker ps
-</code></pre>
-
-<p>这将会列出所有在docker守护进程上运行的容器。</p>
-
+</code></pre><p>这将会列出所有在docker守护进程上运行的容器。</p>
 <p><strong>应用日志</strong></p>
-
 <p>日志对于测试应用是非常重要的。为了检查日志：</p>
-
 <pre><code>docker logs &lt;Container id&gt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -345,6 +306,12 @@ EXPOSE 80
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

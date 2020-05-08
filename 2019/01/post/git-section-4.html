@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,68 +187,41 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#暂存区">暂存区</a>
-<ul>
-<li><a href="#暂存所有文件">暂存所有文件</a></li>
-<li><a href="#取消存储的修改文件">取消存储的修改文件</a></li>
-<li><a href="#添加大片修改">添加大片修改</a></li>
-<li><a href="#交互添加">交互添加</a></li>
-<li><a href="#显示暂存修改">显示暂存修改</a></li>
-<li><a href="#暂存单独文件">暂存单独文件</a></li>
-<li><a href="#存储删除的文件">存储删除的文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#暂存区">暂存区</a>
+      <ul>
+        <li><a href="#暂存所有文件">暂存所有文件</a></li>
+        <li><a href="#取消存储的修改文件">取消存储的修改文件</a></li>
+        <li><a href="#添加大片修改">添加大片修改</a></li>
+        <li><a href="#交互添加">交互添加</a></li>
+        <li><a href="#显示暂存修改">显示暂存修改</a></li>
+        <li><a href="#暂存单独文件">暂存单独文件</a></li>
+        <li><a href="#存储删除的文件">存储删除的文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="暂存区">暂存区</h2>
-
+        		<h2 id="暂存区">暂存区</h2>
 <h3 id="暂存所有文件">暂存所有文件</h3>
-
 <p>想要删除一个远端的分支：</p>
-
 <pre><code>$ git add -A
-</code></pre>
-
-<p>在Git 2.0+之后的版本</p>
-
+</code></pre><p>在Git 2.0+之后的版本</p>
 <pre><code>$ git add .
-</code></pre>
-
-<p>在版本2.x时，<code>git add .</code>命令将会添加当前目录及其子目录下的所有修改的文件。但是在1.x的版本，只会暂存新建或修改的文件，不会暂存删除的文件。</p>
-
+</code></pre><p>在版本2.x时，<code>git add .</code>命令将会添加当前目录及其子目录下的所有修改的文件。但是在1.x的版本，只会暂存新建或修改的文件，不会暂存删除的文件。</p>
 <p>使用<code>git add -A</code>或者<code>git add --all</code>来存储所有修改的文件，不管在哪个版本都是有效的。</p>
-
 <h3 id="取消存储的修改文件">取消存储的修改文件</h3>
-
 <pre><code>$ git reset &lt;filePath&gt;
-</code></pre>
-
-<h3 id="添加大片修改">添加大片修改</h3>
-
+</code></pre><h3 id="添加大片修改">添加大片修改</h3>
 <p>你可以看到大片的选项是怎么被存储的，通过使用patch选项：</p>
-
 <pre><code>$ git add -p
-</code></pre>
-
-<p>或者</p>
-
+</code></pre><p>或者</p>
 <pre><code>$ git add --patch
-</code></pre>
-
-<p>这个命令将会打开一个交互界面，允许你查看修改，并且决定哪些内容去被存储起来：</p>
-
+</code></pre><p>这个命令将会打开一个交互界面，允许你查看修改，并且决定哪些内容去被存储起来：</p>
 <pre><code>Stage this hunk [y,n,q,a,d,/,s,e,?]?
-</code></pre>
-
-<ul>
+</code></pre><ul>
 <li><code>y</code> stage this hunk for the next commit</li>
-<li><code>n</code> do not stage this hunk for the next commit</li>
+<li><code>n </code> do not stage this hunk for the next commit</li>
 <li><code>q</code> quit; do not stage this hunk or any of the remaining hunks</li>
 <li><code>a</code> stage this hunk and all later hunks in the file</li>
 <li><code>d</code> do not stage this hunk or any of the later hunks in the file</li>
@@ -258,24 +235,17 @@
 <li><code>e</code> manually edit the current hunk</li>
 <li><code>?</code> print hunk help</li>
 </ul>
-
 <p>这使得你找到不想提交的修改非常容易。</p>
-
 <p>也可以使用<code>git add --interactive</code>打开这个操作，然后选择<code>p</code></p>
-
 <h3 id="交互添加">交互添加</h3>
-
 <p><code>git add -i</code>或者<code>--iteractive</code>会打开一个交互界面，允许你来选择哪些文件希望放到下一次提交内。你可以添加或移除整个文件的修改，添加未追踪的文件，移除已追踪的文件。也可以只选择一部分修改进行索引，通过：切分修改块，选择一部分模块添加，或者直接编辑diff的结果。许多图形化的GIt工具（git gui）提供了这些功能，这些工具比命令行更加好用一些。</p>
-
 <p>这将是非常有用的：</p>
-
 <ol>
 <li>你已经把所有的修改放到了工作目录内，但是想要把这些修改放到不同的提交里面，而不是单独的一个提交。</li>
-
-<li><p>如果你已经在交互rebase的过程中，想要把数量很多的提交分离开。</p>
-
+<li>如果你已经在交互rebase的过程中，想要把数量很多的提交分离开。</li>
+</ol>
 <pre><code>$ git add -i
-staged      unstaged path
+    staged      unstaged path
 1: unchanged  +4/-4 index.js
 2: +1/-0      nothing package.json
 
@@ -283,59 +253,31 @@ staged      unstaged path
 1: status  2: update    3: revert  4: add untracked
 5: patch   6: diff      7: quit    8: help
 What now&gt;
-</code></pre></li>
-</ol>
-
-<p>上半部分的输出表示，当前的工作区的文件索引分为了追踪文件和为追逐文件两个部分：</p>
-
+</code></pre><p>上半部分的输出表示，当前的工作区的文件索引分为了追踪文件和为追逐文件两个部分：</p>
 <ol>
 <li><code>index.js</code>添加了4行，同时删除了4行。这个文件没有被追踪，并且当前是“未修改”状态。当这个文件变成以追踪状态时，<code>+4/-4</code>将会转移到staged列下，而unstaged列将变成“nothing”。</li>
 <li><code>package.json</code>添加了一行，并且是已追踪的状态。从它被追踪开始没有修改，并且unstaged列现实的是“nothing”。</li>
 </ol>
-
 <p>下半部分显示了你可以进行的操作。可以输出1-8的数字或者s, u, r, a, p, d, q, h的字符：</p>
-
 <p><code>status</code> 显示和上面一样的内容。</p>
-
 <p><code>update</code> 允许你使用另外的语法对已经暂存的提交做进一步的修改。</p>
-
 <p><code>revert</code> 将把暂存的提交的信息变为和HEAD一样。</p>
-
 <p><code>add untracked</code> 允许你把之前没有追踪的文件添加到版本管理中。</p>
-
 <p><code>patch</code> 允许从类似于状态的输出中选择一条路径，以便进一步操作。</p>
-
 <p><code>diff</code> 现在什么内容将被提交。</p>
-
 <p><code>quit</code> 退出这个命令。</p>
-
 <p><code>help</code> 显示使用这个命令的帮助信息。</p>
-
 <h3 id="显示暂存修改">显示暂存修改</h3>
-
 <p>显示等待提交的暂存修改，可以使用：</p>
-
 <pre><code>$ git diff --cached
-</code></pre>
-
-<h3 id="暂存单独文件">暂存单独文件</h3>
-
+</code></pre><h3 id="暂存单独文件">暂存单独文件</h3>
 <p>存储单独的文件可以运行下面的命令：</p>
-
 <pre><code>$ git add &lt;filename&gt;
-</code></pre>
-
-<h3 id="存储删除的文件">存储删除的文件</h3>
-
+</code></pre><h3 id="存储删除的文件">存储删除的文件</h3>
 <pre><code>$ git rm filename
-</code></pre>
-
-<p>删除Git仓库中的文件，但是不删除本地的文件，可以使用<code>--cached</code>选项：</p>
-
+</code></pre><p>删除Git仓库中的文件，但是不删除本地的文件，可以使用<code>--cached</code>选项：</p>
 <pre><code>$ git rm --cached filename
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -407,6 +349,12 @@ What now&gt;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

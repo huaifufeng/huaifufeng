@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,32 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#魔术常量">魔术常量</a>
-<ul>
-<li><a href="#function-和-method-的不同"><code>__FUNCTION__</code>和<code>__METHOD__</code>的不同</a></li>
-<li><a href="#class-get-class-和-get-called-class-的不同"><code>__CLASS__</code>、<code>get_class</code>和<code>get_called_class</code>的不同</a></li>
-<li><a href="#文件和目录常量">文件和目录常量</a>
-<ul>
-<li><a href="#当前文件">当前文件</a></li>
-<li><a href="#当前目录">当前目录</a></li>
-<li><a href="#分隔符">分隔符</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#魔术常量">魔术常量</a>
+      <ul>
+        <li><a href="#__function__和__method__的不同"><code>__FUNCTION__</code>和<code>__METHOD__</code>的不同</a></li>
+        <li><a href="#__class__get_class和get_called_class的不同"><code>__CLASS__</code>、<code>get_class</code>和<code>get_called_class</code>的不同</a></li>
+        <li><a href="#文件和目录常量">文件和目录常量</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="魔术常量">魔术常量</h2>
-
-<h3 id="function-和-method-的不同"><code>__FUNCTION__</code>和<code>__METHOD__</code>的不同</h3>
-
+        		<h2 id="魔术常量">魔术常量</h2>
+<h3 id="__function__和__method__的不同"><code>__FUNCTION__</code>和<code>__METHOD__</code>的不同</h3>
 <p><code>__FUNCTION__</code>只返回函数的名称，<code>__METHOD__</code>返回带有类名的函数名称：</p>
-
 <pre><code>&lt;?php
 class trick {
     public function doit() {
@@ -222,14 +214,9 @@ class trick {
 $obj = new trick();
 $obj-&gt;doit(); // Outputs: doit 
 $obj-&gt;doitagain(); // Outputs: trick::doitagain
-</code></pre>
-
-<h3 id="class-get-class-和-get-called-class-的不同"><code>__CLASS__</code>、<code>get_class</code>和<code>get_called_class</code>的不同</h3>
-
+</code></pre><h3 id="__class__get_class和get_called_class的不同"><code>__CLASS__</code>、<code>get_class</code>和<code>get_called_class</code>的不同</h3>
 <p><code>__CLASS__</code>和<code>get_class</code>没有参数情况下的结果一样，都是这两者定义所在的类的名称(调用这个常量或方法的地方)。</p>
-
 <p>相反，<code>get_class($this)</code>和<code>get_called_class()</code>函数都会返回实际调用的类的名称。</p>
-
 <pre><code>&lt;?php
 class Definition_Class {
     public function say(){
@@ -248,61 +235,39 @@ $c-&gt;say();
 // get_called_class() value: Actual_Class 
 // get_class($this) value: Actual_Class
 // get_class() value: Definition_Class
-</code></pre>
-
-<h3 id="文件和目录常量">文件和目录常量</h3>
-
+</code></pre><h3 id="文件和目录常量">文件和目录常量</h3>
 <h4 id="当前文件">当前文件</h4>
-
 <p>你可以使用<code>__FILE__</code>魔术常量活动当前PHP文件的路径(绝对路径)。这经常被用来打日志或调试代码。</p>
-
 <pre><code>echo &quot;We are in the file:&quot; , __FILE__ , &quot;\n&quot;;
-</code></pre>
-
-<h4 id="当前目录">当前目录</h4>
-
+</code></pre><h4 id="当前目录">当前目录</h4>
 <p>获取当前文件所在目录的绝对路径使用<code>__DIR__</code>魔术常量。</p>
-
 <pre><code>echo &quot;Our script is located in the:&quot; , __DIR__ , &quot;\n&quot;;
-</code></pre>
-
-<p>获取当前文件所在目录的绝对路径也可以使用<code>dirname(__FILE__)</code>:</p>
-
+</code></pre><p>获取当前文件所在目录的绝对路径也可以使用<code>dirname(__FILE__)</code>:</p>
 <pre><code>echo &quot;Our script is located in the:&quot; , dirname(__FILE__) , &quot;\n&quot;;
-</code></pre>
-
-<p>获取当前目录经常被PHP框架用来设置基目录：</p>
-
+</code></pre><p>获取当前目录经常被PHP框架用来设置基目录：</p>
 <pre><code>// index.php of the framework
 define(BASEDIR, __DIR__); // using magic constant to define normal constant
-</code></pre>
-
-<pre><code>// somefile.php looks for views:
+</code></pre><pre><code>// somefile.php looks for views:
 $view = 'page';
 $viewFile = BASEDIR . '/views/' . $view;
-</code></pre>
-
-<h4 id="分隔符">分隔符</h4>
-
+</code></pre><h4 id="分隔符">分隔符</h4>
 <blockquote>
 <p>Windows系统识别/，因此在解析路径时可以使用<code>DIRECTORY_SEPARATOR</code></p>
 </blockquote>
-
 <p>除了魔术常量之外，PHP也提供了固定的常量来处理路径：</p>
-
 <ul>
-<li><p><code>DIRECTORY_SEPARATOR</code>是用在路径中分割目录地址的。在*nix系统中是<code>/</code>，在Windows中是<code>/</code>。例子可以像下面这样重写</p></li>
-
-<li><pre><code>$view = 'page';
+<li>
+<p><code>DIRECTORY_SEPARATOR</code>是用在路径中分割目录地址的。在*nix系统中是<code>/</code>，在Windows中是<code>/</code>。例子可以像下面这样重写</p>
+</li>
+<li>
+<pre><code>$view = 'page';
 $viewFile = BASEDIR . DIRECTORY_SEPARATOR .'views' . DIRECTORY_SEPARATOR . $view;
-</code></pre>
-
-<ul>
-<li>很少使用<code>PATH_SEPARATOR</code>常量来设置<code>$PATH</code>环境变量中的分隔符。Windows是<code>;</code>，其他的是<code>:</code>。</li>
+</code></pre></li>
+<li>
+<p>很少使用<code>PATH_SEPARATOR</code>常量来设置<code>$PATH</code>环境变量中的分隔符。Windows是<code>;</code>，其他的是<code>:</code>。</p>
+</li>
 </ul>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p></li>
-</ul>
+<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -374,6 +339,12 @@ $viewFile = BASEDIR . DIRECTORY_SEPARATOR .'views' . DIRECTORY_SEPARATOR . $view
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

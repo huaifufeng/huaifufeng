@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,38 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#调试">调试</a>
-<ul>
-<li><a href="#1-输出变量">1. 输出变量</a></li>
-<li><a href="#2-显示错误">2. 显示错误</a></li>
-<li><a href="#3-phpinfo">3. phpinfo()</a></li>
-<li><a href="#4-xdebug">4. Xdebug</a></li>
-<li><a href="#5-错误报告-两者都是用">5. 错误报告(两者都是用)</a></li>
-<li><a href="#6-phpversion">6. phpversion()</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#调试">调试</a>
+      <ul>
+        <li><a href="#1-输出变量">1. 输出变量</a></li>
+        <li><a href="#2-显示错误">2. 显示错误</a></li>
+        <li><a href="#3-phpinfo">3. phpinfo()</a></li>
+        <li><a href="#4-xdebug">4. Xdebug</a></li>
+        <li><a href="#5-错误报告两者都是用">5. 错误报告(两者都是用)</a></li>
+        <li><a href="#6-phpversion">6. phpversion()</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="调试">调试</h2>
-
+        		<h2 id="调试">调试</h2>
 <h3 id="1-输出变量">1. 输出变量</h3>
-
 <p><code>var_dump</code>方法允许你输出变量的内容(类型和值)，来进行调试：</p>
-
 <p><strong>例子：</strong></p>
-
-<pre><code class="language-php">$array = [3.7, &quot;string&quot;, 10, [&quot;hello&quot; =&gt; &quot;world&quot;], false, new DateTime()]; 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = [3.7, &#34;string&#34;, 10, [&#34;hello&#34; =&gt; &#34;world&#34;], false, new DateTime()]; 
 var_dump($array);
-</code></pre>
-
-<p><strong>输出</strong></p>
-
+</code></pre></div><p><strong>输出</strong></p>
 <pre><code>array(6) {
   [0]=&gt;
   float(3.7)
@@ -239,74 +232,44 @@ var_dump($array);
        string(13) &quot;Europe/Berlin&quot;
   } 
 }
-</code></pre>
-
-<h3 id="2-显示错误">2. 显示错误</h3>
-
+</code></pre><h3 id="2-显示错误">2. 显示错误</h3>
 <p>如果你想要PHP在页面中输出运行时错误，你必须启用<code>display_errors</code>，或者是在<code>php.ini</code>文件中或者是使用<code>ini_set</code>方法。</p>
-
 <p>你可以选择显示什么错误，使用<code>error_reporting</code>方法(或者ini文件)，这接收<a href="https://www.php.net/manual/zh/errorfunc.constants.php">E_*常量</a>，<a href="https://www.php.net/manual/zh/language.operators.bitwise.php">二进制位运算符</a>的组合。</p>
-
 <p>PHP可以显示text或HTML格式的错误，依赖于<code>html_errors</code>的配置。</p>
-
 <p><strong>例子：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">ini_set(&#34;display_errors&#34;, true);
+ini_set(&#34;html_errors&#34;, false); // Display errors in plain text
+error_reporting(E_ALL <span style="color:#960050;background-color:#1e0010">&amp;</span> ~E_USER_NOTICE); // Display everything except E_USER_NOTICE
 
-<pre><code class="language-php">ini_set(&quot;display_errors&quot;, true);
-ini_set(&quot;html_errors&quot;, false); // Display errors in plain text
-error_reporting(E_ALL &amp; ~E_USER_NOTICE); // Display everything except E_USER_NOTICE
-
-trigger_error(&quot;Pointless error&quot;); // E_USER_NOTICE 
+trigger_error(&#34;Pointless error&#34;); // E_USER_NOTICE 
 echo $nonexistentVariable; // E_NOTICE
 
 nonexistentFunction(); // E_ERROR
-</code></pre>
-
-<p>文本输出:（HTML的格式不同）</p>
-
+</code></pre></div><p>文本输出:（HTML的格式不同）</p>
 <pre><code>Notice: Undefined variable: nonexistentVariable in /path/to/file.php on line 7
 
 Fatal error: Uncaught Error: Call to undefined function nonexistentFunction() in /path/to/file.php:8
 Stack trace:
 #0 {main}
  thrown in /path/to/file.php on line 8
-</code></pre>
-
-<blockquote>
-<p><strong>注意：</strong>如果在php.ini中禁用了错误报告，并在运行时启用了它，则某些错误（如分析错误）将不会显示，因为它们发生在应用运行时设置之前。</p>
+</code></pre><blockquote>
+<p>**注意：**如果在php.ini中禁用了错误报告，并在运行时启用了它，则某些错误（如分析错误）将不会显示，因为它们发生在应用运行时设置之前。</p>
 </blockquote>
-
 <p>使用<code>error_reporting</code>的常见用法是在开发环境使用<code>E_ALL</code>来开启完整的输出，在生产环境使用<code>display_errors</code>禁止这个错误的显示，因此脚本的内部错误。</p>
-
 <h3 id="3-phpinfo">3. phpinfo()</h3>
-
 <p><strong>警告</strong></p>
-
 <p><code>phpinfo</code>必须只在开发环境使用。永远不要将包含<code>phpinfo</code>的代码放到生产环境。</p>
-
 <p><strong>介绍</strong></p>
-
 <p>尽管如此，这是你理解你正在工作的PHP环境(OS，配置，版本，路径，模块)的有用工具。特别是在追踪错误的时候。这是一个简单的内置函数：</p>
-
-<pre><code class="language-php">phpinfo();
-</code></pre>
-
-<p>它有一个参数<code>$what</code>说明什么是被允许输出的。默认的是<code>INFO_ALL</code>，这将会显示所有的信息，通常用来在开发环境查看PHP的状态。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">phpinfo();
+</code></pre></div><p>它有一个参数<code>$what</code>说明什么是被允许输出的。默认的是<code>INFO_ALL</code>，这将会显示所有的信息，通常用来在开发环境查看PHP的状态。</p>
 <p>你可以传入<a href="https://www.php.net/manual/zh/function.phpinfo.php">INFO_*常量</a>，使用二进制运算符连接。</p>
-
 <p>你可以在浏览器中运行获得更好的显示。也可以在PHP CLI中运行，可以将其导入到管道中，便于查看：</p>
-
 <pre><code>phpinfo(INFO_CONFIGURATION | INFO_ENVIRONMENT | INFO_VARIABLES);
-</code></pre>
-
-<p>这将会显示一个PHP指令列表(<a href="https://www.php.net/manual/zh/function.ini-get.php">ini_get</a>)， 环境(<a href="https://www.php.net/manual/zh/reserved.variables.environment.php">$_ENV</a>)，和<a href="https://www.php.net/manual/zh/language.variables.predefined.php">预定义</a>的变量。</p>
-
+</code></pre><p>这将会显示一个PHP指令列表(<a href="https://www.php.net/manual/zh/function.ini-get.php">ini_get</a>)， 环境(<a href="https://www.php.net/manual/zh/reserved.variables.environment.php">$_ENV</a>)，和<a href="https://www.php.net/manual/zh/language.variables.predefined.php">预定义</a>的变量。</p>
 <h3 id="4-xdebug">4. Xdebug</h3>
-
 <p><a href="https://xdebug.org/">Xdebug</a>是一个提供调试和分析功能的PHP扩展。它使用DBGP调试协议。</p>
-
 <p>这个工具有一些很好的特性：</p>
-
 <ul>
 <li>出错时的堆栈跟踪</li>
 <li>最大嵌套级别保护和时间跟踪</li>
@@ -315,52 +278,32 @@ Stack trace:
 <li>分析信息</li>
 <li>远程调试（为与运行PHP脚本交互的调试器客户端提供接口）</li>
 </ul>
-
 <p>正如你看到的，这个扩展非常适合开发环境。特别是<strong>远程调试</strong>功能特别适合调试你的PHP代码，而不用很多的var_dump代码，并且使用想C++或Java的常规调试流程。</p>
-
 <p>通常安装这个扩展是很简单的：</p>
-
 <pre><code>pecl install xdebug
-</code></pre>
-
-<p>然后在php.ini中添加配置：</p>
-
-<pre><code class="language-ini">zend_extension='/usr/local/php/modules/xdebug.so'
-</code></pre>
-
-<p>更多的你让查看<a href="https://xdebug.org/docs/install">介绍</a>。</p>
-
+</code></pre><p>然后在php.ini中添加配置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">zend_extension</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;/usr/local/php/modules/xdebug.so&#39;</span>
+</code></pre></div><p>更多的你让查看<a href="https://xdebug.org/docs/install">介绍</a>。</p>
 <p>当你使用这个工具的时候，要注意<a href="https://stackoverflow.com/questions/3522182/will-enabling-xdebug-on-a-production-server-make-php-slower/3522356#3522356">Xdebug不适合生产环境</a>。</p>
-
-<h3 id="5-错误报告-两者都是用">5. 错误报告(两者都是用)</h3>
-
-<pre><code class="language-php">// this sets the configuration option for your environment
-ini_set('display_errors', '1');
+<h3 id="5-错误报告两者都是用">5. 错误报告(两者都是用)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// this sets the configuration option for your environment
+ini_set(&#39;display_errors&#39;, &#39;1&#39;);
 
 //-1 will allow all errors to be reported
 error_reporting(-1);
-</code></pre>
-
-<h3 id="6-phpversion">6. phpversion()</h3>
-
+</code></pre></div><h3 id="6-phpversion">6. phpversion()</h3>
 <p><strong>介绍</strong></p>
-
 <p>当使用多个仓库或依赖的时候，通常需要知道当前PHP解析器的版本或者其中一个包的版本。</p>
-
 <p>这个方法接收单独的一个可选的参数，用来表示扩展的名称<code>phpversion('extension')</code>。如果问题中的扩展安装了，这个函数会返回包含版本值的字符串。但是如果扩展没有安装，将会返回<code>FALSE</code>。如果没有提供扩展名，这个函数会返回PHP解析器的版本。</p>
-
 <p><strong>例子</strong></p>
-
-<pre><code class="language-php">print &quot;Current PHP version: &quot; . phpversion(); 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">print &#34;Current PHP version: &#34; . phpversion(); 
 // Current PHP version: 7.0.8
 
-print &quot;Current cURL version: &quot; . phpversion( 'curl' );
+print &#34;Current cURL version: &#34; . phpversion( &#39;curl&#39; );
 // Current cURL version: 7.0.8
 // or
 // false, no printed output if package is missing
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -432,6 +375,12 @@ print &quot;Current cURL version: &quot; . phpversion( 'curl' );
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

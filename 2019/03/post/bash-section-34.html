@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,50 +187,38 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#模式匹配和正则表达式">模式匹配和正则表达式</a>
-<ul>
-<li><a href="#获取字符串正则匹配的内容">获取字符串正则匹配的内容</a></li>
-<li><a href="#glob未匹配时的行为">glob未匹配时的行为</a></li>
-<li><a href="#检查字符串是否匹配正则表达式">检查字符串是否匹配正则表达式</a></li>
-<li><a href="#正则匹配">正则匹配</a></li>
-<li><a href="#glob">*glob</a></li>
-<li><a href="#glob-1">**glob</a></li>
-<li><a href="#glob-2">?glob</a></li>
-<li><a href="#glob-3">[] glob</a></li>
-<li><a href="#匹配隐藏文件">匹配隐藏文件</a></li>
-<li><a href="#不区分大小写匹配">不区分大小写匹配</a></li>
-<li><a href="#扩展glob">扩展glob</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#模式匹配和正则表达式">模式匹配和正则表达式</a>
+      <ul>
+        <li><a href="#获取字符串正则匹配的内容">获取字符串正则匹配的内容</a></li>
+        <li><a href="#glob未匹配时的行为">glob未匹配时的行为</a></li>
+        <li><a href="#检查字符串是否匹配正则表达式">检查字符串是否匹配正则表达式</a></li>
+        <li><a href="#正则匹配">正则匹配</a></li>
+        <li><a href="#glob">*glob</a></li>
+        <li><a href="#glob-1">**glob</a></li>
+        <li><a href="#glob-2">?glob</a></li>
+        <li><a href="#-glob">[] glob</a></li>
+        <li><a href="#匹配隐藏文件">匹配隐藏文件</a></li>
+        <li><a href="#不区分大小写匹配">不区分大小写匹配</a></li>
+        <li><a href="#扩展glob">扩展glob</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="模式匹配和正则表达式">模式匹配和正则表达式</h2>
-
+        		<h2 id="模式匹配和正则表达式">模式匹配和正则表达式</h2>
 <h3 id="获取字符串正则匹配的内容">获取字符串正则匹配的内容</h3>
-
 <pre><code>a='I am a simple string with digits 1234' 
 pat='(.*) ([0-9]+)'
 [[ &quot;$a&quot; =~ $pat ]]
 echo &quot;${BASH_REMATCH[0]}&quot;
 echo &quot;${BASH_REMATCH[1]}&quot; 
 echo &quot;${BASH_REMATCH[2]}&quot;
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>I am a simple string with digits 1234
 I am a simple string with digits
 1234
-</code></pre>
-
-<h3 id="glob未匹配时的行为">glob未匹配时的行为</h3>
-
+</code></pre><h3 id="glob未匹配时的行为">glob未匹配时的行为</h3>
 <pre><code>$ mkdir globbing
 $ cd globbing
 $ mkdir -p folder/{sub,another}folder/content/deepfolder/
@@ -237,79 +229,49 @@ $ shopt -u dotglob
 $ shopt -u nocaseglob
 $ shopt -u extglob
 $ shopt -u globstar
-</code></pre>
-
-<p>在这个例子里面，使用<code>nullglob</code>和<code>failglob</code>时将没有匹配任何内容。无论使用了哪一个，如果没有匹配的时候，bash将会返回glob本身。</p>
-
+</code></pre><p>在这个例子里面，使用<code>nullglob</code>和<code>failglob</code>时将没有匹配任何内容。无论使用了哪一个，如果没有匹配的时候，bash将会返回glob本身。</p>
 <pre><code> $ echo no*match 
  no*match
-</code></pre>
-
-<p>如果<code>nullglob</code>被设置了，那么什么(null)都不会返回：</p>
-
+</code></pre><p>如果<code>nullglob</code>被设置了，那么什么(null)都不会返回：</p>
 <pre><code>$ shopt -s nullglob 
 $ echo no*match
 
 $
-</code></pre>
-
-<p>如果<code>failglob</code>设置了，那么将会返回错误信息：</p>
-
+</code></pre><p>如果<code>failglob</code>设置了，那么将会返回错误信息：</p>
 <pre><code>$ shopt -s failglob
 $ echo no*match
 bash: no match: no*match 
 $
-</code></pre>
-
-<p>注意：当<code>failglob</code>和<code>nullglob</code>都被设置了，<code>failglob</code>选项将会替换<code>nullglob</code>选项，当没有匹配的时候，将会返回一个错误信息。</p>
-
+</code></pre><p>注意：当<code>failglob</code>和<code>nullglob</code>都被设置了，<code>failglob</code>选项将会替换<code>nullglob</code>选项，当没有匹配的时候，将会返回一个错误信息。</p>
 <h3 id="检查字符串是否匹配正则表达式">检查字符串是否匹配正则表达式</h3>
-
 <p>Version&gt;=3.0</p>
-
 <p>检查一个字符串是否存在8个数字：</p>
-
 <pre><code>$ date=20150624
 $ [[ $date =~ ^[0-9]{8}$ ]] &amp;&amp; echo &quot;yes&quot; || echo &quot;no&quot; 
 yes
 $ date=hello
 $ [[ $date =~ ^[0-9]{8}$ ]] &amp;&amp; echo &quot;yes&quot; || echo &quot;no&quot; 
 no
-</code></pre>
-
-<h3 id="正则匹配">正则匹配</h3>
-
+</code></pre><h3 id="正则匹配">正则匹配</h3>
 <pre><code>pat='[^0-9]+([0-9]+)'
 s='I am a string with some digits 1024' 
 [[ $s =~ $pat ]] # $pat must be unquoted
 echo &quot;${BASH_REMATCH[0]}&quot;
 echo &quot;${BASH_REMATCH[1]}&quot;
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>I am a string with some digits 1024
 1024
-</code></pre>
-
-<p>我们也可以不用把正则表达式赋值给一个变量：</p>
-
+</code></pre><p>我们也可以不用把正则表达式赋值给一个变量：</p>
 <pre><code>[[ $s =~ [^0-9]+([0-9]+) ]]
-</code></pre>
-
-<p>解释：</p>
-
+</code></pre><p>解释：</p>
 <ul>
-<li><code>[[ $s =~ $pat ]]</code>执行正则匹配操作</li>
+<li><code>[[ $s =~ $pat ]] </code>执行正则匹配操作</li>
 <li>匹配到的部分存放在名为BASH_REMATCH的数组内</li>
 <li>第0个是所有的匹配结果</li>
 <li>第i个值是第i个匹配到的结果 i=1，2，3&hellip;</li>
 </ul>
-
 <h3 id="glob">*glob</h3>
-
 <p>准备：</p>
-
 <pre><code>$ mkdir globbing
 $ cd globbing
 $ mkdir -p folder/{sub,another}folder/content/deepfolder/
@@ -320,28 +282,17 @@ $ shopt -u dotglob
 $ shopt -u nocaseglob
 $ shopt -u extglob
 $ shopt -u globstar
-</code></pre>
-
-<p>*是最常用的字符。它只匹配任何字符串：</p>
-
+</code></pre><p>*是最常用的字符。它只匹配任何字符串：</p>
 <pre><code>$ echo *acy
 macy stacy tracy
-</code></pre>
-
-<p>只是一个*的话，不会匹配子目录内的文件和目录：</p>
-
+</code></pre><p>只是一个*的话，不会匹配子目录内的文件和目录：</p>
 <pre><code>$ echo *
 emptyfolder folder macy stacy tracy
 $ echo folder/*
 folder/anotherfolder folder/subfolder
-</code></pre>
-
-<h3 id="glob-1">**glob</h3>
-
+</code></pre><h3 id="glob-1">**glob</h3>
 <p>Version&gt;=4.0</p>
-
 <p>准备：</p>
-
 <pre><code>$ mkdir globbing
 $ cd globbing
 $ mkdir -p folder/{sub,another}folder/content/deepfolder/
@@ -352,24 +303,14 @@ $ shopt -u dotglob
 $ shopt -u nocaseglob
 $ shopt -u extglob
 $ shopt -s globstar
-</code></pre>
-
-<p>bash可以把两个*和识别为一个符号。<code>globstar</code>这个选项被设置的话，这个可以匹配子目录内的结果。</p>
-
+</code></pre><p>bash可以把两个*和识别为一个符号。<code>globstar</code>这个选项被设置的话，这个可以匹配子目录内的结果。</p>
 <pre><code>echo **
 emptyfolder folder folder/anotherfolder folder/anotherfolder/content folder/anotherfolder/content/deepfolder folder/anotherfolder/content/deepfolder/file folder/subfolder folder/subfolder/content folder/subfolder/content/deepfolder folder/subfolder/content/deepfolder/file macy stacy tracy
-</code></pre>
-
-<p>**可以使用路径扩展，不管这个路径多么深。下面的例子匹配任何以<code>deep</code>开头的目录或文件，不管嵌套的多么深：</p>
-
+</code></pre><p>**可以使用路径扩展，不管这个路径多么深。下面的例子匹配任何以<code>deep</code>开头的目录或文件，不管嵌套的多么深：</p>
 <pre><code>$ echo **/deep*
 folder/anotherfolder/content/deepfolder folder/subfolder/content/deepfolder
-</code></pre>
-
-<h3 id="glob-2">?glob</h3>
-
+</code></pre><h3 id="glob-2">?glob</h3>
 <p>准备：</p>
-
 <pre><code>$ mkdir globbing
 $ cd globbing
 $ mkdir -p folder/{sub,another}folder/content/deepfolder/
@@ -380,18 +321,12 @@ $ shopt -u dotglob
 $ shopt -u nocaseglob 
 $ shopt -u extglob
 $ shopt -u globstar
-</code></pre>
-
-<p><code>?</code>只会匹配一个字符：</p>
-
+</code></pre><p><code>?</code>只会匹配一个字符：</p>
 <pre><code>$ echo ?acy 
 macy
 $ echo ??acy 
 stacy tracy
-</code></pre>
-
-<h3 id="glob-3">[] glob</h3>
-
+</code></pre><h3 id="-glob">[] glob</h3>
 <pre><code>$ mkdir globbing
 $ cd globbing
 $ mkdir -p folder/{sub,another}folder/content/deepfolder/
@@ -402,40 +337,23 @@ $ shopt -u dotglob
 $ shopt -u nocaseglob
 $ shopt -u extglob
 $ shopt -u globstar
-</code></pre>
-
-<p>如果有需要匹配的指定字符串，可以使用<code>[]</code>。任何<code>[]</code>内的字符只会完全匹配一次。</p>
-
+</code></pre><p>如果有需要匹配的指定字符串，可以使用<code>[]</code>。任何<code>[]</code>内的字符只会完全匹配一次。</p>
 <pre><code>$ echo [m]acy
 macy
 $ echo [st][tr]acy 
 stacy tracy
-</code></pre>
-
-<p><code>[]</code>glob并不仅仅是这样，它还有丰富的功能。它也允许字符和字符类的反向匹配和范围匹配。反向匹配在<code>[</code>后面使用<code>!</code>或<code>^</code>，下面我们匹配<code>stacy</code>:</p>
-
+</code></pre><p><code>[]</code>glob并不仅仅是这样，它还有丰富的功能。它也允许字符和字符类的反向匹配和范围匹配。反向匹配在<code>[</code>后面使用<code>!</code>或<code>^</code>，下面我们匹配<code>stacy</code>:</p>
 <pre><code> $ echo [!t][^r]acy 
  stacy
-</code></pre>
-
-<p>这里我们告诉bash我们想匹配一个文件：不以t开头，并且第二个字符不是r，以acy结尾。</p>
-
+</code></pre><p>这里我们告诉bash我们想匹配一个文件：不以t开头，并且第二个字符不是r，以acy结尾。</p>
 <p>范围匹配使用-分割的两个字符。任何在这两个字符之间的字符都会匹配。例如[r-t]等价于[rst]。</p>
-
 <pre><code> $ echo [r-t][r-t]acy 
  stacy tracy
-</code></pre>
-
-<p>字符类是类似于<code>[:class:]</code>。为了匹配一个包含空格的内容：</p>
-
+</code></pre><p>字符类是类似于<code>[:class:]</code>。为了匹配一个包含空格的内容：</p>
 <pre><code> $ echo *[[:blank:]]* 
  file with space
-</code></pre>
-
-<h3 id="匹配隐藏文件">匹配隐藏文件</h3>
-
+</code></pre><h3 id="匹配隐藏文件">匹配隐藏文件</h3>
 <p>准备：</p>
-
 <pre><code>$ mkdir globbing
 $ cd globbing
 $ mkdir -p folder/{sub,another}folder/content/deepfolder/
@@ -446,17 +364,11 @@ $ shopt -u dotglob
 $ shopt -u nocaseglob
 $ shopt -u extglob
 $ shopt -u globstar
-</code></pre>
-
-<p>Bash内建的选项<code>dotglob</code>允许匹配隐藏的文件和目录：以.开头的文件或目录。</p>
-
+</code></pre><p>Bash内建的选项<code>dotglob</code>允许匹配隐藏的文件和目录：以.开头的文件或目录。</p>
 <pre><code>$ shopt -s dotglob
 $ echo *
 file with space folder .hiddenfile macy stacy tracy
-</code></pre>
-
-<h3 id="不区分大小写匹配">不区分大小写匹配</h3>
-
+</code></pre><h3 id="不区分大小写匹配">不区分大小写匹配</h3>
 <pre><code>$ mkdir globbing
 $ cd globbing
 $ mkdir -p folder/{sub,another}folder/content/deepfolder/
@@ -467,21 +379,14 @@ $ shopt -u dotglob
 $ shopt -u nocaseglob
 $ shopt -u extglob
 $ shopt -u globstar
-</code></pre>
-
-<p>设置了<code>nocaseglob</code>选项，将会进行不区分大小写的匹配：</p>
-
+</code></pre><p>设置了<code>nocaseglob</code>选项，将会进行不区分大小写的匹配：</p>
 <pre><code>$ echo M*
 M*
 $ shopt -s nocaseglob 
 $ echo M*
 macy
-</code></pre>
-
-<h3 id="扩展glob">扩展glob</h3>
-
+</code></pre><h3 id="扩展glob">扩展glob</h3>
 <p>Version&gt;=2.02</p>
-
 <pre><code>$ mkdir globbing
 $ cd globbing
 $ mkdir -p folder/{sub,another}folder/content/deepfolder/
@@ -492,15 +397,9 @@ $ shopt -u dotglob
 $ shopt -u nocaseglob 
 $ shopt -u extglob
 $ shopt -u globstar
-</code></pre>
-
-<p>bash内建的<code>extglob</code>选项可以扩展匹配的功能：</p>
-
+</code></pre><p>bash内建的<code>extglob</code>选项可以扩展匹配的功能：</p>
 <pre><code>shopt -s extglob
-</code></pre>
-
-<p>在扩展模式下，下面的匹配符是有效的：</p>
-
+</code></pre><p>在扩展模式下，下面的匹配符是有效的：</p>
 <ul>
 <li><code>?(pattern-list)</code>匹配0个或1个匹配的结果</li>
 <li><code>*(pattern-list)</code>匹配0个或多个匹配的结果</li>
@@ -508,25 +407,17 @@ $ shopt -u globstar
 <li><code>@(pattern-list)</code>匹配一个匹配的结果</li>
 <li><code>!(pattern-list)</code>匹配除了给定模式的其他结果</li>
 </ul>
-
-<p><code>pattern-list</code>是用<code>|</code>分割的符号：</p>
-
+<p><code> pattern-list</code>是用<code>|</code>分割的符号：</p>
 <pre><code>$ echo *([r-t])acy 
 stacy tracy
 $ echo *([r-t]|m)acy 
 macy stacy tracy
 $ echo ?([a-z])acy 
 macy
-</code></pre>
-
-<p><code>pattern-list</code>本身可以是任何嵌套的扩展字符。在上面的例子中，我们用<code>*(r-t)</code>匹配到了<code>tracy</code>和<code>stacy</code>。扩展的模式也可以被嵌套到<code>!(pattern-list)</code>中，来匹配<code>macy</code></p>
-
+</code></pre><p><code>pattern-list</code>本身可以是任何嵌套的扩展字符。在上面的例子中，我们用<code>*(r-t)</code>匹配到了<code>tracy</code>和<code>stacy</code>。扩展的模式也可以被嵌套到<code>!(pattern-list)</code>中，来匹配<code>macy</code></p>
 <pre><code> $ echo !(*([r-t]))acy 
  macy
-</code></pre>
-
-<p>这匹配任何不以0个或多个<code>r,s,t</code>字符，这样就只有macy匹配了。</p>
-
+</code></pre><p>这匹配任何不以0个或多个<code>r,s,t</code>字符，这样就只有macy匹配了。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -599,6 +490,12 @@ macy
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

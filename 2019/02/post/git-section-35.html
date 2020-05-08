@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,54 +187,37 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#filter-branch修改提交历史">filter-branch修改提交历史</a>
-<ul>
-<li><a href="#修改提交作者">修改提交作者</a></li>
-<li><a href="#修改提交人为提交作者">修改提交人为提交作者</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#filter-branch修改提交历史">filter-branch修改提交历史</a>
+      <ul>
+        <li><a href="#修改提交作者">修改提交作者</a></li>
+        <li><a href="#修改提交人为提交作者">修改提交人为提交作者</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="filter-branch修改提交历史">filter-branch修改提交历史</h2>
-
+        		<h2 id="filter-branch修改提交历史">filter-branch修改提交历史</h2>
 <h3 id="修改提交作者">修改提交作者</h3>
-
 <p>你可以使用环境筛选器修改提交的作者。只需要在修改提交作者的脚本中修改并导出<code>$GIT_AUTHOR_NAME</code>。</p>
-
 <p>创建一个包含下面内容的<code>filter.sh</code>脚本：</p>
-
 <pre><code>if [ &quot;$GIT_AUTHOR_NAME&quot; = &quot;Author to Change From&quot; ]
 then
     export GIT_AUTHOR_NAME=&quot;Author to Change To&quot;
     export GIT_AUTHOR_EMAIL=&quot;email.to.change.to@example.com&quot;
 fi
-</code></pre>
-
-<p>然后在命令行中运行这个命令：</p>
-
+</code></pre><p>然后在命令行中运行这个命令：</p>
 <pre><code>chmod +x ./filter.sh
 git filter-branch --env-filter ./filter.sh
-</code></pre>
-
-<h3 id="修改提交人为提交作者">修改提交人为提交作者</h3>
-
+</code></pre><h3 id="修改提交人为提交作者">修改提交人为提交作者</h3>
 <p>下面的命令修改<code>commit1..commit2</code>之间提交的提交人为提交的作者。</p>
-
 <pre><code>git filter-branch -f --commit-filter \
    'export GIT_COMMITER_NAME=\&quot;$GIT_AUTHOR_NAME\&quot;;
 	export GIT_COMMITER_EMAIL=\&quot;$GIT_AUTHOR_EMAIL\&quot;;
 	export GIT_COMMITER_DATE=\&quot;$GIT_AUTHOR_DATE\&quot;;
 	git commit-tree $@' \
 	-- commit1..commit2
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -302,6 +289,12 @@ git filter-branch --env-filter ./filter.sh
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

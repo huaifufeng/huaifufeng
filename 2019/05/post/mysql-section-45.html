@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,68 +187,47 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#事务">事务</a>
-<ul>
-<li><a href="#1-开启事务">1. 开启事务</a></li>
-<li><a href="#2-commit-rollback-autocommit">2. COMMIT，ROLLBACK，AUTOCOMMIT</a></li>
-<li><a href="#3-jdbc驱动的事务">3. JDBC驱动的事务</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#事务">事务</a>
+      <ul>
+        <li><a href="#1-开启事务">1. 开启事务</a></li>
+        <li><a href="#2-commitrollbackautocommit">2. COMMIT，ROLLBACK，AUTOCOMMIT</a></li>
+        <li><a href="#3-jdbc驱动的事务">3. JDBC驱动的事务</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="事务">事务</h2>
-
+        		<h2 id="事务">事务</h2>
 <h3 id="1-开启事务">1. 开启事务</h3>
-
 <p>一个事务就是一个SQL语句的序列分组，可以包括像<code>select,insert,update或者delete</code>这些超值，然后在一个工作单元中执行。</p>
-
 <p>换句话说，事务只有在分组中的每个操作执行成功的情况下才会完成执行。如果事务中任何一个操作失败了，事务就会失败。</p>
-
 <p>银行事务是用来解释这个的最好例子。假设有两个用户之间的转账操作。要实现这个功能你需要写下面的SQL语句：</p>
-
 <ol>
 <li>首先检查第一个账户请求的数量是不是有效。</li>
 <li>从第一账户中删除请求的数量</li>
 <li>在第二个账户中增加这个金额</li>
 </ol>
-
 <p>如果上面的操作中任何一个操作失败了，就需要返回之前的状态。</p>
-
 <p><strong>ACID：事务的属性</strong></p>
-
 <p>事务有下面四个属性：</p>
-
 <ul>
 <li>原子性：确保工作单元内的所有操作都成功完成；否则事务的操作会在失败时终止，以前的操作都会回滚到以前的状态。</li>
 <li>一致性：确保数据库在成功提交事务时正确更改状态。</li>
 <li>隔离性：使事务能够独立运行并且彼此透明</li>
 <li>持久性：确保提交事务的结果在系统故障时持续存在</li>
 </ul>
-
 <p>事务使用<code>START TRANSACTION</code>或<code>BEGIN WORK</code>来开启，然后使用<code>COMMIT</code>或<code>ROLLBACK</code>语句结束。在这两个语句之间的SQL语句就是事务的代码块。</p>
-
-<pre><code class="language-mysql">START TRANSACTION;
-SET @transAmt = '500';
-SELECT @availableAmt:=ledgerAmt FROM accTable WHERE customerId=1 FOR UPDATE;
-UPDATE accTable SET ledgerAmt=ledgerAmt-@transAmt WHERE customerId=1;
-UPDATE accTable SET ledgerAmt=ledgerAmt+@transAmt WHERE customerId=2;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">START TRANSACTION;
+<span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>transAmt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;500&#39;</span>;
+<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>availableAmt:<span style="color:#f92672">=</span>ledgerAmt <span style="color:#66d9ef">FROM</span> accTable <span style="color:#66d9ef">WHERE</span> customerId<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">FOR</span> <span style="color:#66d9ef">UPDATE</span>;
+<span style="color:#66d9ef">UPDATE</span> accTable <span style="color:#66d9ef">SET</span> ledgerAmt<span style="color:#f92672">=</span>ledgerAmt<span style="color:#f92672">-@</span>transAmt <span style="color:#66d9ef">WHERE</span> customerId<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
+<span style="color:#66d9ef">UPDATE</span> accTable <span style="color:#66d9ef">SET</span> ledgerAmt<span style="color:#f92672">=</span>ledgerAmt<span style="color:#f92672">+@</span>transAmt <span style="color:#66d9ef">WHERE</span> customerId<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>;
 COMMIT;
-</code></pre>
-
-<p>在使用<code>START TRANSACTION</code>语句之后，自动提交操作将会被终止，知道事务结束使用<code>COMMIT</code>或<code>ROLLBACK</code> 操作才会提交这些修改。然后恢复自动提交操作之前单的状态。</p>
-
+</code></pre></div><p>在使用<code>START TRANSACTION</code>语句之后，自动提交操作将会被终止，知道事务结束使用<code>COMMIT</code>或<code>ROLLBACK</code> 操作才会提交这些修改。然后恢复自动提交操作之前单的状态。</p>
 <p><code>FOR UPDATE</code>语句指示(并锁定)事务持续期间的行。</p>
-
 <p>事务没有提交之前，这个事务对其他用户就不是有效的。</p>
-
 <p><strong>事务的一般过程</strong></p>
-
 <ul>
 <li>通过<code>START TRANSACTION</code>或<code>BEGIN WORK</code>来开启一个事务。</li>
 <li>运行事务中的SQL语句</li>
@@ -252,37 +235,26 @@ COMMIT;
 <li>如果时的话，执行<code>COMMIT</code>命令。否知执行<code>ROLLBACK</code>操作恢复之前的状态</li>
 <li>即使在提交之后，如果您正在使用或可能最终使用galera/pxc，也要检查错误。</li>
 </ul>
-
-<h3 id="2-commit-rollback-autocommit">2. COMMIT，ROLLBACK，AUTOCOMMIT</h3>
-
+<h3 id="2-commitrollbackautocommit">2. COMMIT，ROLLBACK，AUTOCOMMIT</h3>
 <p><strong>AUTOCOMMIT</strong></p>
-
 <p>MySQL自动提交事务之外的语句。没有在<code>BEGIN</code>或<code>START TRANSACTION</code>语句之后的<code>UPDATE,DELETE,INSERT</code>操作将会在执行之后立刻可以看到结果。</p>
-
 <p><code>AUTOCOMMIT</code>配置默认是设置为<code>true</code>的。这个可以通过下面的方式修改：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 设置为false
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SET</span> AUTOCOMMIT<span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>;
+<span style="color:#75715e">-- 或者
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SET</span> AUTOCOMMIT<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
 
-<pre><code class="language-mysql">-- 设置为false
-SET AUTOCOMMIT=false;
--- 或者
-SET AUTOCOMMIT=0;
+<span style="color:#75715e">-- 设置为true
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SET</span> AUTOCOMMIT<span style="color:#f92672">=</span><span style="color:#66d9ef">true</span>;
+<span style="color:#75715e">-- 或
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SET</span> AUTOCOMMIT<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
 
--- 设置为true
-SET AUTOCOMMIT=true;
--- 或
-SET AUTOCOMMIT=1;
-
--- 查看AUTOCOMMIT的状态
-SELECT @@autocommit;
-</code></pre>
-
-<p><strong>COMMIT</strong></p>
-
+<span style="color:#75715e">-- 查看AUTOCOMMIT的状态
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@@</span>autocommit;
+</code></pre></div><p><strong>COMMIT</strong></p>
 <p>如果<code>AUTOCOMMIT</code>设置为false，并且这个事务没有提交，那么这个修改只有当前的链接可以看到。</p>
-
 <p>在<code>COMMIT</code>语句之后，这些修改才会被提交到表上，其他的连接才可以看到这写修改。</p>
-
 <p><em>连接1</em></p>
-
 <pre><code>-- 在AUTOCOMMIT为true时添加一行
 mysql&gt; INSERT INTO testTable VALUES(1);
 
@@ -299,218 +271,176 @@ mysql&gt; SELECT * FROM testTable;
 |   2 | 
 |   3 | 
 +-----+
-</code></pre>
+</code></pre><p><em>连接2</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span>  <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> testTable;
+<span style="color:#f92672">+-----+</span>
+<span style="color:#f92672">|</span> tId <span style="color:#f92672">|</span>
+<span style="color:#f92672">+-----+</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">+-----+</span>
 
-<p><em>连接2</em></p>
+<span style="color:#75715e">-- 只有在autocommit=false之前的插入可以看到
+</span></code></pre></div><p><em>连接1</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> COMMIT;
+<span style="color:#75715e">-- 提交连接1的修改
+</span><span style="color:#75715e"></span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> testTable;
 
-<pre><code class="language-mysql">mysql&gt;  SELECT * FROM testTable;
-+-----+
-| tId |
-+-----+
-|   1 |
-+-----+
-
--- 只有在autocommit=false之前的插入可以看到
-</code></pre>
-
-<p><em>连接1</em></p>
-
-<pre><code class="language-mysql">mysql&gt; COMMIT;
--- 提交连接1的修改
-mysql&gt; SELECT * FROM testTable;
-
-+-----+ 
-| tId | 
-+-----+ 
-|   1 |
-|   2 |
-|   3 | 
-+-----+
-</code></pre>
-
-<p><em>连接2</em></p>
-
-<pre><code class="language-mysql">mysql&gt; SELECT * FROM testTable;
-+-----+ 
-| tId | 
-+-----+ 
-|   1 |
-|   2 |
-|   3 | 
-+-----+
--- 现在所有的插入都可以看到
-</code></pre>
-
-<p><strong>ROLLBACK</strong></p>
-
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span> tId <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span>
+</code></pre></div><p><em>连接2</em></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> testTable;
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span> tId <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span>
+<span style="color:#75715e">-- 现在所有的插入都可以看到
+</span></code></pre></div><p><strong>ROLLBACK</strong></p>
 <p>如果事务中任何查询执行失败，<code>ROLLBACK</code>用来恢复到之前的状态。查看下面的详细说明：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- autocommit之前执行插入操作
+</span><span style="color:#75715e"></span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> testTable <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">1</span>);
 
-<pre><code class="language-mysql">-- autocommit之前执行插入操作
-mysql&gt; INSERT INTO testTable VALUES (1);
+<span style="color:#75715e">-- 设置autocommit=false
+</span><span style="color:#75715e"></span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SET</span> autocommit<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;
 
--- 设置autocommit=false
-mysql&gt; SET autocommit=0;
+mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> testTable <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>), (<span style="color:#ae81ff">3</span>);
+mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> testTable;
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span> tId <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span>
+</code></pre></div><p>现在执行<code>ROLLBACK</code>操作：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- ROLLBACK操作
+</span><span style="color:#75715e"></span>mysql<span style="color:#f92672">&gt;</span> ROLLBACK;
 
-mysql&gt; INSERT INTO testTable VALUES (2), (3);
-mysql&gt; SELECT * FROM testTable;
-+-----+ 
-| tId | 
-+-----+ 
-|   1 |
-|   2 |
-|   3 | 
-+-----+
-</code></pre>
+mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> testTable;
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span> tId <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">+-----+</span>
+<span style="color:#75715e">-- 移除所有没有提交的行
+</span></code></pre></div><p>一旦执行<code>COMMIT</code>操作了，在执行<code>ROLLBACK</code>没有任何效果</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> testTable <span style="color:#66d9ef">VALUES</span> (<span style="color:#ae81ff">2</span>), (<span style="color:#ae81ff">3</span>);
+mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> testTable;
+mysql<span style="color:#f92672">&gt;</span> COMMIT;
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span> tId <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">+-----+</span>
 
-<p>现在执行<code>ROLLBACK</code>操作：</p>
+<span style="color:#75715e">-- 执行ROLLBACK
+</span><span style="color:#75715e"></span>mysql<span style="color:#f92672">&gt;</span> ROLLBACK;
 
-<pre><code class="language-mysql">-- ROLLBACK操作
-mysql&gt; ROLLBACK;
-
-mysql&gt; SELECT * FROM testTable;
-+-----+ 
-| tId | 
-+-----+ 
-|   1 |
-+-----+
--- 移除所有没有提交的行
-</code></pre>
-
-<p>一旦执行<code>COMMIT</code>操作了，在执行<code>ROLLBACK</code>没有任何效果</p>
-
-<pre><code class="language-mysql">mysql&gt; INSERT INTO testTable VALUES (2), (3);
-mysql&gt; SELECT * FROM testTable;
-mysql&gt; COMMIT;
-+-----+ 
-| tId | 
-+-----+ 
-|   1 |
-|   2 |
-|   3 |
-+-----+
-
--- 执行ROLLBACK
-mysql&gt; ROLLBACK;
-
-mysql&gt; SELECT * FROM testTable;
-+-----+ 
-| tId | 
-+-----+ 
-|   1 |
-|   2 |
-|   3 | 
-+-----+
--- ROLLBACK没有移除任何行
-</code></pre>
-
-<p>如果<code>AUTOCOMMIT</code>设置为true的话，<code>COMMIT</code>和<code>ROLLBACK</code>是没有效果的。</p>
-
+mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> testTable;
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span> tId <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span> 
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----+</span>
+<span style="color:#75715e">-- ROLLBACK没有移除任何行
+</span></code></pre></div><p>如果<code>AUTOCOMMIT</code>设置为true的话，<code>COMMIT</code>和<code>ROLLBACK</code>是没有效果的。</p>
 <h3 id="3-jdbc驱动的事务">3. JDBC驱动的事务</h3>
-
 <p>使用JDBC的事务用来控制怎样和什么时候一个事务应该提交和回滚。使用JDBC驱动连接到MySQL服务器。</p>
-
 <p>可以从<a href="https://dev.mysql.com/downloads/connector/j/5.0.html">JDBC驱动</a>下载。</p>
-
 <p>让我们用JDBC驱动连接一个数据库：</p>
-
-<pre><code class="language-mysql">Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
-Connection con = DriverManager.getConnection(DB_CONNECTION_URL,DB_USER,USER_PASSWORD); 
----&gt;Example for connection url &quot;jdbc:mysql://localhost:3306/testDB&quot;);
-</code></pre>
-
-<p><strong>字符集</strong>：这表明客户端将会使用什么字符集来像服务器发送SQL语句。这指明了使用什么字符集从服务器向客户端发送结果。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">Class.<span style="color:#a6e22e">forName</span>(<span style="color:#e6db74">&#34;com.mysql.jdbc.Driver&#34;</span>);
+Connection con <span style="color:#f92672">=</span> DriverManager.<span style="color:#a6e22e">getConnection</span>(DB_CONNECTION_URL,DB_USER,USER_PASSWORD); 
+<span style="color:#f92672">---&gt;</span>Example <span style="color:#66d9ef">for</span> connection url <span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/testDB&#34;</span>);
+</code></pre></div><p><strong>字符集</strong>：这表明客户端将会使用什么字符集来像服务器发送SQL语句。这指明了使用什么字符集从服务器向客户端发送结果。</p>
 <p>这应该在创建服务器连接的时候指定。下面就是一个例子：</p>
-
 <pre><code>Connection con = DriverManager.getConnection(DB_CONNECTION_URL,DB_USER,USER_PASSWORD); ---&gt;Example for connection url &quot;jdbc:mysql://localhost:3306/testDB&quot;);
-</code></pre>
-
-<p>更详细的信息查看字符集和排序部分。</p>
-
+</code></pre><p>更详细的信息查看字符集和排序部分。</p>
 <p>当你打开一个连接的时候，<code>AUTOCOMMIT</code>默认设置为true，在开启事务之前需要修改为false。</p>
-
-<pre><code class="language-mysql">com.setAutoCommit(false);
-</code></pre>
-
-<p>你应该在开启连接之后立即使用<code>setAutoCommit()</code>方法。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">com.<span style="color:#a6e22e">setAutoCommit</span>(<span style="color:#66d9ef">false</span>);
+</code></pre></div><p>你应该在开启连接之后立即使用<code>setAutoCommit()</code>方法。</p>
 <p>否则使用<code>START TRANSACTION</code>或<code>BEGIN WORK</code>来开启一个新的事务。使用<code>START TRANSACTION</code>或<code>BEGIN WORK</code>就不需要将<code>AUTOCOMMIT</code>修改为false，这将会自动设置为false。</p>
-
 <p>现在开启一个事务，查看下面完整的JDBC事务的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> jdbcTest<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package jdbcTest;
+<span style="color:#f92672">import</span> java.sql.Connection<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.sql.PreparedStatement<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.sql.SQLException<span style="color:#f92672">;</span>
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-public class accTrans {
-    public static void doTransfer(double transAmount, int customerIdFrom, int customerIdTo) {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">accTrans</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doTransfer</span><span style="color:#f92672">(</span><span style="color:#66d9ef">double</span> transAmount<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> customerIdFrom<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> customerIdTo<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Connection con <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        PreparedStatement pstmt <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        ResultSet rs <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
       
-        try {
-            String DB_CONNECTION_URL = &quot;jdbc:mysql://localhost:3306/testDB?useUnicode=true&amp;amp;characterEncoding=utf8&quot;;
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            String DB_CONNECTION_URL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;jdbc:mysql://localhost:3306/testDB?useUnicode=true&amp;amp;characterEncoding=utf8&#34;</span><span style="color:#f92672">;</span>
             
-            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
-            con = DriverManager.getConnection(DB_CONNECTION_URL, DB_USER, USER_PASSWORD);
+            Class<span style="color:#f92672">.</span><span style="color:#a6e22e">forName</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;com.mysql.jdbc.Driver&#34;</span><span style="color:#f92672">);</span>
+            con <span style="color:#f92672">=</span> DriverManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getConnection</span><span style="color:#f92672">(</span>DB_CONNECTION_URL<span style="color:#f92672">,</span> DB_USER<span style="color:#f92672">,</span> USER_PASSWORD<span style="color:#f92672">);</span>
           
-            -- 设置autocommit=false
-            con.setAutoCommit(false);
-            -- 或者使用 con.Start TRANSACTION / con.BEGIN WORK
+            <span style="color:#f92672">--</span> 设置autocommit<span style="color:#f92672">=</span><span style="color:#66d9ef">false</span>
+            con<span style="color:#f92672">.</span><span style="color:#a6e22e">setAutoCommit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+            <span style="color:#f92672">--</span> 或者使用 con<span style="color:#f92672">.</span><span style="color:#a6e22e">Start</span> TRANSACTION <span style="color:#f92672">/</span> con<span style="color:#f92672">.</span><span style="color:#a6e22e">BEGIN</span> WORK
               
-            -- 开始事务的SQL
-            -- 检查有效数量
-            double availableAmt = 0;
-            pstmt = con.prepareStatement(&quot;SELECT ledgerAmt FROM accTable WHERE customerId=? FOR UPDATE&quot;);
-            pstmt.setInt(1, customerIdFrom);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                availableAmt = rs.getDouble(1);
-            }
+            <span style="color:#f92672">--</span> 开始事务的SQL
+            <span style="color:#f92672">--</span> 检查有效数量
+            <span style="color:#66d9ef">double</span> availableAmt <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+            pstmt <span style="color:#f92672">=</span> con<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareStatement</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;SELECT ledgerAmt FROM accTable WHERE customerId=? FOR UPDATE&#34;</span><span style="color:#f92672">);</span>
+            pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setInt</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> customerIdFrom<span style="color:#f92672">);</span>
+            rs <span style="color:#f92672">=</span> pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">executeQuery</span><span style="color:#f92672">();</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>rs<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                availableAmt <span style="color:#f92672">=</span> rs<span style="color:#f92672">.</span><span style="color:#a6e22e">getDouble</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span>
           
-            if (availableAmt &gt;= transAmount) {
-                pstmt = con.prepareStatement(&quot;UPDATE accTable SET ledgerAmt=ledgerAmt-? WHERE customerId=?&quot;);
-                pstmt.setDouble(1, transAmount);
-                pstmt.setInt(2, customerIdFrom);
-                psstmt.executeUpdate();
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>availableAmt <span style="color:#f92672">&gt;=</span> transAmount<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                pstmt <span style="color:#f92672">=</span> con<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareStatement</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;UPDATE accTable SET ledgerAmt=ledgerAmt-? WHERE customerId=?&#34;</span><span style="color:#f92672">);</span>
+                pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setDouble</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> transAmount<span style="color:#f92672">);</span>
+                pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setInt</span><span style="color:#f92672">(</span>2<span style="color:#f92672">,</span> customerIdFrom<span style="color:#f92672">);</span>
+                psstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">executeUpdate</span><span style="color:#f92672">();</span>
               
-                pstmt = con.prepareStatement(&quot;UPDATE accTable SET ledgerAmt=ledgerAmt+? WHERE customerId=?&quot;);
-                pstmt.setDouble(1, transAmount);
-                pstmt.setInt(2, customerIdTo);
-                pstmt.executeUpdate();
-                con.commit();
-            } else {
-                con.rollback();
-            }
-        } catch(SQLException ex) {
-            con.rollback();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
+                pstmt <span style="color:#f92672">=</span> con<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareStatement</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;UPDATE accTable SET ledgerAmt=ledgerAmt+? WHERE customerId=?&#34;</span><span style="color:#f92672">);</span>
+                pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setDouble</span><span style="color:#f92672">(</span>1<span style="color:#f92672">,</span> transAmount<span style="color:#f92672">);</span>
+                pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">setInt</span><span style="color:#f92672">(</span>2<span style="color:#f92672">,</span> customerIdTo<span style="color:#f92672">);</span>
+                pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">executeUpdate</span><span style="color:#f92672">();</span>
+                con<span style="color:#f92672">.</span><span style="color:#a6e22e">commit</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                con<span style="color:#f92672">.</span><span style="color:#a6e22e">rollback</span><span style="color:#f92672">();</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span><span style="color:#f92672">(</span>SQLException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            con<span style="color:#f92672">.</span><span style="color:#a6e22e">rollback</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>rs <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    rs<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+                <span style="color:#f92672">}</span>
               
-                if (pstmt != null) {
-                    pstmt.close();
-                }
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>pstmt <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    pstmt<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+                <span style="color:#f92672">}</span>
               
-                if (con != null) {
-                    con.close();
-                }
-            }
-        }
-    }
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>con <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    con<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
   
-    public static void main(String[] args) {
-        doTransfer(500, 1020, 1021);
-    }
-}
-</code></pre>
-
-<p>JDBC事务确保事务块中的所有SQL执行成功，如果事务块中任何一个SQL执行是啊比，就终止事务并回滚提交的所有内容。</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        doTransfer<span style="color:#f92672">(</span>500<span style="color:#f92672">,</span> 1020<span style="color:#f92672">,</span> 1021<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>JDBC事务确保事务块中的所有SQL执行成功，如果事务块中任何一个SQL执行是啊比，就终止事务并回滚提交的所有内容。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -583,6 +513,12 @@ public class accTrans {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

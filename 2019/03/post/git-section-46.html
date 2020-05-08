@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,61 +187,35 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git大文件存储">git大文件存储</a>
-<ul>
-<li><a href="#声明额外存储的文件类型">声明额外存储的文件类型</a></li>
-<li><a href="#为所有的副本设置lfs配置">为所有的副本设置LFS配置</a></li>
-<li><a href="#按照lfs">按照LFS</a>
-<ul>
-<li><a href="#homebrew">homebrew</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git大文件存储">git大文件存储</a>
+      <ul>
+        <li><a href="#声明额外存储的文件类型">声明额外存储的文件类型</a></li>
+        <li><a href="#为所有的副本设置lfs配置">为所有的副本设置LFS配置</a></li>
+        <li><a href="#按照lfs">按照LFS</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git大文件存储">git大文件存储</h2>
-
+        		<h2 id="git大文件存储">git大文件存储</h2>
 <h3 id="声明额外存储的文件类型">声明额外存储的文件类型</h3>
-
 <p>一个通常使用Git LFS的方式是声明一个使用系统规则处理指定文件，就像<code>.gitingnore</code>这个文件一样。</p>
-
 <p>很多时候，通配符用于选择某些文件类型以覆盖跟踪。</p>
-
 <pre><code>git lfs track &quot;*.psd&quot;
-</code></pre>
-
-<p>当一个匹配上面规则的文件被添加到提交中，当被推送到远端的时候，它将会被单独上次，使用一个指针替换远端仓库中的文件。</p>
-
+</code></pre><p>当一个匹配上面规则的文件被添加到提交中，当被推送到远端的时候，它将会被单独上次，使用一个指针替换远端仓库中的文件。</p>
 <p>使用LFS追踪文件之后，你的<code>.gitattributes</code>文件也会被更新。Github建议你提交自己仓库本地的<code>.gitattributes</code>文件，而不是修改全局的<code>.gitattributes</code>文件，这样就不会再处理多个仓库时出现问题。</p>
-
 <h3 id="为所有的副本设置lfs配置">为所有的副本设置LFS配置</h3>
-
 <p>想要设置在所有仓库副本都有效的LFS配置选项，要在仓库的根目录添加并提交一个<code>.lfsconfig</code>的文件。这个文件用来指定和<code>.git/config</code>中一样的配置文件。</p>
-
 <p>例如：要从LFS中排查某个文件，请创建并提交<code>.lfsconfig</code>文件，并添加下面的内容提交：</p>
-
 <pre><code>[lfs]
     fetchexclude = ReallyBigFile.wav
-</code></pre>
-
-<h3 id="按照lfs">按照LFS</h3>
-
+</code></pre><h3 id="按照lfs">按照LFS</h3>
 <p>下载和安装LFS，既可以使用Homebrew，也可以从<a href="https://git-lfs.github.com/">这个网址</a>。</p>
-
 <h4 id="homebrew">homebrew</h4>
-
 <pre><code> brew install git-lfs
  git lfs install
-</code></pre>
-
-<p>通常你需要对托管的远端服务器进行一些设置，用来允许它和LFS一起使用。这对于每个主机是不同的，但很可能只是勾选了一个框，说明你想要使用<code>git lfs</code>。</p>
-
+</code></pre><p>通常你需要对托管的远端服务器进行一些设置，用来允许它和LFS一起使用。这对于每个主机是不同的，但很可能只是勾选了一个框，说明你想要使用<code>git lfs</code>。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -310,6 +288,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,70 +187,39 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#创建新用户">创建新用户</a>
-<ul>
-<li><a href="#1-创建mysql用户">1. 创建MySQL用户</a></li>
-<li><a href="#2-指定密码">2. 指定密码</a></li>
-<li><a href="#3-创建一个用户并且授予所有权限">3. 创建一个用户并且授予所有权限</a></li>
-<li><a href="#4-重命名用户">4. 重命名用户</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#创建新用户">创建新用户</a>
+      <ul>
+        <li><a href="#1-创建mysql用户">1. 创建MySQL用户</a></li>
+        <li><a href="#2-指定密码">2. 指定密码</a></li>
+        <li><a href="#3-创建一个用户并且授予所有权限">3. 创建一个用户并且授予所有权限</a></li>
+        <li><a href="#4-重命名用户">4. 重命名用户</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="创建新用户">创建新用户</h2>
-
+        		<h2 id="创建新用户">创建新用户</h2>
 <h3 id="1-创建mysql用户">1. 创建MySQL用户</h3>
-
 <p>要创建新用户，我们需要 按照下面的步骤：</p>
-
 <p><strong>步骤1</strong>：使用<code>root</code>用户登录到MySQL：</p>
-
-<pre><code class="language-shell">$ mysql -u root -p
-</code></pre>
-
-<p><strong>步骤2：</strong>我们可以看到MySQL的命令提示</p>
-
-<pre><code class="language-mysql">mysql&gt; CREATE USER 'my_new_user'@'localhost' IDENTIFIED BY 'test_password';
-</code></pre>
-
-<p>现在，我们成功创建了新用户，但是这个用户还没有任何权限。所以需要使用下面的命令给用户赋予相应的权限：</p>
-
-<pre><code class="language-mysql">mysql&gt; GRANT ALL PRIVILEGES ON my_db.* TO 'my_new_user'@'localhost' identified by 'my_password';
-</code></pre>
-
-<h3 id="2-指定密码">2. 指定密码</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysql -u root -p
+</code></pre></div><p>**步骤2：**我们可以看到MySQL的命令提示</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;my_new_user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span> <span style="color:#66d9ef">IDENTIFIED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;test_password&#39;</span>;
+</code></pre></div><p>现在，我们成功创建了新用户，但是这个用户还没有任何权限。所以需要使用下面的命令给用户赋予相应的权限：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">ALL</span> <span style="color:#66d9ef">PRIVILEGES</span> <span style="color:#66d9ef">ON</span> my_db.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> <span style="color:#e6db74">&#39;my_new_user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span> <span style="color:#66d9ef">identified</span> <span style="color:#66d9ef">by</span> <span style="color:#e6db74">&#39;my_password&#39;</span>;
+</code></pre></div><h3 id="2-指定密码">2. 指定密码</h3>
 <p>最基本的方式是：</p>
-
-<pre><code class="language-mysql">mysql&gt; CREATE USER 'my_new_user'@'localhost' IDENTIFIED BY 'test_password';
-</code></pre>
-
-<p>但是，对于不建议使用明文编码密码的情况，直接使用PASSOWRD方法来获取密码的hash值：</p>
-
-<pre><code class="language-mysql">mysql&gt; select PASSWORD('test_password'); -- returns *4414E26EDED6D661B5386813EBBA95065DBC4728 
-mysql&gt; CREATE USER 'my_new_user'@'localhost' IDENTIFIED BY PASSWORD '*4414E26EDED6D661B5386813EBBA95065DBC4728';
-</code></pre>
-
-<h3 id="3-创建一个用户并且授予所有权限">3. 创建一个用户并且授予所有权限</h3>
-
-<pre><code class="language-mysql">grant all privileges on schema_name.* to 'new_user_name'@'%' identified by 'newpassword';
-</code></pre>
-
-<p>注意：这可以用来创建新的root用户</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;my_new_user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span> <span style="color:#66d9ef">IDENTIFIED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;test_password&#39;</span>;
+</code></pre></div><p>但是，对于不建议使用明文编码密码的情况，直接使用PASSOWRD方法来获取密码的hash值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">select</span> <span style="color:#a6e22e">PASSWORD</span>(<span style="color:#e6db74">&#39;test_password&#39;</span>); <span style="color:#75715e">-- returns *4414E26EDED6D661B5386813EBBA95065DBC4728 
+</span><span style="color:#75715e"></span>mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;my_new_user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span> <span style="color:#66d9ef">IDENTIFIED</span> <span style="color:#66d9ef">BY</span> PASSWORD <span style="color:#e6db74">&#39;*4414E26EDED6D661B5386813EBBA95065DBC4728&#39;</span>;
+</code></pre></div><h3 id="3-创建一个用户并且授予所有权限">3. 创建一个用户并且授予所有权限</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">grant</span> <span style="color:#66d9ef">all</span> <span style="color:#66d9ef">privileges</span> <span style="color:#66d9ef">on</span> schema_name.<span style="color:#f92672">*</span> <span style="color:#66d9ef">to</span> <span style="color:#e6db74">&#39;new_user_name&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;%&#39;</span> <span style="color:#66d9ef">identified</span> <span style="color:#66d9ef">by</span> <span style="color:#e6db74">&#39;newpassword&#39;</span>;
+</code></pre></div><p>注意：这可以用来创建新的root用户</p>
 <h3 id="4-重命名用户">4. 重命名用户</h3>
-
-<pre><code class="language-mysql">rename user 'user'@'%' to 'new_name'@'%';
-</code></pre>
-
-<p>如果你创建用户的时候拼错了名字，可以通过rename命令修改用户名。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">rename</span> <span style="color:#66d9ef">user</span> <span style="color:#e6db74">&#39;user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;%&#39;</span> <span style="color:#66d9ef">to</span> <span style="color:#e6db74">&#39;new_name&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;%&#39;</span>;
+</code></pre></div><p>如果你创建用户的时候拼错了名字，可以通过rename命令修改用户名。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -319,6 +292,12 @@ mysql&gt; CREATE USER 'my_new_user'@'localhost' IDENTIFIED BY PASSWORD '*4414E26
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

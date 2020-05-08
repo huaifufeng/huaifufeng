@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,25 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#存储例程-程序和函数">存储例程(程序和函数)</a>
-<ul>
-<li><a href="#1-带有in-out-inout参数的存储过程">1. 带有IN OUT INOUT参数的存储过程</a></li>
-<li><a href="#2-创建函数">2. 创建函数</a></li>
-<li><a href="#3-光标">3. 光标</a></li>
-<li><a href="#4-多个结果集">4. 多个结果集</a></li>
-<li><a href="#5-创建函数">5. 创建函数</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#存储例程程序和函数">存储例程(程序和函数)</a>
+      <ul>
+        <li><a href="#1-带有in-out-inout参数的存储过程">1. 带有IN OUT INOUT参数的存储过程</a></li>
+        <li><a href="#2-创建函数">2. 创建函数</a></li>
+        <li><a href="#3-光标">3. 光标</a></li>
+        <li><a href="#4-多个结果集">4. 多个结果集</a></li>
+        <li><a href="#5-创建函数">5. 创建函数</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="存储例程-程序和函数">存储例程(程序和函数)</h2>
-
+        		<h2 id="存储例程程序和函数">存储例程(程序和函数)</h2>
 <table>
 <thead>
 <tr>
@@ -209,242 +208,185 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>RETURNS</td>
 <td>指定从函数返回的值的数据类型</td>
 </tr>
-
 <tr>
 <td>RETURN</td>
 <td><code>RETURN</code>后面实际的变量或值是调用函数返回的值</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-带有in-out-inout参数的存储过程">1. 带有IN OUT INOUT参数的存储过程</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">DELIMITER <span style="color:#960050;background-color:#1e0010">$$</span>
 
-<pre><code class="language-mysql">DELIMITER $$
-
-DROP PROCEDURE IF EXISTS sp_nested_loop$$
-CREATE PROCEDURE sp_nested_loop(IN i INT, IN j INT, OUT x INT, OUT y INT, INOUT z INT) BEGIN
-		DECLARE a INTEGER DEFAULT 0;
-    DECLARE b INTEGER DEFAULT 0; 
-    DECLARE c INTEGER DEFAULT 0; 
-    WHILE a &lt; i DO
-				WHILE b &lt; j DO
-						SET c = c + 1;
-						SET b = b + 1; 
-				END WHILE;
-				SET a = a + 1;
-				SET b = 0;
-      END WHILE;
-		SET x = a, y = c;
-		SET z = x + y + z; 
-END $$
+<span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">PROCEDURE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> sp_nested_loop<span style="color:#960050;background-color:#1e0010">$$</span>
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">PROCEDURE</span> <span style="color:#a6e22e">sp_nested_loop</span>(<span style="color:#66d9ef">IN</span> i <span style="color:#66d9ef">INT</span>, <span style="color:#66d9ef">IN</span> j <span style="color:#66d9ef">INT</span>, <span style="color:#66d9ef">OUT</span> x <span style="color:#66d9ef">INT</span>, <span style="color:#66d9ef">OUT</span> y <span style="color:#66d9ef">INT</span>, <span style="color:#66d9ef">INOUT</span> z <span style="color:#66d9ef">INT</span>) BEGIN
+		<span style="color:#66d9ef">DECLARE</span> a <span style="color:#66d9ef">INTEGER</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">DECLARE</span> b <span style="color:#66d9ef">INTEGER</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>; 
+    <span style="color:#66d9ef">DECLARE</span> c <span style="color:#66d9ef">INTEGER</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>; 
+    <span style="color:#66d9ef">WHILE</span> a <span style="color:#f92672">&lt;</span> i DO
+				<span style="color:#66d9ef">WHILE</span> b <span style="color:#f92672">&lt;</span> j DO
+						<span style="color:#66d9ef">SET</span> c <span style="color:#f92672">=</span> c <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+						<span style="color:#66d9ef">SET</span> b <span style="color:#f92672">=</span> b <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>; 
+				END <span style="color:#66d9ef">WHILE</span>;
+				<span style="color:#66d9ef">SET</span> a <span style="color:#f92672">=</span> a <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+				<span style="color:#66d9ef">SET</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+      END <span style="color:#66d9ef">WHILE</span>;
+		<span style="color:#66d9ef">SET</span> x <span style="color:#f92672">=</span> a, y <span style="color:#f92672">=</span> c;
+		<span style="color:#66d9ef">SET</span> z <span style="color:#f92672">=</span> x <span style="color:#f92672">+</span> y <span style="color:#f92672">+</span> z; 
+END <span style="color:#960050;background-color:#1e0010">$$</span>
 DELIMITER ;
-</code></pre>
-
-<p><a href="https://dev.mysql.com/doc/refman/5.7/en/call.html">调用</a>这个存储过程：</p>
-
-<pre><code class="language-mysql">SET @z = 30;
-call sp_nested_loop(10, 20, @x, @y, @z);
-SELECT @x, @y, @z
-</code></pre>
-
-<p>结果：</p>
-
+</code></pre></div><p><a href="https://dev.mysql.com/doc/refman/5.7/en/call.html">调用</a>这个存储过程：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>z <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>;
+<span style="color:#66d9ef">call</span> <span style="color:#a6e22e">sp_nested_loop</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">20</span>, <span style="color:#f92672">@</span>x, <span style="color:#f92672">@</span>y, <span style="color:#f92672">@</span>z);
+<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>x, <span style="color:#f92672">@</span>y, <span style="color:#f92672">@</span>z
+</code></pre></div><p>结果：</p>
 <pre><code>+------+------+------+
 |  @x  |  @y  |  @z  |
 +------+------+------+
 |  10  |  200 |  240 |
 +------+------+------+
-</code></pre>
-
-<p><code>IN</code>参数向程序中传入一个参数。程序可能修改这个值，但是修改的过程是对调用者不可见的，当程序返回的时候。</p>
-
+</code></pre><p><code>IN</code>参数向程序中传入一个参数。程序可能修改这个值，但是修改的过程是对调用者不可见的，当程序返回的时候。</p>
 <p><code>OUT</code>参数从程序返回一个值到调用者中。在程序中，初始值是NULL，当程序返回的时候，在调用者中是可见的。</p>
-
 <p><code>INOUT</code>是被调用者初始化的值，可以被这个程序修改，任何程序中修改的值都会返回给调用者。</p>
-
 <p>查看<a href="https://dev.mysql.com/doc/refman/5.7/en/create-procedure.html">手册</a>。</p>
-
 <h3 id="2-创建函数">2. 创建函数</h3>
-
 <p>下面的函数例子只是简单的返回一个常量12：</p>
-
-<pre><code class="language-mysql">DELIMITER ||
-CREATE FUNCTION functionname()
-RETURNS INT
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">DELIMITER <span style="color:#f92672">||</span>
+<span style="color:#66d9ef">CREATE</span> FUNCTION <span style="color:#a6e22e">functionname</span>()
+RETURNS <span style="color:#66d9ef">INT</span>
 BEGIN
-    RETURN 12;
+    <span style="color:#66d9ef">RETURN</span> <span style="color:#ae81ff">12</span>;
 END;
-||
+<span style="color:#f92672">||</span>
 DELIMITER ;
-</code></pre>
-
-<p>第一行定义了要将分隔符(<code>DELIMITER ||</code>)修改为什么。这需要在创建函数之前进行设置，否则如果保留将设置为默认值。则在函数体重找到第一行作为CREATE语句的结尾，这通常不是需要的。</p>
-
+</code></pre></div><p>第一行定义了要将分隔符(<code>DELIMITER ||</code>)修改为什么。这需要在创建函数之前进行设置，否则如果保留将设置为默认值。则在函数体重找到第一行作为CREATE语句的结尾，这通常不是需要的。</p>
 <p>在<code>CREATE FUNCTION</code>已经运行之后，需要把分隔符设置为默认值<code>;</code>，就像在上面代码末尾看到的那样<code>DELIMITER ;</code>。</p>
-
 <p>像下面这样执行这个函数：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">functionname</span>():
 
-<pre><code class="language-mysql">SELECT functionname():
-
-+----------------+
-| functionname() |
-+----------------+
-|             12 |
-+----------------+
-</code></pre>
-
-<p>一个稍微复杂的例子，获取一个参数，然后给这个参数增加一个常量：</p>
-
-<pre><code class="language-mysql"> DELIMITER $$
- CREATE FUNCTION add_2 (my_arg INT)
-     RETURNS INT
+<span style="color:#f92672">+----------------+</span>
+<span style="color:#f92672">|</span> <span style="color:#a6e22e">functionname</span>() <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----------------+</span>
+<span style="color:#f92672">|</span>             <span style="color:#ae81ff">12</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----------------+</span>
+</code></pre></div><p>一个稍微复杂的例子，获取一个参数，然后给这个参数增加一个常量：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"> DELIMITER <span style="color:#960050;background-color:#1e0010">$$</span>
+ <span style="color:#66d9ef">CREATE</span> FUNCTION <span style="color:#a6e22e">add_2</span> (my_arg <span style="color:#66d9ef">INT</span>)
+     RETURNS <span style="color:#66d9ef">INT</span>
  BEGIN
-     RETURN (my_arg + 2);
+     <span style="color:#66d9ef">RETURN</span> (my_arg <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>);
  END;
- $$
+ <span style="color:#960050;background-color:#1e0010">$$</span>
  DELIMITER ;
  
- SELECT add_2(12);
-+-----------+
-| add_2(12) | 
-+-----------+
-|         14|
-+-----------+
-</code></pre>
-
-<p>注意，这里为<code>DELIMITER</code>使用了不同的参数。实际上你可以在这里使用任何不在<code>CREATE</code>语句中的字符序列，但是最好是使用两个非字母数字的字符，像<code>\\ || $$</code>。</p>
-
+ <span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">add_2</span>(<span style="color:#ae81ff">12</span>);
+<span style="color:#f92672">+-----------+</span>
+<span style="color:#f92672">|</span> <span style="color:#a6e22e">add_2</span>(<span style="color:#ae81ff">12</span>) <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-----------+</span>
+<span style="color:#f92672">|</span>         <span style="color:#ae81ff">14</span><span style="color:#f92672">|</span>
+<span style="color:#f92672">+-----------+</span>
+</code></pre></div><p>注意，这里为<code>DELIMITER</code>使用了不同的参数。实际上你可以在这里使用任何不在<code>CREATE</code>语句中的字符序列，但是最好是使用两个非字母数字的字符，像<code>\\ || $$</code>。</p>
 <p>在函数，程序或触发器的创建或更新之前后何止设置参数是一种良好的时间。因为某些GUI不需要更改分隔符，但是通过命令行查询总数需要设置分隔符的。</p>
-
 <h3 id="3-光标">3. 光标</h3>
-
 <p>光标允许你一行行的迭代查询的结果。<code>DECLARE</code>命令用来初始化一个光标，并且将它关联到一个查询语句上面：</p>
-
-<pre><code class="language-mysql">DECLARE student CURSOR FOR SELECT name FROM student;
-</code></pre>
-
-<p>假设我们卖一些不同的商品。我们想要统计每种类型有多少商品。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DECLARE</span> student <span style="color:#66d9ef">CURSOR</span> <span style="color:#66d9ef">FOR</span> <span style="color:#66d9ef">SELECT</span> name <span style="color:#66d9ef">FROM</span> student;
+</code></pre></div><p>假设我们卖一些不同的商品。我们想要统计每种类型有多少商品。</p>
 <p>我们的数据：</p>
-
-<pre><code class="language-mysql">CREATE TABLE product
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">product</span>
 (
-    id   INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    type VARCHAR(50)      NOT NULL,
-    name VARCHAR(255)     NOT NULL
+    id   <span style="color:#66d9ef">INT</span>(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>,
+    type <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">50</span>)      <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    name <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">255</span>)     <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
 );
-CREATE TABLE product_type
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">product_type</span>
 (
-    name VARCHAR(50) NOT NULL PRIMARY KEY
+    name <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">50</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>
 );
-CREATE TABLE product_type_count
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">product_type_count</span>
 (
-    type  VARCHAR(50)    NOT NULL PRIMARY KEY,
-    count INT(10) UNSIGNED NOT NULL DEFAULT 0
+    type  <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">50</span>)    <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>,
+    count <span style="color:#66d9ef">INT</span>(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>
 );
 
-INSERT INTO product_type(name) VALUES
-    ('dress'),
-    ('food');
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">product_type</span>(name) <span style="color:#66d9ef">VALUES</span>
+    (<span style="color:#e6db74">&#39;dress&#39;</span>),
+    (<span style="color:#e6db74">&#39;food&#39;</span>);
 
-INSERT INTO product (type, name) VALUES
-    ('dress', 'T-shirt'),
-    ('dress', 'Trousers'),
-    ('food', 'Apple'),
-    ('food', 'Tomatoes'),
-    ('food', 'Meat');
-</code></pre>
-
-<p>我们完成这个目的使用带有cursor的存储过程：</p>
-
-<pre><code class="language-mysql">DELIMITER //
-DROP PROCEDURE IF EXISTS product_count;
-CREATE TABLE product_count()
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">product</span> (type, name) <span style="color:#66d9ef">VALUES</span>
+    (<span style="color:#e6db74">&#39;dress&#39;</span>, <span style="color:#e6db74">&#39;T-shirt&#39;</span>),
+    (<span style="color:#e6db74">&#39;dress&#39;</span>, <span style="color:#e6db74">&#39;Trousers&#39;</span>),
+    (<span style="color:#e6db74">&#39;food&#39;</span>, <span style="color:#e6db74">&#39;Apple&#39;</span>),
+    (<span style="color:#e6db74">&#39;food&#39;</span>, <span style="color:#e6db74">&#39;Tomatoes&#39;</span>),
+    (<span style="color:#e6db74">&#39;food&#39;</span>, <span style="color:#e6db74">&#39;Meat&#39;</span>);
+</code></pre></div><p>我们完成这个目的使用带有cursor的存储过程：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">DELIMITER <span style="color:#f92672">//</span>
+<span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">PROCEDURE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> product_count;
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">product_count</span>()
     BEGIN
-        DECLARE p_type VARCHAR(255);
-        DECLARE p_count INT(10) UNSIGNED;
-        DECLARE done INT DEFAULT 0;
-        DECLARE product CURSOR FOR 
-            SELECT 
+        <span style="color:#66d9ef">DECLARE</span> p_type <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">255</span>);
+        <span style="color:#66d9ef">DECLARE</span> p_count <span style="color:#66d9ef">INT</span>(<span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">UNSIGNED</span>;
+        <span style="color:#66d9ef">DECLARE</span> done <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">0</span>;
+        <span style="color:#66d9ef">DECLARE</span> product <span style="color:#66d9ef">CURSOR</span> <span style="color:#66d9ef">FOR</span> 
+            <span style="color:#66d9ef">SELECT</span> 
                 type
-                COUNT(*)
-            FROM product
-            GROUP BY type;
-        DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done=1;
+                <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>)
+            <span style="color:#66d9ef">FROM</span> product
+            <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> type;
+        <span style="color:#66d9ef">DECLARE</span> <span style="color:#66d9ef">CONTINUE</span> HANDLER <span style="color:#66d9ef">FOR</span> <span style="color:#66d9ef">SQLSTATE</span> <span style="color:#e6db74">&#39;02000&#39;</span> <span style="color:#66d9ef">SET</span> done<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
         
         TRUNCATE product_type;
         
         OPEN product;
-        REPEAT
-            FETCH product
-            INTO p_type, p_count;
-            IF NOT done
-            THEN
-                INSERT INTO product_type_count
-                SET
-                    type = p_type,
-                    count = p_count;
-            END IF;
+        <span style="color:#66d9ef">REPEAT</span>
+            <span style="color:#66d9ef">FETCH</span> product
+            <span style="color:#66d9ef">INTO</span> p_type, p_count;
+            <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> done
+            <span style="color:#66d9ef">THEN</span>
+                <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> product_type_count
+                <span style="color:#66d9ef">SET</span>
+                    type <span style="color:#f92672">=</span> p_type,
+                    count <span style="color:#f92672">=</span> p_count;
+            END <span style="color:#66d9ef">IF</span>;
         UNTIL done
-        END REPEAT;
+        END <span style="color:#66d9ef">REPEAT</span>;
         
         CLOSE product;
-    END //
+    END <span style="color:#f92672">//</span>
 DELIMITER ;
-</code></pre>
-
-<p>当你开始调用这个存储过程的时候：</p>
-
-<pre><code class="language-mysql">CALL product_count;
-</code></pre>
-
-<p>将会输出下面的结果：</p>
-
+</code></pre></div><p>当你开始调用这个存储过程的时候：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CALL</span> product_count;
+</code></pre></div><p>将会输出下面的结果：</p>
 <pre><code>type   | count
 ----------------
 dress  |   2
 food   |   3
-</code></pre>
-
-<p>这个是<code>CURSOR</code>的一个好例子，但是我们可以使用下面的语句来代替整个存储过程：</p>
-
-<pre><code class="language-mysql">INSERT INTO product_type_count
+</code></pre><p>这个是<code>CURSOR</code>的一个好例子，但是我们可以使用下面的语句来代替整个存储过程：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">product_type_count</span>
     (type, count)
-    SELECT type, count(*)
-        FROM product
-        GROUP BY type;
-</code></pre>
-
-<p>这个将会更加快。</p>
-
+    <span style="color:#66d9ef">SELECT</span> type, <span style="color:#a6e22e">count</span>(<span style="color:#f92672">*</span>)
+        <span style="color:#66d9ef">FROM</span> product
+        <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> type;
+</code></pre></div><p>这个将会更加快。</p>
 <h3 id="4-多个结果集">4. 多个结果集</h3>
-
 <p>不像<code>SELECT</code>语句，一个<code>存储过程</code>将会返回多个结果集。这就要求在Perl，PHP等语言中使用不同的代码来获取去结果集。</p>
-
 <h3 id="5-创建函数">5. 创建函数</h3>
-
-<pre><code class="language-mysql">DELIMITER $$
-CREATE
-    DEFINER=`db_username`@`hostname_or_IP`
-    FUNCTION `function_name`(optional_param data_type(length_if_applicable))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">DELIMITER <span style="color:#960050;background-color:#1e0010">$$</span>
+<span style="color:#66d9ef">CREATE</span>
+    DEFINER<span style="color:#f92672">=`</span>db_username<span style="color:#f92672">`@`</span>hostname_or_IP<span style="color:#f92672">`</span>
+    FUNCTION <span style="color:#f92672">`</span>function_name<span style="color:#f92672">`</span>(optional_param <span style="color:#a6e22e">data_type</span>(length_if_applicable))
     RETURNS data_type
 BEGIN
-    /**
-    * sql语句
-    */
-END $$
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">    * sql语句
+</span><span style="color:#75715e">    */</span>
+END <span style="color:#960050;background-color:#1e0010">$$</span>
 
 DELIMITER ;
-</code></pre>
-
-<p>这里返回的data_type可以是任何有效的MySQL数据类型。</p>
-
+</code></pre></div><p>这里返回的data_type可以是任何有效的MySQL数据类型。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -517,6 +459,12 @@ DELIMITER ;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,61 +187,47 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#变量类型">变量类型</a>
-<ul>
-<li><a href="#声明弱类型变量">声明弱类型变量</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#变量类型">变量类型</a>
+      <ul>
+        <li><a href="#声明弱类型变量">声明弱类型变量</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="变量类型">变量类型</h2>
-
+        		<h2 id="变量类型">变量类型</h2>
 <h3 id="声明弱类型变量">声明弱类型变量</h3>
-
 <p><code>declare</code>是bash的内部变量。经常用来显示和定义变量或显示函数体。</p>
-
 <p>语法：`declare [options] [name[=value]]&hellip;</p>
-
-<pre><code class="language-shell"># options are used to define # an integer
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># options are used to define # an integer</span>
 declare -i myInteger 
-declare -i anotherInt=10
+declare -i anotherInt<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>
 
-# an array with values
-declare -a anArray=( one two three)
-# an assoc Array
-declare -A assocArray=( [element1]=&quot;something&quot; [second]=anotherthing )
-# note that bash recognizes the string context within []
+<span style="color:#75715e"># an array with values</span>
+declare -a anArray<span style="color:#f92672">=(</span> one two three<span style="color:#f92672">)</span>
+<span style="color:#75715e"># an assoc Array</span>
+declare -A assocArray<span style="color:#f92672">=(</span> <span style="color:#f92672">[</span>element1<span style="color:#f92672">]=</span><span style="color:#e6db74">&#34;something&#34;</span> <span style="color:#f92672">[</span>second<span style="color:#f92672">]=</span>anotherthing <span style="color:#f92672">)</span>
+<span style="color:#75715e"># note that bash recognizes the string context within []</span>
 
-# some modifiers exist
-# uppercase content
-declare -u big='this will be uppercase'
-# same for lower case
-declare -l small='THIS WILL BE LOWERCASE'
+<span style="color:#75715e"># some modifiers exist</span>
+<span style="color:#75715e"># uppercase content</span>
+declare -u big<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;this will be uppercase&#39;</span>
+<span style="color:#75715e"># same for lower case</span>
+declare -l small<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;THIS WILL BE LOWERCASE&#39;</span>
 
-# readonly array
-declare -ra constarray=( eternal true and unchangeable )
+<span style="color:#75715e"># readonly array</span>
+declare -ra constarray<span style="color:#f92672">=(</span> eternal true and unchangeable <span style="color:#f92672">)</span>
 
-# export integer to environment
-declare -xi importantInt=42
-</code></pre>
-
-<p>也可以使用+来移除给定的属性。基本没有用处，只是为了完整性。</p>
-
+<span style="color:#75715e"># export integer to environment</span>
+declare -xi importantInt<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>
+</code></pre></div><p>也可以使用+来移除给定的属性。基本没有用处，只是为了完整性。</p>
 <p>显示变量和/或方法也有不同的选项。</p>
-
 <pre><code># printing definded vars and functions
 declare -f
 # restrict output to functions only
 declare -F # if debugging prints line number and filename defined in too
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -309,6 +299,12 @@ declare -F # if debugging prints line number and filename defined in too
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,116 +187,82 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#开始bash">开始Bash</a>
-<ul>
-<li><a href="#hello-world">Hello World</a>
-<ul>
-<li><a href="#交互shell">交互shell</a></li>
-<li><a href="#非交互shell">非交互shell</a></li>
-</ul></li>
-<li><a href="#使用变量">使用变量</a></li>
-<li><a href="#用户输入">用户输入</a></li>
-<li><a href="#引号重要性">引号重要性</a></li>
-<li><a href="#bash内建信息">Bash内建信息</a></li>
-<li><a href="#debug-模式">“Debug”模式</a></li>
-<li><a href="#处理命名参数">处理命名参数</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#开始bash">开始Bash</a>
+      <ul>
+        <li><a href="#hello-world">Hello World</a></li>
+        <li><a href="#使用变量">使用变量</a></li>
+        <li><a href="#用户输入">用户输入</a></li>
+        <li><a href="#引号重要性">引号重要性</a></li>
+        <li><a href="#bash内建信息">Bash内建信息</a></li>
+        <li><a href="#debug模式">“Debug”模式</a></li>
+        <li><a href="#处理命名参数">处理命名参数</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="开始bash">开始Bash</h2>
-
+        		<h2 id="开始bash">开始Bash</h2>
 <h3 id="hello-world">Hello World</h3>
-
 <h4 id="交互shell">交互shell</h4>
-
 <p>Bash shell通常是使用其交互模式：这允许你输入和修改命令，当你按下<code>Return</code>键的时候，就会执行这些命令。大多数基于Unix和类Unix的操作系统都会使用Bash作为它们默认的shell（特别是Linux和macOS）。当终端打开的时候会自动的进入交互模式的Bash shell。</p>
-
 <p>使用下面的方式输出一个<code>Hello World</code>：</p>
-
-<pre><code class="language-shell">$ echo &quot;Hello World&quot;
-#&gt; Hello World # Output Example
-</code></pre>
-
-<p>注意点：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ echo <span style="color:#e6db74">&#34;Hello World&#34;</span>
+<span style="color:#75715e">#&gt; Hello World # Output Example</span>
+</code></pre></div><p>注意点：</p>
 <ul>
 <li>你可以在终端中通过修改shell的名称来修改shell。比如：<code>sh</code>，<code>bash</code>等等</li>
 <li><code>echo</code>是Bash内建的一个命令，会把它接收到的参数输出到标准输出中。默认它会在输出的后面输出一个新行。</li>
 </ul>
-
 <h4 id="非交互shell">非交互shell</h4>
-
 <p>Bash shell也可以在脚本中被按照非交互模式运行，当shell不需要人工操作时。交互的行为和非交互的行为都是唯一的：Unix V7 Bourne shell和其他的衍生shell 的一项重要设计原则。因此，任何在命令行中可以执行的命令都可以放到脚本中重复使用。</p>
-
 <p>下面的步骤创建了一个<code>Hello World</code>脚本：</p>
-
 <ol>
-<li><p>创建一个叫<code>hello-world.sh</code>的文件。</p>
-
-<pre><code>  $ touch hello-world.sh
+<li>
+<p>创建一个叫<code>hello-world.sh</code>的文件。</p>
+<pre><code>   $ touch hello-world.sh
 </code></pre></li>
-
-<li><p>为文件添加执行权限：<code>chmod +x hello-world.sh</code></p></li>
-
-<li><p>添加下面的代码：</p>
-
+<li>
+<p>为文件添加执行权限：<code>chmod +x hello-world.sh</code></p>
+</li>
+<li>
+<p>添加下面的代码：</p>
 <pre><code>#!/bin/bash
 echo &quot;Hello World&quot;
-</code></pre></li>
-</ol>
-
-<p>第一行：脚本的第一行必须以字符串<code>#!</code>开始，这被叫做 shebang。这个shebang通知操作系统去允许<code>/bin/bash</code>，并且把文件的路径作为参数传递给这个命令。像：<code>/bin/bash hello-world.sh</code></p>
-
+</code></pre><p>第一行：脚本的第一行必须以字符串<code>#!</code>开始，这被叫做 shebang。这个shebang通知操作系统去允许<code>/bin/bash</code>，并且把文件的路径作为参数传递给这个命令。像：<code>/bin/bash hello-world.sh</code></p>
 <p>第二行：使用<code>echo</code>命令把<code>Hello world</code>输出到标准输出。</p>
-
-<ol>
-<li><p>在命令行中执行<code>hello-world.sh</code>这个脚本可以使用下面的人一个方式：</p>
-
+</li>
+<li>
+<p>在命令行中执行<code>hello-world.sh</code>这个脚本可以使用下面的人一个方式：</p>
 <ul>
 <li><code>./hello-world.sh</code> 最常用的方法，也是最推荐的方法。</li>
 <li><code>/bin/bash hello-world.sh</code></li>
 <li><code>bash hello-world.sh</code> 这里假设<code>/bin</code>在你的<code>$PATH</code>列表内</li>
 <li><code>sh hello-world.sh</code></li>
-</ul></li>
+</ul>
+</li>
 </ol>
-
 <p>当真正在产品环境使用时，你要忽略掉<code>.sh</code>扩展（这会让人感到迷惑，因为这是一个Bash脚本，而不是一个<code>sh</code>脚本）。可以把文件移动到一个在你<code>PATH</code>列表内容的目录，这样你就不止可以在当前目录使用这个命令，也可以在你需要的任何地方，就像系统命令<code>cat</code>和<code>ls</code>一样。</p>
-
 <p>可能遇到的错误：</p>
-
 <ol>
-<li>忘记给文件添加执行权限，当你执行的时候会有如下的输出：</li>
-</ol>
-
+<li>
+<p>忘记给文件添加执行权限，当你执行的时候会有如下的输出：</p>
 <p><code>./hello-world.sh: Permission denied</code></p>
-
-<ol>
-<li>在Windows系统下编辑这个文件的时候，会在文件行末尾添加上Bash不能处理的行结尾符。一个常见的输出：<code>: command not found</code> 。强制把鼠标定位到一行的开始覆盖冒号之前的错误信息。</li>
-</ol>
-
+</li>
+<li>
+<p>在Windows系统下编辑这个文件的时候，会在文件行末尾添加上Bash不能处理的行结尾符。一个常见的输出：<code>: command not found</code> 。强制把鼠标定位到一行的开始覆盖冒号之前的错误信息。</p>
 <p>这个脚本可以使用<code>dos2unix</code>程序修复。比如：<code>dos2unix hello-world,sh</code>。dos2unix修改行内的结尾。</p>
-
-<ol>
-<li>使用<code>sh ./hello-world.sh</code>，没有意思到<code>bash</code>和<code>sh</code>是不同的shell，有着不同的特性。（尽管Bash是向后兼容的，还是可能出现错误信息）。无论如何，在脚本的开始使用shebang是比直接在脚本文件前面添加<code>bash</code>或<code>sh</code>（或<code>python</code>，<code>perl</code>，<code>awk</code>，<code>ruby</code>&hellip;.）更加合适的。</li>
+</li>
+<li>
+<p>使用<code>sh ./hello-world.sh</code>，没有意思到<code>bash</code>和<code>sh</code>是不同的shell，有着不同的特性。（尽管Bash是向后兼容的，还是可能出现错误信息）。无论如何，在脚本的开始使用shebang是比直接在脚本文件前面添加<code>bash</code>或<code>sh</code>（或<code>python</code>，<code>perl</code>，<code>awk</code>，<code>ruby</code>&hellip;.）更加合适的。</p>
+</li>
 </ol>
-
 <p>一个更加通用的shebang可以用来提升你脚本的可移植性：<code>#! /usr/bin/env bash</code>，而不是强制定义Bash的路径。这样写的话，只需要<code>/user/bin/env</code>必须存在，但是在这里就只需要<code>bash</code>在PATH的目录列表内就可以了。在大多数的系统下面，<code>/bin/bash</code>是不存在的，你必须使用<code>/usr/local/bin/bash</code>或者其他的绝对路径。这样就避免了去寻找这个路径了。</p>
-
 <h3 id="使用变量">使用变量</h3>
-
 <p>创建一个新的文件<code>hello.sh</code>，在文件里面添加下面的内容，并且增加可执行权限<code>chmod +x hello.sh</code>。</p>
-
 <blockquote>
 <p>通过<code>./hello.sh</code>执行。</p>
 </blockquote>
-
 <pre><code>#!/usr/bin/env bash
 # Note that spaces cannot be used around the `=` assignment operator
 whom_variable=&quot;World&quot;
@@ -300,117 +270,71 @@ whom_variable=&quot;World&quot;
 # Use printf to safely output the data
 printf &quot;Hello, %s\n&quot; &quot;$whom_variable&quot; 
 #&gt; Hello, World
-</code></pre>
-
-<p>执行的时候，在标准输出中输出“Hello World”。</p>
-
+</code></pre><p>执行的时候，在标准输出中输出“Hello World”。</p>
 <p>你需要告诉Bash文件在哪里，一般是在包含文件的文件夹内。如果当前目录是工作目录，可以使用<code>./</code>，这里<code>.</code>代表的就是当前目录。如果你没有指定路径的话，<code>bash</code>将会在<code>$PATH</code>环境变量的目录列表中寻找。</p>
-
-<p>下面的代码接收一个参数<code>$1</code>，这个表示的事命令行的第一个参数，然后输出格式化的字符串，在<code>hello,</code>后面：</p>
-
+<p>下面的代码接收一个参数<code>$1</code>，这个表示的事命令行的第一个参数，然后输出格式化的字符串，在<code>hello, </code>后面：</p>
 <blockquote>
 <p>通过<code>./hello.sh World</code>执行</p>
 </blockquote>
-
 <pre><code>#!/usr/bin/env bash
 printf &quot;Hello, %s\n&quot; &quot;$1&quot; 
 #&gt; Hello, World
-</code></pre>
-
-<p>这里有一个重要的事需要注意：<code>$1</code>是被双引号包围着的，不是单引号。<code>&quot;$1&quot;</code>如希望的一样，解析为命令行的第一个参数，<code>'$1'</code>会按照字符串$1输出。</p>
-
+</code></pre><p>这里有一个重要的事需要注意：<code>$1</code>是被双引号包围着的，不是单引号。<code>&quot;$1&quot;</code>如希望的一样，解析为命令行的第一个参数，<code>'$1'</code>会按照字符串$1输出。</p>
 <blockquote>
 <p>安全注意点：</p>
-
 <p>可以阅读以下<a href="https://unix.stackexchange.com/questions/171346/security-implications-of-forgetting-to-quote-a-variable-in-bash-posix-shells">Security implications of forgetting to quote a variable in bash shells</a>，这你就理解了为什么把字符串放到双引号内是非常重要的。</p>
 </blockquote>
-
 <h3 id="用户输入">用户输入</h3>
-
 <p>这里将会展示一个用户的输入，并且把输出字符串存到一个变量内。这个变量用来给用户输出一个字符串。</p>
-
-<pre><code class="language-bash">#!/usr/bin/env bash
-echo &quot;Who are you?&quot; 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/usr/bin/env bash
+</span><span style="color:#75715e"></span>echo <span style="color:#e6db74">&#34;Who are you?&#34;</span> 
 read name
-echo &quot;Hello, $name.&quot;
-</code></pre>
-
-<p>这里的命令<code>read</code>从标准输入设备读取一行的数据，然后放入到变量<code>name</code>里面。然后就在<code>echo</code>中使用<code>$name</code>打印到标准输出设备中。</p>
-
+echo <span style="color:#e6db74">&#34;Hello, </span>$name<span style="color:#e6db74">.&#34;</span>
+</code></pre></div><p>这里的命令<code>read</code>从标准输入设备读取一行的数据，然后放入到变量<code>name</code>里面。然后就在<code>echo</code>中使用<code>$name</code>打印到标准输出设备中。</p>
 <p>例如：</p>
-
-<pre><code class="language-shell">$ ./hello_world.sh 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./hello_world.sh 
 Who are you?
 Matt
 Hello, Matt.
-</code></pre>
-
-<p>这里用户输入了名称“Matt”，这里代码就输出了<code>Hello, Matt.</code></p>
-
+</code></pre></div><p>这里用户输入了名称“Matt”，这里代码就输出了<code>Hello, Matt.</code></p>
 <p>如果你想在输出变量的时候，在变量后面添加一些内容，需要向下面一样在变量的前后添加上花括号：</p>
-
 <pre><code>#!/usr/bin/env bash
 echo &quot;What are you doing?&quot; 
 read action
 echo &quot;You are ${action}ing.&quot;
-</code></pre>
-
-<p>会有下面的输出：</p>
-
+</code></pre><p>会有下面的输出：</p>
 <pre><code>$ ./hello_world.sh 
 What are you doing? 
 Sleep
 You are Sleeping.
-</code></pre>
-
-<p>这样当执行脚本的时候，“ing”将会输出在字符串后面。</p>
-
+</code></pre><p>这样当执行脚本的时候，“ing”将会输出在字符串后面。</p>
 <h3 id="引号重要性">引号重要性</h3>
-
 <p>引用在bash的字符串解析中是非常重要的。使用引用，你可以控制bash如何解析和扩展你的字符串。</p>
-
 <p>有两种类型的引用：</p>
-
 <ul>
 <li>弱：使用双引号</li>
 <li>强：使用单引号</li>
 </ul>
-
 <p>如果你希望bash解析字符串中的变量，使用弱引用：</p>
-
 <pre><code>#!/usr/bin/env bash
 world=&quot;World&quot;
 echo &quot;Hello $world&quot; 
 #&gt; Hello World
-</code></pre>
-
-<p>如果你不希望bash解析你的字符串中的变量，可以使用强引用：</p>
-
+</code></pre><p>如果你不希望bash解析你的字符串中的变量，可以使用强引用：</p>
 <pre><code>#!/usr/bin/env bash
 world=&quot;World&quot;
 echo 'Hello $world'
 #&gt; Hello $world
-</code></pre>
-
-<p>也可以使用转移字符用来避免解析变量：</p>
-
+</code></pre><p>也可以使用转移字符用来避免解析变量：</p>
 <pre><code>#!/usr/bin/env bash
 world=&quot;World&quot;
 echo &quot;Hello \$world&quot; 
 #&gt; Hello $world
-</code></pre>
-
-<p>想要比开始更详细的信息，可以继续阅读下去。</p>
-
+</code></pre><p>想要比开始更详细的信息，可以继续阅读下去。</p>
 <h3 id="bash内建信息">Bash内建信息</h3>
-
 <pre><code>help &lt;command&gt;
-</code></pre>
-
-<p>上面的命令将会展示Bash内建命令的帮助信息。</p>
-
+</code></pre><p>上面的命令将会展示Bash内建命令的帮助信息。</p>
 <p>比如：<code>help unset</code>将会展示：</p>
-
 <pre><code>unset: unset [-f] [-v] [-n] [name ...]
 Unset values and attributes of shell variables and functions.
 
@@ -429,22 +353,15 @@ Some variables cannot be unset; also see `readonly'.
 
 Exit Status:
 Returns success unless an invalid option is given or a NAME is read-only.
-</code></pre>
-
-<p>查看内建命令的简单介绍，使用<code>help -d</code>。</p>
-
-<h3 id="debug-模式">“Debug”模式</h3>
-
-<pre><code class="language-shell">$ cat hello.sh 
-#!/bin/bash
-echo &quot;Hello World&quot; 
+</code></pre><p>查看内建命令的简单介绍，使用<code>help -d</code>。</p>
+<h3 id="debug模式">“Debug”模式</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cat hello.sh 
+<span style="color:#75715e">#!/bin/bash</span>
+echo <span style="color:#e6db74">&#34;Hello World&#34;</span> 
 $ bash -x hello.sh 
 + echo Hello World 
 Hello World
-</code></pre>
-
-<p><code>-x</code>参数允许你把脚本的每一行执行一遍，下面是一个很好的例子：</p>
-
+</code></pre></div><p><code>-x</code>参数允许你把脚本的每一行执行一遍，下面是一个很好的例子：</p>
 <pre><code>$ cat hello.sh 
 #!/bin/bash
 echo &quot;Hello World\n&quot;
@@ -455,10 +372,7 @@ $ ./hello.sh
 Hello World
 
 expr: non-integer argument
-</code></pre>
-
-<p>上面输出的错误信息不能够很好的找到脚本问题，可以使用下面的方式，这里会输出便于查找文件的错误信息：</p>
-
+</code></pre><p>上面输出的错误信息不能够很好的找到脚本问题，可以使用下面的方式，这里会输出便于查找文件的错误信息：</p>
 <pre><code>$ bash -x hello.sh
 + echo Hello World\n 
 Hello World
@@ -467,10 +381,7 @@ Hello World
 + expr 5 + s
 expr: non-integer argument 
 + v=
-</code></pre>
-
-<h3 id="处理命名参数">处理命名参数</h3>
-
+</code></pre><h3 id="处理命名参数">处理命名参数</h3>
 <pre><code>#!/bin/bash
 deploy=false 
 uglify=false
@@ -487,9 +398,7 @@ $uglify &amp;&amp; echo &quot;will uglify... uglify = $uglify&quot;
 # how to run
 # chmod +x script.sh
 # ./script.sh --deploy true --uglify false
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -561,6 +470,12 @@ $uglify &amp;&amp; echo &quot;will uglify... uglify = $uglify&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

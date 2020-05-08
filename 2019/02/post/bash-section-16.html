@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#复制">复制</a>
-<ul>
-<li><a href="#复制一个文件">复制一个文件</a></li>
-<li><a href="#复制目录">复制目录</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#复制">复制</a>
+      <ul>
+        <li><a href="#复制一个文件">复制一个文件</a></li>
+        <li><a href="#复制目录">复制目录</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="复制">复制</h2>
-
+        		<h2 id="复制">复制</h2>
 <table>
 <thead>
 <tr>
@@ -206,71 +205,50 @@
 <th>Description</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-a,-archive</td>
 <td>和选项<code>d</code>，<code>p</code>，<code>r</code>一起使用</td>
 </tr>
-
 <tr>
 <td>-b,-backup</td>
 <td>在删除之前，建立一个备份</td>
 </tr>
-
 <tr>
 <td>-d,&ndash;no-deference</td>
 <td>保存连接</td>
 </tr>
-
 <tr>
 <td>-f,&ndash;force</td>
 <td>在不提醒用户的情况下删除目标地址存在的文件</td>
 </tr>
-
 <tr>
 <td>-i,&ndash;interactive</td>
 <td>在覆盖前进行提示</td>
 </tr>
-
 <tr>
 <td>-l,&ndash;link</td>
 <td>不复制文件，而是使用文件连接</td>
 </tr>
-
 <tr>
 <td>-p,&ndash;preserve</td>
 <td>尽可能保留文件的属性</td>
 </tr>
-
 <tr>
 <td>-R,&ndash;recursive</td>
 <td>递归复制目录的文件</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="复制一个文件">复制一个文件</h3>
-
-<p>把文件<code>foo.txt</code>从<code>/path/to/source/</code>复制到<code>/path/to/target/folder/</code>。</p>
-
+<p>把文件<code>foo.txt </code>从<code> /path/to/source/</code>复制到<code>/path/to/target/folder/</code>。</p>
 <pre><code>cp /path/to/source/foo.txt /path/to/target/folder/
-</code></pre>
-
-<p>把文件<code>foo.txt</code>从<code>/path/to/source/</code>复制到<code>/path/to/target/folder/</code>，并且修改文件名称为<code>bar.txt</code>。</p>
-
+</code></pre><p>把文件<code>foo.txt</code>从<code>/path/to/source/</code>复制到<code>/path/to/target/folder/</code>，并且修改文件名称为<code>bar.txt</code>。</p>
 <pre><code>cp /path/to/source/foo.txt /path/to/target/folder/bar.txt
-</code></pre>
-
-<h3 id="复制目录">复制目录</h3>
-
+</code></pre><h3 id="复制目录">复制目录</h3>
 <p>把目录<code>foo</code>复制到目录<code>bar</code>里面：</p>
-
 <pre><code>cp -r /path/to/foo /path/to/bar
-</code></pre>
-
-<p>如果目录<code>bar</code>在执行命令之前存在，目录<code>foo</code>和它的内容将会被复制到目录<code>bar</code>中。但是如果执行命令之前<code>bar</code>目录不存在的话，会创建目录<code>bar</code>，并且把目录<code>foo</code>的内容存放到<code>bar</code>中。</p>
-
+</code></pre><p>如果目录<code>bar</code>在执行命令之前存在，目录<code>foo</code>和它的内容将会被复制到目录<code>bar</code>中。但是如果执行命令之前<code>bar</code>目录不存在的话，会创建目录<code>bar</code>，并且把目录<code>foo</code>的内容存放到<code>bar</code>中。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -343,6 +321,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

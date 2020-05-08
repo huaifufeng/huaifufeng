@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,39 +187,26 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#bundles">bundles</a>
-<ul>
-<li><a href="#在本地创建一个bundle并应用到另一个">在本地创建一个bundle并应用到另一个</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#bundles">bundles</a>
+      <ul>
+        <li><a href="#在本地创建一个bundle并应用到另一个">在本地创建一个bundle并应用到另一个</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="bundles">bundles</h2>
-
+        		<h2 id="bundles">bundles</h2>
 <h3 id="在本地创建一个bundle并应用到另一个">在本地创建一个bundle并应用到另一个</h3>
-
 <p>如果你想保持没有网络的机器上面的仓库的版本信息。 bundle允许你打包一台机器上这个仓库的对象和引用，然后应用到另一台机器的仓库上。</p>
-
 <pre><code>git tag 2016_07_04
 git bundle create changes_between_tags.bundle [some_previous_tag]..2016_07_24
-</code></pre>
-
-<p>以某种方式把<code>changes_between_tags.bundle</code>传到远端的机器上，例如：thumb drive。一旦你有了这个文件：</p>
-
+</code></pre><p>以某种方式把<code>changes_between_tags.bundle</code>传到远端的机器上，例如：thumb drive。一旦你有了这个文件：</p>
 <pre><code>git bundle verify changes_between_tags.bundle # make sure bundle arrived intact
 git checkout [some branch] # in the repo on the remote machine
 git bundle list-heads changes_between_tags.bundle # list the references in the bundle
 git pull changes_between_tags.bundle [reference from the bundle, e.g. last field from the previous output]
-</code></pre>
-
-<p>反过来也是可能的。一旦对远程存储库进行了更改，您就可以将增量放入bundle里面；将更改放在（例如）一个拇指驱动器上，然后将它们合并回本地存储库，这样两个存储库就可以保持同步，而不需要在计算机之间直接访问git、ssh、rsync或http协议。</p>
-
+</code></pre><p>反过来也是可能的。一旦对远程存储库进行了更改，您就可以将增量放入bundle里面；将更改放在（例如）一个拇指驱动器上，然后将它们合并回本地存储库，这样两个存储库就可以保持同步，而不需要在计算机之间直接访问git、ssh、rsync或http协议。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -288,6 +279,12 @@ git pull changes_between_tags.bundle [reference from the bundle, e.g. last field
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

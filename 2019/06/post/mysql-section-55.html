@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,68 +187,45 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#临时表">临时表</a>
-<ul>
-<li><a href="#1-创建临时表">1. 创建临时表</a></li>
-<li><a href="#2-删除临时表">2. 删除临时表</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#临时表">临时表</a>
+      <ul>
+        <li><a href="#1-创建临时表">1. 创建临时表</a></li>
+        <li><a href="#2-删除临时表">2. 删除临时表</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="临时表">临时表</h2>
-
+        		<h2 id="临时表">临时表</h2>
 <h3 id="1-创建临时表">1. 创建临时表</h3>
-
 <p>临时表用来保存临时数据是很有用的。临时表选项是在MySQL3.23之后开始有效的。</p>
-
 <p>临时表在会话结束或连接关闭的时候自动销毁。用户也可以自己删的临时表。</p>
-
 <p>相同名称的临时表可以在同时被多个连接使用，因为临时表只在创建表的客户端中有效可以访问。</p>
-
 <p>临时表可以使用下面的语法穿甲：</p>
-
-<pre><code class="language-mysql">-- 基本语法
-CREATE TEMPORARY TABLE tempTable1(
-    id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 基本语法
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> TEMPORARY <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">tempTable1</span>(
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span>,
+    title <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">100</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id)
 );
 
--- 从select创建
-CREATE TEMPORYARY TABLE tempTable1
-    SELECT ColumnName1,ColumnName2,... FROM table1;
-</code></pre>
-
-<p>你可以像创建表一样添加索引：</p>
-
-<pre><code class="language-mysql">CREATE TEMPORARY TABLE tempTable1
-    (PRIMARY KEY(ColumnName2))
-    SELECT ColumnName1,ColumnName2,... FROM table1;
-</code></pre>
-
-<p><code>IF NOT EXISTS</code>关键字用来避免&rsquo;table already exists&rsquo;错误。你过你创建的表名在的当前会话中已经存在了，这个表将不会创建。</p>
-
-<pre><code class="language-mysql">CREATE TEMPORARY TABLE IF NOT EXISTS tempTable1
-    SELECT ColumnName1,ColumnName2,... FROM table1;
-</code></pre>
-
-<h3 id="2-删除临时表">2. 删除临时表</h3>
-
+<span style="color:#75715e">-- 从select创建
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> TEMPORYARY <span style="color:#66d9ef">TABLE</span> tempTable1
+    <span style="color:#66d9ef">SELECT</span> ColumnName1,ColumnName2,... <span style="color:#66d9ef">FROM</span> table1;
+</code></pre></div><p>你可以像创建表一样添加索引：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> TEMPORARY <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">tempTable1</span>
+    (<span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>(ColumnName2))
+    <span style="color:#66d9ef">SELECT</span> ColumnName1,ColumnName2,... <span style="color:#66d9ef">FROM</span> table1;
+</code></pre></div><p><code>IF NOT EXISTS</code>关键字用来避免&rsquo;table already exists'错误。你过你创建的表名在的当前会话中已经存在了，这个表将不会创建。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> TEMPORARY <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">EXISTS</span> tempTable1
+    <span style="color:#66d9ef">SELECT</span> ColumnName1,ColumnName2,... <span style="color:#66d9ef">FROM</span> table1;
+</code></pre></div><h3 id="2-删除临时表">2. 删除临时表</h3>
 <p><code>Drop Temporary Table</code>用来删除这个会话中创建的临时表。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DROP</span> TEMPORARY <span style="color:#66d9ef">TABLE</span> tempTable1;
 
-<pre><code class="language-mysql">DROP TEMPORARY TABLE tempTable1;
-
-DROP TEMPORARY TABLE IF EXISTS tempTable1;
-</code></pre>
-
-<p>使用<code>IF EXISTS</code>来避免当表不存在是产生错误。</p>
-
+<span style="color:#66d9ef">DROP</span> TEMPORARY <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> tempTable1;
+</code></pre></div><p>使用<code>IF EXISTS</code>来避免当表不存在是产生错误。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -317,6 +298,12 @@ DROP TEMPORARY TABLE IF EXISTS tempTable1;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

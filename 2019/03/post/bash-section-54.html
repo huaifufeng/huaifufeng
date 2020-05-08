@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,25 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#处理系统提示">处理系统提示</a>
-<ul>
-<li><a href="#prompt-command">PROMPT_COMMAND</a></li>
-<li><a href="#ps2">PS2</a></li>
-<li><a href="#ps3">PS3</a></li>
-<li><a href="#ps4">PS4</a></li>
-<li><a href="#使用ps1">使用PS1</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#处理系统提示">处理系统提示</a>
+      <ul>
+        <li><a href="#prompt_command">PROMPT_COMMAND</a></li>
+        <li><a href="#ps2">PS2</a></li>
+        <li><a href="#ps3">PS3</a></li>
+        <li><a href="#ps4">PS4</a></li>
+        <li><a href="#使用ps1">使用PS1</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="处理系统提示">处理系统提示</h2>
-
+        		<h2 id="处理系统提示">处理系统提示</h2>
 <table>
 <thead>
 <tr>
@@ -209,149 +208,119 @@
 <th>含义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>\a</td>
 <td>响铃字符</td>
 </tr>
-
 <tr>
 <td>\d</td>
-<td>日期，&rdquo;Weekday Month Date&rdquo;这种格式的(像&rdquo;Tue May 26&rdquo;)</td>
+<td>日期，&ldquo;Weekday Month Date&quot;这种格式的(像&quot;Tue May 26&rdquo;)</td>
 </tr>
-
 <tr>
 <td>\D{FORMAT}</td>
 <td>这个FORMAT是传给<code>strftime</code>(3)，并且结果插入提示字符串。一个空的FORMAT导致特定于区域设置的时间表示。花括号是必须的</td>
 </tr>
-
 <tr>
 <td>\e</td>
 <td>转义符。\ 033当然也可以。</td>
 </tr>
-
 <tr>
 <td>\h</td>
 <td>主机名，知道第一个<code>.</code>(就是没有域的部分)</td>
 </tr>
-
 <tr>
 <td>\H</td>
 <td>带有域部分的主机名称</td>
 </tr>
-
 <tr>
 <td>\j</td>
 <td>这个shell当前关联的任务数量</td>
 </tr>
-
 <tr>
 <td>\l</td>
 <td>shell的终端设备名称的根目录</td>
 </tr>
-
 <tr>
 <td>\n</td>
 <td>新行</td>
 </tr>
-
 <tr>
 <td>\r</td>
 <td>回车符</td>
 </tr>
-
 <tr>
 <td>\s</td>
-<td>shell的名称，基名是&rdquo;$0&rdquo;(最后一个斜杠后面的部分)</td>
+<td>shell的名称，基名是&quot;$0&rdquo;(最后一个斜杠后面的部分)</td>
 </tr>
-
 <tr>
 <td>\t</td>
 <td>24小时格式的时间，HH:MM:SS</td>
 </tr>
-
 <tr>
 <td>\T</td>
 <td>12小时格式的时间，HH:MM:SS</td>
 </tr>
-
 <tr>
 <td>@</td>
 <td>12小时格式的时间， am/pm</td>
 </tr>
-
 <tr>
 <td>\A</td>
 <td>24小时的时间，HH:MM</td>
 </tr>
-
 <tr>
 <td>\u</td>
 <td>当前用户的用户名</td>
 </tr>
-
 <tr>
 <td>\v</td>
 <td>Bash的版本(2.00)</td>
 </tr>
-
 <tr>
 <td>\V</td>
 <td>Bash的发布版本， 版本+补丁级别(2.00.0)</td>
 </tr>
-
 <tr>
 <td>\w</td>
 <td>当前的工作目录，使用tilde缩写<code>$HOME</code>(<code>$PROMPT_DIRTRIM</code>变量)</td>
 </tr>
-
 <tr>
 <td>\W</td>
 <td><code>$PWD</code>的基目录，</td>
 </tr>
-
 <tr>
 <td>！</td>
 <td>这个命令的历史数量</td>
 </tr>
-
 <tr>
 <td>#</td>
 <td>这个命令的命令数量</td>
 </tr>
-
 <tr>
 <td>$</td>
 <td>如果有效用户id是0 # 否则是 $</td>
 </tr>
-
 <tr>
 <td>\NNN</td>
 <td>ASCII码是八进制数NNN的字符</td>
 </tr>
-
 <tr>
-<td></td>
+<td>\</td>
 <td>反斜杠</td>
 </tr>
-
 <tr>
 <td>[</td>
 <td>一列非打印字符的开始。这可以用来吧终端控制队列放入提示中</td>
 </tr>
-
 <tr>
 <td>]</td>
 <td>非打印字符的结尾</td>
 </tr>
 </tbody>
 </table>
-
-<h3 id="prompt-command">PROMPT_COMMAND</h3>
-
+<h3 id="prompt_command">PROMPT_COMMAND</h3>
 <p>当交互bash实例中上一个命令执行完毕了，PS1将会显示。在实际显示PS1之前，bash会首先检查PROMPT_COMMAND是否设置了。这个变量的值必须是可调用的程序或脚本。如果这个变量设置了，这个程序或脚本会在PS1提示输出之前调用。</p>
-
 <pre><code>#只是一个简单方法。我们用来检查是否小时是12，分钟小于59
 lunchbreak() {
     if (( $(date +%H) == 12 &amp;&amp; $(date +%M) &lt; 59)); then
@@ -363,30 +332,18 @@ lunchbreak() {
 }
 
 export PROMPT_COMMAND=lunchbreak
-</code></pre>
-
-<h3 id="ps2">PS2</h3>
-
+</code></pre><h3 id="ps2">PS2</h3>
 <p>当命令扩展到多行，并且bash等待更多的击键时，将显示PS2。当输入注入<code>while…do…done</code>等复合命令时，也会显示这个命令。</p>
-
 <pre><code>export PS2=&quot;would you please complete this command?\n&quot;
-</code></pre>
-
-<h3 id="ps3">PS3</h3>
-
+</code></pre><h3 id="ps3">PS3</h3>
 <p>当一个select语句执行时，将会显示元素前面加上数字，然后显示PS3提示：</p>
-
 <pre><code>export PS3=&quot; To choose your language type the preceding number :&quot;
 select lang in EN CA FR DE; do
     #检查输入直到有效
     break
 done
-</code></pre>
-
-<h3 id="ps4">PS4</h3>
-
+</code></pre><h3 id="ps4">PS4</h3>
 <p>当bash在debug模式时，显示PS4：</p>
-
 <pre><code>#!/usr/bin/env bash
 
 # switch on debugging
@@ -409,12 +366,8 @@ stupid_func
 
 # a pipeline of commands running in a subshell
 ( ls -l | grep 'x' )
-</code></pre>
-
-<h3 id="使用ps1">使用PS1</h3>
-
+</code></pre><h3 id="使用ps1">使用PS1</h3>
 <p>PS1是正常的系统提示，只是bash等待输入命令。它理解一些转移序列，并能执行函数和程序。因为bash必须在显示提示之后定位光标，它需要知道怎么去计算提示字符串的长度。为了指示PS1中字符的非打印序列，使用了转义大括号：<code>\[字符的非打印序列]</code>。这里说的对所有的PS*都是有效的。</p>
-
 <pre><code>#everything not being an escape sequence will be literally printed export PS1=&quot;literal sequence &quot; # Prompt is now:
 literal sequence ▉
 
@@ -431,9 +384,7 @@ export PS1='\u@\h:\w &gt; ' # \u == user, \h == host, \w actual working dir loos
 # assuming being root:
 PS1=&quot;\[$( (($EUID == 0)) &amp;&amp; tput setaf 1 \]\u\[$(tput sgr0)\]@\w:\w \$ &quot; 
 looser@host:/some/path &gt; ▉ # if not root else &lt;red&gt;root&lt;default&gt;@host....
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -505,6 +456,12 @@ looser@host:/some/path &gt; ▉ # if not root else &lt;red&gt;root&lt;default&gt
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

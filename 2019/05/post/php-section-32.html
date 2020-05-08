@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,24 +187,19 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#soap客户端">SOAP客户端</a>
-<ul>
-<li><a href="#wsdl模式">WSDL模式</a></li>
-<li><a href="#非wsdl模式">非WSDL模式</a></li>
-<li><a href="#类图">类图</a></li>
-<li><a href="#追踪soap的请求和响应">追踪SOAP的请求和响应</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#soap客户端">SOAP客户端</a>
+      <ul>
+        <li><a href="#wsdl模式">WSDL模式</a></li>
+        <li><a href="#非wsdl模式">非WSDL模式</a></li>
+        <li><a href="#类图">类图</a></li>
+        <li><a href="#追踪soap的请求和响应">追踪SOAP的请求和响应</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="soap客户端">SOAP客户端</h2>
-
+        		<h2 id="soap客户端">SOAP客户端</h2>
 <table>
 <thead>
 <tr>
@@ -208,53 +207,37 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>$wsdl</td>
 <td>WSDL的URI，如果不是 WSDL模式的化，是Null</td>
 </tr>
-
 <tr>
 <td>options</td>
 <td>Soap客户端的选项数组，非WSDL模式要设置<code>location</code>和<code>uri</code>，其他的选项是可选的。查看下面的值</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="wsdl模式">WSDL模式</h3>
-
 <p>首先，创建一个新的<code>SoapClient</code>对象，传入一个WSDL文件的URL和选项的数组。</p>
-
-<pre><code class="language-php">$soap = new SoapClient('https://example.com/soap.wsdl', [
-    'soap_version' =&gt; SOAP_1_2,
-    'compression' =&gt; SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GIZP,
-    'cache_wsdl' =&gt; WSDL_CACHE_BOTH,
-    'trace' =&gt; TRUE,
-    'exceptions' =&gt; TRUE
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$soap = new SoapClient(&#39;https://example.com/soap.wsdl&#39;, [
+    &#39;soap_version&#39; =&gt; SOAP_1_2,
+    &#39;compression&#39; =&gt; SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GIZP,
+    &#39;cache_wsdl&#39; =&gt; WSDL_CACHE_BOTH,
+    &#39;trace&#39; =&gt; TRUE,
+    &#39;exceptions&#39; =&gt; TRUE
 ]);
-</code></pre>
-
-<p>然后使用<code>$soap</code>对象调用SOAP的方法：</p>
-
-<pre><code class="language-php">$result = $soap-&gt;requestData(['a', 'b', 'c']);
-</code></pre>
-
-<h3 id="非wsdl模式">非WSDL模式</h3>
-
+</code></pre></div><p>然后使用<code>$soap</code>对象调用SOAP的方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$result = $soap-&gt;requestData([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]);
+</code></pre></div><h3 id="非wsdl模式">非WSDL模式</h3>
 <p>这个和WSDL模式相似的，传入WSDL文件的地址为NULL，必须传下<code>location</code>和<code>uri</code>选项。</p>
-
 <pre><code>$soap = new SoapClient(NULL, [
     'location' =&gt; 'https://example.com/soap/endpoint',
     'uri' =&gt; 'namespace'
 ]);
-</code></pre>
-
-<h3 id="类图">类图</h3>
-
+</code></pre><h3 id="类图">类图</h3>
 <p>当在PHP中创建SOAP客户端的时候，你可以使用<code>classmap</code>键的配置数组。<code>classmap</code>定义了WSDL实际使用的类型，而不是默认的<code>stdClass</code>。使用这个的原因是因为你可以获取这些类自实现的字段和方法调用，而不是猜测<code>stdClass</code>有什么字段。</p>
-
-<pre><code class="language-php">class MyAddress {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class MyAddress {
     public $country;
     public $city;
     public $full_name;
@@ -266,27 +249,24 @@ class MyBook {
     public $author;
     
     public function getShortDescription() {
-        return &quot;{this-&gt;name}, written by {$this-&gt;author}&quot;;
+        return &#34;{this-&gt;name}, written by {$this-&gt;author}&#34;;
     }
 }
 
 $soap_client = new SoapClient($link_to_wsdl, [
-    'classmap' =&gt; [
-        'Address' =&gt; MyAddress::class,
-        'Book' =&gt; MyBook::class
+    &#39;classmap&#39; =&gt; [
+        &#39;Address&#39; =&gt; MyAddress::class,
+        &#39;Book&#39; =&gt; MyBook::class
     ]
 ]);
-</code></pre>
-
-<p>在配置了classmap之后，无论你什么时候获得一个<code>Address</code>或<code>Book</code>时，SoapClient将会实例化这个类，并且使用数据填充相应的字段，从操作返回他们。</p>
-
-<pre><code class="language-php">// Lets assume 'getAddress(1234)' returns an Address by ID in the database
+</code></pre></div><p>在配置了classmap之后，无论你什么时候获得一个<code>Address</code>或<code>Book</code>时，SoapClient将会实例化这个类，并且使用数据填充相应的字段，从操作返回他们。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// Lets assume &#39;getAddress(1234)&#39; returns an Address by ID in the database
 $address = $soap_client-&gt;getAddress(1234);
 
 // $address is now of type MyAddress due to the classmap
 echo $address-&gt;country;
 
-// Lets assume the same for 'getBook(1234)'
+// Lets assume the same for &#39;getBook(1234)&#39;
 $book = $soap_client-&gt;getBook(124);
 
 // We can not use other functions defined on the MyBook class
@@ -298,24 +278,17 @@ $author = $soap_client-&gt;getAuthor(1234);
 // No classmap for Author type, $author is regular StdClass.
 // We can still access fields, but no auto-completion and no custom functions // to define for the objects.
 echo $author-&gt;name;
-</code></pre>
-
-<h3 id="追踪soap的请求和响应">追踪SOAP的请求和响应</h3>
-
+</code></pre></div><h3 id="追踪soap的请求和响应">追踪SOAP的请求和响应</h3>
 <p>有时候你想要获取SOAP请求中发送和获取的数据。下面的方法将会反复请求和响应中的XML：</p>
-
-<pre><code class="language-php">SoapClient::__getLastRequest()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">SoapClient::__getLastRequest()
 SoapClient::__getLastRequestHeaders()
 SoapClient::__getLastResponse()
 SoapClient::__getLastResponseHeaders()
-</code></pre>
-
-<p>例如，假设我们有一个<code>ENVIRONMENT</code>常量，当这个常量设置为<code>DEVELOPMENT</code>，当调用<code>getAddress</code>时抛出错误，我们想要获取详细的信息。一个方法是：</p>
-
-<pre><code class="language-php">try {
+</code></pre></div><p>例如，假设我们有一个<code>ENVIRONMENT</code>常量，当这个常量设置为<code>DEVELOPMENT</code>，当调用<code>getAddress</code>时抛出错误，我们想要获取详细的信息。一个方法是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">try {
     $address = $soap_client-&gt;getAddress(1234);
 } catch(SoapFault $e) {
-    if (ENVIRONMENT === 'DEVELOPMENT') {
+    if (ENVIRONMENT === &#39;DEVELOPMENT&#39;) {
         var_dump(
             $soap_client-&gt;__getLastRequestHeaders()
             $soap_client-&gt;__getLastRequest(),
@@ -324,9 +297,7 @@ SoapClient::__getLastResponseHeaders()
         );
     }
 }
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -398,6 +369,12 @@ SoapClient::__getLastResponseHeaders()
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

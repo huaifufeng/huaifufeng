@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,44 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#脚本输出修改格式">脚本输出修改格式</a>
-<ul>
-<li><a href="#color-output-sh">color-output.sh</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#脚本输出修改格式">脚本输出修改格式</a>
+      <ul>
+        <li><a href="#color-outputsh">color-output.sh</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="脚本输出修改格式">脚本输出修改格式</h2>
-
-<h3 id="color-output-sh">color-output.sh</h3>
-
+        		<h2 id="脚本输出修改格式">脚本输出修改格式</h2>
+<h3 id="color-outputsh">color-output.sh</h3>
 <p>在bash脚本的开头部分，可以定义一些变量，这些变量在脚本运行期间充电帮助器来对终端的输出进行着色或格式化。</p>
-
 <p>不同的平台使用不同的字符序列来表示颜色。然而有一个叫做<code>tput</code>的工具：在任何类Unix的系统上面，返回指定系统的终端颜色字符串通过一个跨平台的API。</p>
-
 <p>例如，获取终端文本红色或绿色的字符串序列到变量中：</p>
-
 <pre><code> red=$(tput setaf 1) 
  green=$(tput setaf 2)
-</code></pre>
-
-<p>或者，要存储将文本重置为默认外观的字符序列：</p>
-
+</code></pre><p>或者，要存储将文本重置为默认外观的字符序列：</p>
 <pre><code>reset=$(tput sgr0)
-</code></pre>
-
-<p>然后，当BASH脚本想要显示不同的颜色和输出是，可以像下面这样：</p>
-
+</code></pre><p>然后，当BASH脚本想要显示不同的颜色和输出是，可以像下面这样：</p>
 <pre><code>echo &quot;${green}Success!${reset}&quot; echo &quot;${red}Failure.${reset}&quot;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -292,6 +279,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

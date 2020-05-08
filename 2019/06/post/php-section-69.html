@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,53 +187,36 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#编码约定">编码约定</a>
-<ul>
-<li><a href="#1-php标签">1. PHP标签</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#编码约定">编码约定</a>
+      <ul>
+        <li><a href="#1-php标签">1. PHP标签</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="编码约定">编码约定</h2>
-
+        		<h2 id="编码约定">编码约定</h2>
 <h3 id="1-php标签">1. PHP标签</h3>
-
 <p>你应该使用<code>&lt;?php ?&gt;</code>或<code>&lt;?= ?&gt;</code>这两种标签。其他的方式（特别是 <code>&lt;? ?&gt;</code>）不应该使用，因为它们通常会被系统管理员禁用。</p>
-
 <p>当文件不会产生输出（整个文件都是PHP代码），需要使用<code>?&gt;</code>来避免无意义的输出，这将会导致客户端的解析出现问题。特别是一些客户端无法识别<code>&lt;!DOCTYPE</code>标签或开启了<a href="https://en.wikipedia.org/wiki/Quirks_mode">quirks模式</a>。</p>
-
 <p>下面是一个简单的PHP例子：</p>
-
-<pre><code class="language-php">&lt;?php
-print &quot;Hello World&quot;;
-</code></pre>
-
-<p>定义类的例子：</p>
-
-<pre><code class="language-php">&lt;?php
-class Foo {
-... 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Hello World&#34;</span>;
+</code></pre></div><p>定义类的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Foo</span> {
+<span style="color:#f92672">...</span> 
 }
-</code></pre>
-
-<p>PHP内嵌到HTML中的例子：</p>
-
-<pre><code class="language-php">&lt;ul id=&quot;nav&quot;&gt;
-    &lt;?php foreach ($navItems as $navItem): ?&gt;
-        &lt;li&gt;&lt;a href=&quot;&lt;?= htmlspecialchars($navItem-&gt;url) ?&gt;&quot;&gt; 
-        &lt;?= htmlspecialchars($navItem-&gt;label) ?&gt;
-        &lt;/a&gt;&lt;/li&gt;
-    &lt;?php endforeach; ?&gt;
-&lt;/ul&gt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>PHP内嵌到HTML中的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;<span style="color:#f92672">ul</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav&#34;</span>&gt;
+    <span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">foreach</span> ($navItems <span style="color:#66d9ef">as</span> $navItem)<span style="color:#f92672">:</span> <span style="color:#75715e">?&gt;</span>
+        &lt;<span style="color:#f92672">li</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">&lt;?</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">htmlspecialchars</span>($navItem<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">url</span>) <span style="color:#75715e">?&gt;</span><span style="color:#e6db74">&#34;</span>&gt; 
+        <span style="color:#75715e">&lt;?</span><span style="color:#f92672">=</span> <span style="color:#a6e22e">htmlspecialchars</span>($navItem<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">label</span>) <span style="color:#75715e">?&gt;</span>
+        &lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">li</span>&gt;
+    <span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">endforeach</span>; <span style="color:#75715e">?&gt;</span>
+&lt;/<span style="color:#f92672">ul</span>&gt;
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -301,6 +288,12 @@ class Foo {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

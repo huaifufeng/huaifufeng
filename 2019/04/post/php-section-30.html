@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,28 +187,23 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#输出缓存">输出缓存</a>
-<ul>
-<li><a href="#获取内容并清空">获取内容并清空</a></li>
-<li><a href="#使用回调处理缓存">使用回调处理缓存</a></li>
-<li><a href="#嵌套输出缓存">嵌套输出缓存</a></li>
-<li><a href="#在任何内容之前进行输出缓存">在任何内容之前进行输出缓存</a></li>
-<li><a href="#流输出到客户端">流输出到客户端</a></li>
-<li><a href="#输出缓存存储内容到文件">输出缓存存储内容到文件</a></li>
-<li><a href="#ob-start的典型用法和原因">ob_start的典型用法和原因</a></li>
-<li><a href="#捕捉内容-之后重用">捕捉内容，之后重用</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#输出缓存">输出缓存</a>
+      <ul>
+        <li><a href="#获取内容并清空">获取内容并清空</a></li>
+        <li><a href="#使用回调处理缓存">使用回调处理缓存</a></li>
+        <li><a href="#嵌套输出缓存">嵌套输出缓存</a></li>
+        <li><a href="#在任何内容之前进行输出缓存">在任何内容之前进行输出缓存</a></li>
+        <li><a href="#流输出到客户端">流输出到客户端</a></li>
+        <li><a href="#输出缓存存储内容到文件">输出缓存存储内容到文件</a></li>
+        <li><a href="#ob_start的典型用法和原因">ob_start的典型用法和原因</a></li>
+        <li><a href="#捕捉内容之后重用">捕捉内容，之后重用</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="输出缓存">输出缓存</h2>
-
+        		<h2 id="输出缓存">输出缓存</h2>
 <table>
 <thead>
 <tr>
@@ -212,141 +211,115 @@
 <th>详细说明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>ob_start()</td>
 <td>开启输出缓存，任何这个位置之后的输出（处理http头）都会被捕获不会直接显示</td>
 </tr>
-
 <tr>
 <td>ob_get_contents()</td>
 <td>返回<code>ob_start()</code>捕获的内容</td>
 </tr>
-
 <tr>
 <td>ob_end_clean()</td>
 <td>清空输出缓冲区并为当前嵌套级别关闭它</td>
 </tr>
-
 <tr>
 <td>ob_get_clean()</td>
 <td>执行<code>ob_get_contents()</code>和<code>ob_end_clean()</code>两个操作</td>
 </tr>
-
 <tr>
 <td>ob_get_level()</td>
 <td>返回输出缓冲区的当前嵌套级别</td>
 </tr>
-
 <tr>
 <td>ob_flush()</td>
 <td>在不结束缓存的情况下，输出缓存的内容并发送给浏览器</td>
 </tr>
-
 <tr>
 <td>ob_implict_flush()</td>
 <td>开启隐式刷新，在每次输出之后都会刷新</td>
 </tr>
-
 <tr>
 <td>ob_end_flush()</td>
 <td>刷新内容缓冲区并将其发送到浏览器，同时结束缓冲区</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="获取内容并清空">获取内容并清空</h3>
-
 <p>输出缓存允许你把一些文本内容(text，html)存储到一个变量中，然后在脚本结束之后一次性发送给浏览器。默认情况下，PHP解析内容之后会直接发送给浏览器：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//开启缓存
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">ob_start</span>();
 
-<pre><code class="language-php">&lt;?php
-//开启缓存
-ob_start();
-
-//输出内容
-print &quot;Hello&quot;;
-//可以跳出php
-?&gt;
-&lt;em&gt;World&lt;/em&gt;
-&lt;?php
-//获取缓存内容并情况缓存
-$content = ob_get_clean();
-# $content = ob_get_contents();
-# $did_clear_buffer = ob_end_clean();
-
-print($content);  //Hello &lt;em&gt;World&lt;/em&gt;
-</code></pre>
-
-<p>在<code>ob_start()</code>和<code>ob_get_clean()</code>之间的内容输出会被放到变量<code>$content</code>中。调用<code>ob_get_clean()</code>相当于同时调用了<code>ob_get_contents()</code>和<code>ob_end_clean()</code>。</p>
-
+<span style="color:#75715e">//输出内容
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Hello&#34;</span>;
+<span style="color:#75715e">//可以跳出php
+</span><span style="color:#75715e"></span><span style="color:#75715e">?&gt;</span>
+&lt;<span style="color:#f92672">em</span>&gt;World&lt;/<span style="color:#f92672">em</span>&gt;
+<span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//获取缓存内容并情况缓存
+</span><span style="color:#75715e"></span>$content <span style="color:#f92672">=</span> <span style="color:#a6e22e">ob_get_clean</span>();
+<span style="color:#75715e"># $content = ob_get_contents();
+</span><span style="color:#75715e"># $did_clear_buffer = ob_end_clean();
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">print</span>($content);  <span style="color:#75715e">//Hello &lt;em&gt;World&lt;/em&gt;
+</span></code></pre></div><p>在<code>ob_start()</code>和<code>ob_get_clean()</code>之间的内容输出会被放到变量<code>$content</code>中。调用<code>ob_get_clean()</code>相当于同时调用了<code>ob_get_contents()</code>和<code>ob_end_clean()</code>。</p>
 <h3 id="使用回调处理缓存">使用回调处理缓存</h3>
-
 <p>你可以给<code>ob_start()</code>传入一个回调函数来处理输出的数据：</p>
-
-<pre><code class="language-php">&lt;?php
-function clearAllWhiteSpace($buffer) {
-    return str_replace(array(&quot;\n&quot;, &quot;\t&quot;, &quot; &quot;), '', $buffer);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">clearAllWhiteSpace</span>($buffer) {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">str_replace</span>(<span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34; &#34;</span>), <span style="color:#e6db74">&#39;&#39;</span>, $buffer);
 }
 
-ob_start('clearAllWhiteSpace');
-?&gt;
-&lt;h1&gt;&gt;Lorem Ipsum&lt;/h1&gt;
+<span style="color:#a6e22e">ob_start</span>(<span style="color:#e6db74">&#39;clearAllWhiteSpace&#39;</span>);
+<span style="color:#75715e">?&gt;</span>
+&lt;<span style="color:#f92672">h1</span>&gt;&gt;Lorem Ipsum&lt;/<span style="color:#f92672">h1</span>&gt;
 
-&lt;p&gt;&lt;strong&gt;Pellentesque habitant morbi tristique&lt;/strong&gt; senectus et netus et malesuada fames ac turpis egestas. &lt;a href=&quot;#&quot;&gt;Donec non enim&lt;/a&gt; in turpis pulvinar facilisis.&lt;/p&gt;
+&lt;<span style="color:#f92672">p</span>&gt;&lt;<span style="color:#f92672">strong</span>&gt;Pellentesque habitant morbi tristique&lt;/<span style="color:#f92672">strong</span>&gt; senectus et netus et malesuada fames ac turpis egestas. &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#&#34;</span>&gt;Donec non enim&lt;/<span style="color:#f92672">a</span>&gt; in turpis pulvinar facilisis.&lt;/<span style="color:#f92672">p</span>&gt;
 
-&lt;h2&gt;Header Level 2&lt;/h2&gt;
+&lt;<span style="color:#f92672">h2</span>&gt;Header Level 2&lt;/<span style="color:#f92672">h2</span>&gt;
 
-&lt;ol&gt;
-   &lt;li&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.&lt;/li&gt;
-   &lt;li&gt;Aliquam tincidunt mauris eu risus.&lt;/li&gt;
-&lt;/ol&gt;
+&lt;<span style="color:#f92672">ol</span>&gt;
+   &lt;<span style="color:#f92672">li</span>&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.&lt;/<span style="color:#f92672">li</span>&gt;
+   &lt;<span style="color:#f92672">li</span>&gt;Aliquam tincidunt mauris eu risus.&lt;/<span style="color:#f92672">li</span>&gt;
+&lt;/<span style="color:#f92672">ol</span>&gt;
 
-&lt;?php
-/* Output will be flushed and processed when script ends or call
-     ob_end_flush();
-*/
-</code></pre>
-
-<p>这将会输出：</p>
-
+<span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">/* Output will be flushed and processed when script ends or call
+</span><span style="color:#75715e">     ob_end_flush();
+</span><span style="color:#75715e">*/</span>
+</code></pre></div><p>这将会输出：</p>
 <pre><code>&lt;h1&gt;LoremIpsum&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;Pellentesquehabitantmorbitristique&lt;/strong&gt;senectusetnetusetmalesuada famesacturpisegestas.&lt;ahref=&quot;#&quot;&gt;Donecnonenim&lt;/a&gt;inturpispulvinarfacilisis.&lt;/p&gt;&lt;h2&gt;HeaderLevel2&lt;/h2&gt; &lt;ol&gt;&lt;li&gt;Loremipsumdolorsitamet,consectetueradipiscingelit.&lt;/li&gt;&lt;li&gt;Aliquamtinciduntmauriseurisus.&lt;/ li&gt;&lt;/ol&gt;
-</code></pre>
-
-<h3 id="嵌套输出缓存">嵌套输出缓存</h3>
-
+</code></pre><h3 id="嵌套输出缓存">嵌套输出缓存</h3>
 <p>你可以嵌套输出缓存，然后根据<code>ob_get_level()</code>输出缓存的不同等级，输出不同的缓存内容。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$i <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+$output <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
 
-<pre><code class="language-php">&lt;?php
-$i = 1;
-$output = null;
-
-while( $i &lt;= 5 ) {
-    // Each loop, creates a new output buffering `level` ob_start();
-    print &quot;Current nest level: &quot;. ob_get_level() . &quot;\n&quot;; $i++;
+<span style="color:#66d9ef">while</span>( $i <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">5</span> ) {
+    <span style="color:#75715e">// Each loop, creates a new output buffering `level` ob_start();
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Current nest level: &#34;</span><span style="color:#f92672">.</span> <span style="color:#a6e22e">ob_get_level</span>() <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>; $i<span style="color:#f92672">++</span>;
 }
 
-// We're at level 5 now
-print 'Ended up at level: ' . ob_get_level() . PHP_EOL;
+<span style="color:#75715e">// We&#39;re at level 5 now
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;Ended up at level: &#39;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">ob_get_level</span>() <span style="color:#f92672">.</span> <span style="color:#a6e22e">PHP_EOL</span>;
 
-// Get clean will `pop` the contents of the top most level (5)
-$output .= ob_get_clean();
-print $output;
+<span style="color:#75715e">// Get clean will `pop` the contents of the top most level (5)
+</span><span style="color:#75715e"></span>$output <span style="color:#f92672">.=</span> <span style="color:#a6e22e">ob_get_clean</span>();
+<span style="color:#66d9ef">print</span> $output;
 
-print 'Popped level 5, so we now start from 4' . PHP_EOL;
+<span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#39;Popped level 5, so we now start from 4&#39;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">PHP_EOL</span>;
 
-// We're now at level 4 (we pop'ed off 5 above)
-
-// For each level we went up, come back down and get the buffer
-while( $i &gt; 2 ) {
-    print &quot;Current nest level: &quot; . ob_get_level() . &quot;\n&quot;; 
-    echo ob_get_clean();
-    $i--;
+<span style="color:#75715e">// We&#39;re now at level 4 (we pop&#39;ed off 5 above)
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// For each level we went up, come back down and get the buffer
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">while</span>( $i <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span> ) {
+    <span style="color:#66d9ef">print</span> <span style="color:#e6db74">&#34;Current nest level: &#34;</span> <span style="color:#f92672">.</span> <span style="color:#a6e22e">ob_get_level</span>() <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>; 
+    <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">ob_get_clean</span>();
+    $i<span style="color:#f92672">--</span>;
 }
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre></div><p>输出：</p>
 <pre><code>Current nest level: 1
 Current nest level: 2
 Current nest level: 3
@@ -358,52 +331,45 @@ Current nest level: 4
 Current nest level: 3
 Current nest level: 2
 Current nest level: 1
-</code></pre>
+</code></pre><h3 id="在任何内容之前进行输出缓存">在任何内容之前进行输出缓存</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#a6e22e">ob_start</span>();
 
-<h3 id="在任何内容之前进行输出缓存">在任何内容之前进行输出缓存</h3>
-
-<pre><code class="language-php">&lt;?php
-ob_start();
-
-$user_count = 0;
-foreach ($users as $user) {
-    if ($user['access'] != 7) {
-        continue;
+$user_count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+<span style="color:#66d9ef">foreach</span> ($users <span style="color:#66d9ef">as</span> $user) {
+    <span style="color:#66d9ef">if</span> ($user[<span style="color:#e6db74">&#39;access&#39;</span>] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">7</span>) {
+        <span style="color:#66d9ef">continue</span>;
     }
-    ?&gt;
-    &lt;li class=&quot;users user-&lt;?php echo $user['id'];?&gt;&quot;&gt;
-        &lt;a href=&quot;&lt;?php echo $user['link']; ?&gt;&quot;&gt;
-            &lt;?php echo $user['name'] ?&gt;
-        &lt;/a&gt;
-    &lt;/li&gt;
-&lt;?php
-    $user_count++;
+    <span style="color:#75715e">?&gt;</span>
+    &lt;<span style="color:#f92672">li</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users user-</span><span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $user[<span style="color:#e6db74">&#39;id&#39;</span>];<span style="color:#75715e">?&gt;</span><span style="color:#e6db74">&#34;</span>&gt;
+        &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $user[<span style="color:#e6db74">&#39;link&#39;</span>]; <span style="color:#75715e">?&gt;</span><span style="color:#e6db74">&#34;</span>&gt;
+            <span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $user[<span style="color:#e6db74">&#39;name&#39;</span>] <span style="color:#75715e">?&gt;</span>
+        &lt;/<span style="color:#f92672">a</span>&gt;
+    &lt;/<span style="color:#f92672">li</span>&gt;
+<span style="color:#75715e">&lt;?php</span>
+    $user_count<span style="color:#f92672">++</span>;
 }
-$users_html = ob_get_clean();
+$users_html <span style="color:#f92672">=</span> <span style="color:#a6e22e">ob_get_clean</span>();
 
-if (!$user_count) {
-    header('Location: /404.php');
-    exit();
+<span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>$user_count) {
+    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: /404.php&#39;</span>);
+    <span style="color:#66d9ef">exit</span>();
 }
-?&gt;
-&lt;html&gt;
-    &lt;head&gt;
-        &lt;title&gt;Level 7 user results (&lt;?php echo $user_count; ?&gt;)&lt;/title&gt; 
-    &lt;/head&gt;
-&lt;body&gt;
-&lt;h2&gt;We have a total of &lt;?php echo $user_count; ?&gt; users with access level 7&lt;/h2&gt; 
-&lt;ul class=&quot;user-list&quot;&gt;
-    &lt;?php echo $users_html; ?&gt; 
-&lt;/ul&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>在这个例子中我们假设<code>$users</code>是一个多维数组，我们循环寻找访问级别是7的用户。如果没有记录，我们就跳转到错误页。我们这里使用了输出缓存，因为我们在循环中使用<code>header()</code>来进行重定向。</p>
-
+<span style="color:#75715e">?&gt;</span>
+&lt;<span style="color:#f92672">html</span>&gt;
+    &lt;<span style="color:#f92672">head</span>&gt;
+        &lt;<span style="color:#f92672">title</span>&gt;Level 7 user results (<span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $user_count; <span style="color:#75715e">?&gt;</span>)&lt;/<span style="color:#f92672">title</span>&gt; 
+    &lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+&lt;<span style="color:#f92672">h2</span>&gt;We have a total of <span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $user_count; <span style="color:#75715e">?&gt;</span> users with access level 7&lt;/<span style="color:#f92672">h2</span>&gt; 
+&lt;<span style="color:#f92672">ul</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;user-list&#34;</span>&gt;
+    <span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $users_html; <span style="color:#75715e">?&gt;</span> 
+&lt;/<span style="color:#f92672">ul</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>在这个例子中我们假设<code>$users</code>是一个多维数组，我们循环寻找访问级别是7的用户。如果没有记录，我们就跳转到错误页。我们这里使用了输出缓存，因为我们在循环中使用<code>header()</code>来进行重定向。</p>
 <h3 id="流输出到客户端">流输出到客户端</h3>
-
-<pre><code class="language-php">/**
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
  * Enables output buffer streaming. Calling this function
  * immediately flushes the buffer to the client, and any
  * subsequent output will be sent directly to the client.
@@ -412,90 +378,66 @@ function _stream() {
     ob_implicit_flush(true); 
     ob_end_flush();
 }
-</code></pre>
-
-<h3 id="输出缓存存储内容到文件">输出缓存存储内容到文件</h3>
-
-<pre><code class="language-php">&lt;?php
-ob_start(); ?&gt;
-    &lt;html&gt;
-    &lt;head&gt;
-        &lt;title&gt;Example invoice&lt;/title&gt;
-    &lt;/head&gt;
-&lt;body&gt;
-&lt;h1&gt;Invoice #0000&lt;/h1&gt; &lt;h2&gt;Cost: &amp;pound;15,000&lt;/h2&gt;
+</code></pre></div><h3 id="输出缓存存储内容到文件">输出缓存存储内容到文件</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#a6e22e">ob_start</span>(); <span style="color:#75715e">?&gt;</span>
+    &lt;<span style="color:#f92672">html</span>&gt;
+    &lt;<span style="color:#f92672">head</span>&gt;
+        &lt;<span style="color:#f92672">title</span>&gt;Example invoice&lt;/<span style="color:#f92672">title</span>&gt;
+    &lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+&lt;<span style="color:#f92672">h1</span>&gt;Invoice #0000&lt;/<span style="color:#f92672">h1</span>&gt; &lt;<span style="color:#f92672">h2</span>&gt;Cost: &amp;pound;15,000&lt;/<span style="color:#f92672">h2</span>&gt;
     ...
-    &lt;/body&gt;
-    &lt;/html&gt;
-&lt;?php
-$html = ob_get_clean();
-$handle = fopen('invoices/example-invoice.html', 'w');
-fwrite($handle, $html);
-fclose($handle);
-</code></pre>
-
-<p>这个例子获取整个文档的内容，然后把这些内容写入到一个文件中。这里没有把内容输出到浏览器，想要输出的话使用<code>echo $html</code>。</p>
-
-<h3 id="ob-start的典型用法和原因">ob_start的典型用法和原因</h3>
-
+    &lt;/<span style="color:#f92672">body</span>&gt;
+    &lt;/<span style="color:#f92672">html</span>&gt;
+<span style="color:#75715e">&lt;?php</span>
+$html <span style="color:#f92672">=</span> <span style="color:#a6e22e">ob_get_clean</span>();
+$handle <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#39;invoices/example-invoice.html&#39;</span>, <span style="color:#e6db74">&#39;w&#39;</span>);
+<span style="color:#a6e22e">fwrite</span>($handle, $html);
+<span style="color:#a6e22e">fclose</span>($handle);
+</code></pre></div><p>这个例子获取整个文档的内容，然后把这些内容写入到一个文件中。这里没有把内容输出到浏览器，想要输出的话使用<code>echo $html</code>。</p>
+<h3 id="ob_start的典型用法和原因">ob_start的典型用法和原因</h3>
 <p><code>ob_start</code>在重定向你的页面的时候非常有用。例如，下面的代码就是有问题的：</p>
-
-<pre><code class="language-php">Hello
-&lt;?php
-    header(&quot;Location: somepate.php&quot;);
-?&gt;
-</code></pre>
-
-<p>将会输出一个类似<code>headers already sent by &lt;xxx&gt; on line &lt;xxx&gt;</code>这样的错误。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">Hello
+<span style="color:#75715e">&lt;?php</span>
+    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#34;Location: somepate.php&#34;</span>);
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>将会输出一个类似<code>headers already sent by &lt;xxx&gt; on line &lt;xxx&gt;</code>这样的错误。</p>
 <p>为了解决这个问题，我们在页面的开始使用下面的代码：</p>
-
-<pre><code class="language-php">&lt;?php
-ob_start();
-?&gt;
-</code></pre>
-
-<p>在页面的末尾输入：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#a6e22e">ob_start</span>();
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>在页面的末尾输入：</p>
 <pre><code>&lt;?php
 ob_end_flush();
 ?&gt;
-</code></pre>
-
-<p>这将会吧所有的输出内容放到输出缓存中，然后一次性显示这些内容。因此，当你的页面使用重定向时，将会在发送内容之前执行，不会触发这个错误：<code>a headers already sent error occurring.</code></p>
-
-<h3 id="捕捉内容-之后重用">捕捉内容，之后重用</h3>
-
+</code></pre><p>这将会吧所有的输出内容放到输出缓存中，然后一次性显示这些内容。因此，当你的页面使用重定向时，将会在发送内容之前执行，不会触发这个错误：<code>a headers already sent error occurring.</code></p>
+<h3 id="捕捉内容之后重用">捕捉内容，之后重用</h3>
 <p>这个例子中，我们有一个包含内容的数组。我们把输出缓存放到<code>$items_li_html</code>中，然后在页面中使用了两次：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#a6e22e">ob_start</span>();
 
-<pre><code class="language-php">&lt;?php
-ob_start();
+$items <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;Home&#39;</span>, <span style="color:#e6db74">&#39;Blog&#39;</span>, <span style="color:#e6db74">&#39;FAQ&#39;</span>, <span style="color:#e6db74">&#39;Contact&#39;</span>];
 
-$items = ['Home', 'Blog', 'FAQ', 'Contact'];
+<span style="color:#66d9ef">foreach</span>($items <span style="color:#66d9ef">as</span> $item)<span style="color:#f92672">:</span>
+<span style="color:#75715e">?&gt;</span>
+    &lt;<span style="color:#f92672">li</span>&gt;<span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $item <span style="color:#75715e">?&gt;</span>&lt;/<span style="color:#f92672">li</span>&gt;
+<span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">endforeach</span>;
 
-foreach($items as $item):
-?&gt;
-    &lt;li&gt;&lt;?php echo $item ?&gt;&lt;/li&gt;
-&lt;?php
-endforeach;
-
-$items_li_html = ob_get_clean();
-?&gt;
+$items_li_html <span style="color:#f92672">=</span> <span style="color:#a6e22e">ob_get_clean</span>();
+<span style="color:#75715e">?&gt;</span>
   
-&lt;!-- Menu 1: We can now re-use that (multiple times if required) in our HTML. --&gt; 
-&lt;ul class=&quot;header-nav&quot;&gt;
-    &lt;?php echo $items_li_html ?&gt; 
-&lt;/ul&gt;
-&lt;!-- Menu 2 --&gt;
-&lt;ul class=&quot;footer-nav&quot;&gt;
-    &lt;?php echo $items_li_html ?&gt;
-&lt;/ul&gt;
-</code></pre>
-
-<p>把上面的代码保存到<code>output_buffer.php</code>，然后使用<code>php output_buffer.php</code>运行。</p>
-
+<span style="color:#75715e">&lt;!-- Menu 1: We can now re-use that (multiple times if required) in our HTML. --&gt;</span> 
+&lt;<span style="color:#f92672">ul</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;header-nav&#34;</span>&gt;
+    <span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $items_li_html <span style="color:#75715e">?&gt;</span> 
+&lt;/<span style="color:#f92672">ul</span>&gt;
+<span style="color:#75715e">&lt;!-- Menu 2 --&gt;</span>
+&lt;<span style="color:#f92672">ul</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;footer-nav&#34;</span>&gt;
+    <span style="color:#75715e">&lt;?php</span> <span style="color:#66d9ef">echo</span> $items_li_html <span style="color:#75715e">?&gt;</span>
+&lt;/<span style="color:#f92672">ul</span>&gt;
+</code></pre></div><p>把上面的代码保存到<code>output_buffer.php</code>，然后使用<code>php output_buffer.php</code>运行。</p>
 <p>你可以看到输出了两个相同的列表：</p>
-
 <pre><code>&lt;!-- Menu 1: We can now re-use that (multiple times if required) in our HTML. --&gt;
 &lt;ul class=&quot;header-nav&quot;&gt;
     &lt;li&gt;Home&lt;/li&gt; 
@@ -510,9 +452,7 @@ $items_li_html = ob_get_clean();
     &lt;li&gt;FAQ&lt;/li&gt;
     &lt;li&gt;Contact&lt;/li&gt;
 &lt;/ul&gt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -584,6 +524,12 @@ $items_li_html = ob_get_clean();
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

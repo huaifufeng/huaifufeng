@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,63 +187,43 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#对象序列化">对象序列化</a>
-<ul>
-<li><a href="#1-serialize-unserialize">1. serialize / unserialize</a></li>
-<li><a href="#2-serializable接口">2. Serializable接口</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#对象序列化">对象序列化</a>
+      <ul>
+        <li><a href="#1-serialize--unserialize">1. serialize / unserialize</a></li>
+        <li><a href="#2-serializable接口">2. Serializable接口</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="对象序列化">对象序列化</h2>
-
-<h3 id="1-serialize-unserialize">1. serialize / unserialize</h3>
-
+        		<h2 id="对象序列化">对象序列化</h2>
+<h3 id="1-serialize--unserialize">1. serialize / unserialize</h3>
 <p><code>serialize()</code>返回一个包含PHP中存储的任何值的字节流格式的字符串。<code>unserialize()</code>将会把这个变量转换为初始的值。</p>
-
 <p><strong>序列化对象</strong></p>
-
-<pre><code class="language-php">serialize($object);
-</code></pre>
-
-<p><strong>反序列化对象</strong></p>
-
-<pre><code class="language-php">unserialize($object)
-</code></pre>
-
-<p><strong>例子</strong></p>
-
-<pre><code class="language-php">$array = array();
-$array[&quot;a&quot;] = &quot;Foo&quot;;
-$array[&quot;b&quot;] = &quot;Bar&quot;;
-$array[&quot;c&quot;] = &quot;Baz&quot;;
-$array[&quot;d&quot;] = &quot;Wom&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">serialize($object);
+</code></pre></div><p><strong>反序列化对象</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">unserialize($object)
+</code></pre></div><p><strong>例子</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = array();
+$array[&#34;a&#34;] = &#34;Foo&#34;;
+$array[&#34;b&#34;] = &#34;Bar&#34;;
+$array[&#34;c&#34;] = &#34;Baz&#34;;
+$array[&#34;d&#34;] = &#34;Wom&#34;;
 
 $serializedArray = serialize($array);
 echo $serializedArray; //output: 
-a:4:{s:1:&quot;a&quot;;s:3:&quot;Foo&quot;;s:1:&quot;b&quot;;s:3:&quot;Bar&quot;;s:1:&quot;c&quot;;s:3:&quot;Baz&quot;;s:1:&quot;d&quot;;s:3:&quot;Wom&quot;;}
-</code></pre>
-
-<h3 id="2-serializable接口">2. Serializable接口</h3>
-
+a:4:{s:1:&#34;a&#34;;s:3:&#34;Foo&#34;;s:1:&#34;b&#34;;s:3:&#34;Bar&#34;;s:1:&#34;c&#34;;s:3:&#34;Baz&#34;;s:1:&#34;d&#34;;s:3:&#34;Wom&#34;;}
+</code></pre></div><h3 id="2-serializable接口">2. Serializable接口</h3>
 <p>简介</p>
-
 <blockquote>
 <p>实现这个接口的类不在支持<code>__sleep()</code>和<code>wakeup()</code>魔术方法。当实例序列化的时候，serialize方法将会调用。除非在方法内部编程，否则这将不会调用<code>__destruct()</code>和其他有副作用的方法。当类的数据要反序列化的时候<code>unserialize()</code>方法将会作为构造函数调用，而不是<code>__construct()</code>。如果你想要执行标准的构造方法，就在这个方法里面调用。</p>
 </blockquote>
-
 <p><strong>基本用法</strong></p>
-
-<pre><code class="language-php">class obj implents Serializable {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class obj implents Serializable {
     private $data;
     public function __construct() {
-        $this-&gt;data = &quot;My private data&quot;;
+        $this-&gt;data = &#34;My private data&#34;;
     }
     
     public function serialize() {
@@ -258,13 +242,11 @@ a:4:{s:1:&quot;a&quot;;s:3:&quot;Foo&quot;;s:1:&quot;b&quot;;s:3:&quot;Bar&quot;
 $obj = new Obj();
 $user = serialize($obj);
 
-var_dump($user); //string(38) &quot;C:3:&quot;obj&quot;:23:{s:15:&quot;My private data&quot;;}&quot;
+var_dump($user); //string(38) &#34;C:3:&#34;obj&#34;:23:{s:15:&#34;My private data&#34;;}&#34;
 
 $newObj = unserialize($user);
-var_dump($newobj-&gt;getData()); // string(15) &quot;My private data&quot;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+var_dump($newobj-&gt;getData()); // string(15) &#34;My private data&#34;
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -336,6 +318,12 @@ var_dump($newobj-&gt;getData()); // string(15) &quot;My private data&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

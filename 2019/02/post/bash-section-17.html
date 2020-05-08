@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,230 +187,113 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#find">Find</a>
-<ul>
-<li><a href="#按照文件名或扩展名搜索文件">按照文件名或扩展名搜索文件</a></li>
-<li><a href="#对找到的文件执行命令">对找到的文件执行命令</a></li>
-<li><a href="#通过访问-修改时间查找文件">通过访问/修改时间查找文件</a></li>
-<li><a href="#根据文件大小访问文件">根据文件大小访问文件</a></li>
-<li><a href="#过滤路径">过滤路径</a></li>
-<li><a href="#根据类型搜索文件">根据类型搜索文件</a></li>
-<li><a href="#搜索指定扩展的文件">搜索指定扩展的文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#find">Find</a>
+      <ul>
+        <li><a href="#按照文件名或扩展名搜索文件">按照文件名或扩展名搜索文件</a></li>
+        <li><a href="#对找到的文件执行命令">对找到的文件执行命令</a></li>
+        <li><a href="#通过访问修改时间查找文件">通过访问/修改时间查找文件</a></li>
+        <li><a href="#根据文件大小访问文件">根据文件大小访问文件</a></li>
+        <li><a href="#过滤路径">过滤路径</a></li>
+        <li><a href="#根据类型搜索文件">根据类型搜索文件</a></li>
+        <li><a href="#搜索指定扩展的文件">搜索指定扩展的文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="find">Find</h2>
-
+        		<h2 id="find">Find</h2>
 <p>find是一个用于在目录中递归搜索与条件匹配的文件（或目录）的命令，然后对所选文件执行某些操作。</p>
-
 <pre><code>find search_path selection_criteria action
-</code></pre>
-
-<h3 id="按照文件名或扩展名搜索文件">按照文件名或扩展名搜索文件</h3>
-
+</code></pre><h3 id="按照文件名或扩展名搜索文件">按照文件名或扩展名搜索文件</h3>
 <p>使用指定的文件名在<code>pwd</code>指向的本地目录内搜索文件或目录：</p>
-
 <pre><code>$ find . -name &quot;myFile.txt&quot; 
 ./myFile.txt
-</code></pre>
-
-<p>使用通配符查找有指定扩展名的文件或目录：</p>
-
+</code></pre><p>使用通配符查找有指定扩展名的文件或目录：</p>
 <pre><code>$ find . -name &quot;*.txt&quot; 
 ./myFile.txt 
 ./myFile2.txt
-</code></pre>
-
-<p>想要搜索包含多个扩展的文件或目录，使用<code>or</code>选项：</p>
-
+</code></pre><p>想要搜索包含多个扩展的文件或目录，使用<code>or</code>选项：</p>
 <pre><code>$ find . -name &quot;*.txt&quot; -o -name &quot;*.sh&quot;
-</code></pre>
-
-<p>想要搜索以<code>abc</code>开头，后面跟着一个字符，之后跟着一个数字使用下面的模式：</p>
-
+</code></pre><p>想要搜索以<code>abc</code>开头，后面跟着一个字符，之后跟着一个数字使用下面的模式：</p>
 <pre><code>$ find . -name &quot;abc[a-z][0-9]&quot;
-</code></pre>
-
-<p>获取指定目录下所有的文件：</p>
-
+</code></pre><p>获取指定目录下所有的文件：</p>
 <pre><code>$ find /opt
-</code></pre>
-
-<p>只显示目录下面的文件，使用<code>-type f</code>：</p>
-
+</code></pre><p>只显示目录下面的文件，使用<code>-type f</code>：</p>
 <pre><code>$ find /opt -type f
-</code></pre>
-
-<p>只显示目录下面的目录，使用<code>-type d</code>:</p>
-
+</code></pre><p>只显示目录下面的目录，使用<code>-type d</code>:</p>
 <pre><code>$ find /opt -type d
-</code></pre>
-
-<h3 id="对找到的文件执行命令">对找到的文件执行命令</h3>
-
+</code></pre><h3 id="对找到的文件执行命令">对找到的文件执行命令</h3>
 <p>有时候我们需要在一批文件上面运行命令。这里就可以使用<code>xargs</code>命令。</p>
-
 <pre><code>find . -type d -print | xargs -r chmod 770
-</code></pre>
-
-<p>上面的命令将会在<code>.</code>目录（你的当前工作目录）中中的所有递归的子目录(<code>-type f</code>)中执行<code>chmod 770</code>这个命令。<code>xargs</code>命令的<code>-r</code>选项是通知<code>chmod</code>命令，当<code>find</code>命令没有找到文件的时候不执行。</p>
-
+</code></pre><p>上面的命令将会在<code>.</code>目录（你的当前工作目录）中中的所有递归的子目录(<code>-type f</code>)中执行<code>chmod 770</code>这个命令。<code>xargs</code>命令的<code>-r</code>选项是通知<code>chmod</code>命令，当<code>find</code>命令没有找到文件的时候不执行。</p>
 <p>当你文件名或目录名称中包含空字符串，这个命令就会有问题。下面是一种解决办法：</p>
-
 <pre><code>find . -type d -print0 | xargs -r -0 chmod 770
-</code></pre>
-
-<p>在上面的例子中，<code>-print0</code>和<code>-0</code>选项表明文件名称使用<code>null</code>字符分割，允许在文件名中使用空格这样的特殊字符。这个是GNU的扩展实现，在其他版本的<code>find</code>和<code>xargs</code>中不会有效果。</p>
-
+</code></pre><p>在上面的例子中，<code>-print0</code>和<code>-0</code>选项表明文件名称使用<code>null</code>字符分割，允许在文件名中使用空格这样的特殊字符。这个是GNU的扩展实现，在其他版本的<code>find</code>和<code>xargs</code>中不会有效果。</p>
 <p>执行此操作的首选方法是跳过xargs命令，让find调用子进程本身：</p>
-
 <pre><code>find . -type d -exec chmod 770 {} \;
-</code></pre>
-
-<p>这里<code>{}</code>是占位符表明你想在这里使用文件名称。<code>find</code>命令将会在每个文件上面执行<code>chmod</code>命令。</p>
-
+</code></pre><p>这里<code>{}</code>是占位符表明你想在这里使用文件名称。<code>find</code>命令将会在每个文件上面执行<code>chmod</code>命令。</p>
 <p>你也可以把所有的文件名传递给一个单独的<code>chmod</code>命令，使用下面的方法：</p>
-
 <pre><code>find . -type d -exec chmod 770 {} +
-</code></pre>
-
-<p>这个命令和上面<code>xargs</code>的片段是一样的（每个文件单独处理，你可以使用<code>xargs -n1</code>）。</p>
-
+</code></pre><p>这个命令和上面<code>xargs</code>的片段是一样的（每个文件单独处理，你可以使用<code>xargs -n1</code>）。</p>
 <p>第三种选择是让bash循环处理<code>find</code>命令输出的文件列表：</p>
-
 <pre><code>find . -type d | while read -r d; do chmod 770 &quot;$d&quot;; done
-</code></pre>
-
-<p>这个语法有些笨重，但是当你想在找到的所有文件上面允许多个命令的时候是非常方便的。然而当遇到奇数文件名称的文件时是不安全的：</p>
-
+</code></pre><p>这个语法有些笨重，但是当你想在找到的所有文件上面允许多个命令的时候是非常方便的。然而当遇到奇数文件名称的文件时是不安全的：</p>
 <pre><code>find . -type d | while read -r d; do mv &quot;$d&quot; &quot;${d// /_}&quot;; done
-</code></pre>
-
-<p>这里将会把所有的空格替换为下划线（但是当前面的目录中有空格时，这个例子也是不行的）。</p>
-
-<p>上面例子的问题是<code>while read -r</code>希望一个输入一行，但是文件名是可以报考换行符的（或者<code>read -r</code>会丢失尾随的空格）。你可以通过转换：</p>
-
+</code></pre><p>这里将会把所有的空格替换为下划线（但是当前面的目录中有空格时，这个例子也是不行的）。</p>
+<p>上面例子的问题是<code>while read -r </code>希望一个输入一行，但是文件名是可以报考换行符的（或者<code>read -r</code>会丢失尾随的空格）。你可以通过转换：</p>
 <pre><code>find . -type d -exec bash -c 'for f; do mv &quot;$f&quot; &quot;${f// /_}&quot;; done' _ {} +
-</code></pre>
-
-<p>这里<code>-exec</code>以完全正确和兼容的方式接受文件名，<code>bash -c</code>接收，可以在$ @中找到的一些参数，正确引用等等。（当然，脚本需要正确处理这些名称;包含文件名的每个变量都需要在double中引号）。</p>
-
+</code></pre><p>这里<code>-exec</code>以完全正确和兼容的方式接受文件名，<code>bash -c</code>接收，可以在$ @中找到的一些参数，正确引用等等。（当然，脚本需要正确处理这些名称;包含文件名的每个变量都需要在double中引号）。</p>
 <p>符号<code>_</code>是必须的，因为<code>bash -c 'scrit'</code>的第一个参数将会填充<code>$0</code>。</p>
-
-<h3 id="通过访问-修改时间查找文件">通过访问/修改时间查找文件</h3>
-
+<h3 id="通过访问修改时间查找文件">通过访问/修改时间查找文件</h3>
 <p>在<code>ext</code>文件系统中，每一个文件都存储有访问，修改和(状态)更改时间。可以通过<code>stat myFile.txt</code>查看这些信息。通过使用<code>find</code>命令的选项，我们可以搜索指定时间范围内的文件。</p>
-
 <p>查找在过去2个小时修改过的文件：</p>
-
 <pre><code>$ find . -mmin -120
-</code></pre>
-
-<p>查找在过去2个小时没有修改过的文件：</p>
-
+</code></pre><p>查找在过去2个小时没有修改过的文件：</p>
 <pre><code>$ find . -mmin +120
-</code></pre>
-
-<p>上面的命令只会搜索修改时间，想要搜索访问时间，状态更改时间，使用<code>a</code>和<code>c</code>选项：</p>
-
+</code></pre><p>上面的命令只会搜索修改时间，想要搜索访问时间，状态更改时间，使用<code>a</code>和<code>c</code>选项：</p>
 <pre><code>$ find . -amin -120
 $ find . -cmin +120
-</code></pre>
-
-<p>基本的选项格式：</p>
-
+</code></pre><p>基本的选项格式：</p>
 <p><code>-mmin n</code>: 文件在n分钟修改过</p>
-
 <p><code>-mmin -n</code>: 文件在n分支之内修改过</p>
-
 <p><code>-mmin +n</code>: 文件在n分钟之外修改过</p>
-
 <p>寻找在过去2天内修改过的文件：</p>
-
 <pre><code>find . -mtime -2
-</code></pre>
-
-<p>寻找在过去两天没有修改过的文件：</p>
-
+</code></pre><p>寻找在过去两天没有修改过的文件：</p>
 <pre><code>find . -mtime +2
-</code></pre>
-
-<p>对应访问时间和状态更改使用<code>-atime</code>和<code>-ctime</code>选项。</p>
-
+</code></pre><p>对应访问时间和状态更改使用<code>-atime</code>和<code>-ctime</code>选项。</p>
 <p>一般的命令格式：</p>
-
 <p><code>-mtime n</code>: 文件在n*24小时修改过</p>
-
 <p><code>-mtime -n</code>: 文件在n*24小时之内修改过</p>
-
 <p><code>-mtime +n</code>：文件在n*24小时之外修改过</p>
-
 <p>寻找在一段日期2007-06-07到2007-06-08之间修改过的文件：</p>
-
 <pre><code>find . -type f -newermt 2007-06-07 ! -newermt 2007-06-08
-</code></pre>
-
-<p>查找从1小时前到10分钟前在一系列时间戳（使用文件作为时间戳）中访问的文件：</p>
-
+</code></pre><p>查找从1小时前到10分钟前在一系列时间戳（使用文件作为时间戳）中访问的文件：</p>
 <pre><code>touch -t $(date -d '1 HOUR AGO' +%Y%m%d%H%M.%S) start_date
 touch -t $(date -d '10 MINUTE AGO' +%Y%m%d%H%M.%S) end_date
 timeout 10 find &quot;$LOCAL_FOLDER&quot; -newerat &quot;start_date&quot; ! -newerat &quot;end_date&quot; -print
-</code></pre>
-
-<p>一般的用法：</p>
-
+</code></pre><p>一般的用法：</p>
 <p><code>-newerXY reference</code>:使用reference比较当前文件的时间戳。XY会拥有下面值中的一个：<code>at</code>访问时间，<code>mt</code>修改时间，<code>ct</code>状态更改时间等等。reference是想要比较指定的时间戳（访问，修改，更改）或描述绝对时间的字符串的文件的名称。</p>
-
 <h3 id="根据文件大小访问文件">根据文件大小访问文件</h3>
-
 <p>查找大于15M的文件：</p>
-
 <pre><code>find -type f -size +15M
-</code></pre>
-
-<p>查找小于12K的文件：</p>
-
+</code></pre><p>查找小于12K的文件：</p>
 <pre><code>find -type f -size -12k
-</code></pre>
-
-<p>查找等于12k的文件</p>
-
+</code></pre><p>查找等于12k的文件</p>
 <pre><code>find -type f -size 12k
-</code></pre>
-
-<p>或者：</p>
-
+</code></pre><p>或者：</p>
 <pre><code>find -type f -size 12288c
-</code></pre>
-
-<p>或者：</p>
-
+</code></pre><p>或者：</p>
 <pre><code>find -type f -size 24b
-</code></pre>
-
-<p>或者：</p>
-
+</code></pre><p>或者：</p>
 <pre><code>find -type f -size 24
-</code></pre>
-
-<p>命令的一般格式：</p>
-
+</code></pre><p>命令的一般格式：</p>
 <pre><code>find [options] -size n[cwbkMG]
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>查找n块的大小，其中+n表示大于n块，-n表示小于n块，n表示等于n块</p>
 </blockquote>
-
 <p>块的大小：</p>
-
 <ol>
 <li><code>c</code>: 字节</li>
 <li><code>w</code>: 2字节</li>
@@ -415,71 +302,33 @@ timeout 10 find &quot;$LOCAL_FOLDER&quot; -newerat &quot;start_date&quot; ! -new
 <li><code>M</code>: 1MB</li>
 <li><code>G</code>: 1GB</li>
 </ol>
-
 <h3 id="过滤路径">过滤路径</h3>
-
 <p><code>-path</code>选项允许指定一个模式来匹配结果中的文件路径。这个模式也可以匹配文件名称。</p>
-
 <p>只查找文件路径中任何位置包含<code>log</code>的的文件（目录或名称）：</p>
-
 <pre><code>find . -type f -path '*log*'
-</code></pre>
-
-<p>查找路径中包括<code>log</code>目录的文件（任何层级）:</p>
-
+</code></pre><p>查找路径中包括<code>log</code>目录的文件（任何层级）:</p>
 <pre><code>find . -type f -path '*/log/*'
-</code></pre>
-
-<p>查找文件路径中包括<code>log</code>或<code>data</code>目录的文件：</p>
-
+</code></pre><p>查找文件路径中包括<code>log</code>或<code>data</code>目录的文件：</p>
 <pre><code>find . type f -path '*/log/*' -o -path '*/data/*'
-</code></pre>
-
-<p>查找文件路径中不包含<code>bin</code>目录的文件：</p>
-
+</code></pre><p>查找文件路径中不包含<code>bin</code>目录的文件：</p>
 <pre><code>find . -type f -not -path '*/bin/*'
-</code></pre>
-
-<p>查找文件路径中不包含<code>bin</code>目录或者<code>log</code>的文件：</p>
-
+</code></pre><p>查找文件路径中不包含<code>bin</code>目录或者<code>log</code>的文件：</p>
 <pre><code>find . -type f -not -path '*log' -not -path '*/bin/*'
-</code></pre>
-
-<h3 id="根据类型搜索文件">根据类型搜索文件</h3>
-
+</code></pre><h3 id="根据类型搜索文件">根据类型搜索文件</h3>
 <p>使用<code>-type f</code>搜索文件：</p>
-
 <pre><code>$ find . -type f
-</code></pre>
-
-<p>使用<code>-type d</code>搜索目录：</p>
-
+</code></pre><p>使用<code>-type d</code>搜索目录：</p>
 <pre><code>$ find . -type d
-</code></pre>
-
-<p>使用<code>-type b</code>搜索块设备：</p>
-
+</code></pre><p>使用<code>-type b</code>搜索块设备：</p>
 <pre><code>$ find . -type b
-</code></pre>
-
-<p>使用<code>-type l</code>搜索引用文件：</p>
-
+</code></pre><p>使用<code>-type l</code>搜索引用文件：</p>
 <pre><code>$ find . -type l
-</code></pre>
-
-<h3 id="搜索指定扩展的文件">搜索指定扩展的文件</h3>
-
+</code></pre><h3 id="搜索指定扩展的文件">搜索指定扩展的文件</h3>
 <p>搜索当前路径中所有包含指定扩展的文件，使用下面的<code>find</code>语法。它的工作原理是利用bash的内置glob构造来匹配所有具有.extension的名称。</p>
-
 <pre><code>find /directory/to/search -maxdepth 1 -type f -name &quot;*.extension&quot;
-</code></pre>
-
-<p>单独搜索当前目录中包含<code>.txt</code>扩展的文件：</p>
-
+</code></pre><p>单独搜索当前目录中包含<code>.txt</code>扩展的文件：</p>
 <pre><code>find . -maxdepth 1 -type f -name &quot;*.txt&quot;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -551,6 +400,12 @@ timeout 10 find &quot;$LOCAL_FOLDER&quot; -newerat &quot;start_date&quot; ! -new
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

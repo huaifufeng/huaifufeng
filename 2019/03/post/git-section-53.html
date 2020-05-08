@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,29 +187,22 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#外部合并和diff工具">外部合并和diff工具</a>
-<ul>
-<li><a href="#设置kdiff3作为合并工具">设置KDiff3作为合并工具</a></li>
-<li><a href="#设置kdiff3为diff工具">设置KDiff3为diff工具</a></li>
-<li><a href="#设置intellij-ide为合并工具-windows">设置IntelliJ IDE为合并工具(Windows)</a></li>
-<li><a href="#设置intellij-ide为diff工具-windows">设置IntelliJ IDE为diff工具(Windows)</a></li>
-<li><a href="#设置超越比较">设置超越比较</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#外部合并和diff工具">外部合并和diff工具</a>
+      <ul>
+        <li><a href="#设置kdiff3作为合并工具">设置KDiff3作为合并工具</a></li>
+        <li><a href="#设置kdiff3为diff工具">设置KDiff3为diff工具</a></li>
+        <li><a href="#设置intellij-ide为合并工具windows">设置IntelliJ IDE为合并工具(Windows)</a></li>
+        <li><a href="#设置intellij-ide为diff工具windows">设置IntelliJ IDE为diff工具(Windows)</a></li>
+        <li><a href="#设置超越比较">设置超越比较</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="外部合并和diff工具">外部合并和diff工具</h2>
-
+        		<h2 id="外部合并和diff工具">外部合并和diff工具</h2>
 <h3 id="设置kdiff3作为合并工具">设置KDiff3作为合并工具</h3>
-
 <p>下面的配置添加到<code>.gitconfig</code>文件中：</p>
-
 <pre><code>[merge]
     tool = kdiff3
 [mergetool &quot;kdiff3&quot;]
@@ -213,22 +210,15 @@
     keepBackup = false
     keepbackup = false
     trustExitCode = false
-</code></pre>
-
-<p>注意设置<code>path</code>属性为你安装KDiff3的目录。</p>
-
+</code></pre><p>注意设置<code>path</code>属性为你安装KDiff3的目录。</p>
 <h3 id="设置kdiff3为diff工具">设置KDiff3为diff工具</h3>
-
 <pre><code>[diff]
 		tool = kdiff3
   	guitool = kdiff3 
 [difftool &quot;kdiff3&quot;]
 		path = D:/Program Files (x86)/KDiff3/kdiff3.exe
 		cmd = \&quot;D:/Program Files (x86)/KDiff3/kdiff3.exe\&quot; \&quot;$LOCAL\&quot; \&quot;$REMOTE\&quot;
-</code></pre>
-
-<h3 id="设置intellij-ide为合并工具-windows">设置IntelliJ IDE为合并工具(Windows)</h3>
-
+</code></pre><h3 id="设置intellij-ide为合并工具windows">设置IntelliJ IDE为合并工具(Windows)</h3>
 <pre><code>[merge]
 		tool = intellij
 [mergetool &quot;intellij&quot;]
@@ -237,35 +227,21 @@
 		keepBackup = false 
 		keepbackup = false 
 		trustExitCode = true
-</code></pre>
-
-<p>这里需要注意的一点是，这个cmd属性不接受路径中任何奇怪的字符。如果您的IDE安装位置中有奇怪的字符（例如，它安装在<code>Program Files (x86)</code>中），则必须创建一个软连。</p>
-
-<h3 id="设置intellij-ide为diff工具-windows">设置IntelliJ IDE为diff工具(Windows)</h3>
-
+</code></pre><p>这里需要注意的一点是，这个cmd属性不接受路径中任何奇怪的字符。如果您的IDE安装位置中有奇怪的字符（例如，它安装在<code>Program Files (x86)</code>中），则必须创建一个软连。</p>
+<h3 id="设置intellij-ide为diff工具windows">设置IntelliJ IDE为diff工具(Windows)</h3>
 <pre><code>[diff]
     tool = intellij
     guitool = intellij 
 [difftool &quot;intellij&quot;]
 		path = D:/Program Files (x86)/JetBrains/IntelliJ IDEA 2016.2/bin/idea.bat
 cmd = cmd \&quot;/C D:\\workspace\\tools\\symlink\\idea\\bin\\idea.bat diff $(cd $(dirname &quot;$LOCAL&quot;) &amp;&amp; pwd)/$(basename &quot;$LOCAL&quot;) $(cd $(dirname &quot;$REMOTE&quot;) &amp;&amp; pwd)/$(basename &quot;$REMOTE&quot;)\&quot;
-</code></pre>
-
-<p>这里需要注意的一点是，这个cmd属性不接受路径中任何奇怪的字符。如果您的IDE安装位置中有奇怪的字符（例如，它安装在<code>Program Files (x86)</code>中），则必须创建一个软连接。</p>
-
+</code></pre><p>这里需要注意的一点是，这个cmd属性不接受路径中任何奇怪的字符。如果您的IDE安装位置中有奇怪的字符（例如，它安装在<code>Program Files (x86)</code>中），则必须创建一个软连接。</p>
 <h3 id="设置超越比较">设置超越比较</h3>
-
 <p>你可以设置路径为<code>bcomp.exe</code>:</p>
-
 <pre><code>git config --global difftool.bc3.path 'c:\Program Files (x86)\Beyond Compare 3\bcomp.exe'
-</code></pre>
-
-<p>默认配置<code>bc3</code>:</p>
-
+</code></pre><p>默认配置<code>bc3</code>:</p>
 <pre><code>git config --global diff.tool bc3
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -337,6 +313,12 @@ cmd = cmd \&quot;/C D:\\workspace\\tools\\symlink\\idea\\bin\\idea.bat diff $(cd
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

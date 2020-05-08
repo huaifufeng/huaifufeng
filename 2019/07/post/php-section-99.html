@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,118 +187,100 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#多线程扩展">多线程扩展</a>
-<ul>
-<li><a href="#1-开始">1. 开始</a></li>
-<li><a href="#2-使用pool和worker">2. 使用pool和worker</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#多线程扩展">多线程扩展</a>
+      <ul>
+        <li><a href="#1-开始">1. 开始</a></li>
+        <li><a href="#2-使用pool和worker">2. 使用pool和worker</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="多线程扩展">多线程扩展</h2>
-
+        		<h2 id="多线程扩展">多线程扩展</h2>
 <h3 id="1-开始">1. 开始</h3>
-
 <p>想要开启多线程，你需要安装php的<code>pthreads-ext</code>扩展。可以使用下面的命令：</p>
-
 <pre><code>pecl install ptheads
-</code></pre>
-
-<p>然后在<code>php.ini</code>中添加条目。</p>
-
+</code></pre><p>然后在<code>php.ini</code>中添加条目。</p>
 <p>简单的例子：</p>
-
-<pre><code class="language-php">&lt;?php
-//代码使用php7语法
-class MyThead extends Thread {
-    /**
-     * @var string
-     * 包含要显示信息的变量
-     */
-    private $message;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//代码使用php7语法
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyThead</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Thread</span> {
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * @var string
+</span><span style="color:#e6db74">     * 包含要显示信息的变量
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">private</span> $message;
     
-    public function __construct(string $message) {
-        //设置信息内容
-        $this-&gt;message = $message;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct(<span style="color:#a6e22e">string</span> $message) {
+        <span style="color:#75715e">//设置信息内容
+</span><span style="color:#75715e"></span>        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">message</span> <span style="color:#f92672">=</span> $message;
     }
     
-    //另个线程中执行的方法
-    public function run() {
-        echo $this-&gt;message;
+    <span style="color:#75715e">//另个线程中执行的方法
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() {
+        <span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">message</span>;
     }
 }
 
-//实例化MyThead
-$myThead = new MyThead(&quot;来自另一个线程的问候&quot;);
-//开启线程。始终显式的join线程是一个好实践
-//Thread::start()用来初始化线程
-$myThead-&gt;start();
-//Thread::join()通知环境等待线程执行结束
-$myThead-&gt;join();
-</code></pre>
-
-<h3 id="2-使用pool和worker">2. 使用pool和worker</h3>
-
+<span style="color:#75715e">//实例化MyThead
+</span><span style="color:#75715e"></span>$myThead <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MyThead</span>(<span style="color:#e6db74">&#34;来自另一个线程的问候&#34;</span>);
+<span style="color:#75715e">//开启线程。始终显式的join线程是一个好实践
+</span><span style="color:#75715e">//Thread::start()用来初始化线程
+</span><span style="color:#75715e"></span>$myThead<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">start</span>();
+<span style="color:#75715e">//Thread::join()通知环境等待线程执行结束
+</span><span style="color:#75715e"></span>$myThead<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">join</span>();
+</code></pre></div><h3 id="2-使用pool和worker">2. 使用pool和worker</h3>
 <blockquote>
-<p>Pooling提供了更高级的Worker功能的抽象，包括pthreads所需的方式管理引用。<a href="https://www.php.net/manual/zh/class.pool.php">https://www.php.net/manual/zh/class.pool.php</a></p>
+<p>Pooling提供了更高级的Worker功能的抽象，包括pthreads所需的方式管理引用。https://www.php.net/manual/zh/class.pool.php</p>
 </blockquote>
-
 <p>Pools和Workers提供了更高级别的控制，并易于创建多线程。</p>
-
-<pre><code class="language-php">&lt;?php
-//这是被worker运行的 Work
-//这是你希望在worker中运行的work
-//这个类需要继承 \Threaded 或 \Collectable 或 \Thread类
-class AwesomeWork extends Thread {
-    private $workName;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//这是被worker运行的 Work
+</span><span style="color:#75715e">//这是你希望在worker中运行的work
+</span><span style="color:#75715e">//这个类需要继承 \Threaded 或 \Collectable 或 \Thread类
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AwesomeWork</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Thread</span> {
+    <span style="color:#66d9ef">private</span> $workName;
     
-    /**
-     * @param string workName
-     * 提供给每个work的名称
-     */
-    public function __construct(string $workName) {
-        //你work的构造代码块，当work被添加到pool的时候执行
-        $this-&gt;workName = $workName;
-        printf(&quot;新提交的work的名称是：%s\n&quot;, $workName);
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * @param string workName
+</span><span style="color:#e6db74">     * 提供给每个work的名称
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct(<span style="color:#a6e22e">string</span> $workName) {
+        <span style="color:#75715e">//你work的构造代码块，当work被添加到pool的时候执行
+</span><span style="color:#75715e"></span>        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">workName</span> <span style="color:#f92672">=</span> $workName;
+        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;新提交的work的名称是：%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, $workName);
     }
     
-    public function run() {
-        //这个方法应该被worker调用
-        //所有这个方法的代码被另一个线程执行
-        $workName = $this-&gt;workName;
-        printf(&quot;Work的名称%s开启...\n&quot;, $workName);
-        printf(&quot;新的随机数：%d\n&quot;, mt_rand());
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() {
+        <span style="color:#75715e">//这个方法应该被worker调用
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//所有这个方法的代码被另一个线程执行
+</span><span style="color:#75715e"></span>        $workName <span style="color:#f92672">=</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">workName</span>;
+        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;Work的名称%s开启...</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, $workName);
+        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;新的随机数：%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#a6e22e">mt_rand</span>());
     }
 }
 
-//为了简单创建一个空worker
-class AwesomeWorker extends Worker {
-    public function run() {
-        //你可以在这里放一些在work启动之前执行的代码
-    }
+<span style="color:#75715e">//为了简单创建一个空worker
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AwesomeWorker</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Worker</span> {
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() {
+        <span style="color:#75715e">//你可以在这里放一些在work启动之前执行的代码
+</span><span style="color:#75715e"></span>    }
 }
 
-//创建一个新的Pool实例
-//\Pool接收两个参数
-// 第一个最大的worker数量， 第二个worker的名称类
-$pool = new \Pool(1, \AwesomeWorker::class);
+<span style="color:#75715e">//创建一个新的Pool实例
+</span><span style="color:#75715e">//\Pool接收两个参数
+</span><span style="color:#75715e">// 第一个最大的worker数量， 第二个worker的名称类
+</span><span style="color:#75715e"></span>$pool <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">\Pool</span>(<span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">\AwesomeWorker</span><span style="color:#f92672">::</span><span style="color:#a6e22e">class</span>);
 
-// 你需要submit你的工作，而不是继承Threaded的类
-$pool-&gt;submit(new \AwesomeWork(&quot;DeadlyWork&quot;)); 
-$pool-&gt;submit(new \AwesomeWork(&quot;FatalWork&quot;));
+<span style="color:#75715e">// 你需要submit你的工作，而不是继承Threaded的类
+</span><span style="color:#75715e"></span>$pool<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">submit</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">\AwesomeWork</span>(<span style="color:#e6db74">&#34;DeadlyWork&#34;</span>)); 
+$pool<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">submit</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">\AwesomeWork</span>(<span style="color:#e6db74">&#34;FatalWork&#34;</span>));
 
-//我们需要显示的关闭pool，否则不希望的事情会发送
-// See: http://stackoverflow.com/a/23600861/23602185 
-$pool-&gt;shutdown();
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<span style="color:#75715e">//我们需要显示的关闭pool，否则不希望的事情会发送
+</span><span style="color:#75715e">// See: http://stackoverflow.com/a/23600861/23602185 
+</span><span style="color:#75715e"></span>$pool<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">shutdown</span>();
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -366,6 +352,12 @@ $pool-&gt;shutdown();
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

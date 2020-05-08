@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,381 +187,218 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#php-mysqli">PHP MySQLi</a>
-<ul>
-<li><a href="#1-关闭连接">1. 关闭连接</a></li>
-<li><a href="#2-mysqli-连接">2. Mysqli 连接</a></li>
-<li><a href="#3-循环处理mysqli结果集">3. 循环处理MySQLi结果集</a></li>
-<li><a href="#4-mysqli的prepare语句">4. MySQLi的prepare语句</a></li>
-<li><a href="#5-转义字符串">5. 转义字符串</a></li>
-<li><a href="#6-mysqli中调试sql">6. MySQLi中调试SQL</a></li>
-<li><a href="#7-mysqli查询">7. MySQLi查询</a></li>
-<li><a href="#8-怎么从prepare语句获取数据">8.怎么从prepare语句获取数据</a></li>
-<li><a href="#9-mysqli-插入id">9. MySQLi 插入id</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#php-mysqli">PHP MySQLi</a>
+      <ul>
+        <li><a href="#1-关闭连接">1. 关闭连接</a></li>
+        <li><a href="#2-mysqli-连接">2. Mysqli 连接</a></li>
+        <li><a href="#3-循环处理mysqli结果集">3. 循环处理MySQLi结果集</a></li>
+        <li><a href="#4-mysqli的prepare语句">4. MySQLi的prepare语句</a></li>
+        <li><a href="#5-转义字符串">5. 转义字符串</a></li>
+        <li><a href="#6-mysqli中调试sql">6. MySQLi中调试SQL</a></li>
+        <li><a href="#7-mysqli查询">7. MySQLi查询</a></li>
+        <li><a href="#8怎么从prepare语句获取数据">8.怎么从prepare语句获取数据</a></li>
+        <li><a href="#9-mysqli-插入id">9. MySQLi 插入id</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="php-mysqli">PHP MySQLi</h2>
-
-<p><a href="https://www.php.net/manual/zh/book.mysqli.php">mysqli接口</a>是<code>mysql</code>的一种改进方案（含义是&rdquo;MySQL Improvement 扩展&rdquo;），而mysql接口在PHP5.5标记为不推荐使用，在PHP7.0中移除。mysqli扩展（也被称为MySQL优化扩展）为MySQL4.1.3之后的新特性开发的。mysqli扩展在PHP5之后开始支持。</p>
-
+        		<h2 id="php-mysqli">PHP MySQLi</h2>
+<p><a href="https://www.php.net/manual/zh/book.mysqli.php">mysqli接口</a>是<code>mysql</code>的一种改进方案（含义是&quot;MySQL Improvement 扩展&rdquo;），而mysql接口在PHP5.5标记为不推荐使用，在PHP7.0中移除。mysqli扩展（也被称为MySQL优化扩展）为MySQL4.1.3之后的新特性开发的。mysqli扩展在PHP5之后开始支持。</p>
 <h3 id="1-关闭连接">1. 关闭连接</h3>
-
 <p>当我们在数据库上面的查询结束之后，强烈建议关闭连接来释放资源。</p>
-
 <p><strong>面向对象方式</strong></p>
-
-<pre><code class="language-php">$conn-&gt;close();
-</code></pre>
-
-<p><strong>面向过程方式：</strong></p>
-
-<pre><code class="language-php">mysqli_close($conn);
-</code></pre>
-
-<p><strong>注意：</strong>服务器的连接在脚本执行结束之后就会立即关闭，除非在结束之前使用close方法进行关闭。</p>
-
-<p><strong>用例：</strong>如果我们的脚本在获取全部结果之后还有很多的处理要进行，那我们肯定应该关闭连接。如果不这么做，当Web服务器大量使用的时候，MySQL服务器可能达到连接限制。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn-&gt;close();
+</code></pre></div><p><strong>面向过程方式：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">mysqli_close($conn);
+</code></pre></div><p>**注意：**服务器的连接在脚本执行结束之后就会立即关闭，除非在结束之前使用close方法进行关闭。</p>
+<p>**用例：**如果我们的脚本在获取全部结果之后还有很多的处理要进行，那我们肯定应该关闭连接。如果不这么做，当Web服务器大量使用的时候，MySQL服务器可能达到连接限制。</p>
 <h3 id="2-mysqli-连接">2. Mysqli 连接</h3>
-
 <p><strong>面向对象：</strong></p>
-
 <p>连接服务器：</p>
-
-<pre><code class="language-php">$conn = new mysqli(&quot;localhost&quot;, &quot;my_user&quot;, &quot;my_password&quot;);
-</code></pre>
-
-<p>设置默认的数据库：<code>$conn-&gt;select_db(&quot;my_db&quot;);</code></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn = new mysqli(&#34;localhost&#34;, &#34;my_user&#34;, &#34;my_password&#34;);
+</code></pre></div><p>设置默认的数据库：<code>$conn-&gt;select_db(&quot;my_db&quot;);</code></p>
 <p>连接一个数据库：</p>
-
-<pre><code class="language-php">$conn = new mysqli('localhost', 'my_user', 'my_password', 'my_db');
-</code></pre>
-
-<p><strong>面向过程：</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn = new mysqli(&#39;localhost&#39;, &#39;my_user&#39;, &#39;my_password&#39;, &#39;my_db&#39;);
+</code></pre></div><p><strong>面向过程：</strong></p>
 <p>连接服务器</p>
-
-<pre><code class="language-php">$conn = mysqli_connect('localhost', 'mysql_user', 'my_password');
-</code></pre>
-
-<p>设置默认的数据库：<code>mysqli_select_db($conn, 'my_db');</code></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn = mysqli_connect(&#39;localhost&#39;, &#39;mysql_user&#39;, &#39;my_password&#39;);
+</code></pre></div><p>设置默认的数据库：<code>mysqli_select_db($conn, 'my_db');</code></p>
 <p>连接数据库：</p>
-
-<pre><code class="language-php">$conn = mysqli_connect('localhost', 'my_user', 'my_password', 'my_db');
-</code></pre>
-
-<p><strong>验证数据库连接</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn = mysqli_connect(&#39;localhost&#39;, &#39;my_user&#39;, &#39;my_password&#39;, &#39;my_db&#39;);
+</code></pre></div><p><strong>验证数据库连接</strong></p>
 <p>面向对象方式</p>
-
-<pre><code class="language-php">if ($conn-&gt;connect_errno &gt; 0) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if ($conn-&gt;connect_errno &gt; 0) {
     trigger_error($db-&gt;connect_error);
 } //else 正确的逻辑
-</code></pre>
-
-<p>面向过程方式</p>
-
-<pre><code class="language-php">if (!$conn) {
+</code></pre></div><p>面向过程方式</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if (!$conn) {
     trigger_error(mysqli_connect_error());
 } //else 正确
-</code></pre>
-
-<h3 id="3-循环处理mysqli结果集">3. 循环处理MySQLi结果集</h3>
-
+</code></pre></div><h3 id="3-循环处理mysqli结果集">3. 循环处理MySQLi结果集</h3>
 <p>PHP让从结果集中获取数据变得很简单，并且使用<code>while</code>语句进行循环处理。当获取下一行失败的时候，会返回一个<code>false</code>，这时循环就结束了。这些例子对下面的方法都有效果：</p>
-
 <ul>
 <li><a href="https://www.php.net/manual/zh/mysqli-result.fetch-assoc.php">mysqli_fetch_assoc</a> - 返回列名作为key的管理数组。</li>
 <li><a href="https://www.php.net/manual/zh/mysqli-result.fetch-object.php">mysqli_fetch_object</a> - 返回列名作为变量的<code>stdClass</code>对象</li>
 <li><a href="https://www.php.net/manual/zh/mysqli-result.fetch-array.php">mysqli_fetch_array</a> - 关联数组和数字数组（）可以使用参数获取一个或另一个</li>
 <li><a href="https://www.php.net/manual/zh/mysqli-result.fetch-row.php">mysqli_fetch_row</a> - 数字数组</li>
 </ul>
-
 <p><strong>面向对象方式</strong></p>
-
-<pre><code class="language-php">while ($row = $result-&gt;fetch_assoc()) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">while ($row = $result-&gt;fetch_assoc()) {
     var_dump($row);
 }
-</code></pre>
-
-<p><strong>面向过程方式</strong></p>
-
-<pre><code class="language-php">while ($row = mysqli_fetch_assoc($result)) {
+</code></pre></div><p><strong>面向过程方式</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">while ($row = mysqli_fetch_assoc($result)) {
     var_dump($row);
 }
-</code></pre>
-
-<p>想要从结果集中获取明确的信息，我们可以使用：</p>
-
-<pre><code class="language-php">while ($row = $result-&gt;fetch_assoc()) {
-    echo &quot;Name and surname: &quot; . $row['name'] . ' ' . $row['surname'] . '&lt;br&gt;';
-    echo 'Age: ' . $row['age'] . '&lt;br&gt;'; //输出年龄
+</code></pre></div><p>想要从结果集中获取明确的信息，我们可以使用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">while ($row = $result-&gt;fetch_assoc()) {
+    echo &#34;Name and surname: &#34; . $row[&#39;name&#39;] . &#39; &#39; . $row[&#39;surname&#39;] . &#39;&lt;<span style="color:#f92672">br</span>&gt;&#39;;
+    echo &#39;Age: &#39; . $row[&#39;age&#39;] . &#39;&lt;<span style="color:#f92672">br</span>&gt;&#39;; //输出年龄
 }
-</code></pre>
-
-<h3 id="4-mysqli的prepare语句">4. MySQLi的prepare语句</h3>
-
+</code></pre></div><h3 id="4-mysqli的prepare语句">4. MySQLi的prepare语句</h3>
 <p>阅读之前使用<code>变量查询避免SQL注入</code>的部分了解一下为什么prepare语句可以帮助我们增加我们SQL的安全性，避免SQL注入问题。</p>
-
 <p>这里<code>$conn</code>变量是一个MySQLi对象。查看MySQLi连接了解更多信息。</p>
-
 <p>对于两个例子，我们假设<code>$sql</code>是：</p>
-
-<pre><code class="language-php">$sql = &quot;SELECT column_1 FROM table WHERE column_2=? AND column_3&gt;?&quot;;
-</code></pre>
-
-<p>这里<code>?</code>表示我们之后要提供的值。注意这里我们不需要使用引号将占位符包围起来，不敢这是什么类型。我们也只可以在查询的数据部分中使用占位符，像SET, VALUES, WHERE。我们不能在SELECT或FROM部分提供占位符。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$sql = &#34;SELECT column_1 FROM table WHERE column_2=? AND column_3&gt;?&#34;;
+</code></pre></div><p>这里<code>?</code>表示我们之后要提供的值。注意这里我们不需要使用引号将占位符包围起来，不敢这是什么类型。我们也只可以在查询的数据部分中使用占位符，像SET, VALUES, WHERE。我们不能在SELECT或FROM部分提供占位符。</p>
 <p><strong>面向对象方式</strong></p>
-
-<pre><code class="language-php">if ($stmt = $conn-&gt;prepare($sql)) {
-    $stmt-&gt;bind_param(&quot;si&quot;, $column_2_value, $column_3_value);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if ($stmt = $conn-&gt;prepare($sql)) {
+    $stmt-&gt;bind_param(&#34;si&#34;, $column_2_value, $column_3_value);
     $stmt-&gt;execute();
     
     $stmt-&gt;bind_result($column_1);
     $stmt-&gt;fetch();
     $stmt-&gt;close();
 }
-</code></pre>
-
-<p><strong>面向过程方式</strong></p>
-
-<pre><code class="language-php">if ($stmt = mysqli_prepare($conn, $sql)) {
-    mysqli_stmt_bind_Param($stmt, &quot;si&quot;, $column_2_value, $column_3_value);
+</code></pre></div><p><strong>面向过程方式</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if ($stmt = mysqli_prepare($conn, $sql)) {
+    mysqli_stmt_bind_Param($stmt, &#34;si&#34;, $column_2_value, $column_3_value);
     mysqli_stmt_execute($stmt);
     
     mysqli_stmt_close($stmt);
 }
-</code></pre>
-
-<p><code>$stmt-&gt;bind_param</code>的第一个参数或者<code>mysqli_stmt_bind_param</code>的第二个参数由SQL查询中变量的相应类型决定：</p>
-
+</code></pre></div><p><code>$stmt-&gt;bind_param</code>的第一个参数或者<code>mysqli_stmt_bind_param</code>的第二个参数由SQL查询中变量的相应类型决定：</p>
 <pre><code>变量的数据量类型
 i   integer
 d   double
 s   string
 b   blob
-</code></pre>
-
-<p>你的参数列表需要按照查询中的顺序提供。在例子中<code>si</code>表示第一个参数<code>column_2=?</code>是字符串，第二个参数<code>column_3&gt;?</code>是整数。</p>
-
+</code></pre><p>你的参数列表需要按照查询中的顺序提供。在例子中<code>si</code>表示第一个参数<code>column_2=?</code>是字符串，第二个参数<code>column_3&gt;?</code>是整数。</p>
 <p>获取数据，查看如何从prepare中获取数据部分。</p>
-
 <h3 id="5-转义字符串">5. 转义字符串</h3>
-
 <p>转义字符串是一个老的（并且不安全）的方法，这个方法用来让插入查询的数据更加安全。这是通过使用MySQL的方法mysql_real_escape_string()来处理和清除数据（换句话说，PHP不会进行转义操作）。MySQLi的API提供对这个方法的直接访问：</p>
-
-<pre><code class="language-php">$escaped = $conn-&gt;real_escape_string($_GET['var']);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$escaped = $conn-&gt;real_escape_string($_GET[&#39;var&#39;]);
 //或
-$escaped = mysqli_real_escape_string($conn, $_GET['var']);
-</code></pre>
-
-<p>此时，你有一个MySQL认为是安全的可以直接在查询中使用的安全的字符串：</p>
-
-<pre><code class="language-php">$sql = 'SELECT * FROM users WHERE username=&quot;'. $escaped .'&quot;';
+$escaped = mysqli_real_escape_string($conn, $_GET[&#39;var&#39;]);
+</code></pre></div><p>此时，你有一个MySQL认为是安全的可以直接在查询中使用的安全的字符串：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$sql = &#39;SELECT * FROM users WHERE username=&#34;&#39;. $escaped .&#39;&#34;&#39;;
 $result = $conn-&gt;query($sql);
-</code></pre>
-
-<p>但是为什么这个不像prepare语句一样安全呢？有一些方法可以欺骗MySQL让他认为生成的字符串是安全的。假设下面的例子：</p>
-
-<pre><code class="language-php">$id = mysqli_real_escape_string(&quot;1 OR 1=1&quot;);
-$sql = 'SELECT * FROM table WHERE id=' . $id;
-</code></pre>
-
-<p><code>1 OR 1=1</code>并不表示数据是MySQL将要转义的数据。这仍然是SQL注入的。有一些<a href="https://stackoverflow.com/questions/5741187/sql-injection-that-gets-around-mysql-real-escape-string">另外的例子</a>表示返回不安全数据的地方。问题是MySQL的转移方法设计用来让数据符合SQL的语法。并不是设计用来确保用户数据和SQL命令混淆。</p>
-
+</code></pre></div><p>但是为什么这个不像prepare语句一样安全呢？有一些方法可以欺骗MySQL让他认为生成的字符串是安全的。假设下面的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$id = mysqli_real_escape_string(&#34;1 OR 1=1&#34;);
+$sql = &#39;SELECT * FROM table WHERE id=&#39; . $id;
+</code></pre></div><p><code>1 OR 1=1</code>并不表示数据是MySQL将要转义的数据。这仍然是SQL注入的。有一些<a href="https://stackoverflow.com/questions/5741187/sql-injection-that-gets-around-mysql-real-escape-string">另外的例子</a>表示返回不安全数据的地方。问题是MySQL的转移方法设计用来让数据符合SQL的语法。并不是设计用来确保用户数据和SQL命令混淆。</p>
 <h3 id="6-mysqli中调试sql">6. MySQLi中调试SQL</h3>
-
 <p>现在你的SQL执行失败了（查看MySQLi连接部分了解怎么获取<code>$conn</code>）</p>
-
-<pre><code class="language-php">$result = $conn-&gt;query(&quot;SELECT * FROM non_existent_table&quot;);  //查询失败
-</code></pre>
-
-<p>我们怎么寻找发生了什么呢？<code>$result</code>现在是<code>false</code>，所以这个没有用处。幸运的是<code>$conn</code>可以告诉我们MySQL为什么失败了：</p>
-
-<pre><code class="language-php">trigger_error($conn-&gt;error);
-</code></pre>
-
-<p>或者面向对象方法：</p>
-
-<pre><code class="language-php">trigger_error(mysqli_error($conn));
-</code></pre>
-
-<p>你可以获得下面这样类似的错误：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$result = $conn-&gt;query(&#34;SELECT * FROM non_existent_table&#34;);  //查询失败
+</code></pre></div><p>我们怎么寻找发生了什么呢？<code>$result</code>现在是<code>false</code>，所以这个没有用处。幸运的是<code>$conn</code>可以告诉我们MySQL为什么失败了：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">trigger_error($conn-&gt;error);
+</code></pre></div><p>或者面向对象方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">trigger_error(mysqli_error($conn));
+</code></pre></div><p>你可以获得下面这样类似的错误：</p>
 <blockquote>
 <p>Table &lsquo;my_db.non_existent_table&rsquo; doesn&rsquo;t exist</p>
 </blockquote>
-
 <h3 id="7-mysqli查询">7. MySQLi查询</h3>
-
 <p><code>query</code>方法获取一个有效的SQL字符串，然后直接在数据库连接<code>$conn</code>上执行它：</p>
-
 <p><strong>面向对象：</strong></p>
-
-<pre><code class="language-php">$result = $conn-&gt;query(&quot;SELECT * FROM `pepore`&quot;);
-</code></pre>
-
-<p><strong>面向过程：</strong></p>
-
-<pre><code class="language-php">$result = mysqli_query($conn, &quot;SELECT * FROM `people`&quot;);
-</code></pre>
-
-<p><strong>注意：</strong>这里一个常见的问题是简单的执行这个查询，然后期望它正常工作（返回一个<a href="https://www.php.net/manual/zh/class.mysqli-stmt.php">mysqli_stmt_object</a>）。因为这个方法获取一个字符串，所以在查询之前你需要首先创建查询字符串。如果SQL中有任何错误，MySQL的编译器将会失败，这时这个方法将会返回一个<code>false</code>。</p>
-
-<pre><code class="language-php">$result = $conn-&gt;query(&quot;SELECT * FROM non_existent_table&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$result = $conn-&gt;query(&#34;SELECT * FROM `pepore`&#34;);
+</code></pre></div><p><strong>面向过程：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$result = mysqli_query($conn, &#34;SELECT * FROM `people`&#34;);
+</code></pre></div><p>**注意：**这里一个常见的问题是简单的执行这个查询，然后期望它正常工作（返回一个<a href="https://www.php.net/manual/zh/class.mysqli-stmt.php">mysqli_stmt_object</a>）。因为这个方法获取一个字符串，所以在查询之前你需要首先创建查询字符串。如果SQL中有任何错误，MySQL的编译器将会失败，这时这个方法将会返回一个<code>false</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$result = $conn-&gt;query(&#34;SELECT * FROM non_existent_table&#34;);
 $row = $result-&gt;fetch_assoc();
-</code></pre>
-
-<p>上面的代码将会返回一个<code>E_FATAL</code>错误，因为<code>$result</code>是一个<code>false</code>，并不是一个对象。</p>
-
+</code></pre></div><p>上面的代码将会返回一个<code>E_FATAL</code>错误，因为<code>$result</code>是一个<code>false</code>，并不是一个对象。</p>
 <blockquote>
 <p>PHP Fatal error: Call to a member function fetch_assoc() on a non-object</p>
 </blockquote>
-
 <p>面向过程方式错误是相似的，但不是一个致命错误，因为我们只是违反了函数希望的参数。</p>
-
-<pre><code class="language-php">$row = mysqli_fetch_assoc($reult);
-</code></pre>
-
-<p>你会获取下面的错误：</p>
-
-<pre><code class="language-php">mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given
-</code></pre>
-
-<p>你可以检查这个值，在使用之前：</p>
-
-<pre><code class="language-php">if ($result) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$row = mysqli_fetch_assoc($reult);
+</code></pre></div><p>你会获取下面的错误：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">mysqli_fetch_array() expects parameter 1 to be mysqli_result, boolean given
+</code></pre></div><p>你可以检查这个值，在使用之前：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if ($result) {
     $row = mysqli_fetch_assoc($result);
 }
-</code></pre>
-
-<h3 id="8-怎么从prepare语句获取数据">8.怎么从prepare语句获取数据</h3>
-
+</code></pre></div><h3 id="8怎么从prepare语句获取数据">8.怎么从prepare语句获取数据</h3>
 <p><strong>prepare语句</strong></p>
-
 <p>查看MySQLi的prepare语句了解怎么建立prepare语句和执行查询。</p>
-
 <p><strong>绑定结果</strong></p>
-
 <p><strong>面向对象</strong></p>
-
-<pre><code class="language-php">$stmt-&gt;bind_result($forename);
-</code></pre>
-
-<p>面向过程：</p>
-
-<pre><code class="language-php">mysqli_stmt_bind_result($stmt,  $forename);
-</code></pre>
-
-<p>使用<code>bind_result</code>的一个问题是这个方法需要指定将要使用的列。这意味 这项上面的查询语句需要像<code>SELECT forename FROM users</code>这样。想要包含更多的列的话简单的在<code>bind_result</code>方法中使用跟多的参数（确保添加的列在查询语句中）。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$stmt-&gt;bind_result($forename);
+</code></pre></div><p>面向过程：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">mysqli_stmt_bind_result($stmt,  $forename);
+</code></pre></div><p>使用<code>bind_result</code>的一个问题是这个方法需要指定将要使用的列。这意味 这项上面的查询语句需要像<code>SELECT forename FROM users</code>这样。想要包含更多的列的话简单的在<code>bind_result</code>方法中使用跟多的参数（确保添加的列在查询语句中）。</p>
 <p>在两个例子中，我们把<code>forename</code>列的值放入<code>$forename</code>变量。这个方法你可以添加你希望的数量。这个设置只需要做一次，因为这个方法是绑定的引用。</p>
-
 <p>我们可以像下面循环：</p>
-
 <p><strong>面向对象</strong></p>
-
-<pre><code class="language-php">while ($stmt-&gt;fetch()) {
-    echo &quot;$forename&lt;br/&gt;&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">while ($stmt-&gt;fetch()) {
+    echo &#34;$forename&lt;<span style="color:#f92672">br</span>/&gt;&#34;;
 }
-</code></pre>
-
-<p><strong>面向过程</strong></p>
-
-<pre><code class="language-php">while (mysqli_stmt_fetch($stmt)) {
-    echo &quot;$forename&lt;br/&gt;&quot;;
+</code></pre></div><p><strong>面向过程</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">while (mysqli_stmt_fetch($stmt)) {
+    echo &#34;$forename&lt;<span style="color:#f92672">br</span>/&gt;&#34;;
 }
-</code></pre>
-
-<p>这的一个缺点就是你需要一个设置很多变量，这在处理大查询时特别麻烦。如果你按照了<a href="https://www.php.net/manual/zh/book.mysqlnd.php">MySQL原生驱动(mysqlnd)</a>，你可以简单的使用<a href="https://www.php.net/manual/zh/mysqli-stmt.get-result.php">get_result</a>方法。</p>
-
+</code></pre></div><p>这的一个缺点就是你需要一个设置很多变量，这在处理大查询时特别麻烦。如果你按照了<a href="https://www.php.net/manual/zh/book.mysqlnd.php">MySQL原生驱动(mysqlnd)</a>，你可以简单的使用<a href="https://www.php.net/manual/zh/mysqli-stmt.get-result.php">get_result</a>方法。</p>
 <p><strong>面向对象</strong></p>
-
-<pre><code class="language-php">$result = $stmt-&gt;get_result();
-</code></pre>
-
-<p><strong>面向过程</strong></p>
-
-<pre><code class="language-php">$result = mysqli_stmt_get_result($stmt);
-</code></pre>
-
-<p>这个是更加简单的方式，因为我们获得了一个<a href="https://www.php.net/manual/zh/class.mysqli-result.php">mysqli_result</a>对象。这个是和mysqli_query返回的是相同的对象。这样你就可以使用一个简单的循环来获取你的是数据。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$result = $stmt-&gt;get_result();
+</code></pre></div><p><strong>面向过程</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$result = mysqli_stmt_get_result($stmt);
+</code></pre></div><p>这个是更加简单的方式，因为我们获得了一个<a href="https://www.php.net/manual/zh/class.mysqli-result.php">mysqli_result</a>对象。这个是和mysqli_query返回的是相同的对象。这样你就可以使用一个简单的循环来获取你的是数据。</p>
 <p><strong>如果我没有按照mysqlnd？</strong></p>
-
 <p>如果是这个问题的话@已经有了一个<a href="https://stackoverflow.com/questions/10752815/mysqli-get-result-alternative/30551477#30551477">很好的答案</a>。</p>
-
 <p>下面的方法可以完成和<code>get_result</code>方法一样的任务，当服务器上面没有安装的时候。这只是简单的循环结果集，然后场景一个关联数组。</p>
-
-<pre><code class="language-php">function get_result(\mysqli_stmt $statement) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function get_result(\mysqli_stmt $statement) {
     $result = array();
     $statement-&gt;store_result();
-    for ($i = 0; $i &lt; $statement-&gt;num; $i++) {
+    for ($i = 0; $i <span style="color:#960050;background-color:#1e0010">&lt;</span> $statement-&gt;num; $i++) {
         $metadata = $statement-&gt;result_metadata();
         $params = array();
         while ($field = $metadata-&gt;fetch_field()) {
             $params[] = &amp;$result[$i][$field-&gt;name];
         }
-        call_user_func_array(array($statement, 'bind_result'), $params);
+        call_user_func_array(array($statement, &#39;bind_result&#39;), $params);
         $statement-&gt;fetch();
     }
     
     return $result;
 }
-</code></pre>
+</code></pre></div><p>然后我们可以用这个方法像上面一样获取数据，就像我们使用<code>mysqli_fetch_assoc()</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$query <span style="color:#f92672">=</span> $mysqli<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">prepare</span>(<span style="color:#e6db74">&#34;SELECT * FROM users WHERE forename LIKE ?&#34;</span>);
+$condition <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;J%&#34;</span>;
+$query<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">bind_param</span>(<span style="color:#e6db74">&#34;s&#34;</span>, $condition);
+$query<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">execute</span>();
+$result <span style="color:#f92672">=</span> <span style="color:#a6e22e">get_result</span>($query);
 
-<p>然后我们可以用这个方法像上面一样获取数据，就像我们使用<code>mysqli_fetch_assoc()</code>。</p>
-
-<pre><code class="language-php">&lt;?php
-$query = $mysqli-&gt;prepare(&quot;SELECT * FROM users WHERE forename LIKE ?&quot;);
-$condition = &quot;J%&quot;;
-$query-&gt;bind_param(&quot;s&quot;, $condition);
-$query-&gt;execute();
-$result = get_result($query);
-
-while ($row = array_shift($result)) {
-    echo $row[&quot;id&quot;] . ' - ' . $row[&quot;forename&quot;] . ' ' . $row[&quot;surname&quot;] . '&lt;br&gt;';
+<span style="color:#66d9ef">while</span> ($row <span style="color:#f92672">=</span> <span style="color:#a6e22e">array_shift</span>($result)) {
+    <span style="color:#66d9ef">echo</span> $row[<span style="color:#e6db74">&#34;id&#34;</span>] <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39; - &#39;</span> <span style="color:#f92672">.</span> $row[<span style="color:#e6db74">&#34;forename&#34;</span>] <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39; &#39;</span> <span style="color:#f92672">.</span> $row[<span style="color:#e6db74">&#34;surname&#34;</span>] <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;&lt;br&gt;&#39;</span>;
 }
-</code></pre>
-
-<p>这将会获得和我们使用<code>mysqlnd</code>一样的输出，只是没有必要在安装了。这在你不能在你的系统上面安装指定驱动是非常有效果。只要实现这个方案。</p>
-
+</code></pre></div><p>这将会获得和我们使用<code>mysqlnd</code>一样的输出，只是没有必要在安装了。这在你不能在你的系统上面安装指定驱动是非常有效果。只要实现这个方案。</p>
 <h3 id="9-mysqli-插入id">9. MySQLi 插入id</h3>
-
 <p>获取数据表执行<code>INSERT</code>语句时一个<code>AUTO_INCREMENT</code>列产生的ID。</p>
-
 <p><strong>面向对象</strong></p>
-
-<pre><code class="language-php">$id = $conn-&gt;insert_id;
-</code></pre>
-
-<p><strong>面向过程</strong></p>
-
-<pre><code class="language-php">$id = mysqli_insert_id($conn);
-</code></pre>
-
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$id = $conn-&gt;insert_id;
+</code></pre></div><p><strong>面向过程</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$id = mysqli_insert_id($conn);
+</code></pre></div><blockquote>
 <p>如果连接没有以前的查询或者查询没有更新AUTO_INCREMENT列，这将会返回0.</p>
 </blockquote>
-
 <p><strong>更新时插入id</strong></p>
-
 <p>通常<code>UPDATE</code>语句不会返回一个insert id，因为<code>AUTO_INCREMENT</code>列只有当一个新行被保存（或插入）的时候才会返回。一种更新id的方法是使用<code>INSERT … ON DUPLICATE KEY UPDATE</code>来进行更新操作。</p>
-
 <p>为下面的例子做准备：</p>
-
-<pre><code class="language-php">CREATE TABLE iodku (
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">CREATE TABLE iodku (
 id INT AUTO_INCREMENT NOT NULL, name VARCHAR(99) NOT NULL,
 misc INT NOT NULL,
 PRIMARY KEY(id),
@@ -565,8 +406,8 @@ UNIQUE(name)
 ) ENGINE=InnoDB;
 INSERT INTO iodku (name, misc)
     VALUES
-    ('Leslie', 123),
-('Sally', 456);
+    (&#39;Leslie&#39;, 123),
+(&#39;Sally&#39;, 456);
 Query OK, 2 rows affected (0.00 sec) Records: 2 Duplicates: 0 Warnings: 0 
 +----+--------+------+
 | id |   name | misc | 
@@ -574,45 +415,34 @@ Query OK, 2 rows affected (0.00 sec) Records: 2 Duplicates: 0 Warnings: 0
 |  1 | Leslie |  123 |
 |  2 |  Sally |  456 |
 +----+--------+------+
-</code></pre>
-
-<p>iodku的例子执行一个&rdquo;更新&rdquo;操作，然后使用<code>LAST_INSERT_ID()</code>获取关联的<code>id</code>。</p>
-
-<pre><code class="language-php">$sql = &quot;INSERT INTO iodku (name, misc)
+</code></pre></div><p>iodku的例子执行一个&quot;更新&quot;操作，然后使用<code>LAST_INSERT_ID()</code>获取关联的<code>id</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$sql = &#34;INSERT INTO iodku (name, misc)
     VALUES
-    ('Sally', 3333)  -- 应该更新的
-    ON DUPLICATE KEY UPDATE  -- name触发 &quot;duplicate key&quot;
+    (&#39;Sally&#39;, 3333)  -- 应该更新的
+    ON DUPLICATE KEY UPDATE  -- name触发 &#34;duplicate key&#34;
     id = LAST_INSERT_ID(id),
-    misc = VALUES(misc)&quot;;
+    misc = VALUES(misc)&#34;;
 $conn-&gt;query($sql);
 $id = $conn-&gt;insert_id;  -- 获取存在的值 2
-</code></pre>
-
-<p>iodku的例子执行一个&rdquo;更新&rdquo;操作，然后使用<code>LAST_INSERT_ID()</code>获取新的<code>id</code>。</p>
-
-<pre><code class="language-php">$sql = &quot;INSERT INTO iodku (name, misc)
+</code></pre></div><p>iodku的例子执行一个&quot;更新&quot;操作，然后使用<code>LAST_INSERT_ID()</code>获取新的<code>id</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$sql = &#34;INSERT INTO iodku (name, misc)
     VALUES
-    ('Dana', 789)  -- 应该插入
+    (&#39;Dana&#39;, 789)  -- 应该插入
     ON DUPLICATE KEY UPDATE
     id = LAST_INSERT_ID(id),
     misc = VALUES(misc);
 $conn-&gt;query($sql);
 $id = $conn-&gt;insert_id;  -- 获取新值 3
-</code></pre>
-
-<p>数据表的内容：</p>
-
-<pre><code class="language-mysql">SELECT * FROM iodku;
-+----+--------+------+
-| id | name   | misc |
-+----+--------+------+
-|  1 | Leslie |  123 |
-|  2 | Sally  | 3333 |  -- IODKU 更新
-|  3 | Dana   |  789 |  -- IODKU 添加
-+----+--------+------+
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>数据表的内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> iodku;
+<span style="color:#f92672">+----+--------+------+</span>
+<span style="color:#f92672">|</span> id <span style="color:#f92672">|</span> name   <span style="color:#f92672">|</span> misc <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----+--------+------+</span>
+<span style="color:#f92672">|</span>  <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> Leslie <span style="color:#f92672">|</span>  <span style="color:#ae81ff">123</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>  <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span> Sally  <span style="color:#f92672">|</span> <span style="color:#ae81ff">3333</span> <span style="color:#f92672">|</span>  <span style="color:#75715e">-- IODKU 更新
+</span><span style="color:#75715e"></span><span style="color:#f92672">|</span>  <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span> Dana   <span style="color:#f92672">|</span>  <span style="color:#ae81ff">789</span> <span style="color:#f92672">|</span>  <span style="color:#75715e">-- IODKU 添加
+</span><span style="color:#75715e"></span><span style="color:#f92672">+----+--------+------+</span>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -684,6 +514,12 @@ $id = $conn-&gt;insert_id;  -- 获取新值 3
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

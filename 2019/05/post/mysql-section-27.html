@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#删除表">删除表</a>
-<ul>
-<li><a href="#1-删除表">1. 删除表</a></li>
-<li><a href="#2-从数据库删除表">2. 从数据库删除表</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#删除表">删除表</a>
+      <ul>
+        <li><a href="#1-删除表">1. 删除表</a></li>
+        <li><a href="#2-从数据库删除表">2. 从数据库删除表</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="删除表">删除表</h2>
-
+        		<h2 id="删除表">删除表</h2>
 <table>
 <thead>
 <tr>
@@ -206,54 +205,37 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>TEMPORARY</td>
 <td>可选。如果指定的话，只能使用DROP TABLE语句删除临时表</td>
 </tr>
-
 <tr>
 <td>IF EXISTS</td>
 <td>可选。如果指定，如果表不存在的话，<code>DROP TABLE</code>语句将不会报一个错误</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-删除表">1. 删除表</h3>
-
 <p><code>DROP TABLE</code>可以用来删除数据库中的一个表。</p>
-
 <p><strong>创建表</strong></p>
-
 <p>创建一个名字为tbl的表，然后删除这个表。</p>
-
-<pre><code class="language-m">CREATE TABLE tbl(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-m" data-lang="m">CREATE TABLE tbl(
     id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    author VARCHAR(40) NOT NULL,
+    title VARCHAR(<span style="color:#ae81ff">100</span>) NOT NULL,
+    author VARCHAR(<span style="color:#ae81ff">40</span>) NOT NULL,
     submission_date DATE,
     PRIMARYY KEY (id)
 );
-</code></pre>
-
-<p><strong>删除表</strong></p>
-
+</code></pre></div><p><strong>删除表</strong></p>
 <pre><code>DROP TABLE tbl;
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p><strong>注意</strong></p>
-
 <p>删除表将会从数据库中删除表的全部信息，包括所有的信息，所以这个操作没法恢复。</p>
 </blockquote>
-
 <h3 id="2-从数据库删除表">2. 从数据库删除表</h3>
-
-<pre><code class="language-mysql">DROP TABLE Database.table_name
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">Database</span>.table_name
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -325,6 +307,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

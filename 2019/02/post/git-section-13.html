@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,43 +187,25 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#配置">配置</a>
-<ul>
-<li><a href="#配置编辑器">配置编辑器</a></li>
-<li><a href="#自动纠正错别字">自动纠正错别字</a></li>
-<li><a href="#列出并编辑配置">列出并编辑配置</a></li>
-<li><a href="#用户名和邮箱">用户名和邮箱</a></li>
-<li><a href="#多个用户名和邮箱">多个用户名和邮箱</a>
-<ul>
-<li><a href="#windows例子">Windows例子</a>
-<ul>
-<li><a href="#gitconfig">.gitconfig</a></li>
-<li><a href="#gitconfig-work-config">.gitconfig-work.config</a></li>
-<li><a href="#gitconfig-opensource-config">.gitconfig-opensource.config</a></li>
-</ul></li>
-<li><a href="#linux例子">Linux例子</a></li>
-</ul></li>
-<li><a href="#多git配置文件">多Git配置文件</a></li>
-<li><a href="#配置行结尾">配置行结尾</a>
-<ul>
-<li><a href="#描述">描述</a></li>
-<li><a href="#windows">Windows</a></li>
-</ul></li>
-<li><a href="#类unix">类Unix</a></li>
-<li><a href="#只修改一个命令的配置">只修改一个命令的配置</a></li>
-<li><a href="#设置代理">设置代理</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#配置">配置</a>
+      <ul>
+        <li><a href="#配置编辑器">配置编辑器</a></li>
+        <li><a href="#自动纠正错别字">自动纠正错别字</a></li>
+        <li><a href="#列出并编辑配置">列出并编辑配置</a></li>
+        <li><a href="#用户名和邮箱">用户名和邮箱</a></li>
+        <li><a href="#多个用户名和邮箱">多个用户名和邮箱</a></li>
+        <li><a href="#多git配置文件">多Git配置文件</a></li>
+        <li><a href="#配置行结尾">配置行结尾</a></li>
+        <li><a href="#类unix">类Unix</a></li>
+        <li><a href="#只修改一个命令的配置">只修改一个命令的配置</a></li>
+        <li><a href="#设置代理">设置代理</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="配置">配置</h2>
-
+        		<h2 id="配置">配置</h2>
 <table>
 <thead>
 <tr>
@@ -227,245 +213,147 @@
 <th>Detals</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>&ndash;system</td>
 <td>编辑为每个人使用的系统配置（在linux上，配置文件在<code>$(prefix)/etc/gitconfig</code>）</td>
 </tr>
-
 <tr>
 <td>&ndash;global</td>
 <td>修改为你的每个仓库使用的全局配置文件（在linux上，配置文件在<code>~/.gitconfig</code>）</td>
 </tr>
-
 <tr>
 <td>&ndash;local</td>
 <td>编辑指定仓库的配置文件，在你仓库的<code>.git/config</code>这个文件内，这个是默认的配置</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="配置编辑器">配置编辑器</h3>
-
 <p>有多个方式来配置你commit和rebase的时候使用的编辑器：</p>
-
 <ul>
-<li><p>修改<code>core.editor</code>配置项：</p>
-
+<li>
+<p>修改<code> core.editor</code>配置项：</p>
 <pre><code>$ git config --global core.editor nano
 </code></pre></li>
-
-<li><p>设置<code>GIT_EDITOR</code>环境变量：</p></li>
-</ul>
-
+<li>
+<p>设置<code>GIT_EDITOR</code>环境变量：</p>
 <p>举个例子，应用到一个命令：</p>
-
-<pre><code>  $ GIT_EDITOR=nano git commit
-</code></pre>
-
-<p>或者为终端执行的所有git命令。<strong>注意：</strong>直到你关闭了终端，这个配置才会生效：</p>
-
-<pre><code>  $ export GIT_EDITOR=nano
-</code></pre>
-
-<ul>
-<li><p>想要修改终端所有程序的编辑器，不仅仅是git，可以<code>VISUAL</code>或<code>EDITOR</code>环境变量（可以查看<a href="https://unix.stackexchange.com/questions/4859/visual-vs-editor-whats-the-difference">VISUAL vs EDITOR</a>）:</p>
-
-<pre><code>$ export EDITOR=nano
+<pre><code>$ GIT_EDITOR=nano git commit
+</code></pre><p>或者为终端执行的所有git命令。**注意：**直到你关闭了终端，这个配置才会生效：</p>
+<pre><code>$ export GIT_EDITOR=nano
 </code></pre></li>
+<li>
+<p>想要修改终端所有程序的编辑器，不仅仅是git，可以<code>VISUAL</code>或<code>EDITOR</code>环境变量（可以查看<a href="https://unix.stackexchange.com/questions/4859/visual-vs-editor-whats-the-difference">VISUAL vs EDITOR</a>）:</p>
+<pre><code>$ export EDITOR=nano
+</code></pre><p>**注意：**像上面一样，这个命令只会应用到当前的终端页面。你的shell通常会有一个配置文件，允许你永远的设置你的配置。（比如在<code>bash</code>时，可以添加上面的配置到<code> ~/.bashrc</code>获取<code>~/.bash_profile</code>配置文件）。</p>
+</li>
 </ul>
-
-<p><strong>注意：</strong>像上面一样，这个命令只会应用到当前的终端页面。你的shell通常会有一个配置文件，允许你永远的设置你的配置。（比如在<code>bash</code>时，可以添加上面的配置到<code>~/.bashrc</code>获取<code>~/.bash_profile</code>配置文件）。</p>
-
 <p>一些文本编辑器（主要是GUI编辑器）一次只运行一个实例，如果你已经打开了一个实例，通常会退出。如果您的文本编辑器就是这种情况，Git将打印<code>Aborting commit due to empty commit message</code>。不允许你先编辑你的提交信息。如果你遇到了这种情况，检查你的编辑器文档是否有<code>--wait</code>这个配置项。允许你在文档关闭之前终端提交。</p>
-
 <h3 id="自动纠正错别字">自动纠正错别字</h3>
-
 <pre><code>$ git config --global help.autocorrect 17
-</code></pre>
-
-<p>这会在Git中自动更正，并且会忽略你的小错误（例如<code>git stats</code>替换<code>git status</code>）。你设置的<code>help.autocorrect</code>选项将决定在应用自动更正命令的之前，等待多次的时间（单位是十分之一秒）。在上面的命令中，意味着在应用自动更正之前等待1.7秒。</p>
-
+</code></pre><p>这会在Git中自动更正，并且会忽略你的小错误（例如<code>git stats</code>替换<code>git status</code>）。你设置的<code>help.autocorrect</code>选项将决定在应用自动更正命令的之前，等待多次的时间（单位是十分之一秒）。在上面的命令中，意味着在应用自动更正之前等待1.7秒。</p>
 <p>然而，更大的错误将被认为缺少这个命令。所以当你输入<code>git testingit</code>这个命令的时候，将会有下面的结果<code>testingit is not a git command</code>。</p>
-
 <h3 id="列出并编辑配置">列出并编辑配置</h3>
-
 <p>Git的配置允许你配置你的git怎么工作。通常应用来设置你的用户名和邮箱，最喜欢的编辑器或者merge命令怎么执行。</p>
-
 <p>查看当前的配置：</p>
-
 <pre><code>$ git config --list
 ...
 core.editor=vim 
 credential.helper=osxkeychain 
 ...
-</code></pre>
-
-<p>编辑配置项：</p>
-
+</code></pre><p>编辑配置项：</p>
 <pre><code>$ git config &lt;key&gt; &lt;value&gt;
 $ git config core.ignorecase true
-</code></pre>
-
-<p>如果想要把某个配置项修应用到所有的仓库，使用<code>--global</code>选项：</p>
-
+</code></pre><p>如果想要把某个配置项修应用到所有的仓库，使用<code>--global</code>选项：</p>
 <pre><code>$ git config --global user.name &quot;Your Name&quot;
 $ git config --global user.email &quot;Your Email&quot; 
 $ git config --global core.editor vi
-</code></pre>
-
-<p>你可以再次查看你的配置项。</p>
-
+</code></pre><p>你可以再次查看你的配置项。</p>
 <h3 id="用户名和邮箱">用户名和邮箱</h3>
-
 <p>在你按照了Git之后，第一件你应该做的事就是配置用户名和邮箱。在shell中输入下面的命令：</p>
-
 <pre><code>$ git config --global user.name &quot;Mr. Bean&quot;
 $ git config --global user.email mrbean@example.com
-</code></pre>
-
-<ul>
-<li><code>git config</code>是查看和修改配置的命令</li>
-<li><code>--global</code>意味着你用户指定的配置文件正确被编辑</li>
+</code></pre><ul>
+<li><code>git config </code>是查看和修改配置的命令</li>
+<li><code>--global </code>意味着你用户指定的配置文件正确被编辑</li>
 <li><code>user.name</code>和<code>user.email</code>是你配置选项的关键字。<code>user</code>是配置文件的模块，<code>name</code>和<code>email</code>是配置的选项。</li>
 <li><code>&quot;Mr. Bean&quot;</code>和<code>mrbean@example.com</code>是设置给这两个选项的值。注意名称的引号，当你想要保存一个空格时。</li>
 </ul>
-
 <h3 id="多个用户名和邮箱">多个用户名和邮箱</h3>
-
 <p>从Git  2.13开始，可以使用文件夹filter设置多个用户名和邮箱。</p>
-
 <h4 id="windows例子">Windows例子</h4>
-
 <h5 id="gitconfig">.gitconfig</h5>
-
 <p>使用下面的命令：</p>
-
 <pre><code>$ git config --global -e
-</code></pre>
-
-<p>添加下面的配置项：</p>
-
+</code></pre><p>添加下面的配置项：</p>
 <pre><code>[includeIf &quot;gitdir:D:/work&quot;] 
 	path = .gitconfig-work.config
 [includeIf &quot;gitdir:D:/opensource/&quot;] 
 	path = .gitconfig-opensource.config
-</code></pre>
-
-<p>注意：</p>
-
+</code></pre><p>注意：</p>
 <ul>
 <li>配置的顺序是很重要的，最后一个匹配的规则会生效。</li>
 <li>最后的<code>/</code>是需要的<code>&quot;gitdir:D:/work&quot;</code>这个是没有用处的。</li>
 <li><code>gitdir:</code>前缀是需要的</li>
 </ul>
-
-<h5 id="gitconfig-work-config">.gitconfig-work.config</h5>
-
+<h5 id="gitconfig-workconfig">.gitconfig-work.config</h5>
 <p>相同文件夹里的文件<code>.gitconfig</code>。</p>
-
 <pre><code>[user]
    name = Money
    email = work@somewhere.com
-</code></pre>
-
-<h5 id="gitconfig-opensource-config">.gitconfig-opensource.config</h5>
-
+</code></pre><h5 id="gitconfig-opensourceconfig">.gitconfig-opensource.config</h5>
 <p>相同文件夹里的文件<code>.gitconfig</code></p>
-
 <pre><code>[user]
    name = Nice
    email = cool@opensource.stuff
-</code></pre>
-
-<h4 id="linux例子">Linux例子</h4>
-
+</code></pre><h4 id="linux例子">Linux例子</h4>
 <pre><code>[includeIf &quot;gitdir:~/work/&quot;] 
     path = .gitconfig-work
 [includeIf &quot;gitdir:~/opensource/&quot;] 
     path = .gitconfig-opensource
-</code></pre>
-
-<p>文件模块和内容和Windows下是一样的。</p>
-
+</code></pre><p>文件模块和内容和Windows下是一样的。</p>
 <h3 id="多git配置文件">多Git配置文件</h3>
-
 <p>Git的配置最多有5个来源：</p>
-
 <ul>
 <li>6个文件
-
 <ul>
 <li><strong>%ALLUSERSPROFILE%\Git\Config</strong>：只在Windows下有效</li>
-<li>系统配置，<strong><git>/etc/gitconfig</strong>，其中<code>&lt;git&gt;</code>是Git的安装路径（在Windows里是<code>&lt;git&gt;\mingw64\etc\gitconfig</code>）</li>
+<li>系统配置，<strong><!-- raw HTML omitted -->/etc/gitconfig</strong>，其中<code>&lt;git&gt;</code>是Git的安装路径（在Windows里是<code>&lt;git&gt;\mingw64\etc\gitconfig</code>）</li>
 <li>系统配置<code>$XDG_CONFIG_HOME/git/config</code>（只在Windows/Linux有用）</li>
 <li>全局配置<code>~/.gitconfig</code>（Windows下是<code>%USERPROFILE%\.gitconfig</code>）</li>
-<li>本地的配置<code>.git/config</code>（Git仓库的路径是<code>$GIT_DIR</code>）</li>
+<li>本地的配置<code>.git/config</code>（Git仓库的路径是<code> $GIT_DIR</code>）</li>
 <li><code>git config -f</code>的专用文件，用来修改子模块的配置<code>git config -f .gitsubmodules ...</code></li>
-</ul></li>
-<li>命令行文件<code>git -c</code>：<code>git -c core.autocrlf=false fetch</code>会把其他的<code>core.autocrlf</code>配置项修改为false，现在只对<code>fetch</code>命令有效果</li>
 </ul>
-
+</li>
+<li>命令行文件<code>git -c</code>：<code> git -c core.autocrlf=false fetch</code>会把其他的<code>core.autocrlf</code>配置项修改为false，现在只对<code>fetch</code>命令有效果</li>
+</ul>
 <p>这个顺序是很重要的，一个配置文件的配置可以被任何文件列表中在这个文件之后文件的配置项覆盖。</p>
-
-<p><code>git config --system/global/local</code>会列出其中3个源的配置项，而<code>git config -l</code>会列出所有的配置项（根据列表解析之后的最终配置项）。</p>
-
+<p><code>git config --system/global/local </code>会列出其中3个源的配置项，而<code>git config -l</code>会列出所有的配置项（根据列表解析之后的最终配置项）。</p>
 <p>从Git2.8开始，如果你想看某个来源的配置，你可以输入下面的命令：</p>
-
 <pre><code>$ git config --list --show-origin
-</code></pre>
-
-<h3 id="配置行结尾">配置行结尾</h3>
-
+</code></pre><h3 id="配置行结尾">配置行结尾</h3>
 <h4 id="描述">描述</h4>
-
 <p>当在一个团队内部，不同的开发人员对于项目使用不同的系统，有时候在处理行末尾符号会有问题。</p>
-
 <h4 id="windows">Windows</h4>
-
 <p>当你在Windows系统工作的时候，通常的行结尾符是<code>CR+LF</code>。这样的文件在类Unix系统像Liunx和OSX打开的时候就会出现问题，让文本看起来像是没有结尾符。这是因为类Unix系统使用的是不同的结尾符<code>LF</code>。</p>
-
 <p>你可以使用下面的命令修复这个问题：</p>
-
 <pre><code>$ git config --global core.autocrlf=true
-</code></pre>
-
-<p>这个会在提交的时候，确保文件的结尾符是Windows系统格式的（LF-&gt; CR+LF）。</p>
-
+</code></pre><p>这个会在提交的时候，确保文件的结尾符是Windows系统格式的（LF-&gt; CR+LF）。</p>
 <h3 id="类unix">类Unix</h3>
-
 <p>一般来说，在Unix下边界Windows的文件会有问题。为了避免任何不希望的问题，使用下面的命令：</p>
-
 <pre><code>$ git config --global core.autocrlf=input
-</code></pre>
-
-<p>这会在提交的时候，确保结尾符是类Unix格式的（CR+LF -&gt; +LF）。</p>
-
+</code></pre><p>这会在提交的时候，确保结尾符是类Unix格式的（CR+LF -&gt; +LF）。</p>
 <h3 id="只修改一个命令的配置">只修改一个命令的配置</h3>
-
 <p>你可以使用<code>-c &lt;name&gt;=&lt;value&gt;</code>命令修改一个命令的配置。</p>
-
 <p>作为一个另外的人而不用修改你的配置，来达到这个目的：</p>
-
 <pre><code>$ git -c user.email = mail@example commit -m &quot;some message&quot;
-</code></pre>
-
-<p>注意：在先前的例子中，你不用提供<code>user.name</code>和<code>user.email</code>这两个配置，只需要提供一个，Git会从先前的提交中回去另外的信息。</p>
-
+</code></pre><p>注意：在先前的例子中，你不用提供<code>user.name</code>和<code>user.email</code>这两个配置，只需要提供一个，Git会从先前的提交中回去另外的信息。</p>
 <h3 id="设置代理">设置代理</h3>
-
 <p>如果你在使用代理，你需要通知Git这件事：</p>
-
 <pre><code>$ git config --global http.proxy http://my.proxy.com:portnumber
-</code></pre>
-
-<p>如果你不在使用代理了，可以取消这个：</p>
-
+</code></pre><p>如果你不在使用代理了，可以取消这个：</p>
 <pre><code>$ git config --global --unset http.proxy
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -537,6 +425,12 @@ $ git config --global user.email mrbean@example.com
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

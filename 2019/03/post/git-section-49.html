@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,56 +187,35 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git发送邮件">git发送邮件</a>
-<ul>
-<li><a href="#使用gmail">使用Gmail</a></li>
-<li><a href="#组合">组合</a></li>
-<li><a href="#邮件发送补丁">邮件发送补丁</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git发送邮件">git发送邮件</a>
+      <ul>
+        <li><a href="#使用gmail">使用Gmail</a></li>
+        <li><a href="#组合">组合</a></li>
+        <li><a href="#邮件发送补丁">邮件发送补丁</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git发送邮件">git发送邮件</h2>
-
+        		<h2 id="git发送邮件">git发送邮件</h2>
 <h3 id="使用gmail">使用Gmail</h3>
-
 <p>背景：如果你工作在像<code>Linux内核</code>这样的项目上面，你不是使用pull reques，而是要提交你到提交到服务器上等待review。这里介绍怎么使用git发送Gmail邮件。</p>
-
 <p>在<code>.gitconfig</code>中添加下面的配置：</p>
-
 <pre><code>[sendemail]
 		smtpserver = smtp.googlemail.com 
 		smtpencryption = tls 
 		smtpserverport = 587
 		smtpuser = name@gmail.com
-</code></pre>
-
-<p>然后在网页上面：<code>Go to Google -&gt; My Account -&gt; Connected Apps &amp; Sites -&gt; Allow less secure apps -&gt; Switch ON</code></p>
-
+</code></pre><p>然后在网页上面：<code>Go to Google -&gt; My Account -&gt; Connected Apps &amp; Sites -&gt; Allow less secure apps -&gt; Switch ON</code></p>
 <p>创建一个补丁集合：</p>
-
 <pre><code>git format-patch HEAD~~~~ --subject-prefix=&quot;PATCH &lt;project-name&gt;&quot;
-</code></pre>
-
-<p>发送补丁到listserv:</p>
-
+</code></pre><p>发送补丁到listserv:</p>
 <pre><code>git send-email --annotate --to project-developers-list@listserve.example.com 00*.patch
-</code></pre>
-
-<p>创建并发送补丁已经更新的版本：</p>
-
+</code></pre><p>创建并发送补丁已经更新的版本：</p>
 <pre><code>git format-patch -v 2 HEAD~~~~ ......
 git send-email --to project-developers-list@listserve.example.com v2-00*.patch
-</code></pre>
-
-<h3 id="组合">组合</h3>
-
+</code></pre><h3 id="组合">组合</h3>
 <pre><code>--from               * Email From:
 --[no-]to            * Email To:
 --[no-]cc            * Email Cc:
@@ -245,23 +228,13 @@ git send-email --to project-developers-list@listserve.example.com v2-00*.patch
 --compose-encoding   * Encoding to assume for introduction.
 --8bit-encoding      * Encoding to assume 8bit mails if undeclared
 --transfer-encoding  * Transfer encoding to use (quoted-printable, 8bit, base64)
-</code></pre>
-
-<h3 id="邮件发送补丁">邮件发送补丁</h3>
-
+</code></pre><h3 id="邮件发送补丁">邮件发送补丁</h3>
 <p>假设你有一个项目的很多提交(这里是ulogd2，官方分支是git-svn)，你想要把你的补丁集合发送到<code>devel@netfilter.org</code>邮件列表。只需要在git仓库的根目录执行下面的代码：</p>
-
 <pre><code>git format-patch --stat -p --raw --signoff --subject-prefix=&quot;ULOGD PATCH&quot; -o /tmp/ulogd2/ -n git- svn
 git send-email --compose --no-chain-reply-to --to devel@netfilter.org /tmp/ulogd2/
-</code></pre>
-
-<p>第一个命令创建<code>/tmp/ulogd2/</code>下分支的邮件列表，第二个命令开启编辑器来为补丁集合添加简介信息。为了避免糟糕的邮件系列，可以使用：</p>
-
+</code></pre><p>第一个命令创建<code>/tmp/ulogd2/</code>下分支的邮件列表，第二个命令开启编辑器来为补丁集合添加简介信息。为了避免糟糕的邮件系列，可以使用：</p>
 <pre><code>git config sendemail.chainreplyto false
-</code></pre>
-
-<p><a href="https://home.regit.org/technical-articles/git-for-the-newbie/">资源</a></p>
-
+</code></pre><p><a href="https://home.regit.org/technical-articles/git-for-the-newbie/">资源</a></p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -334,6 +307,12 @@ git send-email --compose --no-chain-reply-to --to devel@netfilter.org /tmp/ulogd
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

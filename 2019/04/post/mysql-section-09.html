@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,66 +187,46 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mysql的注释">MySQL的注释</a>
-<ul>
-<li><a href="#增加注释">增加注释</a></li>
-<li><a href="#表定义注释">表定义注释</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mysql的注释">MySQL的注释</a>
+      <ul>
+        <li><a href="#增加注释">增加注释</a></li>
+        <li><a href="#表定义注释">表定义注释</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mysql的注释">MySQL的注释</h2>
-
+        		<h2 id="mysql的注释">MySQL的注释</h2>
 <h3 id="增加注释">增加注释</h3>
-
 <p>有多种类型的注释：</p>
-
-<pre><code class="language-mysql"># 注释到行尾
--- 注释到行尾
-/* 注释符号内部 */
-/*
-多行注释
-*/
-</code></pre>
-
-<p>例子：</p>
-
-<pre><code class="language-mysql">SELECT * FROM t1;  --这是一个注释
-CREATE TABLE stack (
-    /*
-    username varchar(30),
-    */
-    id int
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e"># 注释到行尾
+</span><span style="color:#75715e">-- 注释到行尾
+</span><span style="color:#75715e"></span><span style="color:#75715e">/* 注释符号内部 */</span>
+<span style="color:#75715e">/*
+</span><span style="color:#75715e">多行注释
+</span><span style="color:#75715e">*/</span>
+</code></pre></div><p>例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> t1;  <span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">这是一个注释</span>
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">stack</span> (
+    <span style="color:#75715e">/*
+</span><span style="color:#75715e">    username varchar(30),
+</span><span style="color:#75715e">    */</span>
+    id <span style="color:#66d9ef">int</span>
 );
-</code></pre>
-
-<p><code>—</code>符号要求在符号后面，注释前面有一个空格，否则将认为是一个命令，并且引发一个错误。</p>
-
-<pre><code class="language-mysql">#注释正常
-/*注释正常*/
---注释错误
-</code></pre>
-
-<h3 id="表定义注释">表定义注释</h3>
-
+</code></pre></div><p><code>—</code>符号要求在符号后面，注释前面有一个空格，否则将认为是一个命令，并且引发一个错误。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">#注释正常
+</span><span style="color:#75715e"></span><span style="color:#75715e">/*注释正常*/</span>
+<span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">注释错误</span>
+</code></pre></div><h3 id="表定义注释">表定义注释</h3>
 <pre><code>CREATE TABLE menagerie.bird(
     bird_id INT NOT NULL AUTO_INCREMENT,
     species VARCHAR(300) DEFAULT NULL COMMENT '字段注释',
     INDEX idx_species(species) COMMENT '索引'，
     PRIMARY KEY (bird_id)
 ) ENGINE=InnoDB COMMENT &quot;表注释&quot;;
-</code></pre>
-
-<p>在<code>COMMENT</code>后面添加一个<code>=</code>是可选的。查看<a href="https://dev.mysql.com/doc/refman/5.7/en/create-table.html">手册</a>。</p>
-
+</code></pre><p>在<code>COMMENT</code>后面添加一个<code>=</code>是可选的。查看<a href="https://dev.mysql.com/doc/refman/5.7/en/create-table.html">手册</a>。</p>
 <p>这些注释不像其他的注释，保存在schema中，可以使用<code>SHOW CREATE TABLE</code>或从<code>information_schema</code>中获取。</p>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -315,6 +299,12 @@ CREATE TABLE stack (
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,109 +187,55 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#bash网络操作">bash网络操作</a>
-<ul>
-<li><a href="#网络命令">网络命令</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#bash网络操作">bash网络操作</a>
+      <ul>
+        <li><a href="#网络命令">网络命令</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="bash网络操作">bash网络操作</h2>
-
+        		<h2 id="bash网络操作">bash网络操作</h2>
 <p>Bash通常用于服务器和集群的管理和维护工作。与网络操作使用的典型命令有关的信息，何时使用哪个命令用于哪个目的，以及应包括其独特和/或有趣应用程序的示例/示例。</p>
-
 <h3 id="网络命令">网络命令</h3>
-
 <pre><code>ifconfig
-</code></pre>
-
-<p>上面的命令会显示机器所有活动的接口，提供下面的信息：</p>
-
+</code></pre><p>上面的命令会显示机器所有活动的接口，提供下面的信息：</p>
 <ol>
 <li>接口的IP地址</li>
 <li>接口的MAC地址</li>
 <li>广播地址</li>
 <li>发送和接收字节</li>
 </ol>
-
 <p>一些例子：</p>
-
 <pre><code>ifconfig -a
-</code></pre>
-
-<p>上面的例子也会显示无效的接口。</p>
-
+</code></pre><p>上面的例子也会显示无效的接口。</p>
 <pre><code>ifconfig eth0
-</code></pre>
-
-<p>上面的命令将会只显示eth0接口。</p>
-
+</code></pre><p>上面的命令将会只显示eth0接口。</p>
 <pre><code>ifconfig etho0 192.168.1.100 netmask 255.255.255.0
-</code></pre>
-
-<p>上面的命令将会把静态ip地址赋值给eth0接口。</p>
-
+</code></pre><p>上面的命令将会把静态ip地址赋值给eth0接口。</p>
 <pre><code>ifup ehth0
-</code></pre>
-
-<p>上面的命令会开启eth0</p>
-
+</code></pre><p>上面的命令会开启eth0</p>
 <pre><code>ifdown eth0
-</code></pre>
-
-<p>上面的命令会禁止eth0接口</p>
-
+</code></pre><p>上面的命令会禁止eth0接口</p>
 <pre><code>ping
-</code></pre>
-
-<p>上面的命令(Packet Internet Grouper)用于测试两个节点之间的链接。</p>
-
+</code></pre><p>上面的命令(Packet Internet Grouper)用于测试两个节点之间的链接。</p>
 <pre><code>ping -c2 8.8.8.8
-</code></pre>
-
-<p>上面的命令将ping或测试与谷歌服务器的连接2秒</p>
-
+</code></pre><p>上面的命令将ping或测试与谷歌服务器的连接2秒</p>
 <pre><code>traceroute
-</code></pre>
-
-<p>以上命令用于故障排除，以找出到达目的地所花费的跳数。</p>
-
+</code></pre><p>以上命令用于故障排除，以找出到达目的地所花费的跳数。</p>
 <pre><code>netstat
-</code></pre>
-
-<p>上面的命令将会获取连接信息和他们的状态</p>
-
+</code></pre><p>上面的命令将会获取连接信息和他们的状态</p>
 <pre><code>dig www.baidu.com
-</code></pre>
-
-<p>上面的命令(域信息分组器)查询DNS相关信息</p>
-
+</code></pre><p>上面的命令(域信息分组器)查询DNS相关信息</p>
 <pre><code>nslookup www.baidu.com
-</code></pre>
-
-<p>上面的命令查询DNS信息，并找出网站名称对应的IP地址。</p>
-
+</code></pre><p>上面的命令查询DNS信息，并找出网站名称对应的IP地址。</p>
 <pre><code>route
-</code></pre>
-
-<p>上面的命令用来检测网络路由信息。只是显示你的路由表。</p>
-
+</code></pre><p>上面的命令用来检测网络路由信息。只是显示你的路由表。</p>
 <pre><code>router add default gw 192.168.1.1 eth0
-</code></pre>
-
-<p>上面的命令会将eth0接口的默认网络路由添加到路由表<code>192.168.1.1</code>中</p>
-
+</code></pre><p>上面的命令会将eth0接口的默认网络路由添加到路由表<code>192.168.1.1</code>中</p>
 <pre><code>route del default
-</code></pre>
-
-<p>上面的命令会从路由表中删除<code>default</code>路由。</p>
-
+</code></pre><p>上面的命令会从路由表中删除<code>default</code>路由。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -358,6 +308,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

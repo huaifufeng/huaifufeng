@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,378 +187,193 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#开始学习git">开始学习Git</a>
-<ul>
-<li><a href="#创建自己的项目-并添加-提交文件">创建自己的项目，并添加、提交文件</a>
-<ul>
-<li><a href="#添加远端仓库">添加远端仓库</a></li>
-</ul></li>
-<li><a href="#克隆一个仓库">克隆一个仓库</a></li>
-<li><a href="#分享代码">分享代码</a></li>
-<li><a href="#设置用户名和邮箱">设置用户名和邮箱</a></li>
-<li><a href="#设置上游远端">设置上游远端</a></li>
-<li><a href="#学习一个命令">学习一个命令</a></li>
-<li><a href="#为git设置ssh">为Git设置SSH</a></li>
-<li><a href="#安装git">安装Git</a>
-<ul>
-<li><a href="#源码安装">源码安装</a>
-<ul>
-<li><a href="#linux安装">Linux安装</a></li>
-<li><a href="#mac安装">Mac安装</a></li>
-<li><a href="#windows安装">Windows安装</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#开始学习git">开始学习Git</a>
+      <ul>
+        <li><a href="#创建自己的项目并添加提交文件">创建自己的项目，并添加、提交文件</a></li>
+        <li><a href="#克隆一个仓库">克隆一个仓库</a></li>
+        <li><a href="#分享代码">分享代码</a></li>
+        <li><a href="#设置用户名和邮箱">设置用户名和邮箱</a></li>
+        <li><a href="#设置上游远端">设置上游远端</a></li>
+        <li><a href="#学习一个命令">学习一个命令</a></li>
+        <li><a href="#为git设置ssh">为Git设置SSH</a></li>
+        <li><a href="#安装git">安装Git</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="开始学习git">开始学习Git</h2>
-
-<h3 id="创建自己的项目-并添加-提交文件">创建自己的项目，并添加、提交文件</h3>
-
+        		<h2 id="开始学习git">开始学习Git</h2>
+<h3 id="创建自己的项目并添加提交文件">创建自己的项目，并添加、提交文件</h3>
 <p>首页在终端验证你是否已经安装有Git：</p>
-
 <p>在所有的操作系统上，都可以使用下面的命令：</p>
-
-<pre><code class="language-shell">$ git --version
-</code></pre>
-
-<p>在类Unix系统还可以使用下面的命令：</p>
-
-<pre><code class="language-shell">$ which git
-</code></pre>
-
-<p>如果什么都没有返回，或者没有通过验证，这就表明你需要通过下载并运行安装程序，在你的系统上安装Git。查看<a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git官网</a>，上面有特别详细和容易的安装教程。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git --version
+</code></pre></div><p>在类Unix系统还可以使用下面的命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ which git
+</code></pre></div><p>如果什么都没有返回，或者没有通过验证，这就表明你需要通过下载并运行安装程序，在你的系统上安装Git。查看<a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git官网</a>，上面有特别详细和容易的安装教程。</p>
 <p>安装完Git之后，在你真正的提交之前，还需要配置好你的名称和邮件地址。</p>
-
 <p>一旦安装成功Git，你就可以到你希望进行版本管理的文件夹下，初始化一个空的Git仓库：</p>
-
-<pre><code class="language-shell">$ git init
-</code></pre>
-
-<p>这会创建一个隐藏的<code>.git</code>文件夹，用来存放Git工作需要的信息。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git init
+</code></pre></div><p>这会创建一个隐藏的<code>.git</code>文件夹，用来存放Git工作需要的信息。</p>
 <p>接下来检查下Git将把什么文件加入到仓库内，这是非常值得注意的，也是在添加、提交文件之前的必要操作：</p>
-
-<pre><code class="language-shell">$ git status
-</code></pre>
-
-<p>检查文件的列表，你可以告诉Git哪些文件你想进行版本的管理（避免将像密码这样的重要信息或者污染仓库的信息添加到Git仓库里面）：</p>
-
-<pre><code class="language-shell">$ git add &lt;file/directory name #1&gt; &lt;file/directory name #2&gt; &lt; ... &gt;
-</code></pre>
-
-<p>如果所有的文件你都想和能访问这个仓库的人分享，有一个简单的命令可以添加当前目录和当前目录子目录内的所有文件：</p>
-
-<pre><code class="language-shell">$ git add .
-</code></pre>
-
-<p>这将“暂存”所有的文件，等待将这些文件加入版本管理，准备在你的第一次提交中提交它们。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git status
+</code></pre></div><p>检查文件的列表，你可以告诉Git哪些文件你想进行版本的管理（避免将像密码这样的重要信息或者污染仓库的信息添加到Git仓库里面）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git add &lt;file/directory name <span style="color:#75715e">#1&gt; &lt;file/directory name #2&gt; &lt; ... &gt;</span>
+</code></pre></div><p>如果所有的文件你都想和能访问这个仓库的人分享，有一个简单的命令可以添加当前目录和当前目录子目录内的所有文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git add .
+</code></pre></div><p>这将“暂存”所有的文件，等待将这些文件加入版本管理，准备在你的第一次提交中提交它们。</p>
 <p>对于你不想添加到版本管理的文件，你可以在执行<code>add</code>之前命令创建一个名<code>.gitignore</code>的文件，并且填写里面的内容。</p>
-
 <p>提交所有已经添加的文件，同时填写一个提交的注释信息：</p>
-
-<pre><code class="language-shell">$ git commit -m &quot;Initial commit&quot;
-</code></pre>
-
-<p>这使用提供的信息创建了一个新的提交。一个提交就像你整个项目的一个快照。现在你就可以把本地的文件<code>push</code>到远端的仓库内，如果有需要的时候，你可以重新返回这里。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git commit -m <span style="color:#e6db74">&#34;Initial commit&#34;</span>
+</code></pre></div><p>这使用提供的信息创建了一个新的提交。一个提交就像你整个项目的一个快照。现在你就可以把本地的文件<code>push</code>到远端的仓库内，如果有需要的时候，你可以重新返回这里。</p>
 <p>如果你忽略了<code>-m</code>参数，你默认的编辑器将会打开，你可以在编辑器里面编辑并且保存提交信息。</p>
-
 <h4 id="添加远端仓库">添加远端仓库</h4>
-
 <p>想要添加一个新的远端仓库地址，你可以在你仓库所在的文件夹内，在终端内执行<code>git remote add</code>命令。</p>
-
-<pre><code class="language-git">
-1. 一个远端的名称，比如```origin```
-2. 一个远端的URL地址，比如```https://&lt;your-git-service-address&gt;/user/repo.git```
-
-```shell
-$ git remote add origin https://&lt;your-git-service-address&gt;/owner/repository.git
-</code></pre>
-
-<p>注意：在添加远端仓库之前，你需要确定已经在你的git服务上建好了需要的仓库了，在你添加号远端仓库之后，你就可以<code>push/pull</code>你本地的提交了</p>
-
-<h3 id="克隆一个仓库">克隆一个仓库</h3>
-
-<pre><code class="language-git">
-举个例子，克隆一个GitHub的仓库：
-
-```shell
-$ cd &lt;path where you would like the clone to create a directory&gt; 
-$ git clone https://github.com/username/projectname.git
-</code></pre>
-
-<p>克隆一个BitBucket的项目：</p>
-
-<pre><code class="language-shell">$ cd &lt;path where you would like the clone to create a directory&gt;
-$ git clone https://yourusername@bitbucket.org/username/projectname.git
-</code></pre>
-
-<p>这将在本地机器上创建一个叫<code>projectname</code>的包含远端Git仓库所有文件的文件夹。这个文件夹将包含这个项目的所有源码文件，同时也包括一个<code>.git</code>子文件夹，这个子文件夹包含这个项目的所有历史和配置信息。</p>
-
-<p>在克隆项目时，可以指定一个不同的文件夹名称，比如<code>MyFolder</code>:</p>
-
-<pre><code class="language-shell">$ git clone https://github.com/username/projectname.git MyFolder
-</code></pre>
-
-<p>或者克隆到当前的文件夹内：</p>
-
-<pre><code class="language-shell">$ git clone https://github.com/username/projectname.git .
-</code></pre>
-
-<p>注意：</p>
-
+<p><code>git add remote</code>这个命令需要两个参数：</p>
 <ol>
-<li><p>当克隆一个项目的时候，这个文件夹必须是空的或者不存在的。</p></li>
-
-<li><p>你也可以使用<code>ssh</code>版本的命令：</p></li>
+<li>一个远端的名称，比如<code>origin</code></li>
+<li>一个远端的URL地址，比如<code>https://&lt;your-git-service-address&gt;/user/repo.git</code></li>
 </ol>
-
-<pre><code class="language-shell">   $ git clone git@github.com:username/projectname.git
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git remote add origin https://&lt;your-git-service-address&gt;/owner/repository.git
+</code></pre></div><p>注意：在添加远端仓库之前，你需要确定已经在你的git服务上建好了需要的仓库了，在你添加号远端仓库之后，你就可以<code>push/pull</code>你本地的提交了</p>
+<h3 id="克隆一个仓库">克隆一个仓库</h3>
+<p><code>git clone</code>是用来从服务器上复制一个已经存在的远端仓库到本地机器上的命令。</p>
+<p>举个例子，克隆一个GitHub的仓库：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd &lt;path where you would like the clone to create a directory&gt; 
+$ git clone https://github.com/username/projectname.git
+</code></pre></div><p>克隆一个BitBucket的项目：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd &lt;path where you would like the clone to create a directory&gt;
+$ git clone https://yourusername@bitbucket.org/username/projectname.git
+</code></pre></div><p>这将在本地机器上创建一个叫<code>projectname</code>的包含远端Git仓库所有文件的文件夹。这个文件夹将包含这个项目的所有源码文件，同时也包括一个<code>.git</code>子文件夹，这个子文件夹包含这个项目的所有历史和配置信息。</p>
+<p>在克隆项目时，可以指定一个不同的文件夹名称，比如<code>MyFolder</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git clone https://github.com/username/projectname.git MyFolder
+</code></pre></div><p>或者克隆到当前的文件夹内：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git clone https://github.com/username/projectname.git .
+</code></pre></div><p>注意：</p>
+<ol>
+<li>
+<p>当克隆一个项目的时候，这个文件夹必须是空的或者不存在的。</p>
+</li>
+<li>
+<p>你也可以使用<code>ssh</code>版本的命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git clone git@github.com:username/projectname.git
+</code></pre></div></li>
+</ol>
 <p><code>https</code>版本和<code>ssh</code>版本是等价的。然而一些代码托管服务想GitHub<a href="https://help.github.com/articles/set-up-git/#next-steps-authenticating-with-github-from-git">推荐</a>你使用<code>https</code>而不是<code>ssh</code>。</p>
-
 <h3 id="分享代码">分享代码</h3>
-
 <p>要分享你的代码，你在原端服务器上创建了一个仓库，需要你把本地的仓库复制到远端。</p>
-
 <p>为了减小使用远端服务器的空间，你创建了一个空仓库：一个只包含<code>.git</code>对象，不包含文件系统的工作区复制。一个额外的好处，你可以将这个服务器设置为上游服务器，方便的和其他程序员分享仓库的修改。</p>
-
 <p>在远端服务器上面：</p>
-
-<pre><code class="language-shell">$ git init --bare /path/to/repo.git
-</code></pre>
-
-<p>在本地的机器上面：</p>
-
-<pre><code class="language-shell">$ git remote add origin ssh://username@server:/path/to/repo.git
-</code></pre>
-
-<p>（注意：<code>ssh:</code>只是访问远端仓库的一种方式）</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git init --bare /path/to/repo.git
+</code></pre></div><p>在本地的机器上面：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git remote add origin ssh://username@server:/path/to/repo.git
+</code></pre></div><p>（注意：<code>ssh:</code>只是访问远端仓库的一种方式）</p>
 <p>现在可以将你本地的仓库推送到远端服务器：</p>
-
-<pre><code class="language-shell">$ git push --set-upstream origin master
-</code></pre>
-
-<p>这里添加<code>--set-upstream</code>（或者<code>-u</code>）创建一个远端的引用（跟踪），这样你在执行命令（像<code>git pull</code>）的时候，就可以减少一些参数。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git push --set-upstream origin master
+</code></pre></div><p>这里添加<code>--set-upstream</code>（或者<code>-u</code>）创建一个远端的引用（跟踪），这样你在执行命令（像<code>git pull</code>）的时候，就可以减少一些参数。</p>
 <h3 id="设置用户名和邮箱">设置用户名和邮箱</h3>
-
-<pre><code class="language-shell">$ You need to set who you are *before* creating any commit. That will allow commits to have the right author name and email associated to them.
-</code></pre>
-
-<p>当推送远端仓库出现上面的报错时，这和身份认证没有什么关系（像使用你GitHub, BitBucket, or GitLab的账号推送远端仓库时）。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ You need to set who you are *before* creating any commit. That will allow commits to have the right author name and email associated to them.
+</code></pre></div><p>当推送远端仓库出现上面的报错时，这和身份认证没有什么关系（像使用你GitHub, BitBucket, or GitLab的账号推送远端仓库时）。</p>
 <p>使用<code>git config —global</code>可以为你本地所有的仓库添加一个身份标识。这将在<code>.gitconfigg</code>文件中存储你的配置信息：类Unix系统在<code>$HOME/.gitconfg</code>；在Windows中<code>%USERPROFILE%\.gitconfig</code>。</p>
-
-<pre><code class="language-shell">$ git config --global user.name &quot;Your Name&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git config --global user.name <span style="color:#e6db74">&#34;Your Name&#34;</span>
 $ git config --global user.email mail@example.com
-</code></pre>
-
-<p>如果不想给所有的仓库增加配置，只想给一个单独的仓库增加身份标识，可以在这个仓库里面使用<code>git config</code>命令。这将会在这个仓库里面添加单独的配置，在文件<code>$GIT_DIR/config</code>。例如：<code>/path/to/your/repo/.git/config.</code>。</p>
-
-<pre><code class="language-shell">$ cd /path/to/my/repo
-$ git config user.name &quot;Your Login At Work&quot;
+</code></pre></div><p>如果不想给所有的仓库增加配置，只想给一个单独的仓库增加身份标识，可以在这个仓库里面使用<code>git config</code>命令。这将会在这个仓库里面添加单独的配置，在文件<code>$GIT_DIR/config</code>。例如：<code>/path/to/your/repo/.git/config.</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /path/to/my/repo
+$ git config user.name <span style="color:#e6db74">&#34;Your Login At Work&#34;</span>
 $ git config user.email mail_at_work@example.com
-</code></pre>
-
-<p>当你使用这个仓库的使用，仓库里面的配置具备比全局配置更高的优先级。</p>
-
+</code></pre></div><p>当你使用这个仓库的使用，仓库里面的配置具备比全局配置更高的优先级。</p>
 <p>技巧：如果你有不同的身份标识（开源项目一个，工作的一个，私人的一个&hellip;），并且你不想忘了为正在工作的仓库设置不同的身份标识，你可以这么做：</p>
-
 <ul>
-<li>删除全局身份标识</li>
+<li>
+<p>删除全局身份标识</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git config --global --remove-section user.name 
+$ git config --global --remove-section user.email
+</code></pre></div></li>
+<li>
+<p>强制Git只在仓库本地的配置中查找用户的身份标识，不使用全局的身份标识：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git config --global user.useConfigOnly true
+</code></pre></div></li>
 </ul>
-
-<pre><code class="language-shell">  $ git config --global --remove-section user.name 
-  $ git config --global --remove-section user.email
-</code></pre>
-
-<ul>
-<li>强制Git只在仓库本地的配置中查找用户的身份标识，不使用全局的身份标识：</li>
-</ul>
-
-<pre><code class="language-shell">  $ git config --global user.useConfigOnly true
-</code></pre>
-
 <p>这样，当你忘了给一个仓库设置<code>user.name</code>和<code>user.email</code>的时候，如果你试着去提交修改，你将会看到下面的文字：</p>
-
-<pre><code class="language-shell">$ no name was given and auto-detection is disabled
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ no name was given and auto-detection is disabled
 $ no email was given and auto-detection is disabled
-</code></pre>
-
-<h3 id="设置上游远端">设置上游远端</h3>
-
+</code></pre></div><h3 id="设置上游远端">设置上游远端</h3>
 <p>如果你克隆了一个fork（GitHub的一个开源项目），你可能没有推送到远端的权限，所以你需要获得推送和拉取远端项目的权限。</p>
-
 <p>首先检查下远端的名称：</p>
-
-<pre><code class="language-shell">$ git remote -v
-origin https://github.com/myusername/repo.git (fetch) 
-origin https://github.com/myusername/repo.git (push) 
-upstream # this line may or may not be here
-</code></pre>
-
-<p>如果<code>upstream</code>已经存在了（在某些Git版本），你需要去设置URL（当没有设置的话）：</p>
-
-<pre><code class="language-shell">$ git remote set-url upstream https://github.com/projectusername/repo.git
-</code></pre>
-
-<p>如果<code>upstream</code>不存在，或者你想添加一个朋友/同事的fork（当前不存在）：</p>
-
-<pre><code class="language-shell"> $ git remote add upstream https://github.com/projectusername/repo.git
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git remote -v
+origin https://github.com/myusername/repo.git <span style="color:#f92672">(</span>fetch<span style="color:#f92672">)</span> 
+origin https://github.com/myusername/repo.git <span style="color:#f92672">(</span>push<span style="color:#f92672">)</span> 
+upstream <span style="color:#75715e"># this line may or may not be here</span>
+</code></pre></div><p>如果<code>upstream</code>已经存在了（在某些Git版本），你需要去设置URL（当没有设置的话）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git remote set-url upstream https://github.com/projectusername/repo.git
+</code></pre></div><p>如果<code>upstream</code>不存在，或者你想添加一个朋友/同事的fork（当前不存在）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> $ git remote add upstream https://github.com/projectusername/repo.git
  $ git remote add dave https://github.com/dave/repo.git
-</code></pre>
-
-<h3 id="学习一个命令">学习一个命令</h3>
-
+</code></pre></div><h3 id="学习一个命令">学习一个命令</h3>
 <p>想要获取任何Git命令的详细信息，包括：命令能做什么，有效的选项和其他的一些文档。可以使用<code>—help</code>选项或<code>help</code>命令。</p>
-
 <p>举个例子，获取<code>git diff</code>命令的所有有效信息：</p>
-
-<pre><code class="language-shell">$ git diff --help 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git diff --help 
 $ git help diff
-</code></pre>
-
-<p>同样，获取<code>status</code>命令的有效信息，使用：</p>
-
-<pre><code class="language-shell">$ git status --help 
+</code></pre></div><p>同样，获取<code>status</code>命令的有效信息，使用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git status --help 
 $ git help status
-</code></pre>
-
-<p>如果你只是想快速看下命令常用标签的含义，可以用<code>-h</code>：</p>
-
-<pre><code class="language-shell">$ git checkout -h
-</code></pre>
-
-<h3 id="为git设置ssh">为Git设置SSH</h3>
-
+</code></pre></div><p>如果你只是想快速看下命令常用标签的含义，可以用<code>-h</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git checkout -h
+</code></pre></div><h3 id="为git设置ssh">为Git设置SSH</h3>
 <p>如果你在Windows上使用<a href="https://git-for-windows.github.io/">Git Bash</a>，或者在Mac或Linux使用终端进行操作。</p>
-
 <p>在你生成SSH key之前，需要先检查一下本地是否有任何SSH key.</p>
-
 <p>输出<code>~/.ssh</code>目录下的列表：</p>
-
-<pre><code class="language-shell">$ ls -al ~/.ssh
-# Lists all the files in your ~/.ssh directory
-</code></pre>
-
-<p>检查这个目录文件列表，判断你是否已经有了一个公开的SSH key（公钥）。公钥默认的名字如下：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ls -al ~/.ssh
+<span style="color:#75715e"># Lists all the files in your ~/.ssh directory</span>
+</code></pre></div><p>检查这个目录文件列表，判断你是否已经有了一个公开的SSH key（公钥）。公钥默认的名字如下：</p>
 <pre><code>id_dsa.pub
 id_ecdsa.pub
 id_ed25519.pub
 id_rsa.pub
-</code></pre>
-
-<p>如果在列表里面有公私秘钥对存在，你可以在Bitbucket，GitHub（或者其他的服务）的账号中，复制<code>id_*.pub</code>文件的内容。</p>
-
+</code></pre><p>如果在列表里面有公私秘钥对存在，你可以在Bitbucket，GitHub（或者其他的服务）的账号中，复制<code>id_*.pub</code>文件的内容。</p>
 <p>如果没有，你可以通过下面的命令创建公私秘钥：</p>
-
-<pre><code class="language-shell">$ ssh-keygen
-</code></pre>
-
-<p>按Enter或Return键使用默认的地址。当提示输入密码的时候，输入并重新输入密码，或者保留为空。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ssh-keygen
+</code></pre></div><p>按Enter或Return键使用默认的地址。当提示输入密码的时候，输入并重新输入密码，或者保留为空。</p>
 <p>确保你的SSH key被添加到ssh-agent里面，如果ssh-agent没有运行的话，就启动它。</p>
-
-<pre><code class="language-shell">$ eval &quot;$(ssh-agent -s)&quot;
-</code></pre>
-
-<p>把你的SSH key添加到ssh-agent。注意，使用你的私钥名称替换下面命令中的<code>id_rsa</code>:</p>
-
-<pre><code class="language-shell">$ ssh-add ~/.ssh/id_rsa
-</code></pre>
-
-<p>如果你想把本地仓库的远端从HTTPS修改为SSH，可以使用下面的命令：</p>
-
-<pre><code class="language-shell">$ git remote set-url origin ssh://git@bitbucket.server.com:7999/projects/your_project.git
-</code></pre>
-
-<p>想要通过SSH去克隆一个新的仓库，可以使用这个命令：</p>
-
-<pre><code class="language-shell">$ git clone ssh://git@bitbucket.server.com:7999/projects/your_project.git
-</code></pre>
-
-<h3 id="安装git">安装Git</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ eval <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>ssh-agent -s<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</code></pre></div><p>把你的SSH key添加到ssh-agent。注意，使用你的私钥名称替换下面命令中的<code>id_rsa</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ssh-add ~/.ssh/id_rsa
+</code></pre></div><p>如果你想把本地仓库的远端从HTTPS修改为SSH，可以使用下面的命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git remote set-url origin ssh://git@bitbucket.server.com:7999/projects/your_project.git
+</code></pre></div><p>想要通过SSH去克隆一个新的仓库，可以使用这个命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git clone ssh://git@bitbucket.server.com:7999/projects/your_project.git
+</code></pre></div><h3 id="安装git">安装Git</h3>
 <p>在我们使用Git之前，第一件事就是你已经安装了Git。你可以有很多的方式安装Git，最主要的两种是：从源代码安装，或者安装你平台已经存在的安装包。</p>
-
 <h4 id="源码安装">源码安装</h4>
-
 <p>如果可以的话，从源码安装是最有用的方式，因为你可以获得最新版本的Git。每一个版本，Git都会有一些UI的提升，如果你觉得从源码编译软件不麻烦的话，这是最推荐的方式。并且需要注意，许多Linux用的是很老的安装包。所以，除非你在用最新的版本，或者使用backports的话，从源码安装是最好的选择。</p>
-
 <p>想要安装Git，你首先要安装这些Git的依赖库：curl， zlib， openssl， expat， libiconv。举个例子，如果你在使用有yum命令（像Fedora）或apt-get命令（像基于Debian的系统）的系统，你可以使用下面命令中的一个命令来安装这些依赖：</p>
-
-<pre><code class="language-shell">$ yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
 $ apt-get install libcurl4-gnutls-dev libexpat1-dev gettext  libz-dev libssl-dev
-</code></pre>
-
-<p>当你安装了这些必要的依赖之后，你就可以去GIt网站<a href="http://git-scm.com/download">http://git-scm.com/download</a>获取最新版本的源码，然后编译安装了：</p>
-
-<pre><code class="language-shell">$ tar -zxf git-1.7.2.2.tar.gz
+</code></pre></div><p>当你安装了这些必要的依赖之后，你就可以去GIt网站<a href="http://git-scm.com/download">http://git-scm.com/download</a>获取最新版本的源码，然后编译安装了：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ tar -zxf git-1.7.2.2.tar.gz
 $ cd git-1.7.2.2
-$ make prefix=/usr/local all
-$ sudo make prefix=/usr/local install
-</code></pre>
-
-<p>安装之后，你就可以通过Git本身来获取Git的更新了：</p>
-
-<pre><code class="language-shell">$ git clone git://git.kernel.org/pub/scm/git/git.git
-</code></pre>
-
-<h5 id="linux安装">Linux安装</h5>
-
+$ make prefix<span style="color:#f92672">=</span>/usr/local all
+$ sudo make prefix<span style="color:#f92672">=</span>/usr/local install
+</code></pre></div><p>安装之后，你就可以通过Git本身来获取Git的更新了：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ git clone git://git.kernel.org/pub/scm/git/git.git
+</code></pre></div><h5 id="linux安装">Linux安装</h5>
 <p>如果你现在Linux通过二进制安装包安装Git，只需要正常的使用你系统的包管理工具就可以了。如果你是Fedora，可以使用下面的命令：</p>
-
-<pre><code class="language-shell">$ yum install git
-</code></pre>
-
-<p>如果你是基于Debian的系统像Ubuntu，试试apt-get：</p>
-
-<pre><code class="language-shell">$ apt-get install git
-</code></pre>
-
-<h5 id="mac安装">Mac安装</h5>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ yum install git
+</code></pre></div><p>如果你是基于Debian的系统像Ubuntu，试试apt-get：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ apt-get install git
+</code></pre></div><h5 id="mac安装">Mac安装</h5>
 <p>在Mac上有三种方式来安装Git。</p>
-
 <p>最简单的就是图形化的Git安装器了，你可以从SourceForge下在。<a href="http://sourceforge.net/projects/git-osx-installer/">http://sourceforge.net/projects/git-osx-installer/</a>。</p>
-
 <p>另外一种主要方式是通过<a href="http://www.macports.org">MacPorts</a>来安装。如果你已经安装了MacPorts，可以这样安装：</p>
-
-<pre><code class="language-shell">$ sudo port install git +svn +doc +bash_completion +gitweb
-</code></pre>
-
-<p>你不需要安装所有另外的软件，但是如果你必须在Subversion仓库上使用Git，就包含+svn选项。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo port install git +svn +doc +bash_completion +gitweb
+</code></pre></div><p>你不需要安装所有另外的软件，但是如果你必须在Subversion仓库上使用Git，就包含+svn选项。</p>
 <p><a href="https://brew.sh/">Homebrew</a>是另外的可选安装方式。如果你已经安装了Homebrew，可以使用下面的命令：</p>
-
-<pre><code class="language-shell">$ brew install git
-</code></pre>
-
-<h5 id="windows安装">Windows安装</h5>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew install git
+</code></pre></div><h5 id="windows安装">Windows安装</h5>
 <p>Windows上安装Git是非常容易的。msysGit项目有一个更简单的安装方式，只需要从GitHub上下载安装文件，然后运行就可以了：</p>
-
 <pre><code>http://msysgit.github.io
-</code></pre>
-
-<p>安装之后，你就有了一个命令行工具(包括SSH客户端)和标准的GUI。</p>
-
+</code></pre><p>安装之后，你就有了一个命令行工具(包括SSH客户端)和标准的GUI。</p>
 <p>注意：你需要使用msysGit的shell（Unix风格的），可以使用本书中的复杂命令。如果有需要的话，可以使用Windows本身的命令行工具：对于包含空格的参数使用双引号替换单引号；必须引用最后一行以^结尾的参数，这是Windows的延续符号。</p>
-
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -627,6 +446,12 @@ $ sudo make prefix=/usr/local install
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

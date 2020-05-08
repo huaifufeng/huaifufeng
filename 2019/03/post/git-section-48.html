@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,28 +187,23 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git统计">git统计</a>
-<ul>
-<li><a href="#每个开发者的行">每个开发者的行</a></li>
-<li><a href="#列出每个分支及其最后修订日期">列出每个分支及其最后修订日期</a></li>
-<li><a href="#每个开发者的提交">每个开发者的提交</a></li>
-<li><a href="#每天日期的提交">每天日期的提交</a></li>
-<li><a href="#一个分支的所有提交">一个分支的所有提交</a></li>
-<li><a href="#优化格式列出所有提交">优化格式列出所有提交</a></li>
-<li><a href="#寻找电脑上所有本地仓库">寻找电脑上所有本地仓库</a></li>
-<li><a href="#显示每个作者的提交数量">显示每个作者的提交数量</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git统计">git统计</a>
+      <ul>
+        <li><a href="#每个开发者的行">每个开发者的行</a></li>
+        <li><a href="#列出每个分支及其最后修订日期">列出每个分支及其最后修订日期</a></li>
+        <li><a href="#每个开发者的提交">每个开发者的提交</a></li>
+        <li><a href="#每天日期的提交">每天日期的提交</a></li>
+        <li><a href="#一个分支的所有提交">一个分支的所有提交</a></li>
+        <li><a href="#优化格式列出所有提交">优化格式列出所有提交</a></li>
+        <li><a href="#寻找电脑上所有本地仓库">寻找电脑上所有本地仓库</a></li>
+        <li><a href="#显示每个作者的提交数量">显示每个作者的提交数量</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git统计">git统计</h2>
-
+        		<h2 id="git统计">git统计</h2>
 <table>
 <thead>
 <tr>
@@ -212,130 +211,77 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>-n, —numbered</code></td>
 <td>按照作者的提交数量排序而不是按照字母顺序排序</td>
 </tr>
-
 <tr>
 <td><code>-s, --summary</code></td>
 <td>仅提供提交计数摘要</td>
 </tr>
-
 <tr>
 <td><code>-e, --email</code></td>
 <td>线上每个作者的邮件地址</td>
 </tr>
-
 <tr>
 <td><code>--format[=&lt;format&gt;]</code></td>
 <td>不使用提交对象，使用其他的信息来描述提交。<code>&lt;format&gt;</code>是<code>git log</code>的<code>—format</code>选项使用的字符</td>
 </tr>
-
 <tr>
 <td><code>-w[&lt;width&gt;[,&lt;indent1&gt;[,&lt;indent2&gt;]]]</code></td>
 <td>通过以宽度包装每一行来对输出进行换行。每个条目的第一行缩进1个空格，后续行缩进1个空格。</td>
 </tr>
-
 <tr>
 <td><code>&lt;revision range&gt;</code></td>
 <td>显示指定版本范围内的提交。默认是直到当前的提交的所有历史</td>
 </tr>
-
 <tr>
 <td><code>[—] &lt;path&gt;</code></td>
 <td>只显示说明文件匹配路径的提交。路径可能需要以“-”作为前缀，以将其与选项或修订范围分开。</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="每个开发者的行">每个开发者的行</h3>
-
 <pre><code>git ls-tree -r HEAD | sed -Ee 's/^.{53}//' | \
 while read filename; do file &quot;$filename&quot;; done | \
 grep -E ': .*text' | sed -E -e 's/: .*//' | \
 while read filename; do git blame --line-porcelain &quot;$filename&quot;; done | \ sed -n 's/^author //p' | \
 sort | uniq -c | sort -rn
-</code></pre>
-
-<h3 id="列出每个分支及其最后修订日期">列出每个分支及其最后修订日期</h3>
-
+</code></pre><h3 id="列出每个分支及其最后修订日期">列出每个分支及其最后修订日期</h3>
 <pre><code>for k in `git branch -a | sed s/^..//`; do echo -e `git log -1 --pretty=format:&quot;%Cgreen%ci %Cblue%cr%Creset&quot; $k --`\\t&quot;$k&quot;;done | sort
-</code></pre>
-
-<h3 id="每个开发者的提交">每个开发者的提交</h3>
-
+</code></pre><h3 id="每个开发者的提交">每个开发者的提交</h3>
 <p><code>git shortlog</code>用来汇总<code>git log</code>的信息，并且按照作者进行分组输出。</p>
-
 <p>默认所有提交信息将会显示，<code>—summary</code>或<code>-s</code>将会忽略提交信息，显示所有的作者和他们的提交数量。</p>
-
 <p><code>—numbered</code>或<code>-n</code>修改字母排序(按照作者升序)，修改为按提交数降序：</p>
-
 <pre><code>git shortlog -sn #Names and Number of commits
 git shortlog -sne #Names along with their email ids and the Number of commits
-</code></pre>
-
-<p>或者：</p>
-
+</code></pre><p>或者：</p>
 <pre><code>git log --pretty=format:%ae \
 | gawk -- '{ ++c[$0]; } END { for(cc in c) printf &quot;%5d %s\n&quot;,c[cc],cc; }'
-</code></pre>
-
-<p><strong>注意：</strong>相同作者如果名称或者邮箱地址不一样的话，不会被分到一起。例如<code>John Doe</code>和<code>Johnny Doe</code>将出现在列表的不同地方。要解决这个的话，使用<code>.mailmap</code>特性。</p>
-
+</code></pre><p>**注意：**相同作者如果名称或者邮箱地址不一样的话，不会被分到一起。例如<code>John Doe</code>和<code>Johnny Doe</code>将出现在列表的不同地方。要解决这个的话，使用<code>.mailmap</code>特性。</p>
 <h3 id="每天日期的提交">每天日期的提交</h3>
-
 <pre><code>git log --pretty=format:&quot;%ai&quot; | awk '{print &quot; : &quot;$1}' | sort -r | uniq -c
-</code></pre>
-
-<h3 id="一个分支的所有提交">一个分支的所有提交</h3>
-
+</code></pre><h3 id="一个分支的所有提交">一个分支的所有提交</h3>
 <pre><code>git log --pretty=oneline |wc -l
-</code></pre>
-
-<h3 id="优化格式列出所有提交">优化格式列出所有提交</h3>
-
+</code></pre><h3 id="优化格式列出所有提交">优化格式列出所有提交</h3>
 <pre><code>git log --pretty=format:&quot;%Cgreen%ci %Cblue%cn %Cgreen%cr%Creset %s&quot;
-</code></pre>
-
-<p>这将会给所有提交一个带有日期，用户，提交信息的优化格式。</p>
-
+</code></pre><p>这将会给所有提交一个带有日期，用户，提交信息的优化格式。</p>
 <p><code>—pretty</code>选项有很多<code>%</code>开始的占位符。所有的选项在<a href="https://git-scm.com/docs/pretty-formats">这里</a>。</p>
-
 <h3 id="寻找电脑上所有本地仓库">寻找电脑上所有本地仓库</h3>
-
 <p>列出本地的所有git仓库，你可以：</p>
-
 <pre><code>find $HOME -type d -name &quot;.git&quot;
-</code></pre>
-
-<p>假设安装了<code>locate</code>命令，下面的更快：</p>
-
+</code></pre><p>假设安装了<code>locate</code>命令，下面的更快：</p>
 <pre><code>locate .git |grep git$
-</code></pre>
-
-<p>如果你有<code>gnu locate</code>或<code>mlocate</code>，你只能寻找git目录：</p>
-
+</code></pre><p>如果你有<code>gnu locate</code>或<code>mlocate</code>，你只能寻找git目录：</p>
 <pre><code>locate -ber \\.git$
-</code></pre>
-
-<h3 id="显示每个作者的提交数量">显示每个作者的提交数量</h3>
-
+</code></pre><h3 id="显示每个作者的提交数量">显示每个作者的提交数量</h3>
 <p>获取每个作者在一个仓库上的所有提交，你可以使用<code>git shortlog</code>：</p>
-
 <pre><code>git shortlog -s
-</code></pre>
-
-<p>这提供了作者名称和提交数量。</p>
-
+</code></pre><p>这提供了作者名称和提交数量。</p>
 <p>另外，如果你想要获取所有分支的结果，使用<code>—add</code>选项：</p>
-
 <pre><code>git shortlog -s --all
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -407,6 +353,12 @@ git shortlog -sne #Names along with their email ids and the Number of commits
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

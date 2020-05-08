@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,134 +187,109 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#eval命令">eval命令</a>
-<ul>
-<li><a href="#使用eval">使用eval</a></li>
-<li><a href="#使用getopt">使用getopt</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#eval命令">eval命令</a>
+      <ul>
+        <li><a href="#使用eval">使用eval</a></li>
+        <li><a href="#使用getopt">使用getopt</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="eval命令">eval命令</h2>
-
+        		<h2 id="eval命令">eval命令</h2>
 <p>首先最重要的是：知道你正在做什么。第二，虽然你应该避免使用eval，但是它的使用让代码更加干净，那就继续使用。</p>
-
 <h3 id="使用eval">使用eval</h3>
-
 <p>例如，考虑将<code>$@</code>的内容设置为给定变量的内容：</p>
-
 <pre><code>a=(1 2 3)
 eval set -- &quot;${a[@]}&quot;
-</code></pre>
+</code></pre><p>这个代码通常伴随着<code>getopt</code>或<code>getopts</code>将<code>$@</code>设置为上述选项分析器的输出。但是你也可以用这个创建一个简单的pop函数，这个函数可以简单的直接操作变量，而不用将变量存储在原始变量中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">isnum<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e"># is argument an integer?</span>
+		local re<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;^[0-9]+$&#39;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> -n $1 <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>
+				<span style="color:#f92672">[[</span> $1 <span style="color:#f92672">=</span>~ $re <span style="color:#f92672">]]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
+				<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span> 
+		<span style="color:#66d9ef">else</span>
+				<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">2</span> 
+		<span style="color:#66d9ef">fi</span>
+<span style="color:#f92672">}</span>
 
-<p>这个代码通常伴随着<code>getopt</code>或<code>getopts</code>将<code>$@</code>设置为上述选项分析器的输出。但是你也可以用这个创建一个简单的pop函数，这个函数可以简单的直接操作变量，而不用将变量存储在原始变量中：</p>
+isvar<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+		<span style="color:#66d9ef">if</span> isnum <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">then</span> 
+				<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+		<span style="color:#66d9ef">fi</span>
+		local arr<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>eval eval -- echo -n <span style="color:#e6db74">&#34;\$</span>$1<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> 
+		<span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> -n <span style="color:#e6db74">${</span>arr[@]<span style="color:#e6db74">}</span> <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span>	
+				<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span> 
+		<span style="color:#66d9ef">fi</span>
+		<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span> 
+<span style="color:#f92672">}</span>
 
-<pre><code class="language-shell">isnum() {
-    # is argument an integer?
-		local re='^[0-9]+$'
-    if [[ -n $1 ]]; then
-				[[ $1 =~ $re ]] &amp;&amp; return 0
-				return 1 
-		else
-				return 2 
-		fi
-}
+pop<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+		<span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> -z $@ <span style="color:#f92672">]]</span>; <span style="color:#66d9ef">then</span> 
+				<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+		<span style="color:#66d9ef">fi</span>
 
-isvar() {
-		if isnum &quot;$1&quot;; then 
-				return 1
-		fi
-		local arr=&quot;$(eval eval -- echo -n &quot;\$$1&quot;)&quot; 
-		if [[ -n ${arr[@]} ]]; then	
-				return 0 
-		fi
-		return 1 
-}
-
-pop() {
-		if [[ -z $@ ]]; then 
-				return 1
-		fi
-
-		local var= 
-		local isvar=0 
-		local arr=()
+		local var<span style="color:#f92672">=</span> 
+		local isvar<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> 
+		local arr<span style="color:#f92672">=()</span>
 		
-		if isvar &quot;$1&quot;; then # let's check to see if this is a variable or just a bare array 
-				var=&quot;$1&quot;
-				isvar=1
-				arr=($(eval eval -- echo -n &quot;\${$1[@]}&quot;)) # if it is a var, get its contents 
-		else
-				arr=($@) 
-		fi
+		<span style="color:#66d9ef">if</span> isvar <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">then</span> <span style="color:#75715e"># let&#39;s check to see if this is a variable or just a bare array</span> 
+				var<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span>
+				isvar<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+				arr<span style="color:#f92672">=(</span><span style="color:#66d9ef">$(</span>eval eval -- echo -n <span style="color:#e6db74">&#34;\${</span>$1<span style="color:#e6db74">[@]}&#34;</span><span style="color:#66d9ef">)</span><span style="color:#f92672">)</span> <span style="color:#75715e"># if it is a var, get its contents</span> 
+		<span style="color:#66d9ef">else</span>
+				arr<span style="color:#f92672">=(</span>$@<span style="color:#f92672">)</span> 
+		<span style="color:#66d9ef">fi</span>
 		
-		# we need to reverse the contents of $@ so that we can shift
-    # the last element into nothingness
-		arr=($(awk &lt;&lt;&lt;&quot;${arr[@]}&quot; '{ for (i=NF; i&gt;1; --i) printf(&quot;%s &quot;,$i); print $1; }' 
+		<span style="color:#75715e"># we need to reverse the contents of $@ so that we can shift</span>
+    <span style="color:#75715e"># the last element into nothingness</span>
+		arr<span style="color:#f92672">=(</span><span style="color:#66d9ef">$(</span>awk <span style="color:#f92672">&lt;&lt;&lt;</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>arr[@]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#39;{ for (i=NF; i&gt;1; --i) printf(&#34;%s &#34;,$i); print $1; }&#39;</span> 
 		
-		# set $@ to ${arr[@]} so that we can run shift against it.
-		eval set -- &quot;${arr[@]}&quot;
+		<span style="color:#75715e"># set $@ to ${arr[@]} so that we can run shift against it.</span>
+		eval set -- <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>arr[@]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
 
-		shift # remove the last element
+		shift <span style="color:#75715e"># remove the last element</span>
     
-    # put the array back to its original order
-		arr=($(awk &lt;&lt;&lt;&quot;$@&quot; '{ for (i=NF; i&gt;1; --i) printf(&quot;%s &quot;,$i); print $1; }' 
+    <span style="color:#75715e"># put the array back to its original order</span>
+		arr<span style="color:#f92672">=(</span><span style="color:#66d9ef">$(</span>awk <span style="color:#f92672">&lt;&lt;&lt;</span><span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#39;{ for (i=NF; i&gt;1; --i) printf(&#34;%s &#34;,$i); print $1; }&#39;</span> 
 		
-		# echo the contents for the benefit of users and for bare arrays
-		echo &quot;${arr[@]}&quot;
+		<span style="color:#75715e"># echo the contents for the benefit of users and for bare arrays</span>
+		echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>arr[@]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
 		
-		if ((isvar)); then
-		# set the contents of the original var to the new modified array 
-		eval -- &quot;$var=(${arr[@]})&quot;
-		fi
-}
-</code></pre>
-
-<h3 id="使用getopt">使用getopt</h3>
-
+		<span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>isvar<span style="color:#66d9ef">))</span>; <span style="color:#66d9ef">then</span>
+		<span style="color:#75715e"># set the contents of the original var to the new modified array</span> 
+		eval -- <span style="color:#e6db74">&#34;</span>$var<span style="color:#e6db74">=(</span><span style="color:#e6db74">${</span>arr[@]<span style="color:#e6db74">}</span><span style="color:#e6db74">)&#34;</span>
+		<span style="color:#66d9ef">fi</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="使用getopt">使用getopt</h3>
 <p>虽然pop方法可能不需要eval，但是无论何时使用getopt，都需要eval。</p>
-
 <p>注意下面的方法，接收一个<code>-h</code>的选项：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">f<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+		local __me__<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>FUNCNAME[0]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+		local argv<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>getopt -o <span style="color:#e6db74">&#39;h&#39;</span> -n $__me__ -- <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
 
-<pre><code class="language-shell">f() {
-		local __me__=&quot;${FUNCNAME[0]}&quot;
-		local argv=&quot;$(getopt -o 'h' -n $__me__ -- &quot;$@&quot;)&quot;
+		eval set -- <span style="color:#e6db74">&#34;</span>$argv<span style="color:#e6db74">&#34;</span>
 
-		eval set -- &quot;$argv&quot;
-
-		while :; do
-				case &quot;$1&quot; in
-						-h)
-						echo &quot;LOLOLOLOL&quot; 
-						return 0
+		<span style="color:#66d9ef">while</span> :; <span style="color:#66d9ef">do</span>
+				<span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span> in
+						-h<span style="color:#f92672">)</span>
+						echo <span style="color:#e6db74">&#34;LOLOLOLOL&#34;</span> 
+						<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>
 						;;
-						--) 
+						--<span style="color:#f92672">)</span> 
 						shift
 						break
 						;; 
-		done
-		echo &quot;$@&quot; 
-}
-</code></pre>
-
-<p>没有<code>eval set — &quot;$argv&quot;</code>生成：</p>
-
+		<span style="color:#66d9ef">done</span>
+		echo <span style="color:#e6db74">&#34;</span>$@<span style="color:#e6db74">&#34;</span> 
+<span style="color:#f92672">}</span>
+</code></pre></div><p>没有<code>eval set — &quot;$argv&quot;</code>生成：</p>
 <pre><code>-h --
-</code></pre>
-
-<p>而不是期望的<code>-h —</code>。然后进入一个无限循环，因为</p>
-
+</code></pre><p>而不是期望的<code>-h —</code>。然后进入一个无限循环，因为</p>
 <pre><code>-h --
-</code></pre>
-
-<p>匹配不了<code>—</code>或<code>-h</code>。</p>
-
+</code></pre><p>匹配不了<code>—</code>或<code>-h</code>。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -383,6 +362,12 @@ pop() {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,105 +187,56 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#clone">clone</a>
-<ul>
-<li><a href="#浅克隆">浅克隆</a></li>
-<li><a href="#普通克隆">普通克隆</a></li>
-<li><a href="#克隆指定分支">克隆指定分支</a></li>
-<li><a href="#递归克隆">递归克隆</a></li>
-<li><a href="#使用代理克隆">使用代理克隆</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#clone">clone</a>
+      <ul>
+        <li><a href="#浅克隆">浅克隆</a></li>
+        <li><a href="#普通克隆">普通克隆</a></li>
+        <li><a href="#克隆指定分支">克隆指定分支</a></li>
+        <li><a href="#递归克隆">递归克隆</a></li>
+        <li><a href="#使用代理克隆">使用代理克隆</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="clone">clone</h2>
-
+        		<h2 id="clone">clone</h2>
 <h3 id="浅克隆">浅克隆</h3>
-
 <p>克隆一个大项目（像已经有多年历史的项目）可能会花费很长的时间，或者因为需要传输太多的数据而出现问题。因此你不需要获取所有有效的历史，你可以使用一个浅克隆：</p>
-
 <pre><code>git clone [repo_url] --depth 1
-</code></pre>
-
-<p>上面的命令只会获取远端仓库的最新提交。</p>
-
+</code></pre><p>上面的命令只会获取远端仓库的最新提交。</p>
 <p>注意你可能无法在浅克隆仓库中解析merge提交。获取足够解析merge提交的提交数是个好的主意。例如，获取至少50个提交：</p>
-
 <pre><code>git clone [rrepo_url] --depth 50
-</code></pre>
-
-<p>之后如果需要的话，你可以<code>fetch</code>仓库其他的提交：</p>
-
+</code></pre><p>之后如果需要的话，你可以<code>fetch</code>仓库其他的提交：</p>
 <p>Version &gt;= 1.8.3</p>
-
 <pre><code>git fetch --unshallow # equivalent of git fetch -–depth=2147483647 
 					  # fetches the rest of the repository
-</code></pre>
-
-<p>Version &lt; 1.8.3</p>
-
+</code></pre><p>Version &lt; 1.8.3</p>
 <pre><code>git fetch --depth=1000 # fetch the last 1000 commits
-</code></pre>
-
-<h3 id="普通克隆">普通克隆</h3>
-
+</code></pre><h3 id="普通克隆">普通克隆</h3>
 <p>下载整个仓库包括所有的历史和所有的分支，输入：</p>
-
-<pre><code class="language-xquery">git clone &lt;url&gt;
-</code></pre>
-
-<p>上面的例子将会把仓库的信息放到一个和仓库名称一致的目录内。</p>
-
+<pre><code class="language-xquery" data-lang="xquery">git clone &lt;url&gt;
+</code></pre><p>上面的例子将会把仓库的信息放到一个和仓库名称一致的目录内。</p>
 <p>下载一个仓库，并且把仓库的信息放到指定的目录内：</p>
-
 <pre><code>git clone &lt;url&gt; [directory]
-</code></pre>
-
-<h3 id="克隆指定分支">克隆指定分支</h3>
-
+</code></pre><h3 id="克隆指定分支">克隆指定分支</h3>
 <p>克隆一个仓库指定的分支，可以在仓库地址前面加上<code>--branch</code>选项：</p>
-
 <pre><code>git clone --branch &lt;branch_name&gt; &lt;url&gt; [directory]
-</code></pre>
-
-<p>也可以使用<code>—branch</code>选项的简写格式<code>-b</code>。这个命令会下载整个仓库，并且切换到<code>&lt;branch_name&gt;</code>分支。</p>
-
+</code></pre><p>也可以使用<code>—branch</code>选项的简写格式<code>-b</code>。这个命令会下载整个仓库，并且切换到<code>&lt;branch_name&gt;</code>分支。</p>
 <p>为了节省硬盘空间，你可以只克隆一个分支的历史：</p>
-
 <pre><code>git clone --branch &lt;branch_name&gt; --single-branch &lt;url&gt; [directory]
-</code></pre>
-
-<p>如果没有指定<code>--single-branch</code>选项，仓库所有的分支历史都会被看了到<code>[directory]</code>里面。这对于大仓库是一个问题。</p>
-
+</code></pre><p>如果没有指定<code>--single-branch</code>选项，仓库所有的分支历史都会被看了到<code>[directory]</code>里面。这对于大仓库是一个问题。</p>
 <p>之后可以取消<code>--single-branch</code>选项，然后获取仓库剩余的部分：</p>
-
 <pre><code> git config remote.origin.fetch &quot;+refs/heads/*:refs/remotes/origin/*&quot; 
  git fetch origin
-</code></pre>
-
-<h3 id="递归克隆">递归克隆</h3>
-
+</code></pre><h3 id="递归克隆">递归克隆</h3>
 <p>Version&gt;=1.6.5</p>
-
 <pre><code>git clone &lt;url&gt; --recursive
-</code></pre>
-
-<p>克隆一个仓库并且克隆所有的子模块。如果子模块包含有其他的子模块，Git也将会克隆这些子模块。</p>
-
+</code></pre><p>克隆一个仓库并且克隆所有的子模块。如果子模块包含有其他的子模块，Git也将会克隆这些子模块。</p>
 <h3 id="使用代理克隆">使用代理克隆</h3>
-
 <p>如果你需要在代理的情况下使用Git下载文件，在系统范围内设置代理是不够的。你可以尝试下面的内容：</p>
-
 <pre><code>git config --global http.proxy http://&lt;proxy-server&gt;:&lt;port&gt;/
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -353,6 +308,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

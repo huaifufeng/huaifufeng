@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,86 +187,57 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#编译错误和警告">编译错误和警告</a>
-<ul>
-<li><a href="#1-parse-error-语法错误-意外的t-paamayim-nekudotayim">1. Parse error: 语法错误，意外的T_PAAMAYIM_NEKUDOTAYIM</a></li>
-<li><a href="#2-notice-未定义的引用">2. Notice: 未定义的引用</a></li>
-<li><a href="#3-warning-不能修改header信息-header已经发送了">3. Warning: 不能修改header信息 - header已经发送了</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#编译错误和警告">编译错误和警告</a>
+      <ul>
+        <li><a href="#1-parse-error-语法错误意外的t_paamayim_nekudotayim">1. Parse error: 语法错误，意外的T_PAAMAYIM_NEKUDOTAYIM</a></li>
+        <li><a href="#2-notice-未定义的引用">2. Notice: 未定义的引用</a></li>
+        <li><a href="#3-warning-不能修改header信息---header已经发送了">3. Warning: 不能修改header信息 - header已经发送了</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="编译错误和警告">编译错误和警告</h2>
-
-<h3 id="1-parse-error-语法错误-意外的t-paamayim-nekudotayim">1. Parse error: 语法错误，意外的T_PAAMAYIM_NEKUDOTAYIM</h3>
-
+        		<h2 id="编译错误和警告">编译错误和警告</h2>
+<h3 id="1-parse-error-语法错误意外的t_paamayim_nekudotayim">1. Parse error: 语法错误，意外的T_PAAMAYIM_NEKUDOTAYIM</h3>
 <p><strong>出现</strong></p>
-
-<p>&ldquo;Paamayim Nekudotayim&rdquo;在Hebrew中意味着&rdquo;双引号&rdquo;；因此，这个错误是指不正确的使用了双冒号运算符(<code>::</code>)。这个错误通常是视图静态调用一个不是静态的方法造成的。</p>
-
+<p>&ldquo;Paamayim Nekudotayim&quot;在Hebrew中意味着&quot;双引号&rdquo;；因此，这个错误是指不正确的使用了双冒号运算符(<code>::</code>)。这个错误通常是视图静态调用一个不是静态的方法造成的。</p>
 <p><strong>可能的解决办法</strong></p>
-
-<pre><code class="language-php">$classname::$doMethod();
-</code></pre>
-
-<p>如果上面的代码产生了这个错误，你大多数去情况下简单的修改调用方法：</p>
-
-<pre><code class="language-php">$classname-&gt;doMethod();
-</code></pre>
-
-<p>下面的例子假设<code>$classname</code>是一个类的实例，并且<code>doMethod()</code>是这个类的非静态方法。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$classname::$doMethod();
+</code></pre></div><p>如果上面的代码产生了这个错误，你大多数去情况下简单的修改调用方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$classname-&gt;doMethod();
+</code></pre></div><p>下面的例子假设<code>$classname</code>是一个类的实例，并且<code>doMethod()</code>是这个类的非静态方法。</p>
 <h3 id="2-notice-未定义的引用">2. Notice: 未定义的引用</h3>
-
 <p><strong>出现：</strong></p>
-
 <p>试着访问一个数组中不存在的键。</p>
-
 <p><strong>可能的解决方法</strong></p>
-
 <p>在访问键之前检查键是否存在：</p>
-
 <ol>
 <li><a href="https://www.php.net/manual/zh/function.isset.php">isset()</a></li>
 <li><a href="https://www.php.net/manual/zh/function.array-key-exists.php">array_key_exists()</a></li>
 </ol>
-
-<h3 id="3-warning-不能修改header信息-header已经发送了">3. Warning: 不能修改header信息 - header已经发送了</h3>
-
+<h3 id="3-warning-不能修改header信息---header已经发送了">3. Warning: 不能修改header信息 - header已经发送了</h3>
 <p><strong>出现：</strong></p>
-
 <p>在你向客户端发送HTTP头信息之前你的脚本已经输出了，这将会导致已经将头信息发送给客户端。</p>
-
 <p><strong>可能的原因</strong></p>
-
 <ol>
-<li><p>print, echo: print和echo语句的输出将终止发送HTTP头的机会。必须重新构造应用程序的执行流程，避免这样的情况。</p></li>
-
-<li><p>原生HTML区域：.php文件中未解析的HTML部分也是直接输出的。触发<code>header()</code>方法的脚本部分必须在HTML内容前面。</p></li>
+<li>
+<p>print, echo: print和echo语句的输出将终止发送HTTP头的机会。必须重新构造应用程序的执行流程，避免这样的情况。</p>
+</li>
+<li>
+<p>原生HTML区域：.php文件中未解析的HTML部分也是直接输出的。触发<code>header()</code>方法的脚本部分必须在HTML内容前面。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//太晚了发送header信息
+</span></code></pre></div></li>
+<li>
+<p>在<code>&lt;?php</code>之前的空白，导致<code>script.php line 1</code>：然后经过引用第一行的输出，很可能是空白，文本或HTML在<code>&lt;?php</code>之前了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">   
+<span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//&lt;?php之前有单行或空白
+</span></code></pre></div></li>
 </ol>
-
-<pre><code class="language-php">   &lt;!DOCTYPE html&gt;
-   &lt;?php
-   //太晚了发送header信息
-</code></pre>
-
-<ol>
-<li>在<code>&lt;?php</code>之前的空白，导致<code>script.php line 1</code>：然后经过引用第一行的输出，很可能是空白，文本或HTML在<code>&lt;?php</code>之前了</li>
-</ol>
-
-<pre><code class="language-php">   
-   &lt;?php
-   //&lt;?php之前有单行或空白
-</code></pre>
-
 <p>引用<a href="http://stackoverflow.com/users/345031/mario">Mario</a>的<a href="https://stackoverflow.com/questions/8028957/how-to-fix-headers-already-sent-error-in-php/8028987#8028987">回答</a>。</p>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -335,6 +310,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

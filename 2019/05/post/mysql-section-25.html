@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,261 +187,173 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#创建表">创建表</a>
-<ul>
-<li><a href="#1-创建表带有主键">1. 创建表带有主键</a></li>
-<li><a href="#2-基本表创建">2. 基本表创建</a></li>
-<li><a href="#3-创建表带外键">3. 创建表带外键</a></li>
-<li><a href="#4-显示数据表结构">4. 显示数据表结构</a></li>
-<li><a href="#5-克隆已存在的表">5. 克隆已存在的表</a></li>
-<li><a href="#6-使用时间戳列显示上次更新">6. 使用时间戳列显示上次更新</a></li>
-<li><a href="#7-从select创建表">7. 从SELECT创建表</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#创建表">创建表</a>
+      <ul>
+        <li><a href="#1-创建表带有主键">1. 创建表带有主键</a></li>
+        <li><a href="#2-基本表创建">2. 基本表创建</a></li>
+        <li><a href="#3-创建表带外键">3. 创建表带外键</a></li>
+        <li><a href="#4-显示数据表结构">4. 显示数据表结构</a></li>
+        <li><a href="#5-克隆已存在的表">5. 克隆已存在的表</a></li>
+        <li><a href="#6-使用时间戳列显示上次更新">6. 使用时间戳列显示上次更新</a></li>
+        <li><a href="#7-从select创建表">7. 从SELECT创建表</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="创建表">创建表</h2>
-
+        		<h2 id="创建表">创建表</h2>
 <h3 id="1-创建表带有主键">1. 创建表带有主键</h3>
-
-<pre><code class="language-mysql">CREATE TABLE Person (
-    PersonID  INT UNSIGNED NOT NULL,
-    LastName  VARCHAR(66) NOT NULL,
-    FirstName VARCHAR(66),
-    Address   VARCHAR(255),
-    City      VARCHAR(66),
-    PRIMARY KEY (PersonID)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Person</span> (
+    PersonID  <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    LastName  <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">66</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    FirstName <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">66</span>),
+    Address   <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">255</span>),
+    City      <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">66</span>),
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (PersonID)
 );
-</code></pre>
-
-<p>一个<strong>主键</strong>就是一个<code>NOT NULL</code>的单独或者多列的标识符，这个标识符可以表示表中唯一的行。创建了一个索引，但是没有显示声明为非空的话，MySQL将会以静默和隐式的方式声明他们。</p>
-
+</code></pre></div><p>一个<strong>主键</strong>就是一个<code>NOT NULL</code>的单独或者多列的标识符，这个标识符可以表示表中唯一的行。创建了一个索引，但是没有显示声明为非空的话，MySQL将会以静默和隐式的方式声明他们。</p>
 <p>一个表只可以有一个<code>PRIMARY KEY</code>，并且每个表都推荐有一个。InnoDB将会在不存在的情况下创建一个(像<a href="https://dev.mysql.com/doc/refman/5.7/en/create-table.html">MySQL文档</a>中说明的)，尽管这是不可取的。</p>
-
-<p>通常，一个<code>AUTO_INCREMENT INT</code>被认为是&rdquo;代理键&rdquo;，用于索引优化和其他表的关系。当添加新纪录的时候，这个列的值(通常)会从默认值1开始加1。</p>
-
+<p>通常，一个<code>AUTO_INCREMENT INT</code>被认为是&quot;代理键&rdquo;，用于索引优化和其他表的关系。当添加新纪录的时候，这个列的值(通常)会从默认值1开始加1。</p>
 <p>然而，尽管它的名字是这个，但是目的不是为了保证值是递增的，而是保证值是连续的和唯一的。</p>
-
 <p>一个递增的<code>INT</code>并不会恢复默认的初始值，当这个表的行都被删除的时候。除非这个表被truncate处理了，使用<code>TRUNCATE TABLE</code>语句。</p>
-
 <p><strong>定义一列为主键(行内定义)</strong></p>
-
 <p>如果主键只是一个单独的列的话，可以在列定义的行中添加<code>PRIMARY KEY</code>：</p>
-
-<pre><code class="language-mysql">CREATE TABLE Person (
-    PersonID  INT UNSIGNED NOT NULL PRIMARY KEY,
-    LastName  VARCHAR(66) NOT NULL,
-    FirstName Varchar(66),
-    Address   Varchar(255),
-    City      VARCHAR(66)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Person</span> (
+    PersonID  <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>,
+    LastName  <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">66</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    FirstName <span style="color:#66d9ef">Varchar</span>(<span style="color:#ae81ff">66</span>),
+    Address   <span style="color:#66d9ef">Varchar</span>(<span style="color:#ae81ff">255</span>),
+    City      <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">66</span>)
 );
-</code></pre>
-
-<p>这个命令的格式是简单并且易读的。</p>
-
+</code></pre></div><p>这个命令的格式是简单并且易读的。</p>
 <p><strong>定义多列为主键</strong></p>
-
 <p>定义主键包含多个列也是可能的。可能会在关联外键关系的子表中这么做。多列主键是通过在单独的主键子句中列出参与列来定义的。这里行内定义就不行了，行内主键定义只能用于当个列。例如：</p>
-
-<pre><code class="language-mysql">CREATE TABLE invoice_line_items(
-    LineNum    SMALLINT UNSIGNED NOT NULL,
-    InvoiceNum INT UNSIGNED NOT NULL,
-    --- 其他列
-    PRIMARY KEY (InvoiceNum, LineNum),
-    FOREIGN KEY (InvoiceNum) REFERENCES  -- 一个表属性的引用
-);
-</code></pre>
-
-<p>注意：主键的列应该按照逻辑顺序指定，这可能和列的定义顺序不一样，就像上面的例子一样。</p>
-
-<p>越大的索引需要更大的硬盘空间，内存和IO。因此键应该尽可能小（特别是组合的键）。在InnoDB中，每个&rdquo;二级索引&rdquo;都包含<code>PRIMARY KEY</code>列的副本。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">invoice_line_items</span>(
+    LineNum    <span style="color:#66d9ef">SMALLINT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    InvoiceNum <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#f92672">-</span><span style="color:#75715e">-- 其他列
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (InvoiceNum, LineNum),
+    <span style="color:#66d9ef">FOREIGN</span> <span style="color:#66d9ef">KEY</span> (InvoiceNum) <span style="color:#66d9ef">REFERENCES</span>  <span style="color:#75715e">-- 一个表属性的引用
+</span><span style="color:#75715e"></span>);
+</code></pre></div><p>注意：主键的列应该按照逻辑顺序指定，这可能和列的定义顺序不一样，就像上面的例子一样。</p>
+<p>越大的索引需要更大的硬盘空间，内存和IO。因此键应该尽可能小（特别是组合的键）。在InnoDB中，每个&quot;二级索引&quot;都包含<code>PRIMARY KEY</code>列的副本。</p>
 <h3 id="2-基本表创建">2. 基本表创建</h3>
-
 <p><code>CREATE TABLE</code>用来在MySQL数据库中创建一个表。</p>
-
-<pre><code class="language-mysql">CREATE TABLE Person (
-    `PersonID`    INTEGER NOT NULL PRIMARY KEY,
-    `LastName`    VARCHAR(80),
-    `FirstName`   VARCHAR(80),
-    `Address`     TEXT,
-    `City`        VARCHAR(100)
-)Engine=InnoDB;
-</code></pre>
-
-<p>每个字段的定义必须包含：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Person</span> (
+    <span style="color:#f92672">`</span>PersonID<span style="color:#f92672">`</span>    <span style="color:#66d9ef">INTEGER</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>,
+    <span style="color:#f92672">`</span>LastName<span style="color:#f92672">`</span>    <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">80</span>),
+    <span style="color:#f92672">`</span>FirstName<span style="color:#f92672">`</span>   <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">80</span>),
+    <span style="color:#f92672">`</span>Address<span style="color:#f92672">`</span>     <span style="color:#66d9ef">TEXT</span>,
+    <span style="color:#f92672">`</span>City<span style="color:#f92672">`</span>        <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">100</span>)
+)<span style="color:#66d9ef">Engine</span><span style="color:#f92672">=</span>InnoDB;
+</code></pre></div><p>每个字段的定义必须包含：</p>
 <ol>
 <li>字段名称：一个有效的字段名。确保每个名称都包含在`符号内，这样你就可以在字符名称中使用空格了。</li>
 <li>数据类型[长度]：如果字段是<code>CHAR</code>或<code>VARCHAR</code>的，必须制定字段的长度。</li>
 <li>属性 <code>NULL | NOT NULL</code>：如果指定了<code>NOT NULL</code>，任何像这个字段存入<code>NULL</code>的操作都会失败</li>
 <li>查看<a href="https://dev.mysql.com/doc/refman/5.7/en/data-types.html">手册</a>，了解更多的数据类型和属性。</li>
 </ol>
-
 <p><code>Engine=…</code>是可选的参数，用来指定表的存储引擎。如果没有指定存储引擎的话，将会使用服务器默认的存储引擎(通常是InnoDB或MyISAM)。</p>
-
 <p><strong>默认值</strong></p>
-
 <p>此外，你可以为每个字段设置一个默认的值，使用<code>DEFAULT</code>关键字：</p>
-
-<pre><code class="language-mysql">CREATE TABLE Address(
-    `AddressID`  INTEGER NOT NULL PRIMARY KEY,
-    `Street`     VARCHAR(80),
-    `City`       VARCHAR(80),
-    `Country`    VARCHAR(80) DEFAULT &quot;United States&quot;,
-    `Active`     BOOLEAN DEFAULT 1,
-) Engine=InnoDB;
-</code></pre>
-
-<p>如果在插入数据的时候，没有指定<code>Street</code>的值的话，那么这个字段将会是<code>NULL</code>。当<code>Country</code>没有指定的时候，它的默认值是<code>United States</code>。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Address</span>(
+    <span style="color:#f92672">`</span>AddressID<span style="color:#f92672">`</span>  <span style="color:#66d9ef">INTEGER</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>,
+    <span style="color:#f92672">`</span>Street<span style="color:#f92672">`</span>     <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">80</span>),
+    <span style="color:#f92672">`</span>City<span style="color:#f92672">`</span>       <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">80</span>),
+    <span style="color:#f92672">`</span>Country<span style="color:#f92672">`</span>    <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">80</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#e6db74">&#34;United States&#34;</span>,
+    <span style="color:#f92672">`</span>Active<span style="color:#f92672">`</span>     BOOLEAN <span style="color:#66d9ef">DEFAULT</span> <span style="color:#ae81ff">1</span>,
+) <span style="color:#66d9ef">Engine</span><span style="color:#f92672">=</span>InnoDB;
+</code></pre></div><p>如果在插入数据的时候，没有指定<code>Street</code>的值的话，那么这个字段将会是<code>NULL</code>。当<code>Country</code>没有指定的时候，它的默认值是<code>United States</code>。</p>
 <p>你可以为所有的类型指定默认值，<a href="https://dev.mysql.com/doc/refman/5.7/en/data-type-defaults.html">除了</a><code>BLOB TEXT GEOMETRY JSON</code>这些类型。</p>
-
 <h3 id="3-创建表带外键">3. 创建表带外键</h3>
-
-<pre><code class="language-mysql">CREATE TABLE Account(
-    AccountID  INT UNSIGNED NOT NULL,
-    AccountNo  INT UNSIGNED NOT NULL,
-    PersonID   INT UNSIGNED,
-    PRIMARY KEY (AccountID),
-    FOREIGN KEY (PersonID) REFERENCES Person (PersonID)
-)ENGINE=InnoDB;
-</code></pre>
-
-<p><strong>外键：</strong>一个外键要不是单独的列，要不是引用表的多列组合。这个外键要求在引用表中存在。强烈推荐引用表中作为外键的键是这个表的主键，但是这个不是强制的。它被用作快速查找引用的地方，它不需要是唯一的，实际上它可以是最左边的索引。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Account</span>(
+    AccountID  <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    AccountNo  <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    PersonID   <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span>,
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (AccountID),
+    <span style="color:#66d9ef">FOREIGN</span> <span style="color:#66d9ef">KEY</span> (PersonID) <span style="color:#66d9ef">REFERENCES</span> <span style="color:#a6e22e">Person</span> (PersonID)
+)<span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB;
+</code></pre></div><p>**外键：**一个外键要不是单独的列，要不是引用表的多列组合。这个外键要求在引用表中存在。强烈推荐引用表中作为外键的键是这个表的主键，但是这个不是强制的。它被用作快速查找引用的地方，它不需要是唯一的，实际上它可以是最左边的索引。</p>
 <p>外键涉及保存中心数据的父表，以及指向父表相同值的子表。<code>FOREIGN KEY</code>语句在子表中定义。父表和子表必须拥有相同的存储引擎，他们必须不是<a href="https://dev.mysql.com/doc/refman/5.7/en/create-table.html">TEMPORARY</a>表。</p>
-
 <p>外键和引用键中相应的列必须具有相似的数据类型。整数类型的大小和符合必须相同。字符串类型的长度不需要是相同的。对于非二进制(字符)字符串列，字符集和排序规则必须相同。</p>
-
-<p><strong>注意：</strong>InnoDB存储引擎(不是MyISAM或MEMORY)支持外键约束。使用其他引擎的数据库设置将接受这样的<code>CREATE TABLE</code>语句，但不会考虑外键约束。（虽然较新的MySQL版本默认为InnoDB，但明确的做法是好的。）</p>
-
+<p>**注意：**InnoDB存储引擎(不是MyISAM或MEMORY)支持外键约束。使用其他引擎的数据库设置将接受这样的<code>CREATE TABLE</code>语句，但不会考虑外键约束。（虽然较新的MySQL版本默认为InnoDB，但明确的做法是好的。）</p>
 <h3 id="4-显示数据表结构">4. 显示数据表结构</h3>
-
 <p>如果你想要查看你表的架构信息，可以使用下面的语句：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SHOW</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> child;   <span style="color:#75715e">-- 可选的方式1
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>child<span style="color:#f92672">`</span>(
+    <span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>      <span style="color:#66d9ef">INT</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span>,
+    <span style="color:#f92672">`</span>fullName<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">100</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#f92672">`</span>myParent<span style="color:#f92672">`</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>),
+    <span style="color:#66d9ef">KEY</span> <span style="color:#f92672">`</span>mommy_daddy<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>myParent<span style="color:#f92672">`</span>),
+    <span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#f92672">`</span>mommy_daddy<span style="color:#f92672">`</span> <span style="color:#66d9ef">FOREIGN</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>myParent<span style="color:#f92672">`</span>) <span style="color:#66d9ef">REFERENCES</span> <span style="color:#f92672">`</span>parent<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+        <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">CASCADE</span> <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">CASCADE</span>
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>utf8;
+</code></pre></div><p>如果在mysql命令行中使用，下面这种方式更加详细：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SHOW</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> child <span style="color:#960050;background-color:#1e0010">\</span>G;
+</code></pre></div><p>另外的可选查看表结构的方式：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Tab1</span>(id <span style="color:#66d9ef">int</span>, name <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">30</span>)); 
+Query OK, <span style="color:#ae81ff">0</span> rows <span style="color:#a6e22e">affected</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">03</span> sec)
 
-<pre><code class="language-mysql">SHOW CREATE TABLE child;   -- 可选的方式1
-
-CREATE TABLE `child`(
-    `id`      INT(11) NOT NULL AUTO_INCREMENT,
-    `fullName` VARCHAR(100) NOT NULL,
-    `myParent` int(11) NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `mommy_daddy` (`myParent`),
-    CONSTRAINT `mommy_daddy` FOREIGN KEY (`myParent`) REFERENCES `parent` (`id`)
-        ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-</code></pre>
-
-<p>如果在mysql命令行中使用，下面这种方式更加详细：</p>
-
-<pre><code class="language-mysql">SHOW CREATE TABLE child \G;
-</code></pre>
-
-<p>另外的可选查看表结构的方式：</p>
-
-<pre><code class="language-mysql">mysql&gt; CREATE TABLE Tab1(id int, name varchar(30)); 
-Query OK, 0 rows affected (0.03 sec)
-
-mysql&gt; DESCRIBE Tab1; -- Option 2
-
-+-------+-------------+------+-----+---------+-------+ 
-| Field | Type        | Null | Key | Default | Extra | 
-+-------+-------------+------+-----+---------+-------+
-| id    | int(11)     | YES  |     | NULL    |       | 
-| name  | varchar(30) | YES  |     | NULL    |       |
-+-------+-------------+------+-----+---------+-------+
-</code></pre>
-
-<blockquote>
+mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">DESCRIBE</span> Tab1; <span style="color:#75715e">-- Option 2
+</span><span style="color:#75715e"></span>
+<span style="color:#f92672">+-------+-------------+------+-----+---------+-------+</span> 
+<span style="color:#f92672">|</span> Field <span style="color:#f92672">|</span> Type        <span style="color:#f92672">|</span> <span style="color:#66d9ef">Null</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Key</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Default</span> <span style="color:#f92672">|</span> Extra <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-------+-------------+------+-----+---------+-------+</span>
+<span style="color:#f92672">|</span> id    <span style="color:#f92672">|</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">11</span>)     <span style="color:#f92672">|</span> YES  <span style="color:#f92672">|</span>     <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>    <span style="color:#f92672">|</span>       <span style="color:#f92672">|</span> 
+<span style="color:#f92672">|</span> name  <span style="color:#f92672">|</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">30</span>) <span style="color:#f92672">|</span> YES  <span style="color:#f92672">|</span>     <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>    <span style="color:#f92672">|</span>       <span style="color:#f92672">|</span>
+<span style="color:#f92672">+-------+-------------+------+-----+---------+-------+</span>
+</code></pre></div><blockquote>
 <p>Both DESCRIBE and DESC gives the same result.</p>
 </blockquote>
-
 <p>想要使用<code>DESCRIBE</code>一次性查看数据库所有表的结构，查看这个<a href="http://stackoverflow.com/a/38679580">例子</a>。</p>
-
 <h3 id="5-克隆已存在的表">5. 克隆已存在的表</h3>
-
 <p>表可以使用下面的命令进行复制：</p>
-
-<pre><code class="language-mysql">CREATE TABLE ClonedPersons LIKE Persons;
-</code></pre>
-
-<p>这个新表将会拥有和原表相同的结构，包括索引和列属性。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> ClonedPersons <span style="color:#66d9ef">LIKE</span> Persons;
+</code></pre></div><p>这个新表将会拥有和原表相同的结构，包括索引和列属性。</p>
 <p>除了手动创建表之外，还可以通过另外表中的选中数据来创建表：</p>
-
-<pre><code class="language-mysql">CREATE TABLE ClonedPersons SELECT * FROM Person;
-</code></pre>
-
-<p>你可以使用<code>SELECT</code>语句的任何普通特性来修改你想要的数据结构：</p>
-
-<pre><code class="language-mysql">CREATE TABLE ModifiedPersons
-SELECT PersonID, FirstName + LastName AS FullName FROM Persons
-WHERE LastName IS NOT NULL;
-</code></pre>
-
-<p>当使用<code>SELECT</code>语句创建表的时候，主键和索引将不会创建，你需要重新声明：</p>
-
-<pre><code class="language-mysql">CREATE TABLE ModifiedPersons (PRIMARY KEY (PersonID))
-SELECT PersonID, FirstName + LastName AS FullName FROM Persons 
-WHERE LastName IS NOT NULL;
-</code></pre>
-
-<h3 id="6-使用时间戳列显示上次更新">6. 使用时间戳列显示上次更新</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> ClonedPersons <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> Person;
+</code></pre></div><p>你可以使用<code>SELECT</code>语句的任何普通特性来修改你想要的数据结构：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> ModifiedPersons
+<span style="color:#66d9ef">SELECT</span> PersonID, FirstName <span style="color:#f92672">+</span> LastName <span style="color:#66d9ef">AS</span> FullName <span style="color:#66d9ef">FROM</span> Persons
+<span style="color:#66d9ef">WHERE</span> LastName <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>;
+</code></pre></div><p>当使用<code>SELECT</code>语句创建表的时候，主键和索引将不会创建，你需要重新声明：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">ModifiedPersons</span> (<span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (PersonID))
+<span style="color:#66d9ef">SELECT</span> PersonID, FirstName <span style="color:#f92672">+</span> LastName <span style="color:#66d9ef">AS</span> FullName <span style="color:#66d9ef">FROM</span> Persons 
+<span style="color:#66d9ef">WHERE</span> LastName <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>;
+</code></pre></div><h3 id="6-使用时间戳列显示上次更新">6. 使用时间戳列显示上次更新</h3>
 <p><code>TIMESTAMP</code>的列可以用来显示行上次的更新时间：</p>
-
-<pre><code class="language-mysql">CREATE TABLE `TestLastUpdate`(
-    `ID`    INT NULL,
-    `NAME`  VARCHAR(50) NULL,
-    `Address` VARCHAR(50) NULL,
-    `LastUpdate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) COMMENT='Last Update';
-</code></pre>
-
-<h3 id="7-从select创建表">7. 从SELECT创建表</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>TestLastUpdate<span style="color:#f92672">`</span>(
+    <span style="color:#f92672">`</span>ID<span style="color:#f92672">`</span>    <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#f92672">`</span>NAME<span style="color:#f92672">`</span>  <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">50</span>) <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#f92672">`</span>Address<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">50</span>) <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#f92672">`</span>LastUpdate<span style="color:#f92672">`</span> <span style="color:#66d9ef">TIMESTAMP</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CURRENT_TIMESTAMP</span> <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">CURRENT_TIMESTAMP</span>
+) COMMENT<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Last Update&#39;</span>;
+</code></pre></div><h3 id="7-从select创建表">7. 从SELECT创建表</h3>
 <p>你可以通过在<code>CREATE TABLE</code>语句后面增加一个<code>SELECT</code>语句来创建一个表：</p>
-
-<pre><code class="language-mysql">CREATE TABLE stack ( 
-    id_user INT,
-    username VARCHAR(30),
-    password VARCHAR(30) 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">stack</span> ( 
+    id_user <span style="color:#66d9ef">INT</span>,
+    username <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>),
+    password <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>) 
 );
-</code></pre>
+</code></pre></div><p><strong>同一个数据库内建表</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 创建和原表一样字段配置的表
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> stack2 <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> stack;
 
-<p><strong>同一个数据库内建表</strong></p>
+<span style="color:#75715e">-- 创建包含指定字段配置的表
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> stack3 <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">SELECT</span> username, password <span style="color:#66d9ef">FROM</span> stack;
+</code></pre></div><p><strong>不同数据库内建表</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 创建和原表一样字段配置的表
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> stack2 <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> second_db.stack;
 
-<pre><code class="language-mysql">-- 创建和原表一样字段配置的表
-CREATE TABLE stack2 AS SELECT * FROM stack;
-
--- 创建包含指定字段配置的表
-CREATE TABLE stack3 AS SELECT username, password FROM stack;
-</code></pre>
-
-<p><strong>不同数据库内建表</strong></p>
-
-<pre><code class="language-mysql">-- 创建和原表一样字段配置的表
-CREATE TABLE stack2 AS SELECT * FROM second_db.stack;
-
--- 创建和原表一样字段配置的表
-CREATE TABLE stack3 AS SELECT username, password FROM second_db.stack;
-</code></pre>
-
-<p><strong>N.B</strong></p>
-
+<span style="color:#75715e">-- 创建和原表一样字段配置的表
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> stack3 <span style="color:#66d9ef">AS</span> <span style="color:#66d9ef">SELECT</span> username, password <span style="color:#66d9ef">FROM</span> second_db.stack;
+</code></pre></div><p><strong>N.B</strong></p>
 <p>想要创建一个和其他数据库中存在的表的表名相同的表，你需要在表名前面指定数据库的名称：</p>
-
 <pre><code>FROM NAME_DATABASE.name_table
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -509,6 +425,12 @@ CREATE TABLE stack3 AS SELECT username, password FROM second_db.stack;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

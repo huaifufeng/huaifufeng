@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,106 +187,76 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#多进程">多进程</a>
-<ul>
-<li><a href="#1-内建的fork函数实现多进程">1. 内建的fork函数实现多进程</a></li>
-<li><a href="#2-使用fork创建子进程">2. 使用fork创建子进程</a></li>
-<li><a href="#3-进程间通信">3. 进程间通信</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#多进程">多进程</a>
+      <ul>
+        <li><a href="#1-内建的fork函数实现多进程">1. 内建的fork函数实现多进程</a></li>
+        <li><a href="#2-使用fork创建子进程">2. 使用fork创建子进程</a></li>
+        <li><a href="#3-进程间通信">3. 进程间通信</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="多进程">多进程</h2>
-
+        		<h2 id="多进程">多进程</h2>
 <h3 id="1-内建的fork函数实现多进程">1. 内建的fork函数实现多进程</h3>
-
 <p>你可以使用内置函数以fork的形式来运行PHP进程。如果不需要线程进行通信，这是实现并行工作的最简单的方法。</p>
-
 <p>这允许你将时间密集型任务(如将文件上传到另一个服务器或发送电子邮件)放到另一个线程，这样你的脚本加载更快，可以使用多核心，但是注意，这不是真正的多线程，你的主线程将不知道子线程在做什么。</p>
-
 <p>注意 ，在Windows下面，这将使你启动的每个分叉都弹出另一个命令提示。</p>
-
 <p>master.php</p>
-
-<pre><code class="language-php">$cmd = 'php worker.php 10';
-if (strtoupper(substr(PHPP_OS, 0, 3)) === 'WIN') {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$cmd = &#39;php worker.php 10&#39;;
+if (strtoupper(substr(PHPP_OS, 0, 3)) === &#39;WIN&#39;) {
     //windows使用popen和pclose
-    pclose(popen($cmd, 'r'));
+    pclose(popen($cmd, &#39;r&#39;));
 } else {
-    //unix使用shell命令，&amp;结尾
-    exec('bash -c &quot;exec nohup setsid '. $cmd . ' &gt; /dev/null 2&gt;&amp;1 &amp;&quot;');
+    //unix使用shell命令，<span style="color:#960050;background-color:#1e0010">&amp;</span>结尾
+    exec(&#39;bash -c &#34;exec nohup setsid &#39;. $cmd . &#39; &gt; /dev/null 2&gt;<span style="color:#960050;background-color:#1e0010">&amp;</span>1 &amp;&#34;&#39;);
 }
-</code></pre>
-
-<p>worker.php</p>
-
-<pre><code class="language-php">//发送邮件，上传文件，分析日志等等
+</code></pre></div><p>worker.php</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//发送邮件，上传文件，分析日志等等
 $sleeptime = $argv[1];
 sleep($sleeptime);
-</code></pre>
-
-<h3 id="2-使用fork创建子进程">2. 使用fork创建子进程</h3>
-
+</code></pre></div><h3 id="2-使用fork创建子进程">2. 使用fork创建子进程</h3>
 <p>PHP有内建的函数<code>pcntl_fork</code>来创建子进程。<code>pcntl_forl</code>和unix的<code>fork</code>是相同的。它没有任何参数，然后一个用来区分父子进程的证书。下面是一个展示的例子：</p>
-
-<pre><code class="language-php">&lt;?php
-    //$pid是子进程的PID
-    $pid = pcntl_fork();
-    if ($pid == -1) {
-        die(&quot;创建子进程失败&quot;);
-    } else if ($pid) {
-        //父进程
-    } else {
-        //子进程
-    }
-?&gt;
-</code></pre>
-
-<p>正如展示的，<code>-1</code>是fork的一个错误，并且没有创建子进程。一旦创建了子进程，我们有两个不同<code>PID</code>的进程在运行。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+    <span style="color:#75715e">//$pid是子进程的PID
+</span><span style="color:#75715e"></span>    $pid <span style="color:#f92672">=</span> <span style="color:#a6e22e">pcntl_fork</span>();
+    <span style="color:#66d9ef">if</span> ($pid <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {
+        <span style="color:#66d9ef">die</span>(<span style="color:#e6db74">&#34;创建子进程失败&#34;</span>);
+    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> ($pid) {
+        <span style="color:#75715e">//父进程
+</span><span style="color:#75715e"></span>    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#75715e">//子进程
+</span><span style="color:#75715e"></span>    }
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>正如展示的，<code>-1</code>是fork的一个错误，并且没有创建子进程。一旦创建了子进程，我们有两个不同<code>PID</code>的进程在运行。</p>
 <p>另外需要注意的事<code>zombie_process</code>或<code>defunct_process</code>，当父进程比子进程提前结束了。为了避免僵尸子进程，只需要在父进程 的末尾添加<code>pcntl_wait($status)</code>。</p>
-
 <blockquote>
 <p><strong>pnctl_wait</strong>挂起父进程，直到子进程退出。</p>
 </blockquote>
-
 <p>统一值得注意的事，使用<code>SIGKILL</code>信号不能杀死<code>zombie process</code>。</p>
-
 <h3 id="3-进程间通信">3. 进程间通信</h3>
-
 <p>进程间通信运行开发人员在不同进程之间进行通信。例如假设我们需要写一个运行bash命令并且打印输出的PHP应用程序。我们可以使用<code>proc_open</code>，这将执行这个命令，然后返回我们可以通信的资源。下面的例子显示了php中<code>bash</code>的<code>pwd</code>的基本用法。</p>
-
-<pre><code class="language-php">&lt;?php
-     $descriptor = [
-         0 =&gt; ['pipe', 'r'], //子进程的输入管道
-         1 =&gt; ['pipe', 'w']  //子进程的输出管道
-     ];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+     $descriptor <span style="color:#f92672">=</span> [
+         <span style="color:#ae81ff">0</span> <span style="color:#f92672">=&gt;</span> [<span style="color:#e6db74">&#39;pipe&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>], <span style="color:#75715e">//子进程的输入管道
+</span><span style="color:#75715e"></span>         <span style="color:#ae81ff">1</span> <span style="color:#f92672">=&gt;</span> [<span style="color:#e6db74">&#39;pipe&#39;</span>, <span style="color:#e6db74">&#39;w&#39;</span>]  <span style="color:#75715e">//子进程的输出管道
+</span><span style="color:#75715e"></span>     ];
      
-     $process = proc_open(&quot;bash&quot;, $descriptor, $pipes);
-     if (is_resource($process)) {
-          fwrite($pipes[0], &quot;pwd&quot;.&quot;\n&quot;);
-          fclose($pipes[0]);
-          echo stream_get_contents($pipes[1]);
-          fclose($pipes[1]);
-          $return_value = proc_close($process);
+     $process <span style="color:#f92672">=</span> <span style="color:#a6e22e">proc_open</span>(<span style="color:#e6db74">&#34;bash&#34;</span>, $descriptor, $pipes);
+     <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">is_resource</span>($process)) {
+          <span style="color:#a6e22e">fwrite</span>($pipes[<span style="color:#ae81ff">0</span>], <span style="color:#e6db74">&#34;pwd&#34;</span><span style="color:#f92672">.</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+          <span style="color:#a6e22e">fclose</span>($pipes[<span style="color:#ae81ff">0</span>]);
+          <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">stream_get_contents</span>($pipes[<span style="color:#ae81ff">1</span>]);
+          <span style="color:#a6e22e">fclose</span>($pipes[<span style="color:#ae81ff">1</span>]);
+          $return_value <span style="color:#f92672">=</span> <span style="color:#a6e22e">proc_close</span>($process);
      }
-?&gt;
-</code></pre>
-
-<p><code>proc_open</code>运行<code>bash</code>命令，以<code>$descriptor</code>为描述符规范。之后我们使用<code>is_resource</code>来验证进程。一切妥当之后，我们开始使用描述符规范生成的<strong>$pipes</strong>来与子进程进行通信。</p>
-
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p><code>proc_open</code>运行<code>bash</code>命令，以<code>$descriptor</code>为描述符规范。之后我们使用<code>is_resource</code>来验证进程。一切妥当之后，我们开始使用描述符规范生成的<strong>$pipes</strong>来与子进程进行通信。</p>
 <p>我们简单的使用<code>fwrite</code>来像子进程的stdin写入内容。在这个例子是<code>pwd</code>后面跟上换行。最后使用<code>stream_get_contents</code>用来从子进程中获取内容。</p>
-
 <blockquote>
 <p>请始终记得使用<code>proc_close()</code>来关闭子进程，它将终止子进程并且返回退出状态码。</p>
 </blockquote>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -355,6 +329,12 @@ sleep($sleeptime);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

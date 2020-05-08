@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,95 +187,52 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#字符串解析">字符串解析</a>
-<ul>
-<li><a href="#分割字符串">分割字符串</a></li>
-<li><a href="#子串">子串</a></li>
-<li><a href="#strpos搜索字符串中子串">strpos搜索字符串中子串</a>
-<ul>
-<li><a href="#检查子串是否存在">检查子串是否存在</a></li>
-<li><a href="#从指定位置开始搜索子串">从指定位置开始搜索子串</a></li>
-<li><a href="#获取子串出现次数">获取子串出现次数</a></li>
-</ul></li>
-<li><a href="#正则解析字符串">正则解析字符串</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#字符串解析">字符串解析</a>
+      <ul>
+        <li><a href="#分割字符串">分割字符串</a></li>
+        <li><a href="#子串">子串</a></li>
+        <li><a href="#strpos搜索字符串中子串">strpos搜索字符串中子串</a></li>
+        <li><a href="#正则解析字符串">正则解析字符串</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="字符串解析">字符串解析</h2>
-
+        		<h2 id="字符串解析">字符串解析</h2>
 <h3 id="分割字符串">分割字符串</h3>
-
 <p><a href="https://php.net/explode">explode</a>和<a href="https://php.net/strstr">strstr</a>是用来是用分隔符获取字符串子串的方法。</p>
-
 <p>一个字符串包含使用相同分隔符分割的几部分，可以使用<code>explode</code>将字符串分成几部分：</p>
-
 <pre><code>$fruits = &quot;apple,pear,grapefruit,cherry&quot;;
 print_r(explode(',', $fruits)); // ['apple', 'pear', 'grapefruit', 'cherry']
-</code></pre>
-
-<p>这个方法支持一个参数，用来限制分割的子串数量：</p>
-
+</code></pre><p>这个方法支持一个参数，用来限制分割的子串数量：</p>
 <pre><code>$fruits = 'apple,pear,grapefruit,cherry';
 print_r(explode(',',$fruits,0)); // ['apple,pear,grapefruit,cherry']
-</code></pre>
-
-<p>如果这个参数是0，将会按照1处理。</p>
-
+</code></pre><p>如果这个参数是0，将会按照1处理。</p>
 <p>如果这个限制参数是大于0的值，将会返回最多包含这个值的子串，其中最后一个子串包含所有剩余的部分。</p>
-
 <pre><code>print_r(explode(',',$fruits,2)); // ['apple', 'pear,grapefruit,cherry']
-</code></pre>
-
-<p>如果这个参数为负数，将会返回处理最后这几个子串之外的其他子串：</p>
-
+</code></pre><p>如果这个参数为负数，将会返回处理最后这几个子串之外的其他子串：</p>
 <pre><code>print_r(explode(',',$fruits,-1)); // ['apple', 'pear', 'grapefruit']
-</code></pre>
-
-<p><code>explode</code>可以使用<a href="https://php.net/list">list</a>来把子串放入不同的变量中：</p>
-
+</code></pre><p><code>explode</code>可以使用<a href="https://php.net/list">list</a>来把子串放入不同的变量中：</p>
 <pre><code>$email = &quot;user@example.com&quot;;
 list($name, $domain) = explode(&quot;@&quot;, $email);
-</code></pre>
-
-<p>但是要保证<code>explode</code>返回足够的值，否则将会参数index未定义的错误。</p>
-
+</code></pre><p>但是要保证<code>explode</code>返回足够的值，否则将会参数index未定义的错误。</p>
 <p><a href="https://php.net/strstr">strstr</a>将会把字符串分为两部分，然后根据第二个参数确定返回哪部分，默认返回后面的部分：</p>
-
 <pre><code>$string = &quot;1:23:456&quot;;
 echo json_encode(explode(&quot;:&quot;, $string)); // [&quot;1&quot;,&quot;23&quot;,&quot;456&quot;] 
 var_dump(strstr($string, &quot;:&quot;)); // string(7) &quot;:23:456&quot;
 var_dump(strstr($string, &quot;:&quot;, true)); // string(1) &quot;1&quot;
-</code></pre>
-
-<h3 id="子串">子串</h3>
-
+</code></pre><h3 id="子串">子串</h3>
 <p><a href="https://php.net/substr">substr</a>返回字符串指定开始位置和指定长度的子字符串。</p>
-
 <pre><code>var_dump(substr(&quot;Boo&quot;, 1)); // string(2) &quot;oo&quot;
-</code></pre>
-
-<p>如果遇到了多字节字符，使用<a href="https://php.net/mb_substr">mb_substr</a>是安全的。</p>
-
+</code></pre><p>如果遇到了多字节字符，使用<a href="https://php.net/mb_substr">mb_substr</a>是安全的。</p>
 <pre><code>$cake = &quot;cakeæøå&quot;;
 var_dump(substr($cake, 0, 5)); // string(5) &quot;cake�&quot; 
 var_dump(mb_substr($cake, 0, 5, 'UTF-8')); // string(6) &quot;cakeæ&quot;
-</code></pre>
-
-<p>另一个有效的方法是<a href="https://php.net/substr_replace">substr_replace</a>，这将会替换字符串中指定的部分。</p>
-
+</code></pre><p>另一个有效的方法是<a href="https://php.net/substr_replace">substr_replace</a>，这将会替换字符串中指定的部分。</p>
 <pre><code>var_dump(substr_replace(&quot;Boo&quot;, &quot;0&quot;, 1, 1)); // string(3) &quot;B0o&quot; 
 var_dump(substr_Replace(&quot;Boo&quot;, &quot;ts&quot;, strlen(&quot;Boo&quot;))); // string(5) &quot;Boots&quot;
-</code></pre>
-
-<p>现在你想要找到字符串中指定的单词，但是不想使用正则：</p>
-
+</code></pre><p>现在你想要找到字符串中指定的单词，但是不想使用正则：</p>
 <pre><code>$hi = &quot;Hello World!&quot;;
 $bye = &quot;Goodbye cruel World!&quot;;
 var_dump(strpos($hi, &quot; &quot;)); // int(5) 
@@ -281,77 +242,63 @@ var_dump(substr($bye, -1 * (strlen($bye) - strpos($bye, &quot; &quot;)))); // st
 // If the casing in the text is not important, then using strtolower helps to compare strings 
 var_dump(substr($hi, 0, strpos($hi, &quot; &quot;)) == 'hello'); // bool(false) 
 var_dump(strtolower(substr($hi, 0, strpos($hi, &quot; &quot;))) == 'hello'); // bool(true)
-</code></pre>
+</code></pre><p>另外一个很基础的就是解析email地址：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$email <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test@example.com&#34;</span>;
+$wrong <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;foobar.co.uk&#34;</span>;
+$notld <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;foo@bar&#34;</span>;
 
-<p>另外一个很基础的就是解析email地址：</p>
+$at <span style="color:#f92672">=</span> strpos<span style="color:#f92672">(</span>$email, <span style="color:#e6db74">&#34;@&#34;</span><span style="color:#f92672">)</span>; // int<span style="color:#f92672">(</span>4<span style="color:#f92672">)</span>
+$wat <span style="color:#f92672">=</span> strpos<span style="color:#f92672">(</span>$wrong, <span style="color:#e6db74">&#34;@&#34;</span><span style="color:#f92672">)</span>; // bool<span style="color:#f92672">(</span>false<span style="color:#f92672">)</span> 
+$nat <span style="color:#f92672">=</span> strpos<span style="color:#f92672">(</span>$notld , <span style="color:#e6db74">&#34;@&#34;</span><span style="color:#f92672">)</span>; // int<span style="color:#f92672">(</span>3<span style="color:#f92672">)</span>
+$domain <span style="color:#f92672">=</span> substr<span style="color:#f92672">(</span>$email, $at + 1<span style="color:#f92672">)</span>; // string<span style="color:#f92672">(</span>11<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;example.com&#34;</span> 
+$womain <span style="color:#f92672">=</span> substr<span style="color:#f92672">(</span>$wrong, $wat + 1<span style="color:#f92672">)</span>; // string<span style="color:#f92672">(</span>11<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;oobar.co.uk&#34;</span> 
+$nomain <span style="color:#f92672">=</span> substr<span style="color:#f92672">(</span>$notld, $nat + 1<span style="color:#f92672">)</span>; // string<span style="color:#f92672">(</span>3<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;bar&#34;</span>
+$dot <span style="color:#f92672">=</span> strpos<span style="color:#f92672">(</span>$domain, <span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">)</span>; // int<span style="color:#f92672">(</span>7<span style="color:#f92672">)</span>
+$wot <span style="color:#f92672">=</span> strpos<span style="color:#f92672">(</span>$womain, <span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">)</span>; // int<span style="color:#f92672">(</span>5<span style="color:#f92672">)</span>
+$not <span style="color:#f92672">=</span> strpos<span style="color:#f92672">(</span>$nomain, <span style="color:#e6db74">&#34;.&#34;</span><span style="color:#f92672">)</span>; // bool<span style="color:#f92672">(</span>false<span style="color:#f92672">)</span>
+$tld <span style="color:#f92672">=</span> substr<span style="color:#f92672">(</span>$domain, $dot + 1<span style="color:#f92672">)</span>; // string<span style="color:#f92672">(</span>3<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;com&#34;</span> 
+$wld <span style="color:#f92672">=</span> substr<span style="color:#f92672">(</span>$womain, $wot + 1<span style="color:#f92672">)</span>; // string<span style="color:#f92672">(</span>5<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;co.uk&#34;</span> 
+$nld <span style="color:#f92672">=</span> substr<span style="color:#f92672">(</span>$nomain , $not + 1<span style="color:#f92672">)</span>; // string<span style="color:#f92672">(</span>2<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;ar&#34;</span>
+// string<span style="color:#f92672">(</span>25<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;test@example.com is valid&#34;</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>$at <span style="color:#f92672">&amp;&amp;</span> $dot<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$email<span style="color:#e6db74"> is valid&#34;</span><span style="color:#f92672">)</span>; 
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$email<span style="color:#e6db74"> is invalid&#34;</span><span style="color:#f92672">)</span>;
+<span style="color:#f92672">}</span>
+// string<span style="color:#f92672">(</span>21<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;foobar.com is invalid&#34;</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>$wat <span style="color:#f92672">&amp;&amp;</span> $wot<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> 
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$wrong<span style="color:#e6db74"> is valid&#34;</span><span style="color:#f92672">)</span>; 
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$wrong<span style="color:#e6db74"> is invalid&#34;</span><span style="color:#f92672">)</span>;
+<span style="color:#f92672">}</span>
+// string<span style="color:#f92672">(</span>18<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;foo@bar is invalid&#34;</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>$nat <span style="color:#f92672">&amp;&amp;</span> $not<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$notld<span style="color:#e6db74"> is valid&#34;</span><span style="color:#f92672">)</span>; 
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span> 
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$notld<span style="color:#e6db74"> is invalid&#34;</span><span style="color:#f92672">)</span>;
+<span style="color:#f92672">}</span>
+// string<span style="color:#f92672">(</span>27<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;foobar.co.uk is an UK email&#34;</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>$tld <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;co.uk&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span> 
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$email<span style="color:#e6db74"> is a UK address&#34;</span><span style="color:#f92672">)</span>;
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>$wld <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;co.uk&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span> 
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$wrong<span style="color:#e6db74"> is a UK address&#34;</span><span style="color:#f92672">)</span>;
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>$nld <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;co.uk&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    var_dump<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;</span>$notld<span style="color:#e6db74"> is a UK address&#34;</span><span style="color:#f92672">)</span>; 
+<span style="color:#f92672">}</span>
+</code></pre></div><p>或者字符串的末尾替换为<code>Continue reading</code>或者<code>…</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$blurb <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Lorem ipsum dolor sit amet&#39;</span>;
+$limit <span style="color:#f92672">=</span> 20;
 
-<pre><code class="language-shell">$email = &quot;test@example.com&quot;;
-$wrong = &quot;foobar.co.uk&quot;;
-$notld = &quot;foo@bar&quot;;
-
-$at = strpos($email, &quot;@&quot;); // int(4)
-$wat = strpos($wrong, &quot;@&quot;); // bool(false) 
-$nat = strpos($notld , &quot;@&quot;); // int(3)
-$domain = substr($email, $at + 1); // string(11) &quot;example.com&quot; 
-$womain = substr($wrong, $wat + 1); // string(11) &quot;oobar.co.uk&quot; 
-$nomain = substr($notld, $nat + 1); // string(3) &quot;bar&quot;
-$dot = strpos($domain, &quot;.&quot;); // int(7)
-$wot = strpos($womain, &quot;.&quot;); // int(5)
-$not = strpos($nomain, &quot;.&quot;); // bool(false)
-$tld = substr($domain, $dot + 1); // string(3) &quot;com&quot; 
-$wld = substr($womain, $wot + 1); // string(5) &quot;co.uk&quot; 
-$nld = substr($nomain , $not + 1); // string(2) &quot;ar&quot;
-// string(25) &quot;test@example.com is valid&quot;
-if ($at &amp;&amp; $dot) {
-    var_dump(&quot;$email is valid&quot;); 
-} else {
-    var_dump(&quot;$email is invalid&quot;);
-}
-// string(21) &quot;foobar.com is invalid&quot;
-if ($wat &amp;&amp; $wot) { 
-    var_dump(&quot;$wrong is valid&quot;); 
-} else {
-    var_dump(&quot;$wrong is invalid&quot;);
-}
-// string(18) &quot;foo@bar is invalid&quot;
-if ($nat &amp;&amp; $not) {
-    var_dump(&quot;$notld is valid&quot;); 
-} else { 
-    var_dump(&quot;$notld is invalid&quot;);
-}
-// string(27) &quot;foobar.co.uk is an UK email&quot;
-if ($tld == &quot;co.uk&quot;) { 
-    var_dump(&quot;$email is a UK address&quot;);
-}
-if ($wld == &quot;co.uk&quot;) { 
-    var_dump(&quot;$wrong is a UK address&quot;);
-}
-if ($nld == &quot;co.uk&quot;) {
-    var_dump(&quot;$notld is a UK address&quot;); 
-}
-</code></pre>
-
-<p>或者字符串的末尾替换为<code>Continue reading</code>或者<code>…</code>。</p>
-
-<pre><code class="language-shell">$blurb = 'Lorem ipsum dolor sit amet';
-$limit = 20;
-
-var_dump(substr($blurb, 0, $limit - 3) . '...');  //Lorem ipsum dolor...
-</code></pre>
-
-<h3 id="strpos搜索字符串中子串">strpos搜索字符串中子串</h3>
-
+var_dump<span style="color:#f92672">(</span>substr<span style="color:#f92672">(</span>$blurb, 0, $limit - 3<span style="color:#f92672">)</span> . <span style="color:#e6db74">&#39;...&#39;</span><span style="color:#f92672">)</span>;  //Lorem ipsum dolor...
+</code></pre></div><h3 id="strpos搜索字符串中子串">strpos搜索字符串中子串</h3>
 <p><a href="https://php.net/manual/zh/function.strpos.php">strpos</a>可以理解为<code>needle</code>第一次出现在<code>haystack</code>中的字节数。</p>
-
 <pre><code>var_dump(strpos('haystack', 'hay')); //int(0)
 var_dump(strpos('haystack', 'stack')); //int(3)
 var_dump(strpos('haystack', 'stackoverflow')); //bool(false)
-</code></pre>
-
-<h4 id="检查子串是否存在">检查子串是否存在</h4>
-
+</code></pre><h4 id="检查子串是否存在">检查子串是否存在</h4>
 <p>要小心检查<code>TRUE</code>和<code>FALSE</code>，当子串出现在0的位置时，条件语句可能会认为是false。</p>
-
 <pre><code>$pos = strpos(&quot;abcd&quot;, 'a');  //$pos = 0
 $pos2 = strpos('abcd', 'e'); //$pos2 = false
 
@@ -375,25 +322,16 @@ if ($pos2 === false) {
 } else {
     echo &quot;3. I found your string\n&quot;;
 }
-</code></pre>
-
-<p>整个例子会有下面的输出结果：</p>
-
+</code></pre><p>整个例子会有下面的输出结果：</p>
 <pre><code>1. I did not foud your string
 2. I found your string
 3. I did not found your string
-</code></pre>
-
-<h4 id="从指定位置开始搜索子串">从指定位置开始搜索子串</h4>
-
+</code></pre><h4 id="从指定位置开始搜索子串">从指定位置开始搜索子串</h4>
 <pre><code>$needle = 'Hello';
 $haystack = 'Hello world! Hello world!';
 
 $pos = strpos($haystack, $needle, 1);  //$pos=13
-</code></pre>
-
-<h4 id="获取子串出现次数">获取子串出现次数</h4>
-
+</code></pre><h4 id="获取子串出现次数">获取子串出现次数</h4>
 <pre><code>$haystack = &quot;a baby, a cat, a donkey, a fish&quot;;
 $needle == 'a ';
 $offsets = [];
@@ -407,12 +345,8 @@ for($offset = 0; $offset &lt; strlen($haystack); ) {
 }
 
 echo json_encode($offsets); //[0, 8, 15, 25]
-</code></pre>
-
-<h3 id="正则解析字符串">正则解析字符串</h3>
-
+</code></pre><h3 id="正则解析字符串">正则解析字符串</h3>
 <p><a href="https://php.net/manual/zh/function.preg-match.php">preg_match</a>可以被用来使用正则表达式解析字符串。在括号内的部分叫做子模式，通过这个你可以获取字符串中单独的部分：</p>
-
 <pre><code>$str = &quot;&lt;a href=\&quot;http://example.org\&quot;&gt;My Link&lt;/a&gt;&quot;;
 $pattern = &quot;/&lt;a href=\&quot;(.*)\&quot;&gt;(.*)&lt;\/a&gt;/&quot;;
 $result = preg_match($pattern, $str, $matches); 
@@ -424,19 +358,14 @@ if($result === 1) {
 } else {
 // Error occurred
 }
-</code></pre>
-
-<p>将会输出：</p>
-
+</code></pre><p>将会输出：</p>
 <pre><code>Array
 (
     [0] =&gt; &lt;a href=&quot;http://example.org&quot;&gt;My Link&lt;/a&gt;
     [1] =&gt; http://example.org
     [2] =&gt; My Link
 )
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -508,6 +437,12 @@ if($result === 1) {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

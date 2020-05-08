@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,25 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用trap响应信号和系统事件">使用trap响应信号和系统事件</a>
-<ul>
-<li><a href="#清理临时文件">清理临时文件</a></li>
-<li><a href="#捕捉信号或者ctrl-c">捕捉信号或者Ctrl+C</a></li>
-<li><a href="#在exit运行的一列trap">在exit运行的一列trap</a></li>
-<li><a href="#exit杀死子进程">Exit杀死子进程</a></li>
-<li><a href="#响应修改终端窗口大小">响应修改终端窗口大小</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#使用trap响应信号和系统事件">使用trap响应信号和系统事件</a>
+      <ul>
+        <li><a href="#清理临时文件">清理临时文件</a></li>
+        <li><a href="#捕捉信号或者ctrlc">捕捉信号或者Ctrl+C</a></li>
+        <li><a href="#在exit运行的一列trap">在exit运行的一列trap</a></li>
+        <li><a href="#exit杀死子进程">Exit杀死子进程</a></li>
+        <li><a href="#响应修改终端窗口大小">响应修改终端窗口大小</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="使用trap响应信号和系统事件">使用trap响应信号和系统事件</h2>
-
+        		<h2 id="使用trap响应信号和系统事件">使用trap响应信号和系统事件</h2>
 <table>
 <thead>
 <tr>
@@ -209,28 +208,21 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-p</td>
 <td>列出当前按照的traps</td>
 </tr>
-
 <tr>
 <td>-l</td>
 <td>列出信号的名称和相应编号</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="清理临时文件">清理临时文件</h3>
-
-<p>你可以使用<code>trap</code>命令来&rdquo;trap&rdquo;信号：这是shell中等同于C中调用<code>signal()</code>或<code>sigaction()</code>，或者其他的编程语言中捕捉信号的方法。</p>
-
+<p>你可以使用<code>trap</code>命令来&quot;trap&quot;信号：这是shell中等同于C中调用<code>signal()</code>或<code>sigaction()</code>，或者其他的编程语言中捕捉信号的方法。</p>
 <p><code>trap</code>的一个常用的地方是清理希望或不希望存在的临时文件。</p>
-
 <p>不幸的是没有足够的脚本实现这个功能：</p>
-
 <pre><code>#!/bin/sh
 
 #定义清理函数
@@ -249,12 +241,8 @@ echo &quot;Hello World!&quot; &gt;&gt; &quot;${tmp}&quot;
 
 # No rm -f &quot;$tmp&quot; needed. The advantage of using EXIT is that it still works
 # even if there was an error or if you used exit.
-</code></pre>
-
-<h3 id="捕捉信号或者ctrl-c">捕捉信号或者Ctrl+C</h3>
-
+</code></pre><h3 id="捕捉信号或者ctrlc">捕捉信号或者Ctrl+C</h3>
 <p>这个捕捉将会被subshell重置。这个<code>sleep</code>将会一直活动当<code>SIGINT</code>信号被发送了(Ctrl+C 用来退出)，但是父进程(shell)不会。</p>
-
 <pre><code>#!/bin/sh
 # Run a command on signal 2 (SIGINT, which is what ^C sends)
 sigint() {
@@ -271,10 +259,7 @@ sleep 500
 
 echo &quot;Sleeping...&quot; 
 sleep 500
-</code></pre>
-
-<p>还有一个变体，当你在一秒内使用两次<code>Ctrl+C</code>，将会退出主进程。</p>
-
+</code></pre><p>还有一个变体，当你在一秒内使用两次<code>Ctrl+C</code>，将会退出主进程。</p>
 <pre><code>last=0 
 allow_quit() {
     [ $(date +%s) -lt $(( $last + 1 )) ] &amp;&amp; exit 
@@ -282,16 +267,10 @@ allow_quit() {
     last=$(date +%s)
 }
 trap allow_quit INT
-</code></pre>
-
-<h3 id="在exit运行的一列trap">在exit运行的一列trap</h3>
-
+</code></pre><h3 id="在exit运行的一列trap">在exit运行的一列trap</h3>
 <p>你是否忘了添加清理临时文件的<code>trap</code>或者其他的公共在exit？</p>
-
 <p>你是否添加或取消其他trap的trap？</p>
-
 <p>下面的代码用来在exit上一次添加一个工作，而不是使用一大段的trap语句，这些语句还容易忘记。</p>
-
 <pre><code># on_exit and add_on_exit
 # Usage:
 #   add_on_exit rm -f /tmp/foo
@@ -312,21 +291,12 @@ function add_on_exit() {
         trap on_exit EXIT 
     fi
 }
-</code></pre>
-
-<h3 id="exit杀死子进程">Exit杀死子进程</h3>
-
+</code></pre><h3 id="exit杀死子进程">Exit杀死子进程</h3>
 <p>trap表达式不只是单独的函数或程序，可以有更加复杂的表达式。</p>
-
 <p>通过组合使用<code>jobs -p</code>和<code>kill</code>，我们可以砸退出时杀死shell所有的子进程。</p>
-
 <pre><code>trap 'jobs -p | xargs kill' EXIT
-</code></pre>
-
-<h3 id="响应修改终端窗口大小">响应修改终端窗口大小</h3>
-
+</code></pre><h3 id="响应修改终端窗口大小">响应修改终端窗口大小</h3>
 <p>有一个信号WINCH(WINdowCHange)，当终端窗口大小变化的时候触发：</p>
-
 <pre><code>declare -x rows cols 
 update_size(){
     rows=$(tput lines) # get actual lines of term
@@ -335,9 +305,7 @@ update_size(){
 }
 
 trap update_size WINCH
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -409,6 +377,12 @@ trap update_size WINCH
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

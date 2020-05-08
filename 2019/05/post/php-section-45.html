@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,124 +187,96 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#类型提示">类型提示</a>
-<ul>
-<li><a href="#1-类和接口提示">1. 类和接口提示</a></li>
-<li><a href="#2-标量-数组和回调提示">2. 标量，数组和回调提示</a></li>
-<li><a href="#3-nullable类型提示">3. Nullable类型提示</a></li>
-<li><a href="#4-普通对象提示">4. 普通对象提示</a></li>
-<li><a href="#5-无返回值声明">5. 无返回值声明</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#类型提示">类型提示</a>
+      <ul>
+        <li><a href="#1-类和接口提示">1. 类和接口提示</a></li>
+        <li><a href="#2-标量数组和回调提示">2. 标量，数组和回调提示</a></li>
+        <li><a href="#3-nullable类型提示">3. Nullable类型提示</a></li>
+        <li><a href="#4-普通对象提示">4. 普通对象提示</a></li>
+        <li><a href="#5-无返回值声明">5. 无返回值声明</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="类型提示">类型提示</h2>
-
+        		<h2 id="类型提示">类型提示</h2>
 <h3 id="1-类和接口提示">1. 类和接口提示</h3>
-
 <p>在PHP5的时候，增加了类和接口的提示。</p>
-
 <p><strong>类提示</strong></p>
-
-<pre><code class="language-php">&lt;?php
-class Student
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Student</span>
 {
-    public $name = 'Chris';
+    <span style="color:#66d9ef">public</span> $name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Chris&#39;</span>;
 }
 
-class School
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">School</span>
 {
-    public $name = 'University of Edinburgh';
+    <span style="color:#66d9ef">public</span> $name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;University of Edinburgh&#39;</span>;
 }
 
-function enroll(Student $student, School $school)
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">enroll</span>(<span style="color:#a6e22e">Student</span> $student, <span style="color:#a6e22e">School</span> $school)
 {
-    echo $student-&gt;name . ' is being enrolled at ' . $school-&gt;name;
+    <span style="color:#66d9ef">echo</span> $student<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39; is being enrolled at &#39;</span> <span style="color:#f92672">.</span> $school<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">name</span>;
 }
 
-$student = new Student();
-$school = new School();
+$student <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Student</span>();
+$school <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">School</span>();
 
-enroll($student, $school);
-</code></pre>
-
-<p>上面的例子将会输出：</p>
-
+<span style="color:#a6e22e">enroll</span>($student, $school);
+</code></pre></div><p>上面的例子将会输出：</p>
 <blockquote>
 <p>Chris is being enrolled at University of Edinburgh</p>
 </blockquote>
-
 <p><strong>接口提示</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Enrollable</span> {};
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Attendable</span> {};
 
-<pre><code class="language-php">&lt;?php
-interface Enrollable {};
-interface Attendable {};
-
-class Chris implements Enrollable
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Chris</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">Enrollable</span>
 {
-    public $name = 'Chris';
+    <span style="color:#66d9ef">public</span> $name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Chris&#39;</span>;
 }
 
-class UniversityOfEdinburgh implements Attendable
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UniversityOfEdinburgh</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">Attendable</span>
 {
-    public $name = 'University of Edinburgh';
+    <span style="color:#66d9ef">public</span> $name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;University of Edinburgh&#39;</span>;
 }
 
-function enroll(Enrollable $enrollee, Attendable $premises)
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">enroll</span>(<span style="color:#a6e22e">Enrollable</span> $enrollee, <span style="color:#a6e22e">Attendable</span> $premises)
 {
-    echo $enrollee-&gt;name . ' is being enrolled at ' . $premises-&gt;name;
+    <span style="color:#66d9ef">echo</span> $enrollee<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39; is being enrolled at &#39;</span> <span style="color:#f92672">.</span> $premises<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">name</span>;
 }
 
-$chris = new Chris();
-$edinburgh = new UniversityOfEdinburgh();
-enroll($chris, $edinburgh);
-</code></pre>
-
-<p>上面的例子将会输出：</p>
-
+$chris <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Chris</span>();
+$edinburgh <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">UniversityOfEdinburgh</span>();
+<span style="color:#a6e22e">enroll</span>($chris, $edinburgh);
+</code></pre></div><p>上面的例子将会输出：</p>
 <blockquote>
 <p>Chris is being enrolled at University of Edinburgh</p>
 </blockquote>
-
 <p><strong>Self提示</strong></p>
-
 <p><code>self</code>关键字可以用作类型提示，表名这个值必须是声明这个方法的一个类实例。</p>
-
-<h3 id="2-标量-数组和回调提示">2. 标量，数组和回调提示</h3>
-
+<h3 id="2-标量数组和回调提示">2. 标量，数组和回调提示</h3>
 <p>数组参数的类型提示(PHP7.1增加了返回值类型)是在PHP5.1添加的，使用关键字<code>array</code>。任何维度和类型的数组，甚至空数组都是有效的值。</p>
-
 <p>回调类型提示是在PHP5.4添加进来的。任何符合<code>is_callable()</code>方法的值都是有效的参数和返回值类型提示。像<code>Closure</code>对象，方法名字符串，数组(类名|对象, 方法名)。</p>
-
 <p>如果方法名拼写错误，导致<code>is_callable()</code>返回false，将会显示一个不太明显的错误信息：</p>
-
 <blockquote>
 <p>Fatal error: Uncaught TypeError: Argument 1 passed to foo() must be of the type callable, string/array given</p>
 </blockquote>
-
-<pre><code class="language-php">function foo(callable $c) {}
-foo(&quot;count&quot;); //有效
-foo(&quot;Phar::running&quot;); //有效
-foo(['Phar', 'running']); //有效
-foo([new ReflectionClass('stdClass'), 'getName']);  //有效
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function foo(callable $c) {}
+foo(&#34;count&#34;); //有效
+foo(&#34;Phar::running&#34;); //有效
+foo([&#39;Phar&#39;, &#39;running&#39;]); //有效
+foo([new ReflectionClass(&#39;stdClass&#39;), &#39;getName&#39;]);  //有效
 foo(function(){});  //有效
 
-foo(&quot;no_such_function&quot;);  //callable expected, string given
-</code></pre>
-
-<p>非静态方法也可以使用静态格式作为可回调值，从而在PHP7和PHP5中分别导致拒绝警告和E_STRICT级别的错误。</p>
-
+foo(&#34;no_such_function&#34;);  //callable expected, string given
+</code></pre></div><p>非静态方法也可以使用静态格式作为可回调值，从而在PHP7和PHP5中分别导致拒绝警告和E_STRICT级别的错误。</p>
 <p>考虑到方法的可见性。如果具有可调用参数的方法的上下文没有访问所提供的可调用对象的权限，则该方法将以不存在的方式结束。</p>
-
-<pre><code class="language-php">class Foo {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Foo {
     private static function f() {
-        echo &quot;Good&quot; . PHP_EOL;
+        echo &#34;Good&#34; . PHP_EOL;
     }
     
     public static function r(callable $c) {
@@ -310,85 +286,57 @@ foo(&quot;no_such_function&quot;);  //callable expected, string given
 
 function r(callable $c){}
 
-Foo:r(['Foo', 'f']);
-r(['Foo', 'f']);
-</code></pre>
-
-<p>输出：</p>
-
+Foo:r([&#39;Foo&#39;, &#39;f&#39;]);
+r([&#39;Foo&#39;, &#39;f&#39;]);
+</code></pre></div><p>输出：</p>
 <blockquote>
 <p>Fatal error: Uncaught TypeError: Argument 1 passed to r() must be callable, array given</p>
 </blockquote>
-
 <p>PHP7开始支持标量类型提示。这意味着支持<code>布尔类型</code>， <code>整形</code>， <code>浮点型</code>， <code>字符串</code>。</p>
-
-<pre><code class="language-php">&lt;?php
-function add(int $a, int $b) {
-    return $a + $b;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">int</span> $a, <span style="color:#a6e22e">int</span> $b) {
+    <span style="color:#66d9ef">return</span> $a <span style="color:#f92672">+</span> $b;
 }
 
-var_dump(add(1, 2));  //&quot;int(3)&quot;
-</code></pre>
-
-<p>默认情况下，PHP尝试强制转换任何提供的参数以匹配其类型提示。例如使用<code>add(1.5, 2)</code>将会获得相同的输出，因为浮点数1.5将会强制转换为int型。</p>
-
+<span style="color:#a6e22e">var_dump</span>(<span style="color:#a6e22e">add</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>));  <span style="color:#75715e">//&#34;int(3)&#34;
+</span></code></pre></div><p>默认情况下，PHP尝试强制转换任何提供的参数以匹配其类型提示。例如使用<code>add(1.5, 2)</code>将会获得相同的输出，因为浮点数1.5将会强制转换为int型。</p>
 <p>想要终止这种自动转换行为，在所有源码文件的最开始，可以使用<code>declare(strict_types=1);</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">declare</span>(<span style="color:#a6e22e">strict_types</span><span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>);
 
-<pre><code class="language-php">&lt;?php
-declare(strict_types=1);
-
-function add(int $a, int $b) {
-    return $a + $b;
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">add</span>(<span style="color:#a6e22e">int</span> $a, <span style="color:#a6e22e">int</span> $b) {
+    <span style="color:#66d9ef">return</span> $a <span style="color:#f92672">+</span> $b;
 }
 
-var_dump(add(1.5, 2));
-</code></pre>
-
-<p>上面的代码将会产生一个致命错误：</p>
-
+<span style="color:#a6e22e">var_dump</span>(<span style="color:#a6e22e">add</span>(<span style="color:#ae81ff">1.5</span>, <span style="color:#ae81ff">2</span>));
+</code></pre></div><p>上面的代码将会产生一个致命错误：</p>
 <blockquote>
 <p>Fatal error: Uncaught TypeError: Argument 1 passed to add() must be of the type integer, float given</p>
 </blockquote>
-
 <p><strong>例外：特殊类型</strong></p>
-
 <p>一些PHP的方法会返回一个资源类型的值。因为这是一个特殊类型，不是标量类型，所有这里不能使用类型提示。</p>
-
 <p>例子：<code>curl_init()</code>像<code>fopen()</code>一样返回一个资源类型。当然这两种资源类型是不相互兼容的。因为这个原因，在PHP7将会抛出类型错误当使用<code>resource</code>类型提示的时候：</p>
-
 <blockquote>
 <p>TypeError: Argument 1 passed to sample() must be an instance of resource, resource given</p>
 </blockquote>
-
 <h3 id="3-nullable类型提示">3. Nullable类型提示</h3>
-
 <p><strong>参数</strong></p>
-
 <p>在PHP7.1中添加了Nullable类型提示，就是在类型提示前面加上<code>?</code>运算符。</p>
-
-<pre><code class="language-php">function f(?string $a) {}
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function f(?string $a) {}
 function g(string $a) {}
 
 f(null); //有效
 g(null); //TypeError: Argument 1 passed to g() must be of the type string, null given
-</code></pre>
-
-<p>在PHP7.1之前，如果声明了类型提示，想要传入null值的话，需要在声明的时候使用<code>null</code>默认值。</p>
-
-<pre><code class="language-php">function f(string $a = null) {}
+</code></pre></div><p>在PHP7.1之前，如果声明了类型提示，想要传入null值的话，需要在声明的时候使用<code>null</code>默认值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function f(string $a = null) {}
 function g(string $a) {}
 
 f(null);  //有效
 g(null); //TypeError: Argument 1 passed to g() must be of the type string, null given
-</code></pre>
-
-<p><strong>返回值</strong></p>
-
+</code></pre></div><p><strong>返回值</strong></p>
 <p>在PHP7.0，带有返回值类型的方法额返回值不能是null。</p>
-
 <p>在PHP7.1，方法可以使用nullable的返回值类型。然而，这个方法必须返回null，而不是不返回。</p>
-
-<pre><code class="language-php">function f() : ?string {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function f() : ?string {
     return null;
 }
 
@@ -398,78 +346,56 @@ function h() : ?string {}
 f();  //ok
 g(); //TypeError: Return value of g() must be of the type string or null, none returned
 h(); //TypeError: Return value of g() must be of the type string or null, none returned
-</code></pre>
-
-<h3 id="4-普通对象提示">4. 普通对象提示</h3>
-
+</code></pre></div><h3 id="4-普通对象提示">4. 普通对象提示</h3>
 <p>因为PHP的对象没有继承任何基类(包括stdClass)，所以不支持普通对象类型的类型提示。</p>
-
 <p>例如，下面的代码是不执行的：</p>
-
-<pre><code class="language-php">&lt;?php
-function doSomething(object $obj) {
-    return $obj;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">doSomething</span>(<span style="color:#a6e22e">object</span> $obj) {
+    <span style="color:#66d9ef">return</span> $obj;
 }
 
-class ClassOne {};
-class ClassTwo {};
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClassOne</span> {};
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClassTwo</span> {};
 
-$classOne = new ClassOne();
-$classTwo = new ClassTwo();
+$classOne <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ClassOne</span>();
+$classTwo <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ClassTwo</span>();
 
-doSomething($classOne);
-doSomething($classTwo);
-</code></pre>
-
-<p>将会抛出致命错误：</p>
-
+<span style="color:#a6e22e">doSomething</span>($classOne);
+<span style="color:#a6e22e">doSomething</span>($classTwo);
+</code></pre></div><p>将会抛出致命错误：</p>
 <blockquote>
 <p>Fatal error: Uncaught TypeError: Argument 1 passed to doSomething() must be an instance of object, instance of OperationOne given</p>
 </blockquote>
-
 <p>一个解决办法就是声明一个不定义方法的退化接口，然后让所有的对象实现这个接口。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Object</span> {}
 
-<pre><code class="language-php">&lt;?php
-interface Object {}
-
-function doSomething(Object $obj) {
-    return $obj;
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">doSomething</span>(<span style="color:#a6e22e">Object</span> $obj) {
+    <span style="color:#66d9ef">return</span> $obj;
 }
 
-class ClassOne implements Object {}
-class ClassTwo implements Object {}
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClassOne</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">Object</span> {}
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ClassTwo</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">Object</span> {}
 
-$classOne = new ClassOne();
-$classTwo = new ClassTwo();
+$classOne <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ClassOne</span>();
+$classTwo <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ClassTwo</span>();
 
-doSomething($classOne);
-doSomething($classTwo);
-</code></pre>
-
-<h3 id="5-无返回值声明">5. 无返回值声明</h3>
-
+<span style="color:#a6e22e">doSomething</span>($classOne);
+<span style="color:#a6e22e">doSomething</span>($classTwo);
+</code></pre></div><h3 id="5-无返回值声明">5. 无返回值声明</h3>
 <p>在PHP7.1，添加了<code>void</code>返回值类型。因为PHP没有实际的<code>void</code>值，所以当方法没有返回任何值时，就认为是<code>void</code>。这和null可能容易混淆，但是<code>null</code>是一个可以返回的值。</p>
-
-<pre><code class="language-php">function lacks_return() : void {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function lacks_return() : void {
     //valid
 }
-</code></pre>
-
-<p>注意，如果你声明了<code>void</code>返回值类型，你就不能返回任何值，否则就会获得一个致命错误：</p>
-
-<pre><code class="language-php">function should_return_nothing(): void {
+</code></pre></div><p>注意，如果你声明了<code>void</code>返回值类型，你就不能返回任何值，否则就会获得一个致命错误：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function should_return_nothing(): void {
     return null; // Fatal error: A void function must not return a value
 }
-</code></pre>
-
-<p>但是，使用return来结束方法是可以的：</p>
-
-<pre><code class="language-php">function returns_nothing(): void {
+</code></pre></div><p>但是，使用return来结束方法是可以的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function returns_nothing(): void {
     return; // valid
 }
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -541,6 +467,12 @@ doSomething($classTwo);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,48 +187,29 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#scp传输文件">scp传输文件</a>
-<ul>
-<li><a href="#scp传输文件-1">scp传输文件</a></li>
-<li><a href="#scp传输多个文件">scp传输多个文件</a></li>
-<li><a href="#使用scp下载文件">使用scp下载文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#scp传输文件">scp传输文件</a>
+      <ul>
+        <li><a href="#scp传输文件-1">scp传输文件</a></li>
+        <li><a href="#scp传输多个文件">scp传输多个文件</a></li>
+        <li><a href="#使用scp下载文件">使用scp下载文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="scp传输文件">scp传输文件</h2>
-
+        		<h2 id="scp传输文件">scp传输文件</h2>
 <h3 id="scp传输文件-1">scp传输文件</h3>
-
 <p>想要安全的传输一个文件到另一台机器上面：</p>
-
 <pre><code>scp file1.txt tom@server2:$HOME
-</code></pre>
-
-<p>这个例子将会把<code>file1.txt</code>从我们的机器上面传输到<code>server2</code>的用户<code>tom</code>的家目录内。</p>
-
+</code></pre><p>这个例子将会把<code>file1.txt</code>从我们的机器上面传输到<code>server2</code>的用户<code>tom</code>的家目录内。</p>
 <h3 id="scp传输多个文件">scp传输多个文件</h3>
-
 <p>scp也可以用来从一个服务器到一个服务器传输多个文件。下面的例子是从<code>my_folder</code>目录传输所有后缀为<code>.txt</code>的文件到<code>server2</code>。下面的例子所有的文件传输到用户的home目录：</p>
-
 <pre><code>scp /my_folder/*.txt tom@server2:$HOME
-</code></pre>
-
-<h3 id="使用scp下载文件">使用scp下载文件</h3>
-
+</code></pre><h3 id="使用scp下载文件">使用scp下载文件</h3>
 <p>从远端机器下载文件到本地机器：</p>
-
 <pre><code>scp tom@server2:$HOME/file.txt /local/machine/path/
-</code></pre>
-
-<p>这里例子展示了如果从<code>tom</code>的家目录下载文件<code>file.txt</code>到本地机器的当前目录。</p>
-
+</code></pre><p>这里例子展示了如果从<code>tom</code>的家目录下载文件<code>file.txt</code>到本地机器的当前目录。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -297,6 +282,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

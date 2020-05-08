@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,121 +187,89 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mongo-php">mongo-php</a>
-<ul>
-<li><a href="#1-mongodb和php之间的信息">1. MongoDB和PHP之间的信息</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mongo-php">mongo-php</a>
+      <ul>
+        <li><a href="#1-mongodb和php之间的信息">1. MongoDB和PHP之间的信息</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mongo-php">mongo-php</h2>
-
+        		<h2 id="mongo-php">mongo-php</h2>
 <h3 id="1-mongodb和php之间的信息">1. MongoDB和PHP之间的信息</h3>
-
 <p><strong>要求</strong></p>
-
 <ul>
 <li>MongoDB服务器运行的端口通常是27017。（在命令终端中输入<code>mongod</code>来运行mongodb 服务器）</li>
 <li>PHP已经安装了，不管是cgi还是fpm，同时安装了MongoDB的扩展（PHP默认没有安装MongoDB扩展）</li>
-<li>Composer仓库(mongodb/mongodb)(在项目的根目录运行`php composer.phar require &ldquo;mongodb/mongodb=^1.0.0&rdquo;来安装MongoDB库)。</li>
+<li>Composer仓库(mongodb/mongodb)(在项目的根目录运行`php composer.phar require &ldquo;mongodb/mongodb=^1.0.0&quot;来安装MongoDB库)。</li>
 </ul>
-
 <p>如果上面的要求都正常了，你就可以开始了：</p>
-
 <blockquote>
 <p>检查PHP安装</p>
 </blockquote>
-
-<p>如果不确定PHP是否安装，可以在命令终端中运行&rdquo;php -v&rdquo;，将会返回类似下面的内容：</p>
-
+<p>如果不确定PHP是否安装，可以在命令终端中运行&quot;php -v&rdquo;，将会返回类似下面的内容：</p>
 <pre><code>PHP 7.1.23 (cli) (built: Nov  7 2018 18:20:35) ( NTS )
 Copyright (c) 1997-2018 The PHP Group
 Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>检查MongoDB安装</p>
 </blockquote>
-
 <p>检查MongoDB安装通过运行<code>mongo —version</code>，这将会返回<code>MongoDB shell version: 3.2.6</code></p>
-
 <blockquote>
 <p>检查Composer安装</p>
 </blockquote>
-
 <p>检查Composer安装通过运行<code>php composer.phar —version</code>将会返回<code>Composer version 1.2-dev (3d09c17b489cd29a0c0b3b11e731987e7097797d) 2016-08-30 16:12:39</code></p>
-
 <p><strong>使用php连接MongoDB</strong></p>
-
-<pre><code class="language-php">&lt;?php
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
   
-//Composer的自动加载类
-require &quot;vendor/autoload.php&quot;;
+<span style="color:#75715e">//Composer的自动加载类
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">require</span> <span style="color:#e6db74">&#34;vendor/autoload.php&#34;</span>;
 
-//建立连接
-try {
-    $mongo = new MongoDB\Client(&quot;mongodb://username:password@localhost:27017&quot;);
-    print_r($mongo-&gt;lisDatabases());
-} catch (\Exception $e) {
-    echo $e-&gt;getMessage();
+<span style="color:#75715e">//建立连接
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">try</span> {
+    $mongo <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MongoDB\Client</span>(<span style="color:#e6db74">&#34;mongodb://username:password@localhost:27017&#34;</span>);
+    <span style="color:#a6e22e">print_r</span>($mongo<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">lisDatabases</span>());
+} <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">\Exception</span> $e) {
+    <span style="color:#66d9ef">echo</span> $e<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getMessage</span>();
 }
 
-//使用默认配置
-try {
-    $mongo = new MongoDB\Client(&quot;mongodb://localhost:27017&quot;);
-    print_r($mongo-&gt;listDatabases());
-} catch (\Exception $e) {
-    echo $e-&gt;getMessage();
+<span style="color:#75715e">//使用默认配置
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">try</span> {
+    $mongo <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MongoDB\Client</span>(<span style="color:#e6db74">&#34;mongodb://localhost:27017&#34;</span>);
+    <span style="color:#a6e22e">print_r</span>($mongo<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">listDatabases</span>());
+} <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">\Exception</span> $e) {
+    <span style="color:#66d9ef">echo</span> $e<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getMessage</span>();
 }
-</code></pre>
-
-<p><em>上面的代码使用包含在<code>/vendor/autoload.php</code>的MongoDB的composer仓库(<code>mongodb/mongodb</code>)来连接一个运行在端口<code>27017</code>的MongoDB服务器。如果一切正常，然后会列出一个数组。如果连接MongoDB出现了一个异常，将会打印异常信息。</em></p>
-
+</code></pre></div><p><em>上面的代码使用包含在<code>/vendor/autoload.php</code>的MongoDB的composer仓库(<code>mongodb/mongodb</code>)来连接一个运行在端口<code>27017</code>的MongoDB服务器。如果一切正常，然后会列出一个数组。如果连接MongoDB出现了一个异常，将会打印异常信息。</em></p>
 <p><strong>创建（插入）MongoDB</strong></p>
-
-<pre><code class="language-php">&lt;?php
- //MongoDB 使用collection而不是Tables在SQL中.
- //使用$mongo查询数据库和collection
- //NOTE: 如果数据库和collection不存在，MongoDB将会自动创建
-  $collection = $mongo-&gt;demo-&gt;beers;
- //使用$collection我们可以在MongoDB中插入一个文档，这里文档和行是相似的
-  $result = $collection-&gt;insertOne( [ 'name' =&gt; 'Hinterland', 'brewery' =&gt; 'BrewDog' ] );
- //每个插入的文档都有唯一的值.
-  echo &quot;Inserted with Object ID '{$result-&gt;getInsertedId()}'&quot;; ?&gt;
-</code></pre>
-
-<p><em>在上面的例子中，我们使用前面创建的<code>$mongo</code>对象。MongoDB使用JSON格式的数据，所以我们在PHP中使用数组插入到MongoDB中。这个转换过程或相反的过程在MongoDB库中进行。MongoDB中的每个文档都有一个唯一的id，叫做<code>_id</code>，在插入的时候，我们可以使用<code>$result-&gt;getInsertedId()</code>来获取这个id。</em></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+ <span style="color:#75715e">//MongoDB 使用collection而不是Tables在SQL中.
+</span><span style="color:#75715e"></span> <span style="color:#75715e">//使用$mongo查询数据库和collection
+</span><span style="color:#75715e"></span> <span style="color:#75715e">//NOTE: 如果数据库和collection不存在，MongoDB将会自动创建
+</span><span style="color:#75715e"></span>  $collection <span style="color:#f92672">=</span> $mongo<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">demo</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">beers</span>;
+ <span style="color:#75715e">//使用$collection我们可以在MongoDB中插入一个文档，这里文档和行是相似的
+</span><span style="color:#75715e"></span>  $result <span style="color:#f92672">=</span> $collection<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">insertOne</span>( [ <span style="color:#e6db74">&#39;name&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Hinterland&#39;</span>, <span style="color:#e6db74">&#39;brewery&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;BrewDog&#39;</span> ] );
+ <span style="color:#75715e">//每个插入的文档都有唯一的值.
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Inserted with Object ID &#39;</span><span style="color:#e6db74">{</span>$result-&gt;getInsertedId()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;&#34;</span>; <span style="color:#75715e">?&gt;</span>
+</code></pre></div><p><em>在上面的例子中，我们使用前面创建的<code>$mongo</code>对象。MongoDB使用JSON格式的数据，所以我们在PHP中使用数组插入到MongoDB中。这个转换过程或相反的过程在MongoDB库中进行。MongoDB中的每个文档都有一个唯一的id，叫做<code>_id</code>，在插入的时候，我们可以使用<code>$result-&gt;getInsertedId()</code>来获取这个id。</em></p>
 <p><strong>MongoDB读取（查找）</strong></p>
-
-<pre><code class="language-php">&lt;?php
- //use find() method to query for records, where parameter will be array containing key value pair we need to find.
- $result = $collection-&gt;find( [ 'name' =&gt; 'Hinterland', 'brewery' =&gt; 'BrewDog' ] );
-// all the data(result) returned as array
-// use for each to filter the required keys
-foreach ($result as $entry) {
-    echo $entry['_id'], ': ', $entry['name'], &quot;\n&quot;; 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+ <span style="color:#75715e">//use find() method to query for records, where parameter will be array containing key value pair we need to find.
+</span><span style="color:#75715e"></span> $result <span style="color:#f92672">=</span> $collection<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">find</span>( [ <span style="color:#e6db74">&#39;name&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Hinterland&#39;</span>, <span style="color:#e6db74">&#39;brewery&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;BrewDog&#39;</span> ] );
+<span style="color:#75715e">// all the data(result) returned as array
+</span><span style="color:#75715e">// use for each to filter the required keys
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">foreach</span> ($result <span style="color:#66d9ef">as</span> $entry) {
+    <span style="color:#66d9ef">echo</span> $entry[<span style="color:#e6db74">&#39;_id&#39;</span>], <span style="color:#e6db74">&#39;: &#39;</span>, $entry[<span style="color:#e6db74">&#39;name&#39;</span>], <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>; 
 }
-?&gt;
-</code></pre>
-
-<p><strong>删除</strong></p>
-
-<pre><code class="language-php">&lt;?php
-$result = $collection-&gt;drop( [ 'name' =&gt; 'Hinterland'] ); 
-//return 1 if the drop was sucessfull and 0 for failure
-print_r($result-&gt;ok);
-?&gt;
-</code></pre>
-
-<p>MongoDB中$collection更多的方法查看<a href="https://docs.mongodb.com/php-library/current/">手册</a>。</p>
-
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p><strong>删除</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$result <span style="color:#f92672">=</span> $collection<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">drop</span>( [ <span style="color:#e6db74">&#39;name&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;Hinterland&#39;</span>] ); 
+<span style="color:#75715e">//return 1 if the drop was sucessfull and 0 for failure
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">print_r</span>($result<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">ok</span>);
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>MongoDB中$collection更多的方法查看<a href="https://docs.mongodb.com/php-library/current/">手册</a>。</p>
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -370,6 +342,12 @@ print_r($result-&gt;ok);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

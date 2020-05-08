@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,33 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#设计模式">设计模式</a>
-<ul>
-<li><a href="#发布订阅模式">发布订阅模式</a>
-<ul>
-<li><a href="#pubsub-sh">pubsub.sh</a></li>
-<li><a href="#运行">运行</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#设计模式">设计模式</a>
+      <ul>
+        <li><a href="#发布订阅模式">发布订阅模式</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="设计模式">设计模式</h2>
-
+        		<h2 id="设计模式">设计模式</h2>
 <p>在bash中完成一些常见的设计模式。</p>
-
 <h3 id="发布订阅模式">发布订阅模式</h3>
-
 <p>当项目变为一个库时，添加新功能会变得很困难。函数名、变量和参数通常需要在使用它们的脚本中进行更改。在这样的场景中，分离代码并使用事件驱动的设计模式是很有帮助的。在所述模式中，外部脚本可以订阅事件。当触发（发布）该事件时，脚本可以执行它在该事件中注册的代码。</p>
-
-<h4 id="pubsub-sh">pubsub.sh</h4>
-
+<h4 id="pubsubsh">pubsub.sh</h4>
 <pre><code>#!/usr/bin/env bash
 #
 # Save the path to this script's directory in a global env variable 
@@ -264,15 +255,10 @@ subscribe &quot;/do/even/more/work&quot; &quot;action1&quot; &quot;${DIR}&quot;
 publish &quot;/do/work&quot;
 publish &quot;/do/more/work&quot;
 publish &quot;/do/even/more/work&quot; &quot;again&quot;
-</code></pre>
-
-<h4 id="运行">运行</h4>
-
+</code></pre><h4 id="运行">运行</h4>
 <pre><code>chmod +x pubsub.sh 
 ./pubsub.sh
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -344,6 +330,12 @@ publish &quot;/do/even/more/work&quot; &quot;again&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

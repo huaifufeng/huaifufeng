@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,65 +187,41 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#php中使用redis">PHP中使用Redis</a>
-<ul>
-<li><a href="#1-连接redis实例">1. 连接redis实例</a></li>
-<li><a href="#2-ubuntu上安装redis">2. Ubuntu上安装Redis</a></li>
-<li><a href="#3-在php中执行redis命令">3. 在PHP中执行Redis命令</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#php中使用redis">PHP中使用Redis</a>
+      <ul>
+        <li><a href="#1-连接redis实例">1. 连接redis实例</a></li>
+        <li><a href="#2-ubuntu上安装redis">2. Ubuntu上安装Redis</a></li>
+        <li><a href="#3-在php中执行redis命令">3. 在PHP中执行Redis命令</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="php中使用redis">PHP中使用Redis</h2>
-
+        		<h2 id="php中使用redis">PHP中使用Redis</h2>
 <h3 id="1-连接redis实例">1. 连接redis实例</h3>
-
 <p>假设一个redis服务运行在localhost的默认端口，下面的命令可以连接到这个Redis服务器：</p>
-
-<pre><code class="language-php">$redis = new Redis(); 
-$redis-&gt;connect('127.0.0.1', 6379);
-</code></pre>
-
-<h3 id="2-ubuntu上安装redis">2. Ubuntu上安装Redis</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$redis = new Redis(); 
+$redis-&gt;connect(&#39;127.0.0.1&#39;, 6379);
+</code></pre></div><h3 id="2-ubuntu上安装redis">2. Ubuntu上安装Redis</h3>
 <p>在Ubuntu上面安装PHP，首先安装Redis服务器：</p>
-
-<pre><code class="language-shell">sudo apt install redis-server
-</code></pre>
-
-<p>然后安装PHP的Redis模块：</p>
-
-<pre><code class="language-shell">sudo apt install php-redis
-</code></pre>
-
-<p>然后重启Apache服务器</p>
-
-<pre><code class="language-shell">sudo service apache2 restart
-</code></pre>
-
-<h3 id="3-在php中执行redis命令">3. 在PHP中执行Redis命令</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install redis-server
+</code></pre></div><p>然后安装PHP的Redis模块：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt install php-redis
+</code></pre></div><p>然后重启Apache服务器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo service apache2 restart
+</code></pre></div><h3 id="3-在php中执行redis命令">3. 在PHP中执行Redis命令</h3>
 <p>PHP的Redis模块有和Redis CLI客户端一样的命令，所以可以直接使用。</p>
-
 <p>语法像下面一样：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//创建两个新key
+$redis-&gt;set(&#39;mykey-1&#39;, 123);
+$redis-&gt;set(&#39;mykey-2&#39;, &#39;abcd&#39;);
 
-<pre><code class="language-php">//创建两个新key
-$redis-&gt;set('mykey-1', 123);
-$redis-&gt;set('mykey-2', 'abcd');
-
-//获取一个key (prints '123')
-var_dump($redis-&gt;get('mykey-1'));
-// 获取所有以'my-key-'开头的key // (prints '123', 'abcd') 
-var_dump($redis-&gt;keys('mykey-*'));
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+//获取一个key (prints &#39;123&#39;)
+var_dump($redis-&gt;get(&#39;mykey-1&#39;));
+// 获取所有以&#39;my-key-&#39;开头的key // (prints &#39;123&#39;, &#39;abcd&#39;) 
+var_dump($redis-&gt;keys(&#39;mykey-*&#39;));
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -313,6 +293,12 @@ var_dump($redis-&gt;keys('mykey-*'));
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

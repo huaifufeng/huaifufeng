@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#cut命令">cut命令</a>
-<ul>
-<li><a href="#显示文件第一列">显示文件第一列</a></li>
-<li><a href="#显示文件x-y的列表">显示文件x-y的列表</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#cut命令">cut命令</a>
+      <ul>
+        <li><a href="#显示文件第一列">显示文件第一列</a></li>
+        <li><a href="#显示文件x-y的列表">显示文件x-y的列表</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="cut命令">cut命令</h2>
-
+        		<h2 id="cut命令">cut命令</h2>
 <table>
 <thead>
 <tr>
@@ -206,73 +205,47 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>-b LIST, —bytes=LIST</code></td>
 <td>打印LIST参数中的字节列表</td>
 </tr>
-
 <tr>
 <td><code>-c LIST, —characters=LIST</code></td>
 <td>打印参数LIST中指定位置的字符</td>
 </tr>
-
 <tr>
 <td><code>-f LIST, —fields=LIST</code></td>
 <td>打印字段或者列</td>
 </tr>
-
 <tr>
 <td><code>-d DELIMITER</code></td>
 <td>用来分割字段或列</td>
 </tr>
 </tbody>
 </table>
-
 <p>在Bash，<code>cut</code>命令用来把文件分割到小的部分。</p>
-
 <h3 id="显示文件第一列">显示文件第一列</h3>
-
 <p>假设你有像下面的文件</p>
-
 <pre><code>John Smith 31
 Robert Jones 27
 ...
-</code></pre>
-
-<p>这个文件有空格分割的3列。值选择第一列使用下面的命令：</p>
-
+</code></pre><p>这个文件有空格分割的3列。值选择第一列使用下面的命令：</p>
 <pre><code>cut -d ' ' -f1 filename
-</code></pre>
-
-<p>这里<code>-d</code>标识指定了分隔符，或者什么分割了结果。<code>f</code>标识指定获取的列或自动的数。这将会输出下面的结果：</p>
-
+</code></pre><p>这里<code>-d</code>标识指定了分隔符，或者什么分割了结果。<code>f</code>标识指定获取的列或自动的数。这将会输出下面的结果：</p>
 <pre><code>John
 Robert
 ...
-</code></pre>
-
-<h3 id="显示文件x-y的列表">显示文件x-y的列表</h3>
-
+</code></pre><h3 id="显示文件x-y的列表">显示文件x-y的列表</h3>
 <p>有时候，需要显示一个文件的指定范围的列。假设你有</p>
-
 <pre><code>Apple California 2017 1.00 47
 Mango Oregon 2015 2.30 33
-</code></pre>
-
-<p>选择前3列表：</p>
-
+</code></pre><p>选择前3列表：</p>
 <pre><code>cut -d ' ' -f1-3 filename
-</code></pre>
-
-<p>这将显示下面的输出</p>
-
+</code></pre><p>这将显示下面的输出</p>
 <pre><code>Apple California 2017
 Mango Oregon 2015
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -344,6 +317,12 @@ Mango Oregon 2015
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

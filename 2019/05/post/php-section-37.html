@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,47 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#simplexml">SimpleXML</a>
-<ul>
-<li><a href="#simplexml读取数据">SimpleXML读取数据</a>
-<ul>
-<li><a href="#字符串">字符串</a></li>
-<li><a href="#文件">文件</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#simplexml">SimpleXML</a>
+      <ul>
+        <li><a href="#simplexml读取数据">SimpleXML读取数据</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="simplexml">SimpleXML</h2>
-
+        		<h2 id="simplexml">SimpleXML</h2>
 <h3 id="simplexml读取数据">SimpleXML读取数据</h3>
-
 <h4 id="字符串">字符串</h4>
-
 <p>使用<code>simplexml_load_string</code>从字符串创建一个SimpleXMLElement。</p>
-
-<pre><code class="language-php">$xmlString = &quot;&lt;?xml version='1.0' encoding='UTF-8'?&gt;&quot;;
-$xml = simplexml_load_string($xmlString) or die(&quot;Error: Cannot create object&quot;);
-</code></pre>
-
-<p>注意这里使用<code>or</code>而不是<code>||</code>,因为<code>or</code>的优先级比<code>=</code>低。<code>or</code>后面的代码只有在<code>$xml</code>解析为false时才会执行。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$xmlString = &#34;<span style="color:#75715e">&lt;?</span><span style="color:#a6e22e">xml</span> <span style="color:#a6e22e">version</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;1.0&#39;</span> <span style="color:#a6e22e">encoding</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;UTF-8&#39;</span><span style="color:#75715e">?&gt;</span>&#34;;
+$xml = simplexml_load_string($xmlString) or die(&#34;Error: Cannot create object&#34;);
+</code></pre></div><p>注意这里使用<code>or</code>而不是<code>||</code>,因为<code>or</code>的优先级比<code>=</code>低。<code>or</code>后面的代码只有在<code>$xml</code>解析为false时才会执行。</p>
 <h4 id="文件">文件</h4>
-
 <p>使用<code>simplexml_load_file</code>从一个文件地址加载数据：</p>
-
-<pre><code class="language-php">$xml = simplexml_load_string(&quot;filePath.xml&quot;);
-$xml = simplexml_load_string(&quot;https://example.com/doc.xml&quot;);
-</code></pre>
-
-<p>这个URL可以是<a href="https://php.net/wrappers">任何PHP支持的格式</a>，或者自定义的流封装。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$xml = simplexml_load_string(&#34;filePath.xml&#34;);
+$xml = simplexml_load_string(&#34;https://example.com/doc.xml&#34;);
+</code></pre></div><p>这个URL可以是<a href="https://php.net/wrappers">任何PHP支持的格式</a>，或者自定义的流封装。</p>
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -296,6 +280,12 @@ $xml = simplexml_load_string(&quot;https://example.com/doc.xml&quot;);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,129 +187,98 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#enum">ENUM</a>
-<ul>
-<li><a href="#1-什么是enum">1. 什么是ENUM？</a></li>
-<li><a href="#2-varchar是一种可选方案">2. VARCHAR是一种可选方案</a></li>
-<li><a href="#3-添加一个选项">3. 添加一个选项</a></li>
-<li><a href="#4-null-vs-not-null">4. NULL VS NOT NULL</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#enum">ENUM</a>
+      <ul>
+        <li><a href="#1-什么是enum">1. 什么是ENUM？</a></li>
+        <li><a href="#2-varchar是一种可选方案">2. VARCHAR是一种可选方案</a></li>
+        <li><a href="#3-添加一个选项">3. 添加一个选项</a></li>
+        <li><a href="#4-null-vs-not-null">4. NULL VS NOT NULL</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="enum">ENUM</h2>
-
+        		<h2 id="enum">ENUM</h2>
 <h3 id="1-什么是enum">1. 什么是ENUM？</h3>
-
 <p>ENUM提供了一个为一行数据增加属性的功能。具有少量非数字选项的属性效果最好。例子：</p>
-
-<pre><code class="language-mysql">reply ENUM('yes', 'no')
-gender ENUM('male', 'female', 'other', 'decline-to-state')
-</code></pre>
-
-<p>它们的值是字符串：</p>
-
-<pre><code class="language-mysql"> INSERT ... VALUES ('yes', 'female') 
- SELECT ... --&gt; yes female
-</code></pre>
-
-<h3 id="2-varchar是一种可选方案">2. VARCHAR是一种可选方案</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">reply <span style="color:#66d9ef">ENUM</span>(<span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>)
+gender <span style="color:#66d9ef">ENUM</span>(<span style="color:#e6db74">&#39;male&#39;</span>, <span style="color:#e6db74">&#39;female&#39;</span>, <span style="color:#e6db74">&#39;other&#39;</span>, <span style="color:#e6db74">&#39;decline-to-state&#39;</span>)
+</code></pre></div><p>它们的值是字符串：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"> <span style="color:#66d9ef">INSERT</span> ... <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;female&#39;</span>) 
+ <span style="color:#66d9ef">SELECT</span> ... <span style="color:#f92672">--&gt;</span> yes female
+</code></pre></div><h3 id="2-varchar是一种可选方案">2. VARCHAR是一种可选方案</h3>
 <p>假设我们有下面的内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">type <span style="color:#66d9ef">ENUM</span>(<span style="color:#e6db74">&#39;fish&#39;</span>, <span style="color:#e6db74">&#39;mammal&#39;</span>, <span style="color:#e6db74">&#39;bird&#39;</span>);
 
-<pre><code class="language-mysql">type ENUM('fish', 'mammal', 'bird');
-
--- 下面是另一种方案
-type VARCHAR(20) COMENT 'fish,mammal,bird等等'
-</code></pre>
-
-<p>这是相当开放的，因为新的类型是很容易添加的。</p>
-
+<span style="color:#75715e">-- 下面是另一种方案
+</span><span style="color:#75715e"></span>type <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">20</span>) COMENT <span style="color:#e6db74">&#39;fish,mammal,bird等等&#39;</span>
+</code></pre></div><p>这是相当开放的，因为新的类型是很容易添加的。</p>
 <p>比较，以及是否比枚举更好或更差：</p>
-
 <ul>
 <li>(相同) INSERT:简单的提供相同的字符串</li>
 <li>(更糟？) INSERT：拼写错误可能注意不到</li>
 <li>(相同) SELECT：返回实际的字符串</li>
 <li>(更坏) 需要更多的存储空间。</li>
 </ul>
-
 <h3 id="3-添加一个选项">3. 添加一个选项</h3>
-
-<pre><code class="language-mysql">ALTER TABLE tbl MODIFY COLUMN type ENUM('fish','mammal','bird','insect');
-</code></pre>
-
-<p>注意：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> tbl MODIFY <span style="color:#66d9ef">COLUMN</span> type <span style="color:#66d9ef">ENUM</span>(<span style="color:#e6db74">&#39;fish&#39;</span>,<span style="color:#e6db74">&#39;mammal&#39;</span>,<span style="color:#e6db74">&#39;bird&#39;</span>,<span style="color:#e6db74">&#39;insect&#39;</span>);
+</code></pre></div><p>注意：</p>
 <ul>
 <li>和其他的<code>MODIFY COLUMN</code>一样，你需要包含<code>NOT NULL</code>，以及任何其他之前拥有的限定符，不然会丢失一些东西</li>
 <li>如果添加在列表的末尾，并且列表的数量小于256个，<code>ALTER</code>操作将会正常执行修改表结构的操作。也就是说，不会有冗长的表副本。（旧版本的MySQL没有这种优化。）</li>
 </ul>
-
 <h3 id="4-null-vs-not-null">4. NULL VS NOT NULL</h3>
-
-<p>下面是当NULL和&rsquo;错误值&rsquo;存储到NULLable和非NULL时什么将会发生的例子。也展示了通过+0来转换为数字的操作。</p>
-
-<pre><code class="language-mysql">CREATE TABLE enum (
-    e ENUM('yes', 'no') NOT NULL, 
-    enull ENUM('x', 'y', 'z') NULL
+<p>下面是当NULL和'错误值'存储到NULLable和非NULL时什么将会发生的例子。也展示了通过+0来转换为数字的操作。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">enum</span> (
+    e <span style="color:#66d9ef">ENUM</span>(<span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;no&#39;</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, 
+    enull <span style="color:#66d9ef">ENUM</span>(<span style="color:#e6db74">&#39;x&#39;</span>, <span style="color:#e6db74">&#39;y&#39;</span>, <span style="color:#e6db74">&#39;z&#39;</span>) <span style="color:#66d9ef">NULL</span>
   );
   
-INSERT INTO enum (e, enull)
-    VALUES
-        ('yes', 'x'),
-        ('no', 'y'),
-        (NULL, NULL), 
-        ('bad-value', 'bad-value');
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#66d9ef">enum</span> (e, enull)
+    <span style="color:#66d9ef">VALUES</span>
+        (<span style="color:#e6db74">&#39;yes&#39;</span>, <span style="color:#e6db74">&#39;x&#39;</span>),
+        (<span style="color:#e6db74">&#39;no&#39;</span>, <span style="color:#e6db74">&#39;y&#39;</span>),
+        (<span style="color:#66d9ef">NULL</span>, <span style="color:#66d9ef">NULL</span>), 
+        (<span style="color:#e6db74">&#39;bad-value&#39;</span>, <span style="color:#e6db74">&#39;bad-value&#39;</span>);
 
- Query OK, 4 rows affected, 3 warnings (0.00 sec)
- Records: 4  Duplicates: 0  Warnings: 3
+ Query OK, <span style="color:#ae81ff">4</span> rows affected, <span style="color:#ae81ff">3</span> <span style="color:#a6e22e">warnings</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+ Records: <span style="color:#ae81ff">4</span>  Duplicates: <span style="color:#ae81ff">0</span>  Warnings: <span style="color:#ae81ff">3</span>
  
- mysql&gt;SHOW WARNINGS;
- +---------+------+--------------------------------------------+
- | Level   | Code | Message                                    |
- +---------+------+--------------------------------------------+
- | Warning | 1048 | Column 'e' cannot be null                  |
- | Warning | 1265 | Data truncated for column 'e' at row 4     |
- | Warning | 1265 | Data truncated for column 'enull' at row 4 |
- +---------+------+--------------------------------------------+
- 3 rows in set (0.00 sec)
-</code></pre>
+ mysql<span style="color:#f92672">&gt;</span><span style="color:#66d9ef">SHOW</span> WARNINGS;
+ <span style="color:#f92672">+---------+------+--------------------------------------------+</span>
+ <span style="color:#f92672">|</span> Level   <span style="color:#f92672">|</span> Code <span style="color:#f92672">|</span> Message                                    <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+---------+------+--------------------------------------------+</span>
+ <span style="color:#f92672">|</span> Warning <span style="color:#f92672">|</span> <span style="color:#ae81ff">1048</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">Column</span> <span style="color:#e6db74">&#39;e&#39;</span> cannot be <span style="color:#66d9ef">null</span>                  <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> Warning <span style="color:#f92672">|</span> <span style="color:#ae81ff">1265</span> <span style="color:#f92672">|</span> Data truncated <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">column</span> <span style="color:#e6db74">&#39;e&#39;</span> at row <span style="color:#ae81ff">4</span>     <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> Warning <span style="color:#f92672">|</span> <span style="color:#ae81ff">1265</span> <span style="color:#f92672">|</span> Data truncated <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">column</span> <span style="color:#e6db74">&#39;enull&#39;</span> at row <span style="color:#ae81ff">4</span> <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+---------+------+--------------------------------------------+</span>
+ <span style="color:#ae81ff">3</span> rows <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+</code></pre></div><p>INSERT语句之后表中存储什么内容呢，这里使用&quot;+0&quot;转换数字来看看表里面存储了什么内。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> e, e<span style="color:#f92672">+</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">FROM</span> <span style="color:#66d9ef">enum</span>;
 
-<p>INSERT语句之后表中存储什么内容呢，这里使用&rdquo;+0&rdquo;转换数字来看看表里面存储了什么内。</p>
+<span style="color:#f92672">+-----+-----+</span>
+<span style="color:#f92672">|</span> e   <span style="color:#f92672">|</span> e<span style="color:#f92672">+</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">+-----+-----+</span>
+<span style="color:#f92672">|</span> yes <span style="color:#f92672">|</span>   <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> no  <span style="color:#f92672">|</span>   <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>     <span style="color:#f92672">|</span>   <span style="color:#ae81ff">0</span> <span style="color:#f92672">|</span> <span style="color:#75715e">-- NULL 
+</span><span style="color:#75715e"></span><span style="color:#f92672">|</span>     <span style="color:#f92672">|</span>   <span style="color:#ae81ff">0</span> <span style="color:#f92672">|</span> <span style="color:#75715e">-- &#39;bad-value&#39;
+</span><span style="color:#75715e"></span><span style="color:#f92672">+-----+-----+</span>
 
-<pre><code class="language-mysql">mysql&gt; SELECT e, e+0 FROM enum;
+<span style="color:#ae81ff">4</span> rows <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
 
-+-----+-----+
-| e   | e+0 |
-+-----+-----+
-| yes |   1 |
-| no  |   2 |
-|     |   0 | -- NULL 
-|     |   0 | -- 'bad-value'
-+-----+-----+
-
-4 rows in set (0.00 sec)
-
-mysql&gt;SELECT enull, enull+0 FROM enum;
-+-------+---------+
-| enull | enull+0 | 
-+-------+---------+
-|     x |       1 |
-|     y |       2 |
-|  NULL |    NULL |
-|       |       0 | -- 'bad-value' 
-+-------+---------+
-4 rows in set (0.00 sec)
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+mysql<span style="color:#f92672">&gt;</span><span style="color:#66d9ef">SELECT</span> enull, enull<span style="color:#f92672">+</span><span style="color:#ae81ff">0</span> <span style="color:#66d9ef">FROM</span> <span style="color:#66d9ef">enum</span>;
+<span style="color:#f92672">+-------+---------+</span>
+<span style="color:#f92672">|</span> enull <span style="color:#f92672">|</span> enull<span style="color:#f92672">+</span><span style="color:#ae81ff">0</span> <span style="color:#f92672">|</span> 
+<span style="color:#f92672">+-------+---------+</span>
+<span style="color:#f92672">|</span>     x <span style="color:#f92672">|</span>       <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>     y <span style="color:#f92672">|</span>       <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>  <span style="color:#66d9ef">NULL</span> <span style="color:#f92672">|</span>    <span style="color:#66d9ef">NULL</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span>       <span style="color:#f92672">|</span>       <span style="color:#ae81ff">0</span> <span style="color:#f92672">|</span> <span style="color:#75715e">-- &#39;bad-value&#39; 
+</span><span style="color:#75715e"></span><span style="color:#f92672">+-------+---------+</span>
+<span style="color:#ae81ff">4</span> rows <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -377,6 +350,12 @@ mysql&gt;SELECT enull, enull+0 FROM enum;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

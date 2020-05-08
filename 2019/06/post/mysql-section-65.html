@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,138 +187,87 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#修改密码">修改密码</a>
-<ul>
-<li><a href="#1-linux上面修改mysql-root的密码">1. Linux上面修改MySQL root的密码</a></li>
-<li><a href="#2-windows修改mysql-root密码">2. Windows修改MySQL root密码</a></li>
-<li><a href="#3-处理过程">3. 处理过程</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#修改密码">修改密码</a>
+      <ul>
+        <li><a href="#1-linux上面修改mysql-root的密码">1. Linux上面修改MySQL root的密码</a></li>
+        <li><a href="#2-windows修改mysql-root密码">2. Windows修改MySQL root密码</a></li>
+        <li><a href="#3-处理过程">3. 处理过程</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="修改密码">修改密码</h2>
-
+        		<h2 id="修改密码">修改密码</h2>
 <h3 id="1-linux上面修改mysql-root的密码">1. Linux上面修改MySQL root的密码</h3>
-
 <p>修改MySQL root用户的密码：</p>
-
-<p><strong>步骤1：</strong>停止MySQL服务器</p>
-
+<p>**步骤1：**停止MySQL服务器</p>
 <ul>
-<li>在Ubuntu或Debian</li>
+<li>
+<p>在Ubuntu或Debian</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo /etc/init.d/mysql stop
+</code></pre></div></li>
+<li>
+<p>在CentOS，Fedora或Red Hat Enterprise Linux</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo /etc/init.d/mysqld stop
+</code></pre></div></li>
 </ul>
-
-<pre><code class="language-shell">  sudo /etc/init.d/mysql stop
-</code></pre>
-
-<ul>
-<li>在CentOS，Fedora或Red Hat Enterprise Linux</li>
-</ul>
-
-<pre><code class="language-shell">  sudo /etc/init.d/mysqld stop
-</code></pre>
-
-<p><strong>步骤2：</strong>不带权限系统开启MySQL服务器</p>
-
-<pre><code class="language-shell">sudo mysqld_safe --skip-grant-tables &amp;
-</code></pre>
-
-<p>或者，如果<code>mysqld_safe</code>不可用</p>
-
-<pre><code class="language-shell">sudo mysqld --skip-grant-tables &amp;
-</code></pre>
-
-<p><strong>步骤3：</strong>连接MySQL服务器</p>
-
-<pre><code class="language-shell">mysql -u root 
-</code></pre>
-
-<p><strong>步骤4：</strong>为root用户设置新密码</p>
-
+<p>**步骤2：**不带权限系统开启MySQL服务器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mysqld_safe --skip-grant-tables &amp;
+</code></pre></div><p>或者，如果<code>mysqld_safe</code>不可用</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo mysqld --skip-grant-tables &amp;
+</code></pre></div><p>**步骤3：**连接MySQL服务器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql -u root 
+</code></pre></div><p>**步骤4：**为root用户设置新密码</p>
 <p>Version&gt;5.7</p>
-
-<pre><code class="language-mysql">FLUSH PRIVILEGES;
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password';
-FLUSH PRIVILEGES;
-exit;
-</code></pre>
-
-<p>Version&lt;=5.7</p>
-
-<pre><code class="language-mysql">FLUSH PRIVILEGES;
-SET PASSWORD FOR 'root'@'localhost'=PASSWORD('new_password');
-FLUSH PRIVILEGES;
-exit;
-</code></pre>
-
-<p>注意：<code>ALTER USER</code>的语法是在MySQL5.7.6提供的。</p>
-
-<p><strong>步骤5：</strong>重启MySQL服务器</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">FLUSH</span> <span style="color:#66d9ef">PRIVILEGES</span>;
+<span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;root&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span> <span style="color:#66d9ef">IDENTIFIED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;new_password&#39;</span>;
+<span style="color:#66d9ef">FLUSH</span> <span style="color:#66d9ef">PRIVILEGES</span>;
+<span style="color:#66d9ef">exit</span>;
+</code></pre></div><p>Version&lt;=5.7</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">FLUSH</span> <span style="color:#66d9ef">PRIVILEGES</span>;
+<span style="color:#66d9ef">SET</span> PASSWORD <span style="color:#66d9ef">FOR</span> <span style="color:#e6db74">&#39;root&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span><span style="color:#f92672">=</span><span style="color:#a6e22e">PASSWORD</span>(<span style="color:#e6db74">&#39;new_password&#39;</span>);
+<span style="color:#66d9ef">FLUSH</span> <span style="color:#66d9ef">PRIVILEGES</span>;
+<span style="color:#66d9ef">exit</span>;
+</code></pre></div><p>注意：<code>ALTER USER</code>的语法是在MySQL5.7.6提供的。</p>
+<p>**步骤5：**重启MySQL服务器</p>
 <ul>
-<li>在Ubuntu或Debian上</li>
+<li>
+<p>在Ubuntu或Debian上</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo /etc/init.d/mysql stop
+sudo /etc/init.d/mysql start
+</code></pre></div></li>
+<li>
+<p>在CentOS，Fedora或Red Hat Enterprise Linux</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo /etc/init.d/mysqld stop
+sudo /etc/init.d/mysqld start
+</code></pre></div></li>
 </ul>
-
-<pre><code class="language-shell">  sudo /etc/init.d/mysql stop
-  sudo /etc/init.d/mysql start
-</code></pre>
-
-<ul>
-<li>在CentOS，Fedora或Red Hat Enterprise Linux</li>
-</ul>
-
-<pre><code class="language-shell">  sudo /etc/init.d/mysqld stop
-  sudo /etc/init.d/mysqld start
-</code></pre>
-
 <h3 id="2-windows修改mysql-root密码">2. Windows修改MySQL root密码</h3>
-
 <p>当我们想要在Windows上面修改root的密码的时候，我们需要执行下面的步骤：</p>
-
-<p><strong>步骤1：</strong>使用下面的任意方式开启命令行终端</p>
-
+<p>**步骤1：**使用下面的任意方式开启命令行终端</p>
 <p>按下<code>Ctrl+R</code>或者到<code>开始 &gt; 运行</code>，之后输入cmd，输入enter</p>
-
-<p><strong>步骤2：</strong>切换到MySQL按照的目录，</p>
-
-<pre><code class="language-powershell">C:\&gt; cd C:\mysql\bin
-</code></pre>
-
-<p><strong>步骤3：</strong>开始mysql输入命令行</p>
-
+<p>**步骤2：**切换到MySQL按照的目录，</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-powershell" data-lang="powershell">C:\&gt; cd C:\mysql\bin
+</code></pre></div><p>**步骤3：**开始mysql输入命令行</p>
 <pre><code>C:\mysql\bin&gt; mysql -u root mysql
-</code></pre>
-
-<p><strong>步骤4：</strong>使用下面的查询修改密码</p>
-
+</code></pre><p>**步骤4：**使用下面的查询修改密码</p>
 <pre><code>mysql&gt; SET PASSWORD FOR root@localhost=PASSWORD('my_new_password');
-</code></pre>
-
-<h3 id="3-处理过程">3. 处理过程</h3>
-
+</code></pre><h3 id="3-处理过程">3. 处理过程</h3>
 <ol>
 <li>停止MySQL(mysqld)服务器/守护进程</li>
 <li>使用<code>—skip-grant-tables</code>选项开启MySQL服务器，这样将不会要求输入密码：<code>mysqld_safe —skip-grant-tables &amp;</code></li>
 <li>使用<code>mysql -u root</code>使用root用户连接到MySQL</li>
 <li>修改密码
-
 <ul>
 <li>(5.7.6及之后)<code>ALTER USER 'root'@'localhost' IDENTIFIED BY 'new-password'</code></li>
 <li>(5.7.5及之前，或者MariaDB)<code>SET PASSWORD FOR 'root'@'localhost'=PASSWORD('new-password'); flush privileges;quit;</code></li>
-</ul></li>
+</ul>
+</li>
 <li>重启MySQL服务器</li>
 </ol>
-
 <p>注意：只有当你物理位于同一台机器时，才有效果。</p>
-
 <p>查看<a href="http://dev.mysql.com/doc/refman/5.7/en/resetting-permissions.html">手册</a>。</p>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -387,6 +340,12 @@ exit;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

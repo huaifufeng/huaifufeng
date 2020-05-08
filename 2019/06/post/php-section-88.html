@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,80 +187,50 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#psr">PSR</a>
-<ul>
-<li><a href="#1-psr-4-autoloader">1. PSR-4：Autoloader</a></li>
-<li><a href="#2-psr-1-基本代码标准">2. PSR-1 基本代码标准</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#psr">PSR</a>
+      <ul>
+        <li><a href="#1-psr-4autoloader">1. PSR-4：Autoloader</a></li>
+        <li><a href="#2-psr-1-基本代码标准">2. PSR-1 基本代码标准</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="psr">PSR</h2>
-
+        		<h2 id="psr">PSR</h2>
 <p><a href="https://www.php-fig.org/psr/">PSR</a>（PHP标准建议）是有<a href="https://www.php-fig.org/">FIG</a>（框架互操作组）组合在一起的一系列建议。</p>
-
 <p>&ldquo;该小组的想法是让项目代表讨论我们的项目之间的共性，并找到我们可以合作的方法。&rdquo; - <a href="https://www.php-fig.org/faqs/">FIG FAQ</a></p>
-
 <p>PSRs有下面的状态：Accepted, Review, Draft or Deprecated.</p>
-
-<h3 id="1-psr-4-autoloader">1. PSR-4：Autoloader</h3>
-
+<h3 id="1-psr-4autoloader">1. PSR-4：Autoloader</h3>
 <p><a href="https://www.php-fig.org/psr/psr-4/">PSR-4</a>是一个已接受的建议。它描述了通过文件名自动加载类的标准。这个建议是作为早起(已经废弃)<a href="https://www.php-fig.org/psr/psr-0/">PSR-0</a>的替代方案。</p>
-
 <p>完全限定的类名需要符合下面的要求：</p>
-
 <pre><code>  \&lt;NamespaceName&gt;(\&lt;SubNamespaceNames&gt;)*\&lt;ClassName&gt;
-</code></pre>
-
-<ul>
+</code></pre><ul>
 <li>它必须包含一个定义的第三方命名空间(例如<code>Alphabet</code>)</li>
 <li>它可能包含一个或多个子命名空间(例如<code>Google\AdWord</code>)</li>
 <li>它必须包含一个结尾的类名(例如<code>KeywordPlanner</code>)</li>
 </ul>
-
 <p>最后的类名就是<code>Alphabet\Google\AdWord\KeywordPlanner</code>。完全先定的类名应该也是有意义的文件路径，因此<code>Alphabet\Google\AdWord\KeywordPlanner</code>应该保存在<code>Alphabet\Google\AdWord\KeywordPlanner.php</code>中。</p>
-
 <p>从PHP5.3开始，<a href="https://www.php.net/manual/zh/function.spl-autoload-register.php">自定义加载器方法</a>可以用来定义基于你定义的路径和文件名格式来来加载文件的方法。</p>
-
 <pre><code>spl_autoload_register(function ($class) { include 'classes/' . $class . '.class.php';});
-</code></pre>
-
-<p>替换其中路径<code>classes/</code>和文件扩展<code>.class.php</code>为你自己的结构。</p>
-
+</code></pre><p>替换其中路径<code>classes/</code>和文件扩展<code>.class.php</code>为你自己的结构。</p>
 <p>Composer包管理器<a href="https://getcomposer.org/doc/01-basic-usage.md#autoloading">支持PSR-4</a>，这意味着，如果你遵循这个标准的话，使用Composer的第三方加载器自动加载你的项目的类。</p>
-
-<pre><code class="language-json">//修改composer.json文件
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">//修改composer.json文件</span>
 {
-    &quot;autoload&quot;: {
-        &quot;psr-4&quot;: {
-            &quot;Alphabet\\&quot;: &quot;[path_to_source]&quot;
+    <span style="color:#f92672">&#34;autoload&#34;</span>: {
+        <span style="color:#f92672">&#34;psr-4&#34;</span>: {
+            <span style="color:#f92672">&#34;Alphabet\\&#34;</span>: <span style="color:#e6db74">&#34;[path_to_source]&#34;</span>
         }
     }
 }
-</code></pre>
-
-<p>重新生成加载器文件：</p>
-
+</code></pre></div><p>重新生成加载器文件：</p>
 <pre><code>$ composer dump-autoload
-</code></pre>
-
-<p>现在你的代码你可以像下面这样：</p>
-
-<pre><code class="language-php">&lt;?php
-require __DIR__ . '/vendor/autoload.php';
-$KeywordPlanner = new Alphabet\Google\AdWord\KeywordPlanner();
-</code></pre>
-
-<h3 id="2-psr-1-基本代码标准">2. PSR-1 基本代码标准</h3>
-
+</code></pre><p>现在你的代码你可以像下面这样：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">require</span> <span style="color:#66d9ef">__DIR__</span> <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;/vendor/autoload.php&#39;</span>;
+$KeywordPlanner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Alphabet\Google\AdWord\KeywordPlanner</span>();
+</code></pre></div><h3 id="2-psr-1-基本代码标准">2. PSR-1 基本代码标准</h3>
 <p><a href="http://www.php-fig.org/psr/psr-1/">PSR-1</a>是已经接受的建议，介绍代码应该怎么编写的基本建议标准。</p>
-
 <ul>
 <li>它说明了类，方法和常量的命名规则</li>
 <li>它要求采用PSR-0或PSR-4</li>
@@ -264,7 +238,6 @@ $KeywordPlanner = new Alphabet\Google\AdWord\KeywordPlanner();
 <li>它指明了应该使用什么文件编码(UTF8)</li>
 <li>它还指出，文件应该声明新的符号（类，函数，常量等），并且没有造成其他的副作用，或者执行带有副作用的逻辑，而不是定义符号，但两者都做。</li>
 </ul>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -337,6 +310,12 @@ $KeywordPlanner = new Alphabet\Google\AdWord\KeywordPlanner();
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

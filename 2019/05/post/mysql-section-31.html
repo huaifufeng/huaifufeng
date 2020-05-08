@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,87 +187,59 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#索引和键">索引和键</a>
-<ul>
-<li><a href="#1-创建索引">1. 创建索引</a></li>
-<li><a href="#2-创建唯一索引">2. 创建唯一索引</a></li>
-<li><a href="#3-auto-increment键">3. AUTO_INCREMENT键</a></li>
-<li><a href="#4-创建组合索引">4. 创建组合索引</a></li>
-<li><a href="#5-删除索引">5. 删除索引</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#索引和键">索引和键</a>
+      <ul>
+        <li><a href="#1-创建索引">1. 创建索引</a></li>
+        <li><a href="#2-创建唯一索引">2. 创建唯一索引</a></li>
+        <li><a href="#3-auto_increment键">3. AUTO_INCREMENT键</a></li>
+        <li><a href="#4-创建组合索引">4. 创建组合索引</a></li>
+        <li><a href="#5-删除索引">5. 删除索引</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="索引和键">索引和键</h2>
-
+        		<h2 id="索引和键">索引和键</h2>
 <h3 id="1-创建索引">1. 创建索引</h3>
-
-<pre><code class="language-mysql">-- 创建my_table中name列的索引
-CREATE INDEX idx_name ON my_table(name);
-</code></pre>
-
-<h3 id="2-创建唯一索引">2. 创建唯一索引</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 创建my_table中name列的索引
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">INDEX</span> idx_name <span style="color:#66d9ef">ON</span> <span style="color:#a6e22e">my_table</span>(name);
+</code></pre></div><h3 id="2-创建唯一索引">2. 创建唯一索引</h3>
 <p>一个唯一索引用来避免在表中插入重复的数据。一个唯一索引的列可以插入多个<code>NULL</code>值(因为，默认情况下NULL是和其他值都不相同的，包括其他的NULL)。</p>
-
-<pre><code class="language-mysql">-- 创建my_table表中name列的唯一索引
-CREATE UNIQUE INDEX idex_name ON my_table(name);
-</code></pre>
-
-<h3 id="3-auto-increment键">3. AUTO_INCREMENT键</h3>
-
-<pre><code class="language-mysql">CREATE TABLE (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 创建my_table表中name列的唯一索引
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">UNIQUE</span> <span style="color:#66d9ef">INDEX</span> idex_name <span style="color:#66d9ef">ON</span> <span style="color:#a6e22e">my_table</span>(name);
+</code></pre></div><h3 id="3-auto_increment键">3. AUTO_INCREMENT键</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> (
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span>,
     ...
-    PRIMARY KEY(id),
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>(id),
     ...
 );
-</code></pre>
-
-<p>主要注意点：</p>
-
+</code></pre></div><p>主要注意点：</p>
 <ul>
 <li>从1开始并且自动增加1当你没有在<code>INSERT</code>语句中指定值，或者指定这个值为NULL</li>
 <li>这个id一直都是和其他的不一样的，但是</li>
 <li>不要对id进行假设(如没有间隙、连续生产、不重用等)，除了在任何时候都是唯一的。</li>
 </ul>
-
 <p>细微注意点：</p>
-
 <ul>
-<li>当重启服务器的时候，&rdquo;下一个&rdquo;值就是<code>MAX(id)+1</code>这么计算的</li>
+<li>当重启服务器的时候，&ldquo;下一个&quot;值就是<code>MAX(id)+1</code>这么计算的</li>
 <li>如果在系统关闭或崩溃之前的最后一个操作是删除最大的id值，这个id可能被重用(这根据引擎决定)。所以，不要详细自增量永久是唯一的，它们只是在任何时刻是唯一的。</li>
 <li>对弈多主机或集群解决方案，查看<code>auto_increment_offset</code>和<code>auto_increment_increment</code></li>
 <li>有些时候简单的使用<code>INDEX(id)</code>而不是<code>PRIMARY KEY</code>也是可以的。(这在某些情况下是有中性能提升)</li>
 <li>使用<code>AUTO_INCREMENT</code>作为<code>PARTITION key</code>是很少有好处的，所以不要这么做</li>
-<li>各种操作都可能&rdquo;毁坏&rdquo;值。这发送在当他们预分配的值，不要这么使用：<code>INSERT IGNORE(使用重复键)</code>，<code>REPLACE(这等价于DELETE加上INSERT)</code>，和其他的操作。<code>ROLLBACK</code>是另外造成id间隙的操作。</li>
+<li>各种操作都可能&quot;毁坏&quot;值。这发送在当他们预分配的值，不要这么使用：<code>INSERT IGNORE(使用重复键)</code>，<code>REPLACE(这等价于DELETE加上INSERT)</code>，和其他的操作。<code>ROLLBACK</code>是另外造成id间隙的操作。</li>
 <li>在主从复制过程中，不能信任ID以升序到达从服务器。尽管ID是按照练习顺序分配的，但是InnoDB是按照提交顺序发送到从系统的。</li>
 </ul>
-
 <h3 id="4-创建组合索引">4. 创建组合索引</h3>
-
 <p>这将会在两个键上面创建联合索引，<code>mystring</code>和<code>mydatetime</code>，提升在这两个键上面的WHERE查询的速度。</p>
-
-<pre><code class="language-mysql">CREATE INDEX idx_mmycol_myothercol ON my_table(mycol, myothercol);
-</code></pre>
-
-<p><strong>注意：</strong>这个顺序是很重要的！如果在查下语句的<code>WHERE</code>条件中没有包含这两个列，那将会用到最左的索引。在这样的情况下，当查询的WHERE语句中包括<code>mycol</code>将会使用这个索引，一个查询包含<code>myothercol</code>将不会使用索引。详细信息查看<a href="https://www.percona.com/blog/2009/06/05/a-rule-of-thumb-for-choosing-column-order-in-indexes/">这个blog</a>。</p>
-
-<p><strong>注意：</strong>由于btree的工作方式，通常在范围内查询的列应该是最右边的值。例如，<code>DATETIME</code>的列经常是像<code>WHERE datecol &gt; '2016-01-01 00:00:00'</code>这样查询的。btree索引非常有效地处理范围，但前提是作为范围查询的列是复合索引中的最后一个列。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">INDEX</span> idx_mmycol_myothercol <span style="color:#66d9ef">ON</span> <span style="color:#a6e22e">my_table</span>(mycol, myothercol);
+</code></pre></div><p>**注意：**这个顺序是很重要的！如果在查下语句的<code>WHERE</code>条件中没有包含这两个列，那将会用到最左的索引。在这样的情况下，当查询的WHERE语句中包括<code>mycol</code>将会使用这个索引，一个查询包含<code>myothercol</code>将不会使用索引。详细信息查看<a href="https://www.percona.com/blog/2009/06/05/a-rule-of-thumb-for-choosing-column-order-in-indexes/">这个blog</a>。</p>
+<p>**注意：**由于btree的工作方式，通常在范围内查询的列应该是最右边的值。例如，<code>DATETIME</code>的列经常是像<code>WHERE datecol &gt; '2016-01-01 00:00:00'</code>这样查询的。btree索引非常有效地处理范围，但前提是作为范围查询的列是复合索引中的最后一个列。</p>
 <h3 id="5-删除索引">5. 删除索引</h3>
-
-<pre><code class="language-mysql">-- 删除my_table表中name列的索引
-DROP INDEX idx_name ON my_table;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 删除my_table表中name列的索引
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">INDEX</span> idx_name <span style="color:#66d9ef">ON</span> my_table;
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -335,6 +311,12 @@ DROP INDEX idx_name ON my_table;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

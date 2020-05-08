@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,36 +187,25 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#union">Union</a>
-<ul>
-<li><a href="#1-union运算符">1. Union运算符</a></li>
-<li><a href="#2-union-all">2. Union ALL</a></li>
-<li><a href="#3-union-all使用where">3. Union ALL使用WHERE</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#union">Union</a>
+      <ul>
+        <li><a href="#1-union运算符">1. Union运算符</a></li>
+        <li><a href="#2-union-all">2. Union ALL</a></li>
+        <li><a href="#3-union-all使用where">3. Union ALL使用WHERE</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="union">Union</h2>
-
+        		<h2 id="union">Union</h2>
 <h3 id="1-union运算符">1. Union运算符</h3>
-
 <p>Union运算符用来把两个或多个SELECT语句的结果集(<em>只有非重复的值</em>)组合在一起。</p>
-
-<p><strong>查询：</strong>从&rdquo;Customers&rdquo;和&rdquo;Supplies&rdquo;表中查询不同的城市(只限非重复的值)</p>
-
-<pre><code class="language-mysql">SELECT City FROM Customers 
-UNION
-SELECT City FROM Suppliers ORDER BY City;
-</code></pre>
-
-<p><strong>结果：</strong></p>
-
+<p>**查询：**从&quot;Customers&quot;和&quot;Supplies&quot;表中查询不同的城市(只限非重复的值)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> City <span style="color:#66d9ef">FROM</span> Customers 
+<span style="color:#66d9ef">UNION</span>
+<span style="color:#66d9ef">SELECT</span> City <span style="color:#66d9ef">FROM</span> Suppliers <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> City;
+</code></pre></div><p><strong>结果：</strong></p>
 <pre><code>Number of Records: 10
 
 City
@@ -227,21 +220,13 @@ Bend
 Bergamo
 Berlin
 Bern
-</code></pre>
-
-<h3 id="2-union-all">2. Union ALL</h3>
-
-<p><code>Union ALL</code>从&rdquo;Customers&rdquo;和&rdquo;Suppliers&rdquo;两个表中查到所有的值(包括重复的值)。</p>
-
+</code></pre><h3 id="2-union-all">2. Union ALL</h3>
+<p><code>Union ALL</code>从&quot;Customers&quot;和&quot;Suppliers&quot;两个表中查到所有的值(包括重复的值)。</p>
 <p>查询：</p>
-
-<pre><code class="language-mysql">SELECT City FROM Customers 
-UNION ALL
-SELECT City FROM Suppliers ORDER BY City;
-</code></pre>
-
-<p>结果：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> City <span style="color:#66d9ef">FROM</span> Customers 
+<span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
+<span style="color:#66d9ef">SELECT</span> City <span style="color:#66d9ef">FROM</span> Suppliers <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> City;
+</code></pre></div><p>结果：</p>
 <pre><code>Number of Records: 12
 
 City
@@ -258,22 +243,14 @@ Bergamo
 Berlin
 Berlin 
 Bern
-</code></pre>
-
-<h3 id="3-union-all使用where">3. Union ALL使用WHERE</h3>
-
-<p><code>Union ALL</code>从&rdquo;Customers&rdquo;和&rdquo;Suppliers&rdquo;两个表中查询所有的德国城市(包括重复的值)。这里使用<code>Country=&quot;Germany&quot;</code>来指定筛选条件。</p>
-
+</code></pre><h3 id="3-union-all使用where">3. Union ALL使用WHERE</h3>
+<p><code>Union ALL</code>从&quot;Customers&quot;和&quot;Suppliers&quot;两个表中查询所有的德国城市(包括重复的值)。这里使用<code>Country=&quot;Germany&quot;</code>来指定筛选条件。</p>
 <p>查询：</p>
-
-<pre><code class="language-mysql">SELECT City, Country FROM Customers WHERE Country='Germany'
-UNION ALL
-SELECT City, Country FROM Suppliers WHERE Country='Germany'
-ORDER BY City;
-</code></pre>
-
-<p>结果：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> City, Country <span style="color:#66d9ef">FROM</span> Customers <span style="color:#66d9ef">WHERE</span> Country<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Germany&#39;</span>
+<span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
+<span style="color:#66d9ef">SELECT</span> City, Country <span style="color:#66d9ef">FROM</span> Suppliers <span style="color:#66d9ef">WHERE</span> Country<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Germany&#39;</span>
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> City;
+</code></pre></div><p>结果：</p>
 <pre><code> Number of Records: 14
  
   City          Country
@@ -291,9 +268,7 @@ Mannheim        Germany
 München         Germany
 Münster         Germany
 Stuttgart       Germany
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -365,6 +340,12 @@ Stuttgart       Germany
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

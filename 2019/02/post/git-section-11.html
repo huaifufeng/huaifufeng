@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,143 +187,87 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#别名">别名</a>
-<ul>
-<li><a href="#简单别名">简单别名</a></li>
-<li><a href="#显示搜索别名">显示搜索别名</a>
-<ul>
-<li><a href="#搜索别名">搜索别名</a></li>
-</ul></li>
-<li><a href="#高级别名">高级别名</a></li>
-<li><a href="#临时忽略追踪文件">临时忽略追踪文件</a></li>
-<li><a href="#分支图显示好看的日志">分支图显示好看的日志</a></li>
-<li><a href="#查看-gitignore忽略的文件">查看.gitignore忽略的文件</a></li>
-<li><a href="#在保持线性历史的同时更新代码">在保持线性历史的同时更新代码</a></li>
-<li><a href="#取消暂存文件">取消暂存文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#别名">别名</a>
+      <ul>
+        <li><a href="#简单别名">简单别名</a></li>
+        <li><a href="#显示搜索别名">显示搜索别名</a></li>
+        <li><a href="#高级别名">高级别名</a></li>
+        <li><a href="#临时忽略追踪文件">临时忽略追踪文件</a></li>
+        <li><a href="#分支图显示好看的日志">分支图显示好看的日志</a></li>
+        <li><a href="#查看gitignore忽略的文件">查看.gitignore忽略的文件</a></li>
+        <li><a href="#在保持线性历史的同时更新代码">在保持线性历史的同时更新代码</a></li>
+        <li><a href="#取消暂存文件">取消暂存文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="别名">别名</h2>
-
+        		<h2 id="别名">别名</h2>
 <h3 id="简单别名">简单别名</h3>
-
 <p>有两种方法来创建Git别名：</p>
-
 <ul>
-<li><p>编辑<code>~/.gitconfig</code>文件：</p>
-
+<li>
+<p>编辑<code>~/.gitconfig</code>文件：</p>
 <pre><code>[alias]
 ci = commit 
 st = status 
 co = checkout
 </code></pre></li>
-
-<li><p>使用命令行：</p>
-
+<li>
+<p>使用命令行：</p>
 <pre><code>git config --global alias.ci &quot;commit&quot; 
 git config --global alias.st &quot;status&quot; 
 git config --global alias.co &quot;checkout&quot;
 </code></pre></li>
 </ul>
-
 <p>在别名创建之后：</p>
-
 <ul>
 <li><code>git ci</code>就是<code>git commit</code></li>
 <li><code>git st</code>就是<code>git status</code></li>
 <li><code>git co</code>就是<code>git checkout</code></li>
 </ul>
-
 <p>像正常的命令一样，别名也可以使用参数，例如：</p>
-
 <pre><code> git ci -m &quot;Commit message...&quot; 
  git co -b feature-42
-</code></pre>
-
-<h3 id="显示搜索别名">显示搜索别名</h3>
-
+</code></pre><h3 id="显示搜索别名">显示搜索别名</h3>
 <p>你可以使用<code>--get-regexp</code>选项来<a href="https://stackoverflow.com/questions/7066325/list-git-aliases">列出所有的别名</a>：</p>
-
 <pre><code>$ git config --get-regexp '^alias\.'
-</code></pre>
-
-<h4 id="搜索别名">搜索别名</h4>
-
+</code></pre><h4 id="搜索别名">搜索别名</h4>
 <p>想要<a href="https://stackoverflow.com/questions/39466417/how-do-i-search-my-git-aliases/39466418#39466418">搜索别名</a>的话，在<code>.gitconfig</code>中添加下面的配置：</p>
-
 <pre><code>aliases = !git config --list | grep ^alias\\. | cut -c 7- | grep -Ei --color \&quot;$1\&quot; &quot;#&quot;
-</code></pre>
-
-<p>然后你就可以使用过下面的命令：</p>
-
+</code></pre><p>然后你就可以使用过下面的命令：</p>
 <ul>
 <li><code>git aliases</code>显示所有的别名</li>
 <li><code>git aliases commit</code>只显示包含commit的别名</li>
 </ul>
-
 <h3 id="高级别名">高级别名</h3>
-
 <p>Git允许你在别名中使用非Git命令和完全的shell语法，如果你在命令的签名使用！。在你的<code>~/.gitconfig</code>文件中添加下面的内容：</p>
-
 <pre><code>[alias]
 	temp = !git add -A &amp;&amp; git commit -m &quot;Temp&quot;
-</code></pre>
-
-<p>这在签名的别名中提供了完善的shell语法，意味着可以使用完整的shell函数来构建更加复杂的别名，例如使用过命令行参数的别名：</p>
-
+</code></pre><p>这在签名的别名中提供了完善的shell语法，意味着可以使用完整的shell函数来构建更加复杂的别名，例如使用过命令行参数的别名：</p>
 <pre><code>[alias]
     ignore = &quot;!f() { echo $1 &gt;&gt; .gitignore; }; f&quot;
-</code></pre>
-
-<p>上面的别名定义了一个<code>f</code>函数，可以运行这个命令带上不同的参数。<code>git ignore .tmp/</code>将会添加<code>.tmp/</code>文件夹到<code>.gitignore</code>文件中。</p>
-
+</code></pre><p>上面的别名定义了一个<code>f</code>函数，可以运行这个命令带上不同的参数。<code>git ignore .tmp/</code>将会添加<code>.tmp/</code>文件夹到<code>.gitignore</code>文件中。</p>
 <p>实际上，这个模式非常有用，Git为您定义了$1、$2等变量，因此您甚至不必为它定义特殊的函数。（但请记住，Git无论如何也会附加参数，即使您通过这些变量访问它，所以您可能希望在末尾添加一个虚拟命令。）</p>
-
 <p>注意带有！前缀的别名命令是在你迁出的项目的根目录执行的，即使你再代码树更深处的地方。这样在项目的根目录执行命令就不用显示的使用<code>cd</code>命令切换到具体的目录了。</p>
-
 <pre><code> [alias]
  	ignore = &quot;! echo $1 &gt;&gt; .gitignore&quot;
-</code></pre>
-
-<h3 id="临时忽略追踪文件">临时忽略追踪文件</h3>
-
+</code></pre><h3 id="临时忽略追踪文件">临时忽略追踪文件</h3>
 <p>临时标记文件为忽略的（在别名后面使用文件名）：</p>
-
 <pre><code>unwatch = update-index --assume-unchanged
-</code></pre>
-
-<p>重新追踪文件使用：</p>
-
+</code></pre><p>重新追踪文件使用：</p>
 <pre><code>watch = update-index --no-assume-unchanged
-</code></pre>
-
-<p>列出所有临时忽略的文件：</p>
-
+</code></pre><p>列出所有临时忽略的文件：</p>
 <pre><code>unwatched = &quot;!git ls-files -v | grep '^[[:lower:]]'&quot;
-</code></pre>
-
-<p>清除临时忽略的列表：</p>
-
+</code></pre><p>清除临时忽略的列表：</p>
 <pre><code>watchall = &quot;!git unwatched | xargs -L 1 -I % sh -c 'git watch `echo % | cut -c 2-`'&quot;
-</code></pre>
-
-<p>下面是这些别名的使用例子：</p>
-
+</code></pre><p>下面是这些别名的使用例子：</p>
 <pre><code>git unwatch my_file.txt 
 git watch my_file.txt 
 git unwatched
 git watchall
-</code></pre>
-
-<h3 id="分支图显示好看的日志">分支图显示好看的日志</h3>
-
+</code></pre><h3 id="分支图显示好看的日志">分支图显示好看的日志</h3>
 <pre><code>[alias]
   logp=log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
   lg =  log --graph --date-order --first-parent \
@@ -330,79 +278,41 @@ cyan)&lt;%an&gt;%Creset'
  lga = log --graph --date-order --all \
    --pretty=format:'%C(auto)%h%Creset %C(auto)%d%Creset %s %C(green)(%ad) %C(bold
 cyan)&lt;%an&gt;%Creset'
-</code></pre>
-
-<p>下面是<code>--pretty</code>选项使用的选项和占位符的含义介绍（<code>git help log</code>这个命令可以查看详细信息）：</p>
-
+</code></pre><p>下面是<code>--pretty</code>选项使用的选项和占位符的含义介绍（<code>git help log </code>这个命令可以查看详细信息）：</p>
 <p><code>--graph</code>显示提交树。</p>
-
 <p><code>--date-order</code>可能的话按照提交的时间戳排序。</p>
-
-<p><code>--first-parent</code>在merge的提交上只显示第一级父</p>
-
+<p><code>--first-parent </code>在merge的提交上只显示第一级父</p>
 <p><code>--branches</code>显示所有的本地分支（默认只显示当前分支）</p>
-
-<p><code>--all</code>显示所有的本地和远端分支</p>
-
+<p><code>--all </code>显示所有的本地和远端分支</p>
 <p><code>%h</code>显示hash值</p>
-
 <p><code>%ad</code>作者的日期戳</p>
-
 <p><code>%an</code>作者名称</p>
-
-<p><code>%C(auto)</code>使用[color]模块定义的颜色</p>
-
-<p><code>%Creset</code>重置这个颜色</p>
-
-<p><code>%d</code>装饰（分支和标记名称）</p>
-
+<p><code>%C(auto) </code>使用[color]模块定义的颜色</p>
+<p><code>%Creset </code>重置这个颜色</p>
+<p><code>%d </code>装饰（分支和标记名称）</p>
 <p><code>%s</code>提交的信息</p>
-
 <p><code>%ad</code>作者日期（和<code>--date</code>选项效果一样，不是提交者日期）</p>
-
-<h3 id="查看-gitignore忽略的文件">查看.gitignore忽略的文件</h3>
-
+<h3 id="查看gitignore忽略的文件">查看.gitignore忽略的文件</h3>
 <pre><code>[ alias ]
 	ignored = ! git ls-files --others --ignored --exclude-standard --directory \ &amp;&amp; git 		ls-files --others -i --exclude-standard
-</code></pre>
-
-<p>想要一行显示一个的话，可以使用<code>grep</code>命令（只是文件夹）：</p>
-
+</code></pre><p>想要一行显示一个的话，可以使用<code>grep</code>命令（只是文件夹）：</p>
 <pre><code>$ git ignored | grep '/$' 
 .yardoc/
 doc/
-</code></pre>
-
-<p>或者统计文件数量：</p>
-
+</code></pre><p>或者统计文件数量：</p>
 <pre><code>$ git ignored | wc -l
 199811   # oops, my home directory is getting crowded
-</code></pre>
-
-<h3 id="在保持线性历史的同时更新代码">在保持线性历史的同时更新代码</h3>
-
+</code></pre><h3 id="在保持线性历史的同时更新代码">在保持线性历史的同时更新代码</h3>
 <p>有时候你想要为你代码的提交保持一个线性的历史。如果你在一个分支上工作了一段时间，现在需要<code>git pull</code>一个分支到本地，这回创建一个merge提交。</p>
-
 <pre><code> [alias]
   	up = pull --rebase
-</code></pre>
-
-<p>这将会更新上游的源，把所有本地未提交的工作放到你pull下了的工作的最开头。</p>
-
+</code></pre><p>这将会更新上游的源，把所有本地未提交的工作放到你pull下了的工作的最开头。</p>
 <p>可以使用：</p>
-
 <pre><code>git up
-</code></pre>
-
-<h3 id="取消暂存文件">取消暂存文件</h3>
-
+</code></pre><h3 id="取消暂存文件">取消暂存文件</h3>
 <p>一般来说，想要删除等待提交的暂存文件使用<code>git reset</code>命令，<code>reset</code>根据传给他参数的不同，有很多的方法执行。为了完全取消对所有文件的暂存，我们可以创建一个不需要记忆传递什么参数的新的<code>reset</code>别名。</p>
-
 <pre><code>$ git config --global alias.unstage &quot;reset --&quot;
-</code></pre>
-
-<p>现在当你想要取消文件的暂存是，可以使用<code>git unstag</code>这个命令，这将会很好的执行。</p>
-
+</code></pre><p>现在当你想要取消文件的暂存是，可以使用<code>git unstag</code>这个命令，这将会很好的执行。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -475,6 +385,12 @@ doc/
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

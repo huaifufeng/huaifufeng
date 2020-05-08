@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,112 +187,69 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#简介">简介</a>
-<ul>
-<li><a href="#专注安全">专注安全</a></li>
-<li><a href="#统一格式">统一格式</a></li>
-<li><a href="#原生协程">原生协程</a></li>
-<li><a href="#易于开发">易于开发</a></li>
-<li><a href="#快速编译">快速编译</a></li>
-<li><a href="#webassembly">WebAssembly</a></li>
-</ul></li>
-<li><a href="#hello-world">Hello World!</a>
-<ul>
-<li><a href="#安装">安装</a></li>
-<li><a href="#代码">代码</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#简介">简介</a>
+      <ul>
+        <li><a href="#专注安全">专注安全</a></li>
+        <li><a href="#统一格式">统一格式</a></li>
+        <li><a href="#原生协程">原生协程</a></li>
+        <li><a href="#易于开发">易于开发</a></li>
+        <li><a href="#快速编译">快速编译</a></li>
+        <li><a href="#webassembly">WebAssembly</a></li>
+      </ul>
+    </li>
+    <li><a href="#hello-world">Hello World!</a>
+      <ul>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#代码">代码</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<p>作为一个PHP程序员，最近因为兴趣和业务的需要(学习了一个东西，如果不使用的话，忘记的速度会非常快)，开始接触golang这门语言，这里做下学习的笔记，这里是学习的第一步，简单介绍一下golang的一些基本信息。</p>
-
+        		<p>作为一个PHP程序员，最近因为兴趣和业务的需要(学习了一个东西，如果不使用的话，忘记的速度会非常快)，开始接触golang这门语言，这里做下学习的笔记，这里是学习的第一步，简单介绍一下golang的一些基本信息。</p>
 <h2 id="简介">简介</h2>
-
 <p><a href="https://golang.google.cn/">golang</a>是一门谷歌开发并开源，和C++，java，c等一样的类c语言；一门静态、编译型语言。</p>
-
 <p>该语言起源于2007年，于2009年正式的发布，目前在TIBOE中排行到19位。在各个地区尤其是国内拥有大量的使用，包括京东，七牛，B站等都有使用。</p>
-
-<p><img src="/img/go/tiboe_201901.png" alt="tiboe_201901" /></p>
-
+<p><img src="/img/go/tiboe_201901.png" alt="tiboe_201901"></p>
 <h3 id="专注安全">专注安全</h3>
-
 <p>golang在保留了C++的大部分语法，移除了其中指针运算，运算符重载等特性，同时增加了GC等新特性，拥有不输于C++的性能，是一门类型安全、内存安全的编程语言。</p>
-
 <h3 id="统一格式">统一格式</h3>
-
 <p>golang强制要求语言的格式，让每个人的代码格式都是一致的，也许有人会不习惯，但是我觉得相同的语言格式对于代码的一致性，更容易理解别人的代码。</p>
-
 <h3 id="原生协程">原生协程</h3>
-
 <p>为了更好的利用分布式和多核的计算机，实现了goroutine来达到这个目标，使用channel作为goroutine通信的工具。原生支持协程。简单的一个<code>go func</code>就可以实现协程。</p>
-
 <h3 id="易于开发">易于开发</h3>
-
 <p>虽然具备不输于C++的性能，但是去除了一些C++的不良特性，增加gc。对于开发者来说，不用再考虑那些疑惑的特性，不用考虑内存的申请，更加关注于程序自身。</p>
-
 <h3 id="快速编译">快速编译</h3>
-
 <p>golang的编译速度非常快，整个标准库一般在20s以下，自己的库一般也就几s就可以了，比c的编译速度更快，减少开发者等待编译的时间。</p>
-
 <h3 id="webassembly">WebAssembly</h3>
-
 <p>golang和WebAssembly强强联合，加入WASM的大家庭，允许编写可以在浏览器运营的程序，然后使用JavaScript调用wasm的文件，处理需要运算的功能，虽然目前还比较简单，但是值得期待。</p>
-
 <p>等等，特性还有很多，我这只是列出一些比较有特色的特性。</p>
-
 <h2 id="hello-world">Hello World!</h2>
-
 <p>任何语言的第一步都是<code>Hello World!</code>，我们也从这里开始。</p>
-
 <h3 id="安装">安装</h3>
-
 <p>这里就直接使用mac环境介绍了，其他环境自行百度。</p>
-
 <p>使用mac开发的，一般都已经安装好HomeworkBrew了，这里就直接执行命令就可以：</p>
-
-<pre><code class="language-brew">$ brew install go
-</code></pre>
-
-<p>安装网络的不同，等待的时间也不一样长，在命令行输入如下命令，就可以确定是否安装成功了:</p>
-
+<pre><code class="language-brew" data-lang="brew">$ brew install go
+</code></pre><p>安装网络的不同，等待的时间也不一样长，在命令行输入如下命令，就可以确定是否安装成功了:</p>
 <pre><code>$ go version
-</code></pre>
-
-<p>当输出类似<code>go version go1.11.4 darwin/amd64</code>的信息就代表安装成功了。</p>
-
+</code></pre><p>当输出类似<code>go version go1.11.4 darwin/amd64</code>的信息就代表安装成功了。</p>
 <p>go一般会安装到如下目录：<code>/usr/local/Cellar/go</code>，目录下面是不同版本的目录。同时，会在<code>/usr/local/bin</code>下生成一个指向刚才目录下某个版本的go执行命令，</p>
-
 <h3 id="代码">代码</h3>
-
 <p>环境安装成功之后，只是编写Hello World 的话，在任何目录下都可以。我们就直接在自己的家目录下编写第一个文件吧。</p>
-
 <p>使用vim在命令行打开hello.go文件，然后输入如下内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
 
-<pre><code class="language-go">package main
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
 
-import &quot;fmt&quot;
-
-func main() {
-    fmt.Println(&quot;Hello World!&quot;)
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;Hello World!&#34;</span>)
 }
-</code></pre>
-
-<p>然后保存文件。</p>
-
+</code></pre></div><p>然后保存文件。</p>
 <p>想要执行一个go文件，很简单，直接使用<code>go run filename</code>就可以，比如要执行hello.go文件，我们可以：</p>
-
 <pre><code>$ go run hello.go
 Hello World!
-</code></pre>
-
-<p>这我们就执行成功了，输出了我们想要的Hello World！</p>
-
+</code></pre><p>这我们就执行成功了，输出了我们想要的Hello World！</p>
 <p>我们学习go当然不只是想要输出一个hello，在代码中每一行又都代表什么含义呢，在接下来的文章中，在更进一步的介绍吧！</p>
 
         
@@ -361,6 +322,12 @@ Hello World!
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

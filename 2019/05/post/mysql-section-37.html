@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,134 +187,96 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#触发器">触发器</a>
-<ul>
-<li><a href="#1-基础触发器">1. 基础触发器</a></li>
-<li><a href="#2-触发器类型">2. 触发器类型</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#触发器">触发器</a>
+      <ul>
+        <li><a href="#1-基础触发器">1. 基础触发器</a></li>
+        <li><a href="#2-触发器类型">2. 触发器类型</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="触发器">触发器</h2>
-
+        		<h2 id="触发器">触发器</h2>
 <h3 id="1-基础触发器">1. 基础触发器</h3>
-
 <p><strong>创建表</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">account</span>(acct_num <span style="color:#66d9ef">INT</span>, amount <span style="color:#66d9ef">DECIMAL</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">2</span>));
 
-<pre><code class="language-mysql">mysql&gt; CREATE TABLE account(acct_num INT, amount DECIMAL(10, 2));
-
-Query OK, 0 rows affected (0.03 sec)
-</code></pre>
-
-<p><strong>创建触发器</strong></p>
-
-<pre><code class="language-mysql">mysql&gt; CREATE TRIGGER ins_sum BEFORE INSERT ON account
-    -&gt;FOR EACH ROW SET @sun = @sum + NEW.amount;
+Query OK, <span style="color:#ae81ff">0</span> rows <span style="color:#a6e22e">affected</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">03</span> sec)
+</code></pre></div><p><strong>创建触发器</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TRIGGER</span> ins_sum <span style="color:#66d9ef">BEFORE</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">ON</span> account
+    <span style="color:#f92672">-&gt;</span><span style="color:#66d9ef">FOR</span> <span style="color:#66d9ef">EACH</span> ROW <span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>sun <span style="color:#f92672">=</span> <span style="color:#f92672">@</span>sum <span style="color:#f92672">+</span> NEW.amount;
     
-Query OK, 0 rows affected (0.06 sec)
-</code></pre>
-
-<p>这个<code>CREATE TRIGGER</code>语句创建一个名为<code>ins_sum</code>的触发器，并且关联到<code>account</code>表上面。它也包含指明触发器时间，触发器时间和触发器执行什么操作的语句。</p>
-
+Query OK, <span style="color:#ae81ff">0</span> rows <span style="color:#a6e22e">affected</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">06</span> sec)
+</code></pre></div><p>这个<code>CREATE TRIGGER</code>语句创建一个名为<code>ins_sum</code>的触发器，并且关联到<code>account</code>表上面。它也包含指明触发器时间，触发器时间和触发器执行什么操作的语句。</p>
 <p><strong>插入数据</strong></p>
-
 <p>想要使用触发器，将累加变量(@sum)设置为0，执行一个INSERT语句，然后查看这个变量的值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>sum <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> account <span style="color:#66d9ef">VALUES</span>(<span style="color:#ae81ff">137</span>,<span style="color:#ae81ff">14</span>.<span style="color:#ae81ff">98</span>),(<span style="color:#ae81ff">141</span>,<span style="color:#ae81ff">1937</span>.<span style="color:#ae81ff">50</span>),(<span style="color:#ae81ff">97</span>,<span style="color:#f92672">-</span><span style="color:#ae81ff">100</span>.<span style="color:#ae81ff">00</span>); 
+mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>sum <span style="color:#66d9ef">AS</span> <span style="color:#e6db74">&#39;Total amount inserted&#39;</span>;
 
-<pre><code class="language-mysql">mysql&gt; SET @sum = 0;
-mysql&gt; INSERT INTO account VALUES(137,14.98),(141,1937.50),(97,-100.00); 
-mysql&gt; SELECT @sum AS 'Total amount inserted';
-
- +-----------------------+
- | Total amount inserted |
- +-----------------------+
- | 1852.48               |
- +-----------------------+
-</code></pre>
-
-<p>在这个例子中，<code>@sum</code>的值在执行INSERT语句之后进行了14.98 + 1937.50 - 100这个计算。</p>
-
+ <span style="color:#f92672">+-----------------------+</span>
+ <span style="color:#f92672">|</span> Total amount inserted <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+-----------------------+</span>
+ <span style="color:#f92672">|</span> <span style="color:#ae81ff">1852</span>.<span style="color:#ae81ff">48</span>               <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+-----------------------+</span>
+</code></pre></div><p>在这个例子中，<code>@sum</code>的值在执行INSERT语句之后进行了14.98 + 1937.50 - 100这个计算。</p>
 <p><strong>删除触发器</strong></p>
-
-<pre><code class="language-mysql">mysql&gt; DROP TRIGGER test.ins_sum;
-</code></pre>
-
-<p>如果你删除了表，这个表上面的触发器都会被删除。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TRIGGER</span> test.ins_sum;
+</code></pre></div><p>如果你删除了表，这个表上面的触发器都会被删除。</p>
 <h3 id="2-触发器类型">2. 触发器类型</h3>
-
 <p><strong>时间</strong></p>
-
 <p>有两个触发动作时间修改器：</p>
-
 <ul>
 <li>BEFORE 在执行请求之前执行触发器操作</li>
 <li>AFTER 在改变之后触发器执行</li>
 </ul>
-
 <p><strong>事件触发器</strong></p>
-
 <p>有三种事件可以绑定触发器：</p>
-
 <ul>
 <li>INSERT</li>
 <li>UPDATE</li>
 <li>DELETE</li>
 </ul>
-
 <p><strong>INSERT之前触发的例子</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">DELIMITER <span style="color:#960050;background-color:#1e0010">$$</span>
 
-<pre><code class="language-mysql">DELIMITER $$
-
-CREATE TRIGGER insert_data
-    BEFORE INSERT ON stack
-    FOR EACH ROW
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TRIGGER</span> insert_data
+    <span style="color:#66d9ef">BEFORE</span> <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">ON</span> stack
+    <span style="color:#66d9ef">FOR</span> <span style="color:#66d9ef">EACH</span> ROW
 BEGIN
-    SET NEW.insert_date=NOW();
+    <span style="color:#66d9ef">SET</span> NEW.insert_date<span style="color:#f92672">=</span><span style="color:#a6e22e">NOW</span>();
 END;
 
-$$
+<span style="color:#960050;background-color:#1e0010">$$</span>
 DELIMITER ;
-</code></pre>
+</code></pre></div><p><strong>在UPDATE之前触发的例子</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">DELIMITER <span style="color:#960050;background-color:#1e0010">$$</span>
 
-<p><strong>在UPDATE之前触发的例子</strong></p>
-
-<pre><code class="language-mysql">DELIMITER $$
-
-CREATE TRIGGER update_date 
-    BEFORE UPDATE ON stack 
-    FOR EACH ROW
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TRIGGER</span> update_date 
+    <span style="color:#66d9ef">BEFORE</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">ON</span> stack 
+    <span style="color:#66d9ef">FOR</span> <span style="color:#66d9ef">EACH</span> ROW
 BEGIN
 
-SET 
-    NEW.update_date = NOW(); 
+<span style="color:#66d9ef">SET</span> 
+    NEW.update_date <span style="color:#f92672">=</span> <span style="color:#a6e22e">NOW</span>(); 
 END;
 
-$$
+<span style="color:#960050;background-color:#1e0010">$$</span>
 DELIMITER ;
-</code></pre>
+</code></pre></div><p><strong>DELETE之后触发的例子</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">DELIMITER <span style="color:#960050;background-color:#1e0010">$$</span>
 
-<p><strong>DELETE之后触发的例子</strong></p>
-
-<pre><code class="language-mysql">DELIMITER $$
-
-CREATE TRIGGER deletion_date
-    AFTER DELETE ON stack 
-    FOR EACH ROW
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TRIGGER</span> deletion_date
+    AFTER <span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">ON</span> stack 
+    <span style="color:#66d9ef">FOR</span> <span style="color:#66d9ef">EACH</span> ROW
 BEGIN
-    INSERT INTO log_action(stack_id, deleted_date) VALUES(OLD.id, NOW()); 
+    <span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">log_action</span>(stack_id, deleted_date) <span style="color:#66d9ef">VALUES</span>(OLD.id, <span style="color:#a6e22e">NOW</span>()); 
 END;
 
-$$
+<span style="color:#960050;background-color:#1e0010">$$</span>
 DELIMITER ;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -382,6 +348,12 @@ DELIMITER ;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,43 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用gitk图形化显示提交历史">使用gitk图形化显示提交历史</a>
-<ul>
-<li><a href="#显示一个文件的提交历史">显示一个文件的提交历史</a></li>
-<li><a href="#显示两个提交之间的提交">显示两个提交之间的提交</a></li>
-<li><a href="#显示tag之后的提交">显示tag之后的提交</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#使用gitk图形化显示提交历史">使用gitk图形化显示提交历史</a>
+      <ul>
+        <li><a href="#显示一个文件的提交历史">显示一个文件的提交历史</a></li>
+        <li><a href="#显示两个提交之间的提交">显示两个提交之间的提交</a></li>
+        <li><a href="#显示tag之后的提交">显示tag之后的提交</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="使用gitk图形化显示提交历史">使用gitk图形化显示提交历史</h2>
-
+        		<h2 id="使用gitk图形化显示提交历史">使用gitk图形化显示提交历史</h2>
 <h3 id="显示一个文件的提交历史">显示一个文件的提交历史</h3>
-
 <pre><code>gitk path/to/myfile
-</code></pre>
-
-<h3 id="显示两个提交之间的提交">显示两个提交之间的提交</h3>
-
+</code></pre><h3 id="显示两个提交之间的提交">显示两个提交之间的提交</h3>
 <p>假设你有<code>d9e1db9</code>和<code>5651067</code>两个提交，然后想要看这两个提交之间的提交。<code>d9e1db9</code>是老提交，<code>5651067</code>是提交链上的末尾提交。</p>
-
 <pre><code>gitk --ancestry-path d9e1db9 5651067
-</code></pre>
-
-<h3 id="显示tag之后的提交">显示tag之后的提交</h3>
-
+</code></pre><h3 id="显示tag之后的提交">显示tag之后的提交</h3>
 <p>如果你有<code>v2.3</code>的tag，你可以获取这个tag之后的所有提交</p>
-
 <pre><code>gitk v2.3..
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -291,6 +279,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,33 +187,22 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#文件执行顺序">文件执行顺序</a>
-<ul>
-<li><a href="#profile-vs-bash-profile-和-bash-login">.profile VS .bash_profile(和.bash_login)</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#文件执行顺序">文件执行顺序</a>
+      <ul>
+        <li><a href="#profile-vs-bash_profile和bash_login">.profile VS .bash_profile(和.bash_login)</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="文件执行顺序">文件执行顺序</h2>
-
+        		<h2 id="文件执行顺序">文件执行顺序</h2>
 <p><code>.bash_profile</code>，<code>.bash_login</code>，<code>.bashrc</code>和<code>.profile</code>做这相同的事情：设置和定义函数，变量和排序。</p>
-
 <p>主要的不同是<code>.bashrc</code>在开启一个非登录的交互窗口是调用，<code>.bash_profile</code>和其他文件在登录的shell中执行。无论如何很多人都拥有<code>.bash_profile</code>和相似的<code>.bashrc</code>。</p>
-
-<h3 id="profile-vs-bash-profile-和-bash-login">.profile VS .bash_profile(和.bash_login)</h3>
-
+<h3 id="profile-vs-bash_profile和bash_login">.profile VS .bash_profile(和.bash_login)</h3>
 <p><code>.profile</code>在很多shell启动的时候读取，包括bash。然后<code>.bash_profile</code>是指定bash的配置。对于通用的初始化代码，放在<code>.profile</code>中，但是指定bash的代码，放到<code>.bash_profile</code>中。</p>
-
 <p><code>.profile</code>并不是专门为bash设计的，但是<code>.bash_profile</code>是。(<code>.profile</code>是用于Bourne和其他类似的shell的，bash基于这个创作的。)如果找不到<code>.bash_profile</code>，就会去寻找<code>.profile</code>。</p>
-
 <p>如果找不到<code>.bash_profile</code>的话，就会寻找<code>.bash_login</code>，但是最好是使用<code>.bash_profile</code>或<code>.profile</code>。</p>
-
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -282,6 +275,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

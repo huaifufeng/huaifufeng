@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,73 +187,45 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#管理path环境变量">管理PATH环境变量</a>
-<ul>
-<li><a href="#添加一个path到path环境变量">添加一个path到PATH环境变量</a></li>
-<li><a href="#从path环境变量移除路径">从PATH环境变量移除路径</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#管理path环境变量">管理PATH环境变量</a>
+      <ul>
+        <li><a href="#添加一个path到path环境变量">添加一个path到PATH环境变量</a></li>
+        <li><a href="#从path环境变量移除路径">从PATH环境变量移除路径</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="管理path环境变量">管理PATH环境变量</h2>
-
+        		<h2 id="管理path环境变量">管理PATH环境变量</h2>
 <h3 id="添加一个path到path环境变量">添加一个path到PATH环境变量</h3>
-
 <p>PATH环境变量通常定义在<code>.bashrc</code>或者<code>.bash_profile</code>或者<code>/etc/profile</code>或者<code>.profile</code>或者<code>/etc/bash.bashrc</code>(不同的bash配置文件)。</p>
-
 <pre><code>$ echo $PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin: /usr/lib/jvm/jdk1.8.0_92/bin:/usr/lib/jvm/jdk1.8.0_92/db/bin:/usr/lib/jvm/jdk1.8.0_92/jre/bin
-</code></pre>
-
-<p>现在，如果我们想在PATH中添加一个路径(例如<code>~/bin</code>):</p>
-
+</code></pre><p>现在，如果我们想在PATH中添加一个路径(例如<code>~/bin</code>):</p>
 <pre><code>PATH=~/bin:$PATH 
 # or 
 PATH=$PATH:~/bin
-</code></pre>
-
-<p>但是这只会在当前的shell(或它的子shell中生效)。一旦你退出了这个shell，这个修改就会失效。</p>
-
+</code></pre><p>但是这只会在当前的shell(或它的子shell中生效)。一旦你退出了这个shell，这个修改就会失效。</p>
 <p>想要让修改永久话的话，我们需要在<code>~/.bashrc</code>中添加这些代码，并重新加载这个文件。</p>
-
 <p>如果你在终端中运行下面的命令，将会把<code>~/bin</code>添加到PATH中：</p>
-
 <pre><code>echo 'PATH=~/bin:$PATH' &gt;&gt; ~/.bashrc &amp;&amp; source ~/.bashrc
-</code></pre>
-
-<p>命令解释：</p>
-
+</code></pre><p>命令解释：</p>
 <ul>
 <li><code>echo 'PATH=~/bin:$PATH' &gt;&gt; ~/.bashrc</code>在文件<code>~/.bashrc</code>的末尾添加<code>PATH=~/bin:$PATH</code>这行代码，你也可以在编辑器中添加</li>
 <li><code>source ~/.bashrc</code>重新加载<code>~/.bashrc</code>文件</li>
 </ul>
-
 <p>下面这个代码将会检查路径是否存在，只有在不存在的时候才会添加：</p>
-
 <pre><code>path=~/bin # path to be included
 bashrc=~/.bashrc # bash file to be written and reloaded
 # run the following code unmodified
 echo $PATH | grep -q &quot;\(^\|:\)$path\(:\|/\{0,1\}$\)&quot; || echo &quot;PATH=\$PATH:$path&quot; &gt;&gt; &quot;$bashrc&quot;;
 source &quot;$bashrc&quot;
-</code></pre>
-
-<h3 id="从path环境变量移除路径">从PATH环境变量移除路径</h3>
-
+</code></pre><h3 id="从path环境变量移除路径">从PATH环境变量移除路径</h3>
 <p>要从PATH中移除一个路径，需要编辑<code>~/.bashrc</code>或者<code>~/.bash_profile</code>或者<code>/etc/profile</code>或者<code>~/.profile</code>或者<code>/etc/bash/bashrc</code>(不同的bash配置文件)，并从中移除指定路径的添加语句。</p>
-
 <pre><code>path=~/bin
 PATH=&quot;$(echo &quot;$PATH&quot; |sed -e &quot;s#\(^\|:\)$(echo &quot;$path&quot; |sed -e 's/[^^]/[&amp;]/g' -e 's/\^/\\^/g')\(:\|/\{0,1\}$\)#\1\2#&quot; -e 's#:\+#:#g' -e 's#^:\|:$##g')&quot;
-</code></pre>
-
-<p>想要永久有效的话，就需要把地址添加到文件的末尾。</p>
-
+</code></pre><p>想要永久有效的话，就需要把地址添加到文件的末尾。</p>
 <p>你可以使用下面的命令达成：</p>
-
 <pre><code>rpath(){
     for path in &quot;$@&quot;;do
         PATH=&quot;$(echo &quot;$PATH&quot; |sed -e &quot;s#\(^\|:\)$(echo &quot;$path&quot; |sed -e 's/[^^]/[&amp;]/g' -e  's/\^/\\^/g')\(:\|/\{0,1\}$\)#\1\2#&quot; -e 's#:\+#:#g' -e 's#^:\|:$##g')&quot;
@@ -259,15 +235,11 @@ PATH=&quot;$(echo &quot;$PATH&quot; |sed -e &quot;s#\(^\|:\)$(echo &quot;$path&q
 PATH=&quot;$(rpath ~/bin /usr/local/sbin /usr/local/bin)&quot; 
 PATH=&quot;$(rpath /usr/games)&quot;
 # etc ...
-</code></pre>
-
-<p>这处理多个路径很方便。</p>
-
+</code></pre><p>这处理多个路径很方便。</p>
 <ul>
 <li>你需要把这些代码添加到bash的配置文件中(<code>.bashrc</code>或者其他)</li>
 <li>运行<code>source ~/.bashrc</code>来加载bash的配置文件<code>~/.bashrc</code>。</li>
 </ul>
-
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -340,6 +312,12 @@ PATH=&quot;$(rpath /usr/games)&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

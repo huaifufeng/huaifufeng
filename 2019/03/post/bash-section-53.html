@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,95 +187,65 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#特定时间的任务">特定时间的任务</a>
-<ul>
-<li><a href="#在特定时间执行一次任务">在特定时间执行一次任务</a></li>
-<li><a href="#systemd-timer重复执行某些任务">systemd.timer重复执行某些任务</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#特定时间的任务">特定时间的任务</a>
+      <ul>
+        <li><a href="#在特定时间执行一次任务">在特定时间执行一次任务</a></li>
+        <li><a href="#systemdtimer重复执行某些任务">systemd.timer重复执行某些任务</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="特定时间的任务">特定时间的任务</h2>
-
+        		<h2 id="特定时间的任务">特定时间的任务</h2>
 <h3 id="在特定时间执行一次任务">在特定时间执行一次任务</h3>
-
 <p>注意：<code>at</code>默认没有在大多数的发行版中安装。</p>
-
 <p>想要只当前时间之外的某个时间执行一些任务，在例子中是下午5点，你可以向下面这样：</p>
-
-<pre><code class="language-shell">echo &quot;somecommand &amp;&quot; | at 5pm
-</code></pre>
-
-<p>如果你想要获取命令的输出，你可以像往常一样：</p>
-
-<pre><code class="language-shell">echo &quot;somecommand &gt; out.txt 2&gt;err.txt &amp;&quot; | at 5pm
-</code></pre>
-
-<p><code>at</code>理解非常多的时间格式，所以你也可以像下面这样：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo <span style="color:#e6db74">&#34;somecommand &amp;&#34;</span> | at 5pm
+</code></pre></div><p>如果你想要获取命令的输出，你可以像往常一样：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">echo <span style="color:#e6db74">&#34;somecommand &gt; out.txt 2&gt;err.txt &amp;&#34;</span> | at 5pm
+</code></pre></div><p><code>at</code>理解非常多的时间格式，所以你也可以像下面这样：</p>
 <pre><code>echo &quot;somecommand &amp;&quot; | at now + 2 minutes 
 echo &quot;somecommand &amp;&quot; | at 17:00
 echo &quot;somecommand &amp;&quot; | at 17:00 Jul 7 
 echo &quot;somecommand &amp;&quot; | at 4pm 12.03.17
-</code></pre>
-
-<p>如果没有指定年月日的话，这将会在下次遇到这个时间的时候执行。所以如果你提供了一个之前的时间，将会在明天执行。如果你提供了之前的月份，那将会在下一年才会执行。</p>
-
+</code></pre><p>如果没有指定年月日的话，这将会在下次遇到这个时间的时候执行。所以如果你提供了一个之前的时间，将会在明天执行。如果你提供了之前的月份，那将会在下一年才会执行。</p>
 <p>这也会和nohup联合使用，想你期望的一样：</p>
-
 <pre><code>echo &quot;nohup somecommand &gt; out.txt 2&gt;err.txt &amp;&quot; | at 5pm
-</code></pre>
-
-<p>有更多的控制命令执行时间的命令:</p>
-
+</code></pre><p>有更多的控制命令执行时间的命令:</p>
 <ul>
 <li><code>atq</code>列出所有的时间任务</li>
 <li><code>atrm</code>移除一个时间任务</li>
 <li><code>batch</code>像<code>at</code>命令一样，但是只在系统的负载在0.8之下的时候才会执行任务</li>
 </ul>
-
 <p>所有的命令都应用到登录用户的任务。如果以根用户身份登录，系统范围的作业当然会得到处理。</p>
-
-<h3 id="systemd-timer重复执行某些任务">systemd.timer重复执行某些任务</h3>
-
+<h3 id="systemdtimer重复执行某些任务">systemd.timer重复执行某些任务</h3>
 <p>systemd实现了一个现代话实现的<code>cron</code>。要定期执行一个脚本，需要一个service和一个计时器文件列表。service和计时器文件列表放在<code>/etc/systemd/{system.user}</code>。service文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>Unit<span style="color:#f92672">]</span>
+Description<span style="color:#f92672">=</span>my script or programm does the very best and this is the description
 
-<pre><code class="language-shell">[Unit]
-Description=my script or programm does the very best and this is the description
+<span style="color:#f92672">[</span>Service<span style="color:#f92672">]</span>
+<span style="color:#75715e"># type is important!</span>
+Type<span style="color:#f92672">=</span>simple
+<span style="color:#75715e"># program|script to call. Always use absolute pathes</span>
+<span style="color:#75715e"># and redirect STDIN and STDERR as there is no terminal while being executed</span> 
+ExecStart<span style="color:#f92672">=</span>/absolute/path/to/someCommand &gt;&gt;/path/to/output 2&gt;/path/to/STDERRoutput 
+<span style="color:#75715e">#NO install section!!!! Is handled by the timer facitlities itself.</span>
+<span style="color:#75715e">#[Install]</span>
+<span style="color:#75715e">#WantedBy=multi-user.target</span>
+</code></pre></div><p>下面是这个计时器文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>Unit<span style="color:#f92672">]</span>
+Description<span style="color:#f92672">=</span>my very first systemd timer
 
-[Service]
-# type is important!
-Type=simple
-# program|script to call. Always use absolute pathes
-# and redirect STDIN and STDERR as there is no terminal while being executed 
-ExecStart=/absolute/path/to/someCommand &gt;&gt;/path/to/output 2&gt;/path/to/STDERRoutput 
-#NO install section!!!! Is handled by the timer facitlities itself.
-#[Install]
-#WantedBy=multi-user.target
-</code></pre>
+<span style="color:#f92672">[</span>Timer<span style="color:#f92672">]</span>
+<span style="color:#75715e"># Syntax for date/time specifications is Y-m-d H:M:S</span>
+<span style="color:#75715e"># a * means &#34;each&#34;, and a comma separated list of items can be given too</span>
+<span style="color:#75715e"># *-*-* *,15,30,45:00 says every year, every month, every day, each hour,</span> 
+<span style="color:#75715e"># at minute 15,30,45 and zero seconds</span>
 
-<p>下面是这个计时器文件：</p>
-
-<pre><code class="language-shell">[Unit]
-Description=my very first systemd timer
-
-[Timer]
-# Syntax for date/time specifications is Y-m-d H:M:S
-# a * means &quot;each&quot;, and a comma separated list of items can be given too
-# *-*-* *,15,30,45:00 says every year, every month, every day, each hour, 
-# at minute 15,30,45 and zero seconds
-
-OnCalendar=*-*-* *:01:00
-# this one runs each hour at one minute zero second e.g. 13:01:00
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+OnCalendar<span style="color:#f92672">=</span>*-*-* *:01:00
+<span style="color:#75715e"># this one runs each hour at one minute zero second e.g. 13:01:00</span>
+</code></pre></div><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -343,6 +317,12 @@ OnCalendar=*-*-* *:01:00
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

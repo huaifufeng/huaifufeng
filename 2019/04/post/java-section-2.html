@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,120 +187,88 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#类型转换">类型转换</a>
-<ul>
-<li><a href="#1-数字元素转换">1.  数字元素转换</a></li>
-<li><a href="#2-基础数字提升">2. 基础数字提升</a></li>
-<li><a href="#3-非数字元素转换">3. 非数字元素转换</a></li>
-<li><a href="#4-对象转换">4. 对象转换</a></li>
-<li><a href="#5-使用instanceof测试类是否可以转换">5. 使用instanceof测试类是否可以转换</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#类型转换">类型转换</a>
+      <ul>
+        <li><a href="#1--数字元素转换">1.  数字元素转换</a></li>
+        <li><a href="#2-基础数字提升">2. 基础数字提升</a></li>
+        <li><a href="#3-非数字元素转换">3. 非数字元素转换</a></li>
+        <li><a href="#4-对象转换">4. 对象转换</a></li>
+        <li><a href="#5-使用instanceof测试类是否可以转换">5. 使用instanceof测试类是否可以转换</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="类型转换">类型转换</h2>
-
-<h3 id="1-数字元素转换">1.  数字元素转换</h3>
-
+        		<h2 id="类型转换">类型转换</h2>
+<h3 id="1--数字元素转换">1.  数字元素转换</h3>
 <p>数字值可以有两种转换方式。</p>
-
-<p>当原本的类型比目标类型小的时候，*隐式*转换就会发生。</p>
-
-<pre><code class="language-java">//隐式转换
-byte byteVar = 42;
-short shortVar = byteVar;
-int intVar = shortVar;
-long longVar = intVar;
-float floatVar = longVar;
-double doubleVar = floatVar;
-</code></pre>
-
-<p>当原本的类型比目标类型大的时候，*显示*转换就必须要使用了。</p>
-
-<pre><code class="language-java">//显示转换
-double doubleVar = 42.0d;
-float floatVar = (float) doubleVar;
-long longVar = (long)floatVar;
-int intVar = (int)longVar;
-short shortVar = (short)intVar;
-byte byteVar = (byte) shortVar;
-</code></pre>
-
-<p>当从浮点数元素（float, double）向整数值转换的时候，这个数字是<strong>向下取整的</strong>。</p>
-
+<p>当原本的类型比目标类型小的时候，<em>隐式</em>转换就会发生。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//隐式转换
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">byte</span> byteVar <span style="color:#f92672">=</span> 42<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">short</span> shortVar <span style="color:#f92672">=</span> byteVar<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">int</span> intVar <span style="color:#f92672">=</span> shortVar<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">long</span> longVar <span style="color:#f92672">=</span> intVar<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">float</span> floatVar <span style="color:#f92672">=</span> longVar<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">double</span> doubleVar <span style="color:#f92672">=</span> floatVar<span style="color:#f92672">;</span>
+</code></pre></div><p>当原本的类型比目标类型大的时候，<em>显示</em>转换就必须要使用了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">//显示转换
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">double</span> doubleVar <span style="color:#f92672">=</span> 42<span style="color:#f92672">.</span><span style="color:#a6e22e">0d</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">float</span> floatVar <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">float</span><span style="color:#f92672">)</span> doubleVar<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">long</span> longVar <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">long</span><span style="color:#f92672">)</span>floatVar<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">int</span> intVar <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span>longVar<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">short</span> shortVar <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">short</span><span style="color:#f92672">)</span>intVar<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">byte</span> byteVar <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">)</span> shortVar<span style="color:#f92672">;</span>
+</code></pre></div><p>当从浮点数元素（float, double）向整数值转换的时候，这个数字是<strong>向下取整的</strong>。</p>
 <h3 id="2-基础数字提升">2. 基础数字提升</h3>
-
-<pre><code class="language-java">static void testNumericPromotion() {
-    char char1 = 1, char2 = 2;
-    short short1 = 1, short2 = 2;
-    int int1 = 1, int2 = 2;
-    float float1 = 1.0f, float2 = 2.0f;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testNumericPromotion</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">char</span> char1 <span style="color:#f92672">=</span> 1<span style="color:#f92672">,</span> char2 <span style="color:#f92672">=</span> 2<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">short</span> short1 <span style="color:#f92672">=</span> 1<span style="color:#f92672">,</span> short2 <span style="color:#f92672">=</span> 2<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> int1 <span style="color:#f92672">=</span> 1<span style="color:#f92672">,</span> int2 <span style="color:#f92672">=</span> 2<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">float</span> float1 <span style="color:#f92672">=</span> 1<span style="color:#f92672">.</span><span style="color:#a6e22e">0f</span><span style="color:#f92672">,</span> float2 <span style="color:#f92672">=</span> 2<span style="color:#f92672">.</span><span style="color:#a6e22e">0f</span><span style="color:#f92672">;</span>
     
-    //char1 = char1 + char2; //错误：不能从int转换到char
-    //short1 = short1 + short2; //错误：不能从int转换为short
-    int1 = char1 + char2; //char提升为int
-    int1 = short1 + short2; //short提升为int
-    int1 = char1 + short2;  //char和short都提升为int
-    float1 = short1 + float2; //short提升为float
-    int1 = int1 + int2; //int不变
-}
-</code></pre>
-
-<h3 id="3-非数字元素转换">3. 非数字元素转换</h3>
-
+    <span style="color:#75715e">//char1 = char1 + char2; //错误：不能从int转换到char
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//short1 = short1 + short2; //错误：不能从int转换为short
+</span><span style="color:#75715e"></span>    int1 <span style="color:#f92672">=</span> char1 <span style="color:#f92672">+</span> char2<span style="color:#f92672">;</span> <span style="color:#75715e">//char提升为int
+</span><span style="color:#75715e"></span>    int1 <span style="color:#f92672">=</span> short1 <span style="color:#f92672">+</span> short2<span style="color:#f92672">;</span> <span style="color:#75715e">//short提升为int
+</span><span style="color:#75715e"></span>    int1 <span style="color:#f92672">=</span> char1 <span style="color:#f92672">+</span> short2<span style="color:#f92672">;</span>  <span style="color:#75715e">//char和short都提升为int
+</span><span style="color:#75715e"></span>    float1 <span style="color:#f92672">=</span> short1 <span style="color:#f92672">+</span> float2<span style="color:#f92672">;</span> <span style="color:#75715e">//short提升为float
+</span><span style="color:#75715e"></span>    int1 <span style="color:#f92672">=</span> int1 <span style="color:#f92672">+</span> int2<span style="color:#f92672">;</span> <span style="color:#75715e">//int不变
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><h3 id="3-非数字元素转换">3. 非数字元素转换</h3>
 <p><code>boolean</code>类型不能转换为其他的基础类型，也不能从其他基础类型转换得来。</p>
-
 <p><code>char</code>类型可以使用Unicode指定的代码点映射转换为任何数字类型，或者从数字类型转换来。一个<code>char</code>在内存中表示为一个无符号16位整数值(2个字节)，所以转换为一个<code>byte</code>（1个字节）的时候会丢掉8位(这对于ASCII字符是安全的)。<code>Character</code>类使用<code>int</code>(4个字节)传输或接受代码点值，但是<code>short</code>(2个字节)也足够存储Unicode的代码点。</p>
-
-<pre><code class="language-java">int badInt = (int) true; //不兼容的类型
-char char1 = (char) 65; //A
-byte byte1 = (byte) 'A'; // 65
-short short1 = (short) 'A'; //65
-int int1 = (int) 'A'; //65
-
-char char2 = (char)8253; //‽
-byte byte2 = (byte) '‽';// 61 将代码点转换为ASCII
-short short2 = (short)'‽'; //8253
-int int2 = (int) '‽'; //8253
-</code></pre>
-
-<h3 id="4-对象转换">4. 对象转换</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> badInt <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span> <span style="color:#75715e">//不兼容的类型
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">char</span> char1 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">char</span><span style="color:#f92672">)</span> 65<span style="color:#f92672">;</span> <span style="color:#75715e">//A
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">byte</span> byte1 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 65
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">short</span> short1 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">short</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">;</span> <span style="color:#75715e">//65
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> int1 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#39;A&#39;</span><span style="color:#f92672">;</span> <span style="color:#75715e">//65
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">char</span> char2 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">char</span><span style="color:#f92672">)</span>8253<span style="color:#f92672">;</span> <span style="color:#75715e">//‽
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">byte</span> byte2 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#39;‽&#39;</span><span style="color:#f92672">;</span><span style="color:#75715e">// 61 将代码点转换为ASCII
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">short</span> short2 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">short</span><span style="color:#f92672">)</span><span style="color:#e6db74">&#39;‽&#39;</span><span style="color:#f92672">;</span> <span style="color:#75715e">//8253
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> int2 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span><span style="color:#f92672">)</span> <span style="color:#e6db74">&#39;‽&#39;</span><span style="color:#f92672">;</span> <span style="color:#75715e">//8253
+</span></code></pre></div><h3 id="4-对象转换">4. 对象转换</h3>
 <p>和基础类型一样，对象转换也分为隐式和显示两类。</p>
-
 <p>隐式转换只有在元素类型继承或实现了目标类型的情况下发生（转换为超类或接口）。</p>
-
 <p>显示转换必须发生在原始类型被目标类型继承或实现的情况下（转换到子类）。当被转换的对象不是目标类型的一种（或是目标的子类型）时，这将会产生一个运行时异常（<code>ClassCastException</code>）。</p>
-
-<pre><code class="language-java">Float floatVar = new Float(42.0f);
-Number n = floatVar; //隐式转换(Float实现了Number)
-Float floatVar2 = (Float)n; //显示转换
-Double doubleVar = (Double) n; //抛出异常，对象不是Double类型的
-</code></pre>
-
-<h3 id="5-使用instanceof测试类是否可以转换">5. 使用instanceof测试类是否可以转换</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Float floatVar <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Float<span style="color:#f92672">(</span>42<span style="color:#f92672">.</span><span style="color:#a6e22e">0f</span><span style="color:#f92672">);</span>
+Number n <span style="color:#f92672">=</span> floatVar<span style="color:#f92672">;</span> <span style="color:#75715e">//隐式转换(Float实现了Number)
+</span><span style="color:#75715e"></span>Float floatVar2 <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Float<span style="color:#f92672">)</span>n<span style="color:#f92672">;</span> <span style="color:#75715e">//显示转换
+</span><span style="color:#75715e"></span>Double doubleVar <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Double<span style="color:#f92672">)</span> n<span style="color:#f92672">;</span> <span style="color:#75715e">//抛出异常，对象不是Double类型的
+</span></code></pre></div><h3 id="5-使用instanceof测试类是否可以转换">5. 使用instanceof测试类是否可以转换</h3>
 <p>Java提供了<code>instanceof</code>运算符来测试一个对象是不是某个类型的对象，或者是不是那个类型的子类的对象。这样程序就可以选择强制转换或不强制转换这个对象。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Object obj <span style="color:#f92672">=</span> Calendar<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">();</span>
+<span style="color:#66d9ef">long</span> time <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">Object obj = Calendar.getInstance();
-long time = 0;
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>obj <span style="color:#66d9ef">instanceof</span> Calendar<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    time <span style="color:#f92672">=</span> <span style="color:#f92672">((</span>Calendar<span style="color:#f92672">)</span>obj<span style="color:#f92672">).</span><span style="color:#a6e22e">getTimeInMillis</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span> 
 
-if (obj instanceof Calendar) {
-    time = ((Calendar)obj).getTimeInMillis();
-} 
-
-if (obj instanceof Date) {
-    time = ((Date)obj).getTime();//这行永远不会执行，因为这不是Date类型。
-}
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>obj <span style="color:#66d9ef">instanceof</span> Date<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    time <span style="color:#f92672">=</span> <span style="color:#f92672">((</span>Date<span style="color:#f92672">)</span>obj<span style="color:#f92672">).</span><span style="color:#a6e22e">getTime</span><span style="color:#f92672">();</span><span style="color:#75715e">//这行永远不会执行，因为这不是Date类型。
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
                 
@@ -368,6 +340,12 @@ if (obj instanceof Date) {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,31 +187,19 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#sort">Sort</a>
-<ul>
-<li><a href="#命令输出">命令输出</a>
-<ul>
-<li><a href="#输入一个文件">输入一个文件</a></li>
-<li><a href="#排序另个命令的输出">排序另个命令的输出</a></li>
-</ul></li>
-<li><a href="#输出唯一">输出唯一</a></li>
-<li><a href="#数字排序">数字排序</a></li>
-<li><a href="#按key排序">按key排序</a>
-<ul>
-<li><a href="#t选项">-t选项</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#sort">Sort</a>
+      <ul>
+        <li><a href="#命令输出">命令输出</a></li>
+        <li><a href="#输出唯一">输出唯一</a></li>
+        <li><a href="#数字排序">数字排序</a></li>
+        <li><a href="#按key排序">按key排序</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="sort">Sort</h2>
-
+        		<h2 id="sort">Sort</h2>
 <table>
 <thead>
 <tr>
@@ -215,7 +207,6 @@
 <th>meaning</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-u</td>
@@ -223,143 +214,84 @@
 </tr>
 </tbody>
 </table>
-
 <p><code>sort</code>是一个Unix命令，用来按顺序对文件中的数据进行排序。</p>
-
 <h3 id="命令输出">命令输出</h3>
-
 <p><code>sort</code>用来排序一列行。</p>
-
 <h4 id="输入一个文件">输入一个文件</h4>
-
 <pre><code>sort file.txt
-</code></pre>
-
-<h4 id="排序另个命令的输出">排序另个命令的输出</h4>
-
+</code></pre><h4 id="排序另个命令的输出">排序另个命令的输出</h4>
 <p>你可以排序任何输出命令的输出。在下面的例子中，会排序一列符合条件的文件：</p>
-
 <pre><code>find * -name pattern | sort
-</code></pre>
-
-<h3 id="输出唯一">输出唯一</h3>
-
+</code></pre><h3 id="输出唯一">输出唯一</h3>
 <p>如果想要输出的行保持唯一，可以使用<code>-u</code>选项。</p>
-
 <p>输出目录中文件的所有者：</p>
-
 <pre><code>ls -l | awk '{print $3}' | sort -u
-</code></pre>
-
-<h3 id="数字排序">数字排序</h3>
-
+</code></pre><h3 id="数字排序">数字排序</h3>
 <p>假设我们有下面的文件：</p>
-
 <pre><code>$ cat file 
 10.Gryffindor 
 4.Hogwarts 
 2.Harry 
 3.Dumbledore 
 1.The sorting hat
-</code></pre>
-
-<p>想要按数字排序这些内容，使用<code>-n</code>选项：</p>
-
+</code></pre><p>想要按数字排序这些内容，使用<code>-n</code>选项：</p>
 <pre><code>sort -n file
-</code></pre>
-
-<p>这个命令会输出下面的内容：</p>
-
+</code></pre><p>这个命令会输出下面的内容：</p>
 <pre><code>1.The sorting hat
 2.Harry
 3.Dumbledore
 4.Hogwarts
 10.Gryffindor
-</code></pre>
-
-<p>想要倒序排列的话，使用<code>-r</code>选项：</p>
-
+</code></pre><p>想要倒序排列的话，使用<code>-r</code>选项：</p>
 <pre><code>sort -rn file
-</code></pre>
-
-<p>这将会输出下面的结果：</p>
-
+</code></pre><p>这将会输出下面的结果：</p>
 <pre><code>10.Gryffindor
 4.Hogwarts
 3.Dumbledore
 2.Harry
 1.The sorting hat
-</code></pre>
-
-<h3 id="按key排序">按key排序</h3>
-
+</code></pre><h3 id="按key排序">按key排序</h3>
 <p>假设我们有这样一个文件：</p>
-
 <pre><code>$ cat Hogwarts
 Harry       Malfoy      Rowena       Helga
 Gryffindor  Slytherin   Ravenclaw    Hufflepuff
 Hermione    Goyle       Lockhart     Tonks
 Ron         Snape       Olivander    Newt
 Ron         Goyle       Flitwick     Sprout
-</code></pre>
-
-<p>想用某个列作为key来排序，可以使用<code>k</code>选项：</p>
-
+</code></pre><p>想用某个列作为key来排序，可以使用<code>k</code>选项：</p>
 <pre><code>sort -k 2 Hogwarts
-</code></pre>
-
-<p>这将会把第2列作为排序的key，有下面的输出：</p>
-
+</code></pre><p>这将会把第2列作为排序的key，有下面的输出：</p>
 <pre><code>Ron        Goyle      Flitwick  Sprout
 Hermione   Goyle      Lockhart  Tonks
 Harry      Malfoy     Rowena    Helga
 Gryffindor Slytherin  Ravenclaw Hufflepuff
 Ron        Snape      Olivander Newt
-</code></pre>
-
-<p>如果我们在使用主key的基础上，想用再用第二个key来排序：</p>
-
+</code></pre><p>如果我们在使用主key的基础上，想用再用第二个key来排序：</p>
 <pre><code>sort -k 2,2 -k 1,1 Hogwarts
-</code></pre>
-
-<p>这将会把第二列作为主key，然后将第一列作为第二个key：</p>
-
+</code></pre><p>这将会把第二列作为主key，然后将第一列作为第二个key：</p>
 <pre><code>Hermione   Goyle     Lockhart   Tonks
 Ron        Goyle     Flitwick   Sprout
 Harry      Malfoy    Rowena     Helga
 Gryffindor Slytherin Ravenclaw  Hufflepuff
 Ron        Snape     Olivander  Newt
-</code></pre>
-
-<p>当你使用一个以上的key排序时，对于每个<code>-k</code>选项都要指定排序结束。所以<code>-k 1,1</code>意味着以第一列开始排序，在第一列结束排序。</p>
-
-<h4 id="t选项">-t选项</h4>
-
+</code></pre><p>当你使用一个以上的key排序时，对于每个<code>-k</code>选项都要指定排序结束。所以<code>-k 1,1</code>意味着以第一列开始排序，在第一列结束排序。</p>
+<h4 id="-t选项">-t选项</h4>
 <p>在前面的例子中，文件有默认的分隔符<code>tab</code>。如果文件没有默认分隔符，我们需要使用<code>-t</code>选项指定分隔符。假设我们有下面的文件：</p>
-
 <pre><code>$ cat file
 5.|Gryffindor 
 4.|Hogwarts 
 2.|Harry 
 3.|Dumbledore 
 1.|The sorting hat
-</code></pre>
-
-<p>使用第二列来排列这个文件：</p>
-
+</code></pre><p>使用第二列来排列这个文件：</p>
 <pre><code>$ sort -t &quot;|&quot; -k 2 file
-</code></pre>
-
-<p>将会有下面的输出：</p>
-
+</code></pre><p>将会有下面的输出：</p>
 <pre><code>3.|Dumbledore 
 5.|Gryffindor 
 2.|Harry 
 4.|Hogwarts
 1.|The sorting hat
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -431,6 +363,12 @@ Ron        Snape     Olivander  Newt
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

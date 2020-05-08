@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,72 +187,52 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#压缩">压缩</a>
-<ul>
-<li><a href="#不使用rebase压缩提交">不使用rebase压缩提交</a></li>
-<li><a href="#merge时压缩提交">merge时压缩提交</a></li>
-<li><a href="#rebase时压缩提交">rebase时压缩提交</a></li>
-<li><a href="#自动压缩和修正">自动压缩和修正</a></li>
-<li><a href="#自动压缩-在rebase时压缩">自动压缩：在rebase时压缩</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#压缩">压缩</a>
+      <ul>
+        <li><a href="#不使用rebase压缩提交">不使用rebase压缩提交</a></li>
+        <li><a href="#merge时压缩提交">merge时压缩提交</a></li>
+        <li><a href="#rebase时压缩提交">rebase时压缩提交</a></li>
+        <li><a href="#自动压缩和修正">自动压缩和修正</a></li>
+        <li><a href="#自动压缩在rebase时压缩">自动压缩：在rebase时压缩</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="压缩">压缩</h2>
-
+        		<h2 id="压缩">压缩</h2>
 <h3 id="不使用rebase压缩提交">不使用rebase压缩提交</h3>
-
 <p>如果你想把之前的<code>x</code>个提交压缩到一个提交，你可以使用下面的命令：</p>
-
 <pre><code>$ git reset --soft HEAD~x 
 $ git commit
-</code></pre>
-
-<p>这里，你可以替换<code>x</code>为你想要压缩到一个提交的多个提交的数量。</p>
-
+</code></pre><p>这里，你可以替换<code>x</code>为你想要压缩到一个提交的多个提交的数量。</p>
 <p>请记住这将会创建一个新的提交，基本上会丢掉之前<code>x</code>个提交包含的提交人，提交信息和提交日期。你可能需要首先复制粘贴现有的提交消息。</p>
-
 <h3 id="merge时压缩提交">merge时压缩提交</h3>
-
 <p>你可以使用<code>git merge —squash</code>命令把这个分支的修改压缩到一个提交。并不是实际的提交被创建了。</p>
-
 <pre><code> git merge --squash &lt;branch&gt; 
  git commit
-</code></pre>
-
-<p>这或多或少相当于使用<code>git reset</code>命令，但当合并更改具有符号名时更方便。比较：</p>
-
+</code></pre><p>这或多或少相当于使用<code>git reset</code>命令，但当合并更改具有符号名时更方便。比较：</p>
 <pre><code>git checkout &lt;branch&gt;
 git reset --soft $(git merge-base master &lt;branch&gt;) 
 git commit
-</code></pre>
-
-<h3 id="rebase时压缩提交">rebase时压缩提交</h3>
-
+</code></pre><h3 id="rebase时压缩提交">rebase时压缩提交</h3>
 <p>在<code>git rebase</code>命令执行的时候可以压缩多个提交。建议您在尝试以这种方式压缩提交之前了解<code>rebase</code>命令。</p>
-
 <ol>
-<li><p>确定要从哪个提交中<code>rebase</code>，并注意其提交的hash值。</p></li>
-
-<li><p>执行<code>git rebase -i [commit hash]</code></p></li>
-</ol>
-
+<li>
+<p>确定要从哪个提交中<code>rebase</code>，并注意其提交的hash值。</p>
+</li>
+<li>
+<p>执行<code>git rebase -i [commit hash]</code></p>
 <p>或者，你可以使用<code>HEAD~4</code>来代替提交的hash值，来查看最新的提交和最新之前4个提交</p>
-
-<ol>
-<li><p>在运行这个命令打开的编辑器中，选择哪些提交你想要合并。替换这些行之前的<code>pick</code>为<code>squash</code>来吧这些提交压缩的签名的提交中。</p></li>
-
-<li><p>在选择了压缩的提交之后，你需要编辑提交的信息</p></li>
+</li>
+<li>
+<p>在运行这个命令打开的编辑器中，选择哪些提交你想要合并。替换这些行之前的<code>pick</code>为<code>squash</code>来吧这些提交压缩的签名的提交中。</p>
+</li>
+<li>
+<p>在选择了压缩的提交之后，你需要编辑提交的信息</p>
+</li>
 </ol>
-
 <p>查看提交并且决定哪些提交要rebase:</p>
-
 <pre><code>&gt; git log --oneline
 612f2f7 This commit should not be squashed 
 d84b05d This commit should be squashed 
@@ -258,10 +242,7 @@ ac60234 Yet another commit
 e647334 Another Commit 
 2e30df6 Initial commit
 &gt; git rebase -i 36d15de
-</code></pre>
-
-<p>这时你选择的编辑器就会打开，在这里你可以描述你想要这些提交做什么。Git在注释中提供了帮助信息。如果你退出了这个编辑器，什么都不会发生，因为每个提交都会保持和之前一样的顺序。在这个例子中，我们应用下面的命令：</p>
-
+</code></pre><p>这时你选择的编辑器就会打开，在这里你可以描述你想要这些提交做什么。Git在注释中提供了帮助信息。如果你退出了这个编辑器，什么都不会发生，因为每个提交都会保持和之前一样的顺序。在这个例子中，我们应用下面的命令：</p>
 <pre><code>pick ac60234 Yet another commit
 squash d84b05d This commit should be squashed
 pick 612f2f7 This commit should not be squashed
@@ -283,10 +264,7 @@ pick 612f2f7 This commit should not be squashed
 # However, if you remove everything, the rebase will be aborted.
 #
 # Note that empty commits are commented out
-</code></pre>
-
-<p>在填写完提交信息之后，查看日志信息：</p>
-
+</code></pre><p>在填写完提交信息之后，查看日志信息：</p>
 <pre><code>&gt; git log --oneline
 77393eb This commit should not be squashed 
 e090a8c Yet another commit
@@ -294,75 +272,43 @@ e090a8c Yet another commit
 17692d1 Did some more stuff
 e647334 Another Commit
 2e30df6 Initial commit
-</code></pre>
-
-<h3 id="自动压缩和修正">自动压缩和修正</h3>
-
+</code></pre><h3 id="自动压缩和修正">自动压缩和修正</h3>
 <p>提交更改时，可以指定将来的提交将被压缩到另一个提交，可以这样做：</p>
-
 <pre><code>git commit --squash=[commit hash of commit to which this commit will be squashed to]
-</code></pre>
-
-<p><code>--fixup=[commit hash]</code>这个选项是可选的，用来进行修正。</p>
-
+</code></pre><p><code>--fixup=[commit hash]</code>这个选项是可选的，用来进行修正。</p>
 <p>也可以使用提交信息中的字词来代替这个hash值：</p>
-
 <pre><code>git commit --squash :/things
-</code></pre>
-
-<p>带有单次<code>things</code>的最新提交教会被使用</p>
-
+</code></pre><p>带有单次<code>things</code>的最新提交教会被使用</p>
 <p>这些提交的信息将会以<code>'fixup!'</code>或<code>'squash!'</code>开头，后面是被压缩到的提交的提交信息。</p>
-
-<p>当rebase命令带有<code>--autosquash</code>这个选项的时候，将会应用<code>autosquash/fixup</code>特性。</p>
-
-<h3 id="自动压缩-在rebase时压缩">自动压缩：在rebase时压缩</h3>
-
+<p>当rebase命令带有<code>--autosquash </code>这个选项的时候，将会应用<code>autosquash/fixup</code>特性。</p>
+<h3 id="自动压缩在rebase时压缩">自动压缩：在rebase时压缩</h3>
 <p>看看下面的提交历史，想象你想把一些修改压缩到<code>bbb2222 A second commit</code>这个提交：</p>
-
 <pre><code>$ git log --oneline --decorate
 ccc3333 (HEAD -&gt; master) A third commit 
 bbb2222 A second commit
 aaa1111 A first commit
 9999999 Initial commit
-</code></pre>
-
-<p>一旦你完成了你的修改，可以像往常一样添加，并且使用带有<code>—fixup</code>选项的提交命令，加上想要压缩到的提交hash值：</p>
-
+</code></pre><p>一旦你完成了你的修改，可以像往常一样添加，并且使用带有<code>—fixup</code>选项的提交命令，加上想要压缩到的提交hash值：</p>
 <pre><code>$ git add .
 $ git commit --fixup bbb2222
 [my-feature-branch ddd4444] fixup! A second commit
-</code></pre>
-
-<p>这将创建一个新的提交，包括Git在交互式rebase中识别到的提交信息：</p>
-
+</code></pre><p>这将创建一个新的提交，包括Git在交互式rebase中识别到的提交信息：</p>
 <pre><code>$ git log --oneline --decorate
 ddd4444 (HEAD -&gt; master) fixup! A second commit 
 ccc3333 A third commit
 bbb2222 A second commit
 aaa1111 A first commit
 9999999 Initial commit
-</code></pre>
-
-<p>接下来，使用<code>--autosquash</code>选项做一个交互式rebase：</p>
-
+</code></pre><p>接下来，使用<code>--autosquash </code>选项做一个交互式rebase：</p>
 <pre><code>$ git rebase --autosquash --interactive HEAD~4
-</code></pre>
-
-<p>Git会建议你使用<code>commit --fixup</code>来压缩你的提交到正确的位置：</p>
-
+</code></pre><p>Git会建议你使用<code>commit --fixup</code>来压缩你的提交到正确的位置：</p>
 <pre><code>pick aaa1111 A first commit
 pick bbb2222 A second commit
 fixup ddd4444 fixup! A second commit 
 pick ccc3333 A third commit
-</code></pre>
-
-<p>为了避免每次rebase都是添加<code>--autosquash</code>选项，你可以把这个设置成默认的选项：</p>
-
+</code></pre><p>为了避免每次rebase都是添加<code>--autosquash</code>选项，你可以把这个设置成默认的选项：</p>
 <pre><code>$ git config --global rebase.autosquash true
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -434,6 +380,12 @@ pick ccc3333 A third commit
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

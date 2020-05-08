@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#bc-math-二进制计算">BC Math(二进制计算)</a>
-<ul>
-<li><a href="#1-使用bcmath在32位系统读取-写入一个二进制long型">1. 使用bcmath在32位系统读取/写入一个二进制long型</a></li>
-<li><a href="#2-比较bcmath和浮点数的运算符">2. 比较bcmath和浮点数的运算符</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#bc-math二进制计算">BC Math(二进制计算)</a>
+      <ul>
+        <li><a href="#1-使用bcmath在32位系统读取写入一个二进制long型">1. 使用bcmath在32位系统读取/写入一个二进制long型</a></li>
+        <li><a href="#2-比较bcmath和浮点数的运算符">2. 比较bcmath和浮点数的运算符</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="bc-math-二进制计算">BC Math(二进制计算)</h2>
-
+        		<h2 id="bc-math二进制计算">BC Math(二进制计算)</h2>
 <table>
 <thead>
 <tr>
@@ -206,25 +205,21 @@
 <th>添加两个任意精度的数字</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>left_operand</code></td>
 <td>左操作数，是一个字符串</td>
 </tr>
-
 <tr>
 <td><code>right_operand</code></td>
 <td>右操作数，是一个字符串</td>
 </tr>
-
 <tr>
 <td><code>scale</code></td>
 <td>可选参数，设置结果中小数点后面的位数</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -232,25 +227,21 @@
 <th>比较两个任意精度的数字</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>left_operand</code></td>
 <td>左操作数，是一个字符串</td>
 </tr>
-
 <tr>
 <td><code>right_operand</code></td>
 <td>右操作数，是一个字符串</td>
 </tr>
-
 <tr>
 <td><code>scale</code></td>
 <td>可选的参数，用来设置用来比较的小数点后面的位数</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -258,25 +249,21 @@
 <th>两个任意精度数字的除法</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>left_operand</code></td>
 <td>左操作数，是一个字符串</td>
 </tr>
-
 <tr>
 <td><code>right_operand</code></td>
 <td>右操作数，是一个字符串</td>
 </tr>
-
 <tr>
 <td><code>scale</code></td>
 <td>可选参数，用来设置结果中小数点后面的 位数</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -284,20 +271,17 @@
 <th>对任意精度数字取模</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>left_operand</code></td>
 <td>左操作数，是一个字符串</td>
 </tr>
-
 <tr>
 <td><code>modulus</code></td>
 <td>字符串类型的系数</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -305,25 +289,21 @@
 <th>2个任意精度数字的乘法</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>left_operand</code></td>
 <td>字符串类型的左操作数</td>
 </tr>
-
 <tr>
 <td><code>right_operand</code></td>
 <td>字符串类型的右操作数</td>
 </tr>
-
 <tr>
 <td><code>scale</code></td>
 <td>可选参数，设置结果中小数点后面的位数</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -331,25 +311,21 @@
 <th>任意精度的乘方</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>left_operand</code></td>
 <td>字符串类型的左操作数</td>
 </tr>
-
 <tr>
 <td><code>right_operand</code></td>
 <td>字符串类型的右操作数</td>
 </tr>
-
 <tr>
 <td><code>scale</code></td>
 <td>可选参数，结果中小数点后面的位数</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -357,30 +333,25 @@
 <th>对任意精度数字乘方，然后取模</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>left_operand</code></td>
 <td>整形字符串类型的操作数，scale必须是0</td>
 </tr>
-
 <tr>
 <td><code>right_operand</code></td>
 <td>指数，非负的整形字符串，scale必须是0</td>
 </tr>
-
 <tr>
 <td><code>modulus</code></td>
 <td>整形字符串，scale必须是0</td>
 </tr>
-
 <tr>
 <td>scale</td>
 <td>可选，设置结果中的小数点后位数</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -388,7 +359,6 @@
 <th>为所有的bc方法设置默认的scale值</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>scale</code></td>
@@ -396,7 +366,6 @@
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -404,20 +373,17 @@
 <th>任意精度数字的二次方根</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>operand</code></td>
 <td>字符串类型</td>
 </tr>
-
 <tr>
 <td><code>scale</code></td>
 <td>可选参数，结果中小数点后面的位数</td>
 </tr>
 </tbody>
 </table>
-
 <table>
 <thead>
 <tr>
@@ -425,109 +391,83 @@
 <th></th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>left_operand</code></td>
 <td>字符串类型参数</td>
 </tr>
-
 <tr>
 <td><code>right_operand</code></td>
 <td>字符串类型参数</td>
 </tr>
-
 <tr>
 <td><code>scale</code></td>
 <td>可选参数，设置结果中小数点后面的位数</td>
 </tr>
 </tbody>
 </table>
-
 <p>对于任意精度的数学，PHP提供了支持用字符串表示的任意大小和精度的数字的二进制计算，最多为2147483647-1（或0x7FFFFFFF-1）。二进制计算是比PHP的浮点计算更加精确的。</p>
-
-<h3 id="1-使用bcmath在32位系统读取-写入一个二进制long型">1. 使用bcmath在32位系统读取/写入一个二进制long型</h3>
-
+<h3 id="1-使用bcmath在32位系统读取写入一个二进制long型">1. 使用bcmath在32位系统读取/写入一个二进制long型</h3>
 <p>在32位系统中，大于<code>0x7FFFFFFF</code>的整数不能被原始存储，而介于<code>0x0000000080000000</code>和<code>0x7FFFFFFFFFFFFFFF</code>之间的整数可以原始存储在64位系统上，但是32位系统不行(<code>signed long long</code>)。但是，因为64位系统和其他的语言支持存储<code>signed long long</code>，因此有时需要精确存储这一范围内的值。有多种方法可以实现，例如创建一个有两个数字的整数，或者将整数转换为十进制的可读形式。这有几个优点，例如便于向用户展示，以及bcmath直接操作的能力。</p>
-
 <p><a href="https://www.php.net/pack">pack</a>/<a href="https://www.php.net/unpack">unpack</a>可以用来在二进制字节和十进制之间进行转换（两种类型都是字符串，但是一种是二进制，另一种是ASCII）。但是它们总是视图吧ASCII字符串转换为32位系统的32位整数。下面代码提供了备选方案：</p>
-
-<pre><code class="language-php">//在64位系统使用pack(&quot;J&quot;)或pack(&quot;p&quot;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//在64位系统使用pack(&#34;J&#34;)或pack(&#34;p&#34;)
 function writeLong(string $ascii) : string { 
-    if(bccomp($ascii, &quot;0&quot;) === -1) { // if $ascii &lt; 0
-        // 18446744073709551616 is equal to (1 &lt;&lt; 64)
-        // remember to add the quotes, or the number will be parsed as a float literal 
-        $ascii = bcadd($ascii, &quot;18446744073709551616&quot;);
-    }
+    if(bccomp($ascii, &#34;0&#34;) === -1) { // if $ascii &lt; <span style="color:#f92672">0</span>
+        <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">18446744073709551616</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">equal</span> <span style="color:#a6e22e">to</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">1</span> <span style="color:#960050;background-color:#1e0010">&lt;&lt;</span> <span style="color:#a6e22e">64</span><span style="color:#960050;background-color:#1e0010">)</span>
+        <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">remember</span> <span style="color:#a6e22e">to</span> <span style="color:#a6e22e">add</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">quotes</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">or</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">number</span> <span style="color:#a6e22e">will</span> <span style="color:#a6e22e">be</span> <span style="color:#a6e22e">parsed</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">float</span> <span style="color:#a6e22e">literal</span> 
+        <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">ascii </span><span style="color:#f92672">=</span> <span style="color:#e6db74">bcadd($ascii,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">18446744073709551616</span><span style="color:#960050;background-color:#1e0010">&#34;);</span>
+    <span style="color:#960050;background-color:#1e0010">}</span>
   
-    // &quot;n&quot; is big-endian 16-bit unsigned short. Use &quot;v&quot; for small-endian.
-    return pack(&quot;n&quot;, bcmod(bcdiv($ascii, &quot;281474976710656&quot;), &quot;65536&quot;)) .
-        pack(&quot;n&quot;, bcmod(bcdiv($ascii, &quot;4294967296&quot;), &quot;65536&quot;)) .
-        pack(&quot;n&quot;, bcdiv($ascii, &quot;65536&quot;), &quot;65536&quot;)) .
-        pack(&quot;n&quot;, bcmod($ascii, &quot;65536&quot;));
-}
+    <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">big-endian</span> <span style="color:#a6e22e">16-bit</span> <span style="color:#a6e22e">unsigned</span> <span style="color:#a6e22e">short</span><span style="color:#960050;background-color:#1e0010">.</span> <span style="color:#a6e22e">Use</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">v</span><span style="color:#960050;background-color:#1e0010">&#34;</span> <span style="color:#a6e22e">for</span> <span style="color:#a6e22e">small-endian</span><span style="color:#960050;background-color:#1e0010">.</span>
+    <span style="color:#a6e22e">return</span> <span style="color:#a6e22e">pack</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;,</span> <span style="color:#a6e22e">bcmod</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">bcdiv</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">ascii</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">281474976710656</span><span style="color:#960050;background-color:#1e0010">&#34;),</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">65536</span><span style="color:#960050;background-color:#1e0010">&#34;))</span> <span style="color:#960050;background-color:#1e0010">.</span>
+        <span style="color:#a6e22e">pack</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;,</span> <span style="color:#a6e22e">bcmod</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">bcdiv</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">ascii</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">4294967296</span><span style="color:#960050;background-color:#1e0010">&#34;),</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">65536</span><span style="color:#960050;background-color:#1e0010">&#34;))</span> <span style="color:#960050;background-color:#1e0010">.</span>
+        <span style="color:#a6e22e">pack</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;,</span> <span style="color:#a6e22e">bcdiv</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">ascii</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">65536</span><span style="color:#960050;background-color:#1e0010">&#34;),</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">65536</span><span style="color:#960050;background-color:#1e0010">&#34;))</span> <span style="color:#960050;background-color:#1e0010">.</span>
+        <span style="color:#a6e22e">pack</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;,</span> <span style="color:#a6e22e">bcmod</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">ascii</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">65536</span><span style="color:#960050;background-color:#1e0010">&#34;));</span>
+<span style="color:#960050;background-color:#1e0010">}</span>
 
-function readLong(string $binary) : string { 
-    $result = &quot;0&quot;;
-    $result = bcadd($result, unpack(&quot;n&quot;, substr($binary, 0, 2)));
-    $result = bcmul($result, &quot;65536&quot;);
-    $result = bcadd($result, unpack(&quot;n&quot;, substr($binary, 2, 2)));
-    $result = bcmul($result, &quot;65536&quot;);
-    $result = bcadd($result, unpack(&quot;n&quot;, substr($binary, 4, 2)));
-    $result = bcmul($result, &quot;65536&quot;);
-    $result = bcadd($result, unpack(&quot;n&quot;, substr($binary, 6, 2)));
-    // if $binary is a signed long long
-    // 9223372036854775808 is equal to (1 &lt;&lt; 63) (note that this expression actually does not work even on 64-bit systems)
-    if(bccomp($result, &quot;9223372036854775808&quot;) !== -1) { // if $result &gt;= 9223372036854775807 
-      $result = bcsub($result, &quot;18446744073709551616&quot;); // $result -= (1 &lt;&lt; 64)
-    }
-    return $result;
-}
-</code></pre>
-
-<h3 id="2-比较bcmath和浮点数的运算符">2. 比较bcmath和浮点数的运算符</h3>
-
+<span style="color:#a6e22e">function</span> <span style="color:#a6e22e">readLong</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">string</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">binary</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#a6e22e">:</span> <span style="color:#a6e22e">string</span> <span style="color:#960050;background-color:#1e0010">{</span> 
+    <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result </span><span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0&#34;</span><span style="color:#960050;background-color:#1e0010">;</span>
+    <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result </span><span style="color:#f92672">=</span> <span style="color:#e6db74">bcadd($result,</span> <span style="color:#a6e22e">unpack</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;,</span> <span style="color:#a6e22e">substr</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">binary</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">0</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">2</span><span style="color:#960050;background-color:#1e0010">)));</span>
+    <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result </span><span style="color:#f92672">=</span> <span style="color:#e6db74">bcmul($result,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">65536</span><span style="color:#960050;background-color:#1e0010">&#34;);</span>
+    <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result </span><span style="color:#f92672">=</span> <span style="color:#e6db74">bcadd($result,</span> <span style="color:#a6e22e">unpack</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;,</span> <span style="color:#a6e22e">substr</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">binary</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">2</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">2</span><span style="color:#960050;background-color:#1e0010">)));</span>
+    <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result </span><span style="color:#f92672">=</span> <span style="color:#e6db74">bcmul($result,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">65536</span><span style="color:#960050;background-color:#1e0010">&#34;);</span>
+    <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result </span><span style="color:#f92672">=</span> <span style="color:#e6db74">bcadd($result,</span> <span style="color:#a6e22e">unpack</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;,</span> <span style="color:#a6e22e">substr</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">binary</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">4</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">2</span><span style="color:#960050;background-color:#1e0010">)));</span>
+    <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result </span><span style="color:#f92672">=</span> <span style="color:#e6db74">bcmul($result,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">65536</span><span style="color:#960050;background-color:#1e0010">&#34;);</span>
+    <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result </span><span style="color:#f92672">=</span> <span style="color:#e6db74">bcadd($result,</span> <span style="color:#a6e22e">unpack</span><span style="color:#960050;background-color:#1e0010">(&#34;</span><span style="color:#a6e22e">n</span><span style="color:#960050;background-color:#1e0010">&#34;,</span> <span style="color:#a6e22e">substr</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">binary</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">6</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#a6e22e">2</span><span style="color:#960050;background-color:#1e0010">)));</span>
+    <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">if</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">binary</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">signed</span> <span style="color:#a6e22e">long</span> <span style="color:#a6e22e">long</span>
+    <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">9223372036854775808</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">equal</span> <span style="color:#a6e22e">to</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">1</span> <span style="color:#960050;background-color:#1e0010">&lt;&lt;</span> <span style="color:#a6e22e">63</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">note</span> <span style="color:#a6e22e">that</span> <span style="color:#a6e22e">this</span> <span style="color:#a6e22e">expression</span> <span style="color:#a6e22e">actually</span> <span style="color:#a6e22e">does</span> <span style="color:#a6e22e">not</span> <span style="color:#a6e22e">work</span> <span style="color:#a6e22e">even</span> <span style="color:#a6e22e">on</span> <span style="color:#a6e22e">64-bit</span> <span style="color:#a6e22e">systems</span><span style="color:#960050;background-color:#1e0010">)</span>
+    <span style="color:#a6e22e">if</span><span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">bccomp</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">result</span><span style="color:#960050;background-color:#1e0010">,</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">9223372036854775808</span><span style="color:#960050;background-color:#1e0010">&#34;)</span> <span style="color:#960050;background-color:#1e0010">!==</span> <span style="color:#a6e22e">-1</span><span style="color:#960050;background-color:#1e0010">)</span> <span style="color:#960050;background-color:#1e0010">{</span> <span style="color:#960050;background-color:#1e0010">//</span> <span style="color:#a6e22e">if</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result</span> &gt;= 9223372036854775807 
+      $result = bcsub($result, &#34;18446744073709551616&#34;); // $result -= (1 <span style="color:#960050;background-color:#1e0010">&lt;</span>&lt; <span style="color:#f92672">64</span><span style="color:#960050;background-color:#1e0010">)</span>
+    <span style="color:#960050;background-color:#1e0010">}</span>
+    <span style="color:#a6e22e">return</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">result</span><span style="color:#960050;background-color:#1e0010">;</span>
+<span style="color:#960050;background-color:#1e0010">}</span>
+</code></pre></div><h3 id="2-比较bcmath和浮点数的运算符">2. 比较bcmath和浮点数的运算符</h3>
 <p><strong>bcadd vs float+float</strong></p>
-
-<pre><code class="language-php">var_dump('10' + '-9.99');           // float(0.0099999999999998)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(&#39;10&#39; + &#39;-9.99&#39;);           // float(0.0099999999999998)
 var_dump(10 + -9.99);               // float(0.0099999999999998)
 var_dump(10.00 + -9.99);            // float(0.0099999999999998)
-var_dump(bcadd('10', '-9.99', 20)); // string(22) &quot;0.01000000000000000000&quot;
-</code></pre>
-
-<p><strong>bcsub vs float-float</strong></p>
-
-<pre><code class="language-php">var_dump('10' - '9.99');           // float(0.0099999999999998)
+var_dump(bcadd(&#39;10&#39;, &#39;-9.99&#39;, 20)); // string(22) &#34;0.01000000000000000000&#34;
+</code></pre></div><p><strong>bcsub vs float-float</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(&#39;10&#39; - &#39;9.99&#39;);           // float(0.0099999999999998)
 var_dump(10 - 9.99);               // float(0.0099999999999998)
 var_dump(10.00 - 9.99);            // float(0.0099999999999998)
-var_dump(bcsub('10', '9.99', 20)); // string(22) &quot;0.01000000000000000000&quot;
-</code></pre>
-
-<p><strong>bcmul vs int*int</strong></p>
-
-<pre><code class="language-php">var_dump('5.00' * '2.00');            // float(10)
+var_dump(bcsub(&#39;10&#39;, &#39;9.99&#39;, 20)); // string(22) &#34;0.01000000000000000000&#34;
+</code></pre></div><p><strong>bcmul vs int*int</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(&#39;5.00&#39; * &#39;2.00&#39;);            // float(10)
 var_dump(5.00 * 2.00);                // float(10)
-var_dump(bcmul('5.0', '2', 20));      // string(4) &quot;10.0&quot;
-var_dump(bcmul('5.000', '2.00', 20)); // string(8) &quot;10.00000&quot;
-var_dump(bcmul('5', '2', 20));        // string(2) &quot;10&quot;
-</code></pre>
-
-<p><strong>bcmul vs float*float</strong></p>
-
-<pre><code class="language-php">var_dump('1.6767676767' * '1.6767676767'); // float(2.8115498416259) 
+var_dump(bcmul(&#39;5.0&#39;, &#39;2&#39;, 20));      // string(4) &#34;10.0&#34;
+var_dump(bcmul(&#39;5.000&#39;, &#39;2.00&#39;, 20)); // string(8) &#34;10.00000&#34;
+var_dump(bcmul(&#39;5&#39;, &#39;2&#39;, 20));        // string(2) &#34;10&#34;
+</code></pre></div><p><strong>bcmul vs float*float</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(&#39;1.6767676767&#39; * &#39;1.6767676767&#39;); // float(2.8115498416259) 
 var_dump(1.6767676767 * 1.6767676767); // float(2.8115498416259) 
-var_dump(bcmul('1.6767676767', '1.6767676767', 20));//string(22) &quot;2.81154984162591572289&quot;
-</code></pre>
-
-<p><strong>bcdiv vs float/float</strong></p>
-
-<pre><code class="language-php">var_dump('10' / '3.01');           // float(3.3222591362126)
+var_dump(bcmul(&#39;1.6767676767&#39;, &#39;1.6767676767&#39;, 20));//string(22) &#34;2.81154984162591572289&#34;
+</code></pre></div><p><strong>bcdiv vs float/float</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(&#39;10&#39; / &#39;3.01&#39;);           // float(3.3222591362126)
 var_dump(10 / 3.01);               // float(3.3222591362126)
 var_dump(10.00 / 3.01);            // float(3.3222591362126)
-var_dump(bcdiv('10', '3.01', 20)); // string(22) &quot;3.32225913621262458471&quot;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+var_dump(bcdiv(&#39;10&#39;, &#39;3.01&#39;, 20)); // string(22) &#34;3.32225913621262458471&#34;
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -599,6 +539,12 @@ var_dump(bcdiv('10', '3.01', 20)); // string(22) &quot;3.32225913621262458471&qu
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

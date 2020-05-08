@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,27 +187,22 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#cat">cat</a>
-<ul>
-<li><a href="#拼接文件">拼接文件</a></li>
-<li><a href="#输出文件内容">输出文件内容</a></li>
-<li><a href="#写入文件">写入文件</a></li>
-<li><a href="#显示不可打印字符串">显示不可打印字符串</a></li>
-<li><a href="#标准输入读取内容">标准输入读取内容</a></li>
-<li><a href="#显示行号">显示行号</a></li>
-<li><a href="#拼接gizp加密文件">拼接gizp加密文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#cat">cat</a>
+      <ul>
+        <li><a href="#拼接文件">拼接文件</a></li>
+        <li><a href="#输出文件内容">输出文件内容</a></li>
+        <li><a href="#写入文件">写入文件</a></li>
+        <li><a href="#显示不可打印字符串">显示不可打印字符串</a></li>
+        <li><a href="#标准输入读取内容">标准输入读取内容</a></li>
+        <li><a href="#显示行号">显示行号</a></li>
+        <li><a href="#拼接gizp加密文件">拼接gizp加密文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="cat">cat</h2>
-
+        		<h2 id="cat">cat</h2>
 <table>
 <thead>
 <tr>
@@ -211,199 +210,113 @@
 <th>Description</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-n</td>
 <td>输出行号</td>
 </tr>
-
 <tr>
 <td>-v</td>
 <td>使用^和M-代替不能打印的字符，除了LFD和TAB</td>
 </tr>
-
 <tr>
 <td>-T</td>
 <td>使用^I代替TAB</td>
 </tr>
-
 <tr>
 <td>-E</td>
 <td>使用$代替换行符(LF)</td>
 </tr>
-
 <tr>
 <td>-e</td>
 <td>和-vE一个含义</td>
 </tr>
-
 <tr>
 <td>-b</td>
 <td>输出非空行行号，覆盖-n</td>
 </tr>
-
 <tr>
 <td>-A</td>
 <td>等价于-vET</td>
 </tr>
-
 <tr>
 <td>-s</td>
 <td>抑制重复输出空行</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="拼接文件">拼接文件</h3>
-
 <p>这是<code>cat</code>命令的主要作用：</p>
-
 <pre><code>$ cat file1 file2 file3 &gt; file_all
-</code></pre>
-
-<p><code>cat</code>命令也用来把拼接文件的结果作为管道的一部分：</p>
-
+</code></pre><p><code>cat</code>命令也用来把拼接文件的结果作为管道的一部分：</p>
 <pre><code>$ cat file1 file2 file3 | grep foo
-</code></pre>
-
-<h3 id="输出文件内容">输出文件内容</h3>
-
+</code></pre><h3 id="输出文件内容">输出文件内容</h3>
 <pre><code>$ cat file.txt
-</code></pre>
-
-<p>将会输出文件的所有内容。</p>
-
+</code></pre><p>将会输出文件的所有内容。</p>
 <p>如果文件中包含非ASCII的字符，你可以使用<code>cat -v</code>来把这些字符当做符合现实出来。这个用来解决控制字符不显示的情况非常有用。</p>
-
 <pre><code>$ cat -v unicode.txt
-</code></pre>
-
-<p>不过对于交互使用，通常使用<code>less</code>和<code>more</code>这类有分页效果的命令。<code>less</code>命令比<code>more</code>命令更加强大，所以通常使用<code>less</code>命令多余<code>more</code>命令。</p>
-
+</code></pre><p>不过对于交互使用，通常使用<code>less</code>和<code>more</code>这类有分页效果的命令。<code>less</code>命令比<code>more</code>命令更加强大，所以通常使用<code>less</code>命令多余<code>more</code>命令。</p>
 <pre><code>$ less file.txt
-</code></pre>
-
-<p>想要将文件的内容当做参数传递给命令，使用创定下是更好的选择：</p>
-
+</code></pre><p>想要将文件的内容当做参数传递给命令，使用创定下是更好的选择：</p>
 <pre><code>$ tr A-Z a-z &lt;file.txt # as an alternative to cat file.txt | tr A-Z a-z
-</code></pre>
-
-<p>想要把一个文件的内容从尾部想前输出可以使用<code>tac</code>命令：</p>
-
+</code></pre><p>想要把一个文件的内容从尾部想前输出可以使用<code>tac</code>命令：</p>
 <pre><code>$ tac file.txt
-</code></pre>
-
-<p>如果你想要输出带有行号的文件内容，可以使用<code>cat</code>的<code>-n</code>选项：</p>
-
+</code></pre><p>如果你想要输出带有行号的文件内容，可以使用<code>cat</code>的<code>-n</code>选项：</p>
 <pre><code>$ cat -n file.txt
-</code></pre>
-
-<p>想要一个字节一个字节的线上文件的所有内容，使用16进制是一个标准的解决办法。当你不知道文件的编码方式时，使用这个来处理文件的小片段是非常有效的。标准的16进制输出命令是<code>od -cH</code>，虽然说起来很麻烦，通常可以使用<code>xxd</code>和<code>hexdump</code>来替换。</p>
-
+</code></pre><p>想要一个字节一个字节的线上文件的所有内容，使用16进制是一个标准的解决办法。当你不知道文件的编码方式时，使用这个来处理文件的小片段是非常有效的。标准的16进制输出命令是<code>od -cH</code>，虽然说起来很麻烦，通常可以使用<code>xxd</code>和<code>hexdump</code>来替换。</p>
 <pre><code>$ printf 'Hëllö wörld' | xxd
 0000000: 48c3 ab6c 6cc3 b620 77c3 b672 6c64 H..ll.. w..rld
-</code></pre>
-
-<h3 id="写入文件">写入文件</h3>
-
+</code></pre><h3 id="写入文件">写入文件</h3>
 <pre><code>$ cat &gt; file
-</code></pre>
-
-<p>这将会让你吧终端中的文件保存到一个命名为<code>file</code>的文件里面。</p>
-
+</code></pre><p>这将会让你吧终端中的文件保存到一个命名为<code>file</code>的文件里面。</p>
 <pre><code>$ cat &gt;&gt;file
-</code></pre>
-
-<p>这将会执行相同的操作，唯一不同的是只会把内容添加到文件的末尾。</p>
-
+</code></pre><p>这将会执行相同的操作，唯一不同的是只会把内容添加到文件的末尾。</p>
 <p>使用<code>Ctrl + D</code>命令可以在终端中终端像文件中写内容。</p>
-
 <p>这里文件说明一个文件的内容可以被用于一个命令或者脚本：</p>
-
 <pre><code>$ cat &lt;&lt;END &gt;file 
 Hello, World. 
 END
-</code></pre>
-
-<p>重定向标识符<code>&lt;&lt;</code>后面可以是一个可以在一行内显示的任意字符串（在开始和结尾处没有任何空格），出现在文档的结尾处。你可以添加引号来避免执行命令的替换和变量插值：</p>
-
+</code></pre><p>重定向标识符<code>&lt;&lt;</code>后面可以是一个可以在一行内显示的任意字符串（在开始和结尾处没有任何空格），出现在文档的结尾处。你可以添加引号来避免执行命令的替换和变量插值：</p>
 <pre><code>$ cat &lt;&lt;'fnord'
 Nothing in `here` will be $changed 
 fnord
-</code></pre>
-
-<p>如果没有引号，<code>here</code>将会像命令一样被执行，如果<code>$changed</code>被定义了，将会被替换成这个变量的值，如果没有定义的话，将会是一个空值。</p>
-
+</code></pre><p>如果没有引号，<code>here</code>将会像命令一样被执行，如果<code>$changed</code>被定义了，将会被替换成这个变量的值，如果没有定义的话，将会是一个空值。</p>
 <h3 id="显示不可打印字符串">显示不可打印字符串</h3>
-
 <p>有时候你想要看一些不能打印的字符串，或者ASCII字符。</p>
-
 <p>如果你从网上复制粘贴了一部分字符串，这些字符串的引号将会是<code>“</code>这类引号而不是<code>&quot;</code>这类引号。</p>
-
 <pre><code>$ cat -v file.txt
 $ cat -vE file.txt # Useful in detecting trailing spaces.
-</code></pre>
-
-<p>例如：</p>
-
+</code></pre><p>例如：</p>
 <pre><code> $ echo '” ' | cat -vE # echo | will be replaced by actual file. 
  M-bM-^@M-^] $
-</code></pre>
-
-<p>你也可以使用<code>cat -A</code>，这个是等价于<code>cat -vET</code>。这将会把TAB字符显示为<code>^I</code>，不可以打印的字符和行末尾的字符：</p>
-
+</code></pre><p>你也可以使用<code>cat -A</code>，这个是等价于<code>cat -vET</code>。这将会把TAB字符显示为<code>^I</code>，不可以打印的字符和行末尾的字符：</p>
 <pre><code>$ echo '” `' | cat -A 
 M-bM-^@M-^]^I`$
-</code></pre>
-
-<h3 id="标准输入读取内容">标准输入读取内容</h3>
-
+</code></pre><h3 id="标准输入读取内容">标准输入读取内容</h3>
 <pre><code>$ cat &lt; file.txt
-</code></pre>
-
-<p>输出和<code>cat file.txt</code>一样，只不过这是从标准输入读取内容，而不是从一个文件：</p>
-
+</code></pre><p>输出和<code>cat file.txt</code>一样，只不过这是从标准输入读取内容，而不是从一个文件：</p>
 <pre><code>$ printf &quot;first line\nSecond line\n&quot; | cat -n
-</code></pre>
-
-<p><code>|</code>之前的echo命令会输出两行文本。<code>cat</code>命令将会给这些字符串添加行号。</p>
-
+</code></pre><p><code>|</code>之前的echo命令会输出两行文本。<code>cat</code>命令将会给这些字符串添加行号。</p>
 <h3 id="显示行号">显示行号</h3>
-
 <p>可以使用<code>--number</code>和<code>-n</code>选项来输出每行的行号：</p>
-
 <pre><code>$ cat --number file
 1 line1
 2 line2
 3
 4 line4
 5 line5
-</code></pre>
-
-<p>统计行号的时候想要过滤掉空行，可以使用<code>--number-nonblank</code>或<code>-b</code>选项：</p>
-
+</code></pre><p>统计行号的时候想要过滤掉空行，可以使用<code>--number-nonblank</code>或<code>-b</code>选项：</p>
 <pre><code>$ cat -b file 
 1 line1
 2 line2
 3 line4 
 4 line5
-</code></pre>
-
-<h3 id="拼接gizp加密文件">拼接gizp加密文件</h3>
-
+</code></pre><h3 id="拼接gizp加密文件">拼接gizp加密文件</h3>
 <p>使用<code>gizp</code>加密的文件可以拼接到一个更大的<code>gizp</code>文件。</p>
-
 <pre><code>$ cat file1.gz file2.gz file3.gz &gt; combined.gz
-</code></pre>
-
-<p>这个是<code>gizp</code>的一个属性，这比直接拼接文件然后<code>gizp</code>压缩效率差一些：</p>
-
+</code></pre><p>这个是<code>gizp</code>的一个属性，这比直接拼接文件然后<code>gizp</code>压缩效率差一些：</p>
 <pre><code>$ cat file1 file2 file3 | gzip &gt; combined.gz
-</code></pre>
-
-<p>一个完整的例子：</p>
-
+</code></pre><p>一个完整的例子：</p>
 <pre><code>$ echo 'Hello world!' &gt; hello.txt 
 $ echo 'Howdy world!' &gt; howdy.txt 
 $ gzip hello.txt
@@ -414,16 +327,10 @@ $ cat hello.txt.gz howdy.txt.gz &gt; greetings.txt.gz
 $ gunzip greetings.txt.gz
 
 $ cat greetings.txt
-</code></pre>
-
-<p>这些命令将会输出：</p>
-
+</code></pre><p>这些命令将会输出：</p>
 <pre><code> Hello world! 
  Howdy world!
-</code></pre>
-
-<p><strong>注意：</strong><code>greetings.txt.gz</code>是一个单独的文件，将被解压缩到<code>greeting.txt</code>这个文件。和<code>tar -czf hello.txt howdy.txt &gt; greetings.tar.gz</code>这个命令相比，将会把文件分开放到压缩包内。</p>
-
+</code></pre><p>**注意：**<code>greetings.txt.gz</code>是一个单独的文件，将被解压缩到<code>greeting.txt</code>这个文件。和<code>tar -czf hello.txt howdy.txt &gt; greetings.tar.gz</code>这个命令相比，将会把文件分开放到压缩包内。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -496,6 +403,12 @@ $ cat greetings.txt
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

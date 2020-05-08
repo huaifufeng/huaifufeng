@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,35 +187,24 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#恢复">恢复</a>
-<ul>
-<li><a href="#恢复reset操作">恢复reset操作</a></li>
-<li><a href="#恢复stash">恢复stash</a>
-<ul>
-<li><a href="#git-stash-pop">git stash pop</a></li>
-</ul></li>
-<li><a href="#从丢失的提交中恢复">从丢失的提交中恢复</a></li>
-<li><a href="#提交后恢复已删除的文件">提交后恢复已删除的文件</a></li>
-<li><a href="#从先前版本恢复文件">从先前版本恢复文件</a></li>
-<li><a href="#恢复删除的分支">恢复删除的分支</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#恢复">恢复</a>
+      <ul>
+        <li><a href="#恢复reset操作">恢复reset操作</a></li>
+        <li><a href="#恢复stash">恢复stash</a></li>
+        <li><a href="#从丢失的提交中恢复">从丢失的提交中恢复</a></li>
+        <li><a href="#提交后恢复已删除的文件">提交后恢复已删除的文件</a></li>
+        <li><a href="#从先前版本恢复文件">从先前版本恢复文件</a></li>
+        <li><a href="#恢复删除的分支">恢复删除的分支</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="恢复">恢复</h2>
-
+        		<h2 id="恢复">恢复</h2>
 <h3 id="恢复reset操作">恢复reset操作</h3>
-
 <p>使用Git，你总是（几乎）可以把时钟倒转。</p>
-
 <p>不要害怕尝试重写历史的命令。Git默认不会删除你90天内的提交，在此期间你可以使用<code>reflog</code>轻松的恢复这些修改：</p>
-
 <pre><code>$ git reset @~3 # go back 3 commits
 $ git reflog
 c4f708b HEAD@{0}: reset: moving to @~3
@@ -220,134 +213,61 @@ c4f708b HEAD@{0}: reset: moving to @~3
 ... earlier commits ...
 $ git reset 2c52489
 ... and you're back where you started
-</code></pre>
-
-<p>*<em>注意像<code>--hard</code>和<code>—force</code>这样的选项：他们会丢弃修改</em></p>
-
+</code></pre><p>*<em>注意像<code>--hard</code>和<code>—force</code>这样的选项：他们会丢弃修改</em></p>
 <p>*<em>另外，避免在协助的分支上面修改提交历史。</em></p>
-
 <h3 id="恢复stash">恢复stash</h3>
-
 <p>获取你在执行<code>git stash</code>命令之后你最新的暂存修改，使用下面命令：</p>
-
 <pre><code>git stash apply
-</code></pre>
-
-<p>查看你暂存的信息列表：</p>
-
+</code></pre><p>查看你暂存的信息列表：</p>
 <pre><code>git stash list
-</code></pre>
-
-<p>你可以获取像下面这样的修改：</p>
-
+</code></pre><p>你可以获取像下面这样的修改：</p>
 <pre><code>stash@{0}: WIP on master: 67a4e01 Merge tests into develop
 stash@{1}: WIP on master: 70f0d95 Add user role to localStorage on user login
-</code></pre>
-
-<p>选择一个不同的git stash，使用显示所需存储的数字进行恢复：</p>
-
+</code></pre><p>选择一个不同的git stash，使用显示所需存储的数字进行恢复：</p>
 <pre><code>git stash apply stash@{2}
-</code></pre>
-
-<p>也可以使用命令<code>git stash pop</code>，这个和<code>git stash apply</code>一样：</p>
-
+</code></pre><p>也可以使用命令<code>git stash pop</code>，这个和<code>git stash apply</code>一样：</p>
 <pre><code>git stash pop
-</code></pre>
-
-<p>或</p>
-
+</code></pre><p>或</p>
 <pre><code>git stash pop stash@{2}
-</code></pre>
-
-<p>两个命令的不同之处：</p>
-
+</code></pre><p>两个命令的不同之处：</p>
 <h4 id="git-stash-pop">git stash pop</h4>
-
 <p>暂存的数据将会从暂存列表中删除。</p>
-
 <p>例子：</p>
-
 <pre><code>git stash list
-</code></pre>
-
-<p>你会获得类似下面的列表：</p>
-
+</code></pre><p>你会获得类似下面的列表：</p>
 <pre><code>stash@{0}: WIP on master: 67a4e01 Merge tests into develop
 stash@{1}: WIP on master: 70f0d95 Add user role to localStorage on user login
-</code></pre>
-
-<p>现在使用<code>pop</code>命令获取暂存的数据：</p>
-
+</code></pre><p>现在使用<code>pop</code>命令获取暂存的数据：</p>
 <pre><code>git stash pop
-</code></pre>
-
-<p>然后从新查看暂存信息列表：</p>
-
+</code></pre><p>然后从新查看暂存信息列表：</p>
 <pre><code>git stash list
-</code></pre>
-
-<p>你会看到下面的列表信息：</p>
-
+</code></pre><p>你会看到下面的列表信息：</p>
 <pre><code>stash@{0}: WIP on master: 70f0d95 Add user role to localStorage on user login
-</code></pre>
-
-<p>你可以看到一个暂存信息被删除了，而且<code>stash@{1}</code>变为了<code>stash@{0}</code>。</p>
-
+</code></pre><p>你可以看到一个暂存信息被删除了，而且<code>stash@{1}</code>变为了<code>stash@{0}</code>。</p>
 <h3 id="从丢失的提交中恢复">从丢失的提交中恢复</h3>
-
 <p>如果您已恢复到过去的提交并丢失了较新的提交，则可以通过运行下面的命令来恢复丢失的提交：</p>
-
 <pre><code>git reflog
-</code></pre>
-
-<p>然后你找到丢失提交的值，使用下面的命令来恢复：</p>
-
+</code></pre><p>然后你找到丢失提交的值，使用下面的命令来恢复：</p>
 <pre><code>git reset HEAD --hard &lt;sha1-of-commit&gt;
-</code></pre>
-
-<h3 id="提交后恢复已删除的文件">提交后恢复已删除的文件</h3>
-
+</code></pre><h3 id="提交后恢复已删除的文件">提交后恢复已删除的文件</h3>
 <p>万一你不小心提交了删除文件的提交，但是后面你意识到你需要这个文件。</p>
-
 <p>首先找到你提交删除文件的提交信息：</p>
-
 <pre><code>git log --diff-filter=D --summary
-</code></pre>
-
-<p>将为您提供已删除文件的提交的已排序摘要。</p>
-
+</code></pre><p>将为您提供已删除文件的提交的已排序摘要。</p>
 <p>然后使用下面的命令恢复文件：</p>
-
 <pre><code>git checkout 81eeccf~1 &lt;your-lost-file-name&gt;
-</code></pre>
-
-<p>把<code>81eeccf</code>替换为你自己的提交id。</p>
-
+</code></pre><p>把<code>81eeccf</code>替换为你自己的提交id。</p>
 <h3 id="从先前版本恢复文件">从先前版本恢复文件</h3>
-
 <p>你可以使用<code>reset</code>命令从先前版本恢复文件：</p>
-
 <pre><code>git reset &lt;sha1-of-commit&gt; &lt;file-name&gt;
-</code></pre>
-
-<p>如果你已经对这个文件做了本地的修改（不需要的），你可以使用<code>--hard</code>选项。</p>
-
+</code></pre><p>如果你已经对这个文件做了本地的修改（不需要的），你可以使用<code>--hard</code>选项。</p>
 <h3 id="恢复删除的分支">恢复删除的分支</h3>
-
 <p>要恢复已删除的分支，您需要通过运行下面的命令找到已删除分支的头部的提交：</p>
-
 <pre><code>git reflog
-</code></pre>
-
-<p>你可以使用下面的命令重建这个提交：</p>
-
+</code></pre><p>你可以使用下面的命令重建这个提交：</p>
 <pre><code>git checkout -b &lt;branch-name&gt; &lt;sha1-of-commit&gt;
-</code></pre>
-
-<p>如果git的垃圾收集器删除了悬空提交（没有引用），你将无法恢复已删除的分支。</p>
-
+</code></pre><p>如果git的垃圾收集器删除了悬空提交（没有引用），你将无法恢复已删除的分支。</p>
 <p>保持你的仓库一直有备份存在，哪怕你在一个很小的团队/专有项目组工作时。</p>
-
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -420,6 +340,12 @@ stash@{1}: WIP on master: 70f0d95 Add user role to localStorage on user login
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,35 +187,25 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#sqlsrv">SQLSRV</a>
-<ul>
-<li><a href="#1-获取错误信息">1. 获取错误信息</a></li>
-<li><a href="#2-获取查询结果">2. 获取查询结果</a></li>
-<li><a href="#3-创建连接">3. 创建连接</a></li>
-<li><a href="#4-创建简单查询">4. 创建简单查询</a></li>
-<li><a href="#5-调用存储过程">5. 调用存储过程</a></li>
-<li><a href="#6-进行参数化查询">6. 进行参数化查询</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#sqlsrv">SQLSRV</a>
+      <ul>
+        <li><a href="#1-获取错误信息">1. 获取错误信息</a></li>
+        <li><a href="#2-获取查询结果">2. 获取查询结果</a></li>
+        <li><a href="#3-创建连接">3. 创建连接</a></li>
+        <li><a href="#4-创建简单查询">4. 创建简单查询</a></li>
+        <li><a href="#5-调用存储过程">5. 调用存储过程</a></li>
+        <li><a href="#6-进行参数化查询">6. 进行参数化查询</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="sqlsrv">SQLSRV</h2>
-
+        		<h2 id="sqlsrv">SQLSRV</h2>
 <h3 id="1-获取错误信息">1. 获取错误信息</h3>
-
 <p>当一个查询出错的时候，获取驱动指出的造成错误原因的错误信息是非常重要的。语法是:</p>
-
-<pre><code class="language-php">sqlsrv_errors([int $errorsOrWarnings]);
-</code></pre>
-
-<p>这将会返回一个数组：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">sqlsrv_errors([int $errorsOrWarnings]);
+</code></pre></div><p>这将会返回一个数组：</p>
 <table>
 <thead>
 <tr>
@@ -219,146 +213,104 @@
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>SQLSTATE</td>
 <td>SQL服务器/OBDC驱动的状态</td>
 </tr>
-
 <tr>
 <td>code</td>
 <td>SQL服务器的错误码</td>
 </tr>
-
 <tr>
 <td>message</td>
 <td>错误的描述信息</td>
 </tr>
 </tbody>
 </table>
-
 <p>上面语句的常见用法是：</p>
-
-<pre><code class="language-php">$brokenQuery = &quot;SELECT BadColumnName FROM Table_1&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$brokenQuery = &#34;SELECT BadColumnName FROM Table_1&#34;;
 $stmt = sqlsrv_query($conn, $brokenQuery);
 if ($stmt === false) {
     if (($errors = sqlsrv_errors()) != null) {
         foreach ($errors as $error) {
-            echo &quot;SQLSTATE: &quot;.$error['SQLSTATE'].&quot;&lt;br /&gt;&quot;;
-            echo &quot;code: &quot;.$error['code'].&quot;&lt;br /&gt;&quot;;
-            echo &quot;message: &quot;.$error['message'].&quot;&lt;br /&gt;&quot;;
+            echo &#34;SQLSTATE: &#34;.$error[&#39;SQLSTATE&#39;].&#34;&lt;<span style="color:#f92672">br</span> /&gt;&#34;;
+            echo &#34;code: &#34;.$error[&#39;code&#39;].&#34;&lt;<span style="color:#f92672">br</span> /&gt;&#34;;
+            echo &#34;message: &#34;.$error[&#39;message&#39;].&#34;&lt;<span style="color:#f92672">br</span> /&gt;&#34;;
         } 
     }
 }
-</code></pre>
-
-<h3 id="2-获取查询结果">2. 获取查询结果</h3>
-
+</code></pre></div><h3 id="2-获取查询结果">2. 获取查询结果</h3>
 <p>有三种方法来获取查询的结果：</p>
-
 <p><strong>sqlsrv_fetch_array()</strong></p>
-
 <p><code>sqlsrv_fetch_array()</code>获取下一行，以数组的结构:</p>
-
-<pre><code class="language-php">$stmt = sqlsrv_query($conn, $query);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$stmt = sqlsrv_query($conn, $query);
 while($row = sqlsrv_fetch_array($stmt)) {
     echo $row[0];
-    $var = $row[&quot;name&quot;];
+    $var = $row[&#34;name&#34;];
     //...
 }
-</code></pre>
-
-<p><code>sqlsrv_fetch_array()</code>有一个可选的第二个参数，这个参数用了决定获取不同类型的数组：<code>SQLSRV_FETCH_ASSOC</code>，<code>SQLSRV_FETCH_NUMERIC</code>, <code>SQLSRV_FETCH_BOTH</code>(默认)这可以使用。分别返回一个管理数组，数字数组，或者管理数组和数字数组。</p>
-
+</code></pre></div><p><code>sqlsrv_fetch_array()</code>有一个可选的第二个参数，这个参数用了决定获取不同类型的数组：<code>SQLSRV_FETCH_ASSOC</code>，<code>SQLSRV_FETCH_NUMERIC</code>, <code>SQLSRV_FETCH_BOTH</code>(默认)这可以使用。分别返回一个管理数组，数字数组，或者管理数组和数字数组。</p>
 <p><strong>sqlsrv_fetch_object()</strong></p>
-
 <p><code>sqlsrv_fetch_object()</code>获取下一行记录的对象结构：</p>
-
-<pre><code class="language-php">$stmt = sqlsrv_query($conn, $query);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$stmt = sqlsrv_query($conn, $query);
 while($obj = sqlsrv_fetch_object($stmt)) {
     echo $obj-&gt;field; // Object property names are the names of the fields from the query //...
 }
-</code></pre>
-
-<p><strong>sqlsrv_fetch()</strong></p>
-
+</code></pre></div><p><strong>sqlsrv_fetch()</strong></p>
 <p><code>sqlsrv_fetch()</code>让下一行可以读取：</p>
-
-<pre><code class="language-php">$stmt = sqlsrv_query($conn, $query);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$stmt = sqlsrv_query($conn, $query);
 while(sqlsrv_fetch($stmt) === true) {
     $foo = sqlsrv_get_field($stmt, 0); //gets the first field -
 }
-</code></pre>
-
-<h3 id="3-创建连接">3. 创建连接</h3>
-
-<pre><code class="language-php">$dbServer = &quot;localhost,1234&quot;; //Name of the server/instance, including optional port number (default is 1433)
-$dbName = &quot;db001&quot;; //Name of the database
-$dbUser = &quot;user&quot;; //Name of the user
-$dbPassword = &quot;password&quot;; //DB Password of that user
+</code></pre></div><h3 id="3-创建连接">3. 创建连接</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$dbServer = &#34;localhost,1234&#34;; //Name of the server/instance, including optional port number (default is 1433)
+$dbName = &#34;db001&#34;; //Name of the database
+$dbUser = &#34;user&#34;; //Name of the user
+$dbPassword = &#34;password&#34;; //DB Password of that user
 $connectionInfo = array(
-    &quot;Database&quot; =&gt; $dbName,
-    &quot;UID&quot; =&gt; $dbUser,
-    &quot;PWD&quot; =&gt; $dbPassword
+    &#34;Database&#34; =&gt; $dbName,
+    &#34;UID&#34; =&gt; $dbUser,
+    &#34;PWD&#34; =&gt; $dbPassword
 );
 $conn = sqlsrv_connect($dbServer, $connectionInfo);
-</code></pre>
-
-<p>SQLSRV有一个PDO的驱动，可以使用PDO连接：</p>
-
-<pre><code class="language-php">$conn = new PDO(&quot;sqlsrv:Server=localhost,1234;Database=db001&quot;, $dbUser, $dbPassword);
-</code></pre>
-
-<h3 id="4-创建简单查询">4. 创建简单查询</h3>
-
-<pre><code class="language-php">//Create Connection
+</code></pre></div><p>SQLSRV有一个PDO的驱动，可以使用PDO连接：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn = new PDO(&#34;sqlsrv:Server=localhost,1234;Database=db001&#34;, $dbUser, $dbPassword);
+</code></pre></div><h3 id="4-创建简单查询">4. 创建简单查询</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//Create Connection
 $conn = sqlsrv_connect($dbServer, $connectionInfo);
-$query = &quot;SELECT * FROM [table]&quot;;
+$query = &#34;SELECT * FROM [table]&#34;;
 $stmt = sqlsrv_query($conn, $query);
-</code></pre>
-
-<p>注意：使用[]是为了转义字符<code>table</code>，把他当做<a href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/reserved-keywords-transact-sql?view=sql-server-2017">保留关键字</a>。这和MySQL的`是一样的。</p>
-
+</code></pre></div><p>注意：使用[]是为了转义字符<code>table</code>，把他当做<a href="https://docs.microsoft.com/en-us/sql/t-sql/language-elements/reserved-keywords-transact-sql?view=sql-server-2017">保留关键字</a>。这和MySQL的`是一样的。</p>
 <h3 id="5-调用存储过程">5. 调用存储过程</h3>
-
 <p>在服务器上面调用存储过程：</p>
-
-<pre><code class="language-php">$query = &quot;{call [dbo].[myStoredProcedure](?,?,?)}&quot;; //Parameters '?' includes OUT parameters
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$query = &#34;{call [dbo].[myStoredProcedure](?,?,?)}&#34;; //Parameters &#39;?&#39; includes OUT parameters
 $params = array(
     array($name, SQLSRV_PARAM_IN),
     array($age, SQLSRV_PARAM_IN),
     array($count, SQLSRV_PARAM_OUT, SQLSRV_PHPTYPE_INT) //$count must already be initialised
 );
 $result = sqlsrv_query($conn, $query, $params);
-</code></pre>
-
-<h3 id="6-进行参数化查询">6. 进行参数化查询</h3>
-
-<pre><code class="language-php">$conn = sqlsrv_connect($dbServer, $connectionInfo);
-$query = &quot;SELECT * FROM [users] WHERE [name] = ? AND [password] = ?&quot;;
-$params = array(&quot;joebloggs&quot;, &quot;pa55w0rd&quot;);
+</code></pre></div><h3 id="6-进行参数化查询">6. 进行参数化查询</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn = sqlsrv_connect($dbServer, $connectionInfo);
+$query = &#34;SELECT * FROM [users] WHERE [name] = ? AND [password] = ?&#34;;
+$params = array(&#34;joebloggs&#34;, &#34;pa55w0rd&#34;);
 $stmt = sqlsrv_query($conn, $query, $params);
-</code></pre>
-
-<p>如果你想把相同的查询语句使用多次，分别使用不同的参数，可以使用<code>sqlsrv_prepare()</code>和<code>sqlsrv_execute()</code>方法，就像下面一样：</p>
-
-<pre><code class="language-php">$cart = array(
-    &quot;apple&quot; =&gt; 3,
-    &quot;banana&quot; =&gt; 1,
-    &quot;chocolate&quot; =&gt; 2
+</code></pre></div><p>如果你想把相同的查询语句使用多次，分别使用不同的参数，可以使用<code>sqlsrv_prepare()</code>和<code>sqlsrv_execute()</code>方法，就像下面一样：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$cart = array(
+    &#34;apple&#34; =&gt; 3,
+    &#34;banana&#34; =&gt; 1,
+    &#34;chocolate&#34; =&gt; 2
 );
-$query = &quot;INSERT INTO [order_items]([item], [quantity]) VALUES(?,?)&quot;;
-$params = array(&amp;$item, &amp;$qty); //Variables as parameters must be passed by reference
+$query = &#34;INSERT INTO [order_items]([item], [quantity]) VALUES(?,?)&#34;;
+$params = array(<span style="color:#960050;background-color:#1e0010">&amp;</span>$item, &amp;$qty); //Variables as parameters must be passed by reference
 $stmt = sqlsrv_prepare($conn, $query, $params);
 foreach($cart as $item =&gt; $qty){ 
     if(sqlsrv_execute($stmt) === FALSE) {
         die(print_r(sqlsrv_errors(), true)); 
     }
 }
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -430,6 +382,12 @@ foreach($cart as $item =&gt; $qty){
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

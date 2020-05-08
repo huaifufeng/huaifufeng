@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,79 +187,44 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#修改引用中对象名称">修改引用中对象名称</a>
-<ul>
-<li><a href="#修改引用中对象名称-1">修改引用中对象名称</a>
-<ul>
-<li><a href="#使用">使用</a></li>
-<li><a href="#语法">语法</a></li>
-<li><a href="#普通语法">普通语法</a></li>
-<li><a href="#update">update</a></li>
-<li><a href="#create">create</a></li>
-<li><a href="#delete">delete</a></li>
-<li><a href="#verify">verify</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#修改引用中对象名称">修改引用中对象名称</a>
+      <ul>
+        <li><a href="#修改引用中对象名称-1">修改引用中对象名称</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="修改引用中对象名称">修改引用中对象名称</h2>
-
+        		<h2 id="修改引用中对象名称">修改引用中对象名称</h2>
 <h3 id="修改引用中对象名称-1">修改引用中对象名称</h3>
-
 <h4 id="使用">使用</h4>
-
 <p>修改引用中的对象名称</p>
-
 <h4 id="语法">语法</h4>
-
 <pre><code>git update-ref [-m &lt;reason&gt;] (-d &lt;ref&gt; [&lt;oldvalue&gt;] | [--no-deref] [--create-reflog] &lt;ref&gt; &lt;newvalue&gt; [&lt;oldvalue&gt;] | --stdin [-z])
-</code></pre>
-
-<h4 id="普通语法">普通语法</h4>
-
+</code></pre><h4 id="普通语法">普通语法</h4>
 <ol>
-<li><p>取消符合引用，修改分支头到新的对象</p>
-
+<li>
+<p>取消符合引用，修改分支头到新的对象</p>
 <pre><code>git update-ref HEAD &lt;newvalue&gt;
 </code></pre></li>
-
-<li><p>验证引用中当前只和<code>oldvalue</code>匹配后，修改<code>newvalue</code>到引用中</p>
-
+<li>
+<p>验证引用中当前只和<code>oldvalue</code>匹配后，修改<code>newvalue</code>到引用中</p>
 <pre><code>git update-ref refs/head/master &lt;newvalue&gt; &lt;oldvalue&gt;
-</code></pre></li>
+</code></pre><p>上面的语法只有咱当前的值是<code>oldvalue</code>的时候，修改master分支的头到<code>newvalue</code>。</p>
+</li>
 </ol>
-
-<p>上面的语法只有咱当前的值是<code>oldvalue</code>的时候，修改master分支的头到<code>newvalue</code>。</p>
-
 <p>在验证引用还包含<code>&lt;oldvalue&gt;</code>之后，使用<code>-d</code>标识删除到命名的引用<code>&lt;ref&gt;</code>。</p>
-
 <p>使用<code>—create-reflog</code>之后，更新引用将会为每个引用创建一个reflog，即使通常不会创建reflog。</p>
-
 <p>使用-z标志以nul终止格式指定，该格式具有更新、创建、删除、验证等值。</p>
-
 <h4 id="update">update</h4>
-
 <p>如果提供了，在验证<code>&lt;oldvalue&gt;</code>之后，修改引用<code>&lt;ref&gt;</code>的值为<code>&lt;newvalue&gt;</code>。指定零值<code>&lt;newvalue&gt;</code>确保引用更新之后不存在，或者一个零值<code>&lt;oldvalue&gt;</code>确保引用更新之前不存在。</p>
-
 <h4 id="create">create</h4>
-
 <p>验证不存在之后使用<code>&lt;newvalue&gt;</code>创建<code>&lt;ref&gt;</code>。这个<code>&lt;newvalue&gt;</code>不能为0</p>
-
 <h4 id="delete">delete</h4>
-
 <p>如果提供，验证<code>&lt;oldvalue&gt;</code>存在之后，删除<code>&lt;ref&gt;</code>。这时，<code>&lt;oldvalue&gt;</code>不能是0</p>
-
 <h4 id="verify">verify</h4>
-
 <p>使用<code>&lt;oldvalue&gt;</code>验证<code>&lt;ref&gt;</code>中存在，但是不做修改。如果<code>&lt;oldvalue&gt;</code>为0或缺失，引用必须不存在。</p>
-
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -328,6 +297,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

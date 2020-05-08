@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,68 +187,43 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#引用数据类型">引用数据类型</a>
-<ul>
-<li><a href="#1-间接引用">1. 间接引用</a></li>
-<li><a href="#2-实例化引用类型">2. 实例化引用类型</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#引用数据类型">引用数据类型</a>
+      <ul>
+        <li><a href="#1-间接引用">1. 间接引用</a></li>
+        <li><a href="#2-实例化引用类型">2. 实例化引用类型</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="引用数据类型">引用数据类型</h2>
-
+        		<h2 id="引用数据类型">引用数据类型</h2>
 <h3 id="1-间接引用">1. 间接引用</h3>
-
 <p><code>.</code>运算符就是间接引用。</p>
-
-<pre><code class="language-java">Object obj = new Object();
-String text = obj.toString();  //obj就是间接引用
-</code></pre>
-
-<p>间接引用<code>遵循</code>引用存储的内存地址，到内存中实际对象存储的位置。找到对象后，调用请求的方法（例子中是<code>toString</code>）。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Object obj <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">();</span>
+String text <span style="color:#f92672">=</span> obj<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>  <span style="color:#75715e">//obj就是间接引用
+</span></code></pre></div><p>间接引用<code>遵循</code>引用存储的内存地址，到内存中实际对象存储的位置。找到对象后，调用请求的方法（例子中是<code>toString</code>）。</p>
 <p>当一个引用的值是<code>null</code>，间接引用江湖导致一个NullPointerException的异常：</p>
-
-<pre><code class="language-java">Object obj = null;
-obj.toString();  //语句执行的时候，抛出一个NullPointerException的异常
-</code></pre>
-
-<p><code>null</code>表示没有一个值，也就是说，跟在地址后面没有结果，所以没有可以调用对象的方法。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Object obj <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+obj<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>  <span style="color:#75715e">//语句执行的时候，抛出一个NullPointerException的异常
+</span></code></pre></div><p><code>null</code>表示没有一个值，也就是说，跟在地址后面没有结果，所以没有可以调用对象的方法。</p>
 <h3 id="2-实例化引用类型">2. 实例化引用类型</h3>
-
-<pre><code class="language-java">Object obj = new Object();  //注意new
-</code></pre>
-
-<p>在例子中：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Object obj <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">();</span>  <span style="color:#75715e">//注意new
+</span></code></pre></div><p>在例子中：</p>
 <ul>
 <li><code>Object</code>是一个引用类型</li>
 <li><code>obj</code>是一个存储新引用值的变量</li>
 <li><code>Object()</code>是调用<code>Object</code>的构造方法</li>
 </ul>
-
 <p>发生了什么：</p>
-
 <ul>
 <li>在内存中申请对象的空间</li>
 <li>调用构造函数<code>Object()</code>初始化内存空间</li>
 <li>内存地址存储在<code>obj</code>中，所以它引用新创建的对象</li>
 </ul>
-
 <p>这个和基本类型是不同的：</p>
-
 <pre><code>int i = 0;
-</code></pre>
-
-<p>这里<code>i</code>中存储<code>10</code>的实际值。</p>
-
+</code></pre><p>这里<code>i</code>中存储<code>10</code>的实际值。</p>
 <p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
@@ -317,6 +296,12 @@ obj.toString();  //语句执行的时候，抛出一个NullPointerException的�
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

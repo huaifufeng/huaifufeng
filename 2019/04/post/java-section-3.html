@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,169 +187,125 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#getters和setters">Getters和Setters</a>
-<ul>
-<li><a href="#1-使用一个setter或getter来实现约束">1. 使用一个setter或getter来实现约束</a></li>
-<li><a href="#2-为什么使用getters和setters">2. 为什么使用Getters和Setters?</a></li>
-<li><a href="#3-添加getters和setters">3. 添加Getters和Setters</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#getters和setters">Getters和Setters</a>
+      <ul>
+        <li><a href="#1-使用一个setter或getter来实现约束">1. 使用一个setter或getter来实现约束</a></li>
+        <li><a href="#2-为什么使用getters和setters">2. 为什么使用Getters和Setters?</a></li>
+        <li><a href="#3-添加getters和setters">3. 添加Getters和Setters</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="getters和setters">Getters和Setters</h2>
-
+        		<h2 id="getters和setters">Getters和Setters</h2>
 <p>这个文章讨论getters和setters，Java类中提供的标准数据访问方法。</p>
-
 <h3 id="1-使用一个setter或getter来实现约束">1. 使用一个setter或getter来实现约束</h3>
-
 <p>Setters和Getters运行一个对象有限制的访问和修改私有的变量。例如：</p>
-
-<pre><code class="language-java">public class Person {
-    private String name;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Person</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
   
-    public String getName()
-    {
-        return this.name;
-    }
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
   
-    public void setName(String name) {
-        if (name != null &amp;&amp; name.length() &gt; 2) {
-            this.name = name;
-        }
-    }
-}
-</code></pre>
-
-<p>在这个<code>Person</code>类中，有一个单独的变量：<code>name</code>。这个变量可以通过<code>getName()</code>方法访问，使用<code>setName(String)</code>方法进行修改，然而，设置一个新的名字要求这个名字不为空并且长度大于2个字符。使用一个setter方法而不是把这个变量<code>name</code>变为public，这样就允许其他人进行有限制的修改。也可以在getter方法上面进行限制：</p>
-
-<pre><code class="language-java">public String getName(){
-    if (name.length() &gt; 16) {
-        return &quot;Name is too large!&quot;;
-    } else {
-        return this.name;
-    }
-}
-</code></pre>
-
-<p>在上面修改过的<code>getName()</code>方法中，只有在name的长度小于或等于16的时候才会返回。否则，将会返回<code>&quot;Name is too large!&quot;</code>。这允许编程人员创建允许访问和修改的变量，但是可以客户端类随便的修改这个变量。</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>name <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> name<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>在这个<code>Person</code>类中，有一个单独的变量：<code>name</code>。这个变量可以通过<code>getName()</code>方法访问，使用<code>setName(String)</code>方法进行修改，然而，设置一个新的名字要求这个名字不为空并且长度大于2个字符。使用一个setter方法而不是把这个变量<code>name</code>变为public，这样就允许其他人进行有限制的修改。也可以在getter方法上面进行限制：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">(){</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>name<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 16<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Name is too large!&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>在上面修改过的<code>getName()</code>方法中，只有在name的长度小于或等于16的时候才会返回。否则，将会返回<code>&quot;Name is too large!&quot;</code>。这允许编程人员创建允许访问和修改的变量，但是可以客户端类随便的修改这个变量。</p>
 <h3 id="2-为什么使用getters和setters">2. 为什么使用Getters和Setters?</h3>
-
 <p>假设Java中有一个包含getters和setters的基础的类：</p>
-
-<pre><code class="language-java">public class CountHolder {
-    private int count = 0;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CountHolder</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
     
-    public int getCount() {
-        return this.count;
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">count</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
     
-    public void setCount(int count) {
-        this.count = c;
-    }
-}
-</code></pre>
-
-<p>我们不能访问<code>count</code>变量，因为它是private的。但是我们可以访问<code>getCount()</code>和<code>setCount()</code>方法，因为他们是public。对于这个，可能会产生一个问题：为什么要有这中间的部分？为什么不直接吧count设置为public？</p>
-
-<pre><code class="language-java">public class CountHolder {
-    public int count = 0;
-}
-</code></pre>
-
-<p>对于所有的意图和目的，这两者在功能上是完全相同的。它们的不同之处在于可扩展性。考虑一下这两个类分别说了什么：</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCount</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> count<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">count</span> <span style="color:#f92672">=</span> c<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>我们不能访问<code>count</code>变量，因为它是private的。但是我们可以访问<code>getCount()</code>和<code>setCount()</code>方法，因为他们是public。对于这个，可能会产生一个问题：为什么要有这中间的部分？为什么不直接吧count设置为public？</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CountHolder</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>对于所有的意图和目的，这两者在功能上是完全相同的。它们的不同之处在于可扩展性。考虑一下这两个类分别说了什么：</p>
 <ul>
 <li><strong>第一个</strong> 我有一个方法可以给你一个<code>int</code>值，同时有一个将这个值设置为另外的<code>int</code>的方法。</li>
 <li><strong>第二个</strong> 我有一个<code>int</code>，你可以按照你的意愿设置和获取。</li>
 </ul>
-
 <p>这些听起来是一样相似的，但是第一个在本质上面更加谨慎；这只允许你安装它规定的方式和他内部的信息进行交互。这把球留在球场上面，它可以选择内部交互是如何发生的。第二个把它内部的实现暴露在外部，现在不仅仅倾向于外部的用户，而且在API的情况下，致力于维护这种实现（或者不向后兼容API）。</p>
-
 <p>假设我们想要同步修改和访问count，在第一种情况下是很简单的，下面是一个简单的例子：</p>
-
-<pre><code class="language-java">public class CountHolder {
-    private int count = 0;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CountHolder</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
     
-    public synchronized int getCount() {
-        return this.count;
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">count</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
     
-    public synchronized void setCount(int count) {
-        this.count = count;
-    }
-}
-</code></pre>
-
-<p>但是在第二个例子中，如果不仔细检查和修改count变量引用的每个位置，这几乎是不可能的。更糟糕的，如果这是你类库中提供给其他人使用的项目，那么你没有执行这个修改的办法，因此必须做出上面艰难的选择。</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setCount</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> count<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">count</span> <span style="color:#f92672">=</span> count<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>但是在第二个例子中，如果不仔细检查和修改count变量引用的每个位置，这几乎是不可能的。更糟糕的，如果这是你类库中提供给其他人使用的项目，那么你没有执行这个修改的办法，因此必须做出上面艰难的选择。</p>
 <p>因此它引出了一个问题：公共变量是否曾经是一个好事（或者至少不是坏事）？</p>
-
 <p>我并不确定。一方面，你可以看到经受住时间测试的公共变量的例子（例如：<code>System.out</code>中引用的out变量）。另一方面，提供一个公共变量处理极低的开销和可能减少的冗长之外，没有任何好处。我这里的建议是：如果你打算公开一个变量，你应该根据这些标准以及极端偏见来判断它：</p>
-
 <ol>
 <li>这个变量不应该有<strong>任何</strong>可以想象的改变的理由。这是非常容易搞砸的事情（即使你做的对，需求可能会改变），这就是为什么getter/setter是常见的方法。如果要有一个公共变量，就需要仔细考虑，特别是实现在一个库/框架/API中发布的。</li>
 <li>变量的引用频率必须足够高，以确保从减少冗长的内容中获得的最小收益。我甚至不认为这里应该考虑使用方法和直接引用的开销。对于我保守估计99.9%的应用程序来说，这太微不足道了。</li>
 </ol>
-
 <p>可能还有很多事情我没有考虑到。如果你有任何疑问，一定要使用getter/setter。</p>
-
 <h3 id="3-添加getters和setters">3. 添加Getters和Setters</h3>
-
 <p>封装是OOP的基本原则。它将数据和代码包装为一个基本单元。在这种情况下，将变量封装为私有的，然后使用Getters和Setters来查看/修改他们是一个很好的实践。</p>
-
-<pre><code class="language-java">public class Sample {
-    private String name;
-    private int age;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Sample</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> age<span style="color:#f92672">;</span>
     
-    public int getAge() {
-        return this.age;
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getAge</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">age</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
     
-    public void setAge(int age) {
-        this.age = age;
-    }
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setAge</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> age<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">age</span> <span style="color:#f92672">=</span> age<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
     
-    public String getName() {
-        return this.name;
-    }
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
     
-    public void setName(String name) {
-        this.name = name;
-    }
-}
-</code></pre>
-
-<p>这些私有变量不能直接从类的外部进行访问。因此它们可以避免未认证的访问。但是如果你想要查看或修改他们，你可以使用Getters和Setters。</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>这些私有变量不能直接从类的外部进行访问。因此它们可以避免未认证的访问。但是如果你想要查看或修改他们，你可以使用Getters和Setters。</p>
 <p><code>getXxx()</code>方法返回变量<code>xxx</code>的当前值，同时你可以使用<code>setXxx()</code>方法设置变量<code>xxx</code>的值。</p>
-
 <p>这些方法的命名规则是（在例子中变量的名称是<code>variableName</code>）：</p>
-
 <ul>
-<li>所有的非<code>boolean</code>的变量</li>
-</ul>
-
-<pre><code class="language-java">  getVariableName()  //Getter  变量首字母大写
-  setVariableName(...)  //Setter 变量首字母大写
-</code></pre>
-
-<ul>
-<li><p><code>boolean</code>变量</p>
-
+<li>
+<p>所有的非<code>boolean</code>的变量</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">getVariableName<span style="color:#f92672">()</span>  <span style="color:#75715e">//Getter  变量首字母大写
+</span><span style="color:#75715e"></span>setVariableName<span style="color:#f92672">(...)</span>  <span style="color:#75715e">//Setter 变量首字母大写
+</span></code></pre></div></li>
+<li>
+<p><code>boolean</code>变量</p>
 <pre><code>isVariableName()  //Getter 变量名首字母大写
 setVariableName(...)  //Setter 变量首字母大写  
 </code></pre></li>
 </ul>
-
 <p>公共的Getters和Setters是Java Bean中<a href="https://docs.oracle.com/javase/tutorial/javabeans/writing/properties.html">属性</a>定义的一部分。</p>
-
 <p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
@@ -418,6 +378,12 @@ setVariableName(...)  //Setter 变量首字母大写
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

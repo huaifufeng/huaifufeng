@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,138 +187,77 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mysql表的锁">MySQL表的锁</a>
-<ul>
-<li><a href="#1-行级锁">1. 行级锁</a></li>
-<li><a href="#2-mysql锁">2. MySQL锁</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mysql表的锁">MySQL表的锁</a>
+      <ul>
+        <li><a href="#1-行级锁">1. 行级锁</a></li>
+        <li><a href="#2-mysql锁">2. MySQL锁</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mysql表的锁">MySQL表的锁</h2>
-
+        		<h2 id="mysql表的锁">MySQL表的锁</h2>
 <h3 id="1-行级锁">1. 行级锁</h3>
-
 <p>如果一个表是InnoDB引擎的，MySQL会自动使用行级锁，便于多个事务可以同时对一个表进行读写，而不用彼此等待。</p>
-
 <p>如果两个事务视图修改同一个行并且两个事务都是用行级锁，那么一个事务需要等待另一个事务执行完毕。</p>
-
 <p>也可以同通多对预期要修改的每一行使用<code>SELECT … FRO UPDATE</code>语句来获得。</p>
-
 <p>假设有两个连接来详细介绍行级锁：</p>
-
 <p>连接1</p>
-
-<pre><code class="language-mysql">START TRANSACTION;
-SELECT ledgerAmount FROM accDetails WHERE id=1 FOR UPDATE:
-</code></pre>
-
-<p>在连接1中使用<code>SELECT … FOR UPDATE</code>来获取行级锁。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">START TRANSACTION;
+<span style="color:#66d9ef">SELECT</span> ledgerAmount <span style="color:#66d9ef">FROM</span> accDetails <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">FOR</span> <span style="color:#66d9ef">UPDATE</span>:
+</code></pre></div><p>在连接1中使用<code>SELECT … FOR UPDATE</code>来获取行级锁。</p>
 <p>连接2</p>
-
-<pre><code class="language-mysql">UPDATE accDetails SET ledgerAmount = ledgerAmount + 500 WHERE id=1;
-</code></pre>
-
-<p>但某些人在连接2中其他更新相同的行，将需要等待连接1事务执行完毕，或者达到<code>innodb_lock_wait_timeout</code>配置(默认的时间是50秒)的超时时间，出现一个错误。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> accDetails <span style="color:#66d9ef">SET</span> ledgerAmount <span style="color:#f92672">=</span> ledgerAmount <span style="color:#f92672">+</span> <span style="color:#ae81ff">500</span> <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
+</code></pre></div><p>但某些人在连接2中其他更新相同的行，将需要等待连接1事务执行完毕，或者达到<code>innodb_lock_wait_timeout</code>配置(默认的时间是50秒)的超时时间，出现一个错误。</p>
 <pre><code>  Error Code: 1205. Lock wait timeout exceeded; try restarting transaction
-</code></pre>
-
-<p>想要查看这个锁的详细信息，使用<code>SHOW ENGINE INNODB STATUS</code>。</p>
-
+</code></pre><p>想要查看这个锁的详细信息，使用<code>SHOW ENGINE INNODB STATUS</code>。</p>
 <pre><code>---TRANSACTION 1973004, ACTIVE 7 sec updating
 mysql tables in use 1, locked 1
 LOCK WAIT 2 lock struct(s), heap size 360, 1 row lock(s)
 MySQL thread id 4, OS thread handle 0x7f996beac700, query id 30 localhost root update
 UPDATE accDetails SET ledgerAmount = ledgerAmount + 500 WHERE id=1
 ------- TRX HAS BEEN WAITING 7 SEC FOR THIS LOCK TO BE GRANTED:
-</code></pre>
+</code></pre><p>连接2</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> accDetails <span style="color:#66d9ef">SET</span> ledgerAmount <span style="color:#f92672">=</span> ledgerAmount <span style="color:#f92672">+</span> <span style="color:#ae81ff">250</span> <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>;
 
-<p>连接2</p>
-
-<pre><code class="language-mysql">UPDATE accDetails SET ledgerAmount = ledgerAmount + 250 WHERE id=2;
-
-1 row(s) affected
-</code></pre>
-
-<p>但是在连接2中更新其他行的时候不会出现问题。</p>
-
+<span style="color:#ae81ff">1</span> <span style="color:#a6e22e">row</span>(s) affected
+</code></pre></div><p>但是在连接2中更新其他行的时候不会出现问题。</p>
 <p>连接1</p>
-
-<pre><code class="language-mysql">UPDATE accDetails SET ledgerAmount=ledgerAmount+750 WHERE id=1;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> accDetails <span style="color:#66d9ef">SET</span> ledgerAmount<span style="color:#f92672">=</span>ledgerAmount<span style="color:#f92672">+</span><span style="color:#ae81ff">750</span> <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
 COMMIT;
 
-1 row(s) affected
-</code></pre>
-
-<p>现在连接1中对事务进行了提交，所以这个锁也就释放了。</p>
-
+<span style="color:#ae81ff">1</span> <span style="color:#a6e22e">row</span>(s) affected
+</code></pre></div><p>现在连接1中对事务进行了提交，所以这个锁也就释放了。</p>
 <p>连接2</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> accDetails <span style="color:#66d9ef">SET</span> ledgerAmount<span style="color:#f92672">=</span>ledgerAmount<span style="color:#f92672">+</span><span style="color:#ae81ff">500</span> <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
 
-<pre><code class="language-mysql">UPDATE accDetails SET ledgerAmount=ledgerAmount+500 WHERE id=1;
-
-1 row(s) affected
-</code></pre>
-
-<p>因为连接1中事务提交结束了，所以连接2这执行更新操作没有任何问题。</p>
-
+<span style="color:#ae81ff">1</span> <span style="color:#a6e22e">row</span>(s) affected
+</code></pre></div><p>因为连接1中事务提交结束了，所以连接2这执行更新操作没有任何问题。</p>
 <h3 id="2-mysql锁">2. MySQL锁</h3>
-
 <p><strong>表级锁在<code>ENGINE=MyISAM</code>的时候是一个很重要的工具，但是在<code>ENGINE=InnoDB</code>时很少用到。如果你企图在InnoDB中使用表级锁，就需要重新考虑如何处理事务了。</strong></p>
-
 <p>MySQL允许客户机会话显示的获取表锁，以便和其他会话协作访问表，或者在会话需要独占房务部的期间避免其他会话修改表。会话只能为自己获取或释放表。一个会话不能获取另外会话的锁或释放另外会话的锁。</p>
-
 <p>锁可以用来模拟事务，或者在更新表时提高速度。这将在后面详细介绍。</p>
-
 <p>命令：<code>LOCK TABLES table_name READ|WRITE</code>。</p>
-
 <p>你也可以只给表某种锁类型。</p>
-
 <p>例如(读锁)：</p>
-
-<pre><code class="language-mysql">LOCK TABLES table_name READ;
-</code></pre>
-
-<p>例如(写锁)：</p>
-
-<pre><code class="language-mysql">LOCK TABLES table_name WRITE;
-</code></pre>
-
-<p>查看是否应用了一个锁，可以使用下面的命令：</p>
-
-<pre><code class="language-mysql">SHOW OPEN TABLES;
-</code></pre>
-
-<p>清理或删除所有的锁，使用下面的命令：</p>
-
-<pre><code class="language-mysql">UNLOCK TABLES;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">LOCK</span> <span style="color:#66d9ef">TABLES</span> table_name <span style="color:#66d9ef">READ</span>;
+</code></pre></div><p>例如(写锁)：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">LOCK</span> <span style="color:#66d9ef">TABLES</span> table_name <span style="color:#66d9ef">WRITE</span>;
+</code></pre></div><p>查看是否应用了一个锁，可以使用下面的命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SHOW</span> OPEN <span style="color:#66d9ef">TABLES</span>;
+</code></pre></div><p>清理或删除所有的锁，使用下面的命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UNLOCK</span> <span style="color:#66d9ef">TABLES</span>;
+</code></pre></div><p>例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">LOCK</span> <span style="color:#66d9ef">TABLES</span> products <span style="color:#66d9ef">WRITE</span>;
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">products</span>(id, product_name) <span style="color:#66d9ef">SELECT</span> id,old_product_name <span style="color:#66d9ef">FROM</span> old_products;
+<span style="color:#66d9ef">UNLOCK</span> <span style="color:#66d9ef">TABLES</span>;
+</code></pre></div><p>上面的例子，任何其他的链接都不能在表中写入数据，直到表的锁释放。</p>
 <p>例子：</p>
-
-<pre><code class="language-mysql">LOCK TABLES products WRITE;
-INSERT INTO products(id, product_name) SELECT id,old_product_name FROM old_products;
-UNLOCK TABLES;
-</code></pre>
-
-<p>上面的例子，任何其他的链接都不能在表中写入数据，直到表的锁释放。</p>
-
-<p>例子：</p>
-
-<pre><code class="language-mysql">LOCK TABLES products READ;
-INSERT INTO products(id, product_name) SELECT id, old_product_name FROM old_products;
-UNLOCK TABLE;
-</code></pre>
-
-<p>上面的例子任何其他链接都不能从表中读取其他的数据，直到表锁被释放。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">LOCK</span> <span style="color:#66d9ef">TABLES</span> products <span style="color:#66d9ef">READ</span>;
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">products</span>(id, product_name) <span style="color:#66d9ef">SELECT</span> id, old_product_name <span style="color:#66d9ef">FROM</span> old_products;
+<span style="color:#66d9ef">UNLOCK</span> <span style="color:#66d9ef">TABLE</span>;
+</code></pre></div><p>上面的例子任何其他链接都不能从表中读取其他的数据，直到表锁被释放。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -387,6 +330,12 @@ UNLOCK TABLE;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

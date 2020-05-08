@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,92 +187,51 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#亚秒精度时间">亚秒精度时间</a>
-<ul>
-<li><a href="#1-获取当前毫秒精度时间">1. 获取当前毫秒精度时间</a></li>
-<li><a href="#2-获取当前时间的javascript时间戳格式">2. 获取当前时间的JavaScript时间戳格式</a></li>
-<li><a href="#3-创建存储亚秒列的表">3. 创建存储亚秒列的表</a></li>
-<li><a href="#4-转换毫秒精度的日期和时间为文本值">4. 转换毫秒精度的日期和时间为文本值</a></li>
-<li><a href="#5-存储javascript时间戳到一个timestamp列中">5. 存储Javascript时间戳到一个TIMESTAMP列中</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#亚秒精度时间">亚秒精度时间</a>
+      <ul>
+        <li><a href="#1-获取当前毫秒精度时间">1. 获取当前毫秒精度时间</a></li>
+        <li><a href="#2-获取当前时间的javascript时间戳格式">2. 获取当前时间的JavaScript时间戳格式</a></li>
+        <li><a href="#3-创建存储亚秒列的表">3. 创建存储亚秒列的表</a></li>
+        <li><a href="#4-转换毫秒精度的日期和时间为文本值">4. 转换毫秒精度的日期和时间为文本值</a></li>
+        <li><a href="#5-存储javascript时间戳到一个timestamp列中">5. 存储Javascript时间戳到一个TIMESTAMP列中</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="亚秒精度时间">亚秒精度时间</h2>
-
+        		<h2 id="亚秒精度时间">亚秒精度时间</h2>
 <h3 id="1-获取当前毫秒精度时间">1. 获取当前毫秒精度时间</h3>
-
 <pre><code>SELECT NOW(3)
-</code></pre>
-
-<p>就是这样。</p>
-
+</code></pre><p>就是这样。</p>
 <h3 id="2-获取当前时间的javascript时间戳格式">2. 获取当前时间的JavaScript时间戳格式</h3>
-
 <p>JavaScript时间戳基于古老的Unix<code>time_t</code>数据类型，显示从<code>1970-01-01 00:00:00 UTC</code>开始的毫秒数。</p>
-
 <p>下面的表达式获取当前时间的JavaScript时间戳整数（不管当前时区设置如何，这都会正确地执行此操作）。</p>
-
 <pre><code>ROUND(UNXI_TIMESTAMP(NOW(3)) * 1000.0, 0)
-</code></pre>
-
-<p>如果你的列中存储有<code>TIMESTAMP</code>格式的值，你可以使用<code>UNIX_TIMESTAMP()</code>方法获取时间的JavaScript时间戳整数。</p>
-
+</code></pre><p>如果你的列中存储有<code>TIMESTAMP</code>格式的值，你可以使用<code>UNIX_TIMESTAMP()</code>方法获取时间的JavaScript时间戳整数。</p>
 <pre><code>SELECT ROUND(UNIX_TIMESTAMP(column) * 1000.0, 0)
-</code></pre>
-
-<p>如果你的列中包含<code>DATETIME</code>列，你可以将他们作为JavaScript时间戳检索。那么这些时间戳将会按照时区进行便宜。</p>
-
+</code></pre><p>如果你的列中包含<code>DATETIME</code>列，你可以将他们作为JavaScript时间戳检索。那么这些时间戳将会按照时区进行便宜。</p>
 <h3 id="3-创建存储亚秒列的表">3. 创建存储亚秒列的表</h3>
-
-<pre><code class="language-mysql">CREATE TABLE times (
-    dt DATETIME(3),
-    ts TIMESTAMP(3)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">times</span> (
+    dt <span style="color:#66d9ef">DATETIME</span>(<span style="color:#ae81ff">3</span>),
+    ts <span style="color:#66d9ef">TIMESTAMP</span>(<span style="color:#ae81ff">3</span>)
 );
-</code></pre>
-
-<p>创建带有毫秒精度的日期/时间字段的表。</p>
-
-<pre><code class="language-mysql">INSERT INTO times VALUES (NOW(3), NOW(3));
-</code></pre>
-
-<p>在表中插入一行包含<code>NOW()</code>毫秒精度的值：</p>
-
-<pre><code class="language-mysql">INSERT INTO times VALUES ('2015-01-01 16:34:00.123','2015-01-01 16:34:00.128');
-</code></pre>
-
-<p>插入指定的时间精度值。</p>
-
-<p><strong>注意：</strong>如果你想要插入高精度的值的话，需要使用<code>NOW(3)</code>而不是<code>NOW()</code></p>
-
+</code></pre></div><p>创建带有毫秒精度的日期/时间字段的表。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> times <span style="color:#66d9ef">VALUES</span> (<span style="color:#a6e22e">NOW</span>(<span style="color:#ae81ff">3</span>), <span style="color:#a6e22e">NOW</span>(<span style="color:#ae81ff">3</span>));
+</code></pre></div><p>在表中插入一行包含<code>NOW()</code>毫秒精度的值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> times <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;2015-01-01 16:34:00.123&#39;</span>,<span style="color:#e6db74">&#39;2015-01-01 16:34:00.128&#39;</span>);
+</code></pre></div><p>插入指定的时间精度值。</p>
+<p>**注意：**如果你想要插入高精度的值的话，需要使用<code>NOW(3)</code>而不是<code>NOW()</code></p>
 <h3 id="4-转换毫秒精度的日期和时间为文本值">4. 转换毫秒精度的日期和时间为文本值</h3>
-
 <p><code>%f</code>是小数精度格式说明符，对<a href="https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format">DATE_FORMATE()</a>来说。</p>
-
-<pre><code class="language-mysql">SELECT DATE_FORMAT(NOW(3), '%Y-%m-%d %H:%i:%s.%f')
-</code></pre>
-
-<p>这将会显示<code>2016-11-19 09:52:53.248000</code>这样小数的毫秒。因为我们使用的是<code>NOW(3)</code>，所以分数的最后3位是0。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">DATE_FORMAT</span>(<span style="color:#a6e22e">NOW</span>(<span style="color:#ae81ff">3</span>), <span style="color:#e6db74">&#39;%Y-%m-%d %H:%i:%s.%f&#39;</span>)
+</code></pre></div><p>这将会显示<code>2016-11-19 09:52:53.248000</code>这样小数的毫秒。因为我们使用的是<code>NOW(3)</code>，所以分数的最后3位是0。</p>
 <h3 id="5-存储javascript时间戳到一个timestamp列中">5. 存储Javascript时间戳到一个TIMESTAMP列中</h3>
-
 <p>如果你有一个JavaScript的时间戳，例如1478960868932，你可以像下面这样将这个值转换为MySQL的小数时间值：</p>
-
 <pre><code>FROM_UNIXTIME(1478960868932 * 0.001)
-</code></pre>
-
-<p>所以这个表达式可以用来存储JavaScript时间戳到MySQL的表内：</p>
-
+</code></pre><p>所以这个表达式可以用来存储JavaScript时间戳到MySQL的表内：</p>
 <pre><code>INSERT INTO table (col) VALUES (FROM_UNIXTIME(1478960868932 * 0.001))
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -340,6 +303,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

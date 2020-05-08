@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,34 +187,26 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#异步编程">异步编程</a>
-<ul>
-<li><a href="#1-生成器的优点">1. 生成器的优点</a></li>
-<li><a href="#2-使用icicle时间循环">2. 使用Icicle时间循环</a></li>
-<li><a href="#3-proc-open-生成非阻塞进程">3. proc_open()生成非阻塞进程</a></li>
-<li><a href="#4-使用事件和dio读取串行接口">4. 使用事件和DIO读取串行接口</a></li>
-<li><a href="#5-event扩展的http客户端">5. Event扩展的HTTP客户端</a></li>
-<li><a href="#6-基于ev扩展的http客户端请求">6. 基于Ev扩展的HTTP客户端请求</a></li>
-<li><a href="#7-使用amp事件循环">7 使用AMP事件循环</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#异步编程">异步编程</a>
+      <ul>
+        <li><a href="#1-生成器的优点">1. 生成器的优点</a></li>
+        <li><a href="#2-使用icicle时间循环">2. 使用Icicle时间循环</a></li>
+        <li><a href="#3-proc_open生成非阻塞进程">3. proc_open()生成非阻塞进程</a></li>
+        <li><a href="#4-使用事件和dio读取串行接口">4. 使用事件和DIO读取串行接口</a></li>
+        <li><a href="#5-event扩展的http客户端">5. Event扩展的HTTP客户端</a></li>
+        <li><a href="#6-基于ev扩展的http客户端请求">6. 基于Ev扩展的HTTP客户端请求</a></li>
+        <li><a href="#7-使用amp事件循环">7 使用AMP事件循环</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="异步编程">异步编程</h2>
-
+        		<h2 id="异步编程">异步编程</h2>
 <h3 id="1-生成器的优点">1. 生成器的优点</h3>
-
 <p>PHP5.5提供了生成器和yield关键字，这允许我们想同步代码一样编写异步代码。</p>
-
 <p><code>yield</code>表达式负责将控制结构交还给调用代码，并在这个位置提供恢复点。可以通过yield表达式发送一个值。这个表达式的返回值要么是<code>null</code>，要么是<code>Generator::send()</code>的值。</p>
-
-<pre><code class="language-php">function reverse_range($i) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function reverse_range($i) {
     // 仅仅在这个函数中存在yield关键字就使得它成为一个生成器。
     do {
         //$i 在恢复点之间保留着
@@ -219,21 +215,16 @@
 }
 $gen = reverse_range(5);
 print $gen-&gt;current();
-$gen-&gt;send(&quot;injected!&quot;); // send 也会唤起这个生成器
+$gen-&gt;send(&#34;injected!&#34;); // send 也会唤起这个生成器
 
 foreach ($gen as $val) { //循环处理迭代器，在每个每个迭代中唤起	
     echo $val;
 }
 // Output: 5injected!4321
-</code></pre>
-
-<p>协程可以使用这种机制来等待生成器生成Awaitable的yield（通过将自身注册于用于解析的回调）在Awaitables的yield解析的时候执行生成器。</p>
-
+</code></pre></div><p>协程可以使用这种机制来等待生成器生成Awaitable的yield（通过将自身注册于用于解析的回调）在Awaitables的yield解析的时候执行生成器。</p>
 <h3 id="2-使用icicle时间循环">2. 使用Icicle时间循环</h3>
-
 <p><a href="https://github.com/icicleio/icicle">Icicle</a>使用Awaitable和生成器来创建协程。</p>
-
-<pre><code class="language-php">require __DIR__ . '/vendor/autoload.php';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">require __DIR__ . &#39;/vendor/autoload.php&#39;;
 
 use Icicle\Awaitable;
 use Icicle\Coroutine\Coroutine; use Icicle\Loop;
@@ -242,21 +233,21 @@ $generator = function (float $time) {
     try {
         //设置$start的值为microtime()返回之后大约$time秒
         $start = yield Awaitable\resolve(microtime(true))-&gt;delay($time); 
-        echo &quot;Sleep time: &quot;, microtime(true) - $start, &quot;\n&quot;;
+        echo &#34;Sleep time: &#34;, microtime(true) - $start, &#34;\n&#34;;
       
         // 在rejected awaitable进入协程之后跑出异常
-        return yield Awaitable\reject(new Exception('Rejected awaitable')); 
+        return yield Awaitable\reject(new Exception(&#39;Rejected awaitable&#39;)); 
     } catch (Throwable $e) { // 获取 awaitable 拒绝的原因
-        echo &quot;Caught exception: &quot;, $e-&gt;getMessage(), &quot;\n&quot;; 
+        echo &#34;Caught exception: &#34;, $e-&gt;getMessage(), &#34;\n&#34;; 
     }
     
-    return yield Awaitable\resolve('Coroutine completed');                                
+    return yield Awaitable\resolve(&#39;Coroutine completed&#39;);                                
 };
 
 // 协程休眠1.2秒之后，解析一个字符串
 $coroutine = new Coroutine($generator(1.2)); 
 $coroutine-&gt;done(function (string $data) {
-    echo $data, &quot;\n&quot;; 
+    echo $data, &#34;\n&#34;; 
 });
 
 Loop\run();
@@ -265,102 +256,85 @@ Loop\run();
 Sleep time: 1.2049908638
 Caught exception: Rejected awaitable
 Coroutine completed
-</code></pre>
-
-<h3 id="3-proc-open-生成非阻塞进程">3. proc_open()生成非阻塞进程</h3>
-
+</code></pre></div><h3 id="3-proc_open生成非阻塞进程">3. proc_open()生成非阻塞进程</h3>
 <p>除非你安装了<code>pthread</code>扩展，否则PHP不支持并行运行代码。有时可以通过使用<code>proc_open()</code>和<code>stream_set_blocking()</code>并且异步读取其输出来实现这点。</p>
-
 <p>如果我们把代码拆分到多个进程，我们可以像多个超进程一样运行代码。然后使用<a href="https://www.php.net/manual/zh/function.stream-set-blocking.php">stream_set_blocking()</a>来让每个子进程也不阻塞。这意味着我们可以创建多个子进程，然后在循环中检查他们的输出(简单的就是事件循环)，直到它们都执行完毕。</p>
-
 <p>作为一个例子，我们可以有一个运行一个循环的子进程，在每个迭代中sleep100-1000ms之间的随机时间（注意：对于一个子进程所有的延迟时间是一样的。）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//subprocess.php
+</span><span style="color:#75715e"></span>$name <span style="color:#f92672">=</span> $argv[<span style="color:#ae81ff">1</span>];
+$delay <span style="color:#f92672">=</span> <span style="color:#a6e22e">rand</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">100</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>;
+<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$name</span><span style="color:#e6db74"> delay: </span><span style="color:#e6db74">{</span>$delay<span style="color:#e6db74">}</span><span style="color:#e6db74">ms&#34;</span>);
 
-<pre><code class="language-php">&lt;?php
-//subprocess.php
-$name = $argv[1];
-$delay = rand(1, 100) * 100;
-printf(&quot;$name delay: {$delay}ms&quot;);
-
-for ($i = 0; $i &lt; 5; $i++) { 
-    usleep($delay * 1000); 
-    printf(&quot;$name: $i\n&quot;);
+<span style="color:#66d9ef">for</span> ($i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; $i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">5</span>; $i<span style="color:#f92672">++</span>) { 
+    <span style="color:#a6e22e">usleep</span>($delay <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>); 
+    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$name</span><span style="color:#e6db74">: </span><span style="color:#e6db74">$i\n</span><span style="color:#e6db74">&#34;</span>);
 }
-</code></pre>
-
-<p>然后主进程会生成子进程，然后读取它们的输出。我们把它拆分到小块：</p>
-
+</code></pre></div><p>然后主进程会生成子进程，然后读取它们的输出。我们把它拆分到小块：</p>
 <ul>
 <li>使用<a href="https://www.php.net/manual/zh/function.proc-open.php">proc_open()</a>生成子进程</li>
 <li>使用<a href="https://www.php.net/manual/zh/function.stream-set-blocking.php">stream_set_blocking()</a>让每个子进程不阻塞</li>
 <li>循环，直到所有的子进程结束，使用<a href="https://www.php.net/manual/zh/function.proc-get-status.php">proc_get_status()</a>进行判断</li>
 <li>在子进程中使用<a href="https://www.php.net/manual/zh/function.fclose.php">fclose()</a>使用输出管道关闭文件句柄，使用<a href="https://www.php.net/manual/zh/function.proc-close.php">proc_close()</a>关闭进程句柄</li>
 </ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//non-blocking-proc_open.php
+</span><span style="color:#75715e">//每个子进程的文件描述
+</span><span style="color:#75715e"></span>$descriptors <span style="color:#f92672">=</span> [
+    <span style="color:#ae81ff">0</span> <span style="color:#f92672">=&gt;</span> [<span style="color:#e6db74">&#39;pipe&#39;</span>, <span style="color:#e6db74">&#39;r&#39;</span>], <span style="color:#75715e">//stdin
+</span><span style="color:#75715e"></span>    <span style="color:#ae81ff">1</span> <span style="color:#f92672">=&gt;</span> [<span style="color:#e6db74">&#39;pipe&#39;</span>, <span style="color:#e6db74">&#39;w&#39;</span>], <span style="color:#75715e">//stdout
+</span><span style="color:#75715e"></span>];
 
-<pre><code class="language-php">&lt;?php
-//non-blocking-proc_open.php
-//每个子进程的文件描述
-$descriptors = [
-    0 =&gt; ['pipe', 'r'], //stdin
-    1 =&gt; ['pipe', 'w'], //stdout
-];
-
-$pipes = [];
-$processes = [];
-foreach (range(1, 3) as $i) {
-    //生成子进程
-    $proc = proc_open(&quot;php subprocess.php proc&quot; . $i, $descriptors, $procPipes);
-    $processes[$i] = $proc;
-    //设置子进程非阻塞 只是输出管道
-    stream_set_blocking($procPipes[1], 0);
-    $pipes[$i] = $procPipes;
+$pipes <span style="color:#f92672">=</span> [];
+$processes <span style="color:#f92672">=</span> [];
+<span style="color:#66d9ef">foreach</span> (<span style="color:#a6e22e">range</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">as</span> $i) {
+    <span style="color:#75715e">//生成子进程
+</span><span style="color:#75715e"></span>    $proc <span style="color:#f92672">=</span> <span style="color:#a6e22e">proc_open</span>(<span style="color:#e6db74">&#34;php subprocess.php proc&#34;</span> <span style="color:#f92672">.</span> $i, $descriptors, $procPipes);
+    $processes[$i] <span style="color:#f92672">=</span> $proc;
+    <span style="color:#75715e">//设置子进程非阻塞 只是输出管道
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">stream_set_blocking</span>($procPipes[<span style="color:#ae81ff">1</span>], <span style="color:#ae81ff">0</span>);
+    $pipes[$i] <span style="color:#f92672">=</span> $procPipes;
 }
 
-//运行循环直到所有子进程执行完毕
-while(array_filter($processes, function($proc) { return proc_get_status($proc)['running'];})) {
-    foreach(range(1, 3) as $i) {
-        usleep(10 * 1000); //10ms
-        //读取所有有效的输出
-        $str = fread($pipes[$i][1], 1024);
-        if ($str) {
-            printf($str);
+<span style="color:#75715e">//运行循环直到所有子进程执行完毕
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">while</span>(<span style="color:#a6e22e">array_filter</span>($processes, <span style="color:#66d9ef">function</span>($proc) { <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">proc_get_status</span>($proc)[<span style="color:#e6db74">&#39;running&#39;</span>];})) {
+    <span style="color:#66d9ef">foreach</span>(<span style="color:#a6e22e">range</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">as</span> $i) {
+        <span style="color:#a6e22e">usleep</span>(<span style="color:#ae81ff">10</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1000</span>); <span style="color:#75715e">//10ms
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">//读取所有有效的输出
+</span><span style="color:#75715e"></span>        $str <span style="color:#f92672">=</span> <span style="color:#a6e22e">fread</span>($pipes[$i][<span style="color:#ae81ff">1</span>], <span style="color:#ae81ff">1024</span>);
+        <span style="color:#66d9ef">if</span> ($str) {
+            <span style="color:#a6e22e">printf</span>($str);
         }
     }
 }
 
-//关闭所有管道和进程
-foreach(range(1, 3) as $i) {
-    fclose($pipes[$i][1]);
-    proc_close($processes[$i]);
+<span style="color:#75715e">//关闭所有管道和进程
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">foreach</span>(<span style="color:#a6e22e">range</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>) <span style="color:#66d9ef">as</span> $i) {
+    <span style="color:#a6e22e">fclose</span>($pipes[$i][<span style="color:#ae81ff">1</span>]);
+    <span style="color:#a6e22e">proc_close</span>($processes[$i]);
 }
-</code></pre>
-
-<p>然后输出来自3个子进程的混合体，正如fread()读取的一样(注意，在本示例中，<code>proc1</code>的结束时间早于另外两个)。</p>
-
-<pre><code class="language-shell">$ php non-blocking-proc_open.php
+</code></pre></div><p>然后输出来自3个子进程的混合体，正如fread()读取的一样(注意，在本示例中，<code>proc1</code>的结束时间早于另外两个)。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ php non-blocking-proc_open.php
 proc1 delay: 200ms
 proc2 delay: 1000ms
 proc3 delay: 800ms
-proc1: 0
-proc1: 1
-proc1: 2
-proc1: 3
-proc3: 0
-proc1: 4
-proc2: 0
-proc3: 1
-proc2: 1
-proc3: 2
-proc2: 2
-proc3: 3
-proc2: 3
-proc3: 4
-proc2: 4
-</code></pre>
-
-<h3 id="4-使用事件和dio读取串行接口">4. 使用事件和DIO读取串行接口</h3>
-
+proc1: <span style="color:#ae81ff">0</span>
+proc1: <span style="color:#ae81ff">1</span>
+proc1: <span style="color:#ae81ff">2</span>
+proc1: <span style="color:#ae81ff">3</span>
+proc3: <span style="color:#ae81ff">0</span>
+proc1: <span style="color:#ae81ff">4</span>
+proc2: <span style="color:#ae81ff">0</span>
+proc3: <span style="color:#ae81ff">1</span>
+proc2: <span style="color:#ae81ff">1</span>
+proc3: <span style="color:#ae81ff">2</span>
+proc2: <span style="color:#ae81ff">2</span>
+proc3: <span style="color:#ae81ff">3</span>
+proc2: <span style="color:#ae81ff">3</span>
+proc3: <span style="color:#ae81ff">4</span>
+proc2: <span style="color:#ae81ff">4</span>
+</code></pre></div><h3 id="4-使用事件和dio读取串行接口">4. 使用事件和DIO读取串行接口</h3>
 <p><a href="https://www.php.net/manual/zh/book.event.php">Event</a>扩展现在不能够识别<a href="https://www.php.net/manual/zh/book.dio.php">DIO流</a>。没有很好的方法来获取封装在DIO资源中的文件描述符。但是有一个解决办法：</p>
-
 <ul>
 <li>使用<code>fopen()</code>打开某个端口的流</li>
 <li>设置这个流不阻塞使用<code>stream_set_blocking()</code></li>
@@ -369,235 +343,206 @@ proc2: 4
 <li>在文件描述符上面添加一个回调Event，监听读取<code>Event</code></li>
 <li>在回调中读取有效的数据，然后根据你应用的逻辑进行处理</li>
 </ul>
-
 <p><strong>dio.php</strong></p>
-
-<pre><code class="language-php">&lt;?php
-class Scanner {
-    protected $port;  //端口地址 例如 /dev/pts/5
-    protected $fd; //数字文件描述符
-    protected $base; //EventBase
-    protected $dio; //dio资源
-    protected $e_open; //Event
-    protected $e_read; //Event
-    
-    public function __construct($port) {
-        $this-&gt;port = $port;
-        $this-&gt;base = new EventBase();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Scanner</span> {
+    <span style="color:#66d9ef">protected</span> $port;  <span style="color:#75715e">//端口地址 例如 /dev/pts/5
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">protected</span> $fd; <span style="color:#75715e">//数字文件描述符
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">protected</span> $base; <span style="color:#75715e">//EventBase
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">protected</span> $dio; <span style="color:#75715e">//dio资源
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">protected</span> $e_open; <span style="color:#75715e">//Event
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">protected</span> $e_read; <span style="color:#75715e">//Event
+</span><span style="color:#75715e"></span>    
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($port) {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> $port;
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">EventBase</span>();
     }
     
-    public function __destruct() {
-        $this-&gt;base-&gt;exit();
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __destruct() {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">exit</span>();
         
-        if ($this-&gt;e_open) {
-            $this-&gt;e_open-&gt;free();
+        <span style="color:#66d9ef">if</span> ($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_open</span>) {
+            $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_open</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">free</span>();
         }
-        if ($this-&gt;e_read) {
-            $this-&gt;e_read-&gt;free();
+        <span style="color:#66d9ef">if</span> ($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_read</span>) {
+            $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_read</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">free</span>();
         }
-        if ($this-&gt;dio) {
-            dio_close($this-&gt;dio);
+        <span style="color:#66d9ef">if</span> ($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">dio</span>) {
+            <span style="color:#a6e22e">dio_close</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">dio</span>);
         }
     }
     
-    public function run() {
-        $stream = fopen($this-&gt;port, 'rb');
-        stream_set_blocking($stream, false);
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() {
+        $stream <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">port</span>, <span style="color:#e6db74">&#39;rb&#39;</span>);
+        <span style="color:#a6e22e">stream_set_blocking</span>($stream, <span style="color:#66d9ef">false</span>);
         
-        $this-&gt;fd = EventUtil::getSocketFd($stream);
-        if ($this-&gt;fd &lt; 0) {
-            fprintf(STDERR, &quot;Failed attach to port, events: %d\n&quot;, $events);
-            return;
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">fd</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">EventUtil</span><span style="color:#f92672">::</span><span style="color:#a6e22e">getSocketFd</span>($stream);
+        <span style="color:#66d9ef">if</span> ($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">fd</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) {
+            <span style="color:#a6e22e">fprintf</span>(<span style="color:#a6e22e">STDERR</span>, <span style="color:#e6db74">&#34;Failed attach to port, events: %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, $events);
+            <span style="color:#66d9ef">return</span>;
         }
         
-        $this-&gt;e_open = new Event($this-&gt;base, $this-&gt;fd, Event::WRITE, [$this, '_onOpen']);
-        $this-&gt;e_open-&gt;add();
-        $this-&gt;base-&gt;dispatch();
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_open</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Event</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span>, $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">fd</span>, <span style="color:#a6e22e">Event</span><span style="color:#f92672">::</span><span style="color:#a6e22e">WRITE</span>, [$this, <span style="color:#e6db74">&#39;_onOpen&#39;</span>]);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_open</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">add</span>();
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">dispatch</span>();
         
-        fclose($stream);
+        <span style="color:#a6e22e">fclose</span>($stream);
     }
     
-    public function _onOpen($fd, $events) {
-        $this-&gt;e_open-&gt;del();
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_onOpen</span>($fd, $events) {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_open</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">del</span>();
         
-        $this-&gt;dio = dio_fdopen($this-&gt;fd);
-        //调用dio其他方法
-        dio_tcsetattr($this-&gt;dio, [
-            'baud' =&gt; 9600,
-            'bits' =&gt; 8,
-            'stop' =&gt; 1,
-            'parity' =&gt; 0
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">dio</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">dio_fdopen</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">fd</span>);
+        <span style="color:#75715e">//调用dio其他方法
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">dio_tcsetattr</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">dio</span>, [
+            <span style="color:#e6db74">&#39;baud&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">9600</span>,
+            <span style="color:#e6db74">&#39;bits&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">8</span>,
+            <span style="color:#e6db74">&#39;stop&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">1</span>,
+            <span style="color:#e6db74">&#39;parity&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">0</span>
         ]);
         
-        $this-&gt;e_read = new Event($this-&gt;base, $this-&gt;fd, Event::READ|Event::PERSIST, [$this, '_onRead']);
-        $this-&gt;e_read-&gt;add();
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_read</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Event</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span>, $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">fd</span>, <span style="color:#a6e22e">Event</span><span style="color:#f92672">::</span><span style="color:#a6e22e">READ</span><span style="color:#f92672">|</span><span style="color:#a6e22e">Event</span><span style="color:#f92672">::</span><span style="color:#a6e22e">PERSIST</span>, [$this, <span style="color:#e6db74">&#39;_onRead&#39;</span>]);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">e_read</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">add</span>();
     }
     
-    public function _onRead($fd, $events) {
-        while ($data = dio_read($this-&gt;dio, 1)) {
-            var_dump($data);
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_onRead</span>($fd, $events) {
+        <span style="color:#66d9ef">while</span> ($data <span style="color:#f92672">=</span> <span style="color:#a6e22e">dio_read</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">dio</span>, <span style="color:#ae81ff">1</span>)) {
+            <span style="color:#a6e22e">var_dump</span>($data);
         }
     }
 }
 
-//修改端口参数
-$scanner = new Scanner('/dev/pts/5');
-$scanner-&gt;run();
-</code></pre>
-
-<p><strong>测试</strong></p>
-
+<span style="color:#75715e">//修改端口参数
+</span><span style="color:#75715e"></span>$scanner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Scanner</span>(<span style="color:#e6db74">&#39;/dev/pts/5&#39;</span>);
+$scanner<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">run</span>();
+</code></pre></div><p><strong>测试</strong></p>
 <p>在终端A上运行下面的命令：</p>
-
-<pre><code class="language-php">$ socat -d -d pty,raw,echo=0 pty,raw,echo=0
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$ socat -d -d pty,raw,echo=0 pty,raw,echo=0
 2016/12/01 18:04:06 socat[16750] N PTY is /dev/pts/5
 2016/12/01 18:04:06 socat[16750] N PTY is /dev/pts/8
 2016/12/01 18:04:06 socat[16750] N starting data transfer loop with FDs [5,5] and [7,7]
-</code></pre>
-
-<p>输出可能是不同的。使用前两行中的PTYs（这里是<code>/dev/pts/5</code>和<code>/dev/pts/8</code>）。</p>
-
+</code></pre></div><p>输出可能是不同的。使用前两行中的PTYs（这里是<code>/dev/pts/5</code>和<code>/dev/pts/8</code>）。</p>
 <p>在终端B中运行上面提到的脚本。你可能需要root权限。</p>
-
-<pre><code class="language-shell">$ sudo php dio.php
-</code></pre>
-
-<p>在终端C中发送下面的内容到第一个PTY：</p>
-
-<pre><code class="language-shell">$ echo test &gt; /dev/pts/8
-string(1) &quot;t&quot;
-string(1) &quot;e&quot;
-string(1) &quot;s&quot;
-string(1) &quot;t&quot;
-string(1) &quot;
-&quot;
-</code></pre>
-
-<h3 id="5-event扩展的http客户端">5. Event扩展的HTTP客户端</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ sudo php dio.php
+</code></pre></div><p>在终端C中发送下面的内容到第一个PTY：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ echo test &gt; /dev/pts/8
+string<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;t&#34;</span>
+string<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;e&#34;</span>
+string<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;s&#34;</span>
+string<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;t&#34;</span>
+string<span style="color:#f92672">(</span>1<span style="color:#f92672">)</span> <span style="color:#e6db74">&#34;
+</span><span style="color:#e6db74">&#34;</span>
+</code></pre></div><h3 id="5-event扩展的http客户端">5. Event扩展的HTTP客户端</h3>
 <p>这是一个简单的际遇Event扩展的HTTP客户端。</p>
-
 <p>这个类允许发送一系列的HTTP请求，然后异步的运行它们。</p>
-
 <p>http-client.php</p>
-
-<pre><code class="language-php">&lt;?php
-class MyHttpClient {
-   //@var EventBase
-   protected $base;
-   //@var EventHttpConnection的数组实例
-   protected $connections = [];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyHttpClient</span> {
+   <span style="color:#75715e">//@var EventBase
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">protected</span> $base;
+   <span style="color:#75715e">//@var EventHttpConnection的数组实例
+</span><span style="color:#75715e"></span>   <span style="color:#66d9ef">protected</span> $connections <span style="color:#f92672">=</span> [];
    
-   public function __construct() {
-       $this-&gt;base = new EventBase();
+   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct() {
+       $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">EventBase</span>();
    }
   
-  /**
-   * 分发所有等待中的请求
-   *
-   * @return void
-   */
-  public function run() {
-      $this-&gt;base-&gt;dispatch();
+  <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">   * 分发所有等待中的请求
+</span><span style="color:#e6db74">   *
+</span><span style="color:#e6db74">   * @return void
+</span><span style="color:#e6db74">   */</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() {
+      $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">dispatch</span>();
   }
   
-  public function __destruct() {
-      //显式销毁连接，不等待GC
-      //否则，EventBase可以更早的释放
-      $this-&gt;connections = null;
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __destruct() {
+      <span style="color:#75715e">//显式销毁连接，不等待GC
+</span><span style="color:#75715e"></span>      <span style="color:#75715e">//否则，EventBase可以更早的释放
+</span><span style="color:#75715e"></span>      $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">connections</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
   }
   
-  /**
-   * @brief 添加一个等待的HTTP请求
-   *
-   * @param string $address Hostname或者IP
-   * @param int $port 端口号
-   * @param array $headers 额外的HTTP头
-   * @param int $cmd 一个EventHttpRequest::CMD_*_constant
-   * @param string $resource HTTP请求资源 '/page?a=b&amp;c=d'
-   *
-   * @return EventHttpRequest|false
-   */
-  public function addRequest($address, $port, array $headers, $cmd = EventHttpRequest::CMD_GET, $resource = '/') {
-      $conn = new EventHttpConnection($this-&gt;base, null, $address, $port);
-      $conn-&gt;setTimeout(5);
+  <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">   * @brief 添加一个等待的HTTP请求
+</span><span style="color:#e6db74">   *
+</span><span style="color:#e6db74">   * @param string $address Hostname或者IP
+</span><span style="color:#e6db74">   * @param int $port 端口号
+</span><span style="color:#e6db74">   * @param array $headers 额外的HTTP头
+</span><span style="color:#e6db74">   * @param int $cmd 一个EventHttpRequest::CMD_*_constant
+</span><span style="color:#e6db74">   * @param string $resource HTTP请求资源 &#39;/page?a=b&amp;c=d&#39;
+</span><span style="color:#e6db74">   *
+</span><span style="color:#e6db74">   * @return EventHttpRequest|false
+</span><span style="color:#e6db74">   */</span>
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">addRequest</span>($address, $port, <span style="color:#66d9ef">array</span> $headers, $cmd <span style="color:#f92672">=</span> <span style="color:#a6e22e">EventHttpRequest</span><span style="color:#f92672">::</span><span style="color:#a6e22e">CMD_GET</span>, $resource <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/&#39;</span>) {
+      $conn <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">EventHttpConnection</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span>, <span style="color:#66d9ef">null</span>, $address, $port);
+      $conn<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setTimeout</span>(<span style="color:#ae81ff">5</span>);
     
-      $req = new EventHttpRequest([$this, '_requestHandler'], $this-&gt;base);
+      $req <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">EventHttpRequest</span>([$this, <span style="color:#e6db74">&#39;_requestHandler&#39;</span>], $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">base</span>);
       
-      foreach($headers as $k =&gt; $v) {
-          $req-&gt;addHeader($k, $v, EventHttpRequest::OUTPUT_HEADER);
+      <span style="color:#66d9ef">foreach</span>($headers <span style="color:#66d9ef">as</span> $k <span style="color:#f92672">=&gt;</span> $v) {
+          $req<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addHeader</span>($k, $v, <span style="color:#a6e22e">EventHttpRequest</span><span style="color:#f92672">::</span><span style="color:#a6e22e">OUTPUT_HEADER</span>);
       }
-      $req-&gt;addHeader('Host', $address, EventHttpRequest::OUTPUT_HEADER);
-      $req-&gt;addHeader('Connection', 'close', EventHttpRequest::OUTPUT_HEADER);
-      if($conn-&gt;makeRequest($req, $cmd, $resource)) {
-          $this-&gt;connections[] = $conn;
-          return $req;
+      $req<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addHeader</span>(<span style="color:#e6db74">&#39;Host&#39;</span>, $address, <span style="color:#a6e22e">EventHttpRequest</span><span style="color:#f92672">::</span><span style="color:#a6e22e">OUTPUT_HEADER</span>);
+      $req<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addHeader</span>(<span style="color:#e6db74">&#39;Connection&#39;</span>, <span style="color:#e6db74">&#39;close&#39;</span>, <span style="color:#a6e22e">EventHttpRequest</span><span style="color:#f92672">::</span><span style="color:#a6e22e">OUTPUT_HEADER</span>);
+      <span style="color:#66d9ef">if</span>($conn<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">makeRequest</span>($req, $cmd, $resource)) {
+          $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">connections</span>[] <span style="color:#f92672">=</span> $conn;
+          <span style="color:#66d9ef">return</span> $req;
       }
     
-      return false;
+      <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
   }
   
-  /**
-   * @brief 处理HTTP请求
-   *
-   * @param EventHttpRequest $req
-   * @param mixed $unused
-   *
-   * @return void 
-   */ 
-  public function _requestHandler($req, $unused) {
-      if (is_null($req)) {
-          echo &quot;Timed out\n&quot;;
-      } else {
-          $response_code = $req-&gt;getResponseCode();
+  <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">   * @brief 处理HTTP请求
+</span><span style="color:#e6db74">   *
+</span><span style="color:#e6db74">   * @param EventHttpRequest $req
+</span><span style="color:#e6db74">   * @param mixed $unused
+</span><span style="color:#e6db74">   *
+</span><span style="color:#e6db74">   * @return void 
+</span><span style="color:#e6db74">   */</span> 
+  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_requestHandler</span>($req, $unused) {
+      <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">is_null</span>($req)) {
+          <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Timed out</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+      } <span style="color:#66d9ef">else</span> {
+          $response_code <span style="color:#f92672">=</span> $req<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getResponseCode</span>();
         
-          if($response_code == 0) {
-              echo &quot;Connection refuesd\n&quot;;
-          } elseif ($response_code != 200) {
-              echo &quot;Unexpected response: $response_code\n&quot;;
-          } else {
-              echo &quot;Success: $response_code\n&quot;;
-              $buf = $req-&gt;getInputBuffer();
-              echo &quot;Body:\n&quot;;
-              while($s = $buf-&gt;readLine(EventBuffer::EOL_ANY)) {
-                  echo $s, PHP_EOL;
+          <span style="color:#66d9ef">if</span>($response_code <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+              <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Connection refuesd</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+          } <span style="color:#66d9ef">elseif</span> ($response_code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>) {
+              <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Unexpected response: </span><span style="color:#e6db74">$response_code\n</span><span style="color:#e6db74">&#34;</span>;
+          } <span style="color:#66d9ef">else</span> {
+              <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Success: </span><span style="color:#e6db74">$response_code\n</span><span style="color:#e6db74">&#34;</span>;
+              $buf <span style="color:#f92672">=</span> $req<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getInputBuffer</span>();
+              <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Body:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+              <span style="color:#66d9ef">while</span>($s <span style="color:#f92672">=</span> $buf<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">readLine</span>(<span style="color:#a6e22e">EventBuffer</span><span style="color:#f92672">::</span><span style="color:#a6e22e">EOL_ANY</span>)) {
+                  <span style="color:#66d9ef">echo</span> $s, <span style="color:#a6e22e">PHP_EOL</span>;
               }
           }
       }
   }
 }
 
-$address = &quot;my-host.local&quot;;
-$port = 80;
-$headers = ['User-Agent' =&gt; 'My-User-Agent/1.0',];
+$address <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my-host.local&#34;</span>;
+$port <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span>;
+$headers <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;User-Agent&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;My-User-Agent/1.0&#39;</span>,];
 
-$clients = new MyHttpClient();
+$clients <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MyHttpClient</span>();
 
-//添加等待的请求
-for ($i = 0; $i &lt; 10; $i++) {
-    $client-&gt;addRequest($address, $port, $headers, EventHttpRequest::CMD_GET, 'test.php/?a=' . $i);
+<span style="color:#75715e">//添加等待的请求
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> ($i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; $i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10</span>; $i<span style="color:#f92672">++</span>) {
+    $client<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addRequest</span>($address, $port, $headers, <span style="color:#a6e22e">EventHttpRequest</span><span style="color:#f92672">::</span><span style="color:#a6e22e">CMD_GET</span>, <span style="color:#e6db74">&#39;test.php/?a=&#39;</span> <span style="color:#f92672">.</span> $i);
 }
 
-//发起请求
-$client-&gt;run();
-</code></pre>
-
-<p><strong>test.php</strong></p>
-
+<span style="color:#75715e">//发起请求
+</span><span style="color:#75715e"></span>$client<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">run</span>();
+</code></pre></div><p><strong>test.php</strong></p>
 <p>这是服务端的简单示例脚本：</p>
-
-<pre><code class="language-php">&lt;?php
-echo 'GET: ', var_export($_GET, true), PHP_EOL;
-echo 'User-Agent: ', $_SERVER['HTTP_USER_AGENT'] ?? '(none)', PHP_EOL;
-</code></pre>
-
-<p><strong>用例</strong></p>
-
-<pre><code class="language-shell">php http-client.php
-</code></pre>
-
-<p>示例的输出</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;GET: &#39;</span>, <span style="color:#a6e22e">var_export</span>($_GET, <span style="color:#66d9ef">true</span>), <span style="color:#a6e22e">PHP_EOL</span>;
+<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;User-Agent: &#39;</span>, $_SERVER[<span style="color:#e6db74">&#39;HTTP_USER_AGENT&#39;</span>] <span style="color:#f92672">??</span> <span style="color:#e6db74">&#39;(none)&#39;</span>, <span style="color:#a6e22e">PHP_EOL</span>;
+</code></pre></div><p><strong>用例</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">php http-client.php
+</code></pre></div><p>示例的输出</p>
 <pre><code>Success: 200
 Body:
 GET: array (
@@ -616,239 +561,224 @@ GET: array (
     'a' =&gt; '3', 
 )
 ...
-</code></pre>
-
-<p>注意，这个代码是设计在<a href="https://php.net/manual/en/features.commandline.introduction.php">CLI SAPI</a>中长期运行的。</p>
-
+</code></pre><p>注意，这个代码是设计在<a href="https://php.net/manual/en/features.commandline.introduction.php">CLI SAPI</a>中长期运行的。</p>
 <h3 id="6-基于ev扩展的http客户端请求">6. 基于Ev扩展的HTTP客户端请求</h3>
-
 <p>这个是基于<a href="https://pecl.php.net/package/ev">Ev</a>扩展的HTTP客户端请求例子。</p>
-
 <p>Ev扩展实现了一个简单但功能强大的通用Event循环。它不提供特定网络的观察者程序，但是<a href="http://docs.php.net/manual/zh/class.evio.php">I/O的观察者程序</a>可以用来异步处理<a href="http://docs.php.net/manual/zh/book.sockets.php">sockets</a>。</p>
-
 <p>下面的代码显式了如何安排HTTP的并行请求。</p>
-
 <p><strong>http-client.php</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyHttpRequest</span> {
+    <span style="color:#75715e">// @var MyHttpClient
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $http_client;
+    <span style="color:#75715e">// @var string
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $address; 
+    <span style="color:#75715e">// @var string HTTP resource such as /page?get=param 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $resource;
+    <span style="color:#75715e">// @var string HTTP method such as GET, POST etc.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $method;
+    <span style="color:#75715e">// @var int
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $service_port; 
+    <span style="color:#75715e">// @var resource Socket 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $socket;
+    <span style="color:#75715e">// @var double Connection timeout in seconds. 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $timeout <span style="color:#f92672">=</span> <span style="color:#ae81ff">10.</span>;
+    <span style="color:#75715e">// @var int Chunk size in bytes for socket_recv()
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $chunk_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>;
+    <span style="color:#75715e">// @var EvTimer
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $timeout_watcher;
+    <span style="color:#75715e">// @var EvIo
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $write_watcher;
+    <span style="color:#75715e">// @var EvIo
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $read_watcher;
+    <span style="color:#75715e">// @var EvTimer
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $conn_watcher;
+    <span style="color:#75715e">// @var string buffer for incoming data
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $buffer;
+    <span style="color:#75715e">// @var array errors reported by sockets extension in non-blocking mode. 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> $e_nonblocking <span style="color:#f92672">=</span> [
+        <span style="color:#ae81ff">11</span>, <span style="color:#75715e">// EAGAIN or EWOULDBLOCK
+</span><span style="color:#75715e"></span>        <span style="color:#ae81ff">115</span>, <span style="color:#75715e">// EINPROGRESS 
+</span><span style="color:#75715e"></span>    ];
 
-<pre><code class="language-php">&lt;?php
-class MyHttpRequest {
-    // @var MyHttpClient
-    private $http_client;
-    // @var string
-    private $address; 
-    // @var string HTTP resource such as /page?get=param 
-    private $resource;
-    // @var string HTTP method such as GET, POST etc.
-    private $method;
-    // @var int
-    private $service_port; 
-    // @var resource Socket 
-    private $socket;
-    // @var double Connection timeout in seconds. 
-    private $timeout = 10.;
-    // @var int Chunk size in bytes for socket_recv()
-    private $chunk_size = 20;
-    // @var EvTimer
-    private $timeout_watcher;
-    // @var EvIo
-    private $write_watcher;
-    // @var EvIo
-    private $read_watcher;
-    // @var EvTimer
-    private $conn_watcher;
-    // @var string buffer for incoming data
-    private $buffer;
-    // @var array errors reported by sockets extension in non-blocking mode. 
-    private static $e_nonblocking = [
-        11, // EAGAIN or EWOULDBLOCK
-        115, // EINPROGRESS 
-    ];
-
-    /**
-     * @param MyHttpClient $client
-     * @param string $host Hostname, e.g. google.co.uk
-     * @param string $resource HTTP resource, e.g. /page?a=b&amp;c=d
-     * @param string $method HTTP method: GET, HEAD, POST, PUT etc.
-     * @throws RuntimeException
-     */
-    public function __construct(MyHttpClient $client, $host, $resource, $method) {
-        $this-&gt;http_client = $client;
-        $this-&gt;host = $host;
-        $this-&gt;resource = $resource;
-        $this-&gt;method = $method;
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * @param MyHttpClient $client
+</span><span style="color:#e6db74">     * @param string $host Hostname, e.g. google.co.uk
+</span><span style="color:#e6db74">     * @param string $resource HTTP resource, e.g. /page?a=b&amp;c=d
+</span><span style="color:#e6db74">     * @param string $method HTTP method: GET, HEAD, POST, PUT etc.
+</span><span style="color:#e6db74">     * @throws RuntimeException
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct(<span style="color:#a6e22e">MyHttpClient</span> $client, $host, $resource, $method) {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">http_client</span> <span style="color:#f92672">=</span> $client;
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">host</span> <span style="color:#f92672">=</span> $host;
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">resource</span> <span style="color:#f92672">=</span> $resource;
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">method</span> <span style="color:#f92672">=</span> $method;
       
-        // 获取http服务器的端口
-        $this-&gt;service_port = getservbyname('www', 'tcp'); 
-        // 获取host的ip地址
-        $this-&gt;address = gethostbyname($this-&gt;host);
-        //创建一个TCP/IP socket
-        $this-&gt;socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        if (!$this-&gt;socket) {
-            throw new RuntimeException(&quot;socket_create() failed: reason: &quot; .         socket_strerror(socket_last_error()));
+        <span style="color:#75715e">// 获取http服务器的端口
+</span><span style="color:#75715e"></span>        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">service_port</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">getservbyname</span>(<span style="color:#e6db74">&#39;www&#39;</span>, <span style="color:#e6db74">&#39;tcp&#39;</span>); 
+        <span style="color:#75715e">// 获取host的ip地址
+</span><span style="color:#75715e"></span>        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">address</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">gethostbyname</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">host</span>);
+        <span style="color:#75715e">//创建一个TCP/IP socket
+</span><span style="color:#75715e"></span>        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">socket_create</span>(<span style="color:#a6e22e">AF_INET</span>, <span style="color:#a6e22e">SOCK_STREAM</span>, <span style="color:#a6e22e">SOL_TCP</span>);
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>$this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>) {
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">RuntimeException</span>(<span style="color:#e6db74">&#34;socket_create() failed: reason: &#34;</span> <span style="color:#f92672">.</span>         <span style="color:#a6e22e">socket_strerror</span>(<span style="color:#a6e22e">socket_last_error</span>()));
         }
       
-        // 设置进程非阻塞
-        socket_set_nonblock($this-&gt;socket);
-        $this-&gt;conn_watcher = $this-&gt;http_client-&gt;getLoop()-&gt;timer(0, 0., [$this, 'connect']);
+        <span style="color:#75715e">// 设置进程非阻塞
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">socket_set_nonblock</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">conn_watcher</span> <span style="color:#f92672">=</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">http_client</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getLoop</span>()<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">timer</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0.</span>, [$this, <span style="color:#e6db74">&#39;connect&#39;</span>]);
     }
   
-    public function __destruct() {
-        $this-&gt;close();
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __destruct() {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">close</span>();
     }
   
-    public function freeWatcher(&amp;$w) {
-        if ($w) {
-            $w-&gt;stop();
-            $w = null;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">freeWatcher</span>(<span style="color:#f92672">&amp;</span>$w) {
+        <span style="color:#66d9ef">if</span> ($w) {
+            $w<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">stop</span>();
+            $w <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
         }
     }
   
-    /**
-     * 释放所有的请求资源
-     */
-    public function close() {
-        if ($this-&gt;socket) {
-            socket_close($this-&gt;socket);
-            $this-&gt;socket = null;
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * 释放所有的请求资源
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">close</span>() {
+        <span style="color:#66d9ef">if</span> ($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>) {
+            <span style="color:#a6e22e">socket_close</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>);
+            $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
         }
       
-        $this-&gt;freeWatcher($this-&gt;timeout_watcher);
-        $this-&gt;freeWatcher($this-&gt;read_watcher);
-        $this-&gt;freeWatcher($this-&gt;write_watcher);
-        $this-&gt;freeWatcher($this-&gt;conn_watcher);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">freeWatcher</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">timeout_watcher</span>);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">freeWatcher</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">read_watcher</span>);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">freeWatcher</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">write_watcher</span>);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">freeWatcher</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">conn_watcher</span>);
     }
   
-    /**
-     * 初始化一个socket连接
-     * return bool
-     */
-    public function connect() {
-        $loop = $this-&gt;http_client-&gt;getLoop();
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * 初始化一个socket连接
+</span><span style="color:#e6db74">     * return bool
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">connect</span>() {
+        $loop <span style="color:#f92672">=</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">http_client</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getLoop</span>();
       
-        $this-&gt;timeout_watcher = $loop-&gt;timer($this-&gt;timeout, 0, [$this, '_onTimeout']);
-        $this-&gt;write_watcher = $loop-&gt;io($this-&gt;socket, Ev::WRITE, [$this, '_onWritable']);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">timeout_watcher</span> <span style="color:#f92672">=</span> $loop<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">timer</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">timeout</span>, <span style="color:#ae81ff">0</span>, [$this, <span style="color:#e6db74">&#39;_onTimeout&#39;</span>]);
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">write_watcher</span> <span style="color:#f92672">=</span> $loop<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">io</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>, <span style="color:#a6e22e">Ev</span><span style="color:#f92672">::</span><span style="color:#a6e22e">WRITE</span>, [$this, <span style="color:#e6db74">&#39;_onWritable&#39;</span>]);
       
-        return socket_connect($this-&gt;socket, $this-&gt;address, $this-&gt;service_port);
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">socket_connect</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>, $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">address</span>, $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">service_port</span>);
     }
     
-    /**
-     * 超时观察者程序的回调程序
-     */
-    public function _onTimeout(EvTimer $w) {
-        $w-&gt;stop();
-        $this-&gt;close();
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * 超时观察者程序的回调程序
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_onTimeout</span>(<span style="color:#a6e22e">EvTimer</span> $w) {
+        $w<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">stop</span>();
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">close</span>();
     }
   
-    /**
-     * socket变为可写时的回调方法
-     */
-    public function _onWritable(EvIo $w) {
-        $this-&gt;timeout_watcher-&gt;stop(); 
-        $w-&gt;stop();
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * socket变为可写时的回调方法
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_onWritable</span>(<span style="color:#a6e22e">EvIo</span> $w) {
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">timeout_watcher</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">stop</span>(); 
+        $w<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">stop</span>();
 
-        $in = implode(&quot;\r\n&quot;, [
-            &quot;{$this-&gt;method} {$this-&gt;resource} HTTP/1.1&quot;, 
-            &quot;Host: {$this-&gt;host}&quot;,
-            'Connection: Close',
-        ]) . &quot;\r\n\r\n&quot;;
+        $in <span style="color:#f92672">=</span> <span style="color:#a6e22e">implode</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, [
+            <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>$this-&gt;method<span style="color:#e6db74">}</span><span style="color:#e6db74"> </span><span style="color:#e6db74">{</span>$this-&gt;resource<span style="color:#e6db74">}</span><span style="color:#e6db74"> HTTP/1.1&#34;</span>, 
+            <span style="color:#e6db74">&#34;Host: </span><span style="color:#e6db74">{</span>$this-&gt;host<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>,
+            <span style="color:#e6db74">&#39;Connection: Close&#39;</span>,
+        ]) <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#34;</span>;
       
-        if (!socket_write($this-&gt;socket, $in, strlen($in))) { 
-            trigger_error(&quot;Failed writing $in to socket&quot;, E_USER_ERROR); 
-            return;
+        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">socket_write</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>, $in, <span style="color:#a6e22e">strlen</span>($in))) { 
+            <span style="color:#a6e22e">trigger_error</span>(<span style="color:#e6db74">&#34;Failed writing </span><span style="color:#e6db74">$in</span><span style="color:#e6db74"> to socket&#34;</span>, <span style="color:#a6e22e">E_USER_ERROR</span>); 
+            <span style="color:#66d9ef">return</span>;
         }
       
-        $loop = $this-&gt;http_client-&gt;getLoop();
-        $this-&gt;read_watcher = $loop-&gt;io($this-&gt;socket, Ev::READ, [$this, '_onReadable']);
+        $loop <span style="color:#f92672">=</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">http_client</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getLoop</span>();
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">read_watcher</span> <span style="color:#f92672">=</span> $loop<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">io</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>, <span style="color:#a6e22e">Ev</span><span style="color:#f92672">::</span><span style="color:#a6e22e">READ</span>, [$this, <span style="color:#e6db74">&#39;_onReadable&#39;</span>]);
 
-        // Continue running the loop
-        $loop-&gt;run();
+        <span style="color:#75715e">// Continue running the loop
+</span><span style="color:#75715e"></span>        $loop<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">run</span>();
     }
    
-    /**
-     * 可读时的回调方法
-     */
-    public function _onReadable(EvIo $w) {
-        // recv() 20 bytes in non-blocking mode
-        $ret = socket_recv($this-&gt;socket, $out, 20, MSG_DONTWAIT);
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * 可读时的回调方法
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">_onReadable</span>(<span style="color:#a6e22e">EvIo</span> $w) {
+        <span style="color:#75715e">// recv() 20 bytes in non-blocking mode
+</span><span style="color:#75715e"></span>        $ret <span style="color:#f92672">=</span> <span style="color:#a6e22e">socket_recv</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">socket</span>, $out, <span style="color:#ae81ff">20</span>, <span style="color:#a6e22e">MSG_DONTWAIT</span>);
         
-        if ($ret) {
-        // 有数据就把数据追加大buffer中
-            $this-&gt;buffer .= $out;
-        } elseif ($ret === 0) {
-        // 读完之后
-            printf(&quot;\n&lt;&lt;&lt;&lt;\n%s\n&gt;&gt;&gt;&gt;&quot;, rtrim($this-&gt;buffer)); 
-            fflush(STDOUT);
-            $w-&gt;stop();
-            $this-&gt;close();
-            return;
+        <span style="color:#66d9ef">if</span> ($ret) {
+        <span style="color:#75715e">// 有数据就把数据追加大buffer中
+</span><span style="color:#75715e"></span>            $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">buffer</span> <span style="color:#f92672">.=</span> $out;
+        } <span style="color:#66d9ef">elseif</span> ($ret <span style="color:#f92672">===</span> <span style="color:#ae81ff">0</span>) {
+        <span style="color:#75715e">// 读完之后
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&lt;&lt;&lt;&lt;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&gt;&gt;&gt;&gt;&#34;</span>, <span style="color:#a6e22e">rtrim</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">buffer</span>)); 
+            <span style="color:#a6e22e">fflush</span>(<span style="color:#a6e22e">STDOUT</span>);
+            $w<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">stop</span>();
+            $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">close</span>();
+            <span style="color:#66d9ef">return</span>;
         }
         
-        // Caught EINPROGRESS, EAGAIN, or EWOULDBLOCK
-        if (in_array(socket_last_error(), static::$e_nonblocking)) {
-            return;
+        <span style="color:#75715e">// Caught EINPROGRESS, EAGAIN, or EWOULDBLOCK
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">in_array</span>(<span style="color:#a6e22e">socket_last_error</span>(), <span style="color:#66d9ef">static</span><span style="color:#f92672">::</span>$e_nonblocking)) {
+            <span style="color:#66d9ef">return</span>;
         }
       
-        $w-&gt;stop();
-        $this-&gt;close();
+        $w<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">stop</span>();
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">close</span>();
     }
 }    
 
-/////////////////////////////////////
-class MyHttpClient {
-    // @var array Instances of MyHttpRequest 
-    private $requests = [];
-    // @var EvLoop
-    private $loop;
+<span style="color:#75715e">/////////////////////////////////////
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyHttpClient</span> {
+    <span style="color:#75715e">// @var array Instances of MyHttpRequest 
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $requests <span style="color:#f92672">=</span> [];
+    <span style="color:#75715e">// @var EvLoop
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> $loop;
 
-    public function __construct() {
-        // Each HTTP client runs its own event loop 
-        $this-&gt;loop = new EvLoop();
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct() {
+        <span style="color:#75715e">// Each HTTP client runs its own event loop 
+</span><span style="color:#75715e"></span>        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">loop</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">EvLoop</span>();
     }
     
-    public function __destruct() { 
-        $this-&gt;loop-&gt;stop();
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __destruct() { 
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">loop</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">stop</span>();
     }
   
-    /**
-     * @return EvLoop
-     */
-    public function getLoop() { 
-        return $this-&gt;loop;
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * @return EvLoop
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getLoop</span>() { 
+        <span style="color:#66d9ef">return</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">loop</span>;
     }
     
-    /**
-     * Adds a pending request
-     */
-    public function addRequest(MyHttpRequest $r) { 
-        $this-&gt;requests []= $r;
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * Adds a pending request
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">addRequest</span>(<span style="color:#a6e22e">MyHttpRequest</span> $r) { 
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">requests</span> []<span style="color:#f92672">=</span> $r;
     }
   
-    /**
-     * Dispatches all pending requests
-     */
-    public function run() { 
-        $this-&gt;loop-&gt;run();
+    <span style="color:#e6db74">/**
+</span><span style="color:#e6db74">     * Dispatches all pending requests
+</span><span style="color:#e6db74">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">run</span>() { 
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">loop</span><span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">run</span>();
     } 
 }
 
-///////////////////////////////////// // Usage
-$client = new MyHttpClient(); 
-foreach (range(1, 10) as $i) {
-    $client-&gt;addRequest(new MyHttpRequest($client, 'my-host.local', '/test.php?a=' . $i, 'GET')); 
+<span style="color:#75715e">///////////////////////////////////// // Usage
+</span><span style="color:#75715e"></span>$client <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MyHttpClient</span>(); 
+<span style="color:#66d9ef">foreach</span> (<span style="color:#a6e22e">range</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>) <span style="color:#66d9ef">as</span> $i) {
+    $client<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addRequest</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MyHttpRequest</span>($client, <span style="color:#e6db74">&#39;my-host.local&#39;</span>, <span style="color:#e6db74">&#39;/test.php?a=&#39;</span> <span style="color:#f92672">.</span> $i, <span style="color:#e6db74">&#39;GET&#39;</span>)); 
 }
-$client-&gt;run();
-</code></pre>
-
-<p><strong>测试</strong></p>
-
+$client<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">run</span>();
+</code></pre></div><p><strong>测试</strong></p>
 <p>假设<code>http://my-host.local/test.php</code>脚本在打印输出<code>$_GET</code>：</p>
-
-<pre><code class="language-php">&lt;?php
-echo 'GET: ', var_export($_GET, true), PHP_EOL;
-</code></pre>
-
-<p><code>php http-client.php</code>的输出和下面的内容相似：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;GET: &#39;</span>, <span style="color:#a6e22e">var_export</span>($_GET, <span style="color:#66d9ef">true</span>), <span style="color:#a6e22e">PHP_EOL</span>;
+</code></pre></div><p><code>php http-client.php</code>的输出和下面的内容相似：</p>
 <pre><code>&lt;&lt;&lt;&lt;
 HTTP/1.1 200 OK
 Server: nginx/1.10.1
@@ -882,23 +812,18 @@ GET: array (
 0 
 &gt;&gt;&gt;&gt; 
 ...
-</code></pre>
-
-<p>注意：PHP 5的socket扩展可能会输出<code>EINPROGRESS</code>, <code>EAGAIN</code>, <code>EWOULDBLOCK</code>的<code>errno</code>值。可以通过<code>error_reporting(E_ERROR);</code>关闭日志。</p>
-
+</code></pre><p>注意：PHP 5的socket扩展可能会输出<code>EINPROGRESS</code>, <code>EAGAIN</code>, <code>EWOULDBLOCK</code>的<code>errno</code>值。可以通过<code>error_reporting(E_ERROR);</code>关闭日志。</p>
 <h3 id="7-使用amp事件循环">7 使用AMP事件循环</h3>
-
 <p>使用AMP实现。</p>
-
-<pre><code class="language-php">require __DIR__ . '/vendor/autoload.php';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">require __DIR__ . &#39;/vendor/autoload.php&#39;;
 
 use Amp\Dns;
 
 // Try our system defined resolver or googles, whichever is fastest
 function queryStackOverflow($recordtype) { 
     $requests = [
-        Dns\query(&quot;stackoverflow.com&quot;, $recordtype),
-        Dns\query(&quot;stackoverflow.com&quot;, $recordtype, [&quot;server&quot; =&gt; &quot;8.8.8.8&quot;]),
+        Dns\query(&#34;stackoverflow.com&#34;, $recordtype),
+        Dns\query(&#34;stackoverflow.com&#34;, $recordtype, [&#34;server&#34; =&gt; &#34;8.8.8.8&#34;]),
     ];
     // returns a Promise resolving when the first one of the requests resolves
     return yield Amp\first($request);
@@ -910,16 +835,14 @@ function queryStackOverflow($recordtype) {
         $promise = Amp\resolve(queryStackOverflow(Dns\Record::NS)); 
         list($ns, $type, $ttl) = // we need only one NS result, not all
             current(yield Amp\timeout($promise, 2000 /* milliseconds */)); 
-        echo &quot;The result of the fastest server to reply to our query was $ns&quot;;
+        echo &#34;The result of the fastest server to reply to our query was $ns&#34;;
     } catch (Amp\TimeoutException $e) {
-        echo &quot;We've heard no answer for 2 seconds! Bye!&quot;;
+        echo &#34;We&#39;ve heard no answer for 2 seconds! Bye!&#34;;
     } catch (Dns\NoRecordException $e) {
-        echo &quot;No NS records there? Stupid DNS nameserver!&quot;;
+        echo &#34;No NS records there? Stupid DNS nameserver!&#34;;
     }
 });
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -991,6 +914,12 @@ function queryStackOverflow($recordtype) {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

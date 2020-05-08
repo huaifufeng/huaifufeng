@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Java on 怀府小阁</title>
@@ -18,21 +18,21 @@
       
       <guid>http://blog.huaifufeng.com/2019/05/post/java-section-8.html</guid>
       <description>Java命令 1. 入口点类 一个Java的入口点类有一个具有下面签名和修饰符的主要方法：
-public static void main(String[] args)   旁注：由于数组的工作方式，这里也可以是String args[]
+public static void main(String[] args)  旁注：由于数组的工作方式，这里也可以是String args[]
  当java命令开启一个虚拟机的时候，它将会家长指定的入口点类并且寻找main方法。如果找到了，命令行的参数将会转换为一个String对象并且赋值到数组中。如果main像这样调用，这个数组将不会是null，并且不会包含null的值。
 一个有效的入口点类方法必须做下面的事情：
  必须名称是main(区分大小写) 是public和static 拥有一个void返回类型 拥有一个单独的字符串数组参数String[] args。这个参数必须存在，并且不能有多个参数 泛型：不允许使用类型参数 具有非泛型，顶级（非嵌套或内部）封闭类  通常将类声明为public，但是这并非是绝对的。从Java5开始，main方法的参数类型可以是String 可变参数，而不会字符串数组。main可以选择性的抛出异常，它的参数可以命名为任何值，但是通常是args。
 JavaFx入口点
 从Java8开始，java命令亏直接开启一个JavaFX应用。JavaFX标记有JavaFX标签，但是一个JavaFX的入口点必须有下面的内容：
- 继承javafx.application.Application 需要是public并且不是abstract 不是泛型或嵌套的 有一个显式或隐式 public的无参数构造函数  2. &amp;lsquo;java&amp;rsquo;命令故障排除 下面的例子介绍使用&amp;rsquo;java&amp;rsquo;命令场景的错误。
+ 继承javafx.application.Application 需要是public并且不是abstract 不是泛型或嵌套的 有一个显式或隐式 public的无参数构造函数  2. &amp;lsquo;java&#39;命令故障排除 下面的例子介绍使用&amp;rsquo;java&#39;命令场景的错误。
 &amp;ldquo;命令未找到&amp;rdquo;
 如果你碰到类似下面的错误信息：
-java: command not found  当你试着运行java命令的时候，这意味在你的shell命令查找地址中没有java命令。这可能的原因是：
- 你还没有安装Java的JRE或JDK 你还没有更新你的PATH环境变量（正确的）在你的shell初始化文件 你没有在当前的shell中source你的shell初始文件  查看&amp;rdquo;安装Java&amp;rdquo;的部分。
+java: command not found 当你试着运行java命令的时候，这意味在你的shell命令查找地址中没有java命令。这可能的原因是：
+ 你还没有安装Java的JRE或JDK 你还没有更新你的PATH环境变量（正确的）在你的shell初始化文件 你没有在当前的shell中source你的shell初始文件  查看&amp;quot;安装Java&amp;quot;的部分。
 &amp;ldquo;Could not find or load main Class&amp;rdquo;
 当java命令找不到或者无法家长你指定的入口点类，将会输出这个错误信息。一般来说有三种可能出现这个错误：
  你指定了一个不存在的入口点类 类存在，但是没有正确的指定这个类 类存在并且你正确指定了，但是Java没有找到因为classpath不正确  下面是诊断和解决问题的办法：
- 找到入口点类的完整名称  如果你有类的源代码，完整的名称包含包名和简单类名。&amp;rdquo;Main&amp;rdquo;类的试了在包&amp;rdquo;com.</description>
+ 找到入口点类的完整名称  如果你有类的源代码，完整的名称包含包名和简单类名。&amp;ldquo;Main&amp;quot;类的试了在包&amp;quot;com.example.myapp&amp;quot;然后完整的名称就是&amp;quot;com.example.myapp.Main&amp;rdquo; 如果你有一个编译好的类文件，你可以在这个文件上运行javap来找到类名 如果类文件在一个目录中，你可以从目录名推断完整的类名 如果类名在一个JAR或ZIP文件中，你可以从JAR或ZIP文件中文件的路径推断完整的类名   查看java命令的错误信息。错误信息应该以java试着使用的完整类名结尾。  检查这个入口点类实际匹配的完整类名 不应该以&amp;rdquo;.</description>
     </item>
     
     <item>
@@ -43,7 +43,7 @@ java: command not found  当你试着运行java命令的时候，这意味在你
       <guid>http://blog.huaifufeng.com/2019/05/post/java-section-7.html</guid>
       <description>Java代码文档化    参数 详情     args 命令行的参数。假设main方法是被java的launcher调用的，args将不会是null，将会有非null的值    1. 使用GWT的ToolBase进行参数处理 如果你想要解析更复杂的命令行参数(例如可选参数)，最好的方法就是使用Google的GWT方法，所有公开分类都在：https://gwt.googlesource.com/gwt/+/2.8.0-beta1/dev/core/src/com/google/gwt/util/tools/ToolBase.java
 一个处理命令行myprogram -dir &amp;quot;~/Documents&amp;quot; -port 8888的例子：
-public class MyProgramHanlder extends ToolBase { protected File dir; protected int port; //dir和port的getter和setter ... public MyProgramHandler() { this.registerHandler(new ArgHandlerDir() { @Override public void setDir(File dir) { this.dir = dir; } }); this.registerHandler(new ArgHandlerInt() { @Override public String[] getTagArgs() { return new String[]{&amp;quot;port&amp;quot;}; } @Override public void setInt(int value) { this.</description>
+public class MyProgramHanlder extends ToolBase { protected File dir; protected int port; //dir和port的getter和setter  ... public MyProgramHandler() { this.registerHandler(new ArgHandlerDir() { @Override public void setDir(File dir) { this.dir = dir; } }); this.registerHandler(new ArgHandlerInt() { @Override public String[] getTagArgs() { return new String[]{&amp;#34;port&amp;#34;}; } @Override public void setInt(int value) { this.</description>
     </item>
     
     <item>
@@ -56,10 +56,10 @@ public class MyProgramHanlder extends ToolBase { protected File dir; protected i
 1. 从命令行创建javadocs 许多IDE都支持工Javadocs自动生成HTML文档。一些构建工具（例如Maven和Gradle）也有可以处理HTML创建的插件。
 但是这些工具不是必须要来生成javadoc HTML的。可以使用命令行工具javadoc。
 这个工具的基本用法是：
-javadoc JavaFile.java  这将会从JavaFile.java文件中的Javadoc注释中产生HTML文件。
+javadoc JavaFile.java 这将会从JavaFile.java文件中的Javadoc注释中产生HTML文件。
 命令行工具更好的用法是递归的读取[source-directory]中的所有java文件，创建[package.name]和所有子包的文档，并把这些文档存放到[docs-directory]中：
-javadoc -d [docs-directory] -subpackages -sourcepath [source-directory] [package.name]  2. 类文档 所有的javadoc注释都以一个块注释开头，后面跟着一个星号(/**)，以一个快注释结尾(*/)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。
-/** * 类的简单概述，以句号结束。 * * 通常在概述和详情之间会留一行空白。概述(在第一个句号之前的内容)会用在类或包的描述部分。 * * 可以使用下面的行内标记(不是完整的例子)： * {@link some.other.class.Documentation} 连接到其他的文档或符号 * {@link some.other.class.Documentation Some Display Name} 可以通过在文档或符号定位器之后添加 * 名称来定义连接的外观 * {@code code goes here} 用于格式化作为代码 * {@literal &amp;lt;&amp;gt;[]()foo} 用于在不转换为HTML标记或其他标记的情况下解释文本 * * 或者可以在类文档的末尾使用下面的标记(不是详细的列表)： * * @author 王子 * @version 1.0 * @since 5/10/15 * @see some.</description>
+javadoc -d [docs-directory] -subpackages -sourcepath [source-directory] [package.name] 2. 类文档 所有的javadoc注释都以一个块注释开头，后面跟着一个星号(/**)，以一个快注释结尾(*/)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。
+/** * 类的简单概述，以句号结束。 * * 通常在概述和详情之间会留一行空白。概述(在第一个句号之前的内容)会用在类或包的描述部分。 * * 可以使用下面的行内标记(不是完整的例子)： * {@link some.other.class.Documentation} 连接到其他的文档或符号 * {@link some.other.class.Documentation Some Display Name} 可以通过在文档或符号定位器之后添加 * 名称来定义连接的外观 * {@code code goes here} 用于格式化作为代码 * {@literal &amp;lt;&amp;gt;[]()foo} 用于在不转换为HTML标记或其他标记的情况下解释文本 * * 或者可以在类文档的末尾使用下面的标记(不是详细的列表)： * * @author 王子 * @version 1.0 * @since 5/10/15 * @see some.other.class.Documentation * @deprecated 这个类被some.</description>
     </item>
     
     <item>
@@ -70,15 +70,16 @@ javadoc -d [docs-directory] -subpackages -sourcepath [source-directory] [package
       <guid>http://blog.huaifufeng.com/2019/04/post/java-section-5.html</guid>
       <description>Java编译器 - javac 1. javac命令 简单例子
 假设有一个HelloWorld.java的文件包含下面的java代码：
-public class HelloWorld { public static void main(String[] args) { System.out.println(&amp;quot;Hello World!&amp;quot;); } }  (对上面代码的解释，查看Java语言入门部分)
+public class HelloWorld { public static void main(String[] args) { System.out.println(&amp;#34;Hello World!&amp;#34;); } } (对上面代码的解释，查看Java语言入门部分)
 我们可以使用下面的命令编译上面的文件：
-$ javac HelloWorld.java  这将会产生一个HelloWorld.class的文件，我们可以像下面这样运行这个文件：
-$ java HelloWorld Hello World!  上面例子的关键点是：
+$ javac HelloWorld.java 这将会产生一个HelloWorld.class的文件，我们可以像下面这样运行这个文件：
+$ java HelloWorld Hello World! 上面例子的关键点是：
  源码文件HelloWorld.java必须和源码文件中的类名相匹配，这里是HelloWorld。如果他们不匹配的话，你会遇到一个编译错误。 二进制文件HelloWorld.class和类的名称一样的。如果你重命名HelloWorld.class，当你运行的时候，将会遇到一个错误。 当使用java运行一个java程序的时候，你使用的是类名而不是二进制文件的名称。  包的例子
 最佳实践的Java倒霉使用包来组织类的命名空间，并减少类名冲突的风险。
 如果你想要在包com.example中声明HelloWorld类，需要在HelloWorld.java中包含下面的java源码：
-package com.example; public class HelloWorld { public static void main(String[] args) { System.out.println(&amp;quot;Hello World!&amp;quot;); } }  这个源码文件需要包含在和包名一致的目录树结构中：
-. //当前目录 | -----com | -----example | -----HelloWorld.</description>
+package com.example; public class HelloWorld { public static void main(String[] args) { System.out.println(&amp;#34;Hello World!&amp;#34;); } } 这个源码文件需要包含在和包名一致的目录树结构中：
+. //当前目录 | -----com | -----example | -----HelloWorld.java 我们可以使用下面的命令编译上面的文件：
+$ javac com/example/HelloWorld.java 这将会产生一个叫做comm/example/HelloWorld.</description>
     </item>
     
     <item>
@@ -88,13 +89,13 @@ package com.example; public class HelloWorld { public static void main(String[] 
       
       <guid>http://blog.huaifufeng.com/2019/04/post/java-section-4.html</guid>
       <description>引用数据类型 1. 间接引用 .运算符就是间接引用。
-Object obj = new Object(); String text = obj.toString(); //obj就是间接引用  间接引用遵循引用存储的内存地址，到内存中实际对象存储的位置。找到对象后，调用请求的方法（例子中是toString）。
+Object obj = new Object(); String text = obj.toString(); //obj就是间接引用 间接引用遵循引用存储的内存地址，到内存中实际对象存储的位置。找到对象后，调用请求的方法（例子中是toString）。
 当一个引用的值是null，间接引用江湖导致一个NullPointerException的异常：
-Object obj = null; obj.toString(); //语句执行的时候，抛出一个NullPointerException的异常  null表示没有一个值，也就是说，跟在地址后面没有结果，所以没有可以调用对象的方法。
-2. 实例化引用类型 Object obj = new Object(); //注意new  在例子中：
+Object obj = null; obj.toString(); //语句执行的时候，抛出一个NullPointerException的异常 null表示没有一个值，也就是说，跟在地址后面没有结果，所以没有可以调用对象的方法。
+2. 实例化引用类型 Object obj = new Object(); //注意new 在例子中：
  Object是一个引用类型 obj是一个存储新引用值的变量 Object()是调用Object的构造方法  发生了什么：
  在内存中申请对象的空间 调用构造函数Object()初始化内存空间 内存地址存储在obj中，所以它引用新创建的对象  这个和基本类型是不同的：
-int i = 0;  这里i中存储10的实际值。
+int i = 0; 这里i中存储10的实际值。
 参考：Java® Notes for Professionals book</description>
     </item>
     
@@ -106,9 +107,10 @@ int i = 0;  这里i中存储10的实际值。
       <guid>http://blog.huaifufeng.com/2019/04/post/java-section-3.html</guid>
       <description>Getters和Setters 这个文章讨论getters和setters，Java类中提供的标准数据访问方法。
 1. 使用一个setter或getter来实现约束 Setters和Getters运行一个对象有限制的访问和修改私有的变量。例如：
-public class Person { private String name; public String getName() { return this.name; } public void setName(String name) { if (name != null &amp;amp;&amp;amp; name.length() &amp;gt; 2) { this.name = name; } } }  在这个Person类中，有一个单独的变量：name。这个变量可以通过getName()方法访问，使用setName(String)方法进行修改，然而，设置一个新的名字要求这个名字不为空并且长度大于2个字符。使用一个setter方法而不是把这个变量name变为public，这样就允许其他人进行有限制的修改。也可以在getter方法上面进行限制：
-public String getName(){ if (name.length() &amp;gt; 16) { return &amp;quot;Name is too large!&amp;quot;; } else { return this.name; } }  在上面修改过的getName()方法中，只有在name的长度小于或等于16的时候才会返回。否则，将会返回&amp;quot;Name is too large!&amp;quot;。这允许编程人员创建允许访问和修改的变量，但是可以客户端类随便的修改这个变量。
-2. 为什么使用Getters和Setters? 假设Java中有一个包含getters和setters的基础的类：</description>
+public class Person { private String name; public String getName() { return this.name; } public void setName(String name) { if (name != null &amp;amp;&amp;amp; name.length() &amp;gt; 2) { this.name = name; } } } 在这个Person类中，有一个单独的变量：name。这个变量可以通过getName()方法访问，使用setName(String)方法进行修改，然而，设置一个新的名字要求这个名字不为空并且长度大于2个字符。使用一个setter方法而不是把这个变量name变为public，这样就允许其他人进行有限制的修改。也可以在getter方法上面进行限制：
+public String getName(){ if (name.length() &amp;gt; 16) { return &amp;#34;Name is too large!&amp;#34;; } else { return this.name; } } 在上面修改过的getName()方法中，只有在name的长度小于或等于16的时候才会返回。否则，将会返回&amp;quot;Name is too large!&amp;quot;。这允许编程人员创建允许访问和修改的变量，但是可以客户端类随便的修改这个变量。
+2. 为什么使用Getters和Setters? 假设Java中有一个包含getters和setters的基础的类：
+public class CountHolder { private int count = 0; public int getCount() { return this.</description>
     </item>
     
     <item>
@@ -118,9 +120,9 @@ public String getName(){ if (name.length() &amp;gt; 16) { return &amp;quot;Name 
       
       <guid>http://blog.huaifufeng.com/2019/04/post/java-section-2.html</guid>
       <description>类型转换 1. 数字元素转换 数字值可以有两种转换方式。
-当原本的类型比目标类型小的时候，*隐式*转换就会发生。
-//隐式转换 byte byteVar = 42; short shortVar = byteVar; int intVar = shortVar; long longVar = intVar; float floatVar = longVar; double doubleVar = floatVar;  当原本的类型比目标类型大的时候，*显示*转换就必须要使用了。
-//显示转换 double doubleVar = 42.0d; float floatVar = (float) doubleVar; long longVar = (long)floatVar; int intVar = (int)longVar; short shortVar = (short)intVar; byte byteVar = (byte) shortVar;  当从浮点数元素（float, double）向整数值转换的时候，这个数字是向下取整的。
+当原本的类型比目标类型小的时候，隐式转换就会发生。
+//隐式转换 byte byteVar = 42; short shortVar = byteVar; int intVar = shortVar; long longVar = intVar; float floatVar = longVar; double doubleVar = floatVar; 当原本的类型比目标类型大的时候，显示转换就必须要使用了。
+//显示转换 double doubleVar = 42.0d; float floatVar = (float) doubleVar; long longVar = (long)floatVar; int intVar = (int)longVar; short shortVar = (short)intVar; byte byteVar = (byte) shortVar; 当从浮点数元素（float, double）向整数值转换的时候，这个数字是向下取整的。
 2. 基础数字提升 static void testNumericPromotion() { char char1 = 1, char2 = 2; short short1 = 1, short2 = 2; int int1 = 1, int2 = 2; float float1 = 1.</description>
     </item>
     

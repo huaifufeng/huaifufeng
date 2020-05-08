@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git补丁">git补丁</a>
-<ul>
-<li><a href="#创建补丁">创建补丁</a></li>
-<li><a href="#应用补丁">应用补丁</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git补丁">git补丁</a>
+      <ul>
+        <li><a href="#创建补丁">创建补丁</a></li>
+        <li><a href="#应用补丁">应用补丁</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git补丁">git补丁</h2>
-
+        		<h2 id="git补丁">git补丁</h2>
 <table>
 <thead>
 <tr>
@@ -206,125 +205,91 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td>`(<mbox></td>
-<td><Maildir>)`&hellip;</td>
+<td><code>(&lt;mbox&gt;|&lt;Maildir&gt;)</code>&hellip;</td>
+<td>要从中读取修补程序的邮箱文件列表。如果你没有使用这个参数，命令将会从标准输入中读取。如果你使用了目录，将被认为是邮箱目录</td>
 </tr>
-
 <tr>
 <td><code>-s, —signoff</code></td>
 <td>使用自己的提交者标识，在提交消息中添加一个签名人</td>
 </tr>
-
 <tr>
 <td><code>-q, —quiet</code></td>
 <td>安静模式。值打印错误信息</td>
 </tr>
-
 <tr>
 <td><code>-u, -utf8</code></td>
 <td><code>git mailinfo</code>使用<code>-u</code>标识。这表明从邮箱获取的提交日志信息使用UTF-8重新编码(如果不是UTF-8的话，<code>i18n.commitencoding</code>可以用来指定项目的编码)。你可以使用<code>—no-utf8</code>来覆盖这个选项</td>
 </tr>
-
 <tr>
 <td><code>—no-utf8</code></td>
 <td><code>git mailinfo</code>使用<code>-n</code>标识。</td>
 </tr>
-
 <tr>
 <td><code>-3, —3way</code></td>
 <td>如果补丁不干净地应用，那么如果补丁记录了它应该应用到的blob的标识，并且我们在本地有这些blob可用，那么返回到3路合并。</td>
 </tr>
-
 <tr>
 <td><code>—ingore-date, —ignore-space-change, —ignore-whitespace, —whitespace=&lt;option&gt;, -C&lt;n&gt;, -p&lt;n&gt;, —directory=&lt;dir&gt;, —exclude=&lt;path&gt;, —include=&lt;path&gt;, —reject</code></td>
 <td>这些标识传递给<code>git apply</code>来应用补丁</td>
 </tr>
-
 <tr>
 <td><code>—patch-format</code></td>
 <td>默认命令会试着自动进行补丁格式的解析。这个选项允许用户跳过自动解析，指定补丁的格式。有效的格式包括<code>mbox, stgit stgit-series hg</code></td>
 </tr>
-
 <tr>
 <td><code>-i, —interactive</code></td>
 <td>运行交互模式</td>
 </tr>
-
 <tr>
 <td><code>—committer-date-is-author-date</code></td>
 <td>默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和作者日期一样的值来假装提交者日期。</td>
 </tr>
-
 <tr>
 <td><code>—ignore-date</code></td>
 <td>默认命令使用邮件信息的提交作者日期，使用提交创建时间作为提交者的时间。这允许用户使用和提交者日期一样的值来假装作者日期。</td>
 </tr>
-
 <tr>
 <td><code>—skip</code></td>
 <td>跳过当前补丁。这只在重启一个终端的补丁时有意义。</td>
 </tr>
-
 <tr>
 <td><code>-S[&lt;keyid&gt;], —gpg-sign[=&lt;keyid&gt;]</code></td>
 <td>GPG签名提交</td>
 </tr>
-
 <tr>
 <td><code>—continue, -r, —resolved</code></td>
 <td>修补程序失败后（例如尝试应用冲突的修补程序），用户已手动应用该修补程序，索引文件存储应用程序的结果。使用从电子邮件和当前索引文件中提取的作者身份和提交日志进行提交，然后继续。</td>
 </tr>
-
 <tr>
 <td><code>—resolvemsg=&lt;msg&gt;</code></td>
 <td>当补丁失败的时候，在退出之前，<code>&lt;msg&gt;</code>将会被输出到屏幕。这将会覆盖你使用<code>—continue</code>或<code>—skip</code>的时候的标准信息。这只限于<code>git rebase</code>和<code>git am</code>之间使用</td>
 </tr>
-
 <tr>
 <td><code>—abort</code></td>
 <td>终端补丁操作，返回原本的分支。</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="创建补丁">创建补丁</h3>
-
 <p>创建一个补丁，有两个步骤：</p>
-
 <ol>
 <li>修改并提交</li>
 <li>使用<code>git format-patch &lt;commit-reference&gt;</code>转换<code>&lt;commit-reference&gt;</code>之后（不包括）的提交到补丁文件中。</li>
 </ol>
-
 <p>例如，如果一个补丁从上两次提交中产生：</p>
-
-<pre><code class="language-shell">git format-patch HEAD~~
-</code></pre>
-
-<p>这将会产生两个文件，从<code>HEAD~~</code>之后的每个提交一个文件，像下面这样：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git format-patch HEAD~~
+</code></pre></div><p>这将会产生两个文件，从<code>HEAD~~</code>之后的每个提交一个文件，像下面这样：</p>
 <pre><code>0001-hello_world.patch
 0002-beginning.patch
-</code></pre>
-
-<h3 id="应用补丁">应用补丁</h3>
-
+</code></pre><h3 id="应用补丁">应用补丁</h3>
 <p>我们可以使用<code>git apply some.patch</code>把<code>.patch</code>文件的修改应用到当前的工作目录中。</p>
-
 <p>想要像提交一样应用一个补丁(带提交信息)，</p>
-
 <pre><code>git am some.patch
-</code></pre>
-
-<p>应用所有的提交文件的话：</p>
-
+</code></pre><p>应用所有的提交文件的话：</p>
 <pre><code>git am *.patch
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -396,6 +361,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

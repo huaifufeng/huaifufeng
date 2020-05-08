@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,127 +187,80 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#error-1055">ERROR 1055</a>
-<ul>
-<li><a href="#无用group-by返回不可预测的结果-墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</a></li>
-<li><a href="#无用select-如果修复">无用SELECT * ，如果修复</a></li>
-<li><a href="#any-value">ANY_VALUE()</a></li>
-<li><a href="#使用和误用group-by">使用和误用GROUP BY</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#error-1055">ERROR 1055</a>
+      <ul>
+        <li><a href="#无用group-by返回不可预测的结果墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</a></li>
+        <li><a href="#无用select--如果修复">无用SELECT * ，如果修复</a></li>
+        <li><a href="#any_value">ANY_VALUE()</a></li>
+        <li><a href="#使用和误用group-by">使用和误用GROUP BY</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="error-1055">ERROR 1055</h2>
-
+        		<h2 id="error-1055">ERROR 1055</h2>
 <p>最新版本的MySQL开始为之前的一些查询产生1055的错误。这个主题就是来介绍一下这样的错误。MySQL团队一直在努力让GROUP BY的扩展失效，或者至少让开发人员便于编写这样的查询。</p>
-
-<h3 id="无用group-by返回不可预测的结果-墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</h3>
-
-<pre><code class="language-mysql">SELECT item.item_id, users.category, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP item.item_id
-</code></pre>
-
-<p>将会显示 item表的行，并且显示表uses中关联的行数。也会显示uses.category中的值。</p>
-
+<h3 id="无用group-by返回不可预测的结果墨菲定律">无用GROUP BY返回不可预测的结果：墨菲定律</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> item.item_id, users.category, <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) number_of_uses
+<span style="color:#66d9ef">FROM</span> item
+<span style="color:#66d9ef">JOIN</span> uses <span style="color:#66d9ef">ON</span> item.item_id <span style="color:#f92672">=</span> uses.item_id
+<span style="color:#66d9ef">GROUP</span> item.item_id
+</code></pre></div><p>将会显示 item表的行，并且显示表uses中关联的行数。也会显示uses.category中的值。</p>
 <p>这个查询在(<code>ONLY_FULL_GROUP_BY</code>标识出现之前)MySQL中可以执行。这里使用了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html">非标准的GROUP BY</a>。</p>
-
 <p>但是这有个问题：如果在JOIN语句的ON条件中匹配到了多个uses记录，那么MySQL将会从这些记录中返回一行的category字段值。哪一条？查询优化器，应用的用户都不能提前知道。准确的说：结果是不可预期的。MySQL将会返回任何想要返回的值。</p>
-
-<p>*不可预期就是随机的*，有一个显著的区别。有人希望每次都有一个随机的选择。因此，如果一个选择的随机的，你可以在调试或测试中观察到这个情况。不可预期的结果是坏的：MySQL每次返回相同的结果，知道不相同了。有时候在新版本的MySQL中会有不同的结果。有时候这是导致问题的增长的表。什么会出问题，什么将会出问题，什么时候出问题你不知道。这叫做墨菲定律。</p>
-
+<p><em>不可预期就是随机的</em>，有一个显著的区别。有人希望每次都有一个随机的选择。因此，如果一个选择的随机的，你可以在调试或测试中观察到这个情况。不可预期的结果是坏的：MySQL每次返回相同的结果，知道不相同了。有时候在新版本的MySQL中会有不同的结果。有时候这是导致问题的增长的表。什么会出问题，什么将会出问题，什么时候出问题你不知道。这叫做墨菲定律。</p>
 <p>MySQL团队在努力让开发者更难犯这个错误。新版本的MySQL有一个叫做<code>ONLY_GROUP_BY</code>的<code>sql_mod</code>标签。当这个标识设置了，MySQL将会返回一个1055错误， 拒绝运行这个查询。</p>
-
-<h3 id="无用select-如果修复">无用SELECT * ，如果修复</h3>
-
+<h3 id="无用select--如果修复">无用SELECT * ，如果修复</h3>
 <p>有时候有一个像下面这样的查询，在SELECT中使用*：</p>
-
-<pre><code class="language-mysql">SELECT item.*, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id
-</code></pre>
-
-<p>当设置了<code>ONLY_FULL_GROUP_BY</code>，这样的查询就需要优化了。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> item.<span style="color:#f92672">*</span>, <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) number_of_uses
+<span style="color:#66d9ef">FROM</span> item
+<span style="color:#66d9ef">JOIN</span> uses <span style="color:#66d9ef">ON</span> item.item_id <span style="color:#f92672">=</span> uses.item_id
+<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> item.item_id
+</code></pre></div><p>当设置了<code>ONLY_FULL_GROUP_BY</code>，这样的查询就需要优化了。</p>
 <p>要做优化的话，需要使用一个带有<code>GROUP BY</code>子句的子查询，让这个子查询返回每个<code>item_id</code>对应的<code>number_of_uses</code>字段。这个子查询很短也很简洁，因为它只需要查询<code>uses</code>表。</p>
-
-<pre><code class="language-mysql">SELECT item_id, COUNT(*) number_of_uses
-FROM uses
-GROUP BY item_id;
-</code></pre>
-
-<p>然后我们和<code>item</code>表一起使用这个子查询：</p>
-
-<pre><code class="language-mysql">SELECT item.*,usecount.number_of_uses
-FROM item
-JOIN (
-    SELECT item_id, COUNT(*) number_of_uses
-    FROM uses
-    GROUP BY item_id
-) usecount ON item_item_id = usecount.item_id;
-</code></pre>
-
-<p>这允许你使用简单并且正确的<code>GROUP BY</code>的语句，并且允许我们使用<code>*</code>标识符。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> item_id, <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) number_of_uses
+<span style="color:#66d9ef">FROM</span> uses
+<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> item_id;
+</code></pre></div><p>然后我们和<code>item</code>表一起使用这个子查询：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> item.<span style="color:#f92672">*</span>,usecount.number_of_uses
+<span style="color:#66d9ef">FROM</span> item
+<span style="color:#66d9ef">JOIN</span> (
+    <span style="color:#66d9ef">SELECT</span> item_id, <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) number_of_uses
+    <span style="color:#66d9ef">FROM</span> uses
+    <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> item_id
+) usecount <span style="color:#66d9ef">ON</span> item_item_id <span style="color:#f92672">=</span> usecount.item_id;
+</code></pre></div><p>这允许你使用简单并且正确的<code>GROUP BY</code>的语句，并且允许我们使用<code>*</code>标识符。</p>
 <p>注意：明智的开发人员在任何情况下避免使用<code>*</code>标识符。通常把所有的列列出来是合适的。</p>
-
-<h3 id="any-value">ANY_VALUE()</h3>
-
-<pre><code class="language-mysql">SELECT item.item_id, ANY_VALUE(uses.tag) tag, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id;
-</code></pre>
-
-<p>显示<code>item</code>表中的行，<code>uses</code>表中关联的行的行数，关联表中的tag的一个值。</p>
-
+<h3 id="any_value">ANY_VALUE()</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> item.item_id, <span style="color:#a6e22e">ANY_VALUE</span>(uses.tag) tag, <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) number_of_uses
+<span style="color:#66d9ef">FROM</span> item
+<span style="color:#66d9ef">JOIN</span> uses <span style="color:#66d9ef">ON</span> item.item_id <span style="color:#f92672">=</span> uses.item_id
+<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> item.item_id;
+</code></pre></div><p>显示<code>item</code>表中的行，<code>uses</code>表中关联的行的行数，关联表中的tag的一个值。</p>
 <p>你可以任务<a href="http://dev.mysql.com/doc/refman/5.7/en/miscellaneous-functions.html#function_any-value">ANY_VALUE()</a>是一个奇怪的聚合函数。不是返回一个数量，和或者最大值，它通知MySQL在相关组中选择任意一个值。这是一个解决1055错误的方法。</p>
-
 <p>当在生产环境使用<code>ANY_VALUE()</code>时要特别小心。</p>
-
 <p>它实际应该叫做<code>SURPRISE_ME()</code>。它返回GROUP BY分组中一些行的值。但是它返回哪一个是不可预知的。这意味着这完全依赖于MySQL。准确的说，它返回一个不可预期的值。</p>
-
 <p>服务器不会选择随机的值，这比那个更坏。每次查询都会返回相同的值，直到不再返回了。当一个表增长或缩小时，或当服务器有多或少的RAM时，或当服务器版本改变时，或当Mars逆行时(无论这意味着什么)。或根本没有原因，它可以改变，也可以不改变。</p>
-
 <p>你已经被警告了。</p>
-
 <h3 id="使用和误用group-by">使用和误用GROUP BY</h3>
-
-<pre><code class="language-mysql">SELECT item.item_id, item.name，COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id = uses.item_id
-GROUP BY item.item_id;
-</code></pre>
-
-<p>将会显示item表的行，显示uses表中关联的行的函数。这将正常工作的，但是这个不是标准的SQL-92的语法。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> item.item_id, item.name<span style="color:#960050;background-color:#1e0010">，</span><span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) number_of_uses
+<span style="color:#66d9ef">FROM</span> item
+<span style="color:#66d9ef">JOIN</span> uses <span style="color:#66d9ef">ON</span> item.item_id <span style="color:#f92672">=</span> uses.item_id
+<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> item.item_id;
+</code></pre></div><p>将会显示item表的行，显示uses表中关联的行的函数。这将正常工作的，但是这个不是标准的SQL-92的语法。</p>
 <p>为什么不是？因为包含<code>GROUP BY</code>语句的时候，<code>SELECT</code>语句(和<code>ORDER BY</code>语句)中列必须是：</p>
-
 <ol>
 <li>在<code>GROUP BY</code>语句中说明的列</li>
 <li>像<code>COUNT()</code>，<code>MIN()</code>这样的聚合函数</li>
 </ol>
-
 <p>例子中<code>SELECT</code>语句中包含了item.name列，但是这个列不满足这些条件。当SQL模式包含<code>ONLY_FULL_GROUP_BY</code>的时候，MySQL5.6和之前版本将会拒绝执行。</p>
-
 <p>这个例子想要兼容SQL-92语法的话，需要修改<code>GROUP BY</code>语句：</p>
-
-<pre><code class="language-mysql">SELECT item.item_id, item.name, COUNT(*) number_of_uses
-FROM item
-JOIN uses ON item.item_id, uses.item_id
-GROUP item.item_id, item.name;
-</code></pre>
-
-<p>如果DBMS能够证明它们与组键列之间的功能依赖性，则后面的SQL-99标准允许select语句省略组键中未聚合的列。因为item.name是功能上依赖于item.item_id，最初的例子在SQL-99中是有效的。MySQL增加了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html">功能依赖验证</a>在5.7版本。原本的例子只在<code>ONLY_FULL_GROUP_BY</code>下可以正常工作。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> item.item_id, item.name, <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) number_of_uses
+<span style="color:#66d9ef">FROM</span> item
+<span style="color:#66d9ef">JOIN</span> uses <span style="color:#66d9ef">ON</span> item.item_id, uses.item_id
+<span style="color:#66d9ef">GROUP</span> item.item_id, item.name;
+</code></pre></div><p>如果DBMS能够证明它们与组键列之间的功能依赖性，则后面的SQL-99标准允许select语句省略组键中未聚合的列。因为item.name是功能上依赖于item.item_id，最初的例子在SQL-99中是有效的。MySQL增加了<a href="https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html">功能依赖验证</a>在5.7版本。原本的例子只在<code>ONLY_FULL_GROUP_BY</code>下可以正常工作。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -376,6 +333,12 @@ GROUP item.item_id, item.name;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

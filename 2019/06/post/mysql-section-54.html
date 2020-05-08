@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mysql-client">MySQL Client</a>
-<ul>
-<li><a href="#1-基本登录">1. 基本登录</a></li>
-<li><a href="#2-执行命令">2. 执行命令</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mysql-client">MySQL Client</a>
+      <ul>
+        <li><a href="#1-基本登录">1. 基本登录</a></li>
+        <li><a href="#2-执行命令">2. 执行命令</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mysql-client">MySQL Client</h2>
-
+        		<h2 id="mysql-client">MySQL Client</h2>
 <table>
 <thead>
 <tr>
@@ -206,149 +205,103 @@
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-D —database=name</td>
 <td>数据库的名称</td>
 </tr>
-
 <tr>
 <td>—delimiter=str</td>
 <td>设置语句的分隔符，默认是&rdquo;;&rdquo;</td>
 </tr>
-
 <tr>
-<td>-e —execute=&lsquo;command&rsquo;</td>
+<td>-e —execute='command&rsquo;</td>
 <td>执行命令</td>
 </tr>
-
 <tr>
 <td>-h —hostname=name</td>
 <td>要连接的主机名称</td>
 </tr>
-
 <tr>
 <td>-p —password=password</td>
 <td>密码。注意：在<code>-p</code>和密码之间没有空格</td>
 </tr>
-
 <tr>
 <td>-p (没有密码)</td>
 <td>将会提示输入密码</td>
 </tr>
-
 <tr>
 <td>-P —port=#</td>
 <td>端口号</td>
 </tr>
-
 <tr>
 <td>-s —slient</td>
 <td>安静模式，产生更少的输出。使用<code>-t</code>作为列分隔符</td>
 </tr>
-
 <tr>
 <td>-ss</td>
 <td>和<code>-s</code>一样，但是忽略列名</td>
 </tr>
-
 <tr>
 <td>-S —socket=path</td>
 <td>当连接本地实例的时候，指定使用的socket(Unix)或pipe(Windows)</td>
 </tr>
-
 <tr>
 <td>—skip-column-names</td>
 <td>忽略列名</td>
 </tr>
-
 <tr>
 <td>-u —user=name</td>
 <td>用户名</td>
 </tr>
-
 <tr>
 <td>-U —safe-updates —i-am-a-dummy</td>
 <td>使用<code>sql_safe_updates=ON</code>变量登录。这在<code>DELETE</code>和<code>UPDATE</code>操作时，只允许指定Key的操作</td>
 </tr>
-
 <tr>
 <td>-V —version</td>
 <td>打印版本号并退出</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-基本登录">1. 基本登录</h3>
-
 <p>使用命令行访问MySQL服务器：</p>
-
-<pre><code class="language-mysql">mysql --user=username --password=pwd --host=hostname test_db
-</code></pre>
-
-<p>可以使用短命令模式：</p>
-
-<pre><code class="language-mysql">mysql -u username -ppassword -h hostname test_db
-</code></pre>
-
-<p>通过省略<code>password</code>，MySQL会要求第一个输入密码。如果你在这里指定了<code>password</code>，那么客户端通给你一个不安全的警告：</p>
-
-<pre><code class="language-mysql">mysql -u username -p -h hostname test_db
-</code></pre>
-
-<p>对于本地的连接，可以使用<code>—socket</code>来指定本地socket文件的地址：</p>
-
-<pre><code class="language-shell">mysql --user=username --password=pwd --host=localhost --socket=/path/to/mysqld.sock test_db
-</code></pre>
-
-<p>省略<code>socket</code>选项的话将会导致客户端尝试连接到本地计算机的服务器。服务器必须运行才能连接。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql <span style="color:#f92672">--</span><span style="color:#66d9ef">user</span><span style="color:#f92672">=</span>username <span style="color:#f92672">--</span>password<span style="color:#f92672">=</span>pwd <span style="color:#f92672">--</span>host<span style="color:#f92672">=</span>hostname test_db
+</code></pre></div><p>可以使用短命令模式：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql <span style="color:#f92672">-</span>u username <span style="color:#f92672">-</span>ppassword <span style="color:#f92672">-</span>h hostname test_db
+</code></pre></div><p>通过省略<code>password</code>，MySQL会要求第一个输入密码。如果你在这里指定了<code>password</code>，那么客户端通给你一个不安全的警告：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql <span style="color:#f92672">-</span>u username <span style="color:#f92672">-</span>p <span style="color:#f92672">-</span>h hostname test_db
+</code></pre></div><p>对于本地的连接，可以使用<code>—socket</code>来指定本地socket文件的地址：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql --user<span style="color:#f92672">=</span>username --password<span style="color:#f92672">=</span>pwd --host<span style="color:#f92672">=</span>localhost --socket<span style="color:#f92672">=</span>/path/to/mysqld.sock test_db
+</code></pre></div><p>省略<code>socket</code>选项的话将会导致客户端尝试连接到本地计算机的服务器。服务器必须运行才能连接。</p>
 <h3 id="2-执行命令">2. 执行命令</h3>
-
 <p>下面的例子展示了怎么执行存储在字符串或脚本文件中的命令，而不需要交互式的提示。这在需要使用shell连接数据库的时候很有用处。</p>
-
 <p><strong>执行字符串命令</strong></p>
-
-<pre><code class="language-shell">$ mysql -uroot -proot test -e'select * from people'
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysql -uroot -proot test -e<span style="color:#e6db74">&#39;select * from people&#39;</span>
 
 +----+-------+--------+
 | id | name  | gender |
 +----+-------+--------+
-|  1 | Kathy | f      |
-|  2 | John  | m      |
+|  <span style="color:#ae81ff">1</span> | Kathy | f      |
+|  <span style="color:#ae81ff">2</span> | John  | m      |
 +----+-------+--------+
-</code></pre>
-
-<p>想要使用tab分隔符格式化输出结果的话，使用<code>—slient</code>参数：</p>
-
-<pre><code class="language-mysql">$ mysql -uroot -proot test -s -e'select * from people'
+</code></pre></div><p>想要使用tab分隔符格式化输出结果的话，使用<code>—slient</code>参数：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#960050;background-color:#1e0010">$</span> mysql <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>proot test <span style="color:#f92672">-</span>s <span style="color:#f92672">-</span>e<span style="color:#e6db74">&#39;select * from people&#39;</span>
 
 id      name    gender
-1       Kathy   f
-2       John    m
-</code></pre>
+<span style="color:#ae81ff">1</span>       Kathy   f
+<span style="color:#ae81ff">2</span>       John    m
+</code></pre></div><p>省略掉列的头部信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysql -uroot -proot test -ss -e<span style="color:#e6db74">&#39;select * from people&#39;</span>
+</code></pre></div><p><strong>执行脚本文件</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysql -uroot -proot test &lt; my_script.sql
 
-<p>省略掉列的头部信息：</p>
+$ mysql -uroot -proot test -e<span style="color:#e6db74">&#39;source my_script.sql&#39;</span>
+</code></pre></div><p><strong>输出到文件</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysql -uroot -proot test &lt; my_scripte.sql &gt; out.txt
 
-<pre><code class="language-shell">$ mysql -uroot -proot test -ss -e'select * from people'
-</code></pre>
-
-<p><strong>执行脚本文件</strong></p>
-
-<pre><code class="language-shell">$ mysql -uroot -proot test &lt; my_script.sql
-
-$ mysql -uroot -proot test -e'source my_script.sql'
-</code></pre>
-
-<p><strong>输出到文件</strong></p>
-
-<pre><code class="language-shell">$ mysql -uroot -proot test &lt; my_scripte.sql &gt; out.txt
-
-$ mysql -uroot -proot test -s -e'select * from people' &gt; out.txt
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+$ mysql -uroot -proot test -s -e<span style="color:#e6db74">&#39;select * from people&#39;</span> &gt; out.txt
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -420,6 +373,12 @@ $ mysql -uroot -proot test -s -e'select * from people' &gt; out.txt
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

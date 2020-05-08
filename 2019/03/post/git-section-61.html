@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,58 +187,42 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#diff-tree">diff-tree</a>
-<ul>
-<li><a href="#获取指定提交的文件修改">获取指定提交的文件修改</a></li>
-<li><a href="#使用">使用</a></li>
-<li><a href="#选项">选项</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#diff-tree">diff-tree</a>
+      <ul>
+        <li><a href="#获取指定提交的文件修改">获取指定提交的文件修改</a></li>
+        <li><a href="#使用">使用</a></li>
+        <li><a href="#选项">选项</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="diff-tree">diff-tree</h2>
-
+        		<h2 id="diff-tree">diff-tree</h2>
 <p>比较通过两个树对象找到的blob的内容和模式。</p>
-
 <h3 id="获取指定提交的文件修改">获取指定提交的文件修改</h3>
-
 <pre><code>git diff-tree --no-commit-id --name-only -r COMMIT_ID
-</code></pre>
-
-<h3 id="使用">使用</h3>
-
+</code></pre><h3 id="使用">使用</h3>
 <pre><code>git diff-tree [--stdin] [-m] [-c] [--cc] [-s] [-v] [--pretty] [-t] [-r] [--root] [&lt;common-diff- options&gt;] &lt;tree-ish&gt; [&lt;tree-ish&gt;] [&lt;path&gt;...]
-</code></pre>
-
-<table>
+</code></pre><table>
 <thead>
 <tr>
 <th>选项</th>
 <th>含义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-r</td>
 <td>递归的进行diff</td>
 </tr>
-
 <tr>
 <td>&ndash;root</td>
 <td>包括初始提交作为/dev/null的diff</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="选项">选项</h3>
-
 <table>
 <thead>
 <tr>
@@ -242,115 +230,93 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-z</td>
 <td>输出diff-raw，以NUL结尾</td>
 </tr>
-
 <tr>
 <td>-p</td>
 <td>输出补丁格式</td>
 </tr>
-
 <tr>
 <td>-u</td>
 <td>-p的别名</td>
 </tr>
-
 <tr>
 <td>—patch-with-raw</td>
 <td>输出补丁和diff-raw格式</td>
 </tr>
-
 <tr>
 <td>&ndash;stat</td>
 <td>显示diffstat而不是patch。</td>
 </tr>
-
 <tr>
 <td>&ndash;numstat</td>
 <td>显示数字diffstat而不是patch。</td>
 </tr>
-
 <tr>
 <td>—patch-with-stat</td>
 <td>输出一个补丁并预先准备其diffstat。</td>
 </tr>
-
 <tr>
 <td>—name-only</td>
 <td>显示修改文件的名称</td>
 </tr>
-
 <tr>
 <td>—name-status</td>
 <td>显示修改文件的名称和状态</td>
 </tr>
-
 <tr>
 <td>—full-index</td>
 <td>在索引行显示完整的对象名称</td>
 </tr>
-
 <tr>
-<td>—abbrev=<n></td>
+<td>—abbrev=<!-- raw HTML omitted --></td>
 <td>在对象名称的缩写版本的树和区分RAW头。</td>
 </tr>
-
 <tr>
 <td>-R</td>
 <td>交换输入文件对。</td>
 </tr>
-
 <tr>
 <td>-B</td>
 <td>检测完全重写。</td>
 </tr>
-
 <tr>
 <td>-M</td>
 <td>检查重命名</td>
 </tr>
-
 <tr>
 <td>-C</td>
 <td>检查复制</td>
 </tr>
-
 <tr>
 <td>—find-copies-harder</td>
 <td>尝试将未更改的文件作为副本检测的候选文件。</td>
 </tr>
-
 <tr>
-<td>-l<n></td>
+<td>-l<!-- raw HTML omitted --></td>
 <td>将重命名尝试限制为最多个路径。</td>
 </tr>
-
 <tr>
 <td>-O</td>
 <td>根据重新排序差异。</td>
 </tr>
-
 <tr>
 <td>-S</td>
 <td>查找仅一侧包含字符串的文件对。</td>
 </tr>
-
 <tr>
 <td>—pickaxe-all</td>
 <td>使用-s并找到hit时显示所有文件diff。</td>
 </tr>
-
 <tr>
 <td>-a —text</td>
 <td>把所有的文件当做字符串</td>
 </tr>
 </tbody>
 </table>
-
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -423,6 +389,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,46 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#整理本地和远程存储库">整理本地和远程存储库</a>
-<ul>
-<li><a href="#删除远端已删除的分支">删除远端已删除的分支</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#整理本地和远程存储库">整理本地和远程存储库</a>
+      <ul>
+        <li><a href="#删除远端已删除的分支">删除远端已删除的分支</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="整理本地和远程存储库">整理本地和远程存储库</h2>
-
+        		<h2 id="整理本地和远程存储库">整理本地和远程存储库</h2>
 <h3 id="删除远端已删除的分支">删除远端已删除的分支</h3>
-
 <p>要在本地和已删除的远程分支之间进行远程跟踪，请使用</p>
-
 <pre><code>git fetch -p
-</code></pre>
-
-<p>然后你可以使用</p>
-
+</code></pre><p>然后你可以使用</p>
 <pre><code>git branch -vv
-</code></pre>
-
-<p>来查看哪些分支没有被追踪。</p>
-
+</code></pre><p>来查看哪些分支没有被追踪。</p>
 <p>那些还没有被追踪的分支将会向下面这样，包含&rsquo;gone&rsquo;：</p>
-
 <pre><code>branch 12345e6 [origin/branch: gone] Fixed bug
-</code></pre>
-
-<p>你可以组合使用上面的命令，查找<code>git branch -vv</code>中返回的<code>gone</code>的分支，并使用<code>-d</code>删除这些分支：</p>
-
+</code></pre><p>你可以组合使用上面的命令，查找<code>git branch -vv</code>中返回的<code>gone</code>的分支，并使用<code>-d</code>删除这些分支：</p>
 <pre><code>git fetch -p &amp;&amp; git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -294,6 +279,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

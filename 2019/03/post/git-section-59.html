@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,44 +187,29 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git标签">git标签</a>
-<ul>
-<li><a href="#列出所有的tag">列出所有的tag</a></li>
-<li><a href="#创建并push标签">创建并push标签</a>
-<ul>
-<li><a href="#创建标签">创建标签</a></li>
-</ul></li>
-<li><a href="#push-tag">push tag</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git标签">git标签</a>
+      <ul>
+        <li><a href="#列出所有的tag">列出所有的tag</a></li>
+        <li><a href="#创建并push标签">创建并push标签</a></li>
+        <li><a href="#push-tag">push tag</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git标签">git标签</h2>
-
+        		<h2 id="git标签">git标签</h2>
 <p>像大多数的版本控制工具，git可以把历史中某个提交定义为重要的。特别是用户使用这个功能来标记发版点(v1.0等)。</p>
-
 <h3 id="列出所有的tag">列出所有的tag</h3>
-
 <p>使用<code>git tag</code>可以列出所有有效的tag：</p>
-
 <pre><code>$ git tag 
 &lt;output follows&gt; 
 v0.1
 v1.3
-</code></pre>
-
-<blockquote>
-<p><strong>注意：</strong>这里tag是按照字符顺序输出的。</p>
+</code></pre><blockquote>
+<p>**注意：**这里tag是按照字符顺序输出的。</p>
 </blockquote>
-
 <p>也可以搜索指定的tag：</p>
-
 <pre><code>$ git tag -l &quot;v1.8.5*&quot; 
 &lt;output follows&gt; v1.8.5
 v1.8.5-rc0
@@ -232,44 +221,31 @@ v1.8.5.2
 v1.8.5.3
 v1.8.5.4
 v1.8.5.5
-</code></pre>
-
-<h3 id="创建并push标签">创建并push标签</h3>
-
+</code></pre><h3 id="创建并push标签">创建并push标签</h3>
 <h4 id="创建标签">创建标签</h4>
-
 <ul>
-<li><p>在当前分支创建tag</p>
-
+<li>
+<p>在当前分支创建tag</p>
 <pre><code>git tag &lt;tagname&gt;
-</code></pre></li>
-</ul>
-
-<p>这将在当前分支的当前状态创建一个tag</p>
-
-<ul>
-<li><p>在某些提交上创建tag</p>
-
+</code></pre><p>这将在当前分支的当前状态创建一个tag</p>
+</li>
+<li>
+<p>在某些提交上创建tag</p>
 <pre><code>git tag tag-name commit-identifier
-</code></pre></li>
+</code></pre><p>这将在commit-identifier的提交上创建tag。</p>
+</li>
 </ul>
-
-<p>这将在commit-identifier的提交上创建tag。</p>
-
 <h3 id="push-tag">push tag</h3>
-
 <ul>
-<li><p>push单独的标签</p>
-
+<li>
+<p>push单独的标签</p>
 <pre><code>git push origin tag-name
 </code></pre></li>
-
-<li><p>一次push所有的tag</p>
-
+<li>
+<p>一次push所有的tag</p>
 <pre><code>git push origin --tags
 </code></pre></li>
 </ul>
-
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -342,6 +318,12 @@ v1.8.5.5
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

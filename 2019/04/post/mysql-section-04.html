@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,56 +187,32 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#倒引号">倒引号</a>
-<ul>
-<li><a href="#倒引号用法">倒引号用法</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#倒引号">倒引号</a>
+      <ul>
+        <li><a href="#倒引号用法">倒引号用法</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="倒引号">倒引号</h2>
-
+        		<h2 id="倒引号">倒引号</h2>
 <h3 id="倒引号用法">倒引号用法</h3>
-
 <p>有很多例子在查询中使用倒引号，但是还是有很多人不清楚在什么时候或什么地方使用倒引号`。</p>
-
-<p>倒引号主要用于防止一个调用&rdquo;MySQL保留字&rdquo;的错误。当你使用PHPmyAdmin创建一个表的时候，可能会遇到一个警告或提示：你正在使用MySQL的保留字。</p>
-
-<p>例如，你创建一个包含字段&rdquo;group&rdquo;的表，你会遇到这个警告。这是因为你可能会使用下面的查询：</p>
-
-<pre><code class="language-mysql">SELECT student_name, AVG(test_score) FROM student GROUP BY group;
-</code></pre>
-
-<p>为了确保你的查询不会出现错误，你可以在关键字上面增加倒引号：</p>
-
-<pre><code class="language-mysql">SELECT student_name, AVG(test_score) FROM student GROUP BY `group`;
-</code></pre>
-
-<p><strong>表</strong></p>
-
+<p>倒引号主要用于防止一个调用&quot;MySQL保留字&quot;的错误。当你使用PHPmyAdmin创建一个表的时候，可能会遇到一个警告或提示：你正在使用MySQL的保留字。</p>
+<p>例如，你创建一个包含字段&quot;group&quot;的表，你会遇到这个警告。这是因为你可能会使用下面的查询：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> student_name, <span style="color:#a6e22e">AVG</span>(test_score) <span style="color:#66d9ef">FROM</span> student <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">group</span>;
+</code></pre></div><p>为了确保你的查询不会出现错误，你可以在关键字上面增加倒引号：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> student_name, <span style="color:#a6e22e">AVG</span>(test_score) <span style="color:#66d9ef">FROM</span> student <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#f92672">`</span><span style="color:#66d9ef">group</span><span style="color:#f92672">`</span>;
+</code></pre></div><p><strong>表</strong></p>
 <p>不仅仅列名需要添加倒引号，表名也需要添加倒引号。例如，当你需要<code>JOIN</code>多个表的时候：</p>
-
-<pre><code class="language-mysql">SELECT `users`.`username`, `groups`.`group` FROM `users`;
-</code></pre>
-
-<p><strong>易于阅读</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">`</span>users<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>username<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>groups<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span><span style="color:#66d9ef">group</span><span style="color:#f92672">`</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>users<span style="color:#f92672">`</span>;
+</code></pre></div><p><strong>易于阅读</strong></p>
 <p>正如你看到的，在表名或列表两边添加倒引号，也让查询更加容易阅读。</p>
-
 <p>例如当你在书写全是小写时的查询时：</p>
-
-<pre><code class="language-mysql">select student_name, AVG(test_score) from student group by group
-select `student_name`, AVG(`test_score`) from `student` group by `group`
-</code></pre>
-
-<p>查看MySQL<a href="https://dev.mysql.com/doc/refman/5.5/en/keywords.html">关键字和保留字</a>的手册。带有<code>(R)</code>标识的是保留字。其他的都是关键字。保留字需要特别小心。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">select</span> student_name, <span style="color:#a6e22e">AVG</span>(test_score) <span style="color:#66d9ef">from</span> student <span style="color:#66d9ef">group</span> <span style="color:#66d9ef">by</span> <span style="color:#66d9ef">group</span>
+<span style="color:#66d9ef">select</span> <span style="color:#f92672">`</span>student_name<span style="color:#f92672">`</span>, <span style="color:#a6e22e">AVG</span>(<span style="color:#f92672">`</span>test_score<span style="color:#f92672">`</span>) <span style="color:#66d9ef">from</span> <span style="color:#f92672">`</span>student<span style="color:#f92672">`</span> <span style="color:#66d9ef">group</span> <span style="color:#66d9ef">by</span> <span style="color:#f92672">`</span><span style="color:#66d9ef">group</span><span style="color:#f92672">`</span>
+</code></pre></div><p>查看MySQL<a href="https://dev.mysql.com/doc/refman/5.5/en/keywords.html">关键字和保留字</a>的手册。带有<code>(R)</code>标识的是保留字。其他的都是关键字。保留字需要特别小心。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -305,6 +285,12 @@ select `student_name`, AVG(`test_score`) from `student` group by `group`
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

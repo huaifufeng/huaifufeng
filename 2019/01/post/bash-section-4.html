@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,30 +187,22 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#文件列表">文件列表</a>
-<ul>
-<li><a href="#列出文件详情">列出文件详情</a>
-<ul>
-<li><a href="#文件类型">文件类型</a></li>
-</ul></li>
-<li><a href="#列出最近修改的十个文件">列出最近修改的十个文件</a></li>
-<li><a href="#列出隐藏文件">列出隐藏文件</a></li>
-<li><a href="#不使用ls列出文件">不使用ls列出文件</a></li>
-<li><a href="#列出文件">列出文件</a></li>
-<li><a href="#树格式输出文件">树格式输出文件</a></li>
-<li><a href="#按照大小排序">按照大小排序</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#文件列表">文件列表</a>
+      <ul>
+        <li><a href="#列出文件详情">列出文件详情</a></li>
+        <li><a href="#列出最近修改的十个文件">列出最近修改的十个文件</a></li>
+        <li><a href="#列出隐藏文件">列出隐藏文件</a></li>
+        <li><a href="#不使用ls列出文件">不使用ls列出文件</a></li>
+        <li><a href="#列出文件">列出文件</a></li>
+        <li><a href="#树格式输出文件">树格式输出文件</a></li>
+        <li><a href="#按照大小排序">按照大小排序</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="文件列表">文件列表</h2>
-
+        		<h2 id="文件列表">文件列表</h2>
 <table>
 <thead>
 <tr>
@@ -214,108 +210,83 @@
 <th>Description</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-a, &ndash;all</td>
 <td>列出所有文件，包含.开头的文件</td>
 </tr>
-
 <tr>
 <td>-A, &ndash;almost-all</td>
 <td>列出所有文件，处理.和..</td>
 </tr>
-
 <tr>
 <td>-c</td>
 <td>按修改时间排序文件</td>
 </tr>
-
 <tr>
 <td>-d, &ndash;directory</td>
 <td>列出所有的目录</td>
 </tr>
-
 <tr>
 <td>-h, &ndash;human-readable</td>
 <td>使用人可读的单位列出文件的大小（K, M等）</td>
 </tr>
-
 <tr>
 <td>-H</td>
 <td>和上面的参数一样，只是使用1000来代替1024</td>
 </tr>
-
 <tr>
 <td>-l</td>
 <td>显示文件的详细信息</td>
 </tr>
-
 <tr>
 <td>-o</td>
 <td>显示详细信息处理分组信息</td>
 </tr>
-
 <tr>
 <td>-r, &ndash;reverse</td>
 <td>倒序显示文件内容</td>
 </tr>
-
 <tr>
 <td>-s, &ndash;size</td>
 <td>显示文件的块大小</td>
 </tr>
-
 <tr>
 <td>-S</td>
 <td>以文件大小排序</td>
 </tr>
-
 <tr>
 <td>&ndash;sort=WORD</td>
 <td>按照某个词排序（size，version，status等）。ps：mac没有这个选项</td>
 </tr>
-
 <tr>
 <td>-t</td>
 <td>按照修改时间排序</td>
 </tr>
-
 <tr>
 <td>-u</td>
 <td>按照访问时间排序</td>
 </tr>
-
 <tr>
 <td>-v</td>
 <td>按照版本排序</td>
 </tr>
-
 <tr>
 <td>-1</td>
 <td>每行返回一个文件</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="列出文件详情">列出文件详情</h3>
-
 <p><code>ls</code>命令的<code>-l</code>参数，打印文件长列表格式的详细信息。如果没有指定文件夹，默认列出当前文件夹的内容。</p>
-
 <pre><code>$ ls -l /etc
-</code></pre>
-
-<p>输出例子：</p>
-
+</code></pre><p>输出例子：</p>
 <pre><code>total 1204
 drwxr-xr-x  3 root root  4096 Apr 21 03:44 acpi
 -rw-r--r--  1 root root  3028 Apr 21 03:38 adduser.conf
 drwxr-xr-x  2 root root  4096 Jun 11 20:42 alternatives
 ...
-</code></pre>
-
-<p>输出显示的<code>total</code>表示列表内所有文件的块大小，之后显示文件夹内每个文件的八列信息。下面是每一列的详细含义：</p>
-
+</code></pre><p>输出显示的<code>total</code>表示列表内所有文件的块大小，之后显示文件夹内每个文件的八列信息。下面是每一列的详细含义：</p>
 <table>
 <thead>
 <tr>
@@ -324,50 +295,42 @@ drwxr-xr-x  2 root root  4096 Jun 11 20:42 alternatives
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1.1</td>
 <td>d</td>
 <td>文件类型（看下表）</td>
 </tr>
-
 <tr>
 <td>1.2</td>
 <td>rwxr-xr-x</td>
 <td>权限信息字符串</td>
 </tr>
-
 <tr>
 <td>2</td>
 <td>3</td>
 <td>硬链接数</td>
 </tr>
-
 <tr>
 <td>3</td>
 <td>root</td>
 <td>文件所有人姓名</td>
 </tr>
-
 <tr>
 <td>4</td>
 <td>root</td>
 <td>文件所有人分组名</td>
 </tr>
-
 <tr>
 <td>5</td>
 <td>4096</td>
 <td>文件大小</td>
 </tr>
-
 <tr>
 <td>6</td>
 <td>Apr 21 03:44</td>
 <td>文件修改日期</td>
 </tr>
-
 <tr>
 <td>7</td>
 <td>acpi</td>
@@ -375,11 +338,8 @@ drwxr-xr-x  2 root root  4096 Jun 11 20:42 alternatives
 </tr>
 </tbody>
 </table>
-
 <h4 id="文件类型">文件类型</h4>
-
 <p>文件类型可以是下面字符中的一个：</p>
-
 <table>
 <thead>
 <tr>
@@ -387,108 +347,78 @@ drwxr-xr-x  2 root root  4096 Jun 11 20:42 alternatives
 <th>类型</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-</td>
 <td>常规文件</td>
 </tr>
-
 <tr>
 <td>b</td>
 <td>块特殊文件</td>
 </tr>
-
 <tr>
 <td>c</td>
 <td>字符特殊文件</td>
 </tr>
-
 <tr>
 <td>C</td>
 <td>高性能文件</td>
 </tr>
-
 <tr>
 <td>d</td>
 <td>目录</td>
 </tr>
-
 <tr>
 <td>D</td>
 <td>Door（仅限Solaris+2.5的特殊IPC文件）</td>
 </tr>
-
 <tr>
 <td>l</td>
 <td>符合链接文件</td>
 </tr>
-
 <tr>
 <td>M</td>
 <td>离线（迁移）文件（Cray DMF）</td>
 </tr>
-
 <tr>
 <td>n</td>
 <td>特殊的网络文件（HP-UX）</td>
 </tr>
-
 <tr>
 <td>p</td>
 <td>FIFO (命名的pipe文件)</td>
 </tr>
-
 <tr>
 <td>p</td>
 <td>Port (Solaris 10+的特殊系统文件)</td>
 </tr>
-
 <tr>
 <td>s</td>
 <td>Socket文件</td>
 </tr>
-
 <tr>
 <td>？</td>
 <td>其他的文件</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="列出最近修改的十个文件">列出最近修改的十个文件</h3>
-
 <p>下面的命令将会输出最近修改的10个文件，使用列表详情参数<code>-l</code>和修改时间排序参数<code>-t</code>：</p>
-
 <pre><code>$ ls -lt | head
-</code></pre>
-
-<h3 id="列出隐藏文件">列出隐藏文件</h3>
-
+</code></pre><h3 id="列出隐藏文件">列出隐藏文件</h3>
 <p>一个dot文件就是一个以.开头的文件。在<code>ls</code>命令中这些文件时默认不显示的，除非要求显示这些文件。下面是<code>ls</code>命令的输出显示：</p>
-
 <pre><code>$ ls 
 bin pki
-</code></pre>
-
-<p>使用<code>-a</code>或<code>--all</code>选项可以列出所有的文件，包括dot文件：</p>
-
+</code></pre><p>使用<code>-a</code>或<code>--all</code>选项可以列出所有的文件，包括dot文件：</p>
 <pre><code>$ ls -a
 . .ansible .bash_logout .bashrc .lesshst .puppetlabs .viminfo .. .bash_history 
 .bash_profile bin pki .ssh
-</code></pre>
-
-<p><code>-A</code>和<code>--almost-all</code>选项可以列出所有的dot文件，处理<code>.</code>和<code>..</code>文件夹。注意：<code>.</code>代表当前的目录，<code>..</code>代表他的父文件目录。</p>
-
+</code></pre><p><code>-A</code>和<code>--almost-all</code>选项可以列出所有的dot文件，处理<code>.</code>和<code>..</code>文件夹。注意：<code>.</code>代表当前的目录，<code>..</code>代表他的父文件目录。</p>
 <pre><code>$ ls -A
 .ansible .bash_logout .bashrc .lesshst .puppetlabs .viminfo .bash_history 
 .bash_profile bin pki .ssh
-</code></pre>
-
-<h3 id="不使用ls列出文件">不使用ls列出文件</h3>
-
+</code></pre><h3 id="不使用ls列出文件">不使用ls列出文件</h3>
 <p>使用Bash的<a href="https://www.gnu.org/software/bash/manual/bashref.html#Filename-Expansion">文件名扩展</a>和<a href="https://www.gnu.org/software/bash/manual/bashref.html#Brace-Expansion">花括号扩展</a>功能可以获取文件的名称：</p>
-
 <pre><code># display the files and directories that are in the current directory
 printf &quot;%s\n&quot; *
 
@@ -497,66 +427,43 @@ printf &quot;%s\n&quot; */
 
 # display only (some) image files
 printf &quot;%s\n&quot; *.{gif,jpg,png}
-</code></pre>
-
-<p>想要在程序中把文件的列表放入一个变量，使用<a href="https://www.gnu.org/software/bash/manual/bashref.html#Arrays">bash数组</a>是一个很好的办法：</p>
-
+</code></pre><p>想要在程序中把文件的列表放入一个变量，使用<a href="https://www.gnu.org/software/bash/manual/bashref.html#Arrays">bash数组</a>是一个很好的办法：</p>
 <pre><code>files=( * )
 
 # iterate over them
 for file in &quot;${files[@]}&quot;; do 
 	echo &quot;$file&quot;
 done
-</code></pre>
-
-<h3 id="列出文件">列出文件</h3>
-
+</code></pre><h3 id="列出文件">列出文件</h3>
 <p><code>ls</code>命令列出指定文件夹的文件列表，处理dot文件。如果没有指定文件夹的话，将会列出当前文件夹的文件列表。列出的文件默认安装字符顺序排序，当一行不能放下时，会分成不同的列：</p>
-
 <pre><code>$ ls
 apt configs Documents Fonts Music Programming Templates workspace bin Desktop eclipse git Pictures Public Videos
-</code></pre>
-
-<h3 id="树格式输出文件">树格式输出文件</h3>
-
+</code></pre><h3 id="树格式输出文件">树格式输出文件</h3>
 <p><code>tree</code>像树一样输出指定目录的文件列表。没有指定目录的话，默认会输出当前目录的文件列表。输出的格式像下面一样：</p>
-
 <pre><code>$ tree /tmp
 /tmp
 ├── 5037
 ├── adb.log
 └── evince-20965
 	└── image.FPWTJY.png
-</code></pre>
-
-<p><code>tree</code>使用<code>-L</code>选项可以限制输出的文件层级，使用<code>-d</code>命令只输出文件夹。例如：</p>
-
+</code></pre><p><code>tree</code>使用<code>-L</code>选项可以限制输出的文件层级，使用<code>-d</code>命令只输出文件夹。例如：</p>
 <pre><code>$ tree -L 1 -d /tmp 
 /tmp
 └── evince-20965
-</code></pre>
-
-<h3 id="按照大小排序">按照大小排序</h3>
-
+</code></pre><h3 id="按照大小排序">按照大小排序</h3>
 <p><code>ls</code>命令的<code>-S</code>参数会输出按照文件大小降序排序的文件列表。</p>
-
 <pre><code>$ ls -l -S ./Fruits
 total 444
 -rw-rw-rw- 1 root root 295303 Jul 28 19:19 apples.jpg 
 -rw-rw-rw- 1 root root 102283 Jul 28 19:19 kiwis.jpg 
 -rw-rw-rw- 1 root root 50197 Jul 28 19:19 bananas.jpg
-</code></pre>
-
-<p>使用<code>-r</code>的话，会按照相反的顺序输出文件的列表：</p>
-
+</code></pre><p>使用<code>-r</code>的话，会按照相反的顺序输出文件的列表：</p>
 <pre><code>$ ls -l -S -r /Fruits
 total 444
 -rw-rw-rw- 1 root root 50197 Jul 28 19:19 bananas.jpg 
 -rw-rw-rw- 1 root root 102283 Jul 28 19:19 kiwis.jpg 
 -rw-rw-rw- 1 root root 295303 Jul 28 19:19 apples.jpg
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -628,6 +535,12 @@ total 444
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

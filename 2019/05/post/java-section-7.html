@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,22 +187,17 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#java代码文档化">Java代码文档化</a>
-<ul>
-<li><a href="#1-使用gwt的toolbase进行参数处理">1. 使用GWT的ToolBase进行参数处理</a></li>
-<li><a href="#2-手动处理参数">2. 手动处理参数</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#java代码文档化">Java代码文档化</a>
+      <ul>
+        <li><a href="#1-使用gwt的toolbase进行参数处理">1. 使用GWT的ToolBase进行参数处理</a></li>
+        <li><a href="#2-手动处理参数">2. 手动处理参数</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="java代码文档化">Java代码文档化</h2>
-
+        		<h2 id="java代码文档化">Java代码文档化</h2>
 <table>
 <thead>
 <tr>
@@ -206,7 +205,6 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>args</td>
@@ -214,136 +212,112 @@
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-使用gwt的toolbase进行参数处理">1. 使用GWT的ToolBase进行参数处理</h3>
-
-<p>如果你想要解析更复杂的命令行参数(例如可选参数)，最好的方法就是使用Google的GWT方法，所有公开分类都在：<a href="https://gwt.googlesource.com/gwt/+/2.8.0-beta1/dev/core/src/com/google/gwt/util/tools/ToolBase.java">https://gwt.googlesource.com/gwt/+/2.8.0-beta1/dev/core/src/com/google/gwt/util/tools/ToolBase.java</a></p>
-
+<p>如果你想要解析更复杂的命令行参数(例如可选参数)，最好的方法就是使用Google的GWT方法，所有公开分类都在：https://gwt.googlesource.com/gwt/+/2.8.0-beta1/dev/core/src/com/google/gwt/util/tools/ToolBase.java</p>
 <p>一个处理命令行<code>myprogram -dir &quot;~/Documents&quot; -port 8888</code>的例子：</p>
-
-<pre><code class="language-java">public class MyProgramHanlder extends ToolBase {
-    protected File dir;
-    protected int port;
-    //dir和port的getter和setter
-    ...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyProgramHanlder</span> <span style="color:#66d9ef">extends</span> ToolBase <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">protected</span> File dir<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">int</span> port<span style="color:#f92672">;</span>
+    <span style="color:#75715e">//dir和port的getter和setter
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">...</span>
     
-    public MyProgramHandler() {
-        this.registerHandler(new ArgHandlerDir() {
-            @Override
-            public void setDir(File dir) {
-                this.dir = dir;
-            }
-        });
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">MyProgramHandler</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registerHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArgHandlerDir<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDir</span><span style="color:#f92672">(</span>File dir<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">dir</span> <span style="color:#f92672">=</span> dir<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">});</span>
         
-        this.registerHandler(new ArgHandlerInt() {
-            @Override
-            public String[] getTagArgs() {
-                return new String[]{&quot;port&quot;};
-            }
-            @Override
-            public void setInt(int value) {
-                this.port = value;
-            }
-        });
-    }
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registerHandler</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> ArgHandlerInt<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> String<span style="color:#f92672">[]</span> <span style="color:#a6e22e">getTagArgs</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> String<span style="color:#f92672">[]{</span><span style="color:#e6db74">&#34;port&#34;</span><span style="color:#f92672">};</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setInt</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">port</span> <span style="color:#f92672">=</span> value<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">});</span>
+    <span style="color:#f92672">}</span>
     
-    public static void main(String[] args) {
-        MyProgramHandler myShell = new MyProgramHandler();
-        if (myShell.processArgs(args)) {
-            System.out.println(String.format(&quot;port: %d; dir: %s&quot;, myShell.getPort(), myShell.getDir()));
-        }
-        System.exit(1);
-    }
-}
-</code></pre>
-
-<p><code>ArgHandler</code>也有一个方法<code>isRequired()</code>，这可以重写来说明这个命令行参数是必须的（默认返回<code>false</code>，所以这个参数是可选的）。</p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        MyProgramHandler myShell <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> MyProgramHandler<span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>myShell<span style="color:#f92672">.</span><span style="color:#a6e22e">processArgs</span><span style="color:#f92672">(</span>args<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;port: %d; dir: %s&#34;</span><span style="color:#f92672">,</span> myShell<span style="color:#f92672">.</span><span style="color:#a6e22e">getPort</span><span style="color:#f92672">(),</span> myShell<span style="color:#f92672">.</span><span style="color:#a6e22e">getDir</span><span style="color:#f92672">()));</span>
+        <span style="color:#f92672">}</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>ArgHandler</code>也有一个方法<code>isRequired()</code>，这可以重写来说明这个命令行参数是必须的（默认返回<code>false</code>，所以这个参数是可选的）。</p>
 <h3 id="2-手动处理参数">2. 手动处理参数</h3>
-
 <p>当应用的命令行的语法很简单的时候，完全使用自己的代码进行参数的处理是合理的。</p>
-
-<p>在这个例子中，我们将展示一系列简单的案例进行研究。在每个案例中，如果参数是不能接受的，代码就会产生一个错误信息，并且调用<code>System.exit(1)</code>来通知shell这个命令执行失败了。(在每种情况下，我们假设使用一个名为&rdquo;myapp&rdquo;的包装器来调用Java代码)。</p>
-
+<p>在这个例子中，我们将展示一系列简单的案例进行研究。在每个案例中，如果参数是不能接受的，代码就会产生一个错误信息，并且调用<code>System.exit(1)</code>来通知shell这个命令执行失败了。(在每种情况下，我们假设使用一个名为&quot;myapp&quot;的包装器来调用Java代码)。</p>
 <p><strong>没有参数的命令</strong></p>
-
 <p>在这个案例中，这个命令不需要参数。这个代码通过<code>args.length</code>来获取命令行的参数数量。</p>
-
-<pre><code class="language-java">public class Main {
-    public static void main(String[] args) {
-        if (args.length &gt; 0) {
-            System.err.println(&quot;usage: myapp&quot;);
-            System.exit(1);
-        }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Main</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;usage: myapp&#34;</span><span style="color:#f92672">);</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
         
-        System.out.println(&quot;It worked&quot;);
-    }
-}
-</code></pre>
-
-<p><strong>两个参数的命令</strong></p>
-
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;It worked&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><strong>两个参数的命令</strong></p>
 <p>在这个例子中，命令要求有两个参数。</p>
-
-<pre><code class="language-java">public class Main {
-    public static void main(String[] args) {
-        if (args.length != 2) {
-            System.err.println(&quot;usage: myapp &lt;arg1&gt; &lt;arg2&gt;&quot;);
-            System.exit(1);
-        }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Main</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">!=</span> 2<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;usage: myapp &lt;arg1&gt; &lt;arg2&gt;&#34;</span><span style="color:#f92672">);</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
         
-        System.out.println(&quot;It worked: &quot; + args[0] + &quot;, &quot; + args[1]);
-    }
-}
-</code></pre>
-
-<p>注意，如果我们没有进行<code>args.length</code>的检查，如果用户使用太少的参数运行程序，这个命令就会崩溃。</p>
-
-<p><strong>带有&rdquo;flag&rdquo;选项和至少一个参数的命令</strong></p>
-
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;It worked: &#34;</span> <span style="color:#f92672">+</span> args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> args<span style="color:#f92672">[</span>1<span style="color:#f92672">]);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>注意，如果我们没有进行<code>args.length</code>的检查，如果用户使用太少的参数运行程序，这个命令就会崩溃。</p>
+<p><strong>带有&quot;flag&quot;选项和至少一个参数的命令</strong></p>
 <p>在这个案例中，这个命令有两个(可选)标志选项，并且在选项之后至少有一个参数。</p>
-
-<pre><code class="language-java">package tommy;
-public class Main {
-    public static void main(String[] args) {
-        boolean feelMe = false;
-        boolean seeMe = false;
-        int index;
-        loop: for(index = 0; index &lt; args.length; index++) {
-            String opt = args[index];
-            switch(opt) {
-                case &quot;-c&quot; :
-                    seeMe = true;
-                    break;
-                case &quot;-f&quot;:
-                    feelMe = true;
-                    break;
-                default:
-                    if (!opts.isEmpty() &amp;&amp; opts.charAt(0) == '-') {
-                        error(&quot;Unknown option: '&quot; + opt + &quot;'&quot;);
-                    }
-                    break loop;
-            }
-        }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> tommy<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Main</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">boolean</span> feelMe <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">boolean</span> seeMe <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">int</span> index<span style="color:#f92672">;</span>
+        loop<span style="color:#f92672">:</span> <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span>index <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> index <span style="color:#f92672">&lt;</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> index<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+            String opt <span style="color:#f92672">=</span> args<span style="color:#f92672">[</span>index<span style="color:#f92672">];</span>
+            <span style="color:#66d9ef">switch</span><span style="color:#f92672">(</span>opt<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;-c&#34;</span> <span style="color:#f92672">:</span>
+                    seeMe <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;-f&#34;</span><span style="color:#f92672">:</span>
+                    feelMe <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>opts<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> opts<span style="color:#f92672">.</span><span style="color:#a6e22e">charAt</span><span style="color:#f92672">(</span>0<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;-&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                        error<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Unknown option: &#39;&#34;</span> <span style="color:#f92672">+</span> opt <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;&#39;&#34;</span><span style="color:#f92672">);</span>
+                    <span style="color:#f92672">}</span>
+                    <span style="color:#66d9ef">break</span> loop<span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
         
-        if (index &gt;= args.length) {
-            error(&quot;Missing argument(s)&quot;);
-        }
-    }
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>index <span style="color:#f92672">&gt;=</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            error<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Missing argument(s)&#34;</span><span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
     
-    private static void error(String message) {
-        if (message != null) {
-            System.err.println(message);
-        }
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">error</span><span style="color:#f92672">(</span>String message<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>message <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
         
-        System.err.println(&quot;usage: myapp [-f] [-c] [&lt;arg&gt; ...]&quot;);
-        System.exit(1);
-    }
-}
-</code></pre>
-
-<p>正如你看到的，如果命令语法复杂，处理参数和选项会变得很麻烦。简写使用&rdquo;命令行分享&rdquo;库。查看其它例子。</p>
-
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">err</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;usage: myapp [-f] [-c] [&lt;arg&gt; ...]&#34;</span><span style="color:#f92672">);</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">exit</span><span style="color:#f92672">(</span>1<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>正如你看到的，如果命令语法复杂，处理参数和选项会变得很麻烦。简写使用&quot;命令行分享&quot;库。查看其它例子。</p>
 <p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
@@ -416,6 +390,12 @@ public class Main {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

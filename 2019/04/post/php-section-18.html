@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,38 +187,21 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#操作日期和时间">操作日期和时间</a>
-<ul>
-<li><a href="#获取两个时间的差">获取两个时间的差</a></li>
-<li><a href="#转换日期格式">转换日期格式</a>
-<ul>
-<li><a href="#基本">基本</a></li>
-<li><a href="#使用datetime">使用DateTime</a></li>
-<li><a href="#使用unix时间戳">使用Unix时间戳</a></li>
-<li><a href="#非标准和模糊的日期格式">非标准和模糊的日期格式</a></li>
-</ul></li>
-<li><a href="#解析英文日期描述">解析英文日期描述</a></li>
-<li><a href="#使用预定义日期格式常量">使用预定义日期格式常量</a>
-<ul>
-<li><a href="#预定义日期常量">预定义日期常量</a></li>
-<li><a href="#使用">使用</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#操作日期和时间">操作日期和时间</a>
+      <ul>
+        <li><a href="#获取两个时间的差">获取两个时间的差</a></li>
+        <li><a href="#转换日期格式">转换日期格式</a></li>
+        <li><a href="#解析英文日期描述">解析英文日期描述</a></li>
+        <li><a href="#使用预定义日期格式常量">使用预定义日期格式常量</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="操作日期和时间">操作日期和时间</h2>
-
+        		<h2 id="操作日期和时间">操作日期和时间</h2>
 <h3 id="获取两个时间的差">获取两个时间的差</h3>
-
 <p>最可行的方法是使用<code>DateTime</code>类。例如：</p>
-
 <pre><code>&lt;?php
 //创建一个指定时间的对象 2年前
 $twoYearAgo = new DateTime('2017-04-29 22:00:00');
@@ -236,10 +223,7 @@ $secondsDiff = $diff-&gt;s;
 $totalDaysDiff = $diff-&gt;days;
 
 var_dump($diff);
-</code></pre>
-
-<p>另外比较两个日期也是很简单的，直接使用比较运算符：</p>
-
+</code></pre><p>另外比较两个日期也是很简单的，直接使用比较运算符：</p>
 <pre><code>&lt;?php
 // Create a date time object, which has the value of ~ two years ago
 $twoYearsAgo = new DateTime(&quot;2014-01-18 20:05:56&quot;);
@@ -249,101 +233,53 @@ var_dump($now &gt; $twoYearsAgo); // prints bool(true)
 var_dump($twoYearsAgo &gt; $now); // prints bool(false) 
 var_dump($twoYearsAgo &lt;= $twoYearsAgo); // prints bool(true) 
 var_dump($now == $now); // prints bool(true)
-</code></pre>
-
-<h3 id="转换日期格式">转换日期格式</h3>
-
+</code></pre><h3 id="转换日期格式">转换日期格式</h3>
 <h4 id="基本">基本</h4>
-
 <p>最简单的转换日期的格式是联合使用<a href="https://www.php.net/manual/zh/function.strtotime.php">strtotime</a>和<a href="https://www.php.net/manual/zh/function.date.php">date</a>。<code>strtotime</code>函数会把一个字符串时间转换为一个<a href="https://en.wikipedia.org/wiki/Unix_time">Unix时间戳</a>。这个Unix的时间戳可以使用函数<code>date</code>转换为一个新的格式：</p>
-
 <pre><code>$timestamp = strtotime('2008-07-01T22:35:17.02');
 $new_date_format = date('Y-m-d H:i:s', $timestamp);
-</code></pre>
-
-<p>或者直接使用一行</p>
-
+</code></pre><p>或者直接使用一行</p>
 <pre><code>$new_date_format = date('Y-m-d H:i:s', strtotime('2008-07-01T22:35:17.02'));
-</code></pre>
-
-<p>注意<code>strtotime</code>函数要求日期必须是一个<a href="https://www.php.net/manual/zh/datetime.formats.php">有效的格式</a>。提供一个无效的格式，将会导致<code>strtotime</code>返回false。这将会最后返回<code>1970-01-01</code>。</p>
-
+</code></pre><p>注意<code>strtotime</code>函数要求日期必须是一个<a href="https://www.php.net/manual/zh/datetime.formats.php">有效的格式</a>。提供一个无效的格式，将会导致<code>strtotime</code>返回false。这将会最后返回<code>1970-01-01</code>。</p>
 <h4 id="使用datetime">使用DateTime</h4>
-
 <p>在PHP5.2提供了功能强大的时间操作工具<code>DateTime</code>类。我们可以使用<code>DateTime</code>类来改写上面的内容。</p>
-
 <pre><code> $date = new DateTime('2008-07-01T22:35:17.02'); 
  $new_date_format = $date-&gt;format('Y-m-d H:i:s');
-</code></pre>
-
-<h4 id="使用unix时间戳">使用Unix时间戳</h4>
-
+</code></pre><h4 id="使用unix时间戳">使用Unix时间戳</h4>
 <p><code>date</code>函数支持第二个参数，指明要转换的日期时间，这个参数是Unix时间戳。</p>
-
 <pre><code>$new_date_format = date('Y-m-d H:i:s', '1234567890');
-</code></pre>
-
-<p><code>DateTime</code>使用时间戳的话，就需要在时间戳前面添加<code>@</code>。</p>
-
+</code></pre><p><code>DateTime</code>使用时间戳的话，就需要在时间戳前面添加<code>@</code>。</p>
 <pre><code> $date = new DateTime('@1234567890'); $new_date_format = $date-&gt;format('Y-m-d H:i:s');
-</code></pre>
-
-<p>如果你的时间戳是13个字符长的，这时候时间戳是毫秒级别的，你在转换之前就需要转换成秒级别的时间戳。下面是两种转换方式：</p>
-
+</code></pre><p>如果你的时间戳是13个字符长的，这时候时间戳是毫秒级别的，你在转换之前就需要转换成秒级别的时间戳。下面是两种转换方式：</p>
 <ul>
-<li>使用substr移除时间戳右边的3位。</li>
-</ul>
-
+<li>
+<p>使用substr移除时间戳右边的3位。</p>
 <p>移除字符串右边的3位有多种方法，<code>substr</code>是最简单的。</p>
-
-<pre><code>  $timestamp = substr('1234567899000', 0, -3);
-</code></pre>
-
-<ul>
-<li>除以1000</li>
-</ul>
-
+<pre><code>$timestamp = substr('1234567899000', 0, -3);
+</code></pre></li>
+<li>
+<p>除以1000</p>
 <p>你也可以除以1000来转换秒级别的时间戳。因为这个时间戳在32位系统上面太长了，你需要使用<a href="https://www.php.net/manual/zh/book.bc.php">BCMath</a>来进行运算：</p>
-
-<pre><code>  $timestamp = bcdiv('1234567899000', '1000');
-</code></pre>
-
+<pre><code>$timestamp = bcdiv('1234567899000', '1000');
+</code></pre></li>
+</ul>
 <p>你可以使用<code>strtotime</code>从一个日期字符串获取一个时间戳：</p>
-
 <pre><code>$timestamp = strtotime('1973-04-18');
-</code></pre>
-
-<p>使用<code>DateTime</code>类的话，你可以使用<a href="https://php.net/manual/en/datetime.gettimestamp.php">DateTime::getTimestamp</a>函数。</p>
-
+</code></pre><p>使用<code>DateTime</code>类的话，你可以使用<a href="https://php.net/manual/en/datetime.gettimestamp.php">DateTime::getTimestamp</a>函数。</p>
 <pre><code>$date = new DateTime('2008-07-01T22:35:17.02'); 
 $timestamp = $date-&gt;getTimestamp();
-</code></pre>
-
-<p>如果是PHP5.2，可以在<code>format</code>方法中使用<code>U</code>选项：</p>
-
+</code></pre><p>如果是PHP5.2，可以在<code>format</code>方法中使用<code>U</code>选项：</p>
 <pre><code> $date = new DateTime('2008-07-01T22:35:17.02'); 
  $timestamp = $date-&gt;format('U');
-</code></pre>
-
-<h4 id="非标准和模糊的日期格式">非标准和模糊的日期格式</h4>
-
+</code></pre><h4 id="非标准和模糊的日期格式">非标准和模糊的日期格式</h4>
 <p>不幸运的是不是所有开发者使用的时间格式都是标准的格式。但是从PHP5.3开始，给我们提供了一个解决办法。<a href="http://docs.php.net/manual/en/datetime.createfromformat.php">DateTime::createFromFormat()</a>允许我们告诉PHP这个日期字符串是什么格式的，编译正确的解析出一个DateTime的对象。</p>
-
 <pre><code>$date = DateTime::createFromFormat('F-d-Y h:i A', 'April-18-1973 9:48 AM');
 $new_date_format = $date-&gt;format('Y-m-d H:i:s');
-</code></pre>
-
-<p>从PHP5.4我们可以在类new之后直接访问方法：</p>
-
+</code></pre><p>从PHP5.4我们可以在类new之后直接访问方法：</p>
 <pre><code>$new_date_format = (new DateTime('2008-07-01T22:35:17.02'))-&gt;format('Y-m-d H:i:s');
-</code></pre>
-
-<p>但是这个对<code>createFromFormat</code>是无效的。</p>
-
+</code></pre><p>但是这个对<code>createFromFormat</code>是无效的。</p>
 <h3 id="解析英文日期描述">解析英文日期描述</h3>
-
 <p>使用<code>strtotime</code>和<code>date</code>函数，我们可以解析出不同的英文日期文本到具体的日期：</p>
-
 <pre><code>// Gets the current date
 echo date(&quot;m/d/Y&quot;, strtotime(&quot;now&quot;)), &quot;\n&quot;; // prints the current date
 
@@ -366,52 +302,29 @@ echo date(&quot;m/d/Y&quot;, strtotime(&quot;Last day of next month&quot;)), &qu
 echo date(&quot;m/d/Y&quot;, strtotime(&quot;First day of last month&quot;)), &quot;\n&quot;; // prints date of first day of last month
 
 echo date(&quot;m/d/Y&quot;, strtotime(&quot;Last day of last month&quot;)), &quot;\n&quot;; // prints date of last day of last month
-</code></pre>
-
-<h3 id="使用预定义日期格式常量">使用预定义日期格式常量</h3>
-
+</code></pre><h3 id="使用预定义日期格式常量">使用预定义日期格式常量</h3>
 <p>从PHP5.1开始，我们可以使用<code>date</code>方法预定义的日期常量来代替格式字符串。</p>
-
 <h4 id="预定义日期常量">预定义日期常量</h4>
-
 <p>DATE_ATOM - Atom (2016-07-22T14:50:01+00:00)</p>
-
 <p>DATE_COOKIE - HTTP Cookies (Friday, 22-Jul-16 14:50:01 UTC)</p>
-
 <p>DATE_RSS - RSS (Fri, 22 Jul 2016 14:50:01 +0000)</p>
-
 <p>DATE_W3C - World Wide Web Consortium (2016-07-22T14:50:01+00:00)</p>
-
 <p>DATE_ISO8601 - ISO-8601 (2016-07-22T14:50:01+0000)</p>
-
 <p>DATE_RFC822 - RFC 822 (Fri, 22 Jul 16 14:50:01 +0000)</p>
-
 <p>DATE_RFC850 - RFC 850 (Friday, 22-Jul-16 14:50:01 UTC)</p>
-
 <p>DATE_RFC1036 - RFC 1036 (Fri, 22 Jul 16 14:50:01 +0000)</p>
-
 <p>DATE_RFC1123 - RFC 1123 (Fri, 22 Jul 2016 14:50:01 +0000)</p>
-
 <p>DATE_RFC2822 - RFC 2822 (Fri, 22 Jul 2016 14:50:01 +0000)</p>
-
 <p>DATE_RFC3339 - Same as DATE_ATOM (2016-07-22T14:50:01+00:00)</p>
-
 <h4 id="使用">使用</h4>
-
 <pre><code>echo date(DATE_RFC822);
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>这将会输出：Fri, 22 Jul 16 14:50:01 +0000</p>
 </blockquote>
-
 <pre><code>echo date(DATE_ATOM,mktime(0,0,0,8,15,1947));
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>这将会输出：1947-08-15T00:00:00+05:30</p>
 </blockquote>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -484,6 +397,12 @@ echo date(&quot;m/d/Y&quot;, strtotime(&quot;Last day of last month&quot;)), &qu
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

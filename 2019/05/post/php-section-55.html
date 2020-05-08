@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,91 +187,62 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#读取请求的数据">读取请求的数据</a>
-<ul>
-<li><a href="#1-读取原始post数据">1. 读取原始POST数据</a></li>
-<li><a href="#2-读取post数据">2. 读取POST数据</a></li>
-<li><a href="#3-读取get数据">3. 读取GET数据</a></li>
-<li><a href="#4-处理文件上传错误">4. 处理文件上传错误</a></li>
-<li><a href="#5-post传递数组">5. POST传递数组</a></li>
-<li><a href="#6-使用http-put上传文件">6. 使用HTTP PUT上传文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#读取请求的数据">读取请求的数据</a>
+      <ul>
+        <li><a href="#1-读取原始post数据">1. 读取原始POST数据</a></li>
+        <li><a href="#2-读取post数据">2. 读取POST数据</a></li>
+        <li><a href="#3-读取get数据">3. 读取GET数据</a></li>
+        <li><a href="#4-处理文件上传错误">4. 处理文件上传错误</a></li>
+        <li><a href="#5-post传递数组">5. POST传递数组</a></li>
+        <li><a href="#6-使用http-put上传文件">6. 使用HTTP PUT上传文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="读取请求的数据">读取请求的数据</h2>
-
+        		<h2 id="读取请求的数据">读取请求的数据</h2>
 <h3 id="1-读取原始post数据">1. 读取原始POST数据</h3>
-
 <p>使用POST请求发送的数据通常是MIME类型为<code>application/x-www-form-urlencoded</code>的键/值的数据格式。然而很多应用像web服务要求原始的数据格式，像XML或JSON格式。这个数据可以使用两个方法中的一个进行获取。</p>
-
 <p><code>php://input</code>提供访问原始请求数据体的数据流。</p>
-
-<pre><code class="language-php">$rawdata = file_get_contents(&quot;php://input&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$rawdata = file_get_contents(&#34;php://input&#34;);
 
 //假如是json数据
 $decoded = json_decode($rawdata);
-</code></pre>
-
-<p>在PHP5.6之前，<code>$HTTP_RAW_POST_DATA</code>是一个包含元素POST数据的全局变量。只有在<code>php.ini</code>中的<code>always_populate_raw_post_data</code>选项开启的时候有效。</p>
-
-<pre><code class="language-php">$rawdata = $HTTP_RAW_POST_DATA;
+</code></pre></div><p>在PHP5.6之前，<code>$HTTP_RAW_POST_DATA</code>是一个包含元素POST数据的全局变量。只有在<code>php.ini</code>中的<code>always_populate_raw_post_data</code>选项开启的时候有效。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$rawdata = $HTTP_RAW_POST_DATA;
 //假设是xml数据
 $decoded = simplexml_load_string($rawdata);
-</code></pre>
-
-<p>从PHP5.6开始不推荐使用了，在PHP7.0的时候移除。</p>
-
+</code></pre></div><p>从PHP5.6开始不推荐使用了，在PHP7.0的时候移除。</p>
 <p>当数据的类型是<code>multipart/form-data</code>的时候，上面的方法都没有效果，因为我们这些数据是用来上传文件的。</p>
-
 <h3 id="2-读取post数据">2. 读取POST数据</h3>
-
 <p>一个POST请求中的数据是存储在<a href="https://www.php.net/manual/zh/language.variables.superglobals.php">超全局变量</a>$_POST中的关联数组中。</p>
-
 <p>注意访问数组中不存在的元素将会产生一个notice错误，所以在访问数组元素之前需要使用<code>isset()</code>或<code>empty()</code>函数或null船运算符进行元素存在性的检查。</p>
-
 <p>例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$from = isset($_POST[&#39;name&#39;]) ? $_POST[&#39;name&#39;] : &#39;NO NAME&#39;;
+$message = isset($_POST[&#39;message&#39;]) ? $_POST[&#39;message&#39;] : &#39;NO MESSAGE&#39;;
 
-<pre><code class="language-php">$from = isset($_POST['name']) ? $_POST['name'] : 'NO NAME';
-$message = isset($_POST['message']) ? $_POST['message'] : 'NO MESSAGE';
-
-echo &quot;Message from $from: $message&quot;;
+echo &#34;Message from $from: $message&#34;;
 
 //在PHP7.0之后
-$from = $_POST['name'] ?? 'NO NAME';
-$message = $_POST['message'] ?? 'NO MESSAGE';
+$from = $_POST[&#39;name&#39;] ?? &#39;NO NAME&#39;;
+$message = $_POST[&#39;message&#39;] ?? &#39;NO MESSAGE&#39;;
 
-echo &quot;Message from $from: $message&quot;;
-</code></pre>
-
-<h3 id="3-读取get数据">3. 读取GET数据</h3>
-
+echo &#34;Message from $from: $message&#34;;
+</code></pre></div><h3 id="3-读取get数据">3. 读取GET数据</h3>
 <p>一个GET请求中的数据存储在超全局变量$_GET中的一个关联数组。</p>
-
 <p>注意访问数组中不存在的元素将会产生一个notice错误，所以在访问数组元素之前需要使用<code>isset()</code>或<code>empty()</code>函数或null船运算符进行元素存在性的检查。</p>
-
 <p>例如（对于网址/topics.php?author=alice&amp;topic=php）</p>
-
-<pre><code class="language-php">$author = isset($_GET[&quot;author&quot;]) ? $_GET[&quot;author&quot;] : &quot;NO AUTHOR&quot;;
-$topic = isset($_GET[&quot;topic&quot;]) ? $_GET[&quot;topic&quot;] : &quot;NO TOPIC&quot;;
-echo &quot;Showing posts from $author about $topic&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$author = isset($_GET[&#34;author&#34;]) ? $_GET[&#34;author&#34;] : &#34;NO AUTHOR&#34;;
+$topic = isset($_GET[&#34;topic&#34;]) ? $_GET[&#34;topic&#34;] : &#34;NO TOPIC&#34;;
+echo &#34;Showing posts from $author about $topic&#34;;
 
 //在PHP7.0之后
-$author = $_GET[&quot;author&quot;] ?? &quot;NO AUTHOR&quot;;
-$topic = $_GET[&quot;topic&quot;] ?? &quot;NO TOPIC&quot;;
-echo &quot;Showing posts from $author about $topic&quot;;
-</code></pre>
-
-<h3 id="4-处理文件上传错误">4. 处理文件上传错误</h3>
-
-<p>这个<code>$_FILES['FILE_NAME']['error']</code>（这里&rdquo;FILE_NAME&rdquo;是form中file这个input的name属性值）可以包含下面中的一个值：</p>
-
+$author = $_GET[&#34;author&#34;] ?? &#34;NO AUTHOR&#34;;
+$topic = $_GET[&#34;topic&#34;] ?? &#34;NO TOPIC&#34;;
+echo &#34;Showing posts from $author about $topic&#34;;
+</code></pre></div><h3 id="4-处理文件上传错误">4. 处理文件上传错误</h3>
+<p>这个<code>$_FILES['FILE_NAME']['error']</code>（这里&quot;FILE_NAME&quot;是form中file这个input的name属性值）可以包含下面中的一个值：</p>
 <ol>
 <li><code>UPLOAD_ERR_OK</code>：没有错误，文件上传成功</li>
 <li><code>UPLOAD_ERR_INI_SIZE</code>：上传文件超出<code>php.ini</code>中<code>upload_max_filesize</code>选项配置的值</li>
@@ -277,68 +252,53 @@ echo &quot;Showing posts from $author about $topic&quot;;
 <li><code>UPLOAD_ERR_CANT_WRITE</code>：将文件写入磁盘失败。（PHP5.1.0开始支持）</li>
 <li><code>UPLOAD_ERR_EXTENSION</code>：PHP扩展阻止文件上传。（PHP5.2.0开始支持）</li>
 </ol>
-
 <p>一个基本的检查错误的方式向下面一样：</p>
-
-<pre><code class="language-php">&lt;?php
-$fileError = $_FILES['FILE_NAME']['error'];
-switch($fileError) {
-		case UPLOAD_ERR_INI_SIZE:
-				//超出php.ini中文件大小限制
-				break;
-		case UPLOAD_ERR_PARTIAL:
-				//超出HTML文件大小限制
-				break;
-    case UPLOAD_ERR_NO_FILE:
-				//没有上传文件 
-				break;
-    case UPLOAD_ERR_NO_TMP_DIR:
-        //没有临时文件目录
-        break;
-    case UPLOAD_ERR_CANT_WRITE: 
-        //写入磁盘失败
-        break;
-		default:
-				//没有错误 
-				break;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$fileError <span style="color:#f92672">=</span> $_FILES[<span style="color:#e6db74">&#39;FILE_NAME&#39;</span>][<span style="color:#e6db74">&#39;error&#39;</span>];
+<span style="color:#66d9ef">switch</span>($fileError) {
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">UPLOAD_ERR_INI_SIZE</span><span style="color:#f92672">:</span>
+				<span style="color:#75715e">//超出php.ini中文件大小限制
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">break</span>;
+		<span style="color:#66d9ef">case</span> <span style="color:#a6e22e">UPLOAD_ERR_PARTIAL</span><span style="color:#f92672">:</span>
+				<span style="color:#75715e">//超出HTML文件大小限制
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">break</span>;
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">UPLOAD_ERR_NO_FILE</span><span style="color:#f92672">:</span>
+				<span style="color:#75715e">//没有上传文件 
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">break</span>;
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">UPLOAD_ERR_NO_TMP_DIR</span><span style="color:#f92672">:</span>
+        <span style="color:#75715e">//没有临时文件目录
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">break</span>;
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">UPLOAD_ERR_CANT_WRITE</span><span style="color:#f92672">:</span> 
+        <span style="color:#75715e">//写入磁盘失败
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">break</span>;
+		<span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+				<span style="color:#75715e">//没有错误 
+</span><span style="color:#75715e"></span>				<span style="color:#66d9ef">break</span>;
 } 
-</code></pre>
-
-<h3 id="5-post传递数组">5. POST传递数组</h3>
-
+</code></pre></div><h3 id="5-post传递数组">5. POST传递数组</h3>
 <p>通常，HTML中表格提交给PHP的是一个单独的值，例如：</p>
-
-<pre><code class="language-php">&lt;pre&gt;
-&lt;?php print_r($_POST); ?&gt;
-&lt;/pre&gt;
-&lt;form method=&quot;post&quot;&gt;
-    &lt;input type=&quot;hidden&quot; name=&quot;foo&quot; value=&quot;bar&quot;/&gt;
-    &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
-&lt;/form&gt;
-</code></pre>
-
-<p>结果就像下面这样：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;<span style="color:#f92672">pre</span>&gt;
+<span style="color:#75715e">&lt;?php</span> <span style="color:#a6e22e">print_r</span>($_POST); <span style="color:#75715e">?&gt;</span>
+&lt;/<span style="color:#f92672">pre</span>&gt;
+&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;foo&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bar&#34;</span>/&gt;
+    &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span>&gt;Submit&lt;/<span style="color:#f92672">button</span>&gt;
+&lt;/<span style="color:#f92672">form</span>&gt;
+</code></pre></div><p>结果就像下面这样：</p>
 <pre><code>Array
 (
     [foo] =&gt; bar
 )
-</code></pre>
-
-<p>但是，某些场景下面你希望传递一个数组值。这可以通过在HTML元素中添加一个类似PHP的后缀的name属性：</p>
-
-<pre><code class="language-php">&lt;pre&gt;
-&lt;?php print_r($_POST);?&gt; 
-&lt;/pre&gt;
-&lt;form method=&quot;post&quot;&gt;
-    &lt;input type=&quot;hidden&quot; name=&quot;foo[]&quot; value=&quot;bar&quot;/&gt;
-    &lt;input type=&quot;hidden&quot; name=&quot;foo[]&quot; value=&quot;baz&quot;/&gt;
-    &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
-&lt;/form&gt;
-</code></pre>
-
-<p>结果像下面一样：</p>
-
+</code></pre><p>但是，某些场景下面你希望传递一个数组值。这可以通过在HTML元素中添加一个类似PHP的后缀的name属性：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;<span style="color:#f92672">pre</span>&gt;
+<span style="color:#75715e">&lt;?php</span> <span style="color:#a6e22e">print_r</span>($_POST);<span style="color:#75715e">?&gt;</span> 
+&lt;/<span style="color:#f92672">pre</span>&gt;
+&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;foo[]&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bar&#34;</span>/&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;foo[]&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;baz&#34;</span>/&gt;
+    &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span>&gt;Submit&lt;/<span style="color:#f92672">button</span>&gt;
+&lt;/<span style="color:#f92672">form</span>&gt;
+</code></pre></div><p>结果像下面一样：</p>
 <pre><code>Array
 (
     [foo] =&gt; Array
@@ -347,22 +307,16 @@ switch($fileError) {
             [1] =&gt; baz 
         )
 )
-</code></pre>
-
-<p>你也可以指定数组的键值，不管是数字还是字符串都可以：</p>
-
-<pre><code class="language-php">&lt;pre&gt;
-&lt;?php print_r($_POST);?&gt; 
-&lt;/pre&gt;
-&lt;form method=&quot;post&quot;&gt;
-    &lt;input type=&quot;hidden&quot; name=&quot;foo[42]&quot; value=&quot;bar&quot;/&gt;
-    &lt;input type=&quot;hidden&quot; name=&quot;foo[foo]&quot; value=&quot;baz&quot;/&gt;
-    &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;
-&lt;/form&gt;
-</code></pre>
-
-<p>将会输出下面的内容：</p>
-
+</code></pre><p>你也可以指定数组的键值，不管是数字还是字符串都可以：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;<span style="color:#f92672">pre</span>&gt;
+<span style="color:#75715e">&lt;?php</span> <span style="color:#a6e22e">print_r</span>($_POST);<span style="color:#75715e">?&gt;</span> 
+&lt;/<span style="color:#f92672">pre</span>&gt;
+&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span>&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;foo[42]&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;bar&#34;</span>/&gt;
+    &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hidden&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;foo[foo]&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;baz&#34;</span>/&gt;
+    &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span>&gt;Submit&lt;/<span style="color:#f92672">button</span>&gt;
+&lt;/<span style="color:#f92672">form</span>&gt;
+</code></pre></div><p>将会输出下面的内容：</p>
 <pre><code>Array
 (
     [foo] =&gt; Array
@@ -371,33 +325,23 @@ switch($fileError) {
             [foo] =&gt; baz 
         )
 )
-</code></pre>
-
-<p>这项技术用来避免在$_POST数组上面进行循环处理，从而让代码更加精简，更加简洁。</p>
-
+</code></pre><p>这项技术用来避免在$_POST数组上面进行循环处理，从而让代码更加精简，更加简洁。</p>
 <h3 id="6-使用http-put上传文件">6. 使用HTTP PUT上传文件</h3>
-
 <p>PHP提供了对一些客户端使用HTTP PUT方法像服务器上传文件的支持。PUT请求上传文件比使用POST请求上传文件更加简单，下面就是一个例子：</p>
-
 <pre><code>PUT /path/filename.html HTTP/1.1
-</code></pre>
+</code></pre><p>在你的代码中，向下面这样处理：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$putdata <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;php://input&#34;</span>, <span style="color:#e6db74">&#39;r&#39;</span>);
 
-<p>在你的代码中，向下面这样处理：</p>
+$fp <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#39;putfile.ext&#39;</span>, <span style="color:#e6db74">&#39;w&#39;</span>);
 
-<pre><code class="language-php">&lt;?php
-$putdata = fopen(&quot;php://input&quot;, 'r');
-
-$fp = fopen('putfile.ext', 'w');
-
-while ($data = fread($putdata, 1024)) {
-    fwrite($fp, $data);
+<span style="color:#66d9ef">while</span> ($data <span style="color:#f92672">=</span> <span style="color:#a6e22e">fread</span>($putdata, <span style="color:#ae81ff">1024</span>)) {
+    <span style="color:#a6e22e">fwrite</span>($fp, $data);
 }
-fclose($fp); 
-fclose($putdata); 
-?&gt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<span style="color:#a6e22e">fclose</span>($fp); 
+<span style="color:#a6e22e">fclose</span>($putdata); 
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -469,6 +413,12 @@ fclose($putdata);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

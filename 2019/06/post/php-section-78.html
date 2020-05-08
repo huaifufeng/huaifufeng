@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,143 +187,92 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#缓存">缓存</a>
-<ul>
-<li><a href="#1-使用memcache">1. 使用memcache</a></li>
-<li><a href="#2-apc缓存">2. APC缓存</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#缓存">缓存</a>
+      <ul>
+        <li><a href="#1-使用memcache">1. 使用memcache</a></li>
+        <li><a href="#2-apc缓存">2. APC缓存</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="缓存">缓存</h2>
-
+        		<h2 id="缓存">缓存</h2>
 <h3 id="1-使用memcache">1. 使用memcache</h3>
-
 <p>Memcache是一个分布式对象缓存系统，使用<code>key-value</code>来存储小数据。在你开始在PHP代码中调用Memcache之前，你需要确定它已经安装了。可以在PHP中使用<code>class_exists</code>来测试。如果模块已经安装了，你可以建立一个到memcache服务器实例的连接：</p>
-
-<pre><code class="language-php">if (class_exists(&quot;Memcahce&quot;)) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if (class_exists(&#34;Memcahce&#34;)) {
     $cache = new Memcache();
-    $chace-&gt;connect(&quot;localhost&quot;, 11211);
+    $chace-&gt;connect(&#34;localhost&#34;, 11211);
 } else {
-    print &quot;没有连接缓存服务器&quot;;
+    print &#34;没有连接缓存服务器&#34;;
 }
-</code></pre>
-
-<p>这会确保Memcache的PHP驱动已经安装了，并且连接到运行在localhost的memcache服务器实例。</p>
-
+</code></pre></div><p>这会确保Memcache的PHP驱动已经安装了，并且连接到运行在localhost的memcache服务器实例。</p>
 <blockquote>
 <p>Memcache是守护模式运行的，并且叫做Memcached</p>
 </blockquote>
-
 <p>上面我们只连接了一个服务器实例，但是我们也可以连接到多个实例：</p>
-
-<pre><code class="language-php">if (class_exists(&quot;Memcache&quot;)) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if (class_exists(&#34;Memcache&#34;)) {
     $cache = new Memcache();
-    $cache-&gt;addServer('192.168.0.100', 11211);
-    $cache-&gt;addServer('192.168.0.101', 11211);
+    $cache-&gt;addServer(&#39;192.168.0.100&#39;, 11211);
+    $cache-&gt;addServer(&#39;192.168.0.101&#39;, 11211);
 }
-</code></pre>
-
-<p>注意这个不像connect，这个连接并不是活跃的连接，直到你试着存储或获取数据的时候。</p>
-
+</code></pre></div><p>注意这个不像connect，这个连接并不是活跃的连接，直到你试着存储或获取数据的时候。</p>
 <p>在缓存中有三个重要的操作需要实现：</p>
-
 <ul>
 <li><strong>存储数据</strong>：添加新的数据到Memcache服务器</li>
 <li><strong>获取数据</strong>：从Memcache服务器获取数据</li>
 <li><strong>删除数据</strong>：删除Memcache服务器上面已经存在的数据</li>
 </ul>
-
 <p><strong>存储数据</strong></p>
-
 <p><code>$cache</code>或者Memcache类的对象有一个<code>set</code>方法，这需要一个key，值和时间来存储一个过期时间(ttl)的值。</p>
-
-<pre><code class="language-php">$cache-&gt;set($key, $value, 0, $ttl);
-</code></pre>
-
-<p>这里<code>$ttl</code>或存活时间(单位是秒)是在服务器上面存储键值对的时间。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$cache-&gt;set($key, $value, 0, $ttl);
+</code></pre></div><p>这里<code>$ttl</code>或存活时间(单位是秒)是在服务器上面存储键值对的时间。</p>
 <p><strong>获取数据</strong></p>
-
 <p><code>$cache</code>或Memcache类对象有一个<code>get</code>方法，需要一个key来返回指定的值：</p>
-
-<pre><code class="language-php">$value = $cache-&gt;get($key);
-</code></pre>
-
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$value = $cache-&gt;get($key);
+</code></pre></div><blockquote>
 <p>如果这个key没有值得话，返回null。</p>
 </blockquote>
-
 <p><strong>删除数据</strong></p>
-
 <p>有时候你必须删除一些缓存值。<code>$cache</code>或Memcache类对象有一个<code>delete</code>方法来删除指定key的值。</p>
-
-<pre><code class="language-php">$cache-&gt;delete($key);
-</code></pre>
-
-<p><strong>缓存的小例子</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$cache-&gt;delete($key);
+</code></pre></div><p><strong>缓存的小例子</strong></p>
 <p>我们假设有一个小blog。它有多个页面，每次加载的时候从数据库里面读取。为了减少SQL查询，我们可以使用Memcache来缓存页面。这是一个很小的实现：</p>
-
-<pre><code class="language-php">if (class_exists('Memcache')) { 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if (class_exists(&#39;Memcache&#39;)) { 
     $cache = new Memcache(); 
-    $cache-&gt;connect('localhost',11211);
-        if(($data = $cache-&gt;get('posts')) != null) { 
+    $cache-&gt;connect(&#39;localhost&#39;,11211);
+        if(($data = $cache-&gt;get(&#39;posts&#39;)) != null) { 
             //缓存命中了就从缓存渲染
         } else {
             // 缓存没有命中查询数据库并获取结果
             // 假设$posts是从数据库获取结果的数组
-            $cache-&gt;set('posts', $posts, 0, $ttl);
+            $cache-&gt;set(&#39;posts&#39;, $posts, 0, $ttl);
         } 
 }else {
-    die(&quot;Error while connecting to cache server&quot;);
+    die(&#34;Error while connecting to cache server&#34;);
 }
-</code></pre>
-
-<h3 id="2-apc缓存">2. APC缓存</h3>
-
+</code></pre></div><h3 id="2-apc缓存">2. APC缓存</h3>
 <p>可选PHP缓存(APC)是一个免费的，开放的PHP的opcode缓存。它的目标是为缓存和优化PHP中间代码提供一个免费、开放和健壮的框架。</p>
-
 <p><a href="https://www.php.net/manual/zh/apc.installation.php">安装</a></p>
-
-<pre><code class="language-shell">sudo apt-get install php-apc 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get install php-apc 
 sudo /etc/init.d/apache2 restart
-</code></pre>
-
-<p>添加缓存</p>
-
+</code></pre></div><p>添加缓存</p>
 <pre><code>apc_add ($key, $value , $ttl);
 $key = unique cache key
 $value = cache value
 $ttl = Time To Live;
-</code></pre>
-
-<p>删除缓存</p>
-
+</code></pre><p>删除缓存</p>
 <pre><code>apc_delete($key);
-</code></pre>
-
-<p>设置缓存例子</p>
-
-<pre><code class="language-php">if (apc_exists($key)) {
-    echo &quot;Key exists: &quot;;
+</code></pre><p>设置缓存例子</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if (apc_exists($key)) {
+    echo &#34;Key exists: &#34;;
     echo apc_fetch($key);
 } else {
-    echo &quot;Key does not exist&quot;;
+    echo &#34;Key does not exist&#34;;
     apc_add ($key, $value , $ttl);
 }
-</code></pre>
-
-<p><a href="https://stackoverflow.com/questions/1794342/memcache-vs-apc-for-a-single-server-site-data-caching">性能</a></p>
-
+</code></pre></div><p><a href="https://stackoverflow.com/questions/1794342/memcache-vs-apc-for-a-single-server-site-data-caching">性能</a></p>
 <p>APC比Memcached快近乎<a href="https://www.percona.com/blog/2006/09/27/apc-or-memcached/">5倍</a>。</p>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -392,6 +345,12 @@ $ttl = Time To Live;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

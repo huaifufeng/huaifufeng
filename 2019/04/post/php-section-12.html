@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,30 +187,21 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#数组">数组</a>
-<ul>
-<li><a href="#数组初始化">数组初始化</a></li>
-<li><a href="#检查key是否存在">检查key是否存在</a></li>
-<li><a href="#验证数组类型">验证数组类型</a></li>
-<li><a href="#创建一个数组变量">创建一个数组变量</a></li>
-<li><a href="#检查数组中是否有某个值">检查数组中是否有某个值</a></li>
-<li><a href="#arrayacess-和iterator接口">ArrayAcess 和Iterator接口</a>
-<ul>
-<li><a href="#arrayaccess">ArrayAccess</a></li>
-<li><a href="#iterator">Iterator</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#数组">数组</a>
+      <ul>
+        <li><a href="#数组初始化">数组初始化</a></li>
+        <li><a href="#检查key是否存在">检查key是否存在</a></li>
+        <li><a href="#验证数组类型">验证数组类型</a></li>
+        <li><a href="#创建一个数组变量">创建一个数组变量</a></li>
+        <li><a href="#检查数组中是否有某个值">检查数组中是否有某个值</a></li>
+        <li><a href="#arrayacess-和iterator接口">ArrayAcess 和Iterator接口</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="数组">数组</h2>
-
+        		<h2 id="数组">数组</h2>
 <table>
 <thead>
 <tr>
@@ -214,44 +209,32 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>Key</td>
 <td>key是数组唯一的标识和索引。可以是<code>string</code>和<code>integer</code>。因此有效的key包括<code>foo 5 10 a2b</code></td>
 </tr>
-
 <tr>
 <td>Value</td>
 <td>对于每个key都有一个值和其对应（否知就是null，在访问是会出问题）。这个值没有严格限制的类型</td>
 </tr>
 </tbody>
 </table>
-
 <p>一个数组就是存储任意个元素到单独一个值中的数据结构。PHP中的数组实际是一个有序的映射，其中映射是一种键值关联的结构。</p>
-
 <h3 id="数组初始化">数组初始化</h3>
-
 <p>一个数组可以是空的。</p>
-
 <pre><code>//空数组
 $foo = array();
 
 //从PHP5.4的简短格式
 $foo = [];
-</code></pre>
-
-<p>一个数组可以初始化，并且有值：</p>
-
+</code></pre><p>一个数组可以初始化，并且有值：</p>
 <pre><code>//创建3个值的简单数组
 $fruit = array('apples', 'pears', 'oranges');
 
 //5.4之后的简短格式
 $fruit = ['apples', 'pears', 'oranges'];
-</code></pre>
-
-<p>一个数组可以带有自定义索引的值（这时数组叫关联数组）：</p>
-
+</code></pre><p>一个数组可以带有自定义索引的值（这时数组叫关联数组）：</p>
 <pre><code>//简单关联数组
 $fruit = array(
     'first' =&gt; 'apples',
@@ -268,23 +251,14 @@ $fruit = [
     'second' =&gt; 'pears',
     'third' =&gt; 'oranges'
 ];
-</code></pre>
-
-<p>如果一个变量之前没有用过，PHP将自动创建。虽然方便了，但也让代码更加难读了：</p>
-
+</code></pre><p>如果一个变量之前没有用过，PHP将自动创建。虽然方便了，但也让代码更加难读了：</p>
 <pre><code>$foo[] = 1;   //array([0] =&gt; 1)
 $bar[][] = 2;  //array([0] =&gt; array([0] =&gt; 2))
-</code></pre>
-
-<p>当没有索引的时候，索引会自增。PHP会试着吧数字字符串转换为整数：</p>
-
+</code></pre><p>当没有索引的时候，索引会自增。PHP会试着吧数字字符串转换为整数：</p>
 <pre><code>$foo = [2 =&gt; 'apple', 'melon']; // Array( [2] =&gt; apple, [3] =&gt; melon )
 $foo = ['2' =&gt; 'apple', 'melon']; // same as above
 $foo = [2 =&gt; 'apple', 'this is index 3 temporarily', '3' =&gt; 'melon']; // 和上面一样的，因为第二个被覆盖了
-</code></pre>
-
-<p>初始化归档大小的数组，可以使用<a href="https://secure.php.net/manual/en/class.splfixedarray.php">SplFixedArray</a>：</p>
-
+</code></pre><p>初始化归档大小的数组，可以使用<a href="https://secure.php.net/manual/en/class.splfixedarray.php">SplFixedArray</a>：</p>
 <pre><code>$array = new SplFixedArray(3);
 $array[0] = 1;
 $array[1] = 2;
@@ -292,12 +266,8 @@ $array[2] = 3;
 $array[3] = 4; // RuntimeException
 // Increase the size of the array to 10
 $array-&gt;setSize(10);
-</code></pre>
-
-<p>注意：使用<code>SplFixedArray</code>创建的数组对大量的数据来说占用的内存少，但是数组的可以必须是整数。</p>
-
+</code></pre><p>注意：使用<code>SplFixedArray</code>创建的数组对大量的数据来说占用的内存少，但是数组的可以必须是整数。</p>
 <p>初始化一个动态大小，但是含有<code>n</code>个非空元素的值，你可以使用循环：</p>
-
 <pre><code>$myArray = array();
 $sizeOfMyArray = 5;
 $fill = 'placeholder';
@@ -306,46 +276,29 @@ for ($i = 0; $i &lt; $sizeOfMyArray; $i++) {
 }
 // print_r($myArray); results in the following:
 // Array ( [0] =&gt; placeholder [1] =&gt; placeholder [2] =&gt; placeholder [3] =&gt; placeholder [4] =&gt; placeholder )
-</code></pre>
-
-<p>如果所有的<code>placeholder</code>都是一样的，你可以使用函数<a href="https://secure.php.net/manual/en/function.array-fill.php">array_fil()</a>函数来创建。</p>
-
+</code></pre><p>如果所有的<code>placeholder</code>都是一样的，你可以使用函数<a href="https://secure.php.net/manual/en/function.array-fill.php">array_fil()</a>函数来创建。</p>
 <blockquote>
 <p>array array_fill ( int $start_index , int $num , mixed $value )</p>
 </blockquote>
-
 <p>这个函数创建一个从<code>start_index</code>开始的，<code>num</code>个<code>value</code>值的数组。</p>
-
 <p>注意：如果<code>start_index</code>是一个负数，数组的第一个索引就是这个值，之后都从0开始。</p>
-
 <pre><code>$a = array_fill(5, 6, 'banana'); // Array ( [5] =&gt; banana, [6] =&gt; banana, ..., [10] =&gt; banana) 
 $b = array_fill(-2, 4, 'pear'); // Array ( [-2] =&gt; pear, [0] =&gt; pear, ..., [2] =&gt; pear)
-</code></pre>
-
-<p>结论：使用<code>array_fill</code>时，你会有很多的限制。循环是更加灵活的，也提供更多的方式。</p>
-
+</code></pre><p>结论：使用<code>array_fill</code>时，你会有很多的限制。循环是更加灵活的，也提供更多的方式。</p>
 <p>无论什么时候你想要一个使用数字区间的数组，你可以一个个给数组赋值，也可以使用<a href="https://secure.php.net/manual/en/function.range.php">range()</a>函数。</p>
-
 <blockquote>
 <p>array range ( mixed $start , mixed $end [, number $step = 1 ] )</p>
 </blockquote>
-
 <p>这个函数返回一个包含区间元素的数组。前两个元素是必须的，指明了开始和结尾之间的元素。第三个元素用来指明步数。创建0-4之间，步数是1的数组将会获取<code>0 1 2 3 4</code>。如果步数是2，结果将会是<code>0 2 4</code>。</p>
-
 <pre><code>$array = [];
 $array_with_range = range(1, 4);
 for ($i = 1; $i &lt;= 4; $i++) {
     $array[] = $i;
 }
 print_r($array); // Array ( [0] =&gt; 1 [1] =&gt; 2 [2] =&gt; 3 [3] =&gt; 4 ) print_r($array_with_range); // Array ( [0] =&gt; 1 [1] =&gt; 2 [2] =&gt; 3 [3] =&gt; 4 )
-</code></pre>
-
-<p><code>range</code>可以作用在整数，浮点数，布尔值(转换为整数)，字符串。注意使用浮点数时要考虑浮点数的精度问题。</p>
-
+</code></pre><p><code>range</code>可以作用在整数，浮点数，布尔值(转换为整数)，字符串。注意使用浮点数时要考虑浮点数的精度问题。</p>
 <h3 id="检查key是否存在">检查key是否存在</h3>
-
 <p>使用<a href="https://php.net/manual/en/function.array-key-exists.php">array_key_exists</a>或<a href="https://php.net/manual/en/function.isset.php">isset</a>或<a href="https://php.net/manual/en/function.empty.php">!empty()</a>。</p>
-
 <pre><code>$map = [
     'foo' =&gt; 1,
     'bar' =&gt; null,
@@ -359,90 +312,55 @@ isset($map['foo']);   //true
 array_key_exists('bar', $map);  //true
 isset($map['bar']);   //false
 !empty($map['bar']);  //false
-</code></pre>
-
-<p>注意：<code>isset()</code>函数任务<code>null</code>是不存在的。反之，<code>!empty()</code>对任何等于<code>false</code>的元素做了一样的事情(这里使用弱比较，例如 null &ldquo; 0 都被认为是false)。然后<code>isset($map['foobar'])</code>是返回<code>true</code>，但是<code>!empty($map)</code>被认为是<code>false</code>。这在使用<code>!empty</code>验证的时候，会把0也当做是false，这样会出现问题。</p>
-
+</code></pre><p>注意：<code>isset()</code>函数任务<code>null</code>是不存在的。反之，<code>!empty()</code>对任何等于<code>false</code>的元素做了一样的事情(这里使用弱比较，例如 null '&rsquo; 0 都被认为是false)。然后<code>isset($map['foobar'])</code>是返回<code>true</code>，但是<code>!empty($map)</code>被认为是<code>false</code>。这在使用<code>!empty</code>验证的时候，会把0也当做是false，这样会出现问题。</p>
 <p>注意当<code>$map</code>没有定义的时候，<code>isset</code>和<code>!empty</code>将会返回false，这使它们容易出错。</p>
-
 <pre><code>// Note &quot;long&quot; vs &quot;lang&quot;, a tiny typo in the variable name.
 $my_array_with_a_long_name = ['foo' =&gt; true];
 array_key_exists('foo', $my_array_with_a_lang_name); // shows a warning isset($my_array_with_a_lang_name['foo']); // returns false
-</code></pre>
-
-<p>你也可以检测顺序数组：</p>
-
+</code></pre><p>你也可以检测顺序数组：</p>
 <pre><code>$ord = ['a', 'b']; // equivalent to [0 =&gt; 'a', 1 =&gt; 'b']
 array_key_exists(0, $ord); // true 
 array_key_exists(2, $ord); // false
-</code></pre>
-
-<p>注意<code>isset</code>的性能比<code>array_key_exists</code>好，因为前者是数据结构，而后者是函数。</p>
-
+</code></pre><p>注意<code>isset</code>的性能比<code>array_key_exists</code>好，因为前者是数据结构，而后者是函数。</p>
 <p>你也可以使用<a href="http://php.net/manual/en/function.key-exists.php">key_exists</a>，这个是<code>array_key_exists</code>的别名。</p>
-
 <h3 id="验证数组类型">验证数组类型</h3>
-
 <p>如果一个变量是数组的话，<a href="https://php.net/manual/en/function.is-array.php">is_array</a>函数将会返回true。</p>
-
 <pre><code>$integer = 1337;
 $array = [1337, 42];
 
 is_array($integer); // false 
 is_array($array); // true
-</code></pre>
-
-<p>你可以在函数定义中使用类型声明，强制一个参数的类型是数组，其他类型的值将会返回一个致命错误。</p>
-
+</code></pre><p>你可以在函数定义中使用类型声明，强制一个参数的类型是数组，其他类型的值将会返回一个致命错误。</p>
 <pre><code>function foo (array $array) { /* $array is an array */ }
-</code></pre>
-
-<p>你也可以使用<a href="https://php.net/manual/en/function.gettype.php">gettype</a>函数。</p>
-
+</code></pre><p>你也可以使用<a href="https://php.net/manual/en/function.gettype.php">gettype</a>函数。</p>
 <pre><code>$integer = 1337;
 $array = [1337, 42];
 
 gettype($integer) === 'array'; // false 
 gettype($array) === 'array'; // true
-</code></pre>
-
-<h3 id="创建一个数组变量">创建一个数组变量</h3>
-
+</code></pre><h3 id="创建一个数组变量">创建一个数组变量</h3>
 <pre><code>$username = 'Hadibut';
 $email = 'hadibut@exmaple.org';
 
 $variables = compact('username', 'email');
 // $variables is now ['username' =&gt; 'Hadibut', 'email' =&gt; 'hadibut@example.org']
-</code></pre>
-
-<p>这种方法通常在框架中用于在两个组件之间传递变量数组。</p>
-
+</code></pre><p>这种方法通常在框架中用于在两个组件之间传递变量数组。</p>
 <h3 id="检查数组中是否有某个值">检查数组中是否有某个值</h3>
-
 <p>如果一个元素在数组中存在的话，<a href="https://php.net/manual/en/function.in-array.php">is_array()</a>将会返回true。</p>
-
 <pre><code>$fruits = ['banana', 'apple'];
 
 $foo = in_array('banana', $fruits);   //true
 
 $bar = in_array('orange', $fruits);  //false
-</code></pre>
-
-<p>你也可以使用<a href="https://php.net/manual/en/function.array-search.php">array_search()</a>函数来获取数组中指定元素的键值。</p>
-
+</code></pre><p>你也可以使用<a href="https://php.net/manual/en/function.array-search.php">array_search()</a>函数来获取数组中指定元素的键值。</p>
 <pre><code>$userdb = ['Sandra Shush', 'Stefanie Mcmohn', 'Michael']; 
 $pos = array_search('Stefanie Mcmohn', $userdb);
 if ($pos !== false) {
     echo &quot;Stefanie Mcmohn found at $pos&quot;; 
 }
-</code></pre>
-
-<p>PHP 5.x version&gt;=5.0</p>
-
+</code></pre><p>PHP 5.x version&gt;=5.0</p>
 <p>在PHP5.5之后，你可以使用<a href="https://php.net/manual/en/function.array-column.php">array_column()</a>来获取数组某一列的值，可以和array_search联合使用。</p>
-
 <p>一个特殊的使用<a href="https://stackoverflow.com/questions/6990855/php-check-if-value-and-key-exist-in-multidimensional-array/37935356#37935356">例子</a>。</p>
-
 <pre><code>$userdb = [
     [
         'uid' =&gt; '100',
@@ -462,23 +380,15 @@ if ($pos !== false) {
 ];
 
 $key = array_search(40489, array_column($userdb, 'uid'));
-</code></pre>
-
-<h3 id="arrayacess-和iterator接口">ArrayAcess 和Iterator接口</h3>
-
+</code></pre><h3 id="arrayacess-和iterator接口">ArrayAcess 和Iterator接口</h3>
 <p>PHP一个特别有用的特性是像数组一样访问自定义对象集合。PHP5.0.0之后又两个接口支持这个功能：<code>ArrayAccess</code>和<code>Iterator</code>。这两个允许像数组一样访问自己的对象。</p>
-
 <h4 id="arrayaccess">ArrayAccess</h4>
-
 <p>假设我们有一个用户类，一个数据库表保存所有的用户信息。我们可以创建一个<code>UserCollection</code>的类：</p>
-
 <ul>
 <li>允许我们通过特定用户的用户名唯一标识符与他们联系</li>
 <li>对用户集执行基本操作(不是所有的CURD，但至少是创建 搜索 删除)</li>
 </ul>
-
 <p>查看下面的源码(我们使用5.4之后提供的短结构数组)：</p>
-
 <pre><code>class UserCollection implents ArrayAccess {
     protected $_conn;
     
@@ -530,10 +440,7 @@ $key = array_search(40489, array_column($userdb, 'uid'));
         }
     }
 }
-</code></pre>
-
-<p>然后我们就可以使用了：</p>
-
+</code></pre><p>然后我们就可以使用了：</p>
 <pre><code>$users = new UserCollection();
 
 var_dump(empty($users['testuser']), isset($users['testuser']));
@@ -546,10 +453,7 @@ $users['testuser'] = [
 var_dump($empty($users['testuser']), isset($users['testuser']), $users['testuser']);
 unset($users['testuser']);
 var_dump(empty($users['testuser']), isset($users['testuser']));
-</code></pre>
-
-<p>假设最开始是没有<code>testuser</code>这个用户的，然后就会有下面的输出：</p>
-
+</code></pre><p>假设最开始是没有<code>testuser</code>这个用户的，然后就会有下面的输出：</p>
 <pre><code>bool(true)
 bool(false)
 bool(false)
@@ -564,10 +468,7 @@ array(17) {
 }
 bool(true)
 bool(false)
-</code></pre>
-
-<p><strong>重要：</strong>在使用<code>array_key_exists</code>判断键值是否存在时，<code>offsetExists</code>并不会被调用。所以下面会输出两次false：</p>
-
+</code></pre><p>**重要：**在使用<code>array_key_exists</code>判断键值是否存在时，<code>offsetExists</code>并不会被调用。所以下面会输出两次false：</p>
 <pre><code>var_dump(array_key_exists('testuser', $users));
 $users['testuser'] = [
     'username' =&gt; 'testuser',
@@ -575,25 +476,14 @@ $users['testuser'] = [
     'email'    =&gt; 'test@test.com'
 ];
 var_dump(array_key_exists('testuser', $users));
-</code></pre>
-
-<h4 id="iterator">Iterator</h4>
-
+</code></pre><h4 id="iterator">Iterator</h4>
 <p>让我们使用<code>Iterator</code>接口扩展我们的类，这样可以让我们的类支持<code>foreach</code>和<code>while</code>方法。</p>
-
 <p>第一步，我们需要增加迭代器当前索引的属性，我们增加<code>$_postion</code>属性。</p>
-
 <pre><code>//迭代器的位置
 protected $_position = 1;
-</code></pre>
-
-<p>第二步，我们在类定义时实现<code>Iterator</code>接口。</p>
-
+</code></pre><p>第二步，我们在类定义时实现<code>Iterator</code>接口。</p>
 <pre><code>class UserCollection implements ArrayAccess, Iterator {
-</code></pre>
-
-<p>然后增加需要实现的接口方法：</p>
-
+</code></pre><p>然后增加需要实现的接口方法：</p>
 <pre><code>// START of methods required by Iterator interface
 public function current () {
     return $this-&gt;_getById($this-&gt;_position);
@@ -611,10 +501,7 @@ public function valid () {
     return null !== $this-&gt;_getById($this-&gt;_position);
 }
 //结束
-</code></pre>
-
-<p>这样实现两个接口的类代码就全在这里了。注意，这个例子是不完美的，因为数据库的IDs可能是不连续的，但这只是用来解释用法：你可以上线你的对象集合通过<code>ArrayAccess</code>和<code>Iterator</code>。</p>
-
+</code></pre><p>这样实现两个接口的类代码就全在这里了。注意，这个例子是不完美的，因为数据库的IDs可能是不连续的，但这只是用来解释用法：你可以上线你的对象集合通过<code>ArrayAccess</code>和<code>Iterator</code>。</p>
 <pre><code>class UserCollection implements ArrayAccess, Iterator {
     // iterator current position, required by Iterator interface methods protected    
     $_position = 1;
@@ -639,25 +526,17 @@ public function valid () {
     }
     // END
 }
-</code></pre>
-
-<p>然后使用<code>foreach</code>来循环所有的用户对象：</p>
-
+</code></pre><p>然后使用<code>foreach</code>来循环所有的用户对象：</p>
 <pre><code>foreach ($users as $user) {
     var_dump($user['id']);
 }
-</code></pre>
-
-<p>这将会有下面的输出：</p>
-
+</code></pre><p>这将会有下面的输出：</p>
 <pre><code>string(2) &quot;1&quot;
 string(2) &quot;2&quot;
 string(2) &quot;3&quot;
 string(2) &quot;4&quot;
 ...
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -729,6 +608,12 @@ string(2) &quot;4&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,112 +187,63 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git可视客户端">git可视客户端</a>
-<ul>
-<li><a href="#gitk和git-gui">gitk和git-gui</a></li>
-<li><a href="#github桌面">Github桌面</a></li>
-<li><a href="#git-kraken">Git Kraken</a></li>
-<li><a href="#sourcetree">SourceTree</a></li>
-<li><a href="#git扩展">Git扩展</a></li>
-<li><a href="#smartgit">SmartGit</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git可视客户端">git可视客户端</a>
+      <ul>
+        <li><a href="#gitk和git-gui">gitk和git-gui</a></li>
+        <li><a href="#github桌面">Github桌面</a></li>
+        <li><a href="#git-kraken">Git Kraken</a></li>
+        <li><a href="#sourcetree">SourceTree</a></li>
+        <li><a href="#git扩展">Git扩展</a></li>
+        <li><a href="#smartgit">SmartGit</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git可视客户端">git可视客户端</h2>
-
+        		<h2 id="git可视客户端">git可视客户端</h2>
 <h3 id="gitk和git-gui">gitk和git-gui</h3>
-
 <p>当你按照git的时候，也可以按照可视化的工具：gitk和git-gui。</p>
-
 <p><code>gitk</code>是一个图形历史查看工具。把它想象成<code>git log</code>和<code>git grep</code>的强大GUI工具。这在你想要查看仓库历史发送的修改，或者查看仓库的历史很有用。</p>
-
 <p>Gitk很容易从命令行启动。只要cd到仓库的目录，然后输入：</p>
-
 <pre><code>$ gitk [git log options]
-</code></pre>
-
-<p>Gitk接收很多的命令行选项，启动大部分是传给底层<code>git log</code>操作的。可能其中最有用的：<code>—all</code>标识，通知gitk显示所有引用的提交，不仅仅是HEAD。Gitk的界面可能想下面这样：</p>
-
-<p><img src="/img/git/Q6oU3.png" alt="gitk" /></p>
-
+</code></pre><p>Gitk接收很多的命令行选项，启动大部分是传给底层<code>git log</code>操作的。可能其中最有用的：<code>—all</code>标识，通知gitk显示所有引用的提交，不仅仅是HEAD。Gitk的界面可能想下面这样：</p>
+<p><img src="/img/git/Q6oU3.png" alt="gitk"></p>
 <p>上面图像中上部分就像是使用<code>git log —graph</code>的输出。每个点代表一个提交，每条线代表父关系，引用显示在带颜色的块内。黄点标识HEAD，红点表示还没有提交的修改。下部分就是显示指定提交的展示，注释和补丁在左边，右边是摘要视图。中间是一系列用来搜索历史的。</p>
-
 <p>你可以在分支名或提交信息上右键，可以使用很多git的方法。例如签出不同的分支或cherry pick一个提交，只要一个点击。</p>
-
 <p><code>git-gui</code>主要是用于构建提交的工具，它也很容易从命令行启动：</p>
-
 <pre><code>$ git gui
-</code></pre>
-
-<p>它的界面就像下面这样：</p>
-
-<p><img src="/img/git/P0SPX.png" alt="git-gui" /></p>
-
+</code></pre><p>它的界面就像下面这样：</p>
+<p><img src="/img/git/P0SPX.png" alt="git-gui"></p>
 <p>左边是索引，上边是未暂存的修改，暂存的修改在下吧。你可以点击文件的标识来交互文件的状态，或者选择一个文件点击查看它的名称。</p>
-
 <p>右上角是文件的diff，用来显示选择文件的修改。你可以在这个区域使用右键来暂存单独的块或者行。</p>
-
 <p>右下角是提交信息和操作的地方。在文本框中输入提交信息，然后点击<code>Commit</code>按键做和git commit一样的事情。你也可以使用<code>Amend</code>来提交，将会把暂存的修改提交到上次提交。然后，你可以暂存或取消暂存修改，添加提交信息，然后提交<code>Commit</code>来重新提交。</p>
-
 <p>gitk和git-gui是面向任务的例子。它们中的每一个都是为特定目的而定制的（分别查看历史和创建提交），并且省略了该任务不需要的特性。</p>
-
 <p><a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Graphical-Interfaces">查看介绍</a>。</p>
-
 <h3 id="github桌面">Github桌面</h3>
-
 <p>站点：<a href="https://git-scm.com/book/en/v2/Git-in-Other-Environments-Graphical-Interfaces">https://git-scm.com/book/en/v2/Git-in-Other-Environments-Graphical-Interfaces</a></p>
-
 <p>价格：免费</p>
-
 <p>平台：OS X和Windows</p>
-
 <p>开发者：<a href="https://github.com/">https://github.com/</a></p>
-
 <h3 id="git-kraken">Git Kraken</h3>
-
 <p>站点：<a href="https://www.gitkraken.com/">https://www.gitkraken.com/</a></p>
-
 <p>价格：$60/每年(免费为开源、教育、非营利、初创企业或个人使用)</p>
-
 <p>平台：Linux, OS X,  Windows</p>
-
 <p>开发者：<a href="https://www.axosoft.com/lp-gitkraken">Axosoft</a></p>
-
 <h3 id="sourcetree">SourceTree</h3>
-
 <p>站点：<a href="https://www.sourcetreeapp.com/">https://www.sourcetreeapp.com/</a></p>
-
 <p>价格：免费(需要账户)</p>
-
 <p>平台：OS X 和 Windows</p>
-
 <p>开发者：<a href="https://www.atlassian.com/">Atlassian</a></p>
-
 <h3 id="git扩展">Git扩展</h3>
-
 <p>站点：<a href="https://gitextensions.github.io/">https://gitextensions.github.io</a></p>
-
 <p>价格：免费</p>
-
 <p>平台：Windows</p>
-
 <h3 id="smartgit">SmartGit</h3>
-
-<p>站点：<a href="https://www.syntevo.com/smartgit/">https://www.syntevo.com/smartgit/</a></p>
-
+<p>站点：https://www.syntevo.com/smartgit/</p>
 <p>价格：免费仅限非商业用途。永久许可费99美元</p>
-
 <p>平台：Linux，OS X 和Windows</p>
-
 <p>开发者：<a href="https://www.syntevo.com/">syntevo</a></p>
-
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -361,6 +316,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

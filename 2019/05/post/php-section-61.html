@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,106 +187,75 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用mongodb">使用MongoDB</a>
-<ul>
-<li><a href="#1-连接mongodb">1. 连接MongoDB</a></li>
-<li><a href="#2-获取多个文档-find">2. 获取多个文档 - find()</a></li>
-<li><a href="#3-获取一个文档-findone">3. 获取一个文档 - findOne()</a></li>
-<li><a href="#4-插入一个文档">4. 插入一个文档</a></li>
-<li><a href="#5-更新一个文档">5. 更新一个文档</a></li>
-<li><a href="#6-删除一个文档">6. 删除一个文档</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#使用mongodb">使用MongoDB</a>
+      <ul>
+        <li><a href="#1-连接mongodb">1. 连接MongoDB</a></li>
+        <li><a href="#2-获取多个文档---find">2. 获取多个文档 - find()</a></li>
+        <li><a href="#3-获取一个文档---findone">3. 获取一个文档 - findOne()</a></li>
+        <li><a href="#4-插入一个文档">4. 插入一个文档</a></li>
+        <li><a href="#5-更新一个文档">5. 更新一个文档</a></li>
+        <li><a href="#6-删除一个文档">6. 删除一个文档</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="使用mongodb">使用MongoDB</h2>
-
+        		<h2 id="使用mongodb">使用MongoDB</h2>
 <h3 id="1-连接mongodb">1. 连接MongoDB</h3>
-
 <p>创建一个MongoDB连接，之后你可以在这个连接查询数据：</p>
-
-<pre><code class="language-php">$manager = new \MongoDB\Driver\Manager('mongodb://localhost:27017');
-</code></pre>
-
-<p>在下面的例子中，你可以知道怎么在连接对象上面怎么进行查询。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$manager = new \MongoDB\Driver\Manager(&#39;mongodb://localhost:27017&#39;);
+</code></pre></div><p>在下面的例子中，你可以知道怎么在连接对象上面怎么进行查询。</p>
 <p>这个扩展将会自动的关闭连接，所有不是必须手动关闭的。</p>
-
-<h3 id="2-获取多个文档-find">2. 获取多个文档 - find()</h3>
-
+<h3 id="2-获取多个文档---find">2. 获取多个文档 - find()</h3>
 <p>搜索多个名称为<code>Mike</code>的用户的例子：</p>
-
-<pre><code class="language-php">$filter = ['name' =&gt; 'Mike'];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$filter = [&#39;name&#39; =&gt; &#39;Mike&#39;];
 $query = new \MongoDB\Driver\Query($filter);
 
-$cursor = $manger-&gt;executeQuery('database_name.collection_name', $query);
+$cursor = $manger-&gt;executeQuery(&#39;database_name.collection_name&#39;, $query);
 foreach ($cursor as $doc) {
     var_dump($doc);
 }
-</code></pre>
-
-<h3 id="3-获取一个文档-findone">3. 获取一个文档 - findOne()</h3>
-
+</code></pre></div><h3 id="3-获取一个文档---findone">3. 获取一个文档 - findOne()</h3>
 <p>获取指定id对应的一个用户的信息的例子，你可以使用：</p>
-
-<pre><code class="language-php">$options = ['limit' =&gt; 1];
-$filter = ['_id' =&gt; new \MongoDB\BSON\ObjectID('578ff7c3648c940e008b457a')];
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$options = [&#39;limit&#39; =&gt; 1];
+$filter = [&#39;_id&#39; =&gt; new \MongoDB\BSON\ObjectID(&#39;578ff7c3648c940e008b457a&#39;)];
 $query = new \MongoDB\Driver\Query($filter, $options);
 
-$cursor = $manager-&gt;executeQuery('database_name.collection_name', $query);
+$cursor = $manager-&gt;executeQuery(&#39;database_name.collection_name&#39;, $query);
 $cursorArray = $cursor-&gt;toArray();
 if(isset($cursorArray[0])) {
     var_dump($cursorArray[0]);
 }
-</code></pre>
-
-<h3 id="4-插入一个文档">4. 插入一个文档</h3>
-
+</code></pre></div><h3 id="4-插入一个文档">4. 插入一个文档</h3>
 <p>添加一个文档的例子：</p>
-
-<pre><code class="language-php">$document = [
-    'name' =&gt; 'John',
-    'active' =&gt; true,
-    'info' =&gt; ['genre' =&gt; 'male', 'age' =&gt; 30]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$document = [
+    &#39;name&#39; =&gt; &#39;John&#39;,
+    &#39;active&#39; =&gt; true,
+    &#39;info&#39; =&gt; [&#39;genre&#39; =&gt; &#39;male&#39;, &#39;age&#39; =&gt; 30]
 ];
 $bulk = new \MongoDB\Driver\BulkWrite;
 $_id1 = $bulk-&gt;insert($document);
-$result = $manager-&gt;executeBulkWrite('database_name.collection_name', $bulk);
-</code></pre>
-
-<h3 id="5-更新一个文档">5. 更新一个文档</h3>
-
-<p>更新所有名字为&rdquo;John&rdquo;的例子：</p>
-
-<pre><code class="language-php">$filter = ['name' =&gt; 'John'];
-$document = ['name' =&gt; 'Mike'];
+$result = $manager-&gt;executeBulkWrite(&#39;database_name.collection_name&#39;, $bulk);
+</code></pre></div><h3 id="5-更新一个文档">5. 更新一个文档</h3>
+<p>更新所有名字为&quot;John&quot;的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$filter = [&#39;name&#39; =&gt; &#39;John&#39;];
+$document = [&#39;name&#39; =&gt; &#39;Mike&#39;];
 
 $bulk = new \MongoDB\Driver\BulkWrite; 
 $bulk-&gt;update(
-    $filter, $document, ['multi' =&gt; true]
+    $filter, $document, [&#39;multi&#39; =&gt; true]
 );
-$result = $manager-&gt;executeBulkWrite('database_name.collection_name', $bulk);
-</code></pre>
-
-<h3 id="6-删除一个文档">6. 删除一个文档</h3>
-
-<p>删除所有名字为&rdquo;Peter&rdquo;的文档的例子：</p>
-
+$result = $manager-&gt;executeBulkWrite(&#39;database_name.collection_name&#39;, $bulk);
+</code></pre></div><h3 id="6-删除一个文档">6. 删除一个文档</h3>
+<p>删除所有名字为&quot;Peter&quot;的文档的例子：</p>
 <pre><code>$bulk = new \MongoDB\Driver\BulkWrite; 
 
 $filter = ['name' =&gt; 'Peter'];
 $bulk-&gt;delete($filter);
 
 $result = $manager-&gt;executeBulkWrite('database_name.collection_name', $bulk);
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -354,6 +327,12 @@ $result = $manager-&gt;executeBulkWrite('database_name.collection_name', $bulk);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

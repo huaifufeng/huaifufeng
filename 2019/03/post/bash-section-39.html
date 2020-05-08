@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,39 +187,25 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#读取文件">读取文件</a>
-<ul>
-<li><a href="#一行一行循环">一行一行循环</a></li>
-<li><a href="#逐个字段循环">逐个字段循环</a></li>
-<li><a href="#读取文件行到数组">读取文件行到数组</a></li>
-<li><a href="#读取字符串行到数组">读取字符串行到数组</a></li>
-<li><a href="#一行行循环字符串">一行行循环字符串</a>
-<ul>
-<li><a href="#命令的一行行输出">命令的一行行输出</a></li>
-</ul></li>
-<li><a href="#逐个字段读取文件">逐个字段读取文件</a></li>
-<li><a href="#逐个字段读取字符串">逐个字段读取字符串</a></li>
-<li><a href="#读取文件字段到数组">读取文件字段到数组</a></li>
-<li><a href="#读取字符串字段到数组">读取字符串字段到数组</a></li>
-<li><a href="#逐行和逐字段读取文件-etc-passwd">逐行和逐字段读取文件/etc/passwd</a>
-<ul>
-<li><a href="#例子输入">例子输入</a></li>
-<li><a href="#例子输出">例子输出</a></li>
-<li><a href="#例子输入-1">例子输入</a></li>
-<li><a href="#例子输出-1">例子输出</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#读取文件">读取文件</a>
+      <ul>
+        <li><a href="#一行一行循环">一行一行循环</a></li>
+        <li><a href="#逐个字段循环">逐个字段循环</a></li>
+        <li><a href="#读取文件行到数组">读取文件行到数组</a></li>
+        <li><a href="#读取字符串行到数组">读取字符串行到数组</a></li>
+        <li><a href="#一行行循环字符串">一行行循环字符串</a></li>
+        <li><a href="#逐个字段读取文件">逐个字段读取文件</a></li>
+        <li><a href="#逐个字段读取字符串">逐个字段读取字符串</a></li>
+        <li><a href="#读取文件字段到数组">读取文件字段到数组</a></li>
+        <li><a href="#读取字符串字段到数组">读取字符串字段到数组</a></li>
+        <li><a href="#逐行和逐字段读取文件etcpasswd">逐行和逐字段读取文件/etc/passwd</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="读取文件">读取文件</h2>
-
+        		<h2 id="读取文件">读取文件</h2>
 <table>
 <thead>
 <tr>
@@ -223,138 +213,90 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>IFS</td>
 <td>内部字段分隔符</td>
 </tr>
-
 <tr>
 <td>file</td>
 <td>文件名或路径</td>
 </tr>
-
 <tr>
 <td>-r</td>
 <td>当使用read时，防止反斜杠解析</td>
 </tr>
-
 <tr>
 <td>-t</td>
 <td>从readarray读取的每一行中删除尾部换行符</td>
 </tr>
-
 <tr>
 <td>-d DELIM</td>
 <td>读取到DELIM的第一个字符中断，而不是换行符</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="一行一行循环">一行一行循环</h3>
-
 <pre><code>while IFS= read -r line; do 
     echo &quot;$line&quot;
 done &lt;file
-</code></pre>
-
-<p>如果没有包含新行符号的话：</p>
-
+</code></pre><p>如果没有包含新行符号的话：</p>
 <pre><code>while IFS= read -r line || [ -n &quot;$line&quot; ]; do 
     echo &quot;$line&quot;
 done &lt;file
-</code></pre>
-
-<h3 id="逐个字段循环">逐个字段循环</h3>
-
+</code></pre><h3 id="逐个字段循环">逐个字段循环</h3>
 <p>我们假设字段分隔符是<code>:</code>：</p>
-
 <pre><code>while IFS= read -d : -r field || [ -n &quot;$field&quot; ];do 
     echo &quot;**$field**&quot;
 done &lt; &lt;(ping google.com)
-</code></pre>
-
-<p>或者使用管道：</p>
-
+</code></pre><p>或者使用管道：</p>
 <pre><code>ping google.com | while IFS= read -d : -r field || [ -n &quot;$field&quot; ];do 
     echo &quot;**$field**&quot;
 done
-</code></pre>
-
-<h3 id="读取文件行到数组">读取文件行到数组</h3>
-
+</code></pre><h3 id="读取文件行到数组">读取文件行到数组</h3>
 <pre><code>readarray -t arr &lt;file
-</code></pre>
-
-<p>或者循环：</p>
-
+</code></pre><p>或者循环：</p>
 <pre><code>arr=()
 while IFS= read -r line; do
     arr+=(&quot;$line&quot;) 
 done &lt;file
-</code></pre>
-
-<h3 id="读取字符串行到数组">读取字符串行到数组</h3>
-
+</code></pre><h3 id="读取字符串行到数组">读取字符串行到数组</h3>
 <pre><code>var='line 1
 line 2
 line3'
 readarray -t arr &lt;&lt;&lt; &quot;$var&quot;
-</code></pre>
-
-<p>或使用循环</p>
-
+</code></pre><p>或使用循环</p>
 <pre><code>arr=()
 while IFS= read -r line; do
     arr+=(&quot;$line&quot;) 
 done &lt;&lt;&lt; &quot;$var&quot;
-</code></pre>
-
-<h3 id="一行行循环字符串">一行行循环字符串</h3>
-
+</code></pre><h3 id="一行行循环字符串">一行行循环字符串</h3>
 <pre><code>var='line 1
 line 2
 line3'
 while IFS= read -r line; do
     echo &quot;-$line-&quot; 
 done &lt;&lt;&lt; &quot;$var&quot;
-</code></pre>
-
-<p>或者：</p>
-
+</code></pre><p>或者：</p>
 <pre><code>readarray -t arr &lt;&lt;&lt; &quot;$var&quot;
 for i in &quot;${arr[@]}&quot;;do
     echo &quot;-$i-&quot; 
 done
-</code></pre>
-
-<h4 id="命令的一行行输出">命令的一行行输出</h4>
-
+</code></pre><h4 id="命令的一行行输出">命令的一行行输出</h4>
 <pre><code>while IFS= read -r line;do 
     echo &quot;**$line**&quot;
 done &lt; &lt;(ping google.com)
-</code></pre>
-
-<p>或者使用管道：</p>
-
+</code></pre><p>或者使用管道：</p>
 <pre><code>ping google.com |
 while IFS= read -r line;do
     echo &quot;**$line**&quot; 
 done
-</code></pre>
-
-<h3 id="逐个字段读取文件">逐个字段读取文件</h3>
-
+</code></pre><h3 id="逐个字段读取文件">逐个字段读取文件</h3>
 <p>假设文件的分隔符是<code>:</code>：</p>
-
 <pre><code>while IFS= read -d : -r field || [ -n &quot;$field&quot; ]; do 
     echo &quot;$field&quot;
 done &lt;file
-</code></pre>
-
-<p>将会输出：</p>
-
+</code></pre><p>将会输出：</p>
 <pre><code>first : se
 con
 d:
@@ -371,44 +313,29 @@ d**
 **
     Fourth
 **
-</code></pre>
-
-<h3 id="逐个字段读取字符串">逐个字段读取字符串</h3>
-
+</code></pre><h3 id="逐个字段读取字符串">逐个字段读取字符串</h3>
 <p>假设分隔符是<code>:</code>：</p>
-
 <pre><code>var='line: 1
 line: 2
 line3'
 while IFS= read -d : -r field || [ -n &quot;$field&quot; ]; do
     echo &quot;-$field-&quot;
 done &lt;&lt;&lt; &quot;$var&quot;
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>-line- 
 -1 
 line- 
 -2 
 line3 
 -
-</code></pre>
-
-<h3 id="读取文件字段到数组">读取文件字段到数组</h3>
-
+</code></pre><h3 id="读取文件字段到数组">读取文件字段到数组</h3>
 <p>假设分隔符是<code>:</code>：</p>
-
 <pre><code>arr=()
 while IFS= read -d : -r field || [ -n &quot;$field&quot; ]; do
     arr+=(&quot;$field&quot;) 
 done &lt;file
-</code></pre>
-
-<h3 id="读取字符串字段到数组">读取字符串字段到数组</h3>
-
+</code></pre><h3 id="读取字符串字段到数组">读取字符串字段到数组</h3>
 <p>假设分隔符是<code>:</code>：</p>
-
 <pre><code>var='1:2:3:4:
 newline'
 arr=()
@@ -418,65 +345,44 @@ done &lt;&lt;&lt; &quot;$var&quot;
 echo &quot;${arr[4]}&quot;
 
 //输出 newline
-</code></pre>
-
-<h3 id="逐行和逐字段读取文件-etc-passwd">逐行和逐字段读取文件/etc/passwd</h3>
-
+</code></pre><h3 id="逐行和逐字段读取文件etcpasswd">逐行和逐字段读取文件/etc/passwd</h3>
 <pre><code>#!/bin/bash
 FILENAME=&quot;/etc/passwd&quot;
 while IFS=: read -r username password userid groupid comment homedir cmdshell 
 do
     echo &quot;$username, $userid, $comment $homedir&quot; 
 done &lt; $FILENAME
-</code></pre>
-
-<p>在Unix的密码文件中，用户信息是逐行存储的，每一行包含一个用户用<code>:</code>分隔的信息。这个例子是逐行读取的，该行也使用冒号字符作为分隔符分割为字段，该分隔符由为IFS指定的值指示。</p>
-
+</code></pre><p>在Unix的密码文件中，用户信息是逐行存储的，每一行包含一个用户用<code>:</code>分隔的信息。这个例子是逐行读取的，该行也使用冒号字符作为分隔符分割为字段，该分隔符由为IFS指定的值指示。</p>
 <h4 id="例子输入">例子输入</h4>
-
 <pre><code>mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/bash 
 pulse:x:497:495:PulseAudio System Daemon:/var/run/pulse:/sbin/nologin 
 sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin 
 tomcat:x:91:91:Apache Tomcat:/usr/share/tomcat6:/sbin/nologin 
 webalizer:x:67:67:Webalizer:/var/www/usage:/sbin/nologin
-</code></pre>
-
-<h4 id="例子输出">例子输出</h4>
-
+</code></pre><h4 id="例子输出">例子输出</h4>
 <pre><code>mysql, 27, MySQL Server /var/lib/mysql
 pulse, 497, PulseAudio System Daemon /var/run/pulse 
 sshd, 74, Privilege-separated SSH /var/empty/sshd 
 tomcat, 91, Apache Tomcat /usr/share/tomcat6 
 webalizer, 67, Webalizer /var/www/usage
-</code></pre>
-
-<p>逐行读取，然后把行赋值给一个变量，下面是修改之后的例子。注意这里我们只有一个变量名称。</p>
-
+</code></pre><p>逐行读取，然后把行赋值给一个变量，下面是修改之后的例子。注意这里我们只有一个变量名称。</p>
 <pre><code>#!/bin/bash
 FILENAME=&quot;/etc/passwd&quot; while IFS= read -r line do
     echo &quot;$line&quot; 
 done &lt; $FILENAME
-</code></pre>
-
-<h4 id="例子输入-1">例子输入</h4>
-
+</code></pre><h4 id="例子输入-1">例子输入</h4>
 <pre><code>mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/bash 
 pulse:x:497:495:PulseAudio System Daemon:/var/run/pulse:/sbin/nologin 
 sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin 
 tomcat:x:91:91:Apache Tomcat:/usr/share/tomcat6:/sbin/nologin 
 webalizer:x:67:67:Webalizer:/var/www/usage:/sbin/nologin
-</code></pre>
-
-<h4 id="例子输出-1">例子输出</h4>
-
+</code></pre><h4 id="例子输出-1">例子输出</h4>
 <pre><code>mysql:x:27:27:MySQL Server:/var/lib/mysql:/bin/bash 
 pulse:x:497:495:PulseAudio System Daemon:/var/run/pulse:/sbin/nologin 
 sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin 
 tomcat:x:91:91:Apache Tomcat:/usr/share/tomcat6:/sbin/nologin 
 webalizer:x:67:67:Webalizer:/var/www/usage:/sbin/nologin
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -548,6 +454,12 @@ webalizer:x:67:67:Webalizer:/var/www/usage:/sbin/nologin
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

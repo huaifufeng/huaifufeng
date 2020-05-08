@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,145 +187,90 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#日期和时间运算">日期和时间运算</a>
-<ul>
-<li><a href="#日期计算">日期计算</a></li>
-<li><a href="#sysdate-now-curdate">SYSDATE() NOW() CURDATE()</a></li>
-<li><a href="#时间区间">时间区间</a></li>
-<li><a href="#获取date或datetime表达式的日期">获取Date或DateTime表达式的日期</a></li>
-<li><a href="#使用索引查找日期和时间">使用索引查找日期和时间</a></li>
-<li><a href="#now">NOW()</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#日期和时间运算">日期和时间运算</a>
+      <ul>
+        <li><a href="#日期计算">日期计算</a></li>
+        <li><a href="#sysdate-now-curdate">SYSDATE() NOW() CURDATE()</a></li>
+        <li><a href="#时间区间">时间区间</a></li>
+        <li><a href="#获取date或datetime表达式的日期">获取Date或DateTime表达式的日期</a></li>
+        <li><a href="#使用索引查找日期和时间">使用索引查找日期和时间</a></li>
+        <li><a href="#now">NOW()</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="日期和时间运算">日期和时间运算</h2>
-
+        		<h2 id="日期和时间运算">日期和时间运算</h2>
 <h3 id="日期计算">日期计算</h3>
-
-<pre><code class="language-mysql">NOW() + INTERVAL 1 DAY --明天的这个时间
-CURDATE() - INTERVAL 4 DAY --4天之前的凌晨
-</code></pre>
-
-<p>线上3到10个小时之间（180分到600分之前）存储的mysql问题</p>
-
-<pre><code class="language-mysql">SELECT qId,askDate,minuteDiff
-FROM 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#a6e22e">NOW</span>() <span style="color:#f92672">+</span> <span style="color:#66d9ef">INTERVAL</span> <span style="color:#ae81ff">1</span> DAY <span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">明天的这个时间</span>
+<span style="color:#a6e22e">CURDATE</span>() <span style="color:#f92672">-</span> <span style="color:#66d9ef">INTERVAL</span> <span style="color:#ae81ff">4</span> DAY <span style="color:#f92672">--</span><span style="color:#ae81ff">4</span><span style="color:#960050;background-color:#1e0010">天之前的凌晨</span>
+</code></pre></div><p>线上3到10个小时之间（180分到600分之前）存储的mysql问题</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> qId,askDate,minuteDiff
+<span style="color:#66d9ef">FROM</span> 
 (
-    SELECT qId,askDate
-    TIMESTAMPDIFF(MINUTE, askDate, now()) as minuteDiff
-    FROM questions_mysql
+    <span style="color:#66d9ef">SELECT</span> qId,askDate
+    <span style="color:#a6e22e">TIMESTAMPDIFF</span>(MINUTE, askDate, <span style="color:#a6e22e">now</span>()) <span style="color:#66d9ef">as</span> minuteDiff
+    <span style="color:#66d9ef">FROM</span> questions_mysql
 ) xDerived
-WHERE minuteDiff BETWEEN 180 AND 600
-ORDER BY qId DESC
-LIMIT 50;
+<span style="color:#66d9ef">WHERE</span> minuteDiff <span style="color:#66d9ef">BETWEEN</span> <span style="color:#ae81ff">180</span> <span style="color:#66d9ef">AND</span> <span style="color:#ae81ff">600</span>
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> qId <span style="color:#66d9ef">DESC</span>
+<span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">50</span>;
 
-+----------+---------------------+------------+
-| qId      | askDate             | minuteDiff |
-+----------+---------------------+------------+
-| 38546828 | 2016-07-23 22:06:50 |        182 |
-| 38546733 | 2016-07-23 21:53:26 |        195 |
-| 38546707 | 2016-07-23 21:48:46 |        200 |
-| 38546687 | 2016-07-23 21:45:26 |        203 |
-| ...      |                     |            |
-+----------+---------------------+------------+
+<span style="color:#f92672">+----------+---------------------+------------+</span>
+<span style="color:#f92672">|</span> qId      <span style="color:#f92672">|</span> askDate             <span style="color:#f92672">|</span> minuteDiff <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----------+---------------------+------------+</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">38546828</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">07</span><span style="color:#f92672">-</span><span style="color:#ae81ff">23</span> <span style="color:#ae81ff">22</span>:<span style="color:#ae81ff">06</span>:<span style="color:#ae81ff">50</span> <span style="color:#f92672">|</span>        <span style="color:#ae81ff">182</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">38546733</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">07</span><span style="color:#f92672">-</span><span style="color:#ae81ff">23</span> <span style="color:#ae81ff">21</span>:<span style="color:#ae81ff">53</span>:<span style="color:#ae81ff">26</span> <span style="color:#f92672">|</span>        <span style="color:#ae81ff">195</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">38546707</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">07</span><span style="color:#f92672">-</span><span style="color:#ae81ff">23</span> <span style="color:#ae81ff">21</span>:<span style="color:#ae81ff">48</span>:<span style="color:#ae81ff">46</span> <span style="color:#f92672">|</span>        <span style="color:#ae81ff">200</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> <span style="color:#ae81ff">38546687</span> <span style="color:#f92672">|</span> <span style="color:#ae81ff">2016</span><span style="color:#f92672">-</span><span style="color:#ae81ff">07</span><span style="color:#f92672">-</span><span style="color:#ae81ff">23</span> <span style="color:#ae81ff">21</span>:<span style="color:#ae81ff">45</span>:<span style="color:#ae81ff">26</span> <span style="color:#f92672">|</span>        <span style="color:#ae81ff">203</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> ...      <span style="color:#f92672">|</span>                     <span style="color:#f92672">|</span>            <span style="color:#f92672">|</span>
+<span style="color:#f92672">+----------+---------------------+------------+</span>
 
-</code></pre>
-
-<p><a href="https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timestampdiff">TIMESTAMPDIFF</a>的mysql手册页。</p>
-
-<p><strong>注意：</strong>不要试图在MySQL中使用<code>CURDATE() + 1</code>这样的表达式来进行日期计算。这将不会返回你希望的值，除非你使用的是Oracle数据库。使用<code>CURDATE() + INTERVAL 1 DAY</code>。</p>
-
+</code></pre></div><p><a href="https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_timestampdiff">TIMESTAMPDIFF</a>的mysql手册页。</p>
+<p>**注意：**不要试图在MySQL中使用<code>CURDATE() + 1</code>这样的表达式来进行日期计算。这将不会返回你希望的值，除非你使用的是Oracle数据库。使用<code>CURDATE() + INTERVAL 1 DAY</code>。</p>
 <h3 id="sysdate-now-curdate">SYSDATE() NOW() CURDATE()</h3>
-
-<pre><code class="language-mysql">SELECT SYSDATE();
-</code></pre>
-
-<p>这个方法将会根据使用环境是字符串环境还是数字环境，返回当前时间的日期和时间，分别以<code>YYYY-MM-DD HH:MM:SS</code>或<code>YYYYMMDDHHMMSS</code>。这将会返回当前时区内的日期和时间。</p>
-
-<pre><code class="language-mysql">SELECT NOW()
-</code></pre>
-
-<p>这个方法是SYSDATE的别名</p>
-
-<pre><code class="language-mysql">SELECT CURDATE();
-</code></pre>
-
-<p>这个方法将会根据使用环境是字符串环境还是数字环境，返回当前时间的日期（没有时间），分别以<code>YYYY-MM-DD</code>或<code>YYYYMMDD</code>。这将会返回当前失去的日期。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">SYSDATE</span>();
+</code></pre></div><p>这个方法将会根据使用环境是字符串环境还是数字环境，返回当前时间的日期和时间，分别以<code>YYYY-MM-DD HH:MM:SS</code>或<code>YYYYMMDDHHMMSS</code>。这将会返回当前时区内的日期和时间。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">NOW</span>()
+</code></pre></div><p>这个方法是SYSDATE的别名</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">CURDATE</span>();
+</code></pre></div><p>这个方法将会根据使用环境是字符串环境还是数字环境，返回当前时间的日期（没有时间），分别以<code>YYYY-MM-DD</code>或<code>YYYYMMDD</code>。这将会返回当前失去的日期。</p>
 <h3 id="时间区间">时间区间</h3>
-
 <p>虽然这可以很容易的使用<code>BETWWEN…AND…</code>来处理事件区间。但这是有问题的。相反，下面的语句可以避免大部分问题：</p>
-
-<pre><code class="language-mysql">WHERE x &gt;= '2016-02-25'
-   AND x &lt; '2016-02-25' + INTERVAL 5 DAY
-</code></pre>
-
-<p>这样做的优点：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> x <span style="color:#f92672">&gt;=</span> <span style="color:#e6db74">&#39;2016-02-25&#39;</span>
+   <span style="color:#66d9ef">AND</span> x <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">&#39;2016-02-25&#39;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">INTERVAL</span> <span style="color:#ae81ff">5</span> DAY
+</code></pre></div><p>这样做的优点：</p>
 <ul>
 <li><code>BETWEEN</code>将会包含范围的边界值</li>
 <li>如果在日期上面有微秒的差距，<code>23:59:59</code>是无法处理的</li>
 <li>此模式避免处理闰年和其他数据计算。</li>
 <li>这个无论x是<code>DATE</code>，<code>DATETIME</code>，<code>TIEMSTAMP</code></li>
 </ul>
-
 <h3 id="获取date或datetime表达式的日期">获取Date或DateTime表达式的日期</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">DATE</span>(<span style="color:#e6db74">&#39;2019-05-05 21:21:11&#39;</span>);
 
-<pre><code class="language-mysql">SELECT DATE('2019-05-05 21:21:11');
-
---输出
-2019-05-05
-</code></pre>
-
-<h3 id="使用索引查找日期和时间">使用索引查找日期和时间</h3>
-
+<span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">输出</span>
+<span style="color:#ae81ff">2019</span><span style="color:#f92672">-</span><span style="color:#ae81ff">05</span><span style="color:#f92672">-</span><span style="color:#ae81ff">05</span>
+</code></pre></div><h3 id="使用索引查找日期和时间">使用索引查找日期和时间</h3>
 <p>许多现实世界的数据库表中有许多行的datetime或timestamp列值跨越了很多时间，包括几年甚至几十年。通常需要使用WHERE子句来检索该时间跨度的某些子集。例如，我们可能希望从表中检索日期为2016年9月1日的行。</p>
-
 <p>一种方便的方法是：</p>
-
-<pre><code class="language-mysql">WHERE DATE(x) = '2016-09-01' /* slow! */
-</code></pre>
-
-<p>方便是因为我们在列的值上面使用了<code>DATE()</code>方法。这意味着MySQL将会在列的每个值上都使用这个方法，这样这个列上面的索引就使用不上了。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">DATE</span>(x) <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;2016-09-01&#39;</span> <span style="color:#75715e">/* slow! */</span>
+</code></pre></div><p>方便是因为我们在列的值上面使用了<code>DATE()</code>方法。这意味着MySQL将会在列的每个值上都使用这个方法，这样这个列上面的索引就使用不上了。</p>
 <p>更好的方法是使用：</p>
-
-<pre><code class="language-mysql">WHERE x &gt;= '2016-09-01'
-AND x &lt; '2016-09-01' + INTERVAL 1 DAY
-</code></pre>
-
-<p>这将会搜索指定时间和下一天凌晨之间发布的记录。如果在x列上面有索引，MySQL将会使用索引来提升查询的性能。这意味着将会快速的找到第一个有效的x列表，然后使用索引直到找到最后的有效x列表。使用索引是比使用<code>DATE(x) = '2016-09-1'</code>这样全表查询更加快速。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> x <span style="color:#f92672">&gt;=</span> <span style="color:#e6db74">&#39;2016-09-01&#39;</span>
+<span style="color:#66d9ef">AND</span> x <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">&#39;2016-09-01&#39;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">INTERVAL</span> <span style="color:#ae81ff">1</span> DAY
+</code></pre></div><p>这将会搜索指定时间和下一天凌晨之间发布的记录。如果在x列上面有索引，MySQL将会使用索引来提升查询的性能。这意味着将会快速的找到第一个有效的x列表，然后使用索引直到找到最后的有效x列表。使用索引是比使用<code>DATE(x) = '2016-09-1'</code>这样全表查询更加快速。</p>
 <p>不要使用下面的语法，即使看起来更加高效：</p>
-
-<pre><code class="language-mysql">WHERE x BETWEEN '2016-09-01' AND '2016-09-01' + INTERVAL 1 DAY /* wrong! */
-</code></pre>
-
-<p>这和之前的查询性能相似，但是这里查询了<code>2016-09-02</code>凌晨的记录。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> x <span style="color:#66d9ef">BETWEEN</span> <span style="color:#e6db74">&#39;2016-09-01&#39;</span> <span style="color:#66d9ef">AND</span> <span style="color:#e6db74">&#39;2016-09-01&#39;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">INTERVAL</span> <span style="color:#ae81ff">1</span> DAY <span style="color:#75715e">/* wrong! */</span>
+</code></pre></div><p>这和之前的查询性能相似，但是这里查询了<code>2016-09-02</code>凌晨的记录。</p>
 <h3 id="now">NOW()</h3>
-
-<pre><code class="language-mysql">SELECT NOW();
-</code></pre>
-
-<p>显示当前服务器的日期和时间。</p>
-
-<pre><code class="language-mysql">Update `footable` set mydatefield = Now();
-</code></pre>
-
-<p>这将会把<code>mydatefield</code>字段，修改为服务器当前时区下的日期和时间。</p>
-
-<pre><code class="language-mysql"> '2016-07-21 12:00:00'
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">NOW</span>();
+</code></pre></div><p>显示当前服务器的日期和时间。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">Update</span> <span style="color:#f92672">`</span>footable<span style="color:#f92672">`</span> <span style="color:#66d9ef">set</span> mydatefield <span style="color:#f92672">=</span> <span style="color:#a6e22e">Now</span>();
+</code></pre></div><p>这将会把<code>mydatefield</code>字段，修改为服务器当前时区下的日期和时间。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"> <span style="color:#e6db74">&#39;2016-07-21 12:00:00&#39;</span>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -393,6 +342,12 @@ AND x &lt; '2016-09-01' + INTERVAL 1 DAY
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

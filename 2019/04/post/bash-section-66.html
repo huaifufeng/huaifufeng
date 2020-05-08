@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,77 +187,50 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#陷阱">陷阱</a>
-<ul>
-<li><a href="#赋值时空格">赋值时空格</a></li>
-<li><a href="#失败的命令不停止脚本执行">失败的命令不停止脚本执行</a></li>
-<li><a href="#缺少文件中的最后一行">缺少文件中的最后一行</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#陷阱">陷阱</a>
+      <ul>
+        <li><a href="#赋值时空格">赋值时空格</a></li>
+        <li><a href="#失败的命令不停止脚本执行">失败的命令不停止脚本执行</a></li>
+        <li><a href="#缺少文件中的最后一行">缺少文件中的最后一行</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="陷阱">陷阱</h2>
-
+        		<h2 id="陷阱">陷阱</h2>
 <h3 id="赋值时空格">赋值时空格</h3>
-
 <p>赋值时出现空格：</p>
-
 <pre><code>foo = 'bar' # incorrect 
 foo= 'bar' # incorrect 
 foo='bar' # correct
-</code></pre>
-
-<p>前两个会出现语法错误(或者执行一个错误的命令)。最后一个会正确的为变量<code>foo</code>设置值<code>bar</code>。</p>
-
+</code></pre><p>前两个会出现语法错误(或者执行一个错误的命令)。最后一个会正确的为变量<code>foo</code>设置值<code>bar</code>。</p>
 <h3 id="失败的命令不停止脚本执行">失败的命令不停止脚本执行</h3>
-
 <p>在大多数的脚本语言中，如果一个函数错了，将会抛出一个异常并且终止程序的执行。Bash没有异常，但是有退出码。一个非零的退出码代表出现了错误，但是这并不会终止程序的执行。</p>
-
 <p>这可能会导致危险（尽管诚然是人为的）情况，如：</p>
-
 <pre><code>#!/bin/bash
 cd ~/non/existent/directory 
 rm -rf *
-</code></pre>
-
-<p>如果cd命令失败了，Bash会忽略失败，并且继续执行下面的命令。将会清除你运行命令文件夹的所有文件。</p>
-
+</code></pre><p>如果cd命令失败了，Bash会忽略失败，并且继续执行下面的命令。将会清除你运行命令文件夹的所有文件。</p>
 <p>最好的方法是使用<code>set</code>命令：</p>
-
 <pre><code>#!/bin/bash
 set -e
 cd ~/non/existent/directory 
 rm -rf *
-</code></pre>
-
-<p><code>set -e</code>告诉Bash如果遇到一个非零的返回值，直接终端执行。</p>
-
+</code></pre><p><code>set -e</code>告诉Bash如果遇到一个非零的返回值，直接终端执行。</p>
 <h3 id="缺少文件中的最后一行">缺少文件中的最后一行</h3>
-
 <p>C标准规定文件要以新行结束，所以如果EOF出现在行尾，那么某些命令可能不会遗漏这行。例如：</p>
-
 <pre><code>$ echo 'one\ntwo\nthree\c' &gt; file.txt
 $ cat file.txt one
 two
 three
 $ while read line ; do echo &quot;line $line&quot; ; done &lt; file.txt one
 two
-</code></pre>
-
-<p>想要修复这个问题的话，就测试最后一行是否为空，不为空继续执行：</p>
-
+</code></pre><p>想要修复这个问题的话，就测试最后一行是否为空，不为空继续执行：</p>
 <pre><code>$ while read line || [ -n &quot;$line&quot; ] ; do echo &quot;line $line&quot; ; done &lt; file.txt one
 two
 three
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -325,6 +302,12 @@ three
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

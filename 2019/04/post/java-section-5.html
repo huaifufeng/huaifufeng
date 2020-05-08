@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,73 +187,48 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#java编译器-javac">Java编译器 - javac</a>
-<ul>
-<li><a href="#1-javac命令">1. javac命令</a></li>
-<li><a href="#2-编译不同版本的java">2. 编译不同版本的java</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#java编译器---javac">Java编译器 - javac</a>
+      <ul>
+        <li><a href="#1-javac命令">1. javac命令</a></li>
+        <li><a href="#2-编译不同版本的java">2. 编译不同版本的java</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="java编译器-javac">Java编译器 - javac</h2>
-
+        		<h2 id="java编译器---javac">Java编译器 - javac</h2>
 <h3 id="1-javac命令">1. javac命令</h3>
-
 <p><strong>简单例子</strong></p>
-
 <p>假设有一个<code>HelloWorld.java</code>的文件包含下面的java代码：</p>
-
-<pre><code class="language-java">public class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println(&quot;Hello World!&quot;);
-    }
-}
-</code></pre>
-
-<p>(对上面代码的解释，查看Java语言入门部分)</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloWorld</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello World!&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>(对上面代码的解释，查看Java语言入门部分)</p>
 <p>我们可以使用下面的命令编译上面的文件：</p>
-
-<pre><code class="language-java">$ javac HelloWorld.java
-</code></pre>
-
-<p>这将会产生一个<code>HelloWorld.class</code>的文件，我们可以像下面这样运行这个文件：</p>
-
-<pre><code class="language-shell">$ java HelloWorld
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">$ javac HelloWorld<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span>
+</code></pre></div><p>这将会产生一个<code>HelloWorld.class</code>的文件，我们可以像下面这样运行这个文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ java HelloWorld
 Hello World!
-</code></pre>
-
-<p>上面例子的关键点是：</p>
-
+</code></pre></div><p>上面例子的关键点是：</p>
 <ol>
 <li>源码文件<code>HelloWorld.java</code>必须和源码文件中的类名相匹配，这里是<code>HelloWorld</code>。如果他们不匹配的话，你会遇到一个编译错误。</li>
 <li>二进制文件<code>HelloWorld.class</code>和类的名称一样的。如果你重命名<code>HelloWorld.class</code>，当你运行的时候，将会遇到一个错误。</li>
 <li>当使用<code>java</code>运行一个java程序的时候，你使用的是类名而不是二进制文件的名称。</li>
 </ol>
-
 <p><strong>包的例子</strong></p>
-
 <p>最佳实践的Java倒霉使用包来组织类的命名空间，并减少类名冲突的风险。</p>
-
 <p>如果你想要在包<code>com.example</code>中声明<code>HelloWorld</code>类，需要在<code>HelloWorld.java</code>中包含下面的java源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> com.example<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package com.example;
-
-public class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println(&quot;Hello World!&quot;);
-    }
-}
-</code></pre>
-
-<p>这个源码文件需要包含在和包名一致的目录树结构中：</p>
-
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloWorld</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello World!&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>这个源码文件需要包含在和包名一致的目录树结构中：</p>
 <pre><code>.  //当前目录
 |
 -----com
@@ -257,15 +236,9 @@ public class HelloWorld {
      -----example
           |
           -----HelloWorld.java
-</code></pre>
-
-<p>我们可以使用下面的命令编译上面的文件：</p>
-
-<pre><code class="language-java">$ javac com/example/HelloWorld.java
-</code></pre>
-
-<p>这将会产生一个叫做<code>comm/example/HelloWorld.class</code>的文件，编译之后，这个文件的结构像下面一样：</p>
-
+</code></pre><p>我们可以使用下面的命令编译上面的文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">$ javac com<span style="color:#f92672">/</span>example<span style="color:#f92672">/</span>HelloWorld<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span>
+</code></pre></div><p>这将会产生一个叫做<code>comm/example/HelloWorld.class</code>的文件，编译之后，这个文件的结构像下面一样：</p>
 <pre><code>.  //当前目录
 |
 -----com
@@ -274,124 +247,73 @@ public class HelloWorld {
           |
           -----HelloWorld.java
           -----HelloWorld.class
-</code></pre>
-
-<p>我们可以使用下面的命令运行这个应用：</p>
-
-<pre><code class="language-shell">$ java com.example.HelloWorld
+</code></pre><p>我们可以使用下面的命令运行这个应用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ java com.example.HelloWorld
 Hello World!
-</code></pre>
-
-<p>这个例子中额外的注意点是：</p>
-
+</code></pre></div><p>这个例子中额外的注意点是：</p>
 <ol>
 <li>这个目录的结构必须匹配包名的结构</li>
-<li>当你运行类的时候，需要提供完整的类名：&rdquo;com.example.HelloWorld&rdquo;而不是&rdquo;HelloWorld&rdquo;</li>
+<li>当你运行类的时候，需要提供完整的类名：&ldquo;com.example.HelloWorld&quot;而不是&quot;HelloWorld&rdquo;</li>
 <li>你不是必须在当前文件夹编译和运行代码。我们这里只是为了说明。</li>
 </ol>
-
 <p><strong>一次编译多个文件</strong></p>
-
 <p>如果你的应用包含多个源码文件（大多数情况是），你可以一次编译它们。你可以通过列出所有的文件来一次性编译他们：</p>
-
-<pre><code class="language-java">$ javac Foo.java Bar.java
-</code></pre>
-
-<p>或者使用shell的文件名通配符功能：</p>
-
-<pre><code class="language-shell">$ javac *.java
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">$ javac Foo<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span> Bar<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span>
+</code></pre></div><p>或者使用shell的文件名通配符功能：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ javac *.java
 $ javac com/example/*.java
-$ javac */**/*.java  #只适用于zsh或在shell开启了globstar
-</code></pre>
-
-<p>这将会编译当前目录，&rdquo;com/example&rdquo;目录，递归的子目录中所有java源码文件。第三种选择是通过源码文件名列表（和编译器选项）作为文件。例如：</p>
-
-<pre><code class="language-java">$ javac @sourcefiles
-</code></pre>
-
-<p>这里<code>sourcefiles</code>包含：</p>
-
+$ javac */**/*.java  <span style="color:#75715e">#只适用于zsh或在shell开启了globstar</span>
+</code></pre></div><p>这将会编译当前目录，&ldquo;com/example&quot;目录，递归的子目录中所有java源码文件。第三种选择是通过源码文件名列表（和编译器选项）作为文件。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">$ javac <span style="color:#a6e22e">@sourcefiles</span>
+</code></pre></div><p>这里<code>sourcefiles</code>包含：</p>
 <pre><code>Foo.java
 Bar.java
 com/example/HelloWorld.java
-</code></pre>
-
-<p>注意：对于小型单人项目和一次性程序这样编译代码是合适的。其他的推荐选择和使用一个build工具。或者，大多数程序员使用提供了内嵌编辑器和&rdquo;项目&rdquo;增量构建的Java IDE（例如：NetBeans，Eclipse，IntelliJ IDEA）。</p>
-
+</code></pre><p>注意：对于小型单人项目和一次性程序这样编译代码是合适的。其他的推荐选择和使用一个build工具。或者，大多数程序员使用提供了内嵌编辑器和&quot;项目&quot;增量构建的Java IDE（例如：NetBeans，Eclipse，IntelliJ IDEA）。</p>
 <p><strong>javac的常用选项</strong></p>
-
 <p>下面是<code>javac</code>常用的对你非常有用的选项：</p>
-
 <ul>
-<li><code>-d</code>选项设置&rdquo;.class&rdquo;文件的目标目录地址。</li>
+<li><code>-d</code>选项设置&rdquo;.class&quot;文件的目标目录地址。</li>
 <li><code>-sourcepath</code>选项设置源码文件的搜索地址</li>
 <li><code>-cp</code>或<code>-classpath</code>选项设置扩展和之前编译的类的地址。对于classpath的更多信息以及如果指定，可以查看Classpath主题部分</li>
 <li><code>-version</code>打印编译器的版本信息</li>
 </ul>
-
 <p>更完整的编译器选项列表汇总单独的例子中描述。</p>
-
 <p><strong>引用</strong></p>
-
 <p><code>javac</code>命令的最终参考在<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html">Oracle手册页</a>。</p>
-
 <h3 id="2-编译不同版本的java">2. 编译不同版本的java</h3>
-
 <p>java程序语言（和他的运行时系统）自从首次公开发行依赖，经历了许多的变化。</p>
-
 <ul>
 <li>Java编程语言语法和语义的变化</li>
 <li>Java标准类库提供的API的修改</li>
 <li>Java（字节码）指令集和类文件格式的修改</li>
 </ul>
-
-<p>除了极少数例外（例如<strong>enum</strong>关键字、某些&rdquo;内部&rdquo;类的修改等），这些修改都是向后兼容的。</p>
-
+<p>除了极少数例外（例如<strong>enum</strong>关键字、某些&quot;内部&quot;类的修改等），这些修改都是向后兼容的。</p>
 <ul>
 <li>使用老版本Java工具链编译的Java程序可以在新版本的Java平台上面运行，而不需要重新编译。</li>
 <li>一个老版本Java编写的Java程序可以成功的使用新Java编译器进行编译。</li>
 </ul>
-
 <p><strong>新编译器编译老Java代码</strong></p>
-
 <p>如果你需要在新的Java平台编译老的Java代码， 让代码在新平台上面运行，你不需要提供任何特别的编译选项。在一些情况下（例如你使用<code>enum</code>作为一个标识符）你可以使用<code>-source</code>来禁止新语法。例如有下面的类：</p>
-
-<pre><code class="language-java">public class OldSyntax {
-    private static int enum;  //java5之后无效
-}
-</code></pre>
-
-<p>在使用Java5（或之后）的编译器进行编译的时候，需要使用下面的选项：</p>
-
-<pre><code class="language-shell">$ javac -source 1.4 OldSyntax.java
-</code></pre>
-
-<p><strong>为老的执行平台编译</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OldSyntax</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">enum</span><span style="color:#f92672">;</span>  <span style="color:#75715e">//java5之后无效
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>在使用Java5（或之后）的编译器进行编译的时候，需要使用下面的选项：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ javac -source 1.4 OldSyntax.java
+</code></pre></div><p><strong>为老的执行平台编译</strong></p>
 <p>如果你需要编译Java运行在一个老的Java平台上面，最简单的方法是按照你需要支持的老版本的JDK，然后使用这个JDK的编译器编译代码。</p>
-
 <p>你也可以使用一个新一些的编译器，但是会复杂一些。首先，必须满足一些重要的先决条件：</p>
-
 <ul>
 <li>你要编译的代码必须没有使用你目标版本无效的语言结构。</li>
 <li>代码必须不依赖在老版本平台无效的标准Java类，字段，方法等等</li>
 <li>依赖的第三方库必须也是老版本平台构造的并且在编译和运行时有效</li>
 </ul>
-
 <p>如果满足前面提到的条件，就可以使用<code>-target</code>选项来在老平台上面编译你的代码。例如：</p>
-
-<pre><code class="language-shell">$ javac -target 1.4 SomeClass.java
-</code></pre>
-
-<p>这将会编译上面的类产生兼容Java1.4和之后JVM的字节码。（实际上，<code>-source</code>选项意味着一个兼容的<code>-target</code>，所以<code>javac -source 1.4…</code>将会获得相同的效果。<code>-source</code>和<code>-target</code>的关系在Oracle文档中有描述。）</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ javac -target 1.4 SomeClass.java
+</code></pre></div><p>这将会编译上面的类产生兼容Java1.4和之后JVM的字节码。（实际上，<code>-source</code>选项意味着一个兼容的<code>-target</code>，所以<code>javac -source 1.4…</code>将会获得相同的效果。<code>-source</code>和<code>-target</code>的关系在Oracle文档中有描述。）</p>
 <p>尽管如此，如果你简单的使用<code>-target</code>或<code>-source</code>，那么你扔将根据编译器JDK提供的标准类库进行编译。如果不小心的话，最终可以得到具有正确字节码版本的类，但依赖于不可用的API。解决办法就是使用<code>-bootclasspath</code>选项。例如：</p>
-
-<pre><code class="language-shell">$ javac -target 1.4 --bootclasspath path/to/java1.4/rt.jar SomeClass.java
-</code></pre>
-
-<p>这将会根据另外一组运行时库进行编译。如果正在编译的类对于较新的库有（意外）依赖，这将导致编译出错。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ javac -target 1.4 --bootclasspath path/to/java1.4/rt.jar SomeClass.java
+</code></pre></div><p>这将会根据另外一组运行时库进行编译。如果正在编译的类对于较新的库有（意外）依赖，这将导致编译出错。</p>
 <p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
@@ -464,6 +386,12 @@ com/example/HelloWorld.java
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

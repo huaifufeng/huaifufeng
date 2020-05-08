@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,31 +187,24 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#函数">函数</a>
-<ul>
-<li><a href="#带参数函数">带参数函数</a></li>
-<li><a href="#简单函数">简单函数</a></li>
-<li><a href="#处理标志和可选参数">处理标志和可选参数</a></li>
-<li><a href="#输出函数定义">输出函数定义</a></li>
-<li><a href="#接收命名参数的函数">接收命名参数的函数</a></li>
-<li><a href="#函数返回值">函数返回值</a></li>
-<li><a href="#函数的退出代码是其最后一个命令的退出代码">函数的退出代码是其最后一个命令的退出代码</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#函数">函数</a>
+      <ul>
+        <li><a href="#带参数函数">带参数函数</a></li>
+        <li><a href="#简单函数">简单函数</a></li>
+        <li><a href="#处理标志和可选参数">处理标志和可选参数</a></li>
+        <li><a href="#输出函数定义">输出函数定义</a></li>
+        <li><a href="#接收命名参数的函数">接收命名参数的函数</a></li>
+        <li><a href="#函数返回值">函数返回值</a></li>
+        <li><a href="#函数的退出代码是其最后一个命令的退出代码">函数的退出代码是其最后一个命令的退出代码</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="函数">函数</h2>
-
+        		<h2 id="函数">函数</h2>
 <h3 id="带参数函数">带参数函数</h3>
-
 <p>在<code>helloJohn.sh</code>文件里面有下面的代码：</p>
-
 <pre><code>#!/bin/bash
 greet() {
 	local name=&quot;$1&quot; 
@@ -215,72 +212,55 @@ greet() {
 }
 
 greet &quot;John Doe&quot;
-</code></pre>
-
-<p>执行这个文件：</p>
-
+</code></pre><p>执行这个文件：</p>
 <pre><code>$ bash helloJohn.sh 
 Hello, John Doe
-</code></pre>
-
-<ol>
-<li><p>如果你没有修改参数，可以不用把这个参数放到本地变量中，可以直接使用`echo &ldquo;Hello, $1&rdquo;</p></li>
-
-<li><p>你可以在函数中使用<code>$1</code>，<code>$2</code>，<code>$3</code>等等的变量访问函数的参数。</p></li>
-</ol>
-
+</code></pre><ol>
+<li>
+<p>如果你没有修改参数，可以不用把这个参数放到本地变量中，可以直接使用`echo &ldquo;Hello, $1&rdquo;</p>
+</li>
+<li>
+<p>你可以在函数中使用<code>$1</code>，<code>$2</code>，<code>$3</code>等等的变量访问函数的参数。</p>
 <blockquote>
-<p><strong>注意：</strong>对于超过9个的参数，使用<code>$10</code>是没有用的，因为这将被解析成为<code>$1</code>0，所以你需要使用<code>${10}</code>、<code>${11}</code>这样的变量。</p>
+<p>**注意：**对于超过9个的参数，使用<code>$10</code>是没有用的，因为这将被解析成为<code>$1</code>0，所以你需要使用<code>${10}</code>、<code>${11}</code>这样的变量。</p>
 </blockquote>
-
-<ol>
-<li><p>在函数中，<code>$@</code>引用所有的参数：</p>
-
+</li>
+<li>
+<p>在函数中，<code>$@</code>引用所有的参数：</p>
 <pre><code>#!/bin/bash
 foo() {
-	echo &quot;$@&quot;
+ echo &quot;$@&quot;
 }
    
 foo 1 2 3 # output =&gt; 1 2 3
-</code></pre></li>
-</ol>
-
-<blockquote>
-<p><strong>注意：</strong>你应该像这里展示的一样，在<code>$@</code>周围使用双引号。</p>
+</code></pre><blockquote>
+<p>**注意：**你应该像这里展示的一样，在<code>$@</code>周围使用双引号。</p>
 </blockquote>
-
 <p>省略引号将导致shell扩展通配符（即使用户为避免这种情况而专门引用通配符），并且通常会引入不受欢迎的行为，甚至潜在的安全问题。</p>
-
-<pre><code>    foo &quot;string with spaces;&quot; '$HOME' &quot;*&quot; 
-    # output =&gt; string with spaces; $HOME *
-</code></pre>
-
-<ol>
-<li><p>想要使用默认值的话，用<code>${1:-default_val}</code>的格式：</p>
-
+<pre><code> foo &quot;string with spaces;&quot; '$HOME' &quot;*&quot; 
+ # output =&gt; string with spaces; $HOME *
+</code></pre></li>
+<li>
+<p>想要使用默认值的话，用<code>${1:-default_val}</code>的格式：</p>
 <pre><code>#!/bin/bash
 foo() {
-	local val=${1:-25}
-   echo &quot;$val&quot;
+ local val=${1:-25}
+    echo &quot;$val&quot;
 }
    
-foo # output =&gt; 25 
-foo 30 # output =&gt; 30
+ foo # output =&gt; 25 
+ foo 30 # output =&gt; 30
 </code></pre></li>
-
-<li><p>要求使用一个变量，使用<code>${var:?error message}</code>这种格式：</p>
-
+<li>
+<p>要求使用一个变量，使用<code>${var:?error message}</code>这种格式：</p>
 <pre><code>foo() {
-	local val=${1:?Must provide an argument} 
-	echo &quot;$val&quot;
+ local val=${1:?Must provide an argument} 
+ echo &quot;$val&quot;
 }
 </code></pre></li>
 </ol>
-
 <h3 id="简单函数">简单函数</h3>
-
 <p>在<code>helloWorld.sh</code>文件中有：</p>
-
 <pre><code>#!/bin/bash
 
 # Define a function greet
@@ -290,32 +270,19 @@ greet () {
 
 # Call the function greet
 greet
-</code></pre>
-
-<p>运行这个脚本，我们可以看到下面的输出：</p>
-
+</code></pre><p>运行这个脚本，我们可以看到下面的输出：</p>
 <pre><code>$ bash helloWorld.sh 
 Hello World!
-</code></pre>
-
-<p>注意：使用<code>source</code>命令把这个文件的变量加载到当前bash的缓存：</p>
-
+</code></pre><p>注意：使用<code>source</code>命令把这个文件的变量加载到当前bash的缓存：</p>
 <pre><code>$ source helloWorld.sh # or, more portably, &quot;. helloWorld.sh&quot; 
 $ greet
 Hello World!
-</code></pre>
-
-<p>您可以在一些shell中<code>export</code>一个函数，以便将其公开给子进程。</p>
-
+</code></pre><p>您可以在一些shell中<code>export</code>一个函数，以便将其公开给子进程。</p>
 <pre><code>bash -c 'greet' # fails
 export -f greet # export function; note -f 
 bash -c 'greet' # success
-</code></pre>
-
-<h3 id="处理标志和可选参数">处理标志和可选参数</h3>
-
+</code></pre><h3 id="处理标志和可选参数">处理标志和可选参数</h3>
 <p>内置的<code>getopts</code>函数可以在函数内部使用，以写入包含标志和可选参数的函数。这并不存在特殊的困难，但是必须适当地处理<code>getopts</code>所获取到的值。例如，我们定义了一个<code>failwith</code>函数，该函数在stderr上写入消息，并使用代码1或作为-x选项参数提供的任意代码退出：</p>
-
 <pre><code># failwith [-x STATUS] PRINTF-LIKE-ARGV
 #  Fail with the given diagnostic message
 #
@@ -339,21 +306,12 @@ failwith()
 	} 1&gt;&amp;2
 	exit &quot;${status}&quot; 
 }
-</code></pre>
-
-<p>这个函数可以像下面这样使用：</p>
-
+</code></pre><p>这个函数可以像下面这样使用：</p>
 <pre><code>failwith '%s: File not found.' &quot;${filename}&quot;
 failwith -x 70 'General internal error.'
-</code></pre>
-
-<p>注意：对于<code>printf</code>函数，变量不能不用作第一个参数。如果信息中包含变量的内容，需要使用占位符<code>%s</code>来输出这个变量的信息，就像：</p>
-
+</code></pre><p>注意：对于<code>printf</code>函数，变量不能不用作第一个参数。如果信息中包含变量的内容，需要使用占位符<code>%s</code>来输出这个变量的信息，就像：</p>
 <pre><code>failwith '%s' &quot;${message}&quot;
-</code></pre>
-
-<h3 id="输出函数定义">输出函数定义</h3>
-
+</code></pre><h3 id="输出函数定义">输出函数定义</h3>
 <pre><code>getfunc() {
 	declare -f &quot;$@&quot;
 }
@@ -362,17 +320,11 @@ function func(){
 }
 funcd=&quot;$(getfunc func)&quot;
 getfunc func # or echo &quot;$funcd&quot;
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>func () {
 	echo &quot;I am a sample function&quot; 
 }
-</code></pre>
-
-<h3 id="接收命名参数的函数">接收命名参数的函数</h3>
-
+</code></pre><h3 id="接收命名参数的函数">接收命名参数的函数</h3>
 <pre><code>foo() {
 	while [[ &quot;$#&quot; -gt 0 ]]
 	do
@@ -390,65 +342,39 @@ getfunc func # or echo &quot;$funcd&quot;
 	echo &quot;FOLLOW: $FOLLOW&quot;
 	echo &quot;TAIL: $TAIL&quot; 
 }
-</code></pre>
-
-<p>使用例子：</p>
-
+</code></pre><p>使用例子：</p>
 <pre><code>foo -f
 foo -t 10
 foo -f --tail 10
 foo --follow --tail 10
-</code></pre>
-
-<h3 id="函数返回值">函数返回值</h3>
-
+</code></pre><h3 id="函数返回值">函数返回值</h3>
 <p>Bash中的<code>return</code>语句不像C的函数一样返回一个值，而是带着一个return状态退出函数。您可以将其视为该函数的退出状态。</p>
-
 <p>如果你想要一个函数返回一个值，就像下面这样把值发送到<code>stdout</code>中：</p>
-
 <pre><code>fun() {
 	local var=&quot;Sample value to be returned&quot; 
 	echo &quot;$var&quot;
 	#printf &quot;%s\n&quot; &quot;$var&quot;
 }
-</code></pre>
-
-<p>现在你可以获取这个值：</p>
-
+</code></pre><p>现在你可以获取这个值：</p>
 <pre><code>var=&quot;$(fun)&quot;
-</code></pre>
-
-<p><code>fun</code>函数的输出将会存储到变量<code>$var</code>中。</p>
-
+</code></pre><p><code>fun</code>函数的输出将会存储到变量<code>$var</code>中。</p>
 <h3 id="函数的退出代码是其最后一个命令的退出代码">函数的退出代码是其最后一个命令的退出代码</h3>
-
 <p>考虑使用此示例函数检查主机是否启动：</p>
-
 <pre><code>is_alive() {
 	ping -c1 &quot;$1&quot; &amp;&gt; /dev/null
 }
-</code></pre>
-
-<p>这个函数发送一个简单的ping请求到第一个参数指定的地址中。<code>ping</code>命令的输出和错误的输出到会重定向到<code>/dev/null</code>中，所以这个函数不会输出任何东西。但是<code>ping</code>命令在成功时会返回退出码0，失败的时候会返回非零值。由于这是函数的最后一个（在本例中是唯一的）命令，因此ping的退出代码将被重用为函数本身的退出码。</p>
-
+</code></pre><p>这个函数发送一个简单的ping请求到第一个参数指定的地址中。<code>ping</code>命令的输出和错误的输出到会重定向到<code>/dev/null</code>中，所以这个函数不会输出任何东西。但是<code>ping</code>命令在成功时会返回退出码0，失败的时候会返回非零值。由于这是函数的最后一个（在本例中是唯一的）命令，因此ping的退出代码将被重用为函数本身的退出码。</p>
 <p>这在条件语句中非常有用。</p>
-
 <p>例如：如果<code>graucho</code>是可以连通的，就使用<code>ssh</code>命令连接到这个地址：</p>
-
 <pre><code>if is_alive graucho; then 
 	ssh graucho
 fi
-</code></pre>
-
-<p>另外的例子，反复检查，直到主机graucho启动，然后用ssh连接到它：</p>
-
+</code></pre><p>另外的例子，反复检查，直到主机graucho启动，然后用ssh连接到它：</p>
 <pre><code>while ! is_alive graucho; do 
 	sleep 5
 done
 ssh graucho
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -520,6 +446,12 @@ ssh graucho
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

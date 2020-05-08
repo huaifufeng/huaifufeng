@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,47 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#类型">类型</a>
-<ul>
-<li><a href="#类型比较符">类型比较符</a></li>
-<li><a href="#布尔值">布尔值</a></li>
-<li><a href="#浮点数">浮点数</a>
-<ul>
-<li><a href="#警告">警告</a></li>
-<li><a href="#浮点数精度">浮点数精度</a></li>
-</ul></li>
-<li><a href="#字符串">字符串</a>
-<ul>
-<li><a href="#单引号">单引号</a></li>
-<li><a href="#双引号">双引号</a></li>
-<li><a href="#heredoc">Heredoc</a></li>
-<li><a href="#nowdoc">Nowdoc</a></li>
-</ul></li>
-<li><a href="#可调用">可调用</a></li>
-<li><a href="#资源">资源</a></li>
-<li><a href="#类型转换">类型转换</a></li>
-<li><a href="#类型修改">类型修改</a></li>
-<li><a href="#null">null</a>
-<ul>
-<li><a href="#null和未定义值">null和未定义值</a></li>
-</ul></li>
-<li><a href="#整数">整数</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#类型">类型</a>
+      <ul>
+        <li><a href="#类型比较符">类型比较符</a></li>
+        <li><a href="#布尔值">布尔值</a></li>
+        <li><a href="#浮点数">浮点数</a></li>
+        <li><a href="#字符串">字符串</a></li>
+        <li><a href="#可调用">可调用</a></li>
+        <li><a href="#资源">资源</a></li>
+        <li><a href="#类型转换">类型转换</a></li>
+        <li><a href="#类型修改">类型修改</a></li>
+        <li><a href="#null">null</a></li>
+        <li><a href="#整数">整数</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="类型">类型</h2>
-
+        		<h2 id="类型">类型</h2>
 <h3 id="类型比较符">类型比较符</h3>
-
 <p>两种类型的<a href="http://php.net/manual/en/types.comparisons.php">比较符</a>：松散比较符<code>==</code>和严格比较符<code>===</code>。严格比较符要求比较符两端的变量的类型和值都要相同。</p>
-
 <pre><code>// Loose comparisons 
 var_dump(1 == 1); // true 
 var_dump(1 == &quot;1&quot;); // true 
@@ -239,12 +223,8 @@ var_dump(0 === false); // false
 // Notable exception: NAN — it never is equal to anything 
 var_dump(NAN == NAN); // false
 var_dump(NAN === NAN); // false
-</code></pre>
-
-<p>你也可以使用严格比较符的相对于的反比较符<code>!==</code>。</p>
-
+</code></pre><p>你也可以使用严格比较符的相对于的反比较符<code>!==</code>。</p>
 <p>一个特殊的使用<code>==</code>比较符是不够的情况是那些返回不同类型的函数，像<code>strpos</code>：没找到匹配的值返回<code>false</code>，找到了就返回位置的整数值。</p>
-
 <pre><code>if(strpos('text', 'searchword') == false)
     // strpos returns false, so == comparison works as expected here, BUT:
 if(strpos('text bla', 'text') == false)
@@ -252,135 +232,80 @@ if(strpos('text bla', 'text') == false)
     // This is probably not what you expect!
 if(strpos('text','text') === false)
     // strpos returns 0, and 0===false is false, so this works as expected.
-</code></pre>
-
-<h3 id="布尔值">布尔值</h3>
-
+</code></pre><h3 id="布尔值">布尔值</h3>
 <p><a href="http://php.net/manual/en/language.types.boolean.php">布尔值</a>是一种只有两个值<code>true</code>和<code>false</code>的类型。</p>
-
 <p>下面的代码给<code>$foo</code>赋值<code>true</code>，给<code>$bar</code>赋值为<code>false</code>：</p>
-
 <pre><code>$foo = true;
 $bar = false;
-</code></pre>
-
-<p><code>true</code>和<code>false</code>是不区分大小写的，所以<code>TRUE</code>和<code>FALSE</code>都是正常使用的，即使<code>FalsE</code>也是可以的。使用小写的值是通用的做法，也是大多数开发指导中推荐的方式：<a href="http://www.php-fig.org/psr/psr-2/">PSR-2</a></p>
-
+</code></pre><p><code>true</code>和<code>false</code>是不区分大小写的，所以<code>TRUE</code>和<code>FALSE</code>都是正常使用的，即使<code>FalsE</code>也是可以的。使用小写的值是通用的做法，也是大多数开发指导中推荐的方式：<a href="http://www.php-fig.org/psr/psr-2/">PSR-2</a></p>
 <p>布尔值可以向下面一样用在if语句中：</p>
-
 <pre><code>if ($foo) { //same as evaluating if($foo == true) 
 	  echo &quot;true&quot;;
 }
-</code></pre>
-
-<p>因为PHP是弱类型语音，所有上面<code>$foo</code>如果不是<code>true</code>或<code>false</code>，它将会自动的转换成一个布尔值。</p>
-
+</code></pre><p>因为PHP是弱类型语音，所有上面<code>$foo</code>如果不是<code>true</code>或<code>false</code>，它将会自动的转换成一个布尔值。</p>
 <p>下面结果的值都是<code>false</code>：</p>
-
 <ul>
-<li>零值：0， 0.0，&rsquo;0&rsquo;</li>
+<li>零值：0， 0.0，&lsquo;0&rsquo;</li>
 <li>空字符串<code>''</code>或空数组<code>[]</code></li>
 <li>null(未设置的值，或者设为null的变量)</li>
 </ul>
-
 <p>其他的值都是<code>true</code>。</p>
-
 <p>为了避免松散比较，你可以强制使用严格比较符<code>===</code>，这将会比较值和类型。可以查看之前的内容。</p>
-
 <p>想要把一个值转换为布尔值，你可以在变量前面加上<code>(bool)</code>或者<code>(boolean)</code>。</p>
-
 <pre><code>var_dump((bool) '1');  //输出true
-</code></pre>
-
-<p>或者调用<a href="http://php.net/manual/en/function.boolval.php">boolval</a>函数：</p>
-
+</code></pre><p>或者调用<a href="http://php.net/manual/en/function.boolval.php">boolval</a>函数：</p>
 <pre><code>var_dump(boolval(&quot;1&quot;));  //输出true
-</code></pre>
-
-<p>布尔值转换为一个字符串(<code>false</code>转为空字符串)：</p>
-
+</code></pre><p>布尔值转换为一个字符串(<code>false</code>转为空字符串)：</p>
 <pre><code>var_dump((string) true); //string(1) &quot;1&quot;
 var_dump((string) false); //string(0) &quot;&quot;
-</code></pre>
-
-<p>布尔值转换为一个整数：</p>
-
+</code></pre><p>布尔值转换为一个整数：</p>
 <pre><code>var_dump((int)true); //int(1)
 var_dump((int)false); //int(0)
-</code></pre>
-
-<p>注意其他类型转换为布尔值也是可以的：</p>
-
+</code></pre><p>注意其他类型转换为布尔值也是可以的：</p>
 <pre><code>var_dump((bool) &quot;&quot;); //bool(false)
 var_dump((bool) 1); //bool(true)
-</code></pre>
-
-<p>所有的非零值都会返回true：</p>
-
+</code></pre><p>所有的非零值都会返回true：</p>
 <pre><code>var_dump((bool) -2);   // bool(true)
 var_dump((bool) &quot;foo&quot;);   // bool(true)
 var_dump((bool) 2.3e5);   // bool(true)
 var_dump((bool) array(12));   // bool(true)
 var_dump((bool) array());   // bool(false)
 var_dump((bool) &quot;false&quot;);   // bool(true)
-</code></pre>
-
-<h3 id="浮点数">浮点数</h3>
-
+</code></pre><h3 id="浮点数">浮点数</h3>
 <pre><code>$float = 0.123;
-</code></pre>
-
-<blockquote>
-<p>因为历史的原因，使用<a href="http://php.net/manual/en/function.gettype.php">gettype()</a>获取变量的类型是返回&rdquo;double&rdquo;，而不是&rdquo;float&rdquo;。</p>
+</code></pre><blockquote>
+<p>因为历史的原因，使用<a href="http://php.net/manual/en/function.gettype.php">gettype()</a>获取变量的类型是返回&quot;double&rdquo;，而不是&quot;float&rdquo;。</p>
 </blockquote>
-
 <p>浮点数就是浮点数，拥有比普通整数更高的精度值。</p>
-
 <p>由于PHP对变量类型的松散强制转换，可以将浮点和整数一起使用：</p>
-
 <pre><code>$sum = 3 + 0.14;
 echo $sum; //3.14
-</code></pre>
-
-<p>PHP不会像其他语言那样显示一个浮点数的值，例如：</p>
-
+</code></pre><p>PHP不会像其他语言那样显示一个浮点数的值，例如：</p>
 <pre><code>$var = 1;
 echo ((float) $var); //returns 1 not 1.0
-</code></pre>
-
-<h4 id="警告">警告</h4>
-
+</code></pre><h4 id="警告">警告</h4>
 <h4 id="浮点数精度">浮点数精度</h4>
-
 <p>(来自<a href="http://php.net/manual/en/language.types.float.php">PHP手册</a>)</p>
-
 <blockquote>
 <p>浮点数是有精度限制的。尽管这取决于操作系统，PHP通常会给出最大的相对误差，因为四舍五入的顺序是1.11e-16。非初等算术运算可能会产生较大的误差，当多个运算联合使用时，必须考虑误差传递。</p>
-
+</blockquote>
+<blockquote>
 <p>另外，基数10可以使用浮点数精确表示有理数(如0.1 或 0.7)。但是实际内部使用的基数2使用浮点数不能精确表示有理数，不管这个尾数的大小。因此，如果不降低精度，是无法转换为内部的二进制数的。这可能混淆结果：例如((0.1+0.7) * 10) 通常返回7而不是预期的8，因为内部表示的结果类似于7.9999999999991118&hellip;</p>
-
+</blockquote>
+<blockquote>
 <p>所以不要相信浮点数的最后一个数字，并且不要直接比较浮点数的相等。如果需要更高的精度的话，可以使用任意 精度的函数和gmp函数。</p>
 </blockquote>
-
 <h3 id="字符串">字符串</h3>
-
 <p>PHP中的字符串就是当个字符的一个序列(原生是不支持的Unicode)。有四种方式实现一个字符串：</p>
-
 <h4 id="单引号">单引号</h4>
-
 <p>原样显示一个字符串。变量和大多数的转义序列不会被解析。例外的情况就是：要显示一个单引号，可以在单引号前面增加一个反斜杠来转义它，要显示反斜杠，使用另一个反斜杠来转义它。</p>
-
 <pre><code>$my_string = 'Nothing is parsed, except an escap\'d apostrophe or backslash. $foo\n';
 var_dump($my_string);
 /*
 string(68) &quot;Nothing is parsed, except an escap'd apostrophe or backslash. $foo\n&quot;
 */
-</code></pre>
-
-<h4 id="双引号">双引号</h4>
-
+</code></pre><h4 id="双引号">双引号</h4>
 <p>不像单引号，字符串中单独的变量名和<a href="http://php.net/manual/en/language.types.string.php#language.types.string.syntax.double">转义字符</a>都会被解析出来。最后一个例子中的花括号可以用来确定复杂的变量。</p>
-
 <pre><code>$variable1 = &quot;Testing!&quot;;
 $variable2 = [ &quot;Testing?&quot;, [ &quot;Failure&quot;, &quot;Success&quot; ] ];
 $my_string = &quot;Variables and escape characters are parsed:\n\n&quot;;
@@ -396,12 +321,8 @@ Testing?
 There are limits: Array[0]&quot;
 But we can get around them by wrapping the whole variable in braces: Success
 */
-</code></pre>
-
-<h4 id="heredoc">Heredoc</h4>
-
+</code></pre><h4 id="heredoc">Heredoc</h4>
 <p>在一个heredoc字符串中，变量名和转义字符会像双引号字符串一样解析，但是复杂变量名称不使用花括号。这个字符串的起始标志是<code>&lt;&lt;&lt;identifier</code>，结束标志是<code>identifier</code>，这里<code>identifier</code>是一个有效的PHP名称。结尾的identifier必须在行的最开始。尽管像PHP的其他行一样，但是identifier的前面和后面不允许有空白，必须以分号结尾。</p>
-
 <pre><code>$variable1 = &quot;Including text blocks is easier&quot;;
 $my_string = &lt;&lt;&lt; EOF
 Everything is parsed in the same fashion as a double-quoted string,
@@ -416,14 +337,9 @@ string(268) &quot;Everything is parsed in the same fashion as a double-quoted st
 but there are advantages. Including text blocks is easier; database queries and HTML output can benefit from this formatting.
 Once we hit a line containing nothing but the identifier, the string ends.&quot;
 */
-</code></pre>
-
-<h4 id="nowdoc">Nowdoc</h4>
-
+</code></pre><h4 id="nowdoc">Nowdoc</h4>
 <p>一个nowdoc字符串就是一个单引号版本的heredoc字符串，尽管其中大部分转义符不进行解析。这个字符串的开始标志使用单引号包围的字符串。</p>
-
 <p>PHP 5.x Version&gt;=5.3</p>
-
 <pre><code>$my_string = &lt;&lt;&lt; 'EOF'
 A similar syntax to heredoc but, similar to single quoted strings, nothing is parsed (not even escaped apostrophes \' and backslashes \\.)
 EOF; 
@@ -433,12 +349,8 @@ var_dump($my_string);
 string(116) &quot;A similar syntax to heredoc but, similar to single quoted strings,
 nothing is parsed (not even escaped apostrophes \' and backslashes \\.)&quot;
 */
-</code></pre>
-
-<h3 id="可调用">可调用</h3>
-
-<p>可调用是任何可以被当做回调调用的。这些也可以被称为&rdquo;回调&rdquo;：</p>
-
+</code></pre><h3 id="可调用">可调用</h3>
+<p>可调用是任何可以被当做回调调用的。这些也可以被称为&quot;回调&rdquo;：</p>
 <ul>
 <li>匿名函数</li>
 <li>PHP标准函数(非PHP结构)</li>
@@ -447,15 +359,10 @@ nothing is parsed (not even escaped apostrophes \' and backslashes \\.)&quot;
 <li>指定的对象/类方法</li>
 <li>对象自身(数组第0个参数是对象)</li>
 </ul>
-
 <p>引用数组对象的例子：</p>
-
 <pre><code>$obj = new MyClass();
 call_user_func([$obj, 'myCallbackMethod']);
-</code></pre>
-
-<p>在PHP5.4之后可以使用<code>callable</code>的类型声明，这是可以使用回调函数：</p>
-
+</code></pre><p>在PHP5.4之后可以使用<code>callable</code>的类型声明，这是可以使用回调函数：</p>
 <pre><code>$callable = function () { 
     return 'value';
 };
@@ -463,21 +370,14 @@ function call_something(callable $fn) {
     call_user_func($fn);
 }
 call_something($callable);
-</code></pre>
-
-<h3 id="资源">资源</h3>
-
+</code></pre><h3 id="资源">资源</h3>
 <p><a href="https://secure.php.net/manual/en/language.types.resource.php">资源</a>是一种引用外部资源的变量类型，像文件，socket，流，文档或者连接。</p>
-
 <pre><code>$file = fopen('/etc/passwd', 'r');
 echo gettype($file);
 # Out: resource
 echo $file;
 # Out: Resource id #2
-</code></pre>
-
-<p>有不同的更详细的资源类型，可以使用<a href="https://secure.php.net/manual/en/function.get-resource-type.php">get_source_type</a>来获取：</p>
-
+</code></pre><p>有不同的更详细的资源类型，可以使用<a href="https://secure.php.net/manual/en/function.get-resource-type.php">get_source_type</a>来获取：</p>
 <pre><code>$file = fopen('/etc/passwd', 'r');
 
 echo get_resource_type($file); 
@@ -486,14 +386,9 @@ echo get_resource_type($file);
 $sock = fsockopen('www.google.com', 80); 
 echo get_resource_type($sock);
 #Out: stream
-</code></pre>
-
-<p>你可以在<a href="https://secure.php.net/manual/en/resource.php">手册</a>查看详细的资源类型列表。</p>
-
+</code></pre><p>你可以在<a href="https://secure.php.net/manual/en/resource.php">手册</a>查看详细的资源类型列表。</p>
 <h3 id="类型转换">类型转换</h3>
-
 <p>PHP一般情况下可以根据使用的环境确定变量的类型，但是有些情况下使用强制类型转换是更合适的。这可以通过在声明前面加上括号中所需类型的名称来实现：</p>
-
 <pre><code>$bool = true;
 var_dump($bool); // bool(true)
 
@@ -516,10 +411,7 @@ var_dump((array) $object); // array(1) { [&quot;x&quot;]=&gt; string(1) &quot;y&
 
 $string = &quot;asdf&quot;; 
 var_dump((unset)$string); // NULL
-</code></pre>
-
-<p>但是注意并不是所有的类型转换都正常运行的：</p>
-
+</code></pre><p>但是注意并不是所有的类型转换都正常运行的：</p>
 <pre><code>// below 3 statements hold for 32-bits systems (PHP_INT_MAX=2147483647)
 // an integer value bigger than PHP_INT_MAX is automatically converted to float: var_dump( 999888777666 ); // float(999888777666)
 
@@ -531,98 +423,60 @@ var_dump((int) &quot;999888777666&quot;); // int(2147483647)
 
 var_dump((bool) []); // bool(false) (empty array) 
 var_dump((bool) [false]); // bool(true) (non-empty array)
-</code></pre>
-
-<h3 id="类型修改">类型修改</h3>
-
+</code></pre><h3 id="类型修改">类型修改</h3>
 <p>PHP是弱类型语言，它不要求显示的类型声明。变量的使用环境决定这个变量的类型，类型的转换会自动进行：</p>
-
 <pre><code>$a = &quot;2&quot;; // string
 $a = $a + 2; // integer (4) 
 $a = $a + 0.5; // float (4.5) 
 $a = 1 + &quot;2 oranges&quot;; // integer (3)
-</code></pre>
-
-<h3 id="null">null</h3>
-
-<p>PHP使用<code>null</code>提供了&rdquo;无值&rdquo;。它和c语言中的null指针和SQL中null是相似的。</p>
-
+</code></pre><h3 id="null">null</h3>
+<p>PHP使用<code>null</code>提供了&quot;无值&rdquo;。它和c语言中的null指针和SQL中null是相似的。</p>
 <p>把一个变量设置为null：</p>
-
 <pre><code>$nullvar = null; // directly
 
 function doSomething() {} // this function does not return anything $nullvar = doSomething(); // so the null is assigned to $nullvar
-</code></pre>
-
-<p>检查一个变量是不是null：</p>
-
+</code></pre><p>检查一个变量是不是null：</p>
 <pre><code>if (is_null($nullvar)) { /* variable is null */ } 
 
 if ($nullvar === null) { /* variable is null */ }
-</code></pre>
-
-<h4 id="null和未定义值">null和未定义值</h4>
-
+</code></pre><h4 id="null和未定义值">null和未定义值</h4>
 <p>当一个变量没有定义或者这个变量被unset了，当这个变量和null比较时会返回true。但是会产生一个notice的错误：<code>Notice: Undefined variable: nullvar</code>:</p>
-
 <pre><code>$nullvar = null;
 unset($nullvar);
 if ($nullvar === null) { /* true but also a Notice is printed */ } 
 if (is_null($nullvar)) { /* true but also a Notice is printed */ }
-</code></pre>
-
-<p>因此未定义的变量使用<a href="http://php.net/manual/en/function.isset.php">isset</a>检查：</p>
-
+</code></pre><p>因此未定义的变量使用<a href="http://php.net/manual/en/function.isset.php">isset</a>检查：</p>
 <pre><code>if (!isset($nullvar)) { /* variable is null or is not even defined */ }
-</code></pre>
-
-<h3 id="整数">整数</h3>
-
+</code></pre><h3 id="整数">整数</h3>
 <p>PHP里面的整数指2进制，8进制，10进制，16进制的整数。</p>
-
 <pre><code>$my_decimal = 42;
 $my_binary = 0b101010;
 $my_octal = 052;
 $my_hexadecimal = 0x2a;
 echo ($my_binary + $my_octal) / 2; 
 // Output is always in decimal: 42
-</code></pre>
-
-<p>整数根据操作系统的不同是32位或64位的。<code>PHP_INT_SIZE</code>表示整数位数的大小。<code>PHP_INT_MAX</code>和<code>PHP_INT_MIN</code>(PHP7.0)也是有效的。</p>
-
+</code></pre><p>整数根据操作系统的不同是32位或64位的。<code>PHP_INT_SIZE</code>表示整数位数的大小。<code>PHP_INT_MAX</code>和<code>PHP_INT_MIN</code>(PHP7.0)也是有效的。</p>
 <pre><code> printf(&quot;Integers are %d bits long&quot; . PHP_EOL, PHP_INT_SIZE * 8);
  printf(&quot;They go up to %d&quot; . PHP_EOL, PHP_INT_MAX);
-</code></pre>
-
-<p>需要的话，会从浮点数，布尔值，字符串转为整数。如果显示的类型转换需要的话，可以使用<code>(int)</code>或<code>(integer)</code>进行转换。</p>
-
+</code></pre><p>需要的话，会从浮点数，布尔值，字符串转为整数。如果显示的类型转换需要的话，可以使用<code>(int)</code>或<code>(integer)</code>进行转换。</p>
 <pre><code>$my_numeric_string = &quot;123&quot;; 
 var_dump($my_numeric_string);
 // Output: string(3) &quot;123&quot;
 $my_integer = (int)$my_numeric_string; 
 var_dump($my_integer);
 // Output: int(123)
-</code></pre>
-
-<p>整数超出范围的话会转为浮点数：</p>
-
+</code></pre><p>整数超出范围的话会转为浮点数：</p>
 <pre><code>$too_big_integer = PHP_INT_MAX + 7; 
 var_dump($too_big_integer);
 // Output: float(9.2233720368548E+18)
-</code></pre>
-
-<p>PHP没有整除，但是可以通过显示类型转换时候，根据浮点数部分进行&rdquo;四舍五入&rdquo;。PHP7增加了整除函数。</p>
-
+</code></pre><p>PHP没有整除，但是可以通过显示类型转换时候，根据浮点数部分进行&quot;四舍五入&rdquo;。PHP7增加了整除函数。</p>
 <pre><code>$not_an_integer = 25 / 4; var_dump($not_an_integer);
 // Output: float(6.25)
 var_dump((int) (25 / 4)); // (see note below) 
 // Output: int(6)
 var_dump(intdiv(25 / 4)); // as of PHP7 
 // Output: int(6)
-</code></pre>
-
-<p>注意<code>(25 / 4)</code>外部添加括号是因为<code>(int)</code>比除法的优先级高。</p>
-
+</code></pre><p>注意<code>(25 / 4)</code>外部添加括号是因为<code>(int)</code>比除法的优先级高。</p>
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -695,6 +549,12 @@ var_dump(intdiv(25 / 4)); // as of PHP7
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

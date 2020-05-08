@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,60 +187,39 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#对数组操作">对数组操作</a>
-<ul>
-<li><a href="#对数组每个元素进行函数处理">对数组每个元素进行函数处理</a></li>
-<li><a href="#将数组分入多个块">将数组分入多个块</a></li>
-<li><a href="#数组拼为字符串">数组拼为字符串</a></li>
-<li><a href="#list-获取数组值">list()获取数组值</a></li>
-<li><a href="#array-reduce">array_reduce</a>
-<ul>
-<li><a href="#数组和">数组和</a></li>
-<li><a href="#数组最大值">数组最大值</a></li>
-</ul></li>
-<li><a href="#判断元素是否全部大于100">判断元素是否全部大于100</a></li>
-<li><a href="#判断是有有小于100的元素">判断是有有小于100的元素</a>
-<ul>
-<li><a href="#和-implode-array-piece-相似">和<code>implode($array, $piece)</code>相似</a></li>
-</ul></li>
-<li><a href="#数组插入一个值">数组插入一个值</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#对数组操作">对数组操作</a>
+      <ul>
+        <li><a href="#对数组每个元素进行函数处理">对数组每个元素进行函数处理</a></li>
+        <li><a href="#将数组分入多个块">将数组分入多个块</a></li>
+        <li><a href="#数组拼为字符串">数组拼为字符串</a></li>
+        <li><a href="#list获取数组值">list()获取数组值</a></li>
+        <li><a href="#array_reduce">array_reduce</a></li>
+        <li><a href="#判断元素是否全部大于100">判断元素是否全部大于100</a></li>
+        <li><a href="#判断是有有小于100的元素">判断是有有小于100的元素</a></li>
+        <li><a href="#数组插入一个值">数组插入一个值</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="对数组操作">对数组操作</h2>
-
+        		<h2 id="对数组操作">对数组操作</h2>
 <h3 id="对数组每个元素进行函数处理">对数组每个元素进行函数处理</h3>
-
 <p>对数组每一个元素进行函数的处理，使用<a href="https://www.php.net/manual/zh/function.array-map.php">array_map</a>函数。这将会返回一个新的数组。</p>
-
 <pre><code>$array = array(1,2,3,4,5);
 //each array item is iterated over and gets stored in the function parameter. 
 $newArray = array_map(function($item) {
     return $item + 1;
 }, $array);
-</code></pre>
-
-<p>返回的新数组<code>$newArray</code>的值是<code>array(2,3,4,5,6)</code>。</p>
-
+</code></pre><p>返回的新数组<code>$newArray</code>的值是<code>array(2,3,4,5,6)</code>。</p>
 <p>除了使用匿名函数外，还可以使用一个命名的函数。上面的例子也可以写成下面这样：</p>
-
 <pre><code>function addOne($item) {
     return $item + 1;
 }
 
 $array = array(1, 2, 3, 4, 5);
 $newArray = array_map('addOne', $array);
-</code></pre>
-
-<p>如果这个命名函数是一个类的方法，在使用的时候需要保护类的一个对象：</p>
-
+</code></pre><p>如果这个命名函数是一个类的方法，在使用的时候需要保护类的一个对象：</p>
 <pre><code>class Example {
     public function addOne($item) {
         return $item + 1;
@@ -247,46 +230,27 @@ $newArray = array_map('addOne', $array);
         $newArray = array_map(array($this, 'addOne'), $array);
     }
 }
-</code></pre>
-
-<p>另外的对数组每个元素使用方法的函数是<a href="https://www.php.net/manual/zh/function.array-walk.php">array_walk()</a>和<a href="https://www.php.net/manual/zh/function.array-walk-recursive.php">array_walk_recursive()</a>。在这些函数中使用的调用函数解释数组每个元素的键/值作为参数。这两个函数不返回一个新的数组，而是函数执行成功与否的布尔值。例如：打印一个简单数组的每个元素：</p>
-
+</code></pre><p>另外的对数组每个元素使用方法的函数是<a href="https://www.php.net/manual/zh/function.array-walk.php">array_walk()</a>和<a href="https://www.php.net/manual/zh/function.array-walk-recursive.php">array_walk_recursive()</a>。在这些函数中使用的调用函数解释数组每个元素的键/值作为参数。这两个函数不返回一个新的数组，而是函数执行成功与否的布尔值。例如：打印一个简单数组的每个元素：</p>
 <pre><code>$array = array(1, 2, 3, 4, 5);
 array_walk($array, function($value, $key) {
     $value++;
 })
-</code></pre>
-
-<p>现在数组<code>$array</code>的值就是<code>array(2, 3, 4, 5, 6)</code>。</p>
-
+</code></pre><p>现在数组<code>$array</code>的值就是<code>array(2, 3, 4, 5, 6)</code>。</p>
 <p>对于多维数组，使用<code>array_walk_recursive</code>函数可以处理子数组的元素。</p>
-
 <pre><code>$array = array(1, array(2, 3 array(4, 5)), 6));
 array_walk_recursive($array, function($value, $key) {
     echo $value . &quot; &quot;;
 });
 
 //打印1 2 3 4 5 6
-</code></pre>
-
-<p>注意：<code>array_walk</code>和<code>array_walk_recursive</code>允许你修改数组的元素，不是键。使用引用传递key是有效的，但是没有用。</p>
-
+</code></pre><p>注意：<code>array_walk</code>和<code>array_walk_recursive</code>允许你修改数组的元素，不是键。使用引用传递key是有效的，但是没有用。</p>
 <h3 id="将数组分入多个块">将数组分入多个块</h3>
-
 <p><a href="http://php.net/manual/en/function.array-chunk.php">array_chunk()</a>把一个数组分成几个块。</p>
-
 <p>假设我们有下面的一维数组：</p>
-
 <pre><code>$input_array = array('a', 'b', 'c', 'd', 'e');
-</code></pre>
-
-<p>现在对上面的数组执行<code>array_chunk()</code>方法。</p>
-
+</code></pre><p>现在对上面的数组执行<code>array_chunk()</code>方法。</p>
 <pre><code>$output_array = array_chunk($input_array, 2);
-</code></pre>
-
-<p>上面的代码将会把数组分成2个元素一组的二维数组，向下面这样：</p>
-
+</code></pre><p>上面的代码将会把数组分成2个元素一组的二维数组，向下面这样：</p>
 <pre><code>Array
 (
     [0] =&gt; Array
@@ -302,12 +266,8 @@ array_walk_recursive($array, function($value, $key) {
         [0] =&gt; e
     )
 )
-</code></pre>
-
-<p>如果数组的所有元素不能被均匀分块的话，剩余的元素将会放到<code>$output_array</code>的最后一个元素内。</p>
-
+</code></pre><p>如果数组的所有元素不能被均匀分块的话，剩余的元素将会放到<code>$output_array</code>的最后一个元素内。</p>
 <p>如果方法的第二个参数是比1小的数，将会抛出一个<code>E_WARNING</code>格式的错误，并且输出Null。</p>
-
 <table>
 <thead>
 <tr>
@@ -315,120 +275,79 @@ array_walk_recursive($array, function($value, $key) {
 <th>含义</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>$array(array)</td>
 <td>将要处理的数组</td>
 </tr>
-
 <tr>
 <td>$size(int)</td>
 <td>每个块的大小，整数值</td>
 </tr>
-
 <tr>
 <td>$preserve_keys(boolean)(optional)</td>
 <td>是否保持原数组的key值，如果是true保留，否则丢弃</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="数组拼为字符串">数组拼为字符串</h3>
-
 <p><a href="https://php.net/manual/en/function.implode.php">implode()</a>函数把数组的所有值拼成一个字符串，但是丢弃所有的key。</p>
-
 <pre><code>$arr = ['a' =&gt; &quot;AA&quot;, 'b' =&gt; &quot;BB&quot;, 'c' =&gt; &quot;CC&quot;]; 
 echo implode(&quot; &quot;, $arr); // AA BB CC
-</code></pre>
-
-<p>想要获取key的字符串的话，需要先使用<code>array_keys</code>获取数组的key：</p>
-
+</code></pre><p>想要获取key的字符串的话，需要先使用<code>array_keys</code>获取数组的key：</p>
 <pre><code>$arr = ['a' =&gt; &quot;AA&quot;, 'b' =&gt; &quot;BB&quot;, 'c' =&gt; &quot;CC&quot;]; 
 echo implode(&quot; &quot;, array_keys($arr)); // a b c
-</code></pre>
-
-<p>拼接key和值是更加复杂的，但是可以实现：</p>
-
+</code></pre><p>拼接key和值是更加复杂的，但是可以实现：</p>
 <pre><code>$arr = ['a' =&gt; 'AA', 'b' =&gt; 'BB', 'c' =&gt; 'CC'];
 
 echo implode(&quot; &quot;, array_map(function($key, $val) {
     return &quot;$key:$val&quot;; // function that glues key to the value
 }, array_keys($arr), $arr)); // Output: a:AA b:BB c:CC
-</code></pre>
-
-<h3 id="list-获取数组值">list()获取数组值</h3>
-
+</code></pre><h3 id="list获取数组值">list()获取数组值</h3>
 <p>使用<a href="https://www.php.net/manual/zh/function.list.php">list()</a>函数可以快速获取数组中的值放入一组变量。查看<a href="https://www.php.net/manual/zh/function.compact.php">compact</a>。</p>
-
 <pre><code>//把数组$array的值逐个赋值给$a $b $c
 list($a, $b, $c) = $array;
-</code></pre>
-
-<p>在PHP7.1开始，你也可以使用<a href="https://wiki.php.net/rfc/short_list_syntax">短语法</a>：</p>
-
+</code></pre><p>在PHP7.1开始，你也可以使用<a href="https://wiki.php.net/rfc/short_list_syntax">短语法</a>：</p>
 <pre><code>//将数组的值放入 $a, $b, $c key是从0开始
 [$a, $b, $c] = $array;
 //增加了key  ！！！ 不过7.1在下方输出 $a $b $c 为Null
 [&quot;a&quot; =&gt; $a, &quot;b&quot; =&gt; $b, &quot;c&quot; =&gt; $c] = $array;
-</code></pre>
-
-<h3 id="array-reduce">array_reduce</h3>
-
+</code></pre><h3 id="array_reduce">array_reduce</h3>
 <p><a href="https://www.php.net/manual/zh/function.array-reduce.php">array_reduce()</a>处理数组的值，返回一个值。<code>array_reduce</code>对每个元素进行处理，调用的函数第一个参数是初始值或上次的结果，第二个参数是元素的值，返回的结果进入下个迭代。</p>
-
 <p>用法：<code>array_reduce($array function($carray, $item){}, $default_value_of_first_carry)</code></p>
-
 <ul>
 <li>$array 是上次迭代的结果</li>
 <li>$item 是数组当前的元素值</li>
 </ul>
-
 <h4 id="数组和">数组和</h4>
-
 <pre><code>$result = array_reduce([1, 2, 3, 4, 5], function($carry, $item) {
     return $carry + $item;
 })
 
 //$result = 15
-</code></pre>
-
-<h4 id="数组最大值">数组最大值</h4>
-
+</code></pre><h4 id="数组最大值">数组最大值</h4>
 <pre><code>$result = array_reduce([10, 23, 211, 34, 25], function($carry, $item) {
     return $carry &gt; $item ? $carry : $item;
 })
 
 //$result=211
-</code></pre>
-
-<h3 id="判断元素是否全部大于100">判断元素是否全部大于100</h3>
-
+</code></pre><h3 id="判断元素是否全部大于100">判断元素是否全部大于100</h3>
 <pre><code>$result = array_reduce([101, 230, 210, 341, 251], function($carry, $item) {
     return $carry &amp;&amp; $item &gt; 100;
 }, true);
 
 //$result=true
-</code></pre>
-
-<h3 id="判断是有有小于100的元素">判断是有有小于100的元素</h3>
-
+</code></pre><h3 id="判断是有有小于100的元素">判断是有有小于100的元素</h3>
 <pre><code>$result = array_reduce([101, 230, 21, 341, 251], function($carry, $item) {
     return $carry || $item &lt; 100;
 }, false);
-</code></pre>
-
-<h4 id="和-implode-array-piece-相似">和<code>implode($array, $piece)</code>相似</h4>
-
+</code></pre><h4 id="和implodearray-piece相似">和<code>implode($array, $piece)</code>相似</h4>
 <pre><code>$result = array_reduce(['hello', 'world', 'PHP', 'language'], function($carry, $item) {
     return !$carry ? $item : $carry . '-' . $item;
 })
 
 //$result = 'hello-world-PHP-language'
-</code></pre>
-
-<p>如果你想实现一个implode方法，向下面这样：</p>
-
+</code></pre><p>如果你想实现一个implode方法，向下面这样：</p>
 <pre><code>function implode_method($array, $piece) {
     return array_reduce($array, function($carry, $item) {
        return !$carry ? $item : ($carry . $piece . $item); 
@@ -437,21 +356,13 @@ list($a, $b, $c) = $array;
 
 $result = implode_method([&quot;hello&quot;, &quot;world&quot;, &quot;PHP&quot;, &quot;language&quot;], &quot;-&quot;);
 //$result='hello-world-PHP-language'
-</code></pre>
-
-<h3 id="数组插入一个值">数组插入一个值</h3>
-
+</code></pre><h3 id="数组插入一个值">数组插入一个值</h3>
 <p>有两个方法在数组中插入一个值：<a href="https://www.php.net/manual/zh/function.array-push.php">array_push()</a> 和 <code>$array[]=</code></p>
-
 <p><code>array_push</code>就是下边这样操作：</p>
-
 <pre><code>$array = [1, 2, 3];
 $newArraySize = array_push($array, 5, 6); //返回数组新的大小
 print_r($array); //因为$array是引用传递的，所以原本的值已经修改了
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre><p>这将会输出：</p>
 <pre><code>Array
 (
     [0] =&gt; 1
@@ -460,18 +371,12 @@ print_r($array); //因为$array是引用传递的，所以原本的值已经修�
     [3] =&gt; 5
     [4] =&gt; 6
 )
-</code></pre>
-
-<p><code>$array[] =</code>就是下面这样操作的：</p>
-
+</code></pre><p><code>$array[] =</code>就是下面这样操作的：</p>
 <pre><code>$array = [1,2,3];
 $array[] = 5;
 $array[] = 6;
 print_r($array);
-</code></pre>
-
-<p>这个数组的输出：</p>
-
+</code></pre><p>这个数组的输出：</p>
 <pre><code>Array
 (
     [0] =&gt; 1
@@ -480,9 +385,7 @@ print_r($array);
     [3] =&gt; 5
     [4] =&gt; 6
 )
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -554,6 +457,12 @@ print_r($array);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

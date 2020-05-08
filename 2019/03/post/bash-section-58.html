@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,29 +187,21 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#全局和本地变量">全局和本地变量</a>
-<ul>
-<li><a href="#全局变量">全局变量</a></li>
-<li><a href="#本地变量">本地变量</a></li>
-<li><a href="#混合使用">混合使用</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#全局和本地变量">全局和本地变量</a>
+      <ul>
+        <li><a href="#全局变量">全局变量</a></li>
+        <li><a href="#本地变量">本地变量</a></li>
+        <li><a href="#混合使用">混合使用</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="全局和本地变量">全局和本地变量</h2>
-
+        		<h2 id="全局和本地变量">全局和本地变量</h2>
 <p>默认的，你在脚本中声明的自己的变量，在每个方法，脚本甚至shell外部都是全局的。</p>
-
 <p>如果你想要变量是方法本地的，在方法内部使用<code>local</code>关键字，这些值将只能在方法中访问。</p>
-
 <h3 id="全局变量">全局变量</h3>
-
 <pre><code>var=&quot;hello&quot;
 
 function foo(){
@@ -213,22 +209,15 @@ function foo(){
 }
 
 foo
-</code></pre>
-
-<p>将会输出&rdquo;hello&rdquo;。这在另一种方式也是可以的：</p>
-
+</code></pre><p>将会输出&quot;hello&rdquo;。这在另一种方式也是可以的：</p>
 <pre><code>function foo() {
     var=&quot;hello&quot;
 }
 
 foo
 echo $var
-</code></pre>
-
-<p>将也会输出&rdquo;hello&rdquo;</p>
-
+</code></pre><p>将也会输出&quot;hello&rdquo;</p>
 <h3 id="本地变量">本地变量</h3>
-
 <pre><code>function foo(){
     local var
     var = &quot;hello&quot;
@@ -236,12 +225,8 @@ echo $var
 
 foo
 echo var
-</code></pre>
-
-<p>将什么都不会输出，<code>var</code>是方法内部的变量，在方法外部是不可见的。</p>
-
+</code></pre><p>将什么都不会输出，<code>var</code>是方法内部的变量，在方法外部是不可见的。</p>
 <h3 id="混合使用">混合使用</h3>
-
 <pre><code>var=&quot;hello&quot;
 
 function foo() {
@@ -251,15 +236,10 @@ function foo() {
 
 foo
 echo &quot;outside function, var=$var&quot;
-</code></pre>
-
-<p>将会输出：</p>
-
+</code></pre><p>将会输出：</p>
 <pre><code>inside function, var=sup?
 outside function, var=hello
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -331,6 +311,12 @@ outside function, var=hello
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

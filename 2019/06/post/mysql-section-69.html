@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,147 +187,87 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mysql性能调整">MySQL性能调整</a>
-<ul>
-<li><a href="#1-不要把列放到函数内">1. 不要把列放到函数内</a></li>
-<li><a href="#2-or">2. OR</a></li>
-<li><a href="#3-添加正确的索引">3. 添加正确的索引</a></li>
-<li><a href="#4-有一个索引">4. 有一个索引</a></li>
-<li><a href="#5-子查询">5. 子查询</a></li>
-<li><a href="#6-join-group-by">6. JOIN + GROUP BY</a></li>
-<li><a href="#7-设置正确的缓存">7. 设置正确的缓存</a></li>
-<li><a href="#8-相反">8. 相反</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mysql性能调整">MySQL性能调整</a>
+      <ul>
+        <li><a href="#1-不要把列放到函数内">1. 不要把列放到函数内</a></li>
+        <li><a href="#2-or">2. OR</a></li>
+        <li><a href="#3-添加正确的索引">3. 添加正确的索引</a></li>
+        <li><a href="#4-有一个索引">4. 有一个索引</a></li>
+        <li><a href="#5-子查询">5. 子查询</a></li>
+        <li><a href="#6-join--group-by">6. JOIN + GROUP BY</a></li>
+        <li><a href="#7-设置正确的缓存">7. 设置正确的缓存</a></li>
+        <li><a href="#8-相反">8. 相反</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mysql性能调整">MySQL性能调整</h2>
-
+        		<h2 id="mysql性能调整">MySQL性能调整</h2>
 <h3 id="1-不要把列放到函数内">1. 不要把列放到函数内</h3>
-
 <p>一个常见的错误是把一个索引的列放入到一个函数中。例如，下面的查询不会用到索引：</p>
-
-<pre><code class="language-mysql">WHERE DATE(dt) = '2000-01-01'
-</code></pre>
-
-<p>相反，对于索引<code>INDEX(dt)</code>下面可能会用到索引：</p>
-
-<pre><code class="language-mysql">WHERE dt='2000-01-01' -- 如果dt是DATE类型的话
-</code></pre>
-
-<p>这个对于<code>DATE, DATETIME,TIMESTAMP和DATETIME(6)毫秒</code>也是有效的：</p>
-
-<pre><code class="language-mysql">WHERE dt &gt;= '2000-01-01'
-    AND dt &lt; '2000-01-01' + INTERVAL 1 DAY
-</code></pre>
-
-<h3 id="2-or">2. OR</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">DATE</span>(dt) <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;2000-01-01&#39;</span>
+</code></pre></div><p>相反，对于索引<code>INDEX(dt)</code>下面可能会用到索引：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> dt<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;2000-01-01&#39;</span> <span style="color:#75715e">-- 如果dt是DATE类型的话
+</span></code></pre></div><p>这个对于<code>DATE, DATETIME,TIMESTAMP和DATETIME(6)毫秒</code>也是有效的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> dt <span style="color:#f92672">&gt;=</span> <span style="color:#e6db74">&#39;2000-01-01&#39;</span>
+    <span style="color:#66d9ef">AND</span> dt <span style="color:#f92672">&lt;</span> <span style="color:#e6db74">&#39;2000-01-01&#39;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">INTERVAL</span> <span style="color:#ae81ff">1</span> DAY
+</code></pre></div><h3 id="2-or">2. OR</h3>
 <p>通常OR会很降低性能：</p>
-
-<pre><code class="language-mysql">WHERE a = 12 OR b = 78
-</code></pre>
-
-<p>不能使用索引<code>INDEX(a, b)</code>，可以或不可以通过&rdquo;索引合并&rdquo;使用<code>INDEX(a)和INDEX(b)</code>。索引合并总榜什么都没有好，但只是好一点。</p>
-
-<pre><code class="language-mysql">WHERE x = 3 OR x = 5
-</code></pre>
-
-<p>应该换成：</p>
-
-<pre><code class="language-mysql">WHERE x IN (3, 5)
-</code></pre>
-
-<p>这可能会用到<code>x</code>的索引。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">12</span> <span style="color:#66d9ef">OR</span> b <span style="color:#f92672">=</span> <span style="color:#ae81ff">78</span>
+</code></pre></div><p>不能使用索引<code>INDEX(a, b)</code>，可以或不可以通过&quot;索引合并&quot;使用<code>INDEX(a)和INDEX(b)</code>。索引合并总榜什么都没有好，但只是好一点。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span> <span style="color:#66d9ef">OR</span> x <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</code></pre></div><p>应该换成：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> x <span style="color:#66d9ef">IN</span> (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">5</span>)
+</code></pre></div><p>这可能会用到<code>x</code>的索引。</p>
 <h3 id="3-添加正确的索引">3. 添加正确的索引</h3>
-
-<p>这是一个很多的主题，但是也是一个最重要的&rdquo;性能&rdquo;主题。</p>
-
-<p>初学者的主要经验是学习&rdquo;复合&rdquo;索引。下面是一个例子：</p>
-
-<pre><code class="language-mysql">INDEX(last_name, first_name)
-</code></pre>
-
-<p>对于下面的查询，索引都是有效的：</p>
-
-<pre><code class="language-mysql">WHERE last_name = '...'
-WHERE first_name = '...' AND last_name = '...' -- where中的顺序是没有关系的
-</code></pre>
-
-<p>但是对于下面的查询就没有效果了：</p>
-
-<pre><code class="language-mysql">WHERE first_name = '...' -- 索引的顺序是很重要的
-WHERE last_name = '...' OR first_name = '...' -- &quot;OR&quot;很差
-</code></pre>
-
-<h3 id="4-有一个索引">4. 有一个索引</h3>
-
+<p>这是一个很多的主题，但是也是一个最重要的&quot;性能&quot;主题。</p>
+<p>初学者的主要经验是学习&quot;复合&quot;索引。下面是一个例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INDEX</span>(last_name, first_name)
+</code></pre></div><p>对于下面的查询，索引都是有效的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> last_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;...&#39;</span>
+<span style="color:#66d9ef">WHERE</span> first_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;...&#39;</span> <span style="color:#66d9ef">AND</span> last_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;...&#39;</span> <span style="color:#75715e">-- where中的顺序是没有关系的
+</span></code></pre></div><p>但是对于下面的查询就没有效果了：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> first_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;...&#39;</span> <span style="color:#75715e">-- 索引的顺序是很重要的
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">WHERE</span> last_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;...&#39;</span> <span style="color:#66d9ef">OR</span> first_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;...&#39;</span> <span style="color:#75715e">-- &#34;OR&#34;很差
+</span></code></pre></div><h3 id="4-有一个索引">4. 有一个索引</h3>
 <p>对于任何不小的表来说，提升性能最重要的事情就是天津一个合适的索引：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">WHERE</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">12</span> <span style="color:#f92672">--&gt;</span> <span style="color:#66d9ef">INDEX</span>(a) 
+<span style="color:#66d9ef">WHERE</span> a <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">12</span> <span style="color:#f92672">--&gt;</span> <span style="color:#66d9ef">INDEX</span>(a)
 
-<pre><code class="language-mysql">WHERE a = 12 --&gt; INDEX(a) 
-WHERE a &gt; 12 --&gt; INDEX(a)
+<span style="color:#66d9ef">WHERE</span> a <span style="color:#f92672">=</span> <span style="color:#ae81ff">12</span> <span style="color:#66d9ef">AND</span> b <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">78</span> <span style="color:#f92672">--&gt;</span> <span style="color:#66d9ef">INDEX</span>(a,b) <span style="color:#960050;background-color:#1e0010">比</span> <span style="color:#66d9ef">INDEX</span>(b,a)<span style="color:#960050;background-color:#1e0010">有用</span>
+<span style="color:#66d9ef">WHERE</span> a <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">12</span> <span style="color:#66d9ef">AND</span> b <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">78</span> <span style="color:#f92672">--&gt;</span> <span style="color:#66d9ef">INDEX</span>(a) <span style="color:#66d9ef">or</span> <span style="color:#66d9ef">INDEX</span>(b); <span style="color:#960050;background-color:#1e0010">都是范围</span>
 
-WHERE a = 12 AND b &gt; 78 --&gt; INDEX(a,b) 比 INDEX(b,a)有用
-WHERE a &gt; 12 AND b &gt; 78 --&gt; INDEX(a) or INDEX(b); 都是范围
-
-ORDER BY x --&gt; INDEX(x)
-ORDER BY x, y --&gt; INDEX(x,y) 按照顺序
-ORDER BY x DESC, y ASC --&gt; 没有索引有效，这里是混合的升降排序
-</code></pre>
-
-<h3 id="5-子查询">5. 子查询</h3>
-
-<p>子查询有几种类型，它们有不同的优化潜力。注意子查询可以是&rdquo;相关的&rdquo;或&rdquo;不相关的&rdquo;。相关表示子查询依赖于子查询外部的值。这通常意味着必须为每个外部值重新计算子查询。</p>
-
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x <span style="color:#f92672">--&gt;</span> <span style="color:#66d9ef">INDEX</span>(x)
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x, y <span style="color:#f92672">--&gt;</span> <span style="color:#66d9ef">INDEX</span>(x,y) <span style="color:#960050;background-color:#1e0010">按照顺序</span>
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x <span style="color:#66d9ef">DESC</span>, y <span style="color:#66d9ef">ASC</span> <span style="color:#f92672">--&gt;</span> <span style="color:#960050;background-color:#1e0010">没有索引有效，这里是混合的升降排序</span>
+</code></pre></div><h3 id="5-子查询">5. 子查询</h3>
+<p>子查询有几种类型，它们有不同的优化潜力。注意子查询可以是&quot;相关的&quot;或&quot;不相关的&rdquo;。相关表示子查询依赖于子查询外部的值。这通常意味着必须为每个外部值重新计算子查询。</p>
 <p>相关子查询通常很好。注意：它必须返回至多1个值。通常作为左连接的替代，但不一定有连接快。</p>
-
-<pre><code class="language-mysql">SELECT a, b, ( SELECT ... FROM t WHERE t.x = u.x ) AS c FROM u ...
-SELECT a, b, ( SELECT MAX(x) ... ) AS c FROM u ...
-SELECT a, b, ( SELECT x FROM t ORDER BY ... LIMIT 1 ) AS c FROM u ...
-</code></pre>
-
-<p>下面是非相关的：</p>
-
-<pre><code class="language-mysql">SELECT ...
-FROM ( SELECT ... ) AS a JOIN b ON ...
-</code></pre>
-
-<p>注意<code>FROM SELECT</code>:</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> a, b, ( <span style="color:#66d9ef">SELECT</span> ... <span style="color:#66d9ef">FROM</span> t <span style="color:#66d9ef">WHERE</span> t.x <span style="color:#f92672">=</span> u.x ) <span style="color:#66d9ef">AS</span> c <span style="color:#66d9ef">FROM</span> u ...
+<span style="color:#66d9ef">SELECT</span> a, b, ( <span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">MAX</span>(x) ... ) <span style="color:#66d9ef">AS</span> c <span style="color:#66d9ef">FROM</span> u ...
+<span style="color:#66d9ef">SELECT</span> a, b, ( <span style="color:#66d9ef">SELECT</span> x <span style="color:#66d9ef">FROM</span> t <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> ... <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span> ) <span style="color:#66d9ef">AS</span> c <span style="color:#66d9ef">FROM</span> u ...
+</code></pre></div><p>下面是非相关的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> ...
+<span style="color:#66d9ef">FROM</span> ( <span style="color:#66d9ef">SELECT</span> ... ) <span style="color:#66d9ef">AS</span> a <span style="color:#66d9ef">JOIN</span> b <span style="color:#66d9ef">ON</span> ...
+</code></pre></div><p>注意<code>FROM SELECT</code>:</p>
 <ul>
 <li>如果返回1个值，非常好</li>
-<li>一个很好的范例(同样是&rdquo;1行&rdquo;)，对于子查询<code>(SELECT @n:=0)</code>，初始化一个变量<code>@variable</code>在子查询其他部分或者查询中使用。</li>
+<li>一个很好的范例(同样是&quot;1行&rdquo;)，对于子查询<code>(SELECT @n:=0)</code>，初始化一个变量<code>@variable</code>在子查询其他部分或者查询中使用。</li>
 <li>如果返回很多行，并且<code>JOIN</code>也是<code>(SELECT …)</code>返回很多行，性能是很差的。在5.6之前没有索引，所以这就变成了<code>CROSS JOIN</code>;在5.6之后，涉及到在临时表上推导出最好的索引，然后生成它，最后在完成选择后丢弃它。</li>
 </ul>
-
-<h3 id="6-join-group-by">6. JOIN + GROUP BY</h3>
-
+<h3 id="6-join--group-by">6. JOIN + GROUP BY</h3>
 <p>一个常见的导致查询效率低下的问题像下面这样：</p>
-
-<pre><code class="language-mysql">SELECT ... 
-    FROM a
-    JOIN b ON ... 
-    WHERE ... 
-    GROUP BY a.id
-</code></pre>
-
-<p>首先，<code>JOIN</code>扩展了行数，然后<code>GROUP BY</code>将结果变为了a中的行数。可能没有更好的办法来解决扩展-压缩的问题。一个可能的办法是在SELECT中将JOIN变为一个子查询。这也消除了GROUP BY。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> ... 
+    <span style="color:#66d9ef">FROM</span> a
+    <span style="color:#66d9ef">JOIN</span> b <span style="color:#66d9ef">ON</span> ... 
+    <span style="color:#66d9ef">WHERE</span> ... 
+    <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> a.id
+</code></pre></div><p>首先，<code>JOIN</code>扩展了行数，然后<code>GROUP BY</code>将结果变为了a中的行数。可能没有更好的办法来解决扩展-压缩的问题。一个可能的办法是在SELECT中将JOIN变为一个子查询。这也消除了GROUP BY。</p>
 <h3 id="7-设置正确的缓存">7. 设置正确的缓存</h3>
-
 <p><code>innodb_buffer_pool_size</code>应该被设置为有效内存的70%。</p>
-
 <h3 id="8-相反">8. 相反</h3>
-
 <p>以下是一些不太可能有助于提高性能的事情。它们来源于过时的信息和/或幼稚。</p>
-
 <ul>
 <li>InnoDB已经改进到Myisam不太可能更好的程度。</li>
 <li>分区很少提供性能优势，甚至会损害性能。</li>
@@ -332,7 +276,6 @@ FROM ( SELECT ... ) AS a JOIN b ON ...
 <li>&ldquo;前缀索引&rdquo;(像<code>INDEX(foo(20))</code>)通常是没用的</li>
 <li><code>OPTIMIZE TABLE</code>几乎是没用的，并且会锁表。</li>
 </ul>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -405,6 +348,12 @@ FROM ( SELECT ... ) AS a JOIN b ON ...
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

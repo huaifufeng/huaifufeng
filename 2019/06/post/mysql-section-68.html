@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,69 +187,57 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mysql性能建议">MySQL性能建议</a>
-<ul>
-<li><a href="#1-创建联合索引">1. 创建联合索引</a></li>
-<li><a href="#2-优化innodb的表存储">2. 优化InnoDB的表存储</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mysql性能建议">MySQL性能建议</a>
+      <ul>
+        <li><a href="#1-创建联合索引">1. 创建联合索引</a></li>
+        <li><a href="#2-优化innodb的表存储">2. 优化InnoDB的表存储</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mysql性能建议">MySQL性能建议</h2>
-
+        		<h2 id="mysql性能建议">MySQL性能建议</h2>
 <h3 id="1-创建联合索引">1. 创建联合索引</h3>
-
 <p>在大多数情况下，组合索引比单列索引的性能提升的高。创建一个最佳的联合索引，按照下面的顺序排序列：</p>
-
 <ul>
 <li><code>=</code>列：WHERE子句中开始(例如 <code>INDEX(a, b, …)</code> 对于<code>WHERE a=12 AND b='xyz'...</code>)</li>
 <li><code>IN</code>列：优化器可能跳过索引</li>
-<li>一个&rdquo;范围&rdquo;：(例如：<code>x BETWEEN 3 AND 9</code>, <code>name LIKE 'J%'</code>) 将会不会使用任何第一个范围列的列。</li>
+<li>一个&quot;范围&rdquo;：(例如：<code>x BETWEEN 3 AND 9</code>, <code>name LIKE 'J%'</code>) 将会不会使用任何第一个范围列的列。</li>
 <li>所有<code>GROUP BY</code>中的列，按照顺序</li>
-<li>所有<code>ORDER BY</code>中的列，按照顺序。只有在所有的列是<code>ASC</code>或<code>DESC</code>下有效，或者你用的事8.0<br /></li>
+<li>所有<code>ORDER BY</code>中的列，按照顺序。只有在所有的列是<code>ASC</code>或<code>DESC</code>下有效，或者你用的事8.0</li>
 </ul>
-
 <p>注意和异常：</p>
-
 <ul>
 <li>不要重复任何列</li>
 <li>跳过所有不使用的案例</li>
 <li>如果你没有使用<code>WHERE</code>语句中的所有列，就不需要继续使用<code>GROUP BY</code>等</li>
 <li>有一些情况下只有<code>ORDER BY</code>列是有用的，忽略<code>WHERE</code>列</li>
-<li>不要把列&rdquo;放入&rdquo;方法中(例如<code>DATE(x)=…</code>不能用到<code>x</code>的索引)</li>
-<li>&ldquo;前缀&rdquo;索引(例如<code>text_col(99)</code>)不太可能有帮助，可能会造成伤害</li>
+<li>不要把列&quot;放入&quot;方法中(例如<code>DATE(x)=…</code>不能用到<code>x</code>的索引)</li>
+<li>&ldquo;前缀&quot;索引(例如<code>text_col(99)</code>)不太可能有帮助，可能会造成伤害</li>
 </ul>
-
 <p><a href="https://mariadb.com/kb/en/mariadb/compound-composite-indexes/">更多详情。</a></p>
-
 <h3 id="2-优化innodb的表存储">2. 优化InnoDB的表存储</h3>
-
 <ol>
-<li><p>在InnoDB中，有一个长的<code>Primary KEY</code>(或者是一列有很长的值，或者多个组合列有长值)浪费很大的磁盘空间。行的主键值在同一行所有辅助索引记录中重复。如果主键过长，创建一个自动递增的列作为主键。</p></li>
-
-<li><p>使用<code>VARCHAR</code>数据类型替换<code>CHAR</code>类型当存储变长字符串或者列中有很多NULL值。一个<code>CHAR(N)</code>的列一直花费N个字符存储数据，不管这个字符串是更短的或只是NULL。较小的表更适合缓冲池并减少磁盘的I/O。</p></li>
-</ol>
-
+<li>
+<p>在InnoDB中，有一个长的<code>Primary KEY</code>(或者是一列有很长的值，或者多个组合列有长值)浪费很大的磁盘空间。行的主键值在同一行所有辅助索引记录中重复。如果主键过长，创建一个自动递增的列作为主键。</p>
+</li>
+<li>
+<p>使用<code>VARCHAR</code>数据类型替换<code>CHAR</code>类型当存储变长字符串或者列中有很多NULL值。一个<code>CHAR(N)</code>的列一直花费N个字符存储数据，不管这个字符串是更短的或只是NULL。较小的表更适合缓冲池并减少磁盘的I/O。</p>
 <blockquote>
 <p>当使用COMPACT行格式(默认的InnoDB格式)和可变长度字符集(像utf8或sjis)时，CHAR(N)列占用可变的空间，但是仍然至少占用N个字节</p>
 </blockquote>
-
-<ol>
-<li><p>对于那些包含大量重复文本或者数值数据的大表，考虑使用压缩行格式。花费更少的磁盘I/O来加载数据到缓存池或者执行全表查询。在做一个长久的决定之前，计算依稀使用压缩行格式和压缩行格式可以达到的压缩量。警告：基准测试很少显示出比2:1更好的压缩比，并且缓冲池中有很多用于压缩的开销。</p></li>
-
-<li><p>一旦你的数据达到稳定的大小，或者一个增长表增加了数十兆或数百兆字节，请考虑使用OPTIMIZE TABLE语句来重新组织表并且压缩任何浪费的空间。重新组织表使用更少的磁盘I/O来进行完整的表扫描。这是一种简单的技术，可以在其他的技术(如改进索引使用或优化应用程序代码)不能提供性能的情况下。警告：无论表的大小，OPTIMIZE TABLE 应该很少执行。因为它成本很高，而且很少能改善到使用这个功能。InnoDB相当擅长保持其B+树不存在大量的浪费空间。</p></li>
-</ol>
-
+</li>
+<li>
+<p>对于那些包含大量重复文本或者数值数据的大表，考虑使用压缩行格式。花费更少的磁盘I/O来加载数据到缓存池或者执行全表查询。在做一个长久的决定之前，计算依稀使用压缩行格式和压缩行格式可以达到的压缩量。警告：基准测试很少显示出比2:1更好的压缩比，并且缓冲池中有很多用于压缩的开销。</p>
+</li>
+<li>
+<p>一旦你的数据达到稳定的大小，或者一个增长表增加了数十兆或数百兆字节，请考虑使用OPTIMIZE TABLE语句来重新组织表并且压缩任何浪费的空间。重新组织表使用更少的磁盘I/O来进行完整的表扫描。这是一种简单的技术，可以在其他的技术(如改进索引使用或优化应用程序代码)不能提供性能的情况下。警告：无论表的大小，OPTIMIZE TABLE 应该很少执行。因为它成本很高，而且很少能改善到使用这个功能。InnoDB相当擅长保持其B+树不存在大量的浪费空间。</p>
 <blockquote>
 <p>OPTIMIZE TABLE复制表的数据部分并且重建表的索引。这么做的好处是改进了索引中的数据，减少表空间和磁盘的碎片。根据表中的数据，这些好处也各不相同。你可能会发现，对于某些表有显著的收益，但是对于其他的表没有。并且收益会随着时间减少，直到你下次优化表。如果表很大或者正在重建的索引不适合缓冲池，这个操作会很慢。向表中加入大量数据后的第一次执行通常比以后的运行慢的多。</p>
 </blockquote>
-
+</li>
+</ol>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -318,6 +310,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

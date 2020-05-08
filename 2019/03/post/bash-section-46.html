@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,38 +187,26 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#printf输出日期">printf输出日期</a>
-<ul>
-<li><a href="#获取当前时间">获取当前时间</a></li>
-<li><a href="#设置当前时间变量">设置当前时间变量</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#printf输出日期">printf输出日期</a>
+      <ul>
+        <li><a href="#获取当前时间">获取当前时间</a></li>
+        <li><a href="#设置当前时间变量">设置当前时间变量</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="printf输出日期">printf输出日期</h2>
-
+        		<h2 id="printf输出日期">printf输出日期</h2>
 <p>在Bash4.2，提供了<code>printf</code>内建的时间规则：<code>%(datefmt)T</code>可以让<code>printf</code>输出datefmt指定格式的时间字符串。其中<code>datefmt</code>需要是<a href="http://man7.org/linux/man-pages/man3/strftime.3.html">strftime</a>识别的格式。</p>
-
 <h3 id="获取当前时间">获取当前时间</h3>
-
 <pre><code>$ printf '%(%F)T\n'
 2019-03-14
-</code></pre>
-
-<h3 id="设置当前时间变量">设置当前时间变量</h3>
-
-<pre><code class="language-shell">$ printf -v now '%(%T)T'
-$ echo &quot;$now&quot;
+</code></pre><h3 id="设置当前时间变量">设置当前时间变量</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ printf -v now <span style="color:#e6db74">&#39;%(%T)T&#39;</span>
+$ echo <span style="color:#e6db74">&#34;</span>$now<span style="color:#e6db74">&#34;</span>
 21:00:04
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -286,6 +278,12 @@ $ echo &quot;$now&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

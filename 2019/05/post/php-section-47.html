@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,126 +187,92 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#生成器">生成器</a>
-<ul>
-<li><a href="#yield关键字">Yield关键字</a></li>
-<li><a href="#2-使用generator读取大文件">2. 使用Generator读取大文件</a></li>
-<li><a href="#3-为什么使用生成器">3. 为什么使用生成器</a></li>
-<li><a href="#4-使用send-方法为生成器传值">4. 使用send()方法为生成器传值</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#生成器">生成器</a>
+      <ul>
+        <li><a href="#yield关键字">Yield关键字</a></li>
+        <li><a href="#2-使用generator读取大文件">2. 使用Generator读取大文件</a></li>
+        <li><a href="#3-为什么使用生成器">3. 为什么使用生成器</a></li>
+        <li><a href="#4-使用send方法为生成器传值">4. 使用send()方法为生成器传值</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="生成器">生成器</h2>
-
+        		<h2 id="生成器">生成器</h2>
 <h3 id="yield关键字">Yield关键字</h3>
-
 <p>一个<code>yield</code>和一个return语句很像，除了终止函数的执行并返回，yield语句返回一个<a href="https://www.php.net/manual/zh/class.generator.php">Generator</a>对象并且终止generator函数的执行。</p>
-
 <p>下面是一个使用yield实现的range函数的例子：</p>
-
-<pre><code class="language-php">function gen_one_to_three()
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function gen_one_to_three()
 {
-    for ($i = 0; $i &lt; 3; $i++) {
-        yield $i;
-    }
-}
-</code></pre>
-
-<p>通过<code>var_dump</code>函数可以看到这个方法返回一个Generator对象。</p>
-
-<pre><code class="language-php">var_dump(gen_one_to_three());
+    for ($i = 0; $i &lt; <span style="color:#f92672">3</span><span style="color:#960050;background-color:#1e0010">;</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">++)</span> <span style="color:#960050;background-color:#1e0010">{</span>
+        <span style="color:#a6e22e">yield</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">i</span><span style="color:#960050;background-color:#1e0010">;</span>
+    <span style="color:#960050;background-color:#1e0010">}</span>
+<span style="color:#960050;background-color:#1e0010">}</span>
+</code></pre></div><p>通过<code>var_dump</code>函数可以看到这个方法返回一个Generator对象。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(gen_one_to_three());
 
 输出：
 class Generator (0) { 
 }
-</code></pre>
-
-<p><strong>Yield值</strong></p>
-
+</code></pre></div><p><strong>Yield值</strong></p>
 <p>之后Generator像数组一样被迭代处理：</p>
-
-<pre><code class="language-php">foreach (gen_one_to_three() as $value) { 
-    echo &quot;$value\n&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">foreach (gen_one_to_three() as $value) { 
+    echo &#34;$value\n&#34;;
 }
-</code></pre>
-
-<p>上面的例子会输出：</p>
-
+</code></pre></div><p>上面的例子会输出：</p>
 <pre><code>1
 2
 3
-</code></pre>
-
-<p><strong>带有key的Yield值</strong></p>
-
+</code></pre><p><strong>带有key的Yield值</strong></p>
 <p>处理Yield值之后，你可以使用Yield的键/值对：</p>
-
-<pre><code class="language-php">function gen_one_to_three() {
-    $keys = [&quot;first&quot;, &quot;second&quot;, &quot;third&quot;];
-    for ($i = 1; $i &lt;= 3; $i++) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function gen_one_to_three() {
+    $keys = [&#34;first&#34;, &#34;second&#34;, &#34;third&#34;];
+    for ($i = 1; $i <span style="color:#960050;background-color:#1e0010">&lt;</span>= 3; $i++) {
         // Note that $i is preserved between yields. 
         yield $keys[$i - 1] =&gt; $i;
     } 
 }
 
 foreach (gen_one_to_three() as $key =&gt; $value) { 
-    echo &quot;$key: $value\n&quot;;
+    echo &#34;$key: $value\n&#34;;
 }
-</code></pre>
-
-<p>上面的例子会出现：</p>
-
+</code></pre></div><p>上面的例子会出现：</p>
 <pre><code>first: 1
 second: 2
 third: 3
-</code></pre>
-
-<h3 id="2-使用generator读取大文件">2. 使用Generator读取大文件</h3>
-
+</code></pre><h3 id="2-使用generator读取大文件">2. 使用Generator读取大文件</h3>
 <p>一个生成器的常见用法是用来从硬盘读取一个大文件，并迭代读取里面的内容。下面是一个允许你迭代读取一个CSV文件的类。这个脚本使用的内存是可以预测的，不会根据文件的大小有什么变化。</p>
-
-<pre><code class="language-php">&lt;?php
-class CsvReader 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CsvReader</span> 
 {
-    protected $file;
+    <span style="color:#66d9ef">protected</span> $file;
     
-    public function __construct($filePath)
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($filePath)
     {
-        $this-&gt;file = fopen($filePath, 'r');
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>($filePath, <span style="color:#e6db74">&#39;r&#39;</span>);
     }
     
-    public function rows()
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">rows</span>()
     {
-        while(!feof($this-&gt;file)) {
-            $row = fgetcsv($this-&gt;file, 4096);
+        <span style="color:#66d9ef">while</span>(<span style="color:#f92672">!</span><span style="color:#a6e22e">feof</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">file</span>)) {
+            $row <span style="color:#f92672">=</span> <span style="color:#a6e22e">fgetcsv</span>($this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">file</span>, <span style="color:#ae81ff">4096</span>);
             
-            yield $row;
+            <span style="color:#66d9ef">yield</span> $row;
         }
         
-        return;
+        <span style="color:#66d9ef">return</span>;
     }
 }
 
-$csv = new CsvReader(&quot;/path/to/huge/csv/file.csv&quot;);
+$csv <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">CsvReader</span>(<span style="color:#e6db74">&#34;/path/to/huge/csv/file.csv&#34;</span>);
 
-foreach($csv-&gt;rows() as $row) {
-    //处理csv文件的行
-}
-</code></pre>
-
-<h3 id="3-为什么使用生成器">3. 为什么使用生成器</h3>
-
+<span style="color:#66d9ef">foreach</span>($csv<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">rows</span>() <span style="color:#66d9ef">as</span> $row) {
+    <span style="color:#75715e">//处理csv文件的行
+</span><span style="color:#75715e"></span>}
+</code></pre></div><h3 id="3-为什么使用生成器">3. 为什么使用生成器</h3>
 <p>生成器在当你要生成一个只会要进行迭代处理的集合时非常有用。它们是创建一个实现迭代器的类的一个更简单的替代方法，而迭代器通常被过度杀死。</p>
-
 <p>例如，有下面的例子：</p>
-
 <pre><code>function randomNumbers(int $length)
 {
     $array = [];
@@ -313,22 +283,14 @@ foreach($csv-&gt;rows() as $row) {
     
     return $array;
 }
-</code></pre>
-
-<p>这个方法的功能就是产生一个由随机数组成的数组。使用这个函数，如果我们使用<code>randomNumbers(10)</code>将会产生一个10个元素的数组。但是当我们需要产生100万的随机数呢？我们可以使用<code>randomNumbers(1000000)</code>，但是这将会很消耗内存。一百万整数存储在数组中大概会消耗33M的内存。</p>
-
-<pre><code class="language-php">$startMemory = memory_get_usage();
+</code></pre><p>这个方法的功能就是产生一个由随机数组成的数组。使用这个函数，如果我们使用<code>randomNumbers(10)</code>将会产生一个10个元素的数组。但是当我们需要产生100万的随机数呢？我们可以使用<code>randomNumbers(1000000)</code>，但是这将会很消耗内存。一百万整数存储在数组中大概会消耗33M的内存。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$startMemory = memory_get_usage();
 $randomNumbers = randomNumbers(1000000);
-echo memory_get_usage() - $startMemory, ' bytes';
-</code></pre>
-
-<p>这是因为整个100万数据都被一次性产生并返回，而不是一次一个。生成器是解决这种问题的方法。</p>
-
-<h3 id="4-使用send-方法为生成器传值">4. 使用send()方法为生成器传值</h3>
-
+echo memory_get_usage() - $startMemory, &#39; bytes&#39;;
+</code></pre></div><p>这是因为整个100万数据都被一次性产生并返回，而不是一次一个。生成器是解决这种问题的方法。</p>
+<h3 id="4-使用send方法为生成器传值">4. 使用send()方法为生成器传值</h3>
 <p>生成器是快速编码的，很多情况下，它是重迭代器的一个小成本替换方案。随着快速的实现，当一个生成器应该停止生成或者如果它应该生成其他东西时，会有一点缺乏控制。但是，这可以通过使用send（）函数来实现，使请求函数能够在每个循环之后向生成器发送参数。</p>
-
-<pre><code class="language-php">//想象从服务器读取大量数据，这里使用生成器实现
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//想象从服务器读取大量数据，这里使用生成器实现
 function generateDataFromServerDemo() {
     $indexCurrentRun = 0; //在这个例子中，代替了来自服务器的数据，我只是在每次循环运行时发送反馈。
     
@@ -337,16 +299,16 @@ function generateDataFromServerDemo() {
         $timeout = yield $indexCurrentRun; // 返回给调用者的值.下一次生成器调用的时候，从这里开始. 如果使用了send()，将会使用$timeout
         $indexCurrentRun++;
     }
-    yield 'X of bytes are missing. &lt;/br&gt;';
+    yield &#39;X of bytes are missing. &lt;/<span style="color:#f92672">br</span>&gt;&#39;;
 }
 
 // Start using the generator
 $generatorDataFromServer = generateDataFromServerDemo();
 foreach($generatorDataFromServer as $numberOfRuns)
 {
-    if ($numberOfRuns &lt; 10)
-    {
-        echo $numberOfRuns . &quot;&lt;/br&gt;&quot;;
+    if ($numberOfRuns &lt; <span style="color:#f92672">10</span><span style="color:#960050;background-color:#1e0010">)</span>
+    <span style="color:#960050;background-color:#1e0010">{</span>
+        <span style="color:#a6e22e">echo</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">numberOfRuns</span> <span style="color:#960050;background-color:#1e0010">.</span> <span style="color:#960050;background-color:#1e0010">&#34;&lt;/</span><span style="color:#a6e22e">br</span>&gt;&#34;;
     }
     else
     {
@@ -354,10 +316,7 @@ foreach($generatorDataFromServer as $numberOfRuns)
         echo $generatorDataFromServer-&gt;current(); //访问最新元素
     }
 }
-</code></pre>
-
-<p>结果是：</p>
-
+</code></pre></div><p>结果是：</p>
 <pre><code>0
 1
 2
@@ -369,9 +328,7 @@ foreach($generatorDataFromServer as $numberOfRuns)
 8
 9
 X of bytes are missing
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -443,6 +400,12 @@ X of bytes are missing
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

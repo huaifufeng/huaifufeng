@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,70 +187,49 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#忽略文件文件夹">忽略文件文件夹</a>
-<ul>
-<li><a href="#gitignore">.gitignore</a>
-<ul>
-<li><a href="#例子">例子：</a></li>
-<li><a href="#其他形式">其他形式</a></li>
-<li><a href="#清除忽略的文件">清除忽略的文件</a></li>
-</ul></li>
-<li><a href="#检查文件是否忽略">检查文件是否忽略</a></li>
-<li><a href="#不忽略文件">不忽略文件</a></li>
-<li><a href="#全局-gitignore">全局.gitignore</a></li>
-<li><a href="#忽略已提交的文件">忽略已提交的文件</a></li>
-<li><a href="#无-gitingore">无.gitingore</a></li>
-<li><a href="#不删除文件忽略之后修改">不删除文件忽略之后修改</a></li>
-<li><a href="#忽略任何文件夹的指定文件">忽略任何文件夹的指定文件</a></li>
-<li><a href="#gitignore模板">.gitignore模板</a></li>
-<li><a href="#忽略子目录文件-多个gitignore文件">忽略子目录文件(多个gitignore文件)</a></li>
-<li><a href="#创建空文件夹">创建空文件夹</a></li>
-<li><a href="#查看忽略的文件">查看忽略的文件</a></li>
-<li><a href="#忽略文件一部分">忽略文件一部分</a></li>
-<li><a href="#忽略追踪文件的修改">忽略追踪文件的修改</a></li>
-<li><a href="#清理已提交文件">清理已提交文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#忽略文件文件夹">忽略文件文件夹</a>
+      <ul>
+        <li><a href="#gitignore">.gitignore</a></li>
+        <li><a href="#检查文件是否忽略">检查文件是否忽略</a></li>
+        <li><a href="#不忽略文件">不忽略文件</a></li>
+        <li><a href="#全局gitignore">全局.gitignore</a></li>
+        <li><a href="#忽略已提交的文件">忽略已提交的文件</a></li>
+        <li><a href="#无gitingore">无.gitingore</a></li>
+        <li><a href="#不删除文件忽略之后修改">不删除文件忽略之后修改</a></li>
+        <li><a href="#忽略任何文件夹的指定文件">忽略任何文件夹的指定文件</a></li>
+        <li><a href="#gitignore模板">.gitignore模板</a></li>
+        <li><a href="#忽略子目录文件多个gitignore文件">忽略子目录文件(多个gitignore文件)</a></li>
+        <li><a href="#创建空文件夹">创建空文件夹</a></li>
+        <li><a href="#查看忽略的文件">查看忽略的文件</a></li>
+        <li><a href="#忽略文件一部分">忽略文件一部分</a></li>
+        <li><a href="#忽略追踪文件的修改">忽略追踪文件的修改</a></li>
+        <li><a href="#清理已提交文件">清理已提交文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="忽略文件文件夹">忽略文件文件夹</h2>
-
+        		<h2 id="忽略文件文件夹">忽略文件文件夹</h2>
 <p>这章的主题是介绍怎么避免把不想要的文件（或者文件的修改）添加到Git仓库内。有好几种方式可以实现这个目的：全局或者本地的<code>.gitignore</code> ，<code>.git/exclude</code>，<code>git update-index --assume-unchanged</code>，<code>git update-index --skip-tree</code>。但是请记住Git是用来管理内容的：忽略实际忽略的是文件夹的内容。一个空的文件夹将会被自动忽略，因为它不能不添加到仓库内。</p>
-
 <h3 id="gitignore">.gitignore</h3>
-
 <p>你可以让Git通过添加一个或多个<code>.gitignore</code>文件来忽略某些文件或者文件夹，即不把这些内容通过Git来追踪。</p>
-
 <p>在一些软件项目中，<code>.gitignore</code>文件会包含一列在构建程序或运行时产生的文件或文件夹。在<code>.gitignore</code>中，可能包含指向下面内容的名称或路径：</p>
-
 <ol>
 <li>临时资源，像缓存，log文件，编译文件等</li>
 <li>不应该分享给其他人的配置文件</li>
 <li>包含密码、秘钥、证书等隐秘信息的文件</li>
 </ol>
-
 <p>当在顶层目录创建这个文件时，这些规则将会应用到这个仓库所有的文件和子目录。当在子目录创建时，这些规则只会应用到这个目录和这个目录子目录的文件中。</p>
-
 <p>当一个文件或目录被忽略了，这代表：</p>
-
 <ol>
 <li>不会被Git库追踪。</li>
 <li>不会再<code>git status</code>和<code>git diff</code>命令中输出处理。</li>
 <li>不会通过<code>git add -A</code>命令暂存这些内容。</li>
 </ol>
-
 <p>在一些特殊的场景下，你需要把已经追踪的文件忽略掉，这时你要特别小心。可以查看下面章节：忽略已提交内容。</p>
-
 <h4 id="例子">例子：</h4>
-
 <p>下面是一些<code>.gitignore</code>中比较简单的例子，基于<a href="https://en.wikipedia.org/wiki/Glob_(programming)">glob file patterns</a>：</p>
-
 <pre><code># Lines starting with `#` are comments.
 
 # Ignore files called 'file.ext'
@@ -322,152 +305,81 @@ DirectoryA/**/DirectoryB/
 # Use the backslash as escape character to ignore files with a hash (#) 
 # (supported since 1.6.2.1)
 \#*#
-</code></pre>
-
-<p>不同语言的大多数<code>.gitignore</code>是相识的，这里有<a href="https://github.com/github/gitignore">.gitignore files</a>的，每个语言都有自己独特的文件，你可以从这里clone或复制相应的文件到你的项目中，这是一个简单的开始。另外，你可以使用<a href="https://www.gitignore.io/">online tool</a>为你的新项目自动产生一个初始的文件。</p>
-
+</code></pre><p>不同语言的大多数<code>.gitignore</code>是相识的，这里有<a href="https://github.com/github/gitignore">.gitignore files</a>的，每个语言都有自己独特的文件，你可以从这里clone或复制相应的文件到你的项目中，这是一个简单的开始。另外，你可以使用<a href="https://www.gitignore.io/">online tool</a>为你的新项目自动产生一个初始的文件。</p>
 <h4 id="其他形式">其他形式</h4>
-
 <p><code>.gitignore</code>是要被提交到仓库中的文件。如果你想在没有忽略规则的情况下，不提交某些文件，下面是一些可选的方案：</p>
-
 <ul>
 <li>使用和<code>.gitignore</code>相同的语法编辑<code>.git/info/exclude</code>文件，这些规则会在当前仓库的作用域内有效。</li>
 <li>编写一个应用到你本地所有仓库的规则文件。</li>
 </ul>
-
 <p>甚至，你可以不锈修改git配置的情况下，忽略已追踪文件的修改：</p>
-
 <ul>
 <li><code>git update-index --skip-worktree [&lt;file&gt;...]</code>：选取少量的修改</li>
 <li><code>git update-index --assume-unchanged [&lt;file&gt;...]</code>：对于已经准备好的，不在修改的文件。</li>
 </ul>
-
-<p>通过<a href="http://stackoverflow.com/a/13631525/4531270">more details on differences between the latter flags</a>和<code>git update-index</code>命令的<a href="https://git-scm.com/docs/git-update-index">文档</a>查看更多的信息。</p>
-
+<p>通过<a href="http://stackoverflow.com/a/13631525/4531270">more details on differences between the latter flags</a>和<code> git update-index</code>命令的<a href="https://git-scm.com/docs/git-update-index">文档</a>查看更多的信息。</p>
 <h4 id="清除忽略的文件">清除忽略的文件</h4>
-
 <p>可以使用<code>git clean -X</code>来清除忽略的文件：</p>
-
 <pre><code>$ git clean -Xn #显示已忽略文件的列表
 $ git clean -Xf #移除之前显示的列表
-</code></pre>
-
-<p>注意：<code>-X</code>只清除已忽略的文件。<code>-x</code>同时会清除未追踪的文件。</p>
-
+</code></pre><p>注意：<code>-X</code>只清除已忽略的文件。<code>-x</code>同时会清除未追踪的文件。</p>
 <p>查看<code>git clean</code>命令的详细信息。</p>
-
 <h3 id="检查文件是否忽略">检查文件是否忽略</h3>
-
 <p><code>git check-ignore</code>检测文件是否被忽略。</p>
-
 <p>你可以在命令后面添加文件名，<code>git check-ignore</code>将会展示被忽略的文件列表。比如：</p>
-
 <pre><code>$ cat .gitignore
 *.o
 $ git check-ignore example.o Readme.md 
 example.o
-</code></pre>
-
-<p>这里.gitignore文件里面只定义了*.o文件，所以Readme.md没有包含在<code>git check-ignore</code>命令的输出列表内。</p>
-
+</code></pre><p>这里.gitignore文件里面只定义了*.o文件，所以Readme.md没有包含在<code>git check-ignore</code>命令的输出列表内。</p>
 <p>如果你想查看被忽略的文件，在.gitignore中匹配到了哪条规则，可以在<code>git check-ignore</code>中添加<code>-v</code>参数：</p>
-
 <pre><code> $ git check-ignore -v example.o Readme.md 
  .gitignore:1:*.o example.o
-</code></pre>
-
-<p>从Git 1.7.6开始，可以使用<code>git status --ignored</code>命令获取被忽略的文件。你可以在<a href="https://git-scm.com/docs/git-status">official documentation</a>查看关于这个命令的更多信息，或者查找被.gitignore被忽略的文件。</p>
-
+</code></pre><p>从Git 1.7.6开始，可以使用<code>git status --ignored</code>命令获取被忽略的文件。你可以在<a href="https://git-scm.com/docs/git-status">official documentation</a>查看关于这个命令的更多信息，或者查找被.gitignore被忽略的文件。</p>
 <h3 id="不忽略文件">不忽略文件</h3>
-
 <p>如果你在忽略文件中配置了正则表达式，但是存在一些例外的情况，可以使用！来处理这些特例情况。比如：</p>
-
 <pre><code> *.txt 
  !important.txt
-</code></pre>
-
-<p>上面的例子通知Git去忽略所有<code>.txt</code>后缀的文件，处理<code>important.txt</code>这个文件。</p>
-
+</code></pre><p>上面的例子通知Git去忽略所有<code>.txt</code>后缀的文件，处理<code>important.txt</code>这个文件。</p>
 <p>如果文件在被忽略的文件夹内，也可以“很方便”的忽略某些文件：</p>
-
 <pre><code>folder/ 
 !folder/*.txt
-</code></pre>
-
-<p>这里例子里面，文件夹内所有的.txt文件还是会被忽略。</p>
-
+</code></pre><p>这里例子里面，文件夹内所有的.txt文件还是会被忽略。</p>
 <p>正确的方法是：取消文件夹本身，忽略文件夹下所有的文件，取消文件夹下的.txt文件。</p>
-
 <pre><code>!folder/ 
 folder/* 
 !folder/*.txt
-</code></pre>
-
-<p>注意：在以！开头的文件夹名前面，使用两个！或者添加转移符\：</p>
-
+</code></pre><p>注意：在以！开头的文件夹名前面，使用两个！或者添加转移符\：</p>
 <pre><code>!!includethis 
 \!excludethis
-</code></pre>
-
-<h3 id="全局-gitignore">全局.gitignore</h3>
-
+</code></pre><h3 id="全局gitignore">全局.gitignore</h3>
 <p>如果你想创建一个全部仓库公用的Git忽略文件，可以在终端或命令行内使用下面的命令创建一个<a href="https://help.github.com/articles/ignoring-files/#create-a-global-gitignore">全局的.gitingore文件</a>：</p>
-
 <pre><code>$ git config --global core.excludesfile &lt;Path_To_Global_gitignore_file&gt;
-</code></pre>
-
-<p>这样Git将会在每个仓库内除了使用本地的.gitignore文件，还会使用全局的文件。下面是详细的规则：</p>
-
+</code></pre><p>这样Git将会在每个仓库内除了使用本地的.gitignore文件，还会使用全局的文件。下面是详细的规则：</p>
 <ul>
 <li>如果本地的<code>.gitignore</code>显示包含了一个文件，但是全局的<code>.gitignore</code>忽略了这个文件，本地的<code>.gitignore</code>的优先级更高（这个文件将会被包含）。</li>
 <li>如果一个仓库被克隆岛多个机器上面，全局的<code>.gitignore</code>必须被包含在所有的机器上面，如果机器上的全局<code>.gitignore</code>没有被更新的话，已经被忽略的文件将会被添加到仓库内。所有一个项目一个<code>.gitignore</code>在团队合作的时候比全局<code>.gitignore</code>更有用处。</li>
 </ul>
-
 <p>这个文件时非常有用的，如果你的项目不想加入平台、机器或用户组合一定的文件：OSX的<code>.DS_Store</code>，Windows的<code>Thumbs.db</code>或Vim的<code>*.ext~</code>和<code>*.ext.swp</code>的文件。有一个团队成员在OS X上工作可以忽略所有的<code>.DS_Store</code>和<code>_MACOSX</code>(这基本没有什么用处)，另外的成员使用Windows时可以忽略所有的<code>thumbs.db</code>。</p>
-
 <h3 id="忽略已提交的文件">忽略已提交的文件</h3>
-
 <p>如果你已经把一个文件添加到仓库中了，但是现在不想在追踪这个文件了（不想它出现在之后的提交中），你可以从引用中移除这个文件：</p>
-
 <pre><code>$ git rm --cached &lt;file&gt;
-</code></pre>
-
-<p>这将从仓库中移除这个文件，并且避免将之后的修改添加到Git仓库内。这个<code>--cached</code>参数可以确保文件不会被物理删除。</p>
-
+</code></pre><p>这将从仓库中移除这个文件，并且避免将之后的修改添加到Git仓库内。这个<code>--cached</code>参数可以确保文件不会被物理删除。</p>
 <p>注意之前添加的内容将会一直保存在Git仓库内。</p>
-
 <p>注意：如果在你删除了这个文件之后，另外的人pull了仓库的代码，他们的文件将会被物理删除。</p>
-
 <p>你可以让Git假装工作区内的文件已经是最新的了，然后使用&rdquo;<a href="https://mirrors.edge.kernel.org/pub/software/scm/git/docs/git-update-index.html#_skip_worktree_bit">skip worktree</a>&ldquo;获取它的索引版本（这就忽略了文件的修改）：</p>
-
 <pre><code>$ git update-index --skip-worktree &lt;file&gt;
-</code></pre>
-
-<p>修改并不会收到这个的影响，数据的安全是第一关系的内容。你将不会丢失你之前做的修改。另外，这将和stash有冲突，可以用下面的方法删除这个修改：</p>
-
+</code></pre><p>修改并不会收到这个的影响，数据的安全是第一关系的内容。你将不会丢失你之前做的修改。另外，这将和stash有冲突，可以用下面的方法删除这个修改：</p>
 <pre><code>$ git update-index --no-skip-worktree &lt;file&gt;
-</code></pre>
-
-<p>有时候错误的通知Git，让它任务文件没有修改，忽略这个文件。看起来像是忽略掉了文件之后的修改，没有从索引中移除这个文件：</p>
-
+</code></pre><p>有时候错误的通知Git，让它任务文件没有修改，忽略这个文件。看起来像是忽略掉了文件之后的修改，没有从索引中移除这个文件：</p>
 <pre><code>$ git update-index --assume-unchanged &lt;file&gt;
-</code></pre>
-
-<p>这将强制Git忽略文件的任何修改（注意：如果你pull了这个文件的修改，或者stash了这个文件，你忽略的修改将会丢失）。</p>
-
+</code></pre><p>这将强制Git忽略文件的任何修改（注意：如果你pull了这个文件的修改，或者stash了这个文件，你忽略的修改将会丢失）。</p>
 <p>如果你想让Git再次注意到这个文件的修改，可以运行下面的命令：</p>
-
 <pre><code>$ git update-index --no-assume-unchanged &lt;file&gt;
-</code></pre>
-
-<h3 id="无-gitingore">无.gitingore</h3>
-
+</code></pre><h3 id="无gitingore">无.gitingore</h3>
 <p><code>.gitignore</code>忽略本地的文件，但是必须被提交到仓库里面，分享给其他的贡献者。你可以添加一个全局的<code>.gitignore</code>，但是你所有的仓库都会使用这里面配置。</p>
-
 <p>如果你想要忽略本地仓库的文件又不想在仓库中添加其他的文件，可以编辑仓库内的<code>.git/info/exclude</code>。</p>
-
 <p>例如：</p>
-
 <pre><code># these files are only ignored on this repo # these rules are not shared with anyone
 # as they are personal
 gtk_tests.py
@@ -475,21 +387,12 @@ gui/gtk/tests/*
 localhost
 pushReports.py
 server/
-</code></pre>
-
-<h3 id="不删除文件忽略之后修改">不删除文件忽略之后修改</h3>
-
+</code></pre><h3 id="不删除文件忽略之后修改">不删除文件忽略之后修改</h3>
 <p>有时候你想要在仓库保留一个文件，但是想要忽略之后的修改。</p>
-
 <p>告诉Git去忽略这个文件或文件夹之后的修改使用<code>update-index</code>：</p>
-
 <pre><code>$ git update-index --assume-unchanged my-file.txt
-</code></pre>
-
-<p>上面命令通知Git假设<code>my-file.txt</code>没有修改，并且不用检查和提交这个文件的修改。这个文件在仓库中一直存在的。</p>
-
+</code></pre><p>上面命令通知Git假设<code>my-file.txt</code>没有修改，并且不用检查和提交这个文件的修改。这个文件在仓库中一直存在的。</p>
 <p>这在保留本地默认和允许的环境变量是非常有用的：</p>
-
 <pre><code># create a file with some values in
 cat &lt;&lt;EOF
 MYSQL_USER=app 
@@ -507,105 +410,58 @@ vi .env
 
 # no changes!
 git status
-</code></pre>
-
-<h3 id="忽略任何文件夹的指定文件">忽略任何文件夹的指定文件</h3>
-
+</code></pre><h3 id="忽略任何文件夹的指定文件">忽略任何文件夹的指定文件</h3>
 <p>想要在任何文件夹中忽略一个文件<code>foo.txt</code>，你需要写入这个文件名：</p>
-
 <pre><code>foo.txt # matches all files 'foo.txt' in any directory
-</code></pre>
-
-<p>如果你想要忽略一部分的这个文件，你可以在指定目录下使用<code>**</code>代表子目录：</p>
-
+</code></pre><p>如果你想要忽略一部分的这个文件，你可以在指定目录下使用<code>**</code>代表子目录：</p>
 <pre><code>bar/**/foo.txt # matches all files 'foo.txt' in 'bar' and all subdirectories
-</code></pre>
-
-<p>或者你可以在<code>bar/</code>目录下创建一个<code>.gitignore</code>文件，在<code>bar/.gitignore</code>中添加下面的内容和前面的例子是等价的：</p>
-
+</code></pre><p>或者你可以在<code>bar/</code>目录下创建一个<code>.gitignore</code>文件，在<code>bar/.gitignore</code>中添加下面的内容和前面的例子是等价的：</p>
 <pre><code>foo.txt # matches all files 'foo.txt' in any directory under bar/
-</code></pre>
-
-<h3 id="gitignore模板">.gitignore模板</h3>
-
+</code></pre><h3 id="gitignore模板">.gitignore模板</h3>
 <p>如果你不知道在你的<code>.gitignore</code>文件中放什么规则列表，或者你只是想在你的项目中添加通用的规则，可以从下面的两个地址选择或生成一个<code>.gitignore</code>文件：</p>
-
 <ul>
 <li><a href="https://www.gitignore.io/">https://www.gitignore.io/</a></li>
 <li><a href="https://github.com/github/gitignore">https://github.com/github/gitignore</a></li>
 </ul>
-
 <p>大多数的代码托管服务商像GitHub，BitBucket都提供根据你的项目语言和使用的IDEs为你的项目生成一个<code>.gitignore</code>文件的功能：</p>
-
-<p><img src="/img/git/WfT5z.png" alt="生成文件" /></p>
-
-<h3 id="忽略子目录文件-多个gitignore文件">忽略子目录文件(多个gitignore文件)</h3>
-
+<p><img src="/img/git/WfT5z.png" alt="生成文件"></p>
+<h3 id="忽略子目录文件多个gitignore文件">忽略子目录文件(多个gitignore文件)</h3>
 <p>假设你有个像下面结构的仓库：</p>
-
 <pre><code>examples/ 
     output.log
 src/
     &lt;files not shown&gt; 
     output.log
 README.md
-</code></pre>
-
-<p>例子目录里面的<code>output.log</code>在调试的时候在<code>src/</code>下创建的一个文件，用来帮助理解这个项目，但是这个文件又不应该被添加到仓库里面。</p>
-
+</code></pre><p>例子目录里面的<code>output.log</code>在调试的时候在<code>src/</code>下创建的一个文件，用来帮助理解这个项目，但是这个文件又不应该被添加到仓库里面。</p>
 <p>有两种方法来忽略这个文件。你可以在项目根目录中添加<code>.gitignore</code>文件，然后添加文件的决定路径：</p>
-
 <pre><code># /.gitignore
 src/output.log
-</code></pre>
-
-<p>另外，你可以在<code>src/</code>目录下创建一个<code>.gitignore</code>文件忽略这个文件：</p>
-
+</code></pre><p>另外，你可以在<code>src/</code>目录下创建一个<code>.gitignore</code>文件忽略这个文件：</p>
 <pre><code># /src/.gitignore
 output.log
-</code></pre>
-
-<h3 id="创建空文件夹">创建空文件夹</h3>
-
+</code></pre><h3 id="创建空文件夹">创建空文件夹</h3>
 <p>在Git中是不可能创建一个空文件夹，并且把这个文件夹提交到仓库里面去的。因为Git使用文件来关联文件的目录，这样可以减少提交的数量，提升提交的速度。有两种方法解决这个问题：</p>
-
 <p>方法一：<code>.gitkeep</code></p>
-
 <p>一个解决这个问题的办法是在目录中添加一个<code>.gitkeep</code>文件，然后就可以提交到Git中了。这样只需要在文件夹中添加一个<code>.gitkeep</code>文件。这个文件没有任何内容，只是用来把这个文件夹添加到Git。要在Windows（因为Windows不方便的命名规则）这样做的话：</p>
-
 <blockquote>
 <p>touch .gitkeep</p>
 </blockquote>
-
 <p>这个命令在当前目录中创建一个空白的<code>.gitkeep</code>文件。</p>
-
 <p>方法二：<code>dummy.txt</code></p>
-
-<p>这个方法和上面的方法非常相似的，并且有同样的步骤，只是用<code>dummy.txt</code>来代替<code>.gitkeep</code>文件。这有一个好处是可以方便的在Windows上创建这个文件。你也可以在文件里面添加一些信息。你也可以使用<code>.gitkeep</code>来追踪空文件夹。 <code>.gitkeep</code>只是用来将一个空文件夹添加到Git仓库的空文件。</p>
-
+<p>这个方法和上面的方法非常相似的，并且有同样的步骤，只是用<code>dummy.txt</code>来代替<code>.gitkeep</code>文件。这有一个好处是可以方便的在Windows上创建这个文件。你也可以在文件里面添加一些信息。你也可以使用<code>.gitkeep</code>来追踪空文件夹。	<code>.gitkeep</code>只是用来将一个空文件夹添加到Git仓库的空文件。</p>
 <h3 id="查看忽略的文件">查看忽略的文件</h3>
-
 <p>你可以使用下面的命令来查看当前目录被忽略的文件：</p>
-
 <pre><code>$ git status --ignored
-</code></pre>
-
-<p>如果我们有下面结构的项目：</p>
-
+</code></pre><p>如果我们有下面结构的项目：</p>
 <pre><code>.git
 .gitignore 
 ./example_1 
 ./dir/example_2 
 ./example_2
-</code></pre>
-
-<p>并且在gitignore文件中添加了下面的内容：</p>
-
+</code></pre><p>并且在gitignore文件中添加了下面的内容：</p>
 <pre><code>example_2
-</code></pre>
-
-<p>这样命令就会输出下面的结果：</p>
-
+</code></pre><p>这样命令就会输出下面的结果：</p>
 <pre><code>$ git status --ignored
 
 On branch master
@@ -623,10 +479,7 @@ Ignored files:
 
 dir/ 
 example_2
-</code></pre>
-
-<p>如果你想列出子文件夹下的内容，你就需要添加额外的参数<code>--untracked- files=all</code>:</p>
-
+</code></pre><p>如果你想列出子文件夹下的内容，你就需要添加额外的参数<code>--untracked- files=all</code>:</p>
 <pre><code>$ git status --ignored --untracked-files=all 
 On branch master
 
@@ -643,16 +496,10 @@ Ignored files:
 
 dir/example_2 
 example_2
-</code></pre>
-
-<h3 id="忽略文件一部分">忽略文件一部分</h3>
-
+</code></pre><h3 id="忽略文件一部分">忽略文件一部分</h3>
 <p>有时候你只想把本地文件修改的异步提交并且发布。理想情况下，本地的配置应该保存在单独的一个文件中，并且这个文件时在<code>.gitignore</code>中配置的，但有时候，把这个文件加入代码仓库是很有用的。</p>
-
 <p>你可以使用清理filter，让Git无视这些修改。这些修改也不会出现在diff命令下。</p>
-
 <p>想想下这是文件<code>file1.c</code>的一部分：</p>
-
 <pre><code>struct settings s;
 s.host = &quot;localhost&quot;;
 s.port = 5653;
@@ -660,73 +507,39 @@ s.auth = 1;
 s.port = 15653; // NOCOMMIT 
 s.debug = 1; // NOCOMMIT 
 s.auth = 0; // NOCOMMIT
-</code></pre>
-
-<p>你不想提交任何<code>NOCOMMIT</code>的行。</p>
-
+</code></pre><p>你不想提交任何<code>NOCOMMIT</code>的行。</p>
 <p>可以把下面的代码添加到<code>.git/config</code>中，这样就添加了一个“nocommit”的筛选规则：</p>
-
 <pre><code> [filter &quot;nocommit&quot;] 
  	clean=grep -v NOCOMMIT
-</code></pre>
-
-<p>把这个添加到<code>.git/info/attributes</code>或者<code>.gitmodules</code>：</p>
-
+</code></pre><p>把这个添加到<code>.git/info/attributes</code>或者<code>.gitmodules</code>：</p>
 <pre><code>file1.c filter=nocommit
-</code></pre>
-
-<p>这样你的NOCOMMIT的行就都会被Git隐藏了。</p>
-
+</code></pre><p>这样你的NOCOMMIT的行就都会被Git隐藏了。</p>
 <p>警告：</p>
-
 <ul>
 <li>使用清理filter会降低文件处理的性能，特别是在Windows上</li>
 <li>这些被忽略的行当Git进行修改的时候，这些行会消失。这可以通过另外的filter解决，但是这更加麻烦。</li>
 <li>在Windows上测试一下。</li>
 </ul>
-
 <h3 id="忽略追踪文件的修改">忽略追踪文件的修改</h3>
-
 <p><code>.gitignore</code>和<code>.git/info/exclued</code>只在未追踪的文件上有效果。</p>
-
 <p>想要忽略已经追踪的文件，使用<a href="https://git-scm.com/docs/git-update-index">update-index</a>命令：</p>
-
 <pre><code>$ git update-index --skip-worktree myfile.c
-</code></pre>
-
-<p>回复这个修改的话，使用：</p>
-
+</code></pre><p>回复这个修改的话，使用：</p>
 <pre><code>$ git update-index --no-skip-worktree myfile.c
-</code></pre>
-
-<p>你可以在全局配置中添加下面的片段，就可以使用简洁的命令<code>git hide</code>，<code>git unhide</code>， <code>git hidden</code>命令：</p>
-
+</code></pre><p>你可以在全局配置中添加下面的片段，就可以使用简洁的命令<code>git hide</code>，<code>git unhide</code>， <code>git hidden</code>命令：</p>
 <pre><code>[alias]
     hide   = update-index --skip-worktree
     unhide = update-index --no-skip-worktree
     hidden  = &quot;!git ls-files -v | grep ^[hsS] | cut -c 3-&quot;
-</code></pre>
-
-<p>你也可以使用<code>update-index</code>命令的<code>--assume-unchanged</code>参数：</p>
-
+</code></pre><p>你也可以使用<code>update-index</code>命令的<code>--assume-unchanged</code>参数：</p>
 <pre><code>$ git update-index --assume-unchanged &lt;file&gt;
-</code></pre>
-
-<p>想要回复的话使用下面这个命令：</p>
-
+</code></pre><p>想要回复的话使用下面这个命令：</p>
 <pre><code>$ git update-index --no-assume-unchanged &lt;file&gt;
-</code></pre>
-
-<p>当使用<code>--assume-unchanged</code>参数时，用户承诺不修改这个文件，并且允许Git假设工作区的文件夹树和索引中的文件结果相匹配。当合并提交的时候，如果修改了这个文件，Git会报失败。假设上游文件做了修改，这就需要你手动处理这种情况了。这个关注的是性能。</p>
-
-<p>当你想通知Git不要管某些文件，因为这些文件本地修改了，但是不想提交到仓库内时，<code>--skip-worktree</code>参数非常有用（指定环境的配置文件修改了）。当两个都配置了，<code>--skip-worktree</code>有更高的优先级。</p>
-
+</code></pre><p>当使用<code>--assume-unchanged</code>参数时，用户承诺不修改这个文件，并且允许Git假设工作区的文件夹树和索引中的文件结果相匹配。当合并提交的时候，如果修改了这个文件，Git会报失败。假设上游文件做了修改，这就需要你手动处理这种情况了。这个关注的是性能。</p>
+<p>当你想通知Git不要管某些文件，因为这些文件本地修改了，但是不想提交到仓库内时，<code> --skip-worktree</code>参数非常有用（指定环境的配置文件修改了）。当两个都配置了，<code>--skip-worktree</code>有更高的优先级。</p>
 <h3 id="清理已提交文件">清理已提交文件</h3>
-
 <p>有时候一个文件被添加到了仓库内，但是之后不想在追踪这个文件了，就在<code>.gitignore</code>中添加了这个文件。经常在添加文件到<code>.gitignore</code>中之前忘记将文件删除。这种情况下，就文件还在仓库里面。</p>
-
 <p>要解决这个问题，可以通过移除仓库中的所有文件，然后逐步将需要的文件添加会仓库。当你没有做修改，同时传了参数<code>—cached</code>，下面的命令都是很安全的：</p>
-
 <pre><code># Remove everything from the index (the files will stay in the file system)
 $ git rm -r --cached .
 
@@ -738,9 +551,7 @@ $ git commit -m 'Remove all files that are in the .gitignore'
 
 # Update the remote
 $ git push origin master
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -812,6 +623,12 @@ $ git push origin master
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

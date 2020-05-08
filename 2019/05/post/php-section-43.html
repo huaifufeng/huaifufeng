@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,37 +187,21 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#文件处理">文件处理</a>
-<ul>
-<li><a href="#1-便捷方法">1. 便捷方法</a>
-<ul>
-<li><a href="#1-1-原始直接io">1.1 原始直接IO</a></li>
-<li><a href="#1-2-csv-io">1.2 CSV IO</a></li>
-<li><a href="#1-3-读取文件到标准输出">1.3 读取文件到标准输出</a></li>
-<li><a href="#从文件资源读取">从文件资源读取</a></li>
-<li><a href="#1-4-把文件放入一个数组">1.4 把文件放入一个数组</a></li>
-</ul></li>
-<li><a href="#2-删除文件和目录">2. 删除文件和目录</a>
-<ul>
-<li><a href="#2-1-删除文件">2.1 删除文件</a></li>
-<li><a href="#2-2-递归删除目录">2.2 递归删除目录</a></li>
-</ul></li>
-<li><a href="#3-获取文件信息">3. 获取文件信息</a></li>
-<li><a href="#4-基于流的文件io">4. 基于流的文件IO</a></li>
-<li><a href="#5-移动和复制文件和目录">5. 移动和复制文件和目录</a></li>
-<li><a href="#6-处理大文件时减少内存使用">6. 处理大文件时减少内存使用</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#文件处理">文件处理</a>
+      <ul>
+        <li><a href="#1-便捷方法">1. 便捷方法</a></li>
+        <li><a href="#2-删除文件和目录">2. 删除文件和目录</a></li>
+        <li><a href="#3-获取文件信息">3. 获取文件信息</a></li>
+        <li><a href="#4-基于流的文件io">4. 基于流的文件IO</a></li>
+        <li><a href="#5-移动和复制文件和目录">5. 移动和复制文件和目录</a></li>
+        <li><a href="#6-处理大文件时减少内存使用">6. 处理大文件时减少内存使用</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="文件处理">文件处理</h2>
-
+        		<h2 id="文件处理">文件处理</h2>
 <table>
 <thead>
 <tr>
@@ -221,70 +209,46 @@
 <th>描述</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>filename</td>
 <td>要读取的文件名称</td>
 </tr>
-
 <tr>
 <td>use_include_path</td>
 <td>如果你想要在include_path中搜索这个文件，可以选择可选的第二个参数，并且把这个参数设置为TRUE。</td>
 </tr>
-
 <tr>
 <td>context</td>
 <td>一个环境流资源</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-便捷方法">1. 便捷方法</h3>
-
-<h4 id="1-1-原始直接io">1.1 原始直接IO</h4>
-
+<h4 id="11-原始直接io">1.1 原始直接IO</h4>
 <p><a href="http://php.net/manual/en/function.file-get-contents.php">file_get_contents</a>和<a href="https://php.net/manual/en/function.file-put-contents.php">file_put_contents</a>提供了在一次请求中便捷的从一个文件读取内容到字符串或者将字符串写入一个文件中。</p>
-
 <p>file_put_contents也可以使用<code>FILE_APPEND</code>位标识符来像文件中追加内容，而不是截断或覆盖文件的内容。也可以使用<code>LOCK_EX</code>位标识符来为写文件操作增加一个额外的锁。位标识符可以使用<code>|</code>二进制或来添加。</p>
-
-<pre><code class="language-php">$path = 'file.txt';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$path = &#39;file.txt&#39;;
 //从文件中读取内容
 $contents = file_get_contents($file);
 //做一些修改，比如讲CRLF替换为LF
-$contents = str_replace(&quot;\r\n&quot;, &quot;\n&quot;, $contents);
+$contents = str_replace(&#34;\r\n&#34;, &#34;\n&#34;, $contents);
 //将修改后的内容写入文件
 file_put_contents($path, $contents);
-</code></pre>
-
-<p><code>FILE_APPEND</code>用来像日志文件追加内容，<code>LOCK_FILE</code>用来解决多个进程同时写内容的竞争冲突。例如，将当期session的内容写入文件中：</p>
-
-<pre><code class="language-php">file_put_contents('logins.log', &quot;{$_SESSION[&quot;username&quot;]} logged in&quot;, FILE_APPEND | LOCK_EX);
-</code></pre>
-
-<h4 id="1-2-csv-io">1.2 CSV IO</h4>
-
+</code></pre></div><p><code>FILE_APPEND</code>用来像日志文件追加内容，<code>LOCK_FILE</code>用来解决多个进程同时写内容的竞争冲突。例如，将当期session的内容写入文件中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">file_put_contents(&#39;logins.log&#39;, &#34;{$_SESSION[&#34;username&#34;]} logged in&#34;, FILE_APPEND | LOCK_EX);
+</code></pre></div><h4 id="12-csv-io">1.2 CSV IO</h4>
 <pre><code>fgetcsv($file, $length, $separator)
-</code></pre>
-
-<p><a href="https://php.net/fgetcsv">fgetcsv</a>解析读入的行并找出 CSV 格式的字段，成功返回一个包含这些字段的数组，失败的时候返回<code>FALSE</code>。</p>
-
+</code></pre><p><a href="https://php.net/fgetcsv">fgetcsv</a>解析读入的行并找出 CSV 格式的字段，成功返回一个包含这些字段的数组，失败的时候返回<code>FALSE</code>。</p>
 <p>默认情况下，将只会读取CSV文件中的一行：</p>
-
-<pre><code class="language-php">$file = fopen('contacts.csv', &quot;r&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$file = fopen(&#39;contacts.csv&#39;, &#34;r&#34;);
 print_r(fgetcsv($file));
-print_r(fgetcsv($file, 5, &quot; &quot;));
+print_r(fgetcsv($file, 5, &#34; &#34;));
 fclose($file);
-</code></pre>
-
-<p><strong>contacts.csv</strong></p>
-
+</code></pre></div><p><strong>contacts.csv</strong></p>
 <pre><code>Kai Jim, Refsnes, Stavanger, Norway
 Hege, Refsnes, Stavanger, Norway
-</code></pre>
-
-<p>输出</p>
-
+</code></pre><p>输出</p>
 <pre><code>Array
 (
     [0] =&gt; Kai Jim
@@ -296,89 +260,61 @@ Array
 (
     [0] =&gt; Hege,
 )
-</code></pre>
-
-<h4 id="1-3-读取文件到标准输出">1.3 读取文件到标准输出</h4>
-
+</code></pre><h4 id="13-读取文件到标准输出">1.3 读取文件到标准输出</h4>
 <p><a href="https://php.net/readfile">readfile</a>读取文件的内容到标准输出缓存。readfile()方法不会引起内存问题，即使发送一个很大的文件。</p>
-
-<pre><code class="language-php">$file = 'monkey.gif';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$file = &#39;monkey.gif&#39;;
 if (file_exists($file)) {
-    header('Content-Description: File Transfer');
-    header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename=&quot;'.basename($file).'&quot;');
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate');
-    header('Pragma: public');
-    header('Content-Length: ' . filesize($file));
+    header(&#39;Content-Description: File Transfer&#39;);
+    header(&#39;Content-Type: application/octet-stream&#39;);
+    header(&#39;Content-Disposition: attachment; filename=&#34;&#39;.basename($file).&#39;&#34;&#39;);
+    header(&#39;Expires: 0&#39;);
+    header(&#39;Cache-Control: must-revalidate&#39;);
+    header(&#39;Pragma: public&#39;);
+    header(&#39;Content-Length: &#39; . filesize($file));
     readfile($file);
     exit;
 }
-</code></pre>
-
-<h4 id="从文件资源读取">从文件资源读取</h4>
-
+</code></pre></div><h4 id="从文件资源读取">从文件资源读取</h4>
 <p>或者，想要从文件的某个点开始读取一些内容到标准输出中，使用<a href="https://php.net/fpassthru">fpassthru</a>。在下面的例子中，将会至少获取1024个字节的内容到标准输出中：</p>
-
-<pre><code class="language-php">$fh = fopen('file.txt', 'rb');
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$fh = fopen(&#39;file.txt&#39;, &#39;rb&#39;);
 fseek($fh, -1024, SEEK_END);
 fpassthru($fh);
-</code></pre>
-
-<h4 id="1-4-把文件放入一个数组">1.4 把文件放入一个数组</h4>
-
+</code></pre></div><h4 id="14-把文件放入一个数组">1.4 把文件放入一个数组</h4>
 <p><a href="https://www.php.net/manual/zh/function.file.php">file</a>把文件整个读入一个数组中。数组的每个元素代表文件的一行，新行仍然在。</p>
-
-<pre><code class="language-php">print_r(file(&quot;text.txt&quot;));
-</code></pre>
-
-<p><strong>test.txt</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">print_r(file(&#34;text.txt&#34;));
+</code></pre></div><p><strong>test.txt</strong></p>
 <pre><code>Welcome to File handling
 This is to test file handling
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>Array
 (
     [0] =&gt; Welcome to File handling
     [1] =&gt; This is to test file handling
 )
-</code></pre>
-
-<h3 id="2-删除文件和目录">2. 删除文件和目录</h3>
-
-<h4 id="2-1-删除文件">2.1 删除文件</h4>
-
+</code></pre><h3 id="2-删除文件和目录">2. 删除文件和目录</h3>
+<h4 id="21-删除文件">2.1 删除文件</h4>
 <p><a href="https://php.net/unlink">unlink</a>方法删除一个文件，然后返回操作是否成功。</p>
-
-<pre><code class="language-php">$filename = '/path/to/file.txt';
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$filename = &#39;/path/to/file.txt&#39;;
 
 if (file_exists($filename)) {
     $success = unlink($filename);
     
     if (!$success) {
-        throw new Exception(&quot;不能删除{$filename}&quot;);
+        throw new Exception(&#34;不能删除{$filename}&#34;);
     }
 }
-</code></pre>
-
-<h4 id="2-2-递归删除目录">2.2 递归删除目录</h4>
-
+</code></pre></div><h4 id="22-递归删除目录">2.2 递归删除目录</h4>
 <p>在另外的情况下，可以使用<a href="https://php.net/rmdir">rmdir</a>来删除目录。然而，这个方法只能删除空目录。想要删除带有文件的目录，需要首先删除目录中的文件。如果目录包含有子目录，这里就需要使用递归删除了。</p>
-
 <p>下面的例子查看目录中的文件，然后递归的删除文件/目录，然后返回删除的文件(不是目录)数量。</p>
-
-<pre><code class="language-php">function recurse_delete_dir(string $dir) : int {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function recurse_delete_dir(string $dir) : int {
    $count = 0;
    
-   $dir = rtrim($dir, &quot;/\\&quot;) . '/';
+   $dir = rtrim($dir, &#34;/\\&#34;) . &#39;/&#39;;
    //列出目录的文件列表
    $list = dir($dir);
    
    while (($file = $list-&gt;read()) != false) {
-       if ($file == '.' || $file == '..') {
+       if ($file == &#39;.&#39; || $file == &#39;..&#39;) {
            continue;
        }
        if (is_file($dir . $file)) {
@@ -392,39 +328,27 @@ if (file_exists($filename)) {
    
    return $count;
 }
-</code></pre>
-
-<h3 id="3-获取文件信息">3. 获取文件信息</h3>
-
+</code></pre></div><h3 id="3-获取文件信息">3. 获取文件信息</h3>
 <p><strong>检查路径是目录还是文件</strong></p>
-
 <p><a href="https://php.net/is-dir">is_dir</a>检查参数是不是一个目录，<a href="https://php.net/is-file">is_file</a>检查参数是不是一个文件。使用<a href="https://php.net/file-exists">file_exists</a>检查文件存不存在。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$dir = &#39;/this/is/a/directory&#39;;
+$file = &#39;/this/is/a/file.txt&#39;;
 
-<pre><code class="language-php">$dir = '/this/is/a/directory';
-$file = '/this/is/a/file.txt';
-
-echo is_dir($dir) ? &quot;{$dir} is a directory&quot; : &quot;{$dir} is not a directory&quot;, PHP_EOL,
-     is_file($dir) ? &quot;{$dir} is a file&quot; : &quot;{$dir} is not a file&quot;, PHP_EOL,
-     file_exists($dir) ? &quot;{$dir} exists&quot; : &quot;{$dir} doesn‘t exist&quot;, PHP_EOL,
-     is_dir($file) ? &quot;{$file} is a directory&quot; : &quot;{$file} is not a directory&quot;, PHP_EOL,
-     is_file($file) ? &quot;{$file} is a file&quot; : &quot;{$file} is not a file&quot;, PHP_EOL,
-     file_exists($file) ? &quot;{$file} exists&quot; : &quot;{$file} doesn't exists&quot;, PHP_EOL;
-</code></pre>
-
-<p>这将会输出：</p>
-
+echo is_dir($dir) ? &#34;{$dir} is a directory&#34; : &#34;{$dir} is not a directory&#34;, PHP_EOL,
+     is_file($dir) ? &#34;{$dir} is a file&#34; : &#34;{$dir} is not a file&#34;, PHP_EOL,
+     file_exists($dir) ? &#34;{$dir} exists&#34; : &#34;{$dir} doesn‘t exist&#34;, PHP_EOL,
+     is_dir($file) ? &#34;{$file} is a directory&#34; : &#34;{$file} is not a directory&#34;, PHP_EOL,
+     is_file($file) ? &#34;{$file} is a file&#34; : &#34;{$file} is not a file&#34;, PHP_EOL,
+     file_exists($file) ? &#34;{$file} exists&#34; : &#34;{$file} doesn&#39;t exists&#34;, PHP_EOL;
+</code></pre></div><p>这将会输出：</p>
 <pre><code>/this/is/a/directory is a directory
 /this/is/a/directory is not a file
 /this/is/a/directory exists
 /this/is/a/file.txt is not a directory
 /this/is/a/file.txt is a file
 /this/is/a/file.txt exists
-</code></pre>
-
-<p><strong>检查文件类型</strong></p>
-
+</code></pre><p><strong>检查文件类型</strong></p>
 <p>使用<a href="https://php.net/filetype">filetype</a>获取文件的类型，有下面的输出：</p>
-
 <ul>
 <li>fifo</li>
 <li>char</li>
@@ -435,40 +359,24 @@ echo is_dir($dir) ? &quot;{$dir} is a directory&quot; : &quot;{$dir} is not a di
 <li>socket</li>
 <li>unknown</li>
 </ul>
-
 <p>直接把文件名称传给filetype方法：</p>
-
-<pre><code class="language-php">echo filetype(&quot;~&quot;);   //dir
-</code></pre>
-
-<p><strong>注意：</strong>如果文件不存在的话，<code>filetype</code>将会返回false和触发<code>E_WARNNG</code>。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">echo filetype(&#34;~&#34;);   //dir
+</code></pre></div><p>**注意：**如果文件不存在的话，<code>filetype</code>将会返回false和触发<code>E_WARNNG</code>。</p>
 <p><strong>检查文件的可读和可写</strong></p>
-
 <p>把文件名传给<a href="https://php.net/is-writable">is_writable</a>和<a href="https://php.net/is-readable">is_readable</a>方法，来检查文件时可读或者可写的。</p>
-
 <p>如果文件不存在的话，这个方法会优雅的返回false。</p>
-
 <p><strong>检查文件的最近访问/最近修改时间</strong></p>
-
 <p>使用filemtime和fileatime可以获取文件上次修改和上次访问的时间戳。返回的是Unix时间戳。</p>
-
-<pre><code class="language-php">echo &quot;File was last modified on &quot; . date(&quot;Y-m-d&quot;, filemtime(&quot;file.txt&quot;));
-echo &quot;File was last accessed on &quot; . date(&quot;Y-m-d&quot;, fileatime(&quot;file.txt&quot;));
-</code></pre>
-
-<p><strong>获取文件信息的路径部分</strong></p>
-
-<pre><code class="language-php">$fileToAnalyze = &quot;/var/www/image.png&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">echo &#34;File was last modified on &#34; . date(&#34;Y-m-d&#34;, filemtime(&#34;file.txt&#34;));
+echo &#34;File was last accessed on &#34; . date(&#34;Y-m-d&#34;, fileatime(&#34;file.txt&#34;));
+</code></pre></div><p><strong>获取文件信息的路径部分</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$fileToAnalyze = &#34;/var/www/image.png&#34;;
 $filePathParts = pathinfo($fileToAnalyze);
 
-echo '&lt;pre&gt;';
+echo &#39;&lt;<span style="color:#f92672">pre</span>&gt;&#39;;
     print_r($filePathParts);
-echo '&lt;/pre&gt;';
-</code></pre>
-
-<p>这个例子将会输出：</p>
-
+echo &#39;&lt;/<span style="color:#f92672">pre</span>&gt;&#39;;
+</code></pre></div><p>这个例子将会输出：</p>
 <pre><code>Array
 (
     [dirname] =&gt; /var/www 
@@ -476,55 +384,40 @@ echo '&lt;/pre&gt;';
     [extension] =&gt; png 
     [filename] =&gt; image
 )
-</code></pre>
-
-<p>这些值可以像下面这样应用：</p>
-
+</code></pre><p>这些值可以像下面这样应用：</p>
 <pre><code>$filePathParts['dirname']
 $filePathParts['basename']
 $filePathParts['extension']
 $filePathParts['filename']
-</code></pre>
-
-<table>
+</code></pre><table>
 <thead>
 <tr>
 <th>参数</th>
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>$path</code></td>
 <td>文件的完整路径</td>
 </tr>
-
 <tr>
 <td><code>$option</code></td>
 <td>下面可选参数中的一个[PATHINFO_DIRNAME, PATHINFO_BASENAME, PATHINFO_EXTENSION或者PATHINFO_FILENAME]</td>
 </tr>
 </tbody>
 </table>
-
 <ul>
 <li>如果第二个参数没有传入的话，将会返回关联数组，否则返回字符串</li>
 <li>这个方法不会验证文件是否存在</li>
 <li>只需将字符串解析为多个部分。没有对文件进行验证（没有MIME类型检查等）</li>
 <li>文件的扩展名只是简单的使用<code>$path</code>中最后的值。就像<code>image.jpg.png</code>的扩展名是<code>.png</code>哪怕这个文件实际是jpg文件。如果文件没有扩展名的话，将不会在数组中返回扩展名元素。</li>
 </ul>
-
 <h3 id="4-基于流的文件io">4. 基于流的文件IO</h3>
-
 <p><strong>开启流</strong></p>
-
 <p><a href="http://php.net/fopen">fopen</a>开启一个文件的处理流，这个流可以用于多个读取，写入，寻找或者其他的方法。这个方法的返回值是资源格式的，不能传递给其他保持其功能的线程。</p>
-
-<pre><code class="language-php">$f = fopen(&quot;errors.log&quot;, &quot;a&quot;);  //试着打开errors.log文件来写入信息
-</code></pre>
-
-<p>第二个参数有下面几种：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$f = fopen(&#34;errors.log&#34;, &#34;a&#34;);  //试着打开errors.log文件来写入信息
+</code></pre></div><p>第二个参数有下面几种：</p>
 <table>
 <thead>
 <tr>
@@ -532,90 +425,65 @@ $filePathParts['filename']
 <th>开启只读模式，从文件的开头开始</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>r+</td>
 <td>开启读写模式，从文件的开头开始</td>
 </tr>
-
 <tr>
 <td>w</td>
 <td>开启只写模式，从文件的开头开始。如果文件存在，将会清空文件。如果文件不存在将会试着创建这个文件。</td>
 </tr>
-
 <tr>
 <td>w+</td>
 <td>开启读写模式，从文件的开头开始。如果文件存在将会情况文件。如果文件不存在将会试着创建文件。</td>
 </tr>
-
 <tr>
 <td>a</td>
 <td>开启只写模式，从文件的末尾开始。如果文件不存在将会试着创建一个文件</td>
 </tr>
-
 <tr>
 <td>a+</td>
 <td>开启读写模式，从文件的末尾开始。如果文件不存在，将会试着创建一个</td>
 </tr>
-
 <tr>
 <td>x</td>
 <td>创建并打开一个只写模式的文件。如果文件存在，<code>fopen</code>将会报错</td>
 </tr>
-
 <tr>
 <td>x+</td>
 <td>创建并打开一个读写模式的文件。如果文件存在，<code>fopen</code>将会保存。</td>
 </tr>
-
 <tr>
 <td>c</td>
 <td>开启只写模式。如果文件不存在将会试着创建一个。将会在文件开头写入内容，但是不会清空文件内容。</td>
 </tr>
-
 <tr>
 <td>c+</td>
 <td>开启读写模式。如果文件不存在将尝试创建。将会在文件的开头开始写入文件，在写入之前不会情况文件的内容。</td>
 </tr>
 </tbody>
 </table>
-
-<p>在Windows上在模式后面证据一个<code>t</code>(如 a+b, wt等)将会在处理文件时，把&rdquo;\n&rdquo;转换为&rdquo;\r\n&rdquo;。如果不是有意的话，在模式后面添加b，特别是如果它是一个二进制文件。</p>
-
+<p>在Windows上在模式后面证据一个<code>t</code>(如 a+b, wt等)将会在处理文件时，把&rdquo;\n&quot;转换为&rdquo;\r\n&rdquo;。如果不是有意的话，在模式后面添加b，特别是如果它是一个二进制文件。</p>
 <p>PHP应用不在使用文件的时候，需要使用<a href="http://php.net/fclose">fclose</a>来把文件流关掉，这样可以避免<code>Too many open files</code>错误。这在CLI程序中是特别重要的，因为这样流只有在程序失败的时候才会关闭；这意味着在web服务器上面，这个不是必须这么做的(但是应这么做，用来避免资源泄露)。如果你不想程序运行很长时间，你不应该开很多的文件流。</p>
-
 <p><strong>读取</strong></p>
-
 <p>使用<a href="https://php.net/fread">fread</a>从文件引用中读取指定数量的字节内容，或者遇到EOF了。</p>
-
 <p><strong>读取行</strong></p>
-
 <p>使用<a href="https://php.net/fgets">fgets</a>从文件中读取一行，或者到达EOF。</p>
-
 <p><code>fread</code>和<code>fgets</code>在读取内容的时候，都会移动文件指针。</p>
-
 <p><strong>读取所有剩余内容</strong></p>
-
 <p>使用stream_get_contents可以获取已经打开流的剩余部分的内容，写入一个字符串中，并且返回。</p>
-
 <p><strong>调整文件指针的位置</strong></p>
-
 <p>最初在打开文件流之后，文件指针位于文件的开头(如果使用模式<code>a</code>，指针在结尾)。使用fseek方法将会吧文件指针相对三个值之一移动到新的位置：</p>
-
 <ul>
 <li>SEEK_SET：这是默认值，文件指针的偏移量将会相对于文件开始的位置</li>
 <li>SEEK_CUR：文件指针的偏移量将会相对于当前的位置。</li>
 <li>SEEK_END：文件指针的偏移量将会相对于文件的末尾。在这个变量下通常会使用一个副值，这将会移动文件指针到文件末尾之前的指定字节的位置。</li>
 </ul>
-
 <p><a href="https://php.net/rewind">rewind</a>方法是<code>fseek($fh, 0, SEEK_SET)</code>的一个简写方式。</p>
-
 <p><a href="https://php.net/ftell">ftell</a>方法可以显示文件指针的当前位置。</p>
-
 <p>下面的例子，将会首先跳过10个字节，读取下10个字节的内容，在跳过10个字节，之后读取下10个字节的内容，然后读取文件最后10个字节的内容：</p>
-
-<pre><code class="language-php">$fh = fopen(&quot;file.txt&quot;, &quot;rb&quot;);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$fh = fopen(&#34;file.txt&#34;, &#34;rb&#34;);
 fseek($fh, 10);  //移动10个偏移量
 echo fread($fh, 10); //读取10个字节
 fseek($fh, 10, SEEK_CUR); //移动10
@@ -623,43 +491,30 @@ echo fread($fh, 10);
 fseek($fh, -10, SEEK_END);
 echo fread($fh, 10);
 fclose($fh);
-</code></pre>
-
-<p><strong>写</strong></p>
-
+</code></pre></div><p><strong>写</strong></p>
 <p><a href="https://php.net/fwrite">fwrite</a>将指定的字符串内容，写入到文件当前指针的位置。</p>
-
-<pre><code class="language-php">fwrite($fh, &quot;Some text here\n&quot;);
-</code></pre>
-
-<h3 id="5-移动和复制文件和目录">5. 移动和复制文件和目录</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">fwrite($fh, &#34;Some text here\n&#34;);
+</code></pre></div><h3 id="5-移动和复制文件和目录">5. 移动和复制文件和目录</h3>
 <p><strong>复制文件</strong></p>
-
 <p><a href="https://php.net/copy">copy</a>复制第一个参数的源文件到第二个参数的目的地。目的地地址需要是一个已经创建的目录。</p>
-
-<pre><code class="language-php">if (copy('test.txt', 'dest.txt')) {
-    echo &quot;File has been copied successfully&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">if (copy(&#39;test.txt&#39;, &#39;dest.txt&#39;)) {
+    echo &#34;File has been copied successfully&#34;;
 } else {
-    echo 'Failed to copy file to destionation given';
+    echo &#39;Failed to copy file to destionation given&#39;;
 }
-</code></pre>
-
-<p><strong>递归复制目录</strong></p>
-
+</code></pre></div><p><strong>递归复制目录</strong></p>
 <p>复制目录和删除目录的程序是很相似的，除了使用<code>copy</code>方法替换<code>unlink</code>来处理文件，使用<code>mkdir</code>替换<code>rmdir</code>来处理目录，在方法的开头。</p>
-
-<pre><code class="language-php">function recurse_copy_dir(string $src, sting $dest) : int {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function recurse_copy_dir(string $src, sting $dest) : int {
     $count = 0;
     
-    $src = rtrim($dest, &quot;/\\&quot;) . &quot;/&quot;;
-    $dest = rtrim($dest, &quot;/\\&quot;) . &quot;/&quot;;
+    $src = rtrim($dest, &#34;/\\&#34;) . &#34;/&#34;;
+    $dest = rtrim($dest, &#34;/\\&#34;) . &#34;/&#34;;
     
     $list = dir($src);
     @mkdir($dest);
   
     while(($file = $list-&gt;read()) !== false) {
-        if ($file === '.' || $file === '..') {
+        if ($file === &#39;.&#39; || $file === &#39;..&#39;) {
             continue;
         }
       
@@ -673,62 +528,43 @@ fclose($fh);
   
     return $count;
 }
-</code></pre>
-
-<p><strong>重命名/移动</strong></p>
-
+</code></pre></div><p><strong>重命名/移动</strong></p>
 <p>重命名/移动文件或目录是更加简单的。如果可以在一个请求中移动或重命名整个目录，使用<a href="http://php.net/rename">rename</a>方法。</p>
-
 <ul>
-<li>rename(&rdquo;~/file.txt&rdquo;, &ldquo;~/file.html&rdquo;);</li>
-<li>rename(&rdquo;~/dir&rdquo;, &ldquo;~/old_dir&rdquo;);</li>
-<li>rename(&rdquo;~/dir/file.txt&rdquo;, &ldquo;~/dir2/file.txt&rdquo;);</li>
+<li>rename(&ldquo;~/file.txt&rdquo;, &ldquo;~/file.html&rdquo;);</li>
+<li>rename(&ldquo;~/dir&rdquo;, &ldquo;~/old_dir&rdquo;);</li>
+<li>rename(&ldquo;~/dir/file.txt&rdquo;, &ldquo;~/dir2/file.txt&rdquo;);</li>
 </ul>
-
 <h3 id="6-处理大文件时减少内存使用">6. 处理大文件时减少内存使用</h3>
-
 <p>如果我们需要解析一个大文件，例如一个超过10M包含几百兆的CSV文件，使用<code>file</code>或<code>file_get_contents</code>方法，然后遇到<code>memory_limit</code>配置错误：</p>
-
 <blockquote>
 <p>Allowed memory size of XXX bytes exhausted</p>
 </blockquote>
-
 <p>假设下面的<code>top-1m.csv</code>文件有1百万数据，文件大小22M：</p>
-
-<pre><code class="language-php">var_dump(memory_get_usage(true));
-$arr = file('top-1m.csv');
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(memory_get_usage(true));
+$arr = file(&#39;top-1m.csv&#39;);
 var_dump(memory_get_usage(true));
 
 //这将会输出：
 int(262144)
 int(210501632)
-</code></pre>
-
-<p>因为解析器需要处理<code>$arr</code>中所有的行，所以这里大概使用<code>200M</code>的内存。注意，这里我们还没有对数组做任何处理。</p>
-
+</code></pre></div><p>因为解析器需要处理<code>$arr</code>中所有的行，所以这里大概使用<code>200M</code>的内存。注意，这里我们还没有对数组做任何处理。</p>
 <p>现在假设有下面的代码：</p>
-
-<pre><code class="language-php">var_dump(memory_get_usage(true));
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">var_dump(memory_get_usage(true));
 $index = 1;
-if (($handle = fopen('top-1m.csv', 'r')) !== FALSE) {
-    while (($row = fgetcsv($handle, 1000, ',')) !== FALSE) {
-        file_put_contents('top-1m-reversed.csv', $index . ',' . strrev($row[1]) . PHP_EOL, FILE_APPEND);
+if (($handle = fopen(&#39;top-1m.csv&#39;, &#39;r&#39;)) !== FALSE) {
+    while (($row = fgetcsv($handle, 1000, &#39;,&#39;)) !== FALSE) {
+        file_put_contents(&#39;top-1m-reversed.csv&#39;, $index . &#39;,&#39; . strrev($row[1]) . PHP_EOL, FILE_APPEND);
         $index++;
     }
     fclose($handle);
 }
 
 var_dump(memory_get_useage(true));
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre></div><p>这将会输出：</p>
 <pre><code>int(262144)
 int(262144)
-</code></pre>
-
-<p>所有我们没有使用而我的内容，但是处理了整个CSV文件，并且反转第二个列的值把内容保存到另外的文件中。这是因为<code>fgetcsv</code>只读取了一行，然后<code>$row</code>每次循环都会被覆盖。</p>
-
+</code></pre><p>所有我们没有使用而我的内容，但是处理了整个CSV文件，并且反转第二个列的值把内容保存到另外的文件中。这是因为<code>fgetcsv</code>只读取了一行，然后<code>$row</code>每次循环都会被覆盖。</p>
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -801,6 +637,12 @@ int(262144)
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

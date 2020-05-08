@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,38 +187,29 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#协同进程">协同进程</a>
-<ul>
-<li><a href="#hello-world">Hello World</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#协同进程">协同进程</a>
+      <ul>
+        <li><a href="#hello-world">Hello World</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="协同进程">协同进程</h2>
-
+        		<h2 id="协同进程">协同进程</h2>
 <h3 id="hello-world">Hello World</h3>
-
-<pre><code class="language-shell"># create the co-process
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># create the co-process</span>
 coproc bash
 
-# send a command to it (echo a)
-echo 'echo Hello World' &gt;&amp;&quot;${COPROC[1]}&quot;
+<span style="color:#75715e"># send a command to it (echo a)</span>
+echo <span style="color:#e6db74">&#39;echo Hello World&#39;</span> &gt;&amp;<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>COPROC[1]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
 
-# read a line from its output
-read line &lt;&amp;&quot;${COPROC[0]}&quot;
+<span style="color:#75715e"># read a line from its output</span>
+read line &lt;&amp;<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>COPROC[0]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
 
-# show the line
-echo &quot;$line&quot;
-</code></pre>
-
-<p>输出&rdquo;Hello World&rdquo;</p>
-
+<span style="color:#75715e"># show the line</span>
+echo <span style="color:#e6db74">&#34;</span>$line<span style="color:#e6db74">&#34;</span>
+</code></pre></div><p>输出&quot;Hello World&rdquo;</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -287,6 +282,12 @@ echo &quot;$line&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

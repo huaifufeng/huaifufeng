@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Somes on 怀府小阁</title>
@@ -6,28 +6,29 @@
     <description>Recent content in Somes on 怀府小阁</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
+    <lastBuildDate>Wed, 22 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://blog.huaifufeng.com/some/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>服务器平均负载</title>
+      <link>http://blog.huaifufeng.com/2020/01/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD.html</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://blog.huaifufeng.com/2020/01/post/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B9%B3%E5%9D%87%E8%B4%9F%E8%BD%BD.html</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title></title>
-      <link>http://blog.huaifufeng.com/some/localhost-127.0.0.1/</link>
+      <link>http://blog.huaifufeng.com/some/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://blog.huaifufeng.com/some/localhost-127.0.0.1/</guid>
-      <description>localhost 127.0.0.1
-Localhost
-特殊的DNS域名，分配给计算机本身使用。
-不经网卡传输，不受网络防火墙和网卡相关设置的限制
-访问localhost使用本机用户的权限去访问
-127.0.0.1
-通过网卡传输，依赖网卡，受网络防火墙和网卡设置限制
-访问127.0.0.1 使用本机通过网络去访问本机，涉及到网络用户权限
-访问本地程序时，使用localhost比较好，不占用网卡和网络资源
-/etc/hosts
-配置 127.0.0.1 localhost
-不配做 ping localhost 不通</description>
+      <guid>http://blog.huaifufeng.com/some/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid>
+      <description>插入排序和冒泡排序的交换次数取决于原有数组的有序程度。其中插入排序比冒泡排序交换次数少，只需要移动元素位置。选择排序的交换次数是固定的，和原始数组的顺序无关
+当数组接近有序时，插入最优；大部分无序时，选择最优
+冒泡和插入是稳定的，选择是不稳定的</description>
     </item>
     
   </channel>

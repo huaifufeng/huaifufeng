@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,45 +187,39 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#自动加载初探">自动加载初探</a>
-<ul>
-<li><a href="#1-作为框架解决方案的一部分自动加载">1. 作为框架解决方案的一部分自动加载</a></li>
-<li><a href="#2-内联类定义-不需要加载">2. 内联类定义，不需要加载</a></li>
-<li><a href="#3-require手动加载类">3. require手动加载类</a></li>
-<li><a href="#4-composer自动加载">4. composer自动加载</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#自动加载初探">自动加载初探</a>
+      <ul>
+        <li><a href="#1-作为框架解决方案的一部分自动加载">1. 作为框架解决方案的一部分自动加载</a></li>
+        <li><a href="#2-内联类定义不需要加载">2. 内联类定义，不需要加载</a></li>
+        <li><a href="#3-require手动加载类">3. require手动加载类</a></li>
+        <li><a href="#4-composer自动加载">4. composer自动加载</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="自动加载初探">自动加载初探</h2>
-
+        		<h2 id="自动加载初探">自动加载初探</h2>
 <h3 id="1-作为框架解决方案的一部分自动加载">1. 作为框架解决方案的一部分自动加载</h3>
-
-<pre><code class="language-php">// autoload.php
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// autoload.php
 spl_autoload_register(function ($class) { 
-    require_once &quot;$class.php&quot;;
+    require_once &#34;$class.php&#34;;
 });
 
 // Animal.php
 class Animal {
     public function eats($food) {
-        echo &quot;Yum, $food!&quot;; 
+        echo &#34;Yum, $food!&#34;; 
     }
 }
 
 // Ruminant.php
 class Ruminant extends Animal { 
     public function eats($food) {
-        if ('grass' === $food) {
+        if (&#39;grass&#39; === $food) {
             parent::eats($food);
         } else {
-            echo &quot;Yuck, $food!&quot;;
+            echo &#34;Yuck, $food!&#34;;
         } 
     }
 }
@@ -230,89 +228,60 @@ class Ruminant extends Animal {
 class Cow extends Ruminant { }
 
 // pasture.php
-require 'autoload.php'; 
+require &#39;autoload.php&#39;; 
 $animal = new Cow; 
-$animal-&gt;eats('grass');
-</code></pre>
-
-<p>因为我们的自动加载器，我们可以访问任何符合我们自动加载器规则的类。在这个例子中，规则很简单，所需的类必须在为该类命名并以“.php”结尾的同一目录中有一个文件。注意类名与文件名完全匹配。</p>
-
+$animal-&gt;eats(&#39;grass&#39;);
+</code></pre></div><p>因为我们的自动加载器，我们可以访问任何符合我们自动加载器规则的类。在这个例子中，规则很简单，所需的类必须在为该类命名并以“.php”结尾的同一目录中有一个文件。注意类名与文件名完全匹配。</p>
 <p>没有自动加载器，我们需要手动的<code>require</code>每个类。如果我们建立一个完整的动物动物园，我们将有成千上万的需求声明，可以更容易地替换为一个自动装载机。</p>
-
 <p>在最后的分析中，PHP自动加载是一种帮助您编写更少机械代码的机制，这样您就可以专注于解决业务问题。您可以滚动您自己的自动加载策略，如这里所做的。或者，您可以使用PHP社区采用的任何标准：<a href="https://www.php-fig.org/psr/psr-0/">PSR-0</a>或<a href="https://www.php-fig.org/psr/psr-4/">PSR-4</a>。或者，您可以使用<a href="https://getcomposer.org">composer</a>来一般性地定义和管理这些依赖项。</p>
-
-<h3 id="2-内联类定义-不需要加载">2. 内联类定义，不需要加载</h3>
-
-<pre><code class="language-php">// zoo.php
+<h3 id="2-内联类定义不需要加载">2. 内联类定义，不需要加载</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// zoo.php
 class Animal {
     public function eats($food) {
-        echo &quot;Yum, $food!&quot;;
+        echo &#34;Yum, $food!&#34;;
     }
 }
 
 $animal = new Animal(); 
-$animal-&gt;eats('meat');
-</code></pre>
-
-<p>在执行<code>new Animal</code>之前，PHP知道<code>Animal</code>是什么，因为PHP从上到下加载源码。但是，如果我们想在许多地方创建新的动物，而不仅仅是在定义它的源文件中呢？为此，我们需要加载类定义。</p>
-
+$animal-&gt;eats(&#39;meat&#39;);
+</code></pre></div><p>在执行<code>new Animal</code>之前，PHP知道<code>Animal</code>是什么，因为PHP从上到下加载源码。但是，如果我们想在许多地方创建新的动物，而不仅仅是在定义它的源文件中呢？为此，我们需要加载类定义。</p>
 <h3 id="3-require手动加载类">3. require手动加载类</h3>
-
-<pre><code class="language-php">// Animal.php
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// Animal.php
 class Animal {
     public function eats($food) {
-        echo &quot;Yum, $food!&quot;; 
+        echo &#34;Yum, $food!&#34;; 
     }
 }
 
 // zoo.php
-require 'Animal.php'; 
+require &#39;Animal.php&#39;; 
 $animal = new Animal; 
-$animal-&gt;eats('slop');
+$animal-&gt;eats(&#39;slop&#39;);
 
 // aquarium.php
-require 'Animal.php'; 
+require &#39;Animal.php&#39;; 
 $animal = new Animal; 
-$animal-&gt;eats('shrimp');
-</code></pre>
-
-<p>把这个和其他例子比较一下。注意<code>require &quot;Animal.php&quot;</code>被使用<code>require &quot;autoload.php&quot;</code>替代了。我们还是在运行的时候加载需要的类，但不是通过每次指定类，而是通过一个可以加载任何类的逻辑。这是一个间接的层次，使我们的开发更容易。我们不是为我们需要的每个类编写一个<code>require</code>，而是为所有类编写一个<code>require</code>。我们可以用1个<code>require</code>替换N个<code>require</code>。</p>
-
+$animal-&gt;eats(&#39;shrimp&#39;);
+</code></pre></div><p>把这个和其他例子比较一下。注意<code>require &quot;Animal.php&quot;</code>被使用<code>require &quot;autoload.php&quot;</code>替代了。我们还是在运行的时候加载需要的类，但不是通过每次指定类，而是通过一个可以加载任何类的逻辑。这是一个间接的层次，使我们的开发更容易。我们不是为我们需要的每个类编写一个<code>require</code>，而是为所有类编写一个<code>require</code>。我们可以用1个<code>require</code>替换N个<code>require</code>。</p>
 <p>这个魔法是使用<a href="https://www.php.net/manual/zh/function.spl-autoload-register.php">spl_autoload_register</a>。这个方法接受一个闭包，并把这个闭包加到一个闭包列表中。当PHP遇到一个没有定义的类的时候，会使用队列中的闭包依次处理这个类名。如果调用闭包后类存在了，PHP就会把这个类返回到之前的业务中。如果执行队列后还是没有找到，PHP将会返回一个<code>Class 'Whatever' not found.</code>错误。</p>
-
 <h3 id="4-composer自动加载">4. composer自动加载</h3>
-
 <p>Composer产生一个<code>vendor/autoload.php</code>文件。</p>
-
 <p>你只需要简单的包含这个文件，然后就可以使用自动加载了。</p>
-
-<pre><code class="language-php">require __DIR__ . '/vendor/autoload.php';
-</code></pre>
-
-<p>这让使用第三方的依赖特别容易。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">require __DIR__ . &#39;/vendor/autoload.php&#39;;
+</code></pre></div><p>这让使用第三方的依赖特别容易。</p>
 <p>你也可以在<code>composer.json</code>的<code>autoload</code>部分来把你的自己的代码添加到自动加载器中。</p>
-
-<pre><code class="language-json">{
-    &quot;autoload&quot;: {
-        &quot;psr-4&quot;: {&quot;YourApplicationNamespace\\&quot;: &quot;src/&quot;} 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;autoload&#34;</span>: {
+        <span style="color:#f92672">&#34;psr-4&#34;</span>: {<span style="color:#f92672">&#34;YourApplicationNamespace\\&#34;</span>: <span style="color:#e6db74">&#34;src/&#34;</span>} 
     }
 }
-</code></pre>
-
-<p>在这部分你定于了自动加载器的映射。在这个例子中是一个将命名空间映射到目录的<a href="https://www.php-fig.org/psr/psr-4/">PSR-4</a>映射。<code>/src</code>目录和<code>/vendor</code>目录位于同一级别的项目根目录中。一个例子就是<code>src/Foo.php</code>文件包含一个<code>YourApplicationNamespace\Foo</code>类。</p>
-
-<p><strong>重要：</strong>在你在自动加载部分添加新的模块的时候，你需要运行<a href="https://getcomposer.org/doc/03-cli.md#dump-autoload">dump-autoload</a>来重新生成和将新的信息更新到<code>vendor/autoload.php</code>文件中。</p>
-
+</code></pre></div><p>在这部分你定于了自动加载器的映射。在这个例子中是一个将命名空间映射到目录的<a href="https://www.php-fig.org/psr/psr-4/">PSR-4</a>映射。<code>/src</code>目录和<code>/vendor</code>目录位于同一级别的项目根目录中。一个例子就是<code>src/Foo.php</code>文件包含一个<code>YourApplicationNamespace\Foo</code>类。</p>
+<p>**重要：**在你在自动加载部分添加新的模块的时候，你需要运行<a href="https://getcomposer.org/doc/03-cli.md#dump-autoload">dump-autoload</a>来重新生成和将新的信息更新到<code>vendor/autoload.php</code>文件中。</p>
 <p>除了加载<code>PSR-4</code>的自动加载，Composer也支持<code>PSR-0</code>，<code>classmap</code>和<code>file</code>加载。查看<a href="https://getcomposer.org/doc/04-schema.md#autoload">自动加载器手册</a>了解更多的信息。</p>
-
 <p>当你包含<code>vendor/autoload.php</code>文件，你将会返回一个Composer自动加载器的实例。你可以保存这个自动加载器的实例，然后添加更多的命名空间。这在加载测试组件的时候非常有用：</p>
-
-<pre><code class="language-php">$loader = require __DIR__ . '/vendor/autoload.php';
-$loader-&gt;add('Application\\Test\\', __DIR__);
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$loader = require __DIR__ . &#39;/vendor/autoload.php&#39;;
+$loader-&gt;add(&#39;Application\\Test\\&#39;, __DIR__);
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -384,6 +353,12 @@ $loader-&gt;add('Application\\Test\\', __DIR__);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

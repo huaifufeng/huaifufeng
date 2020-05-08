@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,28 +187,21 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#反射">反射</a>
-<ul>
-<li><a href="#类或对象的特征">类或对象的特征</a></li>
-<li><a href="#测试private-protected方法">测试private/protected方法</a></li>
-<li><a href="#访问private和protected的属性">访问private和protected的属性</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#反射">反射</a>
+      <ul>
+        <li><a href="#类或对象的特征">类或对象的特征</a></li>
+        <li><a href="#测试privateprotected方法">测试private/protected方法</a></li>
+        <li><a href="#访问private和protected的属性">访问private和protected的属性</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="反射">反射</h2>
-
+        		<h2 id="反射">反射</h2>
 <h3 id="类或对象的特征">类或对象的特征</h3>
-
 <p>类的特征检查可以使用<code>property_exists</code>和<code>method_exists</code>来实现。</p>
-
-<pre><code class="language-php">class MyClass {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class MyClass {
     public $public_field;
     protected $protected_field;
     private $private_field;
@@ -215,39 +212,31 @@
 }
 
 // check properties
-$check = property_exists('MyClass', 'public_field');
-$check = property_exists('MyClass', 'protected_field');
-$check = property_exists('MyClass', 'private_field');
-$check = property_exists('MyClass', 'static_field');
-$check = property_exists('MyClass', 'other_field');
+$check = property_exists(&#39;MyClass&#39;, &#39;public_field&#39;);
+$check = property_exists(&#39;MyClass&#39;, &#39;protected_field&#39;);
+$check = property_exists(&#39;MyClass&#39;, &#39;private_field&#39;);
+$check = property_exists(&#39;MyClass&#39;, &#39;static_field&#39;);
+$check = property_exists(&#39;MyClass&#39;, &#39;other_field&#39;);
 
 // check methods
-$check = method_exists('MyClass', 'public_function');
-$check = method_exists('MyClass', 'protected_function');
-$check = method_exists('MyClass', 'private_function');
-$check = method_exists('MyClass', 'static_function');
+$check = method_exists(&#39;MyClass&#39;, &#39;public_function&#39;);
+$check = method_exists(&#39;MyClass&#39;, &#39;protected_function&#39;);
+$check = method_exists(&#39;MyClass&#39;, &#39;private_function&#39;);
+$check = method_exists(&#39;MyClass&#39;, &#39;static_function&#39;);
 
 // however...
-$check = property_exists('MyClass', 'CONSTANT'); // false 
-$check = property_exists($object, 'CONSTANT'); // false
-</code></pre>
-
-<p>使用<code>ReflectionClass</code>的话，常量也可以被检查：</p>
-
-<pre><code class="language-php">$r = new ReflectionClass('MyClass');
-$check = $r-&gt;hasProperty('public_field'); // true
-$check = $r-&gt;hasMethod('public_function'); // true
-$check = $r-&gt;hasConstant('CONSTANT'); // true
+$check = property_exists(&#39;MyClass&#39;, &#39;CONSTANT&#39;); // false 
+$check = property_exists($object, &#39;CONSTANT&#39;); // false
+</code></pre></div><p>使用<code>ReflectionClass</code>的话，常量也可以被检查：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$r = new ReflectionClass(&#39;MyClass&#39;);
+$check = $r-&gt;hasProperty(&#39;public_field&#39;); // true
+$check = $r-&gt;hasMethod(&#39;public_function&#39;); // true
+$check = $r-&gt;hasConstant(&#39;CONSTANT&#39;); // true
 // also works for protected, private and/or static members.
-</code></pre>
-
-<p>注意：对于<code>property_exists</code>和<code>method_exists</code>，可以提供一个类的对象来代替类名。使用反射的话，<code>ReflectionObject</code>类可以替换<code>ReflectionClass</code>。</p>
-
-<h3 id="测试private-protected方法">测试private/protected方法</h3>
-
+</code></pre></div><p>注意：对于<code>property_exists</code>和<code>method_exists</code>，可以提供一个类的对象来代替类名。使用反射的话，<code>ReflectionObject</code>类可以替换<code>ReflectionClass</code>。</p>
+<h3 id="测试privateprotected方法">测试private/protected方法</h3>
 <p>有时候对private/protected像public一样进行测试是很有用的：</p>
-
-<pre><code class="language-php">class Car {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Car {
     /**
      * @param mixed $argument
      *
@@ -264,11 +253,8 @@ $check = $r-&gt;hasConstant('CONSTANT'); // true
     		return true; 
     }
 }
-</code></pre>
-
-<p>最简单的测试方法是使用反射：</p>
-
-<pre><code class="language-php">class DriveTest {
+</code></pre></div><p>最简单的测试方法是使用反射：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class DriveTest {
     /**
     * @test */
     public function testDrive() {
@@ -277,7 +263,7 @@ $check = $r-&gt;hasConstant('CONSTANT'); // true
         $expected = $argument; 
         $car = new \Car();
         $reflection = new ReflectionClass(\Car::class); 
-        $method = $reflection-&gt;getMethod('drive'); 
+        $method = $reflection-&gt;getMethod(&#39;drive&#39;); 
         $method-&gt;setAccessible(true);
             // invoke logic
         $result = $method-&gt;invokeArgs($car, [$argument]);
@@ -285,18 +271,15 @@ $check = $r-&gt;hasConstant('CONSTANT'); // true
         $this-&gt;assertEquals($expected, $result);
     }
 }
-</code></pre>
-
-<p>如果方法是静态的话，在类实例的地方传入一个null：</p>
-
-<pre><code class="language-php">class StopTest {
+</code></pre></div><p>如果方法是静态的话，在类实例的地方传入一个null：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class StopTest {
     /**
     * @test */
     public function testStop() {
         // prepare
         $expected = true;
         $reflection = new ReflectionClass(\Car::class); 
-        $method = $reflection-&gt;getMethod('stop'); 
+        $method = $reflection-&gt;getMethod(&#39;stop&#39;); 
         $method-&gt;setAccessible(true);
         // invoke logic
         $result = $method-&gt;invoke(null);
@@ -304,15 +287,10 @@ $check = $r-&gt;hasConstant('CONSTANT'); // true
         $this-&gt;assertEquals($expected, $result);
     }
 }
-</code></pre>
-
-<h3 id="访问private和protected的属性">访问private和protected的属性</h3>
-
+</code></pre></div><h3 id="访问private和protected的属性">访问private和protected的属性</h3>
 <p>反射经常用在软件测试中，特别是运行时创建/实例化mock对象。它还可以在任何给定的时间点检查对象的状态。下面就是一个在单元测试中，使用反射来检查protected的类属性是否拥有希望的值。</p>
-
 <p>下面是一个非常简单的Car类。包含有一个代码车颜色的属性<code>$color</code>。因为这个属性是受保护的，我们不能直接访问它，必须使用一个get和set方法来获取和设置值。</p>
-
-<pre><code class="language-php">class Car {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Car {
     protected $color
     public function setColor($color) {
         $this-&gt;color = $color;
@@ -321,74 +299,56 @@ $check = $r-&gt;hasConstant('CONSTANT'); // true
         return $this-&gt;color;
     }
 }
-</code></pre>
-
-<p>要测试这个，很多开发者都会创建一个Car对象，使用<code>Car::setColor</code>来设置颜色，使用<code>Car::getColor</code>来获取颜色，然后比较颜色的值是不是他们想要的：</p>
-
-<pre><code class="language-php">/**
+</code></pre></div><p>要测试这个，很多开发者都会创建一个Car对象，使用<code>Car::setColor</code>来设置颜色，使用<code>Car::getColor</code>来获取颜色，然后比较颜色的值是不是他们想要的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
  * @test
  * @covers     \Car::setColor
  */
 public function testSetColor() {
-    $color = 'Red';
+    $color = &#39;Red&#39;;
 		$car = new \Car(); $car-&gt;setColor($color); 
     $getColor = $car-&gt;getColor();
     $this-&gt;assertEquals($color, $reflectionColor);
 }
-</code></pre>
-
-<p>从表面上看这个是可以的。毕竟，<code>Car::getColor()</code>做的就是返回受保护的成员变量<code>Car::$color</code>的值。但是这种方式有两个缺陷：</p>
-
+</code></pre></div><p>从表面上看这个是可以的。毕竟，<code>Car::getColor()</code>做的就是返回受保护的成员变量<code>Car::$color</code>的值。但是这种方式有两个缺陷：</p>
 <ol>
 <li>在测试范围之外执行<code>Car::getColor()</code></li>
 <li>这个依赖<code>Car::getColor</code>方法，如果这个方法有bug，测试的结果就会有问题。</li>
 </ol>
-
-<p>让我们看一下，为什么我们不应该在单元测试中使用<code>Car::getColor()</code>，而应该使用反射。假设一个开发者为每个车增加了&rdquo;Metallic&rdquo;这种颜色。当他们修改<code>Car::getColor()</code>获取车的颜色&rdquo;Metallic&rdquo;。</p>
-
-<pre><code class="language-php">class Car {
+<p>让我们看一下，为什么我们不应该在单元测试中使用<code>Car::getColor()</code>，而应该使用反射。假设一个开发者为每个车增加了&quot;Metallic&quot;这种颜色。当他们修改<code>Car::getColor()</code>获取车的颜色&quot;Metallic&rdquo;。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Car {
     protected $color
     public function setColor($color) {
         $this-&gt;color = $color;
     }
 		public function getColor($color) {
-        return &quot;Metallic &quot;; $this-&gt;color;
+        return &#34;Metallic &#34;; $this-&gt;color;
     }
 }
-</code></pre>
-
-<p>你看到哪里错误了吗？这里开发者希望使用&rdquo;Metallic&rdquo;前缀，但是使用了分号而不是连接符。这样当调用<code>Car::getColor()</code>的时候，不论车实际是什么颜色都会返回&rdquo;Metallic&rdquo;。这样的话<code>Car::setColor()</code>将会一直失败，无论怎么修改。</p>
-
+</code></pre></div><p>你看到哪里错误了吗？这里开发者希望使用&quot;Metallic&quot;前缀，但是使用了分号而不是连接符。这样当调用<code>Car::getColor()</code>的时候，不论车实际是什么颜色都会返回&quot;Metallic&rdquo;。这样的话<code>Car::setColor()</code>将会一直失败，无论怎么修改。</p>
 <p>这样的话我们应该怎么验证<code>Car::setColor()</code>调用之后，<code>Car::$color</code>实际包含的颜色呢？我们可以使用反射来直接检查受保护的变量。所以问应该怎么做？我们使用反射让受保护的变量具备访问权限，然后在代码中获取它的值。</p>
-
 <p>让我们首先看代码，然后分开说明：</p>
-
-<pre><code class="language-php">/**
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
  * @test
  * @covers     \Car::setColor
  */
 public function testSetColor() {
-		$color = 'Red'; $car = new \Car();
+		$color = &#39;Red&#39;; $car = new \Car();
     $car-&gt;setColor($color);
 		$reflectionOfCar = new \ReflectionObject($car); 
-    $protectedColor = $reflectionOfForm-&gt;getProperty('color'); 
+    $protectedColor = $reflectionOfForm-&gt;getProperty(&#39;color&#39;); 
     $protectedColor-&gt;setAccessible(true);
     $reflectionColor = $protectedColor-&gt;getValue($car);
     $this-&gt;assertEquals($color, $reflectionColor);
 }
-</code></pre>
-
-<p>上面代码中，我们使用反射来获取<code>Car::$color</code>的值：</p>
-
+</code></pre></div><p>上面代码中，我们使用反射来获取<code>Car::$color</code>的值：</p>
 <ol>
 <li>我们创建一个新的反射对象来代替Car对象</li>
 <li>我们使用反射属性来代替<code>Car::$color</code></li>
 <li>我们修改<code>Car::$color</code>的访问权限</li>
 <li>我们获取<code>Car::$color</code>的值</li>
 </ol>
-
 <p>我们这里使用反射直接获取<code>Car::$color</code>的值，而不是其他可能造成测试错误的访问方法，像<code>Car::getColor()</code>。现在我们对<code>Car::setColor()</code>的测试时安全和准确的。</p>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -461,6 +421,12 @@ public function testSetColor() {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

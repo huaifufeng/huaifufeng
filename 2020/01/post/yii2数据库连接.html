@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><head>
+    <meta name="google-site-verification" content="9vIieCe-Qpd78QOmBl63rGtIVbhY6sYyuxX3j8XWBA4" />
+    <meta name="baidu-site-verification" content="LRrmH41lz7" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="description" content="Yii2数据库连接">
+    
+    <meta name="keyword"  content="Redis, Go, 微服务, PHP, Git, Bash">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Yii2数据库连接-怀府风的博客 | Arvin&#39;s Blog</title>
+
+    <link rel="canonical" href="/2020/01/post/yii2%e6%95%b0%e6%8d%ae%e5%ba%93%e8%bf%9e%e6%8e%a5.html">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+</head>
+</head>
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">怀府小阁</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">首页</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/algorithms">algorithms</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/go">go</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/java">java</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/php">php</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E5%B7%A5%E5%85%B7">工具</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93">数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/categories/%E9%9A%8F%E7%AC%94">随笔</a>
+                    </li>
+                    
+
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/head_bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                       
+                       <a class="tag" href="/tags/php" title="PHP">
+                           PHP
+                        </a>
+                       
+                    </div>
+                    <h1>Yii2数据库连接</h1>
+                    <h2 class="subheading"></h2>
+                    <span  class="meta">Posted by 怀府风 on Friday, May 8, 2020
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+        		
+                        <header>
+                        <h2>TOC</h2>
+                        </header>
+                        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#yii2数据库连接">Yii2数据库连接</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        		
+        		<h2 id="yii2数据库连接">Yii2数据库连接</h2>
+<p>我们公司使用的php框架是Yii2，最近因为线上出现了数据库连接被打满，导致线上业务出现异常的情况，就专门研究了下Yii的数据库链接问题。
+####1、Yii2怎么链接数据库的
+我们项目中使用的是主从分离的mysql数据库。使用的是配置中的<code>components</code>的方式，其中每个数据库的配置都是一个<code>component</code>。这样就将数据库的配置注册到\Yii::$app中，可以在model中直接在<code>getDb</code>中获取数据库的配置信息，如下</p>
+<pre><code>$config = [
+    &quot;components&quot; =&gt; [
+        &quot;exam&quot; =&gt; [
+            &quot;class&quot; =&gt; &quot;yii\db\Connection&quot;,  //使用的数据库连接类
+            &quot;charset&quot; =&gt; &quot;utf8&quot;, //使用的连接编码方式
+            &quot;enableSchemaCache&quot; =&gt; true, //启用数据库schema的缓存
+            &quot;schemaCacheDuration&quot; =&gt; 3600, //缓存时间1小时
+            &quot;username&quot; =&gt; &quot;&quot;, //用户名
+            &quot;dsn&quot; =&gt; &quot;&quot;,
+            &quot;masterConfig&quot; =&gt; [...], //主库配置
+            &quot;masters&quot; =&gt; [], //主库dsn列表
+            &quot;slaveConfig&quot; =&gt; [...], //从库配置,
+            &quot;slaves&quot; =&gt; [], //从库dsn配置
+        ]
+    ]
+];
+</code></pre><p>这样我们就配置了一个<code>exam</code>的数据库，而在实际的model中时，可以在这个数据库的基类中主从使用的数据库配置：</p>
+<pre><code>class Exam extends \yii\db\ActiveRecord {
+    public static function getDb() {
+        return  \Yii::$app-&gt;exam;
+    }
+}
+</code></pre><p>数据库中每个表都有一个自己的model类，继承这个基类，这样在数据库表中执行的数据库操作就会自动的使用这个数据库的配置。
+同时，在进行数据库操作时，框架会自动的进行数据库的读写分离，插入、更新和删除的操作会使用主库，查询操作会自动使用从库。当需要在主库查询时，也可以使用<code>getDb()-&gt;useMaster()</code>来从主库进行查询。
+在获取从库连接的时候，如果获取从库连接失败，并且允许获取主库(默认是允许自动调整的)，就会自动获取主库的连接。
+####2、Yii2什么时候建立连接
+######2.1 数据库什么时候建立连接呢？有两种可能：
+1、在请求到来之后，Yii2进行初始化的时候建立连接。
+这个是不可能的，我们的项目配置了几十个数据库，而每次请求来了的时候不可能为每个数据库建立一个连接，这是一种浪费：一方面一个请求不可能用到所有的数据库；另一方面建立了数据库连接又不使用，对数据库的资源也是一种浪费。
+2、在执行数据库model方法的时候
+这样只有在使用到相应数据库查询的时候，才会建立该数据库的连接，这样可以尽可能的优化数据库资源的使用。
+同时在一个请求中，如果已经建立了一个数据库的连接，接下来执行类似操作时就会复用这个数据库的连接，减少数据库链接的建立。
+######2.2 建立数据库连接的方法
+在建立数据库连接的时候，最底层调用的方法时<code>Yii2\db\Conection</code>类中的<code>openFromPool</code>方法，从方法名看，是从池子中打开一个连接，其实这里是从之前配置的数据库列表中随机获取一个连接：</p>
+<pre><code>protected function openFromPool(array $pool, array $sharedConfig) {
+        if (empty($pool)) {
+            return null;
+        }
+        if (!isset($sharedConfig['class'])) {
+            $sharedConfig['class'] = get_class($this);
+        }
+        $cache = is_string($this-&gt;serverStatusCache) ? Yii::$app-&gt;get($this-&gt;serverStatusCache, false) : $this-&gt;serverStatusCache;
+        //这里会先将从库的地址列表打乱，然后循环这个配置列表，逐一建立连接，直到建立连接成功。如果都建立失败会返回null
+        shuffle($pool);
+       foreach ($pool as $config) {
+           ...
+           try {
+                //这里就是实际的建立连接的方法
+                $db-&gt;open();
+                return $db;
+           }
+       }
+    return null;
+</code></pre><p>这里有一个要注意的点，在调用<code>openFromPool</code>建立连接的时候，底层使用的实际方法是<code>open</code>。这里要注意，在获取从库时，是使用生成的<code>$db</code>对象来建立的，而获取主库时直接使用的<code>$this</code>，所以在open方法中会判断是否有<code>$this-&gt;masters</code>，只有在主库时才会有值，才会建立主库的连接。
+这里最开始以为时每次都建立主库连接，直到后来看到<code>$db</code>才发现不是最开始的Connection对象了。
+####3、Yii2什么时候销毁链接
+上面说了，我们是在执行数据库表对应的model文件的方法时，才会建立数据库连接，而这个数据库的连接会被放到db对象中，其中从库会放到<code>_slave</code>里面，主库的连接放到<code>pdo</code>里面。这样在获取的时候，如果有值，就会直接使用。
+具体的销毁是在php请求完毕之后，当php把返回值发送给nginx之后，php释放相关的对象值时。</p>
+<h4 id="总结">总结</h4>
+<p>最后，使用Yii2时还是推荐使用主从数据库配置的，这样可以减少主服务器的压力，避免造成主服务器的问题，同时，如果查询压力太大的时候，可以很方便的扩展从库，增加系统的抗压能力。</p>
+
+        
+                
+        
+              <hr>
+              <ul class="pager">
+                  
+                  <li class="previous">
+                      <a href="/2020/01/post/%e6%9c%8d%e5%8a%a1%e5%99%a8%e5%b9%b3%e5%9d%87%e8%b4%9f%e8%bd%bd.html" data-toggle="tooltip" data-placement="top" title="服务器平均负载">&larr; Previous Post</a>
+                  </li>
+                  
+                  
+              </ul>
+  
+              
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">特色标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/algorithms" title="algorithms">
+                        algorithms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/bash" title="bash">
+                        bash
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/git" title="git">
+                        git
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/go" title="go">
+                        go
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/hugo" title="hugo">
+                        hugo
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                        java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/mysql" title="mysql">
+                        mysql
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/php" title="php">
+                        php
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    
+                    
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; 怀府小阁 , 2020
+                    <br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+<script>
+    
+    var _baId = '60e88bb5add74ae0f8d6971f23b916ce';
+
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+</body>
+</html>

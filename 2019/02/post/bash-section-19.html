@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,75 +187,45 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#source">Source</a>
-<ul>
-<li><a href="#source虚拟环境">source虚拟环境</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#source">Source</a>
+      <ul>
+        <li><a href="#source虚拟环境">source虚拟环境</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="source">Source</h2>
-
+        		<h2 id="source">Source</h2>
 <p>source一个文件和执行命令是不同的，因为所有的命令都是在当前bash会话的上下文环境中执行的—这就意味着所有的变量、函数或别名在整个会话中是保持不变的。</p>
-
 <p>创建一个你想要<code>source</code>的文件<code>sourcename.sh</code>：</p>
-
 <pre><code>#!/bin/bash
 export A=&quot;hello_world&quot; 
 alias sayHi=&quot;echo Hi&quot; 
 sayHello() {
 	echo Hello 
 }
-</code></pre>
-
-<p>在你当前的bash会话中，<code>source</code>这个文件：</p>
-
+</code></pre><p>在你当前的bash会话中，<code>source</code>这个文件：</p>
 <pre><code>$ source sourcename.sh
-</code></pre>
-
-<p>从这时开始，在当前的会话中你拥有了被source文件内的所有变量：</p>
-
+</code></pre><p>从这时开始，在当前的会话中你拥有了被source文件内的所有变量：</p>
 <pre><code>$ echo $A
 hello_world
 $ sayHi
 Hi
 $ sayHello
 Hello
-</code></pre>
-
-<p>另外注意：<code>.</code>命令是<code>source</code>命令的简称，所以你可以简单的使用下面的命令：</p>
-
+</code></pre><p>另外注意：<code>.</code>命令是<code>source</code>命令的简称，所以你可以简单的使用下面的命令：</p>
 <pre><code>. sourcename.sh
-</code></pre>
-
-<h3 id="source虚拟环境">source虚拟环境</h3>
-
+</code></pre><h3 id="source虚拟环境">source虚拟环境</h3>
 <p>当在一个机器上面开发多个应用的时候，把不同的依赖分别放入不同的虚拟环境是很有用的。</p>
-
 <p>通过使用<code>virtualenv</code>命令，这些环境变量被source到你的shell环境中。这样当你执行一个命令的时候，它是被运行在一个虚拟环境中。</p>
-
 <p>下面是使用<code>pip</code>按照软件的常用方法：</p>
-
 <pre><code>pip install https://github.com/pypa/virtualenv/tarball/15.0.2
-</code></pre>
-
-<p>创建一个新的环境变量：</p>
-
+</code></pre><p>创建一个新的环境变量：</p>
 <pre><code>virtualenv --python=python3.5 my_env
-</code></pre>
-
-<p>激活这个环境：</p>
-
+</code></pre><p>激活这个环境：</p>
 <pre><code>source my_env/bin/activate
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -323,6 +297,12 @@ Hello
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

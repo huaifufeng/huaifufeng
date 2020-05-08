@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,33 +187,25 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#soap服务器">SOAP服务器</a>
-<ul>
-<li><a href="#1-基础soap服务器">1. 基础SOAP服务器</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#soap服务器">SOAP服务器</a>
+      <ul>
+        <li><a href="#1-基础soap服务器">1. 基础SOAP服务器</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="soap服务器">SOAP服务器</h2>
-
+        		<h2 id="soap服务器">SOAP服务器</h2>
 <h3 id="1-基础soap服务器">1. 基础SOAP服务器</h3>
-
-<pre><code class="language-php">function test($x) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function test($x) {
     return $x; 
 }
 
-$server = new SoapServer(null, array('uri' =&gt; &quot;http://test-uri/&quot;)); 
-$server-&gt;addFunction(&quot;test&quot;);
+$server = new SoapServer(null, array(&#39;uri&#39; =&gt; &#34;http://test-uri/&#34;)); 
+$server-&gt;addFunction(&#34;test&#34;);
 $server-&gt;handle();
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -281,6 +277,12 @@ $server-&gt;handle();
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,63 +187,37 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mysql管理员">MySQL管理员</a>
-<ul>
-<li><a href="#1-原子重命名和表格重新加载">1. 原子重命名和表格重新加载</a></li>
-<li><a href="#2-修改root密码">2. 修改root密码</a></li>
-<li><a href="#3-删除数据库">3. 删除数据库</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mysql管理员">MySQL管理员</a>
+      <ul>
+        <li><a href="#1-原子重命名和表格重新加载">1. 原子重命名和表格重新加载</a></li>
+        <li><a href="#2-修改root密码">2. 修改root密码</a></li>
+        <li><a href="#3-删除数据库">3. 删除数据库</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mysql管理员">MySQL管理员</h2>
-
+        		<h2 id="mysql管理员">MySQL管理员</h2>
 <h3 id="1-原子重命名和表格重新加载">1. 原子重命名和表格重新加载</h3>
-
-<pre><code class="language-mysql">RENAME TABLE t TO t_old, t_copy TO t;
-</code></pre>
-
-<p>当执行<code>RENAME TABLE</code>操作期间，没有其他请求可以访问这个表，这样重命名操作没有并发的问题。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">RENAME</span> <span style="color:#66d9ef">TABLE</span> t <span style="color:#66d9ef">TO</span> t_old, t_copy <span style="color:#66d9ef">TO</span> t;
+</code></pre></div><p>当执行<code>RENAME TABLE</code>操作期间，没有其他请求可以访问这个表，这样重命名操作没有并发的问题。</p>
 <p>原子重命名特别适用于在不等待删除和加载完成的情况下重新加载表：</p>
-
-<pre><code class="language-mysql">CREATE TABLE new LIKE real;
-load `new` by whatever means - LOAD DATA, INSERT, whatever
-RENAME TABLE real TO old, new TO real;
-DROP TABLE old;
-</code></pre>
-
-<h3 id="2-修改root密码">2. 修改root密码</h3>
-
-<pre><code class="language-mysql">mysaladmin -u root -p'old-password' password 'new-password'
-</code></pre>
-
-<h3 id="3-删除数据库">3. 删除数据库</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> new <span style="color:#66d9ef">LIKE</span> <span style="color:#66d9ef">real</span>;
+<span style="color:#66d9ef">load</span> <span style="color:#f92672">`</span>new<span style="color:#f92672">`</span> <span style="color:#66d9ef">by</span> whatever means <span style="color:#f92672">-</span> <span style="color:#66d9ef">LOAD</span> DATA, <span style="color:#66d9ef">INSERT</span>, whatever
+<span style="color:#66d9ef">RENAME</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">real</span> <span style="color:#66d9ef">TO</span> old, new <span style="color:#66d9ef">TO</span> <span style="color:#66d9ef">real</span>;
+<span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> old;
+</code></pre></div><h3 id="2-修改root密码">2. 修改root密码</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysaladmin <span style="color:#f92672">-</span>u root <span style="color:#f92672">-</span>p<span style="color:#e6db74">&#39;old-password&#39;</span> password <span style="color:#e6db74">&#39;new-password&#39;</span>
+</code></pre></div><h3 id="3-删除数据库">3. 删除数据库</h3>
 <p>用来删除数据库和所有表的脚本：</p>
-
-<pre><code class="language-mysql">mysqladmin -u[username] -p[password] drop [database]
-</code></pre>
-
-<p>使用时要格外小心。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqladmin <span style="color:#f92672">-</span>u[username] <span style="color:#f92672">-</span>p[password] <span style="color:#66d9ef">drop</span> [<span style="color:#66d9ef">database</span>]
+</code></pre></div><p>使用时要格外小心。</p>
 <p>想要使用SQL语句删除数据库(你需要在这个数据库上面拥有DROP权限)：</p>
-
-<pre><code class="language-mysql">DROP TABLE database_name
-</code></pre>
-
-<p>或者：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> database_name
+</code></pre></div><p>或者：</p>
 <pre><code>DROP SCHEMA database_name
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -311,6 +289,12 @@ DROP TABLE old;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

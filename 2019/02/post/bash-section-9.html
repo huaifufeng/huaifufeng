@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,45 +187,25 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#重定向">重定向</a>
-<ul>
-<li><a href="#重定向标准输出">重定向标准输出</a></li>
-<li><a href="#追加-vs-重置">追加 Vs 重置</a>
-<ul>
-<li><a href="#重置">重置 &gt;</a></li>
-<li><a href="#追加">追加 &gt;&gt;</a></li>
-</ul></li>
-<li><a href="#重定向到stdout和stderr">重定向到STDOUT和STDERR</a></li>
-<li><a href="#使用命名管道">使用命名管道</a>
-<ul>
-<li><a href="#更多命名管道的例子">更多命名管道的例子</a></li>
-</ul></li>
-<li><a href="#重定向到网络地址">重定向到网络地址</a></li>
-<li><a href="#打印错误到标准错误">打印错误到标准错误</a></li>
-<li><a href="#重定向多个命令">重定向多个命令</a></li>
-<li><a href="#重定向标准输入">重定向标准输入</a></li>
-<li><a href="#重定向stderr">重定向STDERR</a></li>
-<li><a href="#stdin-stdout-stderr-详解">STDIN STDOUT STDERR 详解</a>
-<ul>
-<li><a href="#stdin">STDIN</a></li>
-<li><a href="#stdout">STDOUT</a></li>
-<li><a href="#stderr">STDERR</a>
-<ul>
-<li><a href="#重定向stderr到-dev-null">重定向STDERR到/dev/null</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#重定向">重定向</a>
+      <ul>
+        <li><a href="#重定向标准输出">重定向标准输出</a></li>
+        <li><a href="#追加-vs-重置">追加 Vs 重置</a></li>
+        <li><a href="#重定向到stdout和stderr">重定向到STDOUT和STDERR</a></li>
+        <li><a href="#使用命名管道">使用命名管道</a></li>
+        <li><a href="#重定向到网络地址">重定向到网络地址</a></li>
+        <li><a href="#打印错误到标准错误">打印错误到标准错误</a></li>
+        <li><a href="#重定向多个命令">重定向多个命令</a></li>
+        <li><a href="#重定向标准输入">重定向标准输入</a></li>
+        <li><a href="#重定向stderr">重定向STDERR</a></li>
+        <li><a href="#stdin-stdout-stderr-详解">STDIN STDOUT STDERR 详解</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="重定向">重定向</h2>
-
+        		<h2 id="重定向">重定向</h2>
 <table>
 <thead>
 <tr>
@@ -229,69 +213,47 @@
 <th>Details</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>内部文件标识</td>
 <td>整形</td>
 </tr>
-
 <tr>
 <td>重定向</td>
 <td><code>&gt;</code>或<code>&lt;</code>或<code>&lt;&gt;</code></td>
 </tr>
-
 <tr>
 <td>外部文件标识或路径</td>
 <td>文件标识或路径后面加<code>&amp;</code></td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="重定向标准输出">重定向标准输出</h3>
-
 <p><code>&gt;</code>重定向当前命令的标准输出（STDOUT）到一个文件或者另外的描述符。</p>
-
 <p>下面的例子会把<code>ls</code>命令的标准输出，输出到一个文件<code>file.txt</code>：</p>
-
 <pre><code>$ ls &gt;file.txt 
 $ &gt; file.txt ls
-</code></pre>
-
-<p>如果目标文件不存在的话，就会创建这个文件，否则就会重置这个文件。</p>
-
+</code></pre><p>如果目标文件不存在的话，就会创建这个文件，否则就会重置这个文件。</p>
 <p>默认的文件标识符是标准输出，或者没有提供的话就是1。下面的命令和之前的一样，只是指定了标准输出：</p>
-
 <pre><code>$ ls 1&gt;file.txt
-</code></pre>
-
-<p>注意：重定向是执行的shell初始化的，而不是由执行的命令初始化的，因此在命令执行前，初始化工作就已经完成了。</p>
-
+</code></pre><p>注意：重定向是执行的shell初始化的，而不是由执行的命令初始化的，因此在命令执行前，初始化工作就已经完成了。</p>
 <h3 id="追加-vs-重置">追加 Vs 重置</h3>
-
-<h4 id="重置">重置 &gt;</h4>
-
+<h4 id="重置-">重置 &gt;</h4>
 <ol>
 <li>文件不存在创建指定文件</li>
 <li>重置（删除文件内容）</li>
-
-<li><p>向文件写入内容</p>
-
+<li>向文件写入内容</li>
+</ol>
 <pre><code>$ echo &quot;first line&quot; &gt; /tmp/lines 
 $ echo &quot;second line&quot; &gt; /tmp/lines
 
 $ cat /tmp/lines 
 second line
-</code></pre></li>
-</ol>
-
-<h4 id="追加">追加 &gt;&gt;</h4>
-
+</code></pre><h4 id="追加-">追加 &raquo;</h4>
 <ol>
 <li>不存在创建文件</li>
-
-<li><p>追加文件（向文件末尾写入内容）</p>
-
+<li>追加文件（向文件末尾写入内容）</li>
+</ol>
 <pre><code># Overwrite existing file
 $ echo &quot;first line&quot; &gt; /tmp/lines 
 
@@ -301,29 +263,16 @@ $ echo &quot;second line&quot; &gt;&gt; /tmp/lines
 $ cat /tmp/lines 
 first line 
 second line
-</code></pre></li>
-</ol>
-
-<h3 id="重定向到stdout和stderr">重定向到STDOUT和STDERR</h3>
-
+</code></pre><h3 id="重定向到stdout和stderr">重定向到STDOUT和STDERR</h3>
 <p>文件标识符<code>0</code>和<code>1</code>是指针。我们通过重定向更改文件描述符指向的内容。<code>&gt;/dev/null</code>意味着<code>1</code>指向<code>/dev/null</code>。</p>
-
-<p>首先我们把<code>1</code>（STDOUT）重定向到<code>/dev/null</code>，然后把<code>2</code>（STDERR）指向<code>1</code>指向的地方。</p>
-
+<p>首先我们把<code>1</code>（STDOUT）重定向到<code>/dev/null </code>，然后把<code>2</code>（STDERR）指向<code>1</code>指向的地方。</p>
 <pre><code># STDERR is redirect to STDOUT: redirected to /dev/null,
 # effectually redirecting both STDERR and STDOUT to /dev/null 
 echo 'hello' &gt; /dev/null 2&gt;&amp;1
-</code></pre>
-
-<p>version &gt;= 4.0</p>
-
+</code></pre><p>version &gt;= 4.0</p>
 <p>下面的命令和上面是一样的：</p>
-
 <pre><code>$ echo 'hello' &amp;&gt; /dev/null
-</code></pre>
-
-<p>但是，如果shell兼容性是一个问题，因为它与POSIX冲突，引入解析模糊性，没有此功能的shell会误解它，这种形式在生产中可能是不合需要的：</p>
-
+</code></pre><p>但是，如果shell兼容性是一个问题，因为它与POSIX冲突，引入解析模糊性，没有此功能的shell会误解它，这种形式在生产中可能是不合需要的：</p>
 <pre><code># Actual code
 echo 'hello' &amp;&gt; /dev/null
 echo 'hello' &amp;&gt; /dev/null 'goodbye'
@@ -335,194 +284,110 @@ echo 'hello' 'goodbye' &gt; /dev/null 2&gt;&amp;1
 # Actual behavior
 echo 'hello' &amp;
 echo 'hello' &amp; goodbye &gt; /dev/null
-</code></pre>
-
-<p>注意：<code>&amp;&gt;</code>在Bash和Zsh都可以正常工作。</p>
-
+</code></pre><p>注意：<code>&amp;&gt;</code>在Bash和Zsh都可以正常工作。</p>
 <h3 id="使用命名管道">使用命名管道</h3>
-
 <p>有时您可能希望通过一个程序输出内容并将其输入另一个程序，但不能使用标准管道。</p>
-
 <pre><code>$ ls -l | grep &quot;.log&quot;
-</code></pre>
-
-<p>你可以简单的使用一个临时文件：</p>
-
+</code></pre><p>你可以简单的使用一个临时文件：</p>
 <pre><code>$ touch tempFile.txt
 $ ls -l &gt; tempFile.txt
 $ grep &quot;.log&quot; &lt; tempFile.txt
-</code></pre>
-
-<p>这对大多数应用是工作正常的，没人知道tempFile这个文件做什么用的，另外可能其他人会把这个包括当前目录<code>ls -l</code>结果的文件删除。这就是命名管道使用的地方：</p>
-
+</code></pre><p>这对大多数应用是工作正常的，没人知道tempFile这个文件做什么用的，另外可能其他人会把这个包括当前目录<code>ls -l</code>结果的文件删除。这就是命名管道使用的地方：</p>
 <pre><code>$ mkfifo myPipe
 $ ls -l &gt; myPipe
 $ grep &quot;.log&quot; &lt; myPipe
-</code></pre>
-
-<p><code>myPipe</code>实际是个文件（Linux中都是文件），然我们在一个空文件夹中运行<code>ls -l</code>，然后创建一个管道：</p>
-
+</code></pre><p><code>myPipe</code>实际是个文件（Linux中都是文件），然我们在一个空文件夹中运行<code>ls -l</code>，然后创建一个管道：</p>
 <pre><code>$ mkdir pipeFolder 
 $ cd pipeFolder 
 $ mkfifo myPipe
 $ ls -l
-</code></pre>
-
-<p>输出格式像下面一样：</p>
-
+</code></pre><p>输出格式像下面一样：</p>
 <pre><code> prw-r--r-- 1 root root 0 Jul 25 11:20 myPipe
-</code></pre>
-
-<p>注意权限中的第一个字符，这里是管道而不是文件。</p>
-
+</code></pre><p>注意权限中的第一个字符，这里是管道而不是文件。</p>
 <p>现在让我做一些更酷的事情。</p>
-
 <p>打开一个终端，记下目录（或创建一个目录，便于容易清理），并制作一个管道。</p>
-
 <pre><code>$ mkfifo myPipe
-</code></pre>
-
-<p>现在让我们在管道中做些事情：</p>
-
+</code></pre><p>现在让我们在管道中做些事情：</p>
 <pre><code>$ echo &quot;Hello from the other side&quot; &gt; myPipe
-</code></pre>
-
-<p>你可以注意到我们这端暂停到这了，但是管道的另一端已经关闭了。让我们打开管道的另一边，然后让其中的内容通过。</p>
-
+</code></pre><p>你可以注意到我们这端暂停到这了，但是管道的另一端已经关闭了。让我们打开管道的另一边，然后让其中的内容通过。</p>
 <p>让我们打开另一个终端并到达管道所在的地方（或者你知道这个目录，预习把他给管道）：</p>
-
 <pre><code>$ cat &lt; myPipe
-</code></pre>
-
-<p>你可以看到，在输出<code>hello from the other side</code>文字之后，第一个终端像第二个终端一样关闭了。</p>
-
+</code></pre><p>你可以看到，在输出<code>hello from the other side </code>文字之后，第一个终端像第二个终端一样关闭了。</p>
 <p>现在反过来运行命令，先执行<code>cat &lt; myPipe</code>，然后在终端中输入一些内容。这也是有效的，因为一个程序在终止之前会等待一些东西被放入管道中，因为它知道必须要得到一些东西。</p>
-
 <p>命名管道在两个终端或程序之间互通信息时非常有用的。</p>
-
 <p>管道非常小。一旦管道满了，写入这端就会不阻塞，直到你读了一些内容出来。所以需要在不同的终端中执行一个读取或写入操作，或者有一个运行在后台。</p>
-
 <pre><code> $ ls -l /tmp &gt; myPipe &amp; 
  $ cat &lt; myPipe
-</code></pre>
-
-<h4 id="更多命名管道的例子">更多命名管道的例子</h4>
-
+</code></pre><h4 id="更多命名管道的例子">更多命名管道的例子</h4>
 <ol>
-<li><p>例子1：所有命令在一个终端或shell中运行</p>
-
+<li>
+<p>例子1：所有命令在一个终端或shell中运行</p>
 <pre><code>$ { ls -l &amp;&amp; cat file3; } &gt;mypipe &amp;
 $ cat &lt;mypipe
 # Output: Prints ls -l data and then prints file3 contents on screen
 </code></pre></li>
-
-<li><p>例子2：所有命令在一个终端或shell中运行</p>
-
+<li>
+<p>例子2：所有命令在一个终端或shell中运行</p>
 <pre><code>$ ls -l &gt;mypipe &amp;
 $ cat file3 &gt;mypipe &amp;
 $ cat &lt;mypipe
 #Output: This prints on screen the contents of mypipe.
-</code></pre></li>
-</ol>
-
-<p>首先<code>file3</code>文件的内容会显示，然后<code>ls -l</code>命令的结果霍先生（LIFO配置）</p>
-
-<ol>
-<li><p>例子3：所有命令在一个终端或shell中运行</p>
-
+</code></pre><p>首先<code>file3</code>文件的内容会显示，然后<code>ls -l</code>命令的结果霍先生（LIFO配置）</p>
+</li>
+<li>
+<p>例子3：所有命令在一个终端或shell中运行</p>
 <pre><code>$ { pipedata=$(&lt;mypipe) &amp;&amp; echo &quot;$pipedata&quot;; } &amp;
 $ ls &gt;mypipe
 # Output: Prints the output of ls directly on screen
-</code></pre></li>
-</ol>
-
-<p>注意，变量<code>$pipedata</code>在主终端/主shell中不可用，因为使用&amp;调用子shell，并且<code>$pipedata</code>仅在此子shell中可用。</p>
-
-<ol>
-<li><p>例子4：所有命令在一个终端或shell中运行</p>
-
+</code></pre><p>注意，变量<code>$pipedata</code>在主终端/主shell中不可用，因为使用&amp;调用子shell，并且<code>$pipedata</code>仅在此子shell中可用。</p>
+</li>
+<li>
+<p>例子4：所有命令在一个终端或shell中运行</p>
 <pre><code>$ export pipedata
 $ pipedata=$(&lt;mypipe) &amp;
 $ ls -l *.sh &gt;mypipe
 $ echo &quot;$pipedata&quot;
 #Output : Prints correctly the contents of mypipe
-</code></pre></li>
+</code></pre><p>由于变量的导出声明，这将正确打印主shell中$pipedata变量的值。由于调用了后台shell（&amp;），主终端/主shell未挂起。</p>
+</li>
 </ol>
-
-<p>由于变量的导出声明，这将正确打印主shell中$pipedata变量的值。由于调用了后台shell（&amp;），主终端/主shell未挂起。</p>
-
 <h3 id="重定向到网络地址">重定向到网络地址</h3>
-
 <p>version &gt;= 2.04</p>
-
 <p>Bash把某些路径看做特殊路径，可以通过写入/ dev / {udp | tcp} / host / port进行一些网络通信。Bash无法设置监听服务器，但可以启动连接，而TCP至少可以读取结果。</p>
-
 <p>例如，要发送简单的Web请求，可以执行以下操作：</p>
-
 <pre><code>exec 3&lt;/dev/tcp/www.google.com/80 
 printf 'GET / HTTP/1.0\r\n\r\n' &gt;&amp;3 
 cat &lt;&amp;3
-</code></pre>
-
-<p><code>www.google.com</code>这个地址的结果会被输出到标准输出中：</p>
-
+</code></pre><p><code> www.google.com</code>这个地址的结果会被输出到标准输出中：</p>
 <pre><code>printf 'HI\n' &gt;/dev/udp/192.168.1.1/6666
-</code></pre>
-
-<p>会发送一个UDP的信息<code>HI\n</code>到<code>192.168.1.1:6666</code>监听服务器。</p>
-
+</code></pre><p>会发送一个UDP的信息<code>HI\n</code>到<code>192.168.1.1:6666</code>监听服务器。</p>
 <h3 id="打印错误到标准错误">打印错误到标准错误</h3>
-
 <p>错误消息通常包含在脚本中，用于调试或提供丰富的用户体验。只需编写这样的错误消息：</p>
-
 <pre><code>$ cmd || echo 'cmd failed'
-</code></pre>
-
-<p>对简单的工作是有效的，但这个不是常有的方式。在此示例中，错误消息将通过混合stdout中的错误和成功输出来污染脚本的实际输出。</p>
-
+</code></pre><p>对简单的工作是有效的，但这个不是常有的方式。在此示例中，错误消息将通过混合stdout中的错误和成功输出来污染脚本的实际输出。</p>
 <p>简而言之，错误信息应该输出到<code>stderr</code>而不是<code>stdout</code>。下面是简单的例子：</p>
-
 <pre><code>$ cmd || echo 'cmd failed' &gt;/dev/stderr
-</code></pre>
-
-<p>另外的例子：</p>
-
+</code></pre><p>另外的例子：</p>
 <pre><code>if cmd; then
 	echo 'success'
 else
 	echo 'cmd failed' &gt;/dev/stderr
 fi
-</code></pre>
-
-<p>在上面的例子中，成功的结果会被输出到<code>stdout</code>，而错误的结果会被输出的到<code>stderr</code>。</p>
-
+</code></pre><p>在上面的例子中，成功的结果会被输出到<code>stdout</code>，而错误的结果会被输出的到<code>stderr</code>。</p>
 <p>一个更好的打印错误信息的方法是定义一个方法：</p>
-
 <pre><code>err(){
 	echo &quot;E: $*&quot; &gt;&gt;/dev/stderr
 }
-</code></pre>
-
-<p>现在就可以打印一个错误了：</p>
-
+</code></pre><p>现在就可以打印一个错误了：</p>
 <pre><code>$ err &quot;My error message&quot;
-</code></pre>
-
-<h3 id="重定向多个命令">重定向多个命令</h3>
-
+</code></pre><h3 id="重定向多个命令">重定向多个命令</h3>
 <pre><code>{
 	echo &quot;contents of home directory&quot; ls ~
 } &gt; output.txt
-</code></pre>
-
-<h3 id="重定向标准输入">重定向标准输入</h3>
-
+</code></pre><h3 id="重定向标准输入">重定向标准输入</h3>
 <p><code>&lt;</code>读取右边的参数的值，把结果写入左边的参数。</p>
-
 <p>想要把一个文件的内容，输入到<code>STDIN</code>，可以使用下面的命令<code>read /tmp/a_file</code>，然后写入到<code>STDIN</code>。像：<code>0&lt;/tmp/a_file</code>。</p>
-
 <p>注意：内部的文件标识符<code>0</code>代表<code>STDIN</code>：</p>
-
 <pre><code>$ echo &quot;b&quot; &gt; /tmp/list.txt 
 $ echo &quot;a&quot; &gt;&gt; /tmp/list.txt 
 $ echo &quot;c&quot; &gt;&gt; /tmp/list.txt 
@@ -530,74 +395,41 @@ $ sort &lt; /tmp/list.txt
 a
 b
 c
-</code></pre>
-
-<h3 id="重定向stderr">重定向STDERR</h3>
-
+</code></pre><h3 id="重定向stderr">重定向STDERR</h3>
 <p><code>2</code>就是<code>STDERR</code>。</p>
-
 <pre><code>$ echo_to_stderr 2&gt;/dev/null # echos nothing
-</code></pre>
-
-<p>定义一个<code>echo_to_stderr</code>方法来把<code>&quot;stderr&quot;</code>输出到<code>STDERR</code>。</p>
-
+</code></pre><p>定义一个<code>echo_to_stderr</code>方法来把<code>&quot;stderr&quot;</code>输出到<code>STDERR</code>。</p>
 <pre><code>echo_to_stderr () { 
 	echo stderr &gt;&amp;2
 }
 
 $ echo_to_stderr
 stderr
-</code></pre>
-
-<h3 id="stdin-stdout-stderr-详解">STDIN STDOUT STDERR 详解</h3>
-
-<p>命令有一个输入<code>STDIN</code>，两个输出：一个是<code>STDOUT</code>，一个是<code>STDERR</code>。</p>
-
+</code></pre><h3 id="stdin-stdout-stderr-详解">STDIN STDOUT STDERR 详解</h3>
+<p>命令有一个输入<code>STDIN</code>，两个输出：一个是<code>STDOUT </code>，一个是<code>STDERR</code>。</p>
 <p>例如：</p>
-
 <h4 id="stdin">STDIN</h4>
-
 <pre><code> root@server~# read 
  Type some text here
-</code></pre>
-
-<p>标准输入是给程序提供一个参数（这里使用<code>read</code>命令读取一行到标准输入中）。</p>
-
+</code></pre><p>标准输入是给程序提供一个参数（这里使用<code>read</code>命令读取一行到标准输入中）。</p>
 <h4 id="stdout">STDOUT</h4>
-
 <pre><code>root@server~# ls file 
 file
-</code></pre>
-
-<p>标准输出通常用于一个命令的输出。例如，<code>ls</code>命令列出文件，这些文件将会被输出到标准输出中。</p>
-
+</code></pre><p>标准输出通常用于一个命令的输出。例如，<code>ls</code>命令列出文件，这些文件将会被输出到标准输出中。</p>
 <h4 id="stderr">STDERR</h4>
-
 <pre><code>root@server~# ls anotherfile
 ls: cannot access 'anotherfile': No such file or directory
-</code></pre>
-
-<p>标准错误输出是应用到错误信息上面的。因为信息不是文件列表，所以输出到<code>STDERR</code>。</p>
-
+</code></pre><p>标准错误输出是应用到错误信息上面的。因为信息不是文件列表，所以输出到<code>STDERR</code>。</p>
 <p>STDIN，STDOUT，STDERR是三个标准流。它们除了名字还定义了3个数字：</p>
-
 <pre><code>0 = Standard in
 1 = Standard out 
 2 = Standard error
-</code></pre>
-
-<p>默认情况下，STDIN连接到键盘，STDOUT和STDERR都出现在终端中。然而我们可以重定向STDOUT和STDERR到任何我们希望的地方。假设我们只想要标准输出，所有的错误输出到应该被隐藏。当我们使用标识符1和2的时候。</p>
-
-<h5 id="重定向stderr到-dev-null">重定向STDERR到/dev/null</h5>
-
+</code></pre><p>默认情况下，STDIN连接到键盘，STDOUT和STDERR都出现在终端中。然而我们可以重定向STDOUT和STDERR到任何我们希望的地方。假设我们只想要标准输出，所有的错误输出到应该被隐藏。当我们使用标识符1和2的时候。</p>
+<h5 id="重定向stderr到devnull">重定向STDERR到/dev/null</h5>
 <p>还是先前的例子：</p>
-
 <pre><code>root@server~# ls anotherfile 2&gt;/dev/null 
 root@server~#
-</code></pre>
-
-<p>在这种情况下，如果有任何STDERR，它将被重定向到/ dev / null（一个忽略放入其中的任何内容的特殊文件），因此您不会在shell上获得任何错误输出。</p>
-
+</code></pre><p>在这种情况下，如果有任何STDERR，它将被重定向到/ dev / null（一个忽略放入其中的任何内容的特殊文件），因此您不会在shell上获得任何错误输出。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -670,6 +502,12 @@ root@server~#
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

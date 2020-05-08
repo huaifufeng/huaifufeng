@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,57 +187,50 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#内部变量">内部变量</a>
-<ul>
-<li><a href="#bash内部变量一览">Bash内部变量一览</a></li>
-<li><a href="#toc_2">$@</a></li>
-<li><a href="#toc_3">$</a></li>
-<li><a href="#histsize">$HISTSIZE</a></li>
-<li><a href="#funcname">$FUNCNAME</a></li>
-<li><a href="#home">$HOME</a></li>
-<li><a href="#ifs">$IFS</a></li>
-<li><a href="#oldpwd">$OLDPWD</a></li>
-<li><a href="#pwd">$PWD</a></li>
-<li><a href="#1-2-3">\$1 \$2 \$3 &hellip;</a></li>
-<li><a href="#toc_11">$*</a></li>
-<li><a href="#toc_12">$!</a></li>
-<li><a href="#toc_13">$?</a></li>
-<li><a href="#toc_14">$</a></li>
-<li><a href="#random">$RANDOM</a></li>
-<li><a href="#bashpid">$BASHPID</a></li>
-<li><a href="#bash-env">$BASH_ENV</a></li>
-<li><a href="#bash-bersinfo">$BASH_BERSINFO</a></li>
-<li><a href="#bash-version">$BASH_VERSION</a></li>
-<li><a href="#editor">$EDITOR</a></li>
-<li><a href="#hostname">$HOSTNAME</a></li>
-<li><a href="#hosttype">$HOSTTYPE</a></li>
-<li><a href="#machtype">$MACHTYPE</a></li>
-<li><a href="#ostype">$OSTYPE</a></li>
-<li><a href="#path">$PATH</a></li>
-<li><a href="#ppid">$PPID</a></li>
-<li><a href="#second">$SECOND</a></li>
-<li><a href="#shellopt">$SHELLOPT</a></li>
-<li><a href="#toc_29">$_</a></li>
-<li><a href="#groups">$GROUPS</a></li>
-<li><a href="#lineno">$LINENO</a></li>
-<li><a href="#shlvl">$SHLVL</a></li>
-<li><a href="#uid">$UID</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#内部变量">内部变量</a>
+      <ul>
+        <li><a href="#bash内部变量一览">Bash内部变量一览</a></li>
+        <li><a href="#heading">$@</a></li>
+        <li><a href="#heading-1">$#</a></li>
+        <li><a href="#histsize">$HISTSIZE</a></li>
+        <li><a href="#funcname">$FUNCNAME</a></li>
+        <li><a href="#home">$HOME</a></li>
+        <li><a href="#ifs">$IFS</a></li>
+        <li><a href="#oldpwd">$OLDPWD</a></li>
+        <li><a href="#pwd">$PWD</a></li>
+        <li><a href="#1-2-3-">$1 $2 $3 &hellip;</a></li>
+        <li><a href="#heading-2">$*</a></li>
+        <li><a href="#heading-3">$!</a></li>
+        <li><a href="#heading-4">$?</a></li>
+        <li><a href="#heading-5">$</a></li>
+        <li><a href="#random">$RANDOM</a></li>
+        <li><a href="#bashpid">$BASHPID</a></li>
+        <li><a href="#bash_env">$BASH_ENV</a></li>
+        <li><a href="#bash_bersinfo">$BASH_BERSINFO</a></li>
+        <li><a href="#bash_version">$BASH_VERSION</a></li>
+        <li><a href="#editor">$EDITOR</a></li>
+        <li><a href="#hostname">$HOSTNAME</a></li>
+        <li><a href="#hosttype">$HOSTTYPE</a></li>
+        <li><a href="#machtype">$MACHTYPE</a></li>
+        <li><a href="#ostype">$OSTYPE</a></li>
+        <li><a href="#path">$PATH</a></li>
+        <li><a href="#ppid">$PPID</a></li>
+        <li><a href="#second">$SECOND</a></li>
+        <li><a href="#shellopt">$SHELLOPT</a></li>
+        <li><a href="#_">$_</a></li>
+        <li><a href="#groups">$GROUPS</a></li>
+        <li><a href="#lineno">$LINENO</a></li>
+        <li><a href="#shlvl">$SHLVL</a></li>
+        <li><a href="#uid">$UID</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="内部变量">内部变量</h2>
-
+        		<h2 id="内部变量">内部变量</h2>
 <p>简单介绍一下Bash的内部变量，并说明在什么地方，怎么使用以及何时使用这些变量。</p>
-
 <h3 id="bash内部变量一览">Bash内部变量一览</h3>
-
 <table>
 <thead>
 <tr>
@@ -241,321 +238,219 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td></td>
 <td>函数/脚本可以选择的变量或参数。</td>
 </tr>
-
 <tr>
 <td><code>$*</code> <code>$@</code></td>
 <td><code>$*</code>和<code>$@</code>和<code>$1 $2..</code>这样的内容是一样的(注意：通常不引用这些内容是没有意义的)  <code>&quot;$*&quot;</code> 和 <code>&quot;$1 $2 …</code> 一样。<code>&quot;$@&quot;</code>和<code>&quot;$1&quot; &quot;$2&quot; …</code>一样。<code>&quot;$*&quot;</code>是由$IFS的第一个字符分割的，不一定是空格</td>
 </tr>
-
 <tr>
 <td><code>$#</code></td>
 <td>传个脚本或者函数的参数的数量</td>
 </tr>
-
 <tr>
 <td><code>$!</code></td>
 <td>最后放入后台工作(管道的最右边那个)的job的id。(注意：当启用作业控制时，它不一定和作业的组id相同)</td>
 </tr>
-
 <tr>
 <td><code>$$</code></td>
 <td>bash正在执行的进程的id</td>
 </tr>
-
 <tr>
 <td><code>$?</code></td>
 <td>最后一个命令的退出状态</td>
 </tr>
-
 <tr>
 <td><code>$n</code></td>
 <td>指定位置的参数 n=1,2,3,4…9</td>
 </tr>
-
 <tr>
 <td><code>${n}</code></td>
 <td>和上面一样，但是n可以大于9</td>
 </tr>
-
 <tr>
 <td><code>$0</code></td>
 <td>在执行脚本时，是脚本的路径。<code>bash -c 'printf &quot;%s\n&quot; &quot;$0&quot;' name</code>。name(内部脚本的第一个参数)或者，argv[0]会获得bash</td>
 </tr>
-
 <tr>
 <td><code>$_</code></td>
 <td>命令的最后一个字段</td>
 </tr>
-
 <tr>
 <td><code>$IFS</code></td>
 <td>内建的字段分隔符</td>
 </tr>
-
 <tr>
 <td><code>$PATH</code></td>
 <td>用来寻找可执行脚本的路径地址</td>
 </tr>
-
 <tr>
 <td><code>$OLDPWD</code></td>
 <td>前一个工作目录</td>
 </tr>
-
 <tr>
 <td><code>PWD</code></td>
 <td>当前的工作目录</td>
 </tr>
-
 <tr>
 <td><code>FUNCNAME</code></td>
 <td>调用栈内的函数名称数组</td>
 </tr>
-
 <tr>
 <td><code>BASH_SOURCE</code></td>
 <td>包含<code>FUNCNAME</code>数组中函数的地址的数组。可以用来寻找脚本路径。</td>
 </tr>
-
 <tr>
 <td><code>$BASH_ALIAS</code></td>
 <td>当前定义别名的管理数组</td>
 </tr>
-
 <tr>
 <td><code>BASH_REMATCH</code></td>
 <td>上一个正则表达式匹配的结果</td>
 </tr>
-
 <tr>
 <td><code>BASH_VERSION</code></td>
 <td>bash版本的字符串</td>
 </tr>
-
 <tr>
 <td><code>BASH</code></td>
 <td>到当前执行的bash的绝对路径。(由bash根据argv[0]和$path的值以启发式方式确定；在某些情况下可能是错误的)</td>
 </tr>
-
 <tr>
 <td><code>BASH_SUBSHELL</code></td>
 <td>bash subshell的等级</td>
 </tr>
-
 <tr>
 <td><code>$UID</code></td>
 <td>运行bash的进程的实际（如果不同则无效）用户ID</td>
 </tr>
-
 <tr>
 <td><code>$PS1</code></td>
 <td>主进程的命令提示</td>
 </tr>
-
 <tr>
 <td><code>$PS2</code></td>
 <td>辅助命令行提示（用于附加输入）</td>
 </tr>
-
 <tr>
 <td><code>PS3</code></td>
 <td>三级命令行提示（用于select循环）</td>
 </tr>
-
 <tr>
 <td><code>PS4</code></td>
 <td>第四级命令行提示（用于附加详细输出的信息）</td>
 </tr>
-
 <tr>
 <td><code>RANDOM</code></td>
 <td>0-32767之间的伪随机整数</td>
 </tr>
-
 <tr>
 <td><code>$REPLY</code></td>
 <td>当变量没有指定时，默认为<code>read</code>的使用的变量。<code>SELECT</code>还用于用户返回的值</td>
 </tr>
-
 <tr>
 <td><code>PIPESTATUS</code></td>
 <td>数组变量，保存最近执行的前台管道中每个命令的退出状态值。</td>
 </tr>
 </tbody>
 </table>
-
 <blockquote>
 <p>变量赋值的时候等号前后不能有空格。<code>a=123</code>而不是<code>a = 123</code>。后者（由空格包围的等号）单独表示使用参数<code>=</code>和<code>123</code>运行命令<code>a</code>，尽管在字符串比较运算符（从语法上讲，它是[或[[或使用的任何测试]的参数）中也可以看到。</p>
 </blockquote>
-
-<h3 id="toc_2">$@</h3>
-
+<h3 id="heading">$@</h3>
 <p><code>&quot;$@&quot;</code>是用分隔符分开的所有命令行的参数。和<code>&quot;$*&quot;</code>把所有的参数作为单个单次不同。</p>
-
 <p><code>&quot;$@&quot;</code>在用来处理空格分割的命令参数非常有用。</p>
-
 <p>假设我们有一个传递了2个参数的脚本，就像下面这样：</p>
-
 <pre><code>$ ./script.sh &quot; 1 2 &quot; &quot; 3  4 &quot;
-</code></pre>
-
-<p>变量<code>$*</code>和<code>$@</code>将会扩展为<code>$1 $2</code>，将会实际扩展为<code>1 2 3 4</code>，所以下面的循环：</p>
-
+</code></pre><p>变量<code>$*</code>和<code>$@</code>将会扩展为<code>$1 $2</code>，将会实际扩展为<code>1 2 3 4</code>，所以下面的循环：</p>
 <pre><code>for var in $*; do
     echo \\&lt;&quot;$var&quot;\\&gt;
 done
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre><p>这将会输出：</p>
 <pre><code>&lt;1&gt;
 &lt;2&gt;
 &lt;3&gt;
 &lt;4&gt;
-</code></pre>
-
-<p><code>&quot;$*&quot;</code>将会被扩展到<code>&quot;$1 $2&quot;</code>，然后将会被扩展到<code>1 2   3  4</code>，然后循环：</p>
-
+</code></pre><p><code>&quot;$*&quot;</code>将会被扩展到<code>&quot;$1 $2&quot;</code>，然后将会被扩展到<code>1 2   3  4 </code>，然后循环：</p>
 <pre><code>for var in &quot;$*&quot;; do 
     echo \\&lt;&quot;$var&quot;\\&gt;
 done
-</code></pre>
-
-<p>只会输出一次：</p>
-
+</code></pre><p>只会输出一次：</p>
 <pre><code>&lt; 1 2   3  4 &gt;
-</code></pre>
-
-<p>但是<code>&quot;$@&quot;</code>会扩展为<code>&quot;$1&quot;</code> <code>&quot;$2&quot;</code>，然后会扩展到<code>&quot; 1 2 &quot;</code> <code>&quot; 2  4 &quot;</code>，然后循环：</p>
-
+</code></pre><p>但是<code>&quot;$@&quot;</code>会扩展为<code>&quot;$1&quot;</code> <code>&quot;$2&quot;</code>，然后会扩展到<code>&quot; 1 2 &quot;</code> <code>&quot; 2  4 &quot;</code>，然后循环：</p>
 <pre><code>for var in &quot;$@&quot;; do 
     echo \\&lt;&quot;$var&quot;\\&gt;
 done
-</code></pre>
-
-<p>将会输出：</p>
-
+</code></pre><p>将会输出：</p>
 <pre><code>&lt; 1 2 &gt;
 &lt; 3  4 &gt;
-</code></pre>
-
-<p>从而保持参数内部间距和参数分离。注意：<code>for var in &quot;$@&quot;; do …</code>是很普遍的。这个是for循环的默认值，可以简写为<code>for var; do …</code>。</p>
-
-<h3 id="toc_3">$</h3>
-
+</code></pre><p>从而保持参数内部间距和参数分离。注意：<code>for var in &quot;$@&quot;; do … </code>是很普遍的。这个是for循环的默认值，可以简写为<code>for var; do …</code>。</p>
+<h3 id="heading-1">$#</h3>
 <p>获取命令行参数或可选参数的值，可以输入：</p>
-
 <pre><code>#!/bin/bash
 echo &quot;$#&quot;
-</code></pre>
-
-<p>当像例子一样运行带有3个参数的命令时，将会输出：</p>
-
+</code></pre><p>当像例子一样运行带有3个参数的命令时，将会输出：</p>
 <pre><code> ~&gt; $ ./testscript.sh firstarg secondarg thirdarg 
  3
-</code></pre>
-
-<h3 id="histsize">$HISTSIZE</h3>
-
+</code></pre><h3 id="histsize">$HISTSIZE</h3>
 <p>记住的最大命令数：</p>
-
 <pre><code>~&gt; $ echo $HISTSIZE
 1000
-</code></pre>
-
-<h3 id="funcname">$FUNCNAME</h3>
-
+</code></pre><h3 id="funcname">$FUNCNAME</h3>
 <p>获取当前函数的名称：</p>
-
 <pre><code>my_function()
 {
     echo &quot;This function is $FUNCNAME&quot;
 }
-</code></pre>
-
-<p>如果你在函数外面执行，什么都不会输出：</p>
-
+</code></pre><p>如果你在函数外面执行，什么都不会输出：</p>
 <pre><code>my_function
 
 echo &quot;This function is $FUNCNAME&quot;  //将会输出This function is
-</code></pre>
-
-<h3 id="home">$HOME</h3>
-
+</code></pre><h3 id="home">$HOME</h3>
 <p>当前用户的家目录：</p>
-
 <pre><code>~&gt; $ echo $HOME
 /home/user
-</code></pre>
-
-<h3 id="ifs">$IFS</h3>
-
+</code></pre><h3 id="ifs">$IFS</h3>
 <p>包含bash在进行循环等处理的时候用来分割字符串的内部字段分隔符。默认的是空格字符：<code>\n新行</code>，<code>\t(tab)</code>，空格。修改这个允许你使用不同的字符来分割字符串：</p>
-
 <pre><code>IFS=&quot;,&quot;
 INPUTSTR=&quot;a,b,c,d&quot;
 for field in ${INPUTSTR}; do
     echo $field
 done
-</code></pre>
-
-<p>上面的代码将会输出：</p>
-
+</code></pre><p>上面的代码将会输出：</p>
 <pre><code>a
 b
 c
 d
-</code></pre>
-
-<p>注意：这就是所谓的分词现象。</p>
-
+</code></pre><p>注意：这就是所谓的分词现象。</p>
 <h3 id="oldpwd">$OLDPWD</h3>
-
 <p>OLDPWD(<strong>OLDP</strong>rint<strong>W</strong>orking<strong>D</strong>irectory)包含在上一个<code>cd</code>命令之前所在的目录：</p>
-
 <pre><code>~&gt; $ cd directory 
 directory&gt; $ echo $OLDPWD 
 /home/user
-</code></pre>
-
-<h3 id="pwd">$PWD</h3>
-
+</code></pre><h3 id="pwd">$PWD</h3>
 <p>PWD(<strong>P</strong>rint<strong>W</strong>orking<strong>D</strong>irectory)当前你所在的工作目录。</p>
-
 <pre><code>~&gt; $ echo $PWD 
 /home/user
 ~&gt; $ cd directory 
 directory&gt; $ echo $PWD 
 /home/user/directory
-</code></pre>
-
-<h3 id="1-2-3">\$1 \$2 \$3 &hellip;</h3>
-
+</code></pre><h3 id="1-2-3-">$1 $2 $3 &hellip;</h3>
 <p>从命令行或函数传递给脚本的位置参数：</p>
-
 <pre><code>#!/bin/bash
 # $n is the n'th positional parameter 
 echo &quot;$1&quot;
 echo &quot;$2&quot;
 echo &quot;$3&quot;
-</code></pre>
-
-<p>上面的脚本会输出：</p>
-
+</code></pre><p>上面的脚本会输出：</p>
 <pre><code>~&gt; $ ./testscript.sh firstarg secondarg thirdarg 
 firstarg
 secondarg
 thirdarg
-</code></pre>
-
-<p>如果参数的个数大于9，必须使用花括号：</p>
-
+</code></pre><p>如果参数的个数大于9，必须使用花括号：</p>
 <pre><code>#  &quot;set -- &quot; sets positional parameters
 set -- 1 2 3 4 5 6 7 8 nine ten eleven twelve
 # the following line will output 10 not 1 as the value of $1 the digit 1
@@ -566,236 +461,128 @@ echo ${10} # outputs ten
 # to show this clearly:
 set -- arg{1..12} echo $10
 echo ${10}
-</code></pre>
-
-<h3 id="toc_11">$*</h3>
-
+</code></pre><h3 id="heading-2">$*</h3>
 <p>会把所有的位置参数放到一个字符串里面，并且返回出来。</p>
-
 <pre><code>#!/bin/bash
 echo &quot;$*&quot;
-</code></pre>
-
-<p>使用几个参数运行这个脚本：</p>
-
+</code></pre><p>使用几个参数运行这个脚本：</p>
 <pre><code>./testscript.sh firstarg secondarg thirdarg
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre><p>这将会输出：</p>
 <pre><code> firstarg secondarg thirdarg
-</code></pre>
-
-<h3 id="toc_12">$!</h3>
-
+</code></pre><h3 id="heading-3">$!</h3>
 <p>上一个在后台运行的进程id：</p>
-
 <pre><code>~&gt; $ ls &amp;
 testfile1 testfile2
 [1]+ Done ls 
 ~&gt; $ echo $!
 21715
-</code></pre>
-
-<h3 id="toc_13">$?</h3>
-
+</code></pre><h3 id="heading-4">$?</h3>
 <p>上一个执行的函数或命令的退出状态。0表示成功，其他值表示失败。</p>
-
 <pre><code>~&gt; $ ls *.blah;echo $?
 ls: cannot access *.blah: No such file or directory 2
 ~&gt; $ ls;echo $?
 testfile1 testfile2
 0
-</code></pre>
-
-<h3 id="toc_14">$</h3>
-
+</code></pre><h3 id="heading-5">$</h3>
 <p>当前进程的进程id：</p>
-
 <pre><code> ~&gt; $ echo $$ 
  13246
-</code></pre>
-
-<h3 id="random">$RANDOM</h3>
-
+</code></pre><h3 id="random">$RANDOM</h3>
 <p>每一次这个变量使用的时候，都会产生一个0-32767的整数值。将值赋给该变量将种子随机数生成器(<a href="https://www.gnu.org/software/bash/manual/bashref.html#Bash-Variables">source</a>)。</p>
-
 <pre><code>~&gt; $ echo $RANDOM 
 27119
 ~&gt; $ echo $RANDOM 
 1349
-</code></pre>
-
-<h3 id="bashpid">$BASHPID</h3>
-
+</code></pre><h3 id="bashpid">$BASHPID</h3>
 <p>当前bash实例的进程id。这个和<code>$$</code>是不一样的，但是两者通常产生相同的结果。这种Bash4是有效的，但是Bash3不是的。</p>
-
 <pre><code>~&gt; $ echo &quot;\$\$ pid = $$ BASHPID = $BASHPID&quot; 
 $$ pid = 9265 BASHPID = 9265
-</code></pre>
-
-<h3 id="bash-env">$BASH_ENV</h3>
-
+</code></pre><h3 id="bash_env">$BASH_ENV</h3>
 <p>指向Bash启动文件的环境变量，当脚本被调用的时候会引用这个文件。</p>
-
-<h3 id="bash-bersinfo">$BASH_BERSINFO</h3>
-
+<h3 id="bash_bersinfo">$BASH_BERSINFO</h3>
 <p>一个将完整版本信息分到不同元素内的数组。当获取版本的主版本号的时候，比<code>$BASH_VERSION</code>更便捷。</p>
-
 <pre><code>~&gt; $ for ((i=0; i&lt;=5; i++)); do echo &quot;BASH_VERSINFO[$i] = ${BASH_VERSINFO[$i]}&quot;; done BASH_VERSINFO[0] = 3
 BASH_VERSINFO[1] = 2
 BASH_VERSINFO[2] = 25
 BASH_VERSINFO[3] = 1
 BASH_VERSINFO[4] = release BASH_VERSINFO[5] = x86_64-redhat-linux-gnu
-</code></pre>
-
-<h3 id="bash-version">$BASH_VERSION</h3>
-
+</code></pre><h3 id="bash_version">$BASH_VERSION</h3>
 <p>显示当前正在运行的bash的版本，决定你是否可以使用一些特性。</p>
-
 <pre><code> ~&gt; $ echo $BASH_VERSION 
  4.1.2(1)-release
-</code></pre>
-
-<h3 id="editor">$EDITOR</h3>
-
+</code></pre><h3 id="editor">$EDITOR</h3>
 <p>被任何脚本或程序调用的默认编辑器，通常是vi或emacs。</p>
-
 <pre><code> ~&gt; $ echo $EDITOR 
  vi
-</code></pre>
-
-<h3 id="hostname">$HOSTNAME</h3>
-
+</code></pre><h3 id="hostname">$HOSTNAME</h3>
 <p>启动时分配给系统的主机名。</p>
-
 <pre><code>~&gt; $ echo $HOSTNAME 
 mybox.mydomain.com
-</code></pre>
-
-<h3 id="hosttype">$HOSTTYPE</h3>
-
+</code></pre><h3 id="hosttype">$HOSTTYPE</h3>
 <p>此变量标识硬件，在确定要执行的二进制文件时很有用：</p>
-
 <pre><code>~&gt; $ echo $HOSTTYPE 
 x86_64
-</code></pre>
-
-<h3 id="machtype">$MACHTYPE</h3>
-
+</code></pre><h3 id="machtype">$MACHTYPE</h3>
 <p>和<code>HOSTTYPE</code>相似，多了系统的信息。</p>
-
 <pre><code> ~&gt; $ echo $MACHTYPE 
  x86_64-redhat-linux-gnu
-</code></pre>
-
-<h3 id="ostype">$OSTYPE</h3>
-
+</code></pre><h3 id="ostype">$OSTYPE</h3>
 <p>显示机器上运行的系统的信息：</p>
-
 <pre><code> ~&gt; $ echo $OSTYPE 
  linux-gnu
-</code></pre>
-
-<h3 id="path">$PATH</h3>
-
+</code></pre><h3 id="path">$PATH</h3>
 <p>用来查找二进制命令的路径，常见的例子包含：<code>/user/bin/</code>，<code>/usr/local/bin</code>。</p>
-
 <p>当一个用户或脚本想要执行一个命令，<code>$PATH</code>里面的路径将会按照顺序来寻找匹配的执行文件。</p>
-
 <p>在linux系统中，<code>$PATH</code>里面的路径使用<code>:</code>分割：</p>
-
 <pre><code> ~&gt; $ echo &quot;$PATH&quot; 
  /usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin
-</code></pre>
-
-<p>例如上面给出的<code>$PATH</code>路径中，当你执行<code>lss</code>命令的时候，shell会按照下面的顺序查找这个命令：<code>/usr/kerberos/bin/lss</code>，然后是<code>/usr/local/bin/lss</code>，在后面是<code>/bin/lss</code>，最后是<code>/usr/bin/lss</code>，直到没有找到命令。</p>
-
+</code></pre><p>例如上面给出的<code>$PATH</code>路径中，当你执行<code>lss</code>命令的时候，shell会按照下面的顺序查找这个命令：<code>/usr/kerberos/bin/lss</code>，然后是<code>/usr/local/bin/lss</code>，在后面是<code>/bin/lss</code>，最后是<code>/usr/bin/lss</code>，直到没有找到命令。</p>
 <h3 id="ppid">$PPID</h3>
-
 <p>脚本或shell父级的进程ID（PID），这意味着该进程是调用当前脚本或shell的进程。</p>
-
 <pre><code>~&gt; $ echo $$ 
 13016
 ~&gt; $ echo $PPID 
 13015
-</code></pre>
-
-<h3 id="second">$SECOND</h3>
-
+</code></pre><h3 id="second">$SECOND</h3>
 <p>脚本运行的秒数。如果在shell中显示，这可能会变得相当大：</p>
-
 <pre><code> ~&gt; $ echo $SECONDS 98834
-</code></pre>
-
-<h3 id="shellopt">$SHELLOPT</h3>
-
+</code></pre><h3 id="shellopt">$SHELLOPT</h3>
 <p>只读的bash选项列表，用来在启动时控制bash的行为：</p>
-
 <pre><code> ~&gt; $ echo $SHELLOPTS 
  braceexpand:emacs:hashall:histexpand:history:interactive-comments:monitor
-</code></pre>
-
-<h3 id="toc_29">$_</h3>
-
+</code></pre><h3 id="_">$_</h3>
 <p>用来获取上一个命令的最后一个字段，用来获取传递给另一个命令的参数很有用：</p>
-
 <pre><code>~&gt; $ ls *.sh;echo $_ 
 testscript1.sh testscript2.sh
 testscript2.sh
-</code></pre>
-
-<p>如果在其他脚本之前执行，将会获得这个脚本的路径：</p>
-
+</code></pre><p>如果在其他脚本之前执行，将会获得这个脚本的路径：</p>
 <p><strong>test.sh</strong></p>
-
 <pre><code>#!/bin/bash
 echo &quot;$_&quot;
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code> ~&gt; $ ./test.sh # running test.sh 
  ./test.sh
-</code></pre>
-
-<p><strong>注意</strong>：这不是获取脚本路径的好办法。</p>
-
+</code></pre><p><strong>注意</strong>：这不是获取脚本路径的好办法。</p>
 <h3 id="groups">$GROUPS</h3>
-
 <p>包含当前用户所在分组的数量：</p>
-
 <pre><code>#!/usr/bin/env bash
 echo You are assigned to the following groups: 
 for group in ${GROUPS[@]}; do
     IFS=: read -r name dummy number members &lt; &lt;(getent group $group )
     printf &quot;name: %-10s number: %-15s members: %s\n&quot; &quot;$name&quot; &quot;$number&quot; &quot;$members&quot; 
 done
-</code></pre>
-
-<h3 id="lineno">$LINENO</h3>
-
+</code></pre><h3 id="lineno">$LINENO</h3>
 <p>输出当前脚本的行数，在调试代码的时候很有用。</p>
-
 <pre><code>#!/bin/bash
 # this is line 2
 echo something # this is line 3 
 echo $LINENO # Will output 4
-</code></pre>
-
-<h3 id="shlvl">$SHLVL</h3>
-
+</code></pre><h3 id="shlvl">$SHLVL</h3>
 <p>当这个脚本命令执行的时候，将会打开一个新的shell。这个变量保存着shell的等级数目，当前的shell处于最顶端。</p>
-
 <p>在一个新的终端窗口中，执行下面的命令在不同的linux版本中将会输出不同的内容。</p>
-
 <pre><code>echo $SHLVL
-</code></pre>
-
-<p>在<code>Fedora 25</code>中将会输出3。这表明，当打开一个新的shell时，一个初始的bash命令执行并执行一个任务。最初的bash命令执行一个子进程（另一个bash命令），然后执行最后的bash命令以打开新的shell。当新shell打开时，它作为其他两个shell进程的子进程运行，因此输出“3”。</p>
-
+</code></pre><p>在<code>Fedora 25</code>中将会输出3。这表明，当打开一个新的shell时，一个初始的bash命令执行并执行一个任务。最初的bash命令执行一个子进程（另一个bash命令），然后执行最后的bash命令以打开新的shell。当新shell打开时，它作为其他两个shell进程的子进程运行，因此输出“3”。</p>
 <p>在下面的例子中(假设在Fedora 25中)，第一次输出这个表里的时候值是3，之后每次执行都会加1。</p>
-
 <pre><code>~&gt; $ echo $SHLVL
 3
 ~&gt; $ bash
@@ -804,52 +591,30 @@ echo $LINENO # Will output 4
 ~&gt; $ bash
 ~&gt; $ echo $SHLVL 
 5
-</code></pre>
-
-<p>可以看到，执行“bash”命令（或执行bash脚本）会打开一个新的shell。相比之下，源代码脚本在当前shell中运行代码。</p>
-
+</code></pre><p>可以看到，执行“bash”命令（或执行bash脚本）会打开一个新的shell。相比之下，源代码脚本在当前shell中运行代码。</p>
 <p><strong>test1.sh</strong></p>
-
 <pre><code>#!/usr/bin/env bash
 echo &quot;Hello from test1.sh. My shell level is $SHLVL&quot; 
 source &quot;test2.sh&quot;
-</code></pre>
-
-<p><strong>test2.sh</strong></p>
-
+</code></pre><p><strong>test2.sh</strong></p>
 <pre><code> #!/usr/bin/env bash
 echo &quot;Hello from test2.sh. My shell level is $SHLVL&quot;
-</code></pre>
-
-<p><strong>run.sh</strong></p>
-
+</code></pre><p><strong>run.sh</strong></p>
 <pre><code>#!/usr/bin/env bash
 echo &quot;Hello from run.sh. My shell level is $SHLVL&quot; 
 ./test1.sh
-</code></pre>
-
-<p>执行：</p>
-
+</code></pre><p>执行：</p>
 <pre><code> chmod +x test1.sh &amp;&amp; chmod +x run.sh 
  ./run.sh
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>Hello from run.sh. My shell level is 4
 Hello from test1.sh. My shell level is 5
 Hello from test2.sh. My shell level is 5
-</code></pre>
-
-<h3 id="uid">$UID</h3>
-
+</code></pre><h3 id="uid">$UID</h3>
 <p>存储当前用户id的只读变量：</p>
-
 <pre><code> ~&gt; $ echo $UID 
  12345
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -921,6 +686,12 @@ Hello from test2.sh. My shell level is 5
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

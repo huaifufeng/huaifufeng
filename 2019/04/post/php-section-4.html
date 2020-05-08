@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,65 +187,26 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#超全局变量">超全局变量</a>
-<ul>
-<li><a href="#超全局变量解释">超全局变量解释</a>
-<ul>
-<li><a href="#简介">简介</a></li>
-<li><a href="#什么是超全局变量">什么是超全局变量？</a></li>
-<li><a href="#更多信息">更多信息</a>
-<ul>
-<li><a href="#globals">$GLOBALS</a>
-<ul>
-<li><a href="#变为全局">变为全局</a></li>
-</ul></li>
-<li><a href="#server">$_SERVER</a></li>
-<li><a href="#get">$_GET</a>
-<ul>
-<li><a href="#安全风险">安全风险</a></li>
-</ul></li>
-<li><a href="#post">$_POST</a>
-<ul>
-<li><a href="#安全风险-1">安全风险</a></li>
-</ul></li>
-<li><a href="#files">$_FILES</a></li>
-<li><a href="#cookie">$_COOKIE</a></li>
-<li><a href="#session">$_SESSION</a></li>
-<li><a href="#request">$_REQUEST</a></li>
-<li><a href="#env">$_ENV</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#php5超全局变量">PHP5超全局变量</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#超全局变量">超全局变量</a>
+      <ul>
+        <li><a href="#超全局变量解释">超全局变量解释</a></li>
+        <li><a href="#php5超全局变量">PHP5超全局变量</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="超全局变量">超全局变量</h2>
-
+        		<h2 id="超全局变量">超全局变量</h2>
 <p>超全局变量是内建的在任何地方都一直有效的变量。</p>
-
-<p>一些预定义的PHP变量叫做&rdquo;超全局变量&rdquo;，这意味着这些变量在一个脚本的任何作用域都是有效的。不用在函数或方法内使用<code>global $variable</code>来访问这些变量。</p>
-
+<p>一些预定义的PHP变量叫做&quot;超全局变量&rdquo;，这意味着这些变量在一个脚本的任何作用域都是有效的。不用在函数或方法内使用<code>global $variable</code>来访问这些变量。</p>
 <h3 id="超全局变量解释">超全局变量解释</h3>
-
 <h4 id="简介">简介</h4>
-
 <p>简单来说，这些变量就是在你的脚本中<code>全部作用域</code>有效的变量。</p>
-
 <p>这意味着没有必要把它们作为参数传递给你的函数，或者为了让不同的作用域访问这些变量把他们存放在块作用域之外。</p>
-
 <h4 id="什么是超全局变量">什么是超全局变量？</h4>
-
 <p>如果你认为它们就像超级英雄一样-它们不是的。</p>
-
 <p>在PHP 7.1.3之后，有9个超全局变量，下面是它们的列表：</p>
-
 <ul>
 <li><code>$GLOBALS</code>：包含所有的全局变量</li>
 <li><code>$_SERVER</code>：服务器和执行环境的信息</li>
@@ -253,23 +218,15 @@
 <li><code>$_REQUEST</code>：HTTP的请求变量</li>
 <li><code>$_ENV</code>：环境变量</li>
 </ul>
-
 <p>查看<a href="http://php.net/manual/en/language.variables.superglobals.php">文档</a>。</p>
-
 <h4 id="更多信息">更多信息</h4>
-
 <p>这里是它的<a href="https://www.youtube.com/watch?v=ZW0DfsCzfq4">参考资料</a>。</p>
-
 <p>是时候解释这些超全局变量了。</p>
-
 <h5 id="globals">$GLOBALS</h5>
-
 <blockquote>
 <p>一个定义了当前脚本定义的所有全局作用域的变量的关联数组。变量名就是这个数组的键。</p>
 </blockquote>
-
 <p>代码：</p>
-
 <pre><code>$myGlobal = &quot;global&quot;;
 
 function test() 
@@ -283,24 +240,15 @@ test();
 
 var_dump($myLocal);
 var_dump($myGlobal);
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>string 'local' (length=5)
 string 'global' (length=6)
 null
 string 'global' (length=6)
-</code></pre>
-
-<p>在上面的例子中<code>$myLocal</code>第二次没有显示因为这个变量定义在函数<code>test()</code>内部，当函数关闭之后这个变量就销毁了。</p>
-
+</code></pre><p>在上面的例子中<code>$myLocal</code>第二次没有显示因为这个变量定义在函数<code>test()</code>内部，当函数关闭之后这个变量就销毁了。</p>
 <h6 id="变为全局">变为全局</h6>
-
 <p>实现这个有两种方法。</p>
-
 <p>第一种方法：<code>global</code>关键字</p>
-
 <pre><code>function test()
 {
     global $myLocal;
@@ -308,14 +256,9 @@ string 'global' (length=6)
     var_dump($myLocal);
     var_dump($GLOBALS[&quot;myGloabl&quot;]);
 }
-</code></pre>
-
-<p>这个关键字<code>global</code>放到变量前面，强制这个变量变为全局作用域变量。</p>
-
+</code></pre><p>这个关键字<code>global</code>放到变量前面，强制这个变量变为全局作用域变量。</p>
 <p>注意不能在<code>global</code>语句中进行变量的赋值操作。这就是为什么我在下变进行这个操作。(当然你可以通过删除新行和空格来实现在同一行，但这是不友好的。<code>global $myLocal; $myLocal= &quot;local&quot;;</code>)。</p>
-
 <p>第二种方法：<code>$GLOBALS</code>数组</p>
-
 <pre><code>function test()
 {
     $GLOBALS['myLocal'] = 'local';
@@ -323,18 +266,12 @@ string 'global' (length=6)
     var_dump($myLocal);
     var_dump($GLOBALS['myLocal']);
 }
-</code></pre>
-
-<p>在这个例子中，我重新赋值<code>$GLOBALS['myLocal']</code>给变量<code>$myLocal</code>，因为这样写起来比关联数组简单。</p>
-
-<h5 id="server">$_SERVER</h5>
-
+</code></pre><p>在这个例子中，我重新赋值<code>$GLOBALS['myLocal']</code>给变量<code>$myLocal</code>，因为这样写起来比关联数组简单。</p>
+<h5 id="_server">$_SERVER</h5>
 <blockquote>
 <p><code>_SERVER</code>是一个包含headers，paths，脚本路径等信息的关联数组。这个数组的信息是被web服务器创建的。不能保证web服务器会提供其中的每一个值，服务器会忽略一些或者提供另外的一些。大量的变量被定义在<a href="http://www.faqs.org/rfcs/rfc3875.html">CGI/1.1 specification</a>，所以你可以期待这些变量。</p>
 </blockquote>
-
 <p>下面是这个变量的一个输出(在windows上运行WAMP)：</p>
-
 <pre><code>C:\wamp64\www\test.php:2:
 array (size=36)
     'HTTP_HOST' =&gt; string 'localhost' (length=9)
@@ -376,98 +313,60 @@ Port 80&lt;/address&gt;' (length=80)
     'PHP_SELF' =&gt; string '/test.php' (length=13)
     'REQUEST_TIME_FLOAT' =&gt; float 1491068771.413
     'REQUEST_TIME' =&gt; int 1491068771
-</code></pre>
-
-<p>这里有很多的变量，所以我挑了一些在这里。如果你想阅读这些变量，查看文档的<a href="http://php.net/manual/en/reserved.variables.server.php#refsect1-reserved.variables.server-indices">变量部分</a>。</p>
-
+</code></pre><p>这里有很多的变量，所以我挑了一些在这里。如果你想阅读这些变量，查看文档的<a href="http://php.net/manual/en/reserved.variables.server.php#refsect1-reserved.variables.server-indices">变量部分</a>。</p>
 <p>我可能在某天在下面添加他们。或者某些人可以编辑并提供一个解释。</p>
-
-<p>对下面的解释，假设网址是<a href="http://www.example.com/index.php。">http://www.example.com/index.php。</a></p>
-
+<p>对下面的解释，假设网址是http://www.example.com/index.php。</p>
 <ul>
 <li><code>HTTP_HOST</code>：host地址。这里是<code>www.example.com</code></li>
 <li><code>HTTP_USER_AGENT</code>：用户agent的内容。这个是包含浏览器信息，操作系统信息的字符串。</li>
 <li><code>HTTP_COOKIE</code>：所有cookie按照分号拼接的字符串。</li>
-<li><code>SERVER_ADDR</code>：当前脚本运行的服务器的ip地址。这里将会是<code>93.184.216.34</code>。</li>
+<li><code>SERVER_ADDR</code>：当前脚本运行的服务器的ip地址。这里将会是<code> 93.184.216.34</code>。</li>
 <li><code>PHP_SELF</code>：相对于文档根目录，当前运行脚本的路径。这里将会返回<code>/index.php</code>。</li>
 <li><code>REQUEST_TIME_FLOAT</code>：请求开始的时间戳，毫秒级别。从PHP5.4开始有效。</li>
 <li><code>REQUEST_TIME</code>：请求开始的时间戳，从PHP 5.1开始。</li>
 </ul>
-
-<h5 id="get">$_GET</h5>
-
+<h5 id="_get">$_GET</h5>
 <blockquote>
 <p>当前脚本通过url传递的变量的关联数组。</p>
 </blockquote>
-
 <p><code>$_GET</code>包含所有URL参数的数组，这些参数在URL中的？的后面。</p>
-
-<p>这里使用<a href="http://www.example.com/index.php?myVar=myVal作为例子。URL中变量的信息可以通过`$_GET['myVar']`访问，这里返回的结果是`myVal`。">http://www.example.com/index.php?myVar=myVal作为例子。URL中变量的信息可以通过`$_GET['myVar']`访问，这里返回的结果是`myVal`。</a></p>
-
+<p>这里使用http://www.example.com/index.php?myVar=myVal作为例子。URL中变量的信息可以通过<code>$_GET['myVar']</code>访问，这里返回的结果是<code>myVal</code>。</p>
 <p>使用下面的代码为那些不存在的参数：</p>
-
 <pre><code>// URL = http://www.example.com/index.php?myVar=myVal
 echo $_GET[&quot;myVar&quot;] == &quot;myVal&quot; ? &quot;true&quot; : &quot;false&quot;; // returns &quot;true&quot;
-</code></pre>
-
-<p>上面的例子使用了三元操作符。</p>
-
+</code></pre><p>上面的例子使用了三元操作符。</p>
 <p>这展示了你怎么通过$_GET来获取URL中的参数信息。</p>
-
 <p>下面是另外的例子：</p>
-
 <pre><code>// URL = http://www.example.com/index.php?myVar=myVal&amp;myVar2=myVal2 
 echo $_GET[&quot;myVar&quot;]; // returns &quot;myVal&quot;
 echo $_GET[&quot;myVar2&quot;]; // returns &quot;myVal2&quot;
-</code></pre>
-
-<p>可以在URL中通过<code>&amp;</code>分割多个变量。</p>
-
+</code></pre><p>可以在URL中通过<code>&amp;</code>分割多个变量。</p>
 <h6 id="安全风险">安全风险</h6>
-
 <p>一个非常重要的建议是：不要在URL中传递敏感信息，因为这些请求将会保存到计算机上，可以被所有能访问浏览器的人看到。</p>
-
-<h5 id="post">$_POST</h5>
-
+<h5 id="_post">$_POST</h5>
 <blockquote>
 <p>在以Content-Type等于<code>application/x-www-form-urlencoded</code>或<code>multipart/form-data</code>的HTTP POST请求，当前脚本的关联数组。</p>
 </blockquote>
-
 <p>这个和<code>$_GET</code>传递数据是相似的。</p>
-
 <p>我直接使用一个例子说明。（我省略了action属性，因为这会将信息发送到表单所在的页面）。</p>
-
 <pre><code>&lt;form method=&quot;POST&quot;&gt;
     &lt;input type=&quot;text&quot; name=&quot;myVar&quot; value=&quot;myVal&quot; /&gt; 
     &lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
 &lt;/form&gt;
-</code></pre>
-
-<p>上面是发送数据的基本表格。真实环境中<code>value</code>属性没有被设置将会被设为空白。这将会发送任何用户填写的信息。</p>
-
+</code></pre><p>上面是发送数据的基本表格。真实环境中<code>value</code>属性没有被设置将会被设为空白。这将会发送任何用户填写的信息。</p>
 <pre><code>echo $_POST[&quot;myVar&quot;]); // returns &quot;myVal&quot;
-</code></pre>
-
-<h6 id="安全风险-1">安全风险</h6>
-
+</code></pre><h6 id="安全风险-1">安全风险</h6>
 <p>通过POST发送数据也是不安全的。使用HTTPS发送数据将会更加安全。</p>
-
-<h5 id="files">$_FILES</h5>
-
+<h5 id="_files">$_FILES</h5>
 <blockquote>
 <p>当前脚本通过POST上传的数据的关联数组。这个数组的结构在<a href="https://www.php.net/manual/en/features.file-upload.post-method.php">POST method uploads</a>部分进行了介绍。</p>
 </blockquote>
-
 <p>让我们通过简单的form来开始：</p>
-
 <pre><code>&lt;form method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;&gt; 
     &lt;input type=&quot;file&quot; name=&quot;myVar&quot; /&gt;
     &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; /&gt;
 &lt;/form&gt;
-</code></pre>
-
-<p>注意这里我忽视了<code>action</code>属性(也)。另外我添加了<code>enctype=&quot;multipart/form-data&quot;</code>，这在处理文件上传的时候是非常重要的。</p>
-
+</code></pre><p>注意这里我忽视了<code>action</code>属性(也)。另外我添加了<code>enctype=&quot;multipart/form-data&quot;</code>，这在处理文件上传的时候是非常重要的。</p>
 <pre><code>// ensure there isn't an error
 if ($_FILES[&quot;myVar&quot;][&quot;error&quot;] == UPLOAD_ERR_OK)
 {
@@ -479,158 +378,106 @@ if ($_FILES[&quot;myVar&quot;][&quot;error&quot;] == UPLOAD_ERR_OK)
     // move the file into the folder
     move_uploaded_file($_FILES[&quot;myVar&quot;][&quot;tmp_name&quot;], &quot;$folderLocation/&quot; . basename($_FILES[&quot;myVar&quot;][&quot;name&quot;]));
 }
-</code></pre>
-
-<p>这用来上传一个文件。有时候你希望上传多个文件。一个叫做<code>multiple</code>的属性是实现这个功能的。</p>
-
+</code></pre><p>这用来上传一个文件。有时候你希望上传多个文件。一个叫做<code>multiple</code>的属性是实现这个功能的。</p>
 <p>任何事情都有一个属性。<a href="https://www.youtube.com/watch?v=szrsfeyLzyg">链接</a></p>
-
 <p>下面是提交多个文件的一个例子：</p>
-
 <pre><code>&lt;form method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;&gt;
     &lt;input type=&quot;file&quot; name=&quot;myVar[]&quot; multiple=&quot;multiple&quot; /&gt; 
     &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; /&gt;
 &lt;/form&gt;
-</code></pre>
-
-<p>注意这里的修改，只有一部分：</p>
-
+</code></pre><p>注意这里的修改，只有一部分：</p>
 <ul>
 <li><code>input</code>的名字有一个方括号。这是因为现在有一个数组的文件所以我们要告诉form使用一个数组保存选择的文件。省略方括号将导致只有最后一个文件赋值到<code>$_FILES[&quot;myVar&quot;]</code>。</li>
-
-<li><p><code>multiple=&quot;multiple&quot;</code>属性。这告诉浏览器可以选择多于一个文件。</p>
-
+<li><code>multiple=&quot;multiple&quot;</code>属性。这告诉浏览器可以选择多于一个文件。</li>
+</ul>
 <pre><code>$total = isset($_FILES[&quot;myVar&quot;]) ? count($_FILES[&quot;myVar&quot;][&quot;name&quot;]) : 0; // count how many files were sent
 // iterate over each of the files
 for ($i = 0; $i &lt; $total; $i++)
 {
-// there isn't an error
-if ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i] == UPLOAD_ERR_OK)
-{
-    $folderLocation = &quot;myFiles&quot;; // a relative path. (could be &quot;path/to/file&quot; for example) 
+    // there isn't an error
+    if ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i] == UPLOAD_ERR_OK)
+    {
+        $folderLocation = &quot;myFiles&quot;; // a relative path. (could be &quot;path/to/file&quot; for example) 
         
-    // if the folder doesn't exist then make it
-    if (!file_exists($folderLocation)) mkdir($folderLocation);
+        // if the folder doesn't exist then make it
+        if (!file_exists($folderLocation)) mkdir($folderLocation);
         
-    move_uploaded_file($_FILES[&quot;myVar&quot;][&quot;tmp_name&quot;][$i], &quot;$folderLocation/&quot; .     basename($_FILES[&quot;myVar&quot;][&quot;name&quot;][$i]));
+        move_uploaded_file($_FILES[&quot;myVar&quot;][&quot;tmp_name&quot;][$i], &quot;$folderLocation/&quot; .     basename($_FILES[&quot;myVar&quot;][&quot;name&quot;][$i]));
+    }
+    // else report the error
+    else switch ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i])
+    {
+        case UPLOAD_ERR_INI_SIZE:
+            echo &quot;Value: 1; The uploaded file exceeds the upload_max_filesize directive in php.ini.&quot;;
+            break;
+        case UPLOAD_ERR_FORM_SIZE:
+            echo &quot;Value: 2; The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.&quot;;
+            break;
+        case UPLOAD_ERR_PARTIAL:
+            echo &quot;Value: 3; The uploaded file was only partially uploaded.&quot;;
+            break;
+        case UPLOAD_ERR_NO_FILE:
+            echo &quot;Value: 4; No file was uploaded.&quot;;
+            break;
+        case UPLOAD_ERR_NO_TMP_DIR:
+            echo &quot;Value: 6; Missing a temporary folder. Introduced in PHP 5.0.3.&quot;;
+            break;
+        case UPLOAD_ERR_CANT_WRITE:
+            echo &quot;Value: 7; Failed to write file to disk. Introduced in PHP 5.1.0.&quot;;
+            break;
+        case UPLOAD_ERR_EXTENSION:
+            echo &quot;Value: 8; A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help. Introduced in PHP 5.2.0.&quot;;
+            break;
+        default:
+            echo &quot;An unknown error has occurred.&quot;;
+            break;
+    } 
 }
-// else report the error
-else switch ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i])
-{
-    case UPLOAD_ERR_INI_SIZE:
-        echo &quot;Value: 1; The uploaded file exceeds the upload_max_filesize directive in php.ini.&quot;;
-        break;
-    case UPLOAD_ERR_FORM_SIZE:
-        echo &quot;Value: 2; The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.&quot;;
-        break;
-    case UPLOAD_ERR_PARTIAL:
-        echo &quot;Value: 3; The uploaded file was only partially uploaded.&quot;;
-        break;
-    case UPLOAD_ERR_NO_FILE:
-        echo &quot;Value: 4; No file was uploaded.&quot;;
-        break;
-    case UPLOAD_ERR_NO_TMP_DIR:
-        echo &quot;Value: 6; Missing a temporary folder. Introduced in PHP 5.0.3.&quot;;
-        break;
-    case UPLOAD_ERR_CANT_WRITE:
-        echo &quot;Value: 7; Failed to write file to disk. Introduced in PHP 5.1.0.&quot;;
-        break;
-    case UPLOAD_ERR_EXTENSION:
-        echo &quot;Value: 8; A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help. Introduced in PHP 5.2.0.&quot;;
-        break;
-    default:
-        echo &quot;An unknown error has occurred.&quot;;
-        break;
-} 
-}
-</code></pre></li>
-</ul>
-
-<p>这是非常简单的例子，没有处理错误像文件类型不允许，使用PHP代码命名(像SQL注入)。查看文档。</p>
-
+</code></pre><p>这是非常简单的例子，没有处理错误像文件类型不允许，使用PHP代码命名(像SQL注入)。查看文档。</p>
 <p>第一个进程用来检查是否有任何文件，如果有的话总数就被设置到<code>$total</code>。</p>
-
 <p>允许使用for循环迭代处理<code>$_FILES</code>这个数组，一次处理一个数组元素。如果那个文件没有遇到问题，这个语句是true，然后单个文件的上传处理代码将会执行。如果遇到问题，将执行switch块，并根据特定上载的错误显示错误。</p>
-
-<h5 id="cookie">$_COOKIE</h5>
-
+<h5 id="_cookie">$_COOKIE</h5>
 <blockquote>
 <p>通过HTTP Cookies传递的变量的关联数组。</p>
 </blockquote>
-
 <p>Cookie是包含数据的变量，存储在客户端机器上面。</p>
-
 <p>这个和前面提到的全局变量不一样。cookies必须使用函数创建(不是通过赋值)。下面就是一个例子：</p>
-
 <pre><code> setcookie(&quot;myVar&quot;, &quot;myVal&quot;, time() + 3600);
-</code></pre>
-
-<p>在这个例子里面，一个name设置到了cookie(这里是<code>myvar</code>)。一个值也被提供了(这里是<code>myVal</code>，一个变量也可以用来设置这个值到cookie)。然后提供了一个过期时间(这个例子是从当前时间之后1个小时)。</p>
-
+</code></pre><p>在这个例子里面，一个name设置到了cookie(这里是<code>myvar</code>)。一个值也被提供了(这里是<code>myVal</code>，一个变量也可以用来设置这个值到cookie)。然后提供了一个过期时间(这个例子是从当前时间之后1个小时)。</p>
 <p>尽管设置cookie的方式是不一样的，但是访问的方式是一样的。</p>
-
 <pre><code>echo $_COOKIE[&quot;myVar&quot;]; // returns &quot;myVal&quot;
-</code></pre>
-
-<p>要销毁一个cookie，<code>setcookie</code>必须再次调用，这个过期时间是任何当前时间之前的时间。</p>
-
+</code></pre><p>要销毁一个cookie，<code>setcookie</code>必须再次调用，这个过期时间是任何当前时间之前的时间。</p>
 <pre><code> setcookie(&quot;myVar&quot;, &quot;&quot;, time() - 1); 
  var_dump($_COOKIE[&quot;myVar&quot;]); // returns null
-</code></pre>
-
-<p>这将把cookie注销掉，然后从客户端的计算机上删除。</p>
-
-<h5 id="session">$_SESSION</h5>
-
+</code></pre><p>这将把cookie注销掉，然后从客户端的计算机上删除。</p>
+<h5 id="_session">$_SESSION</h5>
 <blockquote>
 <p>一个保存当前脚本有效的session变量的关联数组。开<a href="http://php.net/manual/en/ref.session.php">Session functions</a>来了解如何使用session函数的详细信息。</p>
 </blockquote>
-
 <p>会话和cookie非常相似，只是这是在服务端的。</p>
-
 <p>想要使用session，你必须在脚本的开始使用<code>session_start()</code>函数，来允许设置session。</p>
-
 <p>设置session变量和其他变量一样，向下面这样：</p>
-
 <pre><code>$_SESSION[&quot;myVar&quot;] = &quot;myVal&quot;;
-</code></pre>
-
-<p>当开启一个session的随机id并且设置为cookie，名称为&rdquo;PHPSESSID&rdquo;，将会包含当前session的id。可以通过<code>session_id()</code>来访问。</p>
-
+</code></pre><p>当开启一个session的随机id并且设置为cookie，名称为&quot;PHPSESSID&rdquo;，将会包含当前session的id。可以通过<code>session_id()</code>来访问。</p>
 <p>可以通过unset来销毁一个session的变量(<code>unset($_SESSION[&quot;myVar&quot;])</code>将销毁这个变量)。</p>
-
 <p>还可以使用<code>session_destory</code>，这将销毁所有的session。</p>
-
-<h5 id="request">$_REQUEST</h5>
-
+<h5 id="_request">$_REQUEST</h5>
 <blockquote>
 <p>包含<code>$_GET，$POST，$COOKIE</code>的所有值的关联数组。</p>
 </blockquote>
-
 <p>像PHP文档说的一样，这将包含<code>$_GET $_POST $_COOKIE</code>的全部值到一个变量中。</p>
-
 <p>因为这三个数组可能含有名称相同的变量，根据<code>php.ini</code>中的<code>request_order</code>配置设置这三个指的顺序。例如如果是<code>GPC</code>将会使用<code>$_COOKIE</code>的值。按照从左向右的顺序，<code>$_REQUEST</code>将会依次设置<code>$_GET</code>,<code>$_POST</code>,<code>$COOKIE</code>的值，然后<code>$_COOKIE</code>的值将会是<code>$_REQUEST</code>的值。</p>
-
 <p>查看<a href="https://stackoverflow.com/questions/43157933/what-is-the-request-precedence">这个问题</a>。</p>
-
-<h5 id="env">$_ENV</h5>
-
+<h5 id="_env">$_ENV</h5>
 <blockquote>
 <p>通过环境函数传递给当前脚本的有效变量的关联数组。这些变量从运行PHP解析器的环境导入到PHP的全局命名空间中。许多都是由运行PHP的shell提供的，不同的系统可能运行不同类型的shell，不可能有一个确定的列表。有关已定义环境变量的列表，请参阅shell的文档。</p>
-
 <p>其他环境变量包括放置在那里的CGI变量，不管PHP是作为服务器模块运行还是作为CGI处理器运行。</p>
 </blockquote>
-
 <p>所有存储在<code>$_ENV</code>的变量都是从PHP运行的环境来的。</p>
-
 <p>只有php.ini允许的情况下，<code>$_ENV</code>才会填充值。</p>
-
 <p>查看<a href="https://stackoverflow.com/questions/3780866/why-is-my-env-empty/27077452#27077452">这个答案</a>来获取为什么$_ENV没有填充。</p>
-
 <h3 id="php5超全局变量">PHP5超全局变量</h3>
-
 <p>下面是PHP5的超全局变量：</p>
-
 <ul>
 <li>$GLOBALS</li>
 <li>$REQUEST</li>
@@ -642,49 +489,35 @@ else switch ($_FILES[&quot;myVar&quot;][&quot;error&quot;][$i])
 <li>$_COOKIE</li>
 <li>$_SESSION</li>
 </ul>
-
-<p><strong>$GLOBALS:</strong>用来访问全局变量的超全局变量：</p>
-
+<p>**$GLOBALS:**用来访问全局变量的超全局变量：</p>
 <pre><code>&lt;?php
 $a = 10; function foo(){
     echo $GLOBALS['a'];
 }
 //Which will print 10 Global Variable a
 ?&gt;
-</code></pre>
-
-<p><strong>$REQUEST:</strong>用来收集从表提交来的数据：</p>
-
+</code></pre><p>**$REQUEST:**用来收集从表提交来的数据：</p>
 <pre><code>&lt;?php
 if(isset($_REQUEST['user'])){
     echo $_REQUEST['user'];
 }
 //This will print value of HTML Field with name=user submitted using POST and/or GET MEthod
 ?&gt;
-</code></pre>
-
-<p><strong>$_GET:</strong>用来收集含有<code>get</code>的表格提交过来的数据：</p>
-
+</code></pre><p>**$_GET:**用来收集含有<code>get</code>的表格提交过来的数据：</p>
 <pre><code>&lt;?php
 if(isset($_GET['username'])){
     echo $_GET['username'];
 }
 //This will print value of HTML field with name username submitted using GET Method
 ?&gt;
-</code></pre>
-
-<p><strong>$_POST:</strong>用来收集含有<code>post</code>方法的表格提交过来的数据：</p>
-
+</code></pre><p>**$_POST:**用来收集含有<code>post</code>方法的表格提交过来的数据：</p>
 <pre><code>&lt;?php
 if(isset($_POST['username'])){
     echo $_POST['username'];
 }
 //This will print value of HTML field with name username submitted using POST Method
 ?&gt;
-</code></pre>
-
-<p><strong>$_FILES:</strong>包含通过POST方法提交文件的信息：</p>
-
+</code></pre><p>**$_FILES:**包含通过POST方法提交文件的信息：</p>
 <pre><code>&lt;?php
 if($_FILES['picture']){
     echo &quot;&lt;pre&gt;&quot;;
@@ -704,10 +537,7 @@ Array (
 )
 */
 ?&gt;
-</code></pre>
-
-<p><strong>$_SERVER:</strong>包含脚本，HTTP headers和服务端路径的信息：</p>
-
+</code></pre><p>**$_SERVER:**包含脚本，HTTP headers和服务端路径的信息：</p>
 <pre><code>&lt;?php
 echo &quot;&lt;pre&gt;&quot;; print_r($_SERVER);
 echo &quot;&lt;/pre&gt;&quot;;
@@ -760,12 +590,8 @@ Chrome/52.0.2743.82 Safari/537.36
 ) 
 */ 
 ?&gt;
-</code></pre>
-
-<p><strong>$_ENV:</strong>PHP运行环境的变量详情：</p>
-
-<p><strong>$_COOKIE:</strong>包含指定键值的cookie详情：</p>
-
+</code></pre><p>**$_ENV:**PHP运行环境的变量详情：</p>
+<p>**$_COOKIE:**包含指定键值的cookie详情：</p>
 <pre><code>&lt;?php
 $cookie_name = &quot;data&quot;;
 $cookie_value = &quot;Foo Bar&quot;;
@@ -782,10 +608,7 @@ Output
     Value is: Foo Bar
 */
 ?&gt;
-</code></pre>
-
-<p><strong>$_SESSION:</strong>用户设置和获取服务端的session值：</p>
-
+</code></pre><p>**$_SESSION:**用户设置和获取服务端的session值：</p>
 <pre><code>&lt;?php
 //Start the session
 session_start(); /**
@@ -801,9 +624,7 @@ Output
     Session is saved successfully
 */
 ?&gt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -875,6 +696,12 @@ Output
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

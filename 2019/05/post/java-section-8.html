@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,42 +187,30 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#java命令">Java命令</a>
-<ul>
-<li><a href="#1-入口点类">1.  入口点类</a></li>
-<li><a href="#2-java-命令故障排除">2. &lsquo;java&rsquo;命令故障排除</a></li>
-<li><a href="#3-运行有类库依赖的java应用">3. 运行有类库依赖的Java应用</a></li>
-<li><a href="#4-java选项">4. Java选项</a></li>
-<li><a href="#5-参数中空格和其他特殊字符">5. 参数中空格和其他特殊字符</a></li>
-<li><a href="#6-运行可执行的jar文件">6 运行可执行的JAR文件</a></li>
-<li><a href="#7-通过-main-类运行一个java应用">7. 通过&rdquo;main&rdquo;类运行一个Java应用</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#java命令">Java命令</a>
+      <ul>
+        <li><a href="#1--入口点类">1.  入口点类</a></li>
+        <li><a href="#2-java命令故障排除">2. &lsquo;java'命令故障排除</a></li>
+        <li><a href="#3-运行有类库依赖的java应用">3. 运行有类库依赖的Java应用</a></li>
+        <li><a href="#4-java选项">4. Java选项</a></li>
+        <li><a href="#5-参数中空格和其他特殊字符">5. 参数中空格和其他特殊字符</a></li>
+        <li><a href="#6-运行可执行的jar文件">6 运行可执行的JAR文件</a></li>
+        <li><a href="#7-通过main类运行一个java应用">7. 通过&quot;main&quot;类运行一个Java应用</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="java命令">Java命令</h2>
-
-<h3 id="1-入口点类">1.  入口点类</h3>
-
+        		<h2 id="java命令">Java命令</h2>
+<h3 id="1--入口点类">1.  入口点类</h3>
 <p>一个Java的入口点类有一个具有下面签名和修饰符的主要方法：</p>
-
-<pre><code class="language-java">public static void main(String[] args)
-</code></pre>
-
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span>
+</code></pre></div><blockquote>
 <p>旁注：由于数组的工作方式，这里也可以是<code>String args[]</code></p>
 </blockquote>
-
 <p>当<code>java</code>命令开启一个虚拟机的时候，它将会家长指定的入口点类并且寻找<code>main</code>方法。如果找到了，命令行的参数将会转换为一个<code>String</code>对象并且赋值到数组中。如果<code>main</code>像这样调用，这个数组将不会是<code>null</code>，并且不会包含<code>null</code>的值。</p>
-
 <p>一个有效的入口点类方法必须做下面的事情：</p>
-
 <ul>
 <li>必须名称是<code>main</code>(区分大小写)</li>
 <li>是<code>public</code>和<code>static</code></li>
@@ -227,84 +219,63 @@
 <li>泛型：不允许使用类型参数</li>
 <li>具有非泛型，顶级（非嵌套或内部）封闭类</li>
 </ul>
-
 <p>通常将类声明为public，但是这并非是绝对的。从Java5开始，main方法的参数类型可以是String 可变参数，而不会字符串数组。main可以选择性的抛出异常，它的参数可以命名为任何值，但是通常是args。</p>
-
 <p><strong>JavaFx入口点</strong></p>
-
 <p>从Java8开始，<code>java</code>命令亏直接开启一个JavaFX应用。JavaFX标记有JavaFX标签，但是一个JavaFX的入口点必须有下面的内容：</p>
-
 <ul>
 <li>继承<code>javafx.application.Application</code></li>
 <li>需要是<code>public</code>并且不是<code>abstract</code></li>
 <li>不是泛型或嵌套的</li>
 <li>有一个显式或隐式 public的无参数构造函数</li>
 </ul>
-
-<h3 id="2-java-命令故障排除">2. &lsquo;java&rsquo;命令故障排除</h3>
-
-<p>下面的例子介绍使用&rsquo;java&rsquo;命令场景的错误。</p>
-
+<h3 id="2-java命令故障排除">2. &lsquo;java'命令故障排除</h3>
+<p>下面的例子介绍使用&rsquo;java'命令场景的错误。</p>
 <p><strong>&ldquo;命令未找到&rdquo;</strong></p>
-
 <p>如果你碰到类似下面的错误信息：</p>
-
 <pre><code>java: command not found
-</code></pre>
-
-<p>当你试着运行<code>java</code>命令的时候，这意味在你的shell命令查找地址中没有<code>java</code>命令。这可能的原因是：</p>
-
+</code></pre><p>当你试着运行<code>java</code>命令的时候，这意味在你的shell命令查找地址中没有<code>java</code>命令。这可能的原因是：</p>
 <ul>
 <li>你还没有安装Java的JRE或JDK</li>
 <li>你还没有更新你的<code>PATH</code>环境变量（正确的）在你的shell初始化文件</li>
 <li>你没有在当前的shell中source你的shell初始文件</li>
 </ul>
-
-<p>查看&rdquo;安装Java&rdquo;的部分。</p>
-
+<p>查看&quot;安装Java&quot;的部分。</p>
 <p><strong>&ldquo;Could not find or load main Class&rdquo;</strong></p>
-
 <p>当<code>java</code>命令找不到或者无法家长你指定的入口点类，将会输出这个错误信息。一般来说有三种可能出现这个错误：</p>
-
 <ul>
 <li>你指定了一个不存在的入口点类</li>
 <li>类存在，但是没有正确的指定这个类</li>
 <li>类存在并且你正确指定了，但是Java没有找到因为classpath不正确</li>
 </ul>
-
 <p>下面是诊断和解决问题的办法：</p>
-
 <ol>
 <li>找到入口点类的完整名称
-
 <ul>
-<li>如果你有类的源代码，完整的名称包含包名和简单类名。&rdquo;Main&rdquo;类的试了在包&rdquo;com.example.myapp&rdquo;然后完整的名称就是&rdquo;com.example.myapp.Main&rdquo;</li>
+<li>如果你有类的源代码，完整的名称包含包名和简单类名。&ldquo;Main&quot;类的试了在包&quot;com.example.myapp&quot;然后完整的名称就是&quot;com.example.myapp.Main&rdquo;</li>
 <li>如果你有一个编译好的类文件，你可以在这个文件上运行<code>javap</code>来找到类名</li>
 <li>如果类文件在一个目录中，你可以从目录名推断完整的类名</li>
 <li>如果类名在一个JAR或ZIP文件中，你可以从JAR或ZIP文件中文件的路径推断完整的类名</li>
-</ul></li>
+</ul>
+</li>
 <li>查看<code>java</code>命令的错误信息。错误信息应该以<code>java</code>试着使用的完整类名结尾。
-
 <ul>
 <li>检查这个入口点类实际匹配的完整类名</li>
-<li>不应该以&rdquo;.java&rdquo;或&rdquo;.class&rdquo;结尾</li>
+<li>不应该以&rdquo;.java&quot;或&rdquo;.class&quot;结尾</li>
 <li>不应该包含斜杠或其他不应该在Java标识符中出现的字符</li>
 <li>名称的大小写应该和完整的类名完全匹配</li>
-</ul></li>
+</ul>
+</li>
 <li>如果你在使用完整的类名，确定类真的在classpath中
-
 <ul>
 <li>计算类隐射到的路径名，参考类映射到路径名</li>
 <li>检查classpath是什么内容。查看 不同的指定classpath的方法</li>
 <li>查看classpath中每个JAR和ZIP的内容，查看它们是否包含指定路径的类</li>
 <li>查看每个目录确定路径名是否解析为目录中的文件</li>
-</ul></li>
+</ul>
+</li>
 </ol>
-
 <p>如果手动检查classpath没有解决这个问题，你应该添加<code>-Xdiag</code>和<code>-XshowSettings</code>选项。前者列出家长的所有的类，后者打印包含有效的JVM路径的设置。</p>
-
 <p>最后，这个问题还有一些不清楚的原因：</p>
-
 <ul>
 <li>一个带有<code>Main-Class</code>属性的可执行的JAR文件指定一个不存在的类。</li>
 <li>一个带有错误<code>Class-Path</code>属性的可执行JAR文件</li>
@@ -312,77 +283,49 @@
 <li>如果某些人忽略了Java样式规则，它们只在字母大小写不同，则你在一个平台上运行，这个平台文件名中的字母大小写很重要</li>
 <li>代码或命令行中类名中的同形符号有问题。</li>
 </ul>
-
-<p><strong>&ldquo;Main method not found in class <name>&ldquo;</strong></p>
-
+<p><strong>&ldquo;Main method not found in class <!-- raw HTML omitted -->&rdquo;</strong></p>
 <p>这个问题出现在当<code>java</code>命令可以找到并且加载指定的类，但是不能够在类中找到入口方法。</p>
-
 <p>有三种可能的解释：</p>
-
 <ul>
-<li>当你试图运行一个可执行的JAR文件，但是JAR的manifest有一个不正确的&rdquo;Main-Class&rdquo;属性，这个属性指定了一个不正确的入口点类</li>
+<li>当你试图运行一个可执行的JAR文件，但是JAR的manifest有一个不正确的&quot;Main-Class&quot;属性，这个属性指定了一个不正确的入口点类</li>
 <li>你告诉<code>java</code>命令的类不是一个入口点类</li>
 <li>入口点类不正确，查看入口点类了解详细信息</li>
 </ul>
-
 <p><strong>其他资源</strong></p>
-
 <ul>
 <li><a href="https://stackoverflow.com/questions/18093928/what-does-could-not-find-or-load-main-class-mean">What does &ldquo;Could not find or load main class&rdquo; mean?</a></li>
 <li><a href="https://docs.oracle.com/javase/tutorial/getStarted/problems/index.html">https://docs.oracle.com/javase/tutorial/getStarted/problems/index.html</a></li>
 </ul>
-
-<p>1 - 从Java 8开始，java命令将会有助于将文件分隔符(&ldquo;/&ldquo;或&rdquo;&ldquo;)映射到句号(&rdquo;.&ldquo;)。但是这个行为没有记录到手册中。</p>
-
-<p>2 - 一个很难理解的例子是如果你从格式化的文档中复制粘贴命令，文本编辑器使用&rdquo;长连字符&rdquo;而不是常规连字符</p>
-
+<p>1 - 从Java 8开始，java命令将会有助于将文件分隔符(&quot;/&ldquo;或&rdquo;&quot;)映射到句号(&quot;.&quot;)。但是这个行为没有记录到手册中。</p>
+<p>2 - 一个很难理解的例子是如果你从格式化的文档中复制粘贴命令，文本编辑器使用&quot;长连字符&quot;而不是常规连字符</p>
 <h3 id="3-运行有类库依赖的java应用">3. 运行有类库依赖的Java应用</h3>
-
-<p>这是&rdquo;main class&rdquo;和&rdquo;可执行JAR&rdquo;延续的例子。</p>
-
+<p>这是&quot;main class&quot;和&quot;可执行JAR&quot;延续的例子。</p>
 <p>典型的Java应用程序包含一个特定于应用程序的代码，以及有第三方实现或已有第三方实现的各种可重用的库代码。后者通常称为库依赖项，通常打包为JAR文件。</p>
-
 <p>Java是一个动态绑定的语言。当你运行依赖库的应用，JVM需要知道依赖在哪里以便于它可以加载依赖的类。一般来说有两种办法解决这个问题：</p>
-
 <ul>
 <li>应用和它的依赖可以被重新打包为一个单独的JAR文件，这个文件将会包含所有需要的类和资源</li>
 <li>JVM可以通过运行时classpath知道哪里寻找依赖的JAR文件</li>
 </ul>
-
-<p>对于可运行的JAR文件，运行时classpath是&rdquo;Class-Path&rdquo;的manifest属性指定的。(编辑注意：这应该在<code>jar</code>主题介绍。)否则，这个运行时classpath需要通过<code>-cp</code>选项指定或者使用<code>CLASSPATH</code>环境变量。</p>
-
+<p>对于可运行的JAR文件，运行时classpath是&quot;Class-Path&quot;的manifest属性指定的。(编辑注意：这应该在<code>jar</code>主题介绍。)否则，这个运行时classpath需要通过<code>-cp</code>选项指定或者使用<code>CLASSPATH</code>环境变量。</p>
 <p>例如，假设我们有一个在<code>myApp.jar</code>中的java应用，这个的入口点类是<code>com.example.MyApp</code>。假设这个应用依赖于<code>lib/libary1.jar</code>和<code>lib/library2.jar</code>。我们可以像下面这样使用<code>java</code>命令运行应用：</p>
-
-<pre><code class="language-shell">$ # Alternative 1 (preferred)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># Alternative 1 (preferred)</span>
 $ java -cp myApp.jar:lib/library1.jar:lib/library2.jar com.example.MyApp
 
-$ # Alternative 2
-$ export CLASSPATH=myApp.jar:lib/library1.jar:lib/library2.jar
+$ <span style="color:#75715e"># Alternative 2</span>
+$ export CLASSPATH<span style="color:#f92672">=</span>myApp.jar:lib/library1.jar:lib/library2.jar
 $ java com.example.MyApp
-</code></pre>
-
-<p>(在Windows上，你可以使用<code>;</code>代替<code>:</code>作为classpath的分隔符，并且使用<code>set</code>而不是<code>export</code>来设置(本地)CLASSPATH环境变量)。</p>
-
-<p>虽然Java开发者会对此感到满意，但它并不是&rdquo;用户友好&rdquo;的。因此，通常的做法是编写一个简单的shell脚本(或Windows批处理文件)来隐藏用户不需要知道的细节。例如，如果将下面的shell脚本放入&rdquo;myapp&rdquo;文件中，并且增加可执行权限，并且将目录放入到命令搜索路径中：</p>
-
-<pre><code class="language-shell">#!/bin/bash
-# The 'myApp' wrapper script
-export DIR=/usr/libexec/myApp
-export CLASSPATH=$DIR/myApp.jar:$DIR/lib/library1.jar:$DIR/lib/library2.jar 
+</code></pre></div><p>(在Windows上，你可以使用<code>;</code>代替<code>:</code>作为classpath的分隔符，并且使用<code>set</code>而不是<code>export</code>来设置(本地)CLASSPATH环境变量)。</p>
+<p>虽然Java开发者会对此感到满意，但它并不是&quot;用户友好&quot;的。因此，通常的做法是编写一个简单的shell脚本(或Windows批处理文件)来隐藏用户不需要知道的细节。例如，如果将下面的shell脚本放入&quot;myapp&quot;文件中，并且增加可执行权限，并且将目录放入到命令搜索路径中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span><span style="color:#75715e"># The &#39;myApp&#39; wrapper script</span>
+export DIR<span style="color:#f92672">=</span>/usr/libexec/myApp
+export CLASSPATH<span style="color:#f92672">=</span>$DIR/myApp.jar:$DIR/lib/library1.jar:$DIR/lib/library2.jar 
 java com.example.MyApp
-</code></pre>
-
-<p>然后像下面这样运行：</p>
-
-<pre><code class="language-shell">$ myApp arg1 arg2 ...
-</code></pre>
-
-<p>命令行上面的任何参数都可以通过&rdquo;$@&ldquo;扩展传递给Java应用程序。(可以对Windows批处理文件执行类似的操作，尽管语法不同)</p>
-
+</code></pre></div><p>然后像下面这样运行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ myApp arg1 arg2 ...
+</code></pre></div><p>命令行上面的任何参数都可以通过&quot;$@&ldquo;扩展传递给Java应用程序。(可以对Windows批处理文件执行类似的操作，尽管语法不同)</p>
 <h3 id="4-java选项">4. Java选项</h3>
-
 <p><code>java</code>命令支持多种选项：</p>
-
 <ul>
 <li>所有的选项以一个连字符或减号(<code>-</code>)开始：GNU/Linux通常的对长选项使用<code>—</code>的 约定不支持</li>
 <li>选项必须要在识别的<code>&lt;classname&gt;</code>或<code>-jar &lt;jarfile&gt;</code>参数之前，之后的任何参数都被视为传递给Java应用程序的参数。</li>
@@ -390,19 +333,12 @@ java com.example.MyApp
 <li>选项以<code>-X</code>开始的是非标准选项，并且可以从一个Java版本撤回到下一个Java版本。</li>
 <li>以-xx开头的选项是高级选项，也可以撤销。</li>
 </ul>
-
 <p><strong>使用-D设置系统属性</strong></p>
-
 <p><code>-D&lt;property&gt;=&lt;value&gt;</code>选项用来设置系统<code>Properties</code>对象的属性。这个选项可以重复使用设置不同的属性。</p>
-
 <p><strong>内存，堆栈和GC选项</strong></p>
-
 <p>控制堆和堆栈大小的主要选项记录在设置堆、PermGen和堆栈大小中。</p>
-
 <p><strong>启用或禁用断言</strong></p>
-
 <p><code>-ea</code>和<code>-da</code>选项分别用来启用和禁用Java的断言检查：</p>
-
 <ul>
 <li>所有的断言检查默认是关闭的</li>
 <li><code>-ea</code>选项启用所有的断言检查</li>
@@ -414,148 +350,86 @@ java com.example.MyApp
 <li><code>-esa</code>选项启用所有的系统类检查</li>
 <li><code>-dsa</code>选项禁用所有的系统类检查</li>
 </ul>
-
 <p>这些选项是可以组合使用的。例子：</p>
-
-<pre><code class="language-shell">$ # Enable all assertion checking in non-system classes
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># Enable all assertion checking in non-system classes</span>
 $ java -ea -dsa MyApp
 
-$ # Enable assertions for all classes in a package except for one.
+$ <span style="color:#75715e"># Enable assertions for all classes in a package except for one.</span>
 $ java -ea:com.wombat.fruitbat... -da:com.wombat.fruitbat.Brickbat MyApp
-</code></pre>
-
-<p>注意启用断言检查很容易改变Java变成的行为。</p>
-
+</code></pre></div><p>注意启用断言检查很容易改变Java变成的行为。</p>
 <ul>
 <li>可能会降低应用程序的速度</li>
 <li>可能造成指定的方法执行时间更长，这会修改多线程应用的线程时间</li>
 <li>这可能会引入偶然的发生前关系，从而导致内存异常消失</li>
 <li>错误实现的断言语句可能导致不正确的问题</li>
 </ul>
-
 <p><strong>选择虚拟机类型</strong></p>
-
 <p><code>-client</code>和<code>-server</code>选项允许你选择两种不同的HotSpot VM：</p>
-
 <ul>
-<li>&ldquo;client&rdquo;类型针对用户应用程序进行了优化，提供了更快的启动速度。</li>
-<li>&ldquo;server&rdquo;类型针对长时间运行的应用程序作了优化。在JVM&rdquo;预热&rdquo;期间获取统计信息需要更长的时间，这让JIT编译器能更好的优化本机代码。</li>
+<li>&ldquo;client&quot;类型针对用户应用程序进行了优化，提供了更快的启动速度。</li>
+<li>&ldquo;server&quot;类型针对长时间运行的应用程序作了优化。在JVM&quot;预热&quot;期间获取统计信息需要更长的时间，这让JIT编译器能更好的优化本机代码。</li>
 </ul>
-
 <p>根据平台的能力，如果可以JVM默认情况下运行64位模式。<code>-d32</code>和<code>-d64</code>允许你明确选择模式。</p>
-
 <p>1 - 查看<code>java</code>命令的官方手册。</p>
-
 <h3 id="5-参数中空格和其他特殊字符">5. 参数中空格和其他特殊字符</h3>
-
 <p>首先，在参数中处理空格的问题实际不是Java的问题。更确切的说，这是一个需要砸运行Java程序时使用的命令shell处理的问题。</p>
-
 <p>例如，让我们假设我们有下面这个打印文件大小的程序：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> java.io.File<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">import java.io.File;
-
-public class PrintFileSizes {
-    public static void main(String[] args) {
-        for (String name: args) {
-            File file = new File(name);
-            System.out.println(&quot;Size of '&quot; + file +  &quot;' is &quot; + file.size());
-        }
-    }
-}
-</code></pre>
-
-<p>现在假设我们想要打印路径中有空格的文件的大小：例如<code>/home/steve/Test  File.txt</code>。如果我们像下面这样运行程序：</p>
-
-<pre><code class="language-shell">$ java PrintFileSize /home/steve/Test  File.txt
-</code></pre>
-
-<p>这个shell将不能理解<code>/home/steve/Test  File.txt</code>这是一个路径地址。相反，这将会在Java程序中传入两个不同的参数，将会分别输出这两个文件的大小，然后因为文件路径不存在(可能)而失败。</p>
-
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PrintFileSizes</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>String name<span style="color:#f92672">:</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            File file <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span>name<span style="color:#f92672">);</span>
+            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Size of &#39;&#34;</span> <span style="color:#f92672">+</span> file <span style="color:#f92672">+</span>  <span style="color:#e6db74">&#34;&#39; is &#34;</span> <span style="color:#f92672">+</span> file<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>现在假设我们想要打印路径中有空格的文件的大小：例如<code>/home/steve/Test  File.txt</code>。如果我们像下面这样运行程序：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ java PrintFileSize /home/steve/Test  File.txt
+</code></pre></div><p>这个shell将不能理解<code>/home/steve/Test  File.txt</code>这是一个路径地址。相反，这将会在Java程序中传入两个不同的参数，将会分别输出这两个文件的大小，然后因为文件路径不存在(可能)而失败。</p>
 <p><strong>使用POSIX shell解决</strong></p>
-
 <p>POSIX shell包括<code>sh</code>，也包括衍生的<code>bash</code>和<code>ksh</code>。如果你在使用这些shell中的一个，你只需要在参数上添加引号：</p>
-
-<pre><code class="language-shell">$ java PrintFileSizes &quot;/home/steve/Test File.txt&quot;
-</code></pre>
-
-<p>路径周围的双引号告诉shell，这是传入了一个参数。当这个发生的时候，引号将会被移除。有两种其他的方法可以做到这点：</p>
-
-<pre><code class="language-shell">$ java PrintFileSize '/home/steve/Test File.txt'
-</code></pre>
-
-<p>单引号(直引号)被认为是双引号，除了抑制了参数中的扩展。</p>
-
-<pre><code class="language-shell">$ java PrintFileSizes /home/steve/Test\ File.txt
-</code></pre>
-
-<p>一个反斜杠转义后面的空格，让空格不作为参数分隔符。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ java PrintFileSizes <span style="color:#e6db74">&#34;/home/steve/Test File.txt&#34;</span>
+</code></pre></div><p>路径周围的双引号告诉shell，这是传入了一个参数。当这个发生的时候，引号将会被移除。有两种其他的方法可以做到这点：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ java PrintFileSize <span style="color:#e6db74">&#39;/home/steve/Test File.txt&#39;</span>
+</code></pre></div><p>单引号(直引号)被认为是双引号，除了抑制了参数中的扩展。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ java PrintFileSizes /home/steve/Test<span style="color:#ae81ff">\ </span>File.txt
+</code></pre></div><p>一个反斜杠转义后面的空格，让空格不作为参数分隔符。</p>
 <p>有关更全面的文档，包括如何处理参数中其他特殊字符的描述，请参阅bash文档中的引用主题。</p>
-
 <p><strong>Windows的解决办法</strong></p>
-
 <p>Windows的基本问题是，在操作系统级别，参数作为单个字符串传递给子进程(<a href="https://blogs.msdn.microsoft.com/twistylittlepassagesallalike/2011/04/23/everyone-quotes-command-line-arguments-the-wrong-way/">source</a>)。这意味着解析(或者重新就解析)命令行的最终责任落在程序或其运行时库上。有很多不一致的地方。</p>
-
 <p>在这个例子中，长话短说：</p>
-
 <ul>
 <li><code>java</code>命令中你可以在参数周围添加双引号，允许你传递带有空格的参数</li>
 <li>显然，Java命令本身正在解析命令字符串，并且它或多或少地得到了正确的命令字符串。</li>
 <li>然而，当您尝试将其与批处理文件中的集合替换和变量替换结合使用时，是否删除双引号会变得非常复杂。</li>
 <li><code>cmd.exe</code>显然还有其他的转义机制：例如：双引号和^转义</li>
 </ul>
-
 <p>详细信息查看批处理文件相关的文档。</p>
-
 <h3 id="6-运行可执行的jar文件">6 运行可执行的JAR文件</h3>
-
 <p>可执行的JAR文件是最简单的方法把Java代码组装到一个可执行文件中。</p>
-
 <p>假设你有一个可执行的JAR文件，路径在<code>&lt;jar-path&gt;</code>中。你可以用下面的方法运行这个文件：</p>
-
-<pre><code class="language-shell">java -jar &lt;jar-path&gt;
-</code></pre>
-
-<p>如果命令要求命令行参数，你可以把他们添加到<code>&lt;jar-path&gt;</code>后面。例如：</p>
-
-<pre><code class="language-shell">java -jar &lt;jar-path&gt; arg1 arg2 arg3
-</code></pre>
-
-<p>如果你需要给<code>java</code>提供额外的JVM选项，你需要在<code>-jar</code>选项前面添加。注意如果使用了<code>-jar</code>选项， <code>-cp/-classpath</code>选项将会被忽略掉。应用的classpath是由JAR文件的manifest决定的。</p>
-
-<h3 id="7-通过-main-类运行一个java应用">7. 通过&rdquo;main&rdquo;类运行一个Java应用</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">java -jar &lt;jar-path&gt;
+</code></pre></div><p>如果命令要求命令行参数，你可以把他们添加到<code>&lt;jar-path&gt;</code>后面。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">java -jar &lt;jar-path&gt; arg1 arg2 arg3
+</code></pre></div><p>如果你需要给<code>java</code>提供额外的JVM选项，你需要在<code>-jar</code>选项前面添加。注意如果使用了<code>-jar</code>选项， <code>-cp/-classpath</code>选项将会被忽略掉。应用的classpath是由JAR文件的manifest决定的。</p>
+<h3 id="7-通过main类运行一个java应用">7. 通过&quot;main&quot;类运行一个Java应用</h3>
 <p>当应用没有被打包为一个可执行的JAR文件，你需要在<code>java</code>命令中提供入口点类来执行。</p>
-
 <p><strong>运行HelloWorld类</strong></p>
-
-<p>这个&rdquo;HelloWorld&rdquo;例子在创建一个新Java程序的部分已经介绍过了。它包含一个单独的叫做<code>HelloWorld</code>的类，这个类包含邀请的入口点。</p>
-
+<p>这个&quot;HelloWorld&quot;例子在创建一个新Java程序的部分已经介绍过了。它包含一个单独的叫做<code>HelloWorld</code>的类，这个类包含邀请的入口点。</p>
 <p>假设编译号的<code>HelloWorld.class</code>文件在当前目录中，可以像下面这样加载类：</p>
-
-<pre><code class="language-shell">java HelloWorld
-</code></pre>
-
-<p>一些需要注意的重要事项：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">java HelloWorld
+</code></pre></div><p>一些需要注意的重要事项：</p>
 <ul>
-<li>我们必须提供类的名字：不是&rdquo;.class&rdquo;文件或&rdquo;.java&rdquo;文件的地址</li>
-<li>如果类被声明在包(大多数情况是)，我们提供给<code>java</code>命令的类名必须是完整的类名。对于<code>com.example</code>包中的<code>SomeClass</code>类，这个完整的类名是&rdquo;com.example.SomeClass&rdquo;</li>
+<li>我们必须提供类的名字：不是&rdquo;.class&quot;文件或&rdquo;.java&quot;文件的地址</li>
+<li>如果类被声明在包(大多数情况是)，我们提供给<code>java</code>命令的类名必须是完整的类名。对于<code>com.example</code>包中的<code>SomeClass</code>类，这个完整的类名是&quot;com.example.SomeClass&rdquo;</li>
 </ul>
-
 <p><strong>指定一个classpath</strong></p>
-
 <p>除非我们使用<code>java -jar</code>命令选项，<code>java</code>命令将会在classpath进行选择并加载这个类：参考 Classpath部分。上面的命令就是使用默认的classpath(或包含)是当前的目录。我们可以使用<code>-cp</code>选项明确指出classpath的地址：</p>
-
-<pre><code class="language-shell">java -cp . HelloWorld
-</code></pre>
-
-<p>这表示当前目录(就是&rdquo;.&ldquo;锁指定的目录)作为classpath上唯一的目录。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">java -cp . HelloWorld
+</code></pre></div><p>这表示当前目录(就是&rdquo;.&ldquo;锁指定的目录)作为classpath上唯一的目录。</p>
 <p><code>-cp</code>是一个被<code>java</code>命令处理的选项。所有提供给<code>java</code>命令的选项都要写在类名之前。任何写在类名之后的值都会被认为是传递给java应用的参数，然后会传递给应用的<code>String[]</code>，并且传入<code>main</code>方法中。</p>
-
 <p>(如果没有提供<code>-cp</code>选项，<code>java</code>命令将会使用<code>CLASSPATH</code>环境变量提供的值。如果这个环境变量没有设置或者为空，<code>java</code>将会把&rdquo;.&ldquo;作为默认的classpath)</p>
-
 <p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
@@ -628,6 +502,12 @@ public class PrintFileSizes {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

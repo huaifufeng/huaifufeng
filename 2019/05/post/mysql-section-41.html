@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,64 +187,44 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用docker-compose安装mysql容器">使用Docker-Compose安装MySQL容器</a>
-<ul>
-<li><a href="#1-简单的docker-compose例子">1. 简单的Docker-Compose例子</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#使用docker-compose安装mysql容器">使用Docker-Compose安装MySQL容器</a>
+      <ul>
+        <li><a href="#1-简单的docker-compose例子">1. 简单的Docker-Compose例子</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="使用docker-compose安装mysql容器">使用Docker-Compose安装MySQL容器</h2>
-
+        		<h2 id="使用docker-compose安装mysql容器">使用Docker-Compose安装MySQL容器</h2>
 <h3 id="1-简单的docker-compose例子">1. 简单的Docker-Compose例子</h3>
-
 <p>下面是使用Docker创建MySQL服务器的简单例子。</p>
-
 <p><strong>创建docker-compose.yml文件：</strong></p>
-
-<p><strong>注意：</strong>如果你想为你所有的项目使用相同的容器，需要在你的HOME_PATH中创建一个PATH。如果你想要在你的每个项目中创建这个文件，你需要在项目中创建一个<strong>docker</strong>目录。</p>
-
-<pre><code class="language-yaml">version: '2'
-services:
-  cabin_db:
-    image: mysql:latest
-    volumes:
-      - &quot;./.mysql-data/db:/var/lib/mysql&quot;
-    restart: always
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpw
-      MYSQL_DATABASE: cabin
-      MYSQL_USER: cabin
-      MYSQL_PASSWORD: cabinpw
-</code></pre>
-
-<p><strong>运行</strong></p>
-
+<p><strong>注意：<strong>如果你想为你所有的项目使用相同的容器，需要在你的HOME_PATH中创建一个PATH。如果你想要在你的每个项目中创建这个文件，你需要在项目中创建一个</strong>docker</strong>目录。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">version</span>: <span style="color:#e6db74">&#39;2&#39;</span>
+<span style="color:#66d9ef">services</span>:
+  <span style="color:#66d9ef">cabin_db</span>:
+    <span style="color:#66d9ef">image</span>: mysql:latest
+    <span style="color:#66d9ef">volumes</span>:
+      - <span style="color:#e6db74">&#34;./.mysql-data/db:/var/lib/mysql&#34;</span>
+    <span style="color:#66d9ef">restart</span>: always
+    <span style="color:#66d9ef">ports</span>:
+      - <span style="color:#ae81ff">3306</span>:<span style="color:#ae81ff">3306</span>
+    <span style="color:#66d9ef">environment</span>:
+      <span style="color:#66d9ef">MYSQL_ROOT_PASSWORD</span>: rootpw
+      <span style="color:#66d9ef">MYSQL_DATABASE</span>: cabin
+      <span style="color:#66d9ef">MYSQL_USER</span>: cabin
+      <span style="color:#66d9ef">MYSQL_PASSWORD</span>: cabinpw
+</code></pre></div><p><strong>运行</strong></p>
 <pre><code>cd PATH_TO_DOCKER-COMPOSE.YML 
 docker-compose up -d
-</code></pre>
-
-<p><strong>连接到服务器</strong></p>
-
-<pre><code class="language-shell"> mysql -h 127.0.0.1 -u root -P 3306 -p rootpw
+</code></pre><p><strong>连接到服务器</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> mysql -h 127.0.0.1 -u root -P <span style="color:#ae81ff">3306</span> -p rootpw
  
  -- 成功了
-</code></pre>
-
-<p><strong>终止服务器</strong></p>
-
+</code></pre></div><p><strong>终止服务器</strong></p>
 <pre><code> docker-compose stop
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -312,6 +296,12 @@ docker-compose up -d
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

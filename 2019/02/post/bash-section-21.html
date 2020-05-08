@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,58 +187,38 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#引号">引号</a>
-<ul>
-<li><a href="#变量和命令替换的双引号">变量和命令替换的双引号</a></li>
-<li><a href="#单双引号的不同">单双引号的不同</a></li>
-<li><a href="#换行和控制符">换行和控制符</a></li>
-<li><a href="#引用字符文本">引用字符文本</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#引号">引号</a>
+      <ul>
+        <li><a href="#变量和命令替换的双引号">变量和命令替换的双引号</a></li>
+        <li><a href="#单双引号的不同">单双引号的不同</a></li>
+        <li><a href="#换行和控制符">换行和控制符</a></li>
+        <li><a href="#引用字符文本">引用字符文本</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="引号">引号</h2>
-
+        		<h2 id="引号">引号</h2>
 <h3 id="变量和命令替换的双引号">变量和命令替换的双引号</h3>
-
 <p>变量的个替换只能够被用在双引号中。</p>
-
 <pre><code>calculation='2 * 3'
 echo &quot;$calculation&quot;  # prints 2 * 3
 echo $calculation    # prints 2, the list of files in the current directory, and 3
 echo &quot;$(($calculation))&quot;  # prints 6
-</code></pre>
-
-<p>在双引号之外，<code>$var</code>使用变量<code>var</code>的值，然后用空格分隔这个值的每一部分，并将每一部分解析为一个(通配符)模式。除非你需要这种方式，否则每次都把<code>$var</code>放到双引号里面<code>&quot;$var&quot;</code>。</p>
-
+</code></pre><p>在双引号之外，<code>$var</code>使用变量<code>var</code>的值，然后用空格分隔这个值的每一部分，并将每一部分解析为一个(通配符)模式。除非你需要这种方式，否则每次都把<code>$var</code>放到双引号里面<code>&quot;$var&quot;</code>。</p>
 <p>这也适用于命令的方式，<code>&quot;$(mycommand)&quot;输出</code>mycommand的值。<code>mycommand</code>将会输出空格分隔之后的结果。</p>
-
 <pre><code>echo &quot;$var&quot;  # good
 echo &quot;$(mycommand)&quot; # good
 another=$var  # also works, assignment is implicitly double-quoted
 make -D THING=$var   # BAD! This is not a bash assignment.
 make -D THING=&quot;$var&quot;  # good
 make -D &quot;THING=$var&quot;  # also good
-</code></pre>
-
-<p>命令替换有它自己的上下文环境。编写任意嵌套替换很容易，因为解析器将跟踪嵌套深度，而不是贪婪地搜索第一个“字符”。不过，StackOverflow语法高亮分析错误。例如：</p>
-
+</code></pre><p>命令替换有它自己的上下文环境。编写任意嵌套替换很容易，因为解析器将跟踪嵌套深度，而不是贪婪地搜索第一个“字符”。不过，StackOverflow语法高亮分析错误。例如：</p>
 <pre><code>echo &quot;formatted text: $(printf &quot;a + b = %04d&quot; &quot;${c}&quot;)&quot; # “formatted text: a + b = 0000”
-</code></pre>
-
-<p>命令替换中的变量参数需要添加自己的双引号。例如：</p>
-
+</code></pre><p>命令替换中的变量参数需要添加自己的双引号。例如：</p>
 <pre><code>echo &quot;$(mycommand &quot;$arg1&quot; &quot;$arg2&quot;)&quot;
-</code></pre>
-
-<h3 id="单双引号的不同">单双引号的不同</h3>
-
+</code></pre><h3 id="单双引号的不同">单双引号的不同</h3>
 <table>
 <thead>
 <tr>
@@ -242,47 +226,38 @@ make -D &quot;THING=$var&quot;  # also good
 <th>单引号</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>允许变量的解析</td>
 <td>禁止变量的解析</td>
 </tr>
-
 <tr>
 <td>允许历史扩展</td>
 <td>禁止历史扩展</td>
 </tr>
-
 <tr>
 <td>允许命令替换</td>
 <td>禁止命令替换</td>
 </tr>
-
 <tr>
 <td>*和@可以有特殊的含义</td>
 <td>*和@是字符常量</td>
 </tr>
-
 <tr>
 <td>可以包含双引号也可以包含单引号</td>
 <td>单引号不能在单引号里面</td>
 </tr>
-
 <tr>
-<td>$,&lsquo;,&ldquo;,\可以使用\逃脱，避免他们自己的特殊含义</td>
+<td>$,',&quot;,\可以使用\逃脱，避免他们自己的特殊含义</td>
 <td>所有前面的符号都是字符常量</td>
 </tr>
 </tbody>
 </table>
-
 <p>相同点：</p>
-
 <ul>
 <li>禁止通配符</li>
-
-<li><p>禁止字符分割</p>
-
+<li>禁止字符分割</li>
+</ul>
 <pre><code>$ echo &quot;!cat&quot; 
 echo &quot;cat file&quot; 
 cat file
@@ -295,13 +270,8 @@ $ echo '$a'
 $a
 $ echo &quot;$a&quot; 
 var
-</code></pre></li>
-</ul>
-
-<h3 id="换行和控制符">换行和控制符</h3>
-
+</code></pre><h3 id="换行和控制符">换行和控制符</h3>
 <p>换行符可以被包含在单引号或者双引号中。注意，反斜杠换行符不会产生换行，会把忽略。</p>
-
 <pre><code>newline1='
 '
 newline2=&quot;
@@ -314,50 +284,28 @@ echo &quot;Line${newline1}break&quot;
 echo &quot;Line${newline2}break&quot;
 echo &quot;Line${newline3}break&quot;
 echo &quot;No line break${empty} here&quot;
-</code></pre>
-
-<p>在美元引号字符串中，反斜杠字母或反斜杠八进制可以用来插入控制字符，就像在许多其他编程语言中一样。</p>
-
+</code></pre><p>在美元引号字符串中，反斜杠字母或反斜杠八进制可以用来插入控制字符，就像在许多其他编程语言中一样。</p>
 <pre><code>echo $'Tab: [\t]'
 echo $'Tab again: [\009]' 
 echo $'Form feed: [\f]' 
 echo $'Line\nbreak'
-</code></pre>
-
-<h3 id="引用字符文本">引用字符文本</h3>
-
+</code></pre><h3 id="引用字符文本">引用字符文本</h3>
 <p>这节所有的内容都会输出下面这行：</p>
-
 <pre><code>!&quot;#$&amp;'()*;&lt;=&gt;? @[\]^`{|}~
-</code></pre>
-
-<p>反斜杠引用下一个字符，即下一个字符按字面解释。唯一的例外是换行：反斜杠换行符扩展为空字符串。</p>
-
+</code></pre><p>反斜杠引用下一个字符，即下一个字符按字面解释。唯一的例外是换行：反斜杠换行符扩展为空字符串。</p>
 <pre><code>echo \!\&quot;\#\$\&amp;\'\(\)\*\;\&lt;\=\&gt;\?\ \ \@\[\\\]\^\`\{\|\}\~
-</code></pre>
-
-<p>单引号（前引号，也称为单引号）之间的所有文本都按字面顺序打印。即使是反斜杠也是按照本身输出的，并且单引号里面不能拥有单引号。相反，你可以在单引号内使用反斜杠后跟随的单引号终止字符串，然后开启新的字符串。<code>'\''</code>允许在文本中包含字符串。</p>
-
+</code></pre><p>单引号（前引号，也称为单引号）之间的所有文本都按字面顺序打印。即使是反斜杠也是按照本身输出的，并且单引号里面不能拥有单引号。相反，你可以在单引号内使用反斜杠后跟随的单引号终止字符串，然后开启新的字符串。<code>'\'' </code>允许在文本中包含字符串。</p>
 <pre><code>echo '!&quot;#$&amp;'\''()*;&lt;=&gt;? @[\]^`{|}~'
 #          ^^^^
-</code></pre>
-
-<p>$的单引号像其他语言一样<code>\$'...'</code>，使用反斜杠后面加上单引号：</p>
-
+</code></pre><p>$的单引号像其他语言一样<code>\$'...'</code>，使用反斜杠后面加上单引号：</p>
 <pre><code>echo $'!&quot;#$&amp;\'()*;&lt;=&gt;? @[\\]^`{|}~' 
 #           ^^           ^^
-</code></pre>
-
-<p>双引号分割半文本的字符串，只有<code>&quot;\$</code>和`保留原有的含义。这些字符之前需要一个反斜杠（请注意，如果反斜杠后面跟着其他字符，则反斜杠将保留）。双引号是很有用的，在包含一个变量和命令替换的情况下：</p>
-
+</code></pre><p>双引号分割半文本的字符串，只有<code>&quot;\$</code>和`保留原有的含义。这些字符之前需要一个反斜杠（请注意，如果反斜杠后面跟着其他字符，则反斜杠将保留）。双引号是很有用的，在包含一个变量和命令替换的情况下：</p>
 <pre><code>echo &quot;!\&quot;#\$&amp;'()*;&lt;=&gt;? @[\\]^\`{|}~&quot;
 #      ^^                ^^  ^^
 echo &quot;!\&quot;#\$&amp;'()*;&lt;=&gt;? @[\]^\`{|}~&quot;
 #      ^^                ^  ^^ \[ prints \[
-</code></pre>
-
-<p>注意：双引号里面的<code>!</code>会触发历史扩展：<code>&quot;!oops&quot;</code>会寻找一个包含<code>oops</code>的历史命令。<code>\!oops</code>不会进行历史扩展，但是会保留这个反斜杠。这个在脚本里面不会出现。</p>
-
+</code></pre><p>注意：双引号里面的<code>!</code>会触发历史扩展：<code>&quot;!oops&quot;</code>会寻找一个包含<code>oops</code>的历史命令。<code>\!oops</code>不会进行历史扩展，但是会保留这个反斜杠。这个在脚本里面不会出现。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -430,6 +378,12 @@ echo &quot;!\&quot;#\$&amp;'()*;&lt;=&gt;? @[\]^\`{|}~&quot;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

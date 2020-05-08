@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,54 +187,39 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#here语法">Here语法</a>
-<ul>
-<li><a href="#here文档执行命令">here文档执行命令</a></li>
-<li><a href="#here缩进">here缩进</a></li>
-<li><a href="#创建文件">创建文件</a></li>
-<li><a href="#here字符串">here字符串</a></li>
-<li><a href="#使用sudo运行多个命令">使用sudo运行多个命令</a></li>
-<li><a href="#限制字符串">限制字符串</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#here语法">Here语法</a>
+      <ul>
+        <li><a href="#here文档执行命令">here文档执行命令</a></li>
+        <li><a href="#here缩进">here缩进</a></li>
+        <li><a href="#创建文件">创建文件</a></li>
+        <li><a href="#here字符串">here字符串</a></li>
+        <li><a href="#使用sudo运行多个命令">使用sudo运行多个命令</a></li>
+        <li><a href="#限制字符串">限制字符串</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="here语法">Here语法</h2>
-
+        		<h2 id="here语法">Here语法</h2>
 <h3 id="here文档执行命令">here文档执行命令</h3>
-
 <pre><code>ssh -p 21 example@example.com &lt;&lt;EOF
 	echo 'printing pwd'
 	echo &quot;\${pwd}&quot;
 	ls -a
 	find '*.txt'
 EOF
-</code></pre>
-
-<p><code>$</code>这里是被逃脱的，因为我们不想让这个变量在当前shell中解析。<code>$(pwd)</code>应该在远端的shell中执行。</p>
-
+</code></pre><p><code>$</code>这里是被逃脱的，因为我们不想让这个变量在当前shell中解析。<code>$(pwd)</code>应该在远端的shell中执行。</p>
 <p>另外一种方式：</p>
-
 <pre><code>ssh -p 21 example@example.com &lt;&lt;'EOF'
 	echo 'printing pwd'
 	echo &quot;$(pwd)&quot;
 	ls -a
 	find '*.txt'
 EOF
-</code></pre>
-
-<p>注意：这个结束的<code>EOF</code>标识需要在一行的最开始（前面没有任何空格）。如果需要缩进的话，当你的hera语法是以<code>&lt;&lt;-</code>开头的话，可以使用<code>tab</code>。查看here文档的缩进和限制字符串来获取更多信息。</p>
-
+</code></pre><p>注意：这个结束的<code>EOF</code>标识需要在一行的最开始（前面没有任何空格）。如果需要缩进的话，当你的hera语法是以<code>&lt;&lt;-</code>开头的话，可以使用<code>tab</code>。查看here文档的缩进和限制字符串来获取更多信息。</p>
 <h3 id="here缩进">here缩进</h3>
-
 <p>你可以在here文档中使用<code>tab</code>来进行缩进操作，但是这个时候你就需要使用<code>&lt;&lt;-</code>来代替<code>&lt;&lt;</code>符号了：</p>
-
 <pre><code>$ cat &lt;&lt;- EOF
 	This is some content indented with tabs `\t`.
 	You cannot indent with spaces you __have__ to use tabs.
@@ -242,60 +231,38 @@ This is some content indented with tabs _\t_.
 You cannot indent with spaces you __have__ to use tabs.
 Bash will remove empty space before these lines.
 __Note__: Be sure to replace spaces with tabs when copying this example.
-</code></pre>
-
-<p>一个特别重要的用处是在shell脚本中，可以查看<code>man bash</code>，例如：</p>
-
+</code></pre><p>一个特别重要的用处是在shell脚本中，可以查看<code>man bash</code>，例如：</p>
 <pre><code>if cond; then
 	cat &lt;&lt;- EOF
 	hello
 	there
 	EOF
 fi
-</code></pre>
-
-<p>通常为了更好的可读性，将代码块中的行缩进为if语句的行。如果没有<code>&lt;&lt;-</code>语法，我们必须按照下面这么写：</p>
-
+</code></pre><p>通常为了更好的可读性，将代码块中的行缩进为if语句的行。如果没有<code>&lt;&lt;-</code>语法，我们必须按照下面这么写：</p>
 <pre><code>if cond; then 
 	cat &lt;&lt; EOF
 hello 
 there 
 EOF 
 fi
-</code></pre>
-
-<p>这中写法非常不可读，尤其是在真实的复杂脚本中，非常容易出现错误。</p>
-
+</code></pre><p>这中写法非常不可读，尤其是在真实的复杂脚本中，非常容易出现错误。</p>
 <h3 id="创建文件">创建文件</h3>
-
 <p>一个here语法的经典用处是列出文件的内容来创建一个文件：</p>
-
 <pre><code>cat &gt; fruits.txt &lt;&lt; EOF
 apple
 orange
 lemon
 EOF
-</code></pre>
-
-<p>这个文件的内容是<code>&lt;&lt; EOF</code>和<code>EOF</code>之间的内容。</p>
-
+</code></pre><p>这个文件的内容是<code>&lt;&lt; EOF</code>和<code>EOF</code>之间的内容。</p>
 <p>这里here文档的输入变成了<code>cat</code>命令的输入。然后<code>cat</code>命令只是把获取的输入内容简单的输出出来，然后重定向到<code>fruits.txt</code>文件中。</p>
-
 <p>这个命令就创建了一个叫做<code>fruits.txt</code>的文件，并且文件的内容是：</p>
-
 <pre><code>apple
 orange
 lemon
-</code></pre>
-
-<p>输出重定向的规则生效了：如果文件<code>fruits.txt</code>文件不存在，就会创建这个文件；如果文件存在的话，就会清空文件的内容，然后填入上述的信息。</p>
-
+</code></pre><p>输出重定向的规则生效了：如果文件<code>fruits.txt</code>文件不存在，就会创建这个文件；如果文件存在的话，就会清空文件的内容，然后填入上述的信息。</p>
 <h3 id="here字符串">here字符串</h3>
-
 <p>Version&gt;=2.05b</p>
-
 <p>你可以使用下面的here语法给命令传递参数：</p>
-
 <pre><code>$ awk '{print $2}' &lt;&lt;&lt; &quot;hello world - how are you?&quot;
 world
 
@@ -303,94 +270,62 @@ $ awk '{print $1}' &lt;&lt;&lt; &quot;hello how are you
 &gt; she is fine&quot;
 hello
 she
-</code></pre>
-
-<p>你也可以在<code>while</code>循环中使用here字符串语法：</p>
-
+</code></pre><p>你也可以在<code>while</code>循环中使用here字符串语法：</p>
 <pre><code>$ while IFS=&quot; &quot; read -r word1 word2 rest
 &gt; do
 &gt; echo &quot;$word1&quot;
 &gt; done &lt;&lt;&lt; &quot;hello how are you - i am fine&quot;
 hello
-</code></pre>
-
-<h3 id="使用sudo运行多个命令">使用sudo运行多个命令</h3>
-
+</code></pre><h3 id="使用sudo运行多个命令">使用sudo运行多个命令</h3>
 <pre><code>sudo -s &lt;&lt;EOF
 a='var'
 echo 'Running serveral commands with sudo'
 mktemp -d
 echo &quot;\$a&quot;
 EOF
-</code></pre>
-
-<ul>
+</code></pre><ul>
 <li><code>$a</code>需要被逃脱，避免在当前的shell中直接解析</li>
 </ul>
-
 <p>或者</p>
-
 <pre><code>sudo -s &lt;&lt;'EOF'
 a='var'
 echo &quot;Running serveral commands with sudo&quot;
 mktemp -d
 echo &quot;$a&quot;
 EOF
-</code></pre>
-
-<h3 id="限制字符串">限制字符串</h3>
-
+</code></pre><h3 id="限制字符串">限制字符串</h3>
 <p>heredoc使用限制字符串来确定什么时候停止获取输入。这里限制字符串必须：</p>
-
 <ul>
 <li>在一行的开头</li>
-<li>这一行只有这个标识字符串。<strong>注意：</strong>如果你使用<code>&lt;&lt;-</code>限制字符，可以在内容前面使用<code>tab</code></li>
+<li>这一行只有这个标识字符串。**注意：**如果你使用<code>&lt;&lt;-</code>限制字符，可以在内容前面使用<code>tab</code></li>
 </ul>
-
 <p>正确的用法：</p>
-
 <pre><code>cat &lt;&lt;limitstrinng
 line 1
 line 2
 limitstring
-</code></pre>
-
-<p>这个将会输出：</p>
-
+</code></pre><p>这个将会输出：</p>
 <blockquote>
 <p>line 1</p>
-
 <p>line2</p>
 </blockquote>
-
 <p>不正确的用法：</p>
-
 <pre><code>cat &lt;&lt;limitstring
 line 1
 line 2
   limitstring
-</code></pre>
-
-<p>因为在最后一行的<code>limitstring</code>字符没有在行的最开始，这个shell将会等待进一步的输入，直到遇到一行以<code>limitstring</code>开头，并且没有其他内容的时候才停止。只有在这个时候，shell才会中断等待输入，输入的内容也会被传递给<code>cat</code>命令。</p>
-
+</code></pre><p>因为在最后一行的<code>limitstring</code>字符没有在行的最开始，这个shell将会等待进一步的输入，直到遇到一行以<code>limitstring</code>开头，并且没有其他内容的时候才停止。只有在这个时候，shell才会中断等待输入，输入的内容也会被传递给<code>cat</code>命令。</p>
 <p>注意：当你在开始时使用<code>&lt;&lt;-</code>的标识符，每行开始的<code>tab</code>在解析的时候将会被移除，所以数据和限制字符串前面可以添加<code>tab</code>（为了便于shell脚本阅读）：</p>
-
 <pre><code>cat &lt;&lt;-limitstring
 	line 1	has a tab each before the words line and has 
 		line 2 has two leading tabs
 		limitstring
-</code></pre>
-
-<p>这也会正常的工作：</p>
-
+</code></pre><p>这也会正常的工作：</p>
 <blockquote>
-<p>line 1    has a tab each before the words line and has</p>
-
+<p>line 1 	has a tab each before the words line and has</p>
 <p>line 2 has two leading tabs</p>
 </blockquote>
-
 <p>开始的<code>tab</code>将会被移除（文档内部的tab不变）。</p>
-
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -463,6 +398,12 @@ line 2
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

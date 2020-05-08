@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,91 +187,52 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#导航目录">导航目录</a>
-<ul>
-<li><a href="#绝对目录和相对目录">绝对目录和相对目录</a></li>
-<li><a href="#到之前目录">到之前目录</a></li>
-<li><a href="#home目录">home目录</a></li>
-<li><a href="#脚本目录">脚本目录</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#导航目录">导航目录</a>
+      <ul>
+        <li><a href="#绝对目录和相对目录">绝对目录和相对目录</a></li>
+        <li><a href="#到之前目录">到之前目录</a></li>
+        <li><a href="#home目录">home目录</a></li>
+        <li><a href="#脚本目录">脚本目录</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="导航目录">导航目录</h2>
-
+        		<h2 id="导航目录">导航目录</h2>
 <h3 id="绝对目录和相对目录">绝对目录和相对目录</h3>
-
 <p>想要切换到一个绝对路径的目录，可以使用<code>/</code>开头的完整目录名称：</p>
-
 <pre><code>$ cd /home/username/project/abc
-</code></pre>
-
-<p>如果你想到达的目录在这个目录的下级目录，可以使用一个相对路径。例如，你当前在<code>/home/username/project</code>目录，如果想要到这个目录的<code>abc</code>子目录：</p>
-
+</code></pre><p>如果你想到达的目录在这个目录的下级目录，可以使用一个相对路径。例如，你当前在<code>/home/username/project</code>目录，如果想要到这个目录的<code>abc</code>子目录：</p>
 <pre><code>$ cd abc
-</code></pre>
-
-<p>如果你想到当前目录的上级目录，可以使用<code>..</code>符号。比如，如果你当前在<code>/home/username/project/abc</code>这个目录，现在想要到<code>/home/username/project</code>这个目录，可以使用下面的命令：</p>
-
+</code></pre><p>如果你想到当前目录的上级目录，可以使用<code>..</code>符号。比如，如果你当前在<code>/home/username/project/abc</code>这个目录，现在想要到<code>/home/username/project</code>这个目录，可以使用下面的命令：</p>
 <pre><code>$ cd ..
-</code></pre>
-
-<p>这也可以称作“向上”目录。</p>
-
+</code></pre><p>这也可以称作“向上”目录。</p>
 <h3 id="到之前目录">到之前目录</h3>
-
 <p>在当前的shell中，你可以到你之前在的目录，而不用管这个目录在哪：</p>
-
 <pre><code>$ cd -
-</code></pre>
-
-<p>如果多次执行这个目录，你将会在当前目录和之前的目录之间切换。</p>
-
+</code></pre><p>如果多次执行这个目录，你将会在当前目录和之前的目录之间切换。</p>
 <h3 id="home目录">home目录</h3>
-
 <p>默认的目录是home目录（<code>$HOME</code>，特别是<code>/home/username</code>），所以当没有带目录参数的执行<code>cd</code>命令的时候，将会直接到home目录：</p>
-
 <pre><code>$ cd
-</code></pre>
-
-<p>或者你可以更加明确的执行：</p>
-
+</code></pre><p>或者你可以更加明确的执行：</p>
 <pre><code>$ cd $HOME
-</code></pre>
-
-<p>home目录的简单符合是<code>~</code>，所以也可以这样执行：</p>
-
+</code></pre><p>home目录的简单符合是<code>~</code>，所以也可以这样执行：</p>
 <pre><code>$ cd ~
-</code></pre>
-
-<h3 id="脚本目录">脚本目录</h3>
-
+</code></pre><h3 id="脚本目录">脚本目录</h3>
 <p>通常，有两种bash脚本：</p>
-
 <ol>
 <li>在当前目录执行的系统工具。</li>
 <li>相对于自己目录修改文件的项目工具。</li>
 </ol>
-
 <p>对第二中脚本来说，到的脚本所在的目录是非常有用的。这可以使用下面的命令：</p>
-
 <pre><code>$ cd &quot;$(dirname &quot;$(readlink -f &quot;$0&quot;)&quot;)&quot;
-</code></pre>
-
-<p>这个命令运行了3个命令：</p>
-
+</code></pre><p>这个命令运行了3个命令：</p>
 <ol>
-<li><code>readlink -f &quot;$0&quot;</code>获取当前脚本的目录。</li>
+<li><code>readlink -f &quot;$0&quot; </code>获取当前脚本的目录。</li>
 <li><code>dirname</code>获取脚本的目录。</li>
 <li><code>cd</code>修改当前的目录到<code>dirname</code>返回的目录。</li>
 </ol>
-
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -340,6 +305,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

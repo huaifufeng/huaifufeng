@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,39 +187,31 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#phpdoc">PHPDoc</a>
-<ul>
-<li><a href="#1-描述变量">1. 描述变量</a></li>
-<li><a href="#2-添加方法的元信息">2. 添加方法的元信息</a></li>
-<li><a href="#3-描述参数">3. 描述参数</a></li>
-<li><a href="#4-集合">4. 集合</a></li>
-<li><a href="#5-添加文件元数据">5. 添加文件元数据</a></li>
-<li><a href="#6-从父结构继承元数据">6. 从父结构继承元数据</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#phpdoc">PHPDoc</a>
+      <ul>
+        <li><a href="#1-描述变量">1. 描述变量</a></li>
+        <li><a href="#2-添加方法的元信息">2. 添加方法的元信息</a></li>
+        <li><a href="#3-描述参数">3. 描述参数</a></li>
+        <li><a href="#4-集合">4. 集合</a></li>
+        <li><a href="#5-添加文件元数据">5. 添加文件元数据</a></li>
+        <li><a href="#6-从父结构继承元数据">6. 从父结构继承元数据</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="phpdoc">PHPDoc</h2>
-
+        		<h2 id="phpdoc">PHPDoc</h2>
 <h3 id="1-描述变量">1. 描述变量</h3>
-
 <p><code>@var</code>关键字用来描述一个类型和用法：</p>
-
 <ul>
 <li>类属性</li>
 <li>本地或全局变量</li>
 <li>类或者全局常量</li>
 </ul>
-
-<pre><code class="language-php">class Example {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Example {
     /** @var string 常量*/
-    const UNCHANGING = 'Untouchable';
+    const UNCHANGING = &#39;Untouchable&#39;;
     
     /** @var string $some_str 字符串 */
     public $some_str;
@@ -228,17 +224,11 @@
     
     ...
 }
-</code></pre>
-
-<p>类型这里可以是PHP内建的类型，也可以是包含命名空间的用户定义的类</p>
-
+</code></pre></div><p>类型这里可以是PHP内建的类型，也可以是包含命名空间的用户定义的类</p>
 <p>变量名应该包含，但是如果只有一个元素的话可以省略。</p>
-
 <h3 id="2-添加方法的元信息">2. 添加方法的元信息</h3>
-
 <p>函数级注释有助于IDE识别返回值或潜在的危险代码。</p>
-
-<pre><code class="language-php">/**
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
  * 两个元素加在一起
  *
  * @param Int $a 第一个求和的元素
@@ -255,7 +245,7 @@ function sum($a, $b) {
  * @throws Exception 一直
  */
 function dangerousCode() {
-    throw new Exception('注意，这里有风险');
+    throw new Exception(&#39;注意，这里有风险&#39;);
 }
 /**
  * 老结构不使用了，这里的代码不使用
@@ -265,11 +255,8 @@ function dangerousCode() {
 function oldCode() {
     mysql_connect(/* ... */);
 }
-</code></pre>
-
-<h3 id="3-描述参数">3. 描述参数</h3>
-
-<pre><code class="language-php">/**
+</code></pre></div><h3 id="3-描述参数">3. 描述参数</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
  * 参数
  * 
  * @param int     $int
@@ -289,7 +276,7 @@ function demo_param($int, $string, $array, $bool) {
  * @param array   $array
  * @param bool    $bool
  */
- function demo_param_optional($int = 5, $string = 'foo', $array = [], $bool = false) {
+ function demo_param_optional($int = 5, $string = &#39;foo&#39;, $array = [], $bool = false) {
  
  }
  
@@ -310,121 +297,102 @@ function demo_param($int, $string, $array, $bool) {
   * 参数 - 复杂
   *  
   * @param array $config
-  * &lt;pre&gt;
+  * &lt;<span style="color:#f92672">pre</span>&gt;
   * $params = [
-  *     'hostname' =&gt; (string) DB hostname, 必须
-  *     'database' =&gt; (string) DB name 必须    
-  *     'username' =&gt; (string) DB username 必须
+  *     &#39;hostname&#39; =&gt; (string) DB hostname, 必须
+  *     &#39;database&#39; =&gt; (string) DB name 必须    
+  *     &#39;username&#39; =&gt; (string) DB username 必须
   * ]
-  * &lt;/pre&gt;
+  * &lt;/<span style="color:#f92672">pre</span>&gt;
   */
 function demo_param_complex($config) {
 
 }
-</code></pre>
-
-<h3 id="4-集合">4. 集合</h3>
-
+</code></pre></div><h3 id="4-集合">4. 集合</h3>
 <p>PSR-5为集合提供了一种通用样式的表示方式。</p>
-
 <p><strong>通用语法</strong></p>
-
 <pre><code>Type[]
 Type&lt;Type&gt;
 Type&lt;Type[, Type]...&gt;
 Type&lt;Type[|Type]...&gt;
-</code></pre>
-
-<p>集合的值也可以是另外的数组和集合。</p>
-
+</code></pre><p>集合的值也可以是另外的数组和集合。</p>
 <pre><code>Type&lt;Type&lt;Type&gt;&gt;
 Type&lt;Type&lt;Type[, Type]...&gt;&gt;
 Type&lt;Type&lt;Type[|Type]...&gt;&gt;
-</code></pre>
+</code></pre><p><strong>例子</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @var ArrayObject&lt;string&gt; $name
+</span><span style="color:#e6db74"> */</span>
+$name <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>]);
 
-<p><strong>例子</strong></p>
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @var ArrayObject&lt;int&gt; $name
+</span><span style="color:#e6db74"> */</span>
+$name <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>]);
 
-<pre><code class="language-php">&lt;?php
-/**
- * @var ArrayObject&lt;string&gt; $name
- */
-$name = new ArrayObject(['a', 'b']);
-
-/**
- * @var ArrayObject&lt;int&gt; $name
- */
-$name = new ArrayObject([1, 2]);
-
-/**
- * @var ArrayObject&lt;stdClass&gt; $name
- */
-$name = new ArrayObject([ 
-    new stdClass(),
-    new stdClass() 
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @var ArrayObject&lt;stdClass&gt; $name
+</span><span style="color:#e6db74"> */</span>
+$name <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([ 
+    <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">stdClass</span>(),
+    <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">stdClass</span>() 
 ]);
 
-/**
- * @var ArrayObject&lt;string|int|stdClass|bool&gt; $name
- */
-$name = new ArrayObject([ 'a',
-    true,
-    1,
-    'b',
-    new stdClass(), 
-    'c',
-    2 
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @var ArrayObject&lt;string|int|stdClass|bool&gt; $name
+</span><span style="color:#e6db74"> */</span>
+$name <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([ <span style="color:#e6db74">&#39;a&#39;</span>,
+    <span style="color:#66d9ef">true</span>,
+    <span style="color:#ae81ff">1</span>,
+    <span style="color:#e6db74">&#39;b&#39;</span>,
+    <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">stdClass</span>(), 
+    <span style="color:#e6db74">&#39;c&#39;</span>,
+    <span style="color:#ae81ff">2</span> 
 ]);
 
-/**
- * @var ArrayObject&lt;ArrayObject&lt;int&gt;&gt; $name
- */
-$name = new ArrayObject([ 
-    new ArrayObject([1, 2]), 
-    new ArrayObject([1, 2])
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @var ArrayObject&lt;ArrayObject&lt;int&gt;&gt; $name
+</span><span style="color:#e6db74"> */</span>
+$name <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([ 
+    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>]), 
+    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>])
 ]);
 
-/**
- * @var ArrayObject&lt;int, string&gt; $name
-*/
-$name = new ArrayObject([ 
-    1 =&gt; 'a',
-    2 =&gt; 'b' 
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @var ArrayObject&lt;int, string&gt; $name
+</span><span style="color:#e6db74">*/</span>
+$name <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([ 
+    <span style="color:#ae81ff">1</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;a&#39;</span>,
+    <span style="color:#ae81ff">2</span> <span style="color:#f92672">=&gt;</span> <span style="color:#e6db74">&#39;b&#39;</span> 
 ]);
 
-/**
- * @var ArrayObject&lt;string, int&gt; $name
- */
-$name = new ArrayObject([ 
-    'a' =&gt; 1,
-    'b' =&gt; 2 
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @var ArrayObject&lt;string, int&gt; $name
+</span><span style="color:#e6db74"> */</span>
+$name <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([ 
+    <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">1</span>,
+    <span style="color:#e6db74">&#39;b&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#ae81ff">2</span> 
 ]);
 
-/**
- * @var ArrayObject&lt;string, stdClass&gt; $name
- */
-$name = new ArrayObject([ 
-    'a' =&gt; new stdClass(), 
-    'b' =&gt; new stdClass()
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @var ArrayObject&lt;string, stdClass&gt; $name
+</span><span style="color:#e6db74"> */</span>
+$name <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">ArrayObject</span>([ 
+    <span style="color:#e6db74">&#39;a&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">stdClass</span>(), 
+    <span style="color:#e6db74">&#39;b&#39;</span> <span style="color:#f92672">=&gt;</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">stdClass</span>()
 ]);
-</code></pre>
-
-<h3 id="5-添加文件元数据">5. 添加文件元数据</h3>
-
+</code></pre></div><h3 id="5-添加文件元数据">5. 添加文件元数据</h3>
 <p>文件级元数据应用于文件中的所有代码，并应放在文件的顶部：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
 
-<pre><code class="language-php">&lt;?php
-
-/**
- * @author John Doe (jdoe@example.com)
- * @copyright MIT
- */
-</code></pre>
-
-<h3 id="6-从父结构继承元数据">6. 从父结构继承元数据</h3>
-
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * @author John Doe (jdoe@example.com)
+</span><span style="color:#e6db74"> * @copyright MIT
+</span><span style="color:#e6db74"> */</span>
+</code></pre></div><h3 id="6-从父结构继承元数据">6. 从父结构继承元数据</h3>
 <p>如果一个类扩展了另外一个类，并将使用相同的元数据，那么提供<code>@inheritDoc</code>是使用相同文件的简单方式。如果多个类继承自一个基类，则只有基类需要更改才能影响子类：</p>
-
-<pre><code class="language-php">abstract class FooBase {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">abstract class FooBase {
     /**
      * @param Int $a First parameter to add
      * @param Int $b Second parameter to add
@@ -442,9 +410,7 @@ class ConcreteFoo extends FooBase
         return $a + $b;
     }
 }
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -516,6 +482,12 @@ class ConcreteFoo extends FooBase
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

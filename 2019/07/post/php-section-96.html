@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,28 +187,21 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#单元测试">单元测试</a>
-<ul>
-<li><a href="#1-测试类规则">1. 测试类规则</a></li>
-<li><a href="#2-phpunit数据提供者">2. PHPUnit数据提供者</a></li>
-<li><a href="#3-测试异常">3. 测试异常</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#单元测试">单元测试</a>
+      <ul>
+        <li><a href="#1-测试类规则">1. 测试类规则</a></li>
+        <li><a href="#2-phpunit数据提供者">2. PHPUnit数据提供者</a></li>
+        <li><a href="#3-测试异常">3. 测试异常</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="单元测试">单元测试</h2>
-
+        		<h2 id="单元测试">单元测试</h2>
 <h3 id="1-测试类规则">1. 测试类规则</h3>
-
 <p>例如，我们有一个简单的<code>LoginForm</code>类，这个类有一个方法<code>rules()</code>（在登录页面中用作框架的模板）：</p>
-
-<pre><code class="language-php">class LoginForm {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class LoginForm {
     public $email;
     public $rememberMe;
     public $password;
@@ -216,16 +213,16 @@
      public function rules() {
          return [
          	   //email和password是必须的
-             [['email', 'password'], 'required'],
+             [[&#39;email&#39;, &#39;password&#39;], &#39;required&#39;],
              
              //email必须是email格式的
-             ['email', 'email'],
+             [&#39;email&#39;, &#39;email&#39;],
              
              //rememberMe必须是布尔值
-             ['rememberMe', 'boolean'],
+             [&#39;rememberMe&#39;, &#39;boolean&#39;],
              
              //password必须匹配正则 必须只包含字母和数字
-             ['password', 'match', 'pattern' =&gt; '/^[a-z0-9]+$/'],
+             [&#39;password&#39;, &#39;match&#39;, &#39;pattern&#39; =&gt; &#39;/^[a-z0-9]+$/&#39;],
          ];
      }
      
@@ -235,31 +232,28 @@
          list($vars, $type) = $rule;
          foreach((array) $vars as $var) {
              switch($type) {
-                 case 'required':
-                     $success = $success &amp;&amp; $var != '';
+                 case &#39;required&#39;:
+                     $success = $success <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> $var != &#39;&#39;;
                      break;
-                 case 'email':
-                     $success = $success &amp;&amp; filter_var($var, FILTER_VALIDATE_EMAIL);
+                 case &#39;email&#39;:
+                     $success = $success <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> filter_var($var, FILTER_VALIDATE_EMAIL);
                      break;
-                 case 'boolean':
-                     $success = $success &amp;&amp; filter_var($var, FILTER_VALIDATE_BOOLEAN);
+                 case &#39;boolean&#39;:
+                     $success = $success <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> filter_var($var, FILTER_VALIDATE_BOOLEAN);
                      break;
-                 case 'match':
-                     $success = $success &amp;&amp; preg_match($rule['pattern'], $var);
+                 case &#39;match&#39;:
+                     $success = $success <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> preg_match($rule[&#39;pattern&#39;], $var);
                      break;
                  default:
-                     throw new \InvalidArgumentException(&quot;Invalid filter type passed&quot;);    
+                     throw new \InvalidArgumentException(&#34;Invalid filter type passed&#34;);    
              }
          }
          
          return $success;
      }
 }
-</code></pre>
-
-<p>为了在这个类上面执行测试，我们使用单元测试(检查源代码查看是否符合我们的预期)：</p>
-
-<pre><code class="language-php">class LoginFormTest extends TestCase {
+</code></pre></div><p>为了在这个类上面执行测试，我们使用单元测试(检查源代码查看是否符合我们的预期)：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class LoginFormTest extends TestCase {
     protected $loginForm;
     
     //开始测试前执行的代码
@@ -276,73 +270,55 @@
         $rules = $this-&gt;loginForm-&gt;rules();
         
         //初始化验证和测试的数据
-        $this-&gt;loginForm-&gt;email = &quot;valid@email.com&quot;;
-				$this-&gt;loginForm-&gt;password = &quot;password&quot;;
+        $this-&gt;loginForm-&gt;email = &#34;valid@email.com&#34;;
+				$this-&gt;loginForm-&gt;password = &#34;password&#34;;
 				$this-&gt;loginForm-&gt;rememberMe = true;
-				$this-&gt;assertTrue($this-&gt;loginForm-&gt;validate($rules), '应该是有效的没有无效的存在');
+				$this-&gt;assertTrue($this-&gt;loginForm-&gt;validate($rules), &#39;应该是有效的没有无效的存在&#39;);
 				
 				//验证邮箱
-				$this-&gt;loginForm-&gt;email = '';
-				$this-&gt;assertFalse($this-&gt;loginForm-&gt;validate($rules), &quot;email应该是无效的&quot;);
+				$this-&gt;loginForm-&gt;email = &#39;&#39;;
+				$this-&gt;assertFalse($this-&gt;loginForm-&gt;validate($rules), &#34;email应该是无效的&#34;);
 				
 				//没有包含@的是无效的
-				$this-&gt;loginForm-&gt;email = 'invalid.email.com';
-        $this-&gt;assertFalse($this-&gt;loginForm-&gt;validate($rules), &quot;email应该是无效的&quot;);
+				$this-&gt;loginForm-&gt;email = &#39;invalid.email.com&#39;;
+        $this-&gt;assertFalse($this-&gt;loginForm-&gt;validate($rules), &#34;email应该是无效的&#34;);
          
         //修改邮箱去做下个测试
-        $this-&gt;loginForm-&gt;email = 'valid@email.com';
+        $this-&gt;loginForm-&gt;email = &#39;valid@email.com&#39;;
         
         //验证密码有效，密码不能为空
-        $this-&gt;loginForm-&gt;password = ''; 
-        $this-&gt;assertFalse($this-&gt;loginForm-&gt;validate($rules), &quot;密码应该是无效的&quot;);
+        $this-&gt;loginForm-&gt;password = &#39;&#39;; 
+        $this-&gt;assertFalse($this-&gt;loginForm-&gt;validate($rules), &#34;密码应该是无效的&#34;);
         
         //修改密码做下个测试
-        $this-&gt;loginForm-&gt;password = 'ThisIsMyPassword';
+        $this-&gt;loginForm-&gt;password = &#39;ThisIsMyPassword&#39;;
         
         //验证rememberMe
         $this-&gt;loginForm-&gt;rememberMe = 999;
-        $this-&gt;assertFalse($this-&gt;loginForm-&gt;validate($rules), &quot;rememberMe应该是布尔型&quot;);
+        $this-&gt;assertFalse($this-&gt;loginForm-&gt;validate($rules), &#34;rememberMe应该是布尔型&#34;);
         
         //rememberMe修改为正确
         $this-&gt;loginForm-&gt;rememberMe = true;
     }
 }
-</code></pre>
-
-<p>这里<code>Unit</code>单元测试有什么实际的用处呢？例如，当出现不希望的结果时很容易修复。例如，这让我们尽早发下下面规则的问题：</p>
-
+</code></pre></div><p>这里<code>Unit</code>单元测试有什么实际的用处呢？例如，当出现不希望的结果时很容易修复。例如，这让我们尽早发下下面规则的问题：</p>
 <pre><code>['password', 'match', 'pattern' =&gt; '/^[a-z0-9]+$/i'],
-</code></pre>
-
-<p>相反，如果我们缺少一个重要的地方：</p>
-
+</code></pre><p>相反，如果我们缺少一个重要的地方：</p>
 <pre><code>['password', 'match', 'pattern' =&gt; '/^[a-z0-9]$/i'],
-</code></pre>
-
-<p>由于有许多不同的规则（假设我们不仅仅使用电子邮件和密码），很难发现错误。</p>
-
-<pre><code class="language-php">// Initialize to valid and test this
-$this-&gt;loginForm-&gt;email = &quot;valid@email.com&quot;;
-$this-&gt;loginForm-&gt;password = &quot;password&quot;;
+</code></pre><p>由于有许多不同的规则（假设我们不仅仅使用电子邮件和密码），很难发现错误。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">// Initialize to valid and test this
+$this-&gt;loginForm-&gt;email = &#34;valid@email.com&#34;;
+$this-&gt;loginForm-&gt;password = &#34;password&#34;;
 $this-&gt;loginForm-&gt;rememberMe = true;
-$this-&gt;assertTrue($this-&gt;loginForm-&gt;validate($rules), &quot;Should be valid as nothing is invalid&quot;);
-</code></pre>
-
-<p>这个单元测试将会通过<strong>第一个</strong>例子，但是不是<strong>第二个</strong>。为什么？因为在第二个例子中我们写的模式(缺少<code>+</code>号)，这表示只接受一个字符/数字。</p>
-
+$this-&gt;assertTrue($this-&gt;loginForm-&gt;validate($rules), &#34;Should be valid as nothing is invalid&#34;);
+</code></pre></div><p>这个单元测试将会通过<strong>第一个</strong>例子，但是不是<strong>第二个</strong>。为什么？因为在第二个例子中我们写的模式(缺少<code>+</code>号)，这表示只接受一个字符/数字。</p>
 <p>单元测试可以通过在命令行中运行：<code>phpunit path_to_file</code>。如果每个东西都是正常的，我们可以看到所有的测试都是<code>OK</code>状态的。否则我们将会遇到<code>ERROR</code>(语法错误)或者<code>FAIL</code>(至少一个方法没有通过)。</p>
-
 <p>使用额外的参数像<code>--coverage</code>我们可以看到在测试后面又多少行代码执行，哪一个通过/失败。这适用于任何安装了<a href="https://phpunit.de/">PHPUnit</a>的框架。</p>
-
 <p>示例phpunit测试在控制台中的外观（常规外观，而不是根据此示例）：</p>
-
-<p><img src="/img/php/9za6b.png" alt="phpunit" /></p>
-
+<p><img src="/img/php/9za6b.png" alt="phpunit"></p>
 <h3 id="2-phpunit数据提供者">2. PHPUnit数据提供者</h3>
-
 <p>测试方法通常需要测试的数据。为了保证某些方法测试完全，需要为每个可能的测试条件提供不同的数据集。当然，你可以手动的在循环中进行提供：</p>
-
-<pre><code class="language-php">...
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">...
 public function testSomething() {
     $data = [...];
     foreach($data as $dataSet) {
@@ -350,19 +326,13 @@ public function testSomething() {
     }
 } 
 ...
-</code></pre>
-
-<p>一些人认为这是便利的。但是这种方法有一些缺点。首先，如果测试方法接收多个参数，你需要执行额外的操作来准备数据。第二，如果失败，在没有附加消息和调试的情况下很难区分失败的数据集。第三，phpunit提供了使用数据提供者<a href="https://phpunit.de/manual/6.5/en/writing-tests-for-phpunit.html#writing-tests-for-phpunit.data-providers">处理测试数据集</a>的自动方法。</p>
-
+</code></pre></div><p>一些人认为这是便利的。但是这种方法有一些缺点。首先，如果测试方法接收多个参数，你需要执行额外的操作来准备数据。第二，如果失败，在没有附加消息和调试的情况下很难区分失败的数据集。第三，phpunit提供了使用数据提供者<a href="https://phpunit.de/manual/6.5/en/writing-tests-for-phpunit.html#writing-tests-for-phpunit.data-providers">处理测试数据集</a>的自动方法。</p>
 <p>数据提供程序是一个函数，它应该为您的特定测试用例返回数据。</p>
-
 <blockquote>
 <p>数据提供程序方法必须是公共的，并且返回<strong>数组数组</strong>或实现<strong>迭代器接口</strong>并为每个迭代步骤生成数组的<strong>yield</strong>。对于作为集合一部分的每个数组，将使用数组的内容作为参数调用测试方法。</p>
 </blockquote>
-
 <p>想要使用数据提供器的话，需要在注释中使用<code>@dataProvider</code>来指定数据提供器的方法名称：</p>
-
-<pre><code class="language-php">/**
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
 * @dataProvider dataProviderForTest 
 */
 public function testEquals($a, $b) {
@@ -376,37 +346,27 @@ public function dataProviderForTest() {
         [3,2] //this will fail 
     ];
 }
-</code></pre>
-
-<p><strong>数组</strong></p>
-
+</code></pre></div><p><strong>数组</strong></p>
 <blockquote>
 <p>注意<code>dataProviderForTest()</code>返回一个二维数组。每个嵌套的数组由两个元素值，他们会一个个为<code>testEquals()</code>方法提供必要的参数。如果没有足够的参数，将会抛出<code>Missing argument 2 for Test::testEquals()</code>这样的错误。PHPUnit将会自动循环数据并且执行测试：</p>
 </blockquote>
-
-<pre><code class="language-php">public function dataProviderForTest() {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">public function dataProviderForTest() {
     return [
         [1,1], // [0] testEquals($a = 1, $b = 1)
         [2,2], // [1] testEquals($a = 2, $b = 2)
         [3,2] // [2] There was 1 failure: 1) Test::testEquals with data set #2 (3, 4)
     ]; 
 }
-</code></pre>
-
-<p>为了便捷，每个数据集可以命名。检查问题数据时更加容易：</p>
-
-<pre><code class="language-php">public function dataProviderForTest() {
+</code></pre></div><p>为了便捷，每个数据集可以命名。检查问题数据时更加容易：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">public function dataProviderForTest() {
     return [
-        'Test 1' =&gt; [1,1], // [0] testEquals($a = 1, $b = 1) 
-        'Test 2' =&gt; [2,2], // [1] testEquals($a = 2, $b = 2) 
-        'Test 3' =&gt; [3,2] // [2] There was 1 failure:
+        &#39;Test 1&#39; =&gt; [1,1], // [0] testEquals($a = 1, $b = 1) 
+        &#39;Test 2&#39; =&gt; [2,2], // [1] testEquals($a = 2, $b = 2) 
+        &#39;Test 3&#39; =&gt; [3,2] // [2] There was 1 failure:
     ]; 
 }
-</code></pre>
-
-<p><strong>迭代器</strong></p>
-
-<pre><code class="language-php">class MyIterator implements Iterator { 
+</code></pre></div><p><strong>迭代器</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class MyIterator implements Iterator { 
     protected $array = [];
     
     public function __construct($array) { 
@@ -445,55 +405,38 @@ class Test extends TestCase {
     
     public function dataProviderForTest() {
         return new MyIterator([
-            'Test 1' =&gt; [0],
-            'Test 2' =&gt; [false], 
-            'Test 3' =&gt; [null]
+            &#39;Test 1&#39; =&gt; [0],
+            &#39;Test 2&#39; =&gt; [false], 
+            &#39;Test 3&#39; =&gt; [null]
         ]); 
     }
 }
-</code></pre>
-
-<p>正如你所见，简单的迭代器也正常工作：</p>
-
+</code></pre></div><p>正如你所见，简单的迭代器也正常工作：</p>
 <blockquote>
 <p>注意：即使对于<strong>单个参数</strong>，也必须返回一个数组<code>[$param]</code></p>
 </blockquote>
-
 <p>因为如果我们修改<code>current()</code>方法(每次迭代时实际返回数据)：</p>
-
-<pre><code class="language-php">function current() {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function current() {
     return current($this-&gt;array)[0];
 }
-</code></pre>
-
-<p>或者修改迭代器：</p>
-
-<pre><code class="language-php">return new MyIterator([ 
-    'Test 1' =&gt; 0,
-    'Test 2' =&gt; false,
-    'Test 3' =&gt; null 
+</code></pre></div><p>或者修改迭代器：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">return new MyIterator([ 
+    &#39;Test 1&#39; =&gt; 0,
+    &#39;Test 2&#39; =&gt; false,
+    &#39;Test 3&#39; =&gt; null 
 ]);
-</code></pre>
-
-<p>我们将会获取一个错误：</p>
-
+</code></pre></div><p>我们将会获取一个错误：</p>
 <pre><code>There was 1 warning:
 
 1) Warning
 The data provider specified for Test::testEquals is invalid.
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>当然，在简单数组上使用迭代器对象是不有用的。它应该为您的案例实现一些特定的逻辑。</p>
 </blockquote>
-
 <p><strong>生成器</strong></p>
-
 <p>手册中没有明确的指出和线上，但是你也可以使用生成器作为数据提供程序。注意，生成器实际实现了迭代器的接口。</p>
-
 <p>下面是一个混合使用<code>DirectoryIterator</code>和<code>generator</code>的例子：</p>
-
-<pre><code class="language-php">/**
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">/**
  * @param string $file
  *
  * @dataProvider fileDataProvider
@@ -504,43 +447,35 @@ public function testSomethingWithFiles($fileName) {
 }
 
 public function fileDataProvider() {
-    $directory = new DirectoryIterator('path-to-the-directory');
+    $directory = new DirectoryIterator(&#39;path-to-the-directory&#39;);
     
     foreach ($directory as $file) {
-        if ($file-&gt;isFile() &amp;&amp; $file-&gt;isReadable()) {
+        if ($file-&gt;isFile() <span style="color:#960050;background-color:#1e0010">&amp;&amp;</span> $file-&gt;isReadable()) {
             yield [$file-&gt;getPathname()]; // invoke generator here. 
         }
     } 
 }
-</code></pre>
-
-<blockquote>
+</code></pre></div><blockquote>
 <p>注意<code>yield</code>数组。您将收到一个无效的数据提供程序警告。</p>
 </blockquote>
-
 <h3 id="3-测试异常">3. 测试异常</h3>
-
 <p>假设测试一个抛出异常的方法：</p>
-
-<pre><code class="language-php">class Car
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class Car
 {
     /**
     * @throws \Exception
     */
     public function drive() {
-        throw new \Exception('Useful message', 1); 
+        throw new \Exception(&#39;Useful message&#39;, 1); 
     }
 }
-</code></pre>
-
-<p>你可以通过将方法调用封闭到一个<code>try/catch</code>块中，并对执行对象的属性进行断言来实现。但可以更加方便的使用异常断言方法。从PHPUnit 5.2开始，有expeectX()方法来断言异常类型，信息和错误码。</p>
-
-<pre><code class="language-php">class DriveTest extends PHPUnit_Framework_TestCase {
+</code></pre></div><p>你可以通过将方法调用封闭到一个<code>try/catch</code>块中，并对执行对象的属性进行断言来实现。但可以更加方便的使用异常断言方法。从PHPUnit 5.2开始，有expeectX()方法来断言异常类型，信息和错误码。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class DriveTest extends PHPUnit_Framework_TestCase {
     public function testDrive() {
         // prepare
         $car = new \Car();
         $expectedClass = \Exception::class; 
-        $expectedMessage = 'Useful message'; 
+        $expectedMessage = &#39;Useful message&#39;; 
         $expectedCode = 1;
 
         // test
@@ -552,16 +487,13 @@ public function fileDataProvider() {
         $car-&gt;drive();
     }
 }
-</code></pre>
-
-<p>如果你使用更早版本的PHPUnit，可以使用<code>setExpectedException</code>来代替<code>expectX()</code>方法，但是注意这个方法不推荐使用并且将在版本6中移除。</p>
-
-<pre><code class="language-php">class DriveTest extends PHPUnit_Framework_TestCase {
+</code></pre></div><p>如果你使用更早版本的PHPUnit，可以使用<code>setExpectedException</code>来代替<code>expectX()</code>方法，但是注意这个方法不推荐使用并且将在版本6中移除。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class DriveTest extends PHPUnit_Framework_TestCase {
     public function testDrive() {
         // prepare
         $car = new \Car();
         $expectedClass = \Exception::class; 
-        $expectedMessage = 'Useful message'; 
+        $expectedMessage = &#39;Useful message&#39;; 
         $expectedCode = 1;
         
         // test
@@ -571,9 +503,7 @@ public function fileDataProvider() {
         $car-&gt;drive();
     }
 }
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -645,6 +575,12 @@ public function fileDataProvider() {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

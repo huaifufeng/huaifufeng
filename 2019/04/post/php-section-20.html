@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,40 +187,29 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#循环">循环</a>
-<ul>
-<li><a href="#continue">continue</a></li>
-<li><a href="#break">break</a></li>
-<li><a href="#foreach">foreach</a></li>
-<li><a href="#do-while">do…while</a></li>
-<li><a href="#for">for</a></li>
-<li><a href="#while">while</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#循环">循环</a>
+      <ul>
+        <li><a href="#continue">continue</a></li>
+        <li><a href="#break">break</a></li>
+        <li><a href="#foreach">foreach</a></li>
+        <li><a href="#dowhile">do…while</a></li>
+        <li><a href="#for">for</a></li>
+        <li><a href="#while">while</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="循环">循环</h2>
-
+        		<h2 id="循环">循环</h2>
 <p>循环是编程语言非常重要的部分。这允许程序员创作循环执行几次的代码片段或者迭代处理。循环的次数可以是显示的(例如6次)，或者循环直到遇到了某个条件。</p>
-
 <p>这个主题包括不同类型的循环结构，他们关联的控制结构，他们潜在的应用。</p>
-
 <h3 id="continue">continue</h3>
-
 <blockquote>
 <p><code>continue</code>中断一个循环中当前的迭代，但是不会中断这个循环。</p>
 </blockquote>
-
 <p>就像<code>break</code>语句一样，<code>continu</code>语句是在循环体内部的。当执行了<code>continu</code>语句，将会立即跳到循环条件判断语句。</p>
-
 <p>在下面的例子中，循环根据数组的值输出指定的信息，但是跳过指定的值。</p>
-
 <pre><code>$list = ['apple', 'banana', 'cherry'];
 
 foreach ($list as $value) {
@@ -226,16 +219,10 @@ foreach ($list as $value) {
     
     echo &quot;I love to eat {$value} pie.&quot; . PHP_EOL;
 }
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre><p>这将会输出：</p>
 <pre><code>I love to eat apple pie.
 I love to eat cherry pie;
-</code></pre>
-
-<p><code>continue</code>也可以用来中断外部循环通过为continue提供中断循环的级数。例如，data的数据向下面一样，为了找到花费小于5的水果派：</p>
-
+</code></pre><p><code>continue</code>也可以用来中断外部循环通过为continue提供中断循环的级数。例如，data的数据向下面一样，为了找到花费小于5的水果派：</p>
 <pre><code>$data = [
     ['Fruit' =&gt; 'Apple', 'Color' =&gt; 'Red', 'Cost' =&gt; 1],
     ['Fruit' =&gt; 'Banana', 'Color' =&gt; 'Yellow', 'Cost' =&gt; 7],
@@ -251,18 +238,12 @@ foreach($data as $fruit) {
     }
     var_dump($fruit);
 }
-</code></pre>
-
-<p>当<code>continue 2;</code>执行的时候，程序立即跳转到<code>$data as $fruit</code>，然后开始执行下一个外部循环，调过了其他的代码(包括内部循环的条件语句)。</p>
-
+</code></pre><p>当<code>continue 2;</code>执行的时候，程序立即跳转到<code>$data as $fruit</code>，然后开始执行下一个外部循环，调过了其他的代码(包括内部循环的条件语句)。</p>
 <h3 id="break">break</h3>
-
 <blockquote>
 <p><code>break</code>立即中断当前循环的执行。</p>
 </blockquote>
-
 <p>和<code>continue</code>语句相似，<code>break</code>语句立即中断循环的执行。但是和<code>continue</code>语句不通的是，<code>break</code>立即中断循环的执行，并且不会再执行条件语句。</p>
-
 <pre><code>$i = 5;
 while(true) {
     echo 120 / $i . PHP_EOL;
@@ -271,21 +252,14 @@ while(true) {
         break;
     }
 }
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre><p>这将会输出：</p>
 <pre><code>24
 30
 40
 60
 120
-</code></pre>
-
-<p>但是在<code>$i</code>为0的时候就不在执行了，这样就避免了除0引发的致命错误。</p>
-
+</code></pre><p>但是在<code>$i</code>为0的时候就不在执行了，这样就避免了除0引发的致命错误。</p>
 <p><code>break</code>语句也可以用来中断多级的循环。这在执行嵌套循环的时候很有用。例如循环处理一个字符串的数组，并拼接成一个字符串，移除其中的<code>#</code>，直到达到160个字符。</p>
-
 <pre><code>$output = &quot;&quot;;
 $inputs = array(
     &quot;#soblessed #throwbackthursday&quot;, 
@@ -305,94 +279,58 @@ foreach($inputs as $input) {
     }
     $output .= ' ';
 }
-</code></pre>
-
-<p><code>break 2</code>将会立即中断内层和外层的循环。</p>
-
+</code></pre><p><code>break 2</code>将会立即中断内层和外层的循环。</p>
 <h3 id="foreach">foreach</h3>
-
 <blockquote>
 <p><code>foreach</code>语句用来循环遍历数组。</p>
 </blockquote>
-
 <p><code>foreach</code>语句迭代处理当前的数组元素，并把这个元素放入变量<code>$value</code>中，然后数组的指针指向下一个将要被处理的元素。</p>
-
 <p>下面是显示数组中所有元素的例子：</p>
-
 <pre><code>$list = ['apple', 'banana', 'cherry'];
 
 foreach ($list as $value) {
     echo &quot;I love to eat {$value}. &quot;;
 }
-</code></pre>
-
-<p>这将会输出下面的内容：</p>
-
+</code></pre><p>这将会输出下面的内容：</p>
 <pre><code>I love to eat apple. I love to eat banana. I love to eat cherry.
-</code></pre>
-
-<p>你也可以使用<code>foreach</code>语句来处理key/value：</p>
-
+</code></pre><p>你也可以使用<code>foreach</code>语句来处理key/value：</p>
 <pre><code>foreach ($list as $key =&gt; $value) {
     echo $key . &quot;:&quot; . $value . &quot; &quot;;
 }
 //Outputs - 0:apple 1:banana 2:cherry
-</code></pre>
-
-<p>默认情况下<code>$value</code>的值是<code>$list</code>的一个副本，修改这个变量的值，不会影响<code>$list</code>变量的值。</p>
-
+</code></pre><p>默认情况下<code>$value</code>的值是<code>$list</code>的一个副本，修改这个变量的值，不会影响<code>$list</code>变量的值。</p>
 <pre><code>foreach ($list as $value) {
     $value = $value . &quot; pie&quot;;
 }
 echo $list[0]; // Outputs &quot;apple&quot;
-</code></pre>
-
-<p>想要在<code>foreach</code>循环中处理数组的值，可以使用<code>&amp;</code>操作符获取变量<code>$value</code>的引用。在循环处理之后，<code>unset</code>掉数组的值，避免在之后修改变量的值影响到数组。</p>
-
+</code></pre><p>想要在<code>foreach</code>循环中处理数组的值，可以使用<code>&amp;</code>操作符获取变量<code>$value</code>的引用。在循环处理之后，<code>unset</code>掉数组的值，避免在之后修改变量的值影响到数组。</p>
 <pre><code>foreach ($list as &amp;$value) { // Or foreach ($list as $key =&gt; &amp;$value) { 
     $value = $value . &quot; pie&quot;;
 }
 unset($value);
 echo $list[0]; // Outputs &quot;apple pie&quot;
-</code></pre>
-
-<p>你也可以在数组循环中通过数组的key来修改数组的值：</p>
-
+</code></pre><p>你也可以在数组循环中通过数组的key来修改数组的值：</p>
 <pre><code>foreach ($list as $key =&gt; $value) {
     $list[$key] = $value . &quot; pie&quot;;
 }
 echo $list[0]; // Outputs &quot;apple pie&quot;
-</code></pre>
-
-<h3 id="do-while">do…while</h3>
-
+</code></pre><h3 id="dowhile">do…while</h3>
 <blockquote>
 <p><code>do…while</code>语句至少执行代码一次，然后只要条件是true就会一直执行。</p>
 </blockquote>
-
 <p>下面的例子将会至少增加<code>$i</code>一次，并且当<code>$i</code>小于25时，会一直增加这个变量的值。</p>
-
 <pre><code>$i = 0; do {
     $i++;
 } while($i &lt; 25);
 echo 'The final value of i is: ', $i;
-</code></pre>
-
-<p>这将会输出下面的结果：</p>
-
+</code></pre><p>这将会输出下面的结果：</p>
 <pre><code>The final value of i is: 25
-</code></pre>
-
-<h3 id="for">for</h3>
-
+</code></pre><h3 id="for">for</h3>
 <blockquote>
 <p><code>for</code>语句当你知道要执行一段代码多少次的时候非常有用。</p>
 </blockquote>
-
 <p>这个初始化语句将会初始化循环处理的开始值。这里通常会声明一个名为<code>$i</code>的变量。</p>
-
 <p>下面这个例子会声明一个循环10次的数组，并且输出0-9的值：</p>
-
 <pre><code>for ($i = 0; $i &lt;= 9; $i++) {
     echo $i, ',';
 }
@@ -414,23 +352,14 @@ for (; ; ) {
 }
 # Example 4
 for ($i = 0, $j = 0; $i &lt;= 9; $j += $i, print $i. ',', $i++);
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre><p>这将会输出：</p>
 <pre><code>0,1,2,3,4,5,6,7,8,9,
-</code></pre>
-
-<h3 id="while">while</h3>
-
+</code></pre><h3 id="while">while</h3>
 <blockquote>
 <p><code>while</code>语句在条件为真时，将会执行一段代码。</p>
 </blockquote>
-
 <p>如果条件表达式为真，将会执行一段代码。当代码执行完毕之后，将会重新进行条件表达式的判断，代码将会再次执行，直到条件表达式为false。</p>
-
 <p>下面的例子将会一直执行，知道计算的he达到了100：</p>
-
 <pre><code>$i = true; $sum = 0;
 while ($i) {
     if ($sum === 100) {
@@ -440,14 +369,9 @@ while ($i) {
     }
 }
 echo 'The sum is: ', $sum;
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre><p>这将会输出：</p>
 <pre><code> The sum is: 100
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -519,6 +443,12 @@ echo 'The sum is: ', $sum;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

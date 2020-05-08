@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,74 +187,43 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#花括号扩展">花括号扩展</a>
-<ul>
-<li><a href="#修改文件名扩展">修改文件名扩展</a></li>
-<li><a href="#创建按照年月分组文件的目录">创建按照年月分组文件的目录</a></li>
-<li><a href="#创建-文件的备份">创建.文件的备份</a></li>
-<li><a href="#使用增量">使用增量</a></li>
-<li><a href="#使用括号扩展创建列表">使用括号扩展创建列表</a></li>
-<li><a href="#创建多个带有子目录的目录">创建多个带有子目录的目录</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#花括号扩展">花括号扩展</a>
+      <ul>
+        <li><a href="#修改文件名扩展">修改文件名扩展</a></li>
+        <li><a href="#创建按照年月分组文件的目录">创建按照年月分组文件的目录</a></li>
+        <li><a href="#创建文件的备份">创建.文件的备份</a></li>
+        <li><a href="#使用增量">使用增量</a></li>
+        <li><a href="#使用括号扩展创建列表">使用括号扩展创建列表</a></li>
+        <li><a href="#创建多个带有子目录的目录">创建多个带有子目录的目录</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="花括号扩展">花括号扩展</h2>
-
+        		<h2 id="花括号扩展">花括号扩展</h2>
 <h3 id="修改文件名扩展">修改文件名扩展</h3>
-
 <pre><code>$ mv filename.{jar,zip}
-</code></pre>
-
-<p>这个将会执行<code>mv filename.jar filename.zip</code>这个命令</p>
-
+</code></pre><p>这个将会执行<code>mv filename.jar filename.zip</code>这个命令</p>
 <h3 id="创建按照年月分组文件的目录">创建按照年月分组文件的目录</h3>
-
 <pre><code>$ mkdir 20{09..11}-{01-12}
-</code></pre>
-
-<p>执行<code>ls</code>命令，将会看到下面的目录被创建了：</p>
-
+</code></pre><p>执行<code>ls</code>命令，将会看到下面的目录被创建了：</p>
 <pre><code>2009-01 2009-04 2009-07 2009-10 2010-01 2010-04 2010-07 2010-10 2011-01 2011-04 2011-07 2011-10 2009-02 2009-05 2009-08 2009-11 2010-02 2010-05 2010-08 2010-11 2011-02 2011-05 2011-08 2011-11 2009-03 2009-06 2009-09 2009-12 2010-03 2010-06 2010-09 2010-12 2011-03 2011-06 2011-09 2011-12
-</code></pre>
-
-<p>在9前面加上0确保当个数字有一个0。你也可以在数字前面使用多个0，例如：</p>
-
+</code></pre><p>在9前面加上0确保当个数字有一个0。你也可以在数字前面使用多个0，例如：</p>
 <pre><code>$ echo {001..10}
 001 002 003 004 005 006 007 008 009 010
-</code></pre>
-
-<h3 id="创建-文件的备份">创建.文件的备份</h3>
-
+</code></pre><h3 id="创建文件的备份">创建.文件的备份</h3>
 <pre><code>$ cp .vimrc{,.bak}
-</code></pre>
-
-<p>这个扩展将会执行下面的命令：<code>cp .vimrc .vimrc.bak</code>。</p>
-
+</code></pre><p>这个扩展将会执行下面的命令：<code>cp .vimrc .vimrc.bak</code>。</p>
 <h3 id="使用增量">使用增量</h3>
-
 <pre><code>$ echo {0..10..2}
 0 2 4 6 8 10
-</code></pre>
-
-<p>第三个参数用来指定增量值。{start..end..increment}</p>
-
+</code></pre><p>第三个参数用来指定增量值。{start..end..increment}</p>
 <p>增量不仅仅用到数字上面：</p>
-
 <pre><code>$ for c in {a..z..5};do echo -n $c;done
 afkpuz
-</code></pre>
-
-<h3 id="使用括号扩展创建列表">使用括号扩展创建列表</h3>
-
+</code></pre><h3 id="使用括号扩展创建列表">使用括号扩展创建列表</h3>
 <p>bash可以简单的创建字符数字的列表。</p>
-
 <pre><code>#从a-z的列表
 $ echo {a..z}
 a b c d e f g h i j k l m n o p q r s t u vw x y z
@@ -278,33 +251,19 @@ $ echo {20..01}
 #组合括号
 $ echo {a..d}{1..3}
 a1 a2 a3 b1 b2 b3 c1 c2 c3 d1 d2 d3
-</code></pre>
-
-<p>大括号扩展是第一个发生的扩展，因此它不能与任何其他扩展组合。</p>
-
+</code></pre><p>大括号扩展是第一个发生的扩展，因此它不能与任何其他扩展组合。</p>
 <p>只有字符和数字可以使用。</p>
-
 <p>下面这个就不会有效果：</p>
-
 <pre><code>echo {${date +$H}..24}
-</code></pre>
-
-<h3 id="创建多个带有子目录的目录">创建多个带有子目录的目录</h3>
-
+</code></pre><h3 id="创建多个带有子目录的目录">创建多个带有子目录的目录</h3>
 <pre><code>mkdir -p toplevel/sublevel_{00..09}/{child1,child2,child3}
-</code></pre>
-
-<p>这将会创建一个叫做<code>toplevel</code>的顶级目录，然后在顶级目录<code>toplevel</code>中创建9个名字为<code>sublevel_01,sublevel_02..</code>这样的子目录，然后在每个子目录里面会有<code>child1 child2 child3</code>3个子目录。</p>
-
+</code></pre><p>这将会创建一个叫做<code>toplevel</code>的顶级目录，然后在顶级目录<code>toplevel</code>中创建9个名字为<code>sublevel_01,sublevel_02..</code>这样的子目录，然后在每个子目录里面会有<code>child1 child2 child3</code>3个子目录。</p>
 <pre><code>toplevel/sublevel_01/child1
 toplevel/sublevel_01/child2 
 toplevel/sublevel_01/child3 
 toplevel/sublevel_02/child1
 ....
-</code></pre>
-
-<p>这在为某个目的创建多个目录和子目录的时候，这个命令是很有用的。替换变量以帮助自动化/解析提供给脚本的信息。</p>
-
+</code></pre><p>这在为某个目的创建多个目录和子目录的时候，这个命令是很有用的。替换变量以帮助自动化/解析提供给脚本的信息。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -377,6 +336,12 @@ toplevel/sublevel_02/child1
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

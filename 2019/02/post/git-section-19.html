@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,24 +187,19 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#git清理">Git清理</a>
-<ul>
-<li><a href="#交互式清理">交互式清理</a></li>
-<li><a href="#强制清理未暂存文件">强制清理未暂存文件</a></li>
-<li><a href="#清理忽略文件">清理忽略文件</a></li>
-<li><a href="#清理所有未暂存目录">清理所有未暂存目录</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#git清理">Git清理</a>
+      <ul>
+        <li><a href="#交互式清理">交互式清理</a></li>
+        <li><a href="#强制清理未暂存文件">强制清理未暂存文件</a></li>
+        <li><a href="#清理忽略文件">清理忽略文件</a></li>
+        <li><a href="#清理所有未暂存目录">清理所有未暂存目录</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="git清理">Git清理</h2>
-
+        		<h2 id="git清理">Git清理</h2>
 <table>
 <thead>
 <tr>
@@ -208,42 +207,32 @@
 <th>Details</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-d</td>
 <td>除了未追踪的文件外，删除未追踪的文件夹。如果未追踪的文件夹由不同的Git仓库管理，默认是不删除的。如果你一定要删除，使用两次<code>-f</code>选项。</td>
 </tr>
-
 <tr>
 <td>-f,&ndash;force</td>
 <td>如果Git的配置<code>clean. requireForce</code>配置为false，Git将不会删除任何文件或目录，除了提供<code>-f</code>，<code>-n</code>或<code>-i</code>选项。除非给出第二个-f，否则Git将拒绝删除有.git子目录的目录或文件。</td>
 </tr>
-
 <tr>
 <td>-i,&ndash;interactive</td>
 <td>交互式操作删除每个文件</td>
 </tr>
-
 <tr>
 <td>-n,&ndash;dry-run</td>
 <td>只显示将要被删除的文件列表，而不实际删除这些内容</td>
 </tr>
-
 <tr>
 <td>-q,&ndash;quiet</td>
 <td>只显示删除出错的文件，不显示成功的文件</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="交互式清理">交互式清理</h3>
-
 <pre><code>git clean -i
-</code></pre>
-
-<p>打印出将要被清理的文件，使用下面的命令进行确认：</p>
-
+</code></pre><p>打印出将要被清理的文件，使用下面的命令进行确认：</p>
 <pre><code>Would remove the following items:
 folder/file1.py
 folder/file2.py
@@ -251,41 +240,20 @@ folder/file2.py
 1: clean        2: filter by pattern   3: select by numbers    4: ask each
 5: quit        6: help
 What now&gt;
-</code></pre>
-
-<p>交互式选项<code>-i</code>可以和其他的选项<code>-X</code>，<code>-d</code>一起添加。</p>
-
+</code></pre><p>交互式选项<code>-i</code>可以和其他的选项<code>-X</code>，<code>-d</code>一起添加。</p>
 <h3 id="强制清理未暂存文件">强制清理未暂存文件</h3>
-
 <pre><code>git clean -f
-</code></pre>
-
-<p>清理没有暂存的文件。</p>
-
+</code></pre><p>清理没有暂存的文件。</p>
 <h3 id="清理忽略文件">清理忽略文件</h3>
-
 <pre><code>git clean -fX
-</code></pre>
-
-<p>清理当前文件夹和所有子文件夹中的忽略文件。</p>
-
+</code></pre><p>清理当前文件夹和所有子文件夹中的忽略文件。</p>
 <pre><code>git clean -Xn
-</code></pre>
-
-<p>预览所有将要被清理的文件</p>
-
+</code></pre><p>预览所有将要被清理的文件</p>
 <h3 id="清理所有未暂存目录">清理所有未暂存目录</h3>
-
 <pre><code>git clean -fd
-</code></pre>
-
-<p>将会清理所有未暂存的目录，包括里面的文件。这将会清理当前的目录，包括当前目录的子目录。</p>
-
+</code></pre><p>将会清理所有未暂存的目录，包括里面的文件。这将会清理当前的目录，包括当前目录的子目录。</p>
 <pre><code>git clean -dn
-</code></pre>
-
-<p>预览所有将要被清理的文件。</p>
-
+</code></pre><p>预览所有将要被清理的文件。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -358,6 +326,12 @@ What now&gt;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

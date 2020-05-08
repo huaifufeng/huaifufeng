@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,91 +187,68 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#imagick">Imagick</a>
-<ul>
-<li><a href="#1-第一步">1. 第一步</a></li>
-<li><a href="#2-转换图片到base64字符串">2. 转换图片到base64字符串</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#imagick">Imagick</a>
+      <ul>
+        <li><a href="#1-第一步">1. 第一步</a></li>
+        <li><a href="#2-转换图片到base64字符串">2. 转换图片到base64字符串</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="imagick">Imagick</h2>
-
+        		<h2 id="imagick">Imagick</h2>
 <h3 id="1-第一步">1. 第一步</h3>
-
 <p><strong>安装</strong></p>
-
 <p><strong>基于Debian的系统使用apt</strong></p>
-
-<pre><code class="language-shell">sudo apt-get install php5-imagick
-</code></pre>
-
-<p><strong>OSX/macOS上使用Homebrew</strong></p>
-
-<pre><code class="language-shell"> brew install imagemagick
-</code></pre>
-
-<p>想要查看<code>brew</code>安装的依赖，查看<a href="https://brewformulas.org/Imagemagick">https://brewformulas.org/Imagemagick</a></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo apt-get install php5-imagick
+</code></pre></div><p><strong>OSX/macOS上使用Homebrew</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> brew install imagemagick
+</code></pre></div><p>想要查看<code>brew</code>安装的依赖，查看https://brewformulas.org/Imagemagick</p>
 <p><strong>使用二进制版本</strong></p>
-
 <p><a href="https://imagemagick.org/script/download.php">Imagemagick网站</a>的说明。</p>
-
 <p><strong>用例</strong></p>
-
-<pre><code class="language-php">&lt;?php
-$imagen = new Imagick('imagen.jpg'); 
-$imagen-&gt;thumbnailImage(100, 0);
-//if you put 0 in the parameter aspect ratio is maintained
-echo $imagen; 
-?&gt;
-</code></pre>
-
-<h3 id="2-转换图片到base64字符串">2. 转换图片到base64字符串</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$imagen <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Imagick</span>(<span style="color:#e6db74">&#39;imagen.jpg&#39;</span>); 
+$imagen<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">thumbnailImage</span>(<span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">0</span>);
+<span style="color:#75715e">//if you put 0 in the parameter aspect ratio is maintained
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">echo</span> $imagen; 
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><h3 id="2-转换图片到base64字符串">2. 转换图片到base64字符串</h3>
 <p>下面的例子展示了怎么把图片转换为base64字符串(你可以在<code>img</code>表的<code>src</code>属性中使用的字符串)。这个例子使用<a href="https://www.php.net/manual/zh/intro.imagick.php">Imagick扩展</a>(其他的也是有效的，像GD扩展)。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * 这加载了图片image.jpg进行操作。
+</span><span style="color:#e6db74"> * 这个图片的路径是包含代码的php文件的相对地址, 所以在这个例子中，图片需要和代码在一个目录中
+</span><span style="color:#e6db74"> */</span>
+$img <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Imagick</span>(<span style="color:#e6db74">&#39;image.jpg&#39;</span>);
 
-<pre><code class="language-php">&lt;?php
-/**
- * 这加载了图片image.jpg进行操作。
- * 这个图片的路径是包含代码的php文件的相对地址, 所以在这个例子中，图片需要和代码在一个目录中
- */
-$img = new Imagick('image.jpg');
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * 这缩放图片，提供目标的长宽。如果你想要改变图片的分辨率，使用$img-&gt;resampleimage(320, 240)
+</span><span style="color:#e6db74"> *
+</span><span style="color:#e6db74"> * 注意第二个参数可以为0，保持原图片的长宽比
+</span><span style="color:#e6db74"> */</span>
+$img<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">resizeImage</span>(<span style="color:#ae81ff">320</span>, <span style="color:#ae81ff">240</span>);
 
-/**
- * 这缩放图片，提供目标的长宽。如果你想要改变图片的分辨率，使用$img-&gt;resampleimage(320, 240)
- *
- * 注意第二个参数可以为0，保持原图片的长宽比
- */
-$img-&gt;resizeImage(320, 240);
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * 这返回图片未编码的字符串内容
+</span><span style="color:#e6db74">*/</span>
+$imgBuff <span style="color:#f92672">=</span> $img<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">getimageblob</span>();
 
-/**
- * 这返回图片未编码的字符串内容
-*/
-$imgBuff = $img-&gt;getimageblob();
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * 浙江清理image.jpg图片资源的对象，并销毁对象。因此会释放系统的资源
+</span><span style="color:#e6db74"> * 
+</span><span style="color:#e6db74"> */</span>
+$img<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">clear</span>();
 
-/**
- * 浙江清理image.jpg图片资源的对象，并销毁对象。因此会释放系统的资源
- * 
- */
-$img-&gt;clear();
-
-/**
- * 这创建base64编码的字符串，可以用来后面的输出
- *
- * 注意在src属性中，image/jpeg根据图片类型修改
- */
-$img = base64_encode($imgBuff);
-echo &quot;&lt;img alt='Embedded Image' src='data:image/jpeg;base64,$img' /&gt;&quot;;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<span style="color:#e6db74">/**
+</span><span style="color:#e6db74"> * 这创建base64编码的字符串，可以用来后面的输出
+</span><span style="color:#e6db74"> *
+</span><span style="color:#e6db74"> * 注意在src属性中，image/jpeg根据图片类型修改
+</span><span style="color:#e6db74"> */</span>
+$img <span style="color:#f92672">=</span> <span style="color:#a6e22e">base64_encode</span>($imgBuff);
+<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;&lt;img alt=&#39;Embedded Image&#39; src=&#39;data:image/jpeg;base64,</span><span style="color:#e6db74">$img</span><span style="color:#e6db74">&#39; /&gt;&#34;</span>;
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -339,6 +320,12 @@ echo &quot;&lt;img alt='Embedded Image' src='data:image/jpeg;base64,$img' /&gt;&
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

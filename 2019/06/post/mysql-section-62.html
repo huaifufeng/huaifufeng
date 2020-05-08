@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,200 +187,116 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#ssl链接配置">SSL链接配置</a>
-<ul>
-<li><a href="#1-基于debian系统的设置">1. 基于Debian系统的设置</a></li>
-<li><a href="#2-centos7-rhel7的配置">2. CentOS7/RHEL7的配置</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#ssl链接配置">SSL链接配置</a>
+      <ul>
+        <li><a href="#1-基于debian系统的设置">1. 基于Debian系统的设置</a></li>
+        <li><a href="#2-centos7rhel7的配置">2. CentOS7/RHEL7的配置</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="ssl链接配置">SSL链接配置</h2>
-
+        		<h2 id="ssl链接配置">SSL链接配置</h2>
 <h3 id="1-基于debian系统的设置">1. 基于Debian系统的设置</h3>
-
 <p>这里假设MySQL已经安装了，并且用户拥有<code>sudo</code>权限。</p>
-
 <p><strong>生成CA和SSL key</strong></p>
-
 <p>确保OpenSSL和相关的库已经安装了：</p>
-
-<pre><code class="language-shell">apt-get -y install openssl
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">apt-get -y install openssl
 apt-get -y install libssl-dev
-</code></pre>
-
-<p>接下来创建并进入一个SSL文件的目录：</p>
-
-<pre><code class="language-shell">mkdir /home/ubuntu/mysqlcerts
+</code></pre></div><p>接下来创建并进入一个SSL文件的目录：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir /home/ubuntu/mysqlcerts
 cd /home/ubuntu/mysqlcerts
-</code></pre>
-
-<p>要生成密钥，请创建证书颁发机构(CA)以及密钥进行签名(自签名)：</p>
-
-<pre><code class="language-shell">openssl genrsa 2048 &gt; ca-key.pem
-openssl req -new -x509 -nodes -days 3600 -key ca-key.pem -out ca.pem
-</code></pre>
-
-<p>每个提示里面输入的值不会影响配置项。下面创建服务器的密钥，使用之前创建的CA进行签名：</p>
-
-<pre><code class="language-shell">openssl req -newkey rsa:2048 -days 3600 -nodes -keyout server-key.pem -out server-req.pem
+</code></pre></div><p>要生成密钥，请创建证书颁发机构(CA)以及密钥进行签名(自签名)：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl genrsa <span style="color:#ae81ff">2048</span> &gt; ca-key.pem
+openssl req -new -x509 -nodes -days <span style="color:#ae81ff">3600</span> -key ca-key.pem -out ca.pem
+</code></pre></div><p>每个提示里面输入的值不会影响配置项。下面创建服务器的密钥，使用之前创建的CA进行签名：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl req -newkey rsa:2048 -days <span style="color:#ae81ff">3600</span> -nodes -keyout server-key.pem -out server-req.pem
 openssl rsa -in server-key.pem -out server-key.pem
 
-openssl x509 -req -in server-req.pem -days 3600 -CA ca.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem
-</code></pre>
-
-<p>创建客户端的密钥：</p>
-
-<pre><code class="language-shell">openssl req -newkey rsa:2048 -days 3600 -nodes -keyout client-key.pem -out client-req.pem openssl rsa -in client-key.pem -out client-key.pem
-openssl x509 -req -in client-req.pem -days 3600 -CA ca.pem -CAkey ca-key.pem -set_serial 01 -out client-cert.pem
-</code></pre>
-
-<p>确保之前创建的都是正确的，验证密钥：</p>
-
-<pre><code class="language-shell">openssl verify -CAfile ca.pem server-cert.pem client-cert.pem
-</code></pre>
-
-<p><strong>添加密钥到MySQL</strong></p>
-
+openssl x509 -req -in server-req.pem -days <span style="color:#ae81ff">3600</span> -CA ca.pem -CAkey ca-key.pem -set_serial <span style="color:#ae81ff">01</span> -out server-cert.pem
+</code></pre></div><p>创建客户端的密钥：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl req -newkey rsa:2048 -days <span style="color:#ae81ff">3600</span> -nodes -keyout client-key.pem -out client-req.pem openssl rsa -in client-key.pem -out client-key.pem
+openssl x509 -req -in client-req.pem -days <span style="color:#ae81ff">3600</span> -CA ca.pem -CAkey ca-key.pem -set_serial <span style="color:#ae81ff">01</span> -out client-cert.pem
+</code></pre></div><p>确保之前创建的都是正确的，验证密钥：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl verify -CAfile ca.pem server-cert.pem client-cert.pem
+</code></pre></div><p><strong>添加密钥到MySQL</strong></p>
 <p>打开MySQL的配置文件，例如：</p>
-
-<pre><code class="language-shell">vim /etc/mysql/mysql.conf.d/mysqld.cnf
-</code></pre>
-
-<p>在<code>[mysqld]</code>部分添加下面的内容：</p>
-
-<pre><code class="language-shell">ssl-ca = /home/ubuntu/mysqlcerts/ca.pem
-ssl-cert = /home/ubuntu/mysqlcerts/server-cert.pem 
-ssl-key = /home/ubuntu/mysqlcerts/server-key.pem
-</code></pre>
-
-<p>重启MySQL服务器。例如：</p>
-
-<pre><code class="language-shell">service mysql restart
-</code></pre>
-
-<p><strong>测试SSL的链接</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /etc/mysql/mysql.conf.d/mysqld.cnf
+</code></pre></div><p>在<code>[mysqld]</code>部分添加下面的内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ssl-ca <span style="color:#f92672">=</span> /home/ubuntu/mysqlcerts/ca.pem
+ssl-cert <span style="color:#f92672">=</span> /home/ubuntu/mysqlcerts/server-cert.pem 
+ssl-key <span style="color:#f92672">=</span> /home/ubuntu/mysqlcerts/server-key.pem
+</code></pre></div><p>重启MySQL服务器。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">service mysql restart
+</code></pre></div><p><strong>测试SSL的链接</strong></p>
 <p>和普通链接一样的方法，除了增加了用来使用密码的选项：<code>ssl-ca</code>,<code>ssl-cert</code>和<code>ssl-key</code>。例如，假设<code>cd /home/ubuntu/mysqlcerts</code>：</p>
-
-<pre><code class="language-shell">mysql --ssl-ca=ca.pem --ssl-cert=client-cert.pem --ssl-key=client-key.pem -h 127.0.0.1 -u superman -p
-</code></pre>
-
-<p>在登录之后，验证链接是安全的：</p>
-
-<pre><code class="language-mysql">superman@127.0.0.1 [None]&gt; SHOW VARIABLES LIKE '%ssl%';
-+---------------+-----------------------------------------+
-| Variable_name | Value                                   |
-+---------------+-----------------------------------------+
-| have_openssl  | YES                                     |
-| have_ssl      | YES                                     |
-| ssl_ca        | /home/ubuntu/mysqlcerts/ca.pem          |
-| ssl_capath    |                                         |
-| ssl_cert      | /home/ubuntu/mysqlcerts/server-cert.pem |
-| ssl_cipher    |                                         |
-| ssl_crl       |                                         |
-| ssl_crlpath   |                                         |
-| ssl_key       | /home/ubuntu/mysqlcerts/server-key.pem  |
-+---------------+-----------------------------------------+
-</code></pre>
-
-<p>你也可以使用下面的方法检测：</p>
-
-<pre><code class="language-mysql">superman@127.0.0.1 [None]&gt; STATUS;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql --ssl-ca<span style="color:#f92672">=</span>ca.pem --ssl-cert<span style="color:#f92672">=</span>client-cert.pem --ssl-key<span style="color:#f92672">=</span>client-key.pem -h 127.0.0.1 -u superman -p
+</code></pre></div><p>在登录之后，验证链接是安全的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">superman<span style="color:#f92672">@</span><span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span> [None]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SHOW</span> VARIABLES <span style="color:#66d9ef">LIKE</span> <span style="color:#e6db74">&#39;%ssl%&#39;</span>;
+<span style="color:#f92672">+---------------+-----------------------------------------+</span>
+<span style="color:#f92672">|</span> Variable_name <span style="color:#f92672">|</span> Value                                   <span style="color:#f92672">|</span>
+<span style="color:#f92672">+---------------+-----------------------------------------+</span>
+<span style="color:#f92672">|</span> have_openssl  <span style="color:#f92672">|</span> YES                                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> have_ssl      <span style="color:#f92672">|</span> YES                                     <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> ssl_ca        <span style="color:#f92672">|</span> <span style="color:#f92672">/</span>home<span style="color:#f92672">/</span>ubuntu<span style="color:#f92672">/</span>mysqlcerts<span style="color:#f92672">/</span>ca.pem          <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> ssl_capath    <span style="color:#f92672">|</span>                                         <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> ssl_cert      <span style="color:#f92672">|</span> <span style="color:#f92672">/</span>home<span style="color:#f92672">/</span>ubuntu<span style="color:#f92672">/</span>mysqlcerts<span style="color:#f92672">/</span>server<span style="color:#f92672">-</span>cert.pem <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> ssl_cipher    <span style="color:#f92672">|</span>                                         <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> ssl_crl       <span style="color:#f92672">|</span>                                         <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> ssl_crlpath   <span style="color:#f92672">|</span>                                         <span style="color:#f92672">|</span>
+<span style="color:#f92672">|</span> ssl_key       <span style="color:#f92672">|</span> <span style="color:#f92672">/</span>home<span style="color:#f92672">/</span>ubuntu<span style="color:#f92672">/</span>mysqlcerts<span style="color:#f92672">/</span>server<span style="color:#f92672">-</span><span style="color:#66d9ef">key</span>.pem  <span style="color:#f92672">|</span>
+<span style="color:#f92672">+---------------+-----------------------------------------+</span>
+</code></pre></div><p>你也可以使用下面的方法检测：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">superman<span style="color:#f92672">@</span><span style="color:#ae81ff">127</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">1</span> [None]<span style="color:#f92672">&gt;</span> STATUS;
 ...
-SSL: Cipher in use is DHE-RSA-AES256-SHA 
+<span style="color:#66d9ef">SSL</span>: Cipher <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">use</span> <span style="color:#66d9ef">is</span> DHE<span style="color:#f92672">-</span>RSA<span style="color:#f92672">-</span>AES256<span style="color:#f92672">-</span>SHA 
 ...
-</code></pre>
-
-<p><strong>强制使用SSL</strong></p>
-
+</code></pre></div><p><strong>强制使用SSL</strong></p>
 <p>这里通过<code>GRANT</code>命令，使用<code>REQUIRE SSL</code>选项：</p>
-
-<pre><code class="language-mysql">GRANT ALL PRIVILEGES ON *.* TO 'superman'@'127.0.0.1' IDENTIFIED BY 'pass' REQUIRE SSL; FLUSH PRIVILEGES;
-</code></pre>
-
-<p>现在<code>superman</code>必须使用SSL进行链接。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">ALL</span> <span style="color:#66d9ef">PRIVILEGES</span> <span style="color:#66d9ef">ON</span> <span style="color:#f92672">*</span>.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> <span style="color:#e6db74">&#39;superman&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;127.0.0.1&#39;</span> <span style="color:#66d9ef">IDENTIFIED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;pass&#39;</span> <span style="color:#66d9ef">REQUIRE</span> <span style="color:#66d9ef">SSL</span>; <span style="color:#66d9ef">FLUSH</span> <span style="color:#66d9ef">PRIVILEGES</span>;
+</code></pre></div><p>现在<code>superman</code>必须使用SSL进行链接。</p>
 <p>如果你不想管理客户端的密钥，请使用前面的客户端密钥，并且自动将其用于所有的客户端。打开MySQL配置文件，例如：</p>
-
-<pre><code class="language-shell">vim /etc/mysql/mysql.conf.d/mysqld.cnf
-</code></pre>
-
-<p>在<code>[clien]</code>部分添加下面的内容：</p>
-
-<pre><code class="language-shell">ssl-ca = /home/ubuntu/mysqlcerts/ca.pem
-ssl-cert = /home/ubuntu/mysqlcerts/client-cert.pem 
-ssl-key = /home/ubuntu/mysqlcerts/client-key.pem
-</code></pre>
-
-<p>现在<code>superman</code>只需要输入下面的内容就可以使用SSL来登录了：</p>
-
-<pre><code class="language-shell">mysql -h 127.0.0.1 -u superman -p
-</code></pre>
-
-<p>使用另外的程序进行连接，例如Python，通常只需要一个额外的参数来连接函数。下面是Python的例子：</p>
-
-<pre><code class="language-python">import MySQLdb
-ssl = {'cert': '/home/ubuntu/mysqlcerts/client-cert.pem', 'key': '/home/ubuntu/mysqlcerts/client- key.pem'}
-conn = MySQLdb.connect(host='127.0.0.1', user='superman', passwd='imsoawesome', ssl=ssl)
-</code></pre>
-
-<p><strong>引用与进一步阅读：</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim /etc/mysql/mysql.conf.d/mysqld.cnf
+</code></pre></div><p>在<code>[clien]</code>部分添加下面的内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ssl-ca <span style="color:#f92672">=</span> /home/ubuntu/mysqlcerts/ca.pem
+ssl-cert <span style="color:#f92672">=</span> /home/ubuntu/mysqlcerts/client-cert.pem 
+ssl-key <span style="color:#f92672">=</span> /home/ubuntu/mysqlcerts/client-key.pem
+</code></pre></div><p>现在<code>superman</code>只需要输入下面的内容就可以使用SSL来登录了：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql -h 127.0.0.1 -u superman -p
+</code></pre></div><p>使用另外的程序进行连接，例如Python，通常只需要一个额外的参数来连接函数。下面是Python的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> MySQLdb
+ssl <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;cert&#39;</span>: <span style="color:#e6db74">&#39;/home/ubuntu/mysqlcerts/client-cert.pem&#39;</span>, <span style="color:#e6db74">&#39;key&#39;</span>: <span style="color:#e6db74">&#39;/home/ubuntu/mysqlcerts/client- key.pem&#39;</span>}
+conn <span style="color:#f92672">=</span> MySQLdb<span style="color:#f92672">.</span>connect(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;127.0.0.1&#39;</span>, user<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;superman&#39;</span>, passwd<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;imsoawesome&#39;</span>, ssl<span style="color:#f92672">=</span>ssl)
+</code></pre></div><p><strong>引用与进一步阅读：</strong></p>
 <ul>
 <li><a href="https://www.percona.com/blog/2013/06/22/setting-up-mysql-ssl-and-secure-connections/">https://www.percona.com/blog/2013/06/22/setting-up-mysql-ssl-and-secure-connections/</a></li>
 <li><a href="https://lowendbox.com/blog/getting-started-with-mysql-over-ssl/">https://lowendbox.com/blog/getting-started-with-mysql-over-ssl/</a></li>
 <li><a href="http://xmodulo.com/enable-ssl-mysql-server-client.html">http://xmodulo.com/enable-ssl-mysql-server-client.html</a></li>
 <li><a href="https://ubuntuforums.org/showthread.php?t=1121458">https://ubuntuforums.org/showthread.php?t=1121458</a></li>
 </ul>
-
-<h3 id="2-centos7-rhel7的配置">2. CentOS7/RHEL7的配置</h3>
-
+<h3 id="2-centos7rhel7的配置">2. CentOS7/RHEL7的配置</h3>
 <p>这个例子假设有两个服务器：</p>
-
 <ol>
 <li>dbserver(数据库的服务器)</li>
 <li>appclient(应用程序的服务器)</li>
 </ol>
-
 <p>FWIW两个服务器都是强制SELinux。</p>
-
 <p><strong>首先，登录到dbserver</strong></p>
-
 <p>创建用来创建证书的临时目录：</p>
-
-<pre><code class="language-shell">mkdir /root/certs/mysql/ &amp;&amp; cd /root/certs/mysql/
-</code></pre>
-
-<p>创建服务器证书：</p>
-
-<pre><code class="language-shell">openssl genrsa 2048 &gt; ca-key.pem
-openssl req -sha1 -new -x509 -nodes -days 3650 -key ca-key.pem &gt; ca-cert.pem
-openssl req -sha1 -newkey rsa:2048 -days 730 -nodes -keyout server-key.pem &gt; server-req.pem
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir /root/certs/mysql/ <span style="color:#f92672">&amp;&amp;</span> cd /root/certs/mysql/
+</code></pre></div><p>创建服务器证书：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl genrsa <span style="color:#ae81ff">2048</span> &gt; ca-key.pem
+openssl req -sha1 -new -x509 -nodes -days <span style="color:#ae81ff">3650</span> -key ca-key.pem &gt; ca-cert.pem
+openssl req -sha1 -newkey rsa:2048 -days <span style="color:#ae81ff">730</span> -nodes -keyout server-key.pem &gt; server-req.pem
 openssl rsa -in server-key.pem -out server-key.pem
-openssl x509 -sha1 -req -in server-req.pem -days 730 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 &gt; server-cert.pem
-</code></pre>
-
-<p>将证书移动到<code>/etc/pki/tls/certs/mysql/</code>这个目录。</p>
-
+openssl x509 -sha1 -req -in server-req.pem -days <span style="color:#ae81ff">730</span> -CA ca-cert.pem -CAkey ca-key.pem -set_serial <span style="color:#ae81ff">01</span> &gt; server-cert.pem
+</code></pre></div><p>将证书移动到<code>/etc/pki/tls/certs/mysql/</code>这个目录。</p>
 <p>目录路径假定为CentOS或RHEL（根据其他发行版的需要进行调整）：</p>
-
-<pre><code class="language-shell">mkdir /etc/pki/tls/certs/mysql/
-</code></pre>
-
-<p>确保对目录和文件设置权限，MySQL需要完全的所有权和访问权限：</p>
-
-<pre><code class="language-shell">chown -R mysql:mysql /etc/pki/tls/certs/mysql
-</code></pre>
-
-<p>现在配置MySQL/MariaDB：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir /etc/pki/tls/certs/mysql/
+</code></pre></div><p>确保对目录和文件设置权限，MySQL需要完全的所有权和访问权限：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">chown -R mysql:mysql /etc/pki/tls/certs/mysql
+</code></pre></div><p>现在配置MySQL/MariaDB：</p>
 <pre><code> # vi /etc/my.cnf 
  #i
  [mysqld]
@@ -385,89 +305,43 @@ ssl-ca=/etc/pki/tls/certs/ca-cert.pem
 ssl-cert=/etc/pki/tls/certs/server-cert.pem 
 ssl-key=/etc/pki/tls/certs/server-key.pem
 # :wq
-</code></pre>
-
-<p>然后，重启MySQL/Mariadb：</p>
-
-<pre><code class="language-shell"> systemctl restart mariadb
-</code></pre>
-
-<p>不用望京开启防火墙，运行客户端连接(使用IP<code>1.2.3.4</code>)：</p>
-
-<pre><code class="language-shell">firewall-cmd --zone=drop --permanent --add-rich-rule 'rule family=&quot;ipv4&quot; source address=&quot;1.2.3.4&quot; service name=&quot;mysql&quot; accept'
-# I force everything to the drop zone. Season the above command to taste
-</code></pre>
-
-<p>现在重启防火墙：</p>
-
-<pre><code class="language-shell">service firewalld restart
-</code></pre>
-
-<p>下面登录到dbserver上面：</p>
-
-<pre><code class="language-shell">mysql -uroot -p
-</code></pre>
-
-<p>输入下面的内容来给客户端用户授权，注意这里要使用<code>REQUIRE SSL</code>，在<code>GRANT</code>命令中：</p>
-
-<pre><code class="language-mysql">GRANT ALL PRIVILEGES ON *.* TO ‘iamsecure’@’appclient’ IDENTIFIED BY ‘dingdingding’ REQUIRE SSL; FLUSH PRIVILEGES;
-# quit mysql
-</code></pre>
-
-<p>现在你需要在<code>/root/certs/mysql</code>目录中。如果不在的话，首先使用cd命令到达这个目录，然后运行下面的命令。</p>
-
+</code></pre><p>然后，重启MySQL/Mariadb：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> systemctl restart mariadb
+</code></pre></div><p>不用望京开启防火墙，运行客户端连接(使用IP<code>1.2.3.4</code>)：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">firewall-cmd --zone<span style="color:#f92672">=</span>drop --permanent --add-rich-rule <span style="color:#e6db74">&#39;rule family=&#34;ipv4&#34; source address=&#34;1.2.3.4&#34; service name=&#34;mysql&#34; accept&#39;</span>
+<span style="color:#75715e"># I force everything to the drop zone. Season the above command to taste</span>
+</code></pre></div><p>现在重启防火墙：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">service firewalld restart
+</code></pre></div><p>下面登录到dbserver上面：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mysql -uroot -p
+</code></pre></div><p>输入下面的内容来给客户端用户授权，注意这里要使用<code>REQUIRE SSL</code>，在<code>GRANT</code>命令中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">ALL</span> <span style="color:#66d9ef">PRIVILEGES</span> <span style="color:#66d9ef">ON</span> <span style="color:#f92672">*</span>.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> <span style="color:#960050;background-color:#1e0010">‘</span>iamsecure<span style="color:#960050;background-color:#1e0010">’</span><span style="color:#f92672">@</span><span style="color:#960050;background-color:#1e0010">’</span>appclient<span style="color:#960050;background-color:#1e0010">’</span> <span style="color:#66d9ef">IDENTIFIED</span> <span style="color:#66d9ef">BY</span> <span style="color:#960050;background-color:#1e0010">‘</span>dingdingding<span style="color:#960050;background-color:#1e0010">’</span> <span style="color:#66d9ef">REQUIRE</span> <span style="color:#66d9ef">SSL</span>; <span style="color:#66d9ef">FLUSH</span> <span style="color:#66d9ef">PRIVILEGES</span>;
+<span style="color:#75715e"># quit mysql
+</span></code></pre></div><p>现在你需要在<code>/root/certs/mysql</code>目录中。如果不在的话，首先使用cd命令到达这个目录，然后运行下面的命令。</p>
 <p>创建证书：</p>
-
-<pre><code class="language-shell">openssl req -sha1 -newkey rsa:2048 -days 730 -nodes -keyout client-key.pem &gt; client-req.pem 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl req -sha1 -newkey rsa:2048 -days <span style="color:#ae81ff">730</span> -nodes -keyout client-key.pem &gt; client-req.pem 
 openssl rsa -in client-key.pem -out client-key.pem
-openssl x509 -sha1 -req -in client-req.pem -days 730 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 &gt; client-cert.pem
-</code></pre>
-
-<p><strong>注意：</strong>这里我在客户端和服务端使用相同的证书名称。</p>
-
+openssl x509 -sha1 -req -in client-req.pem -days <span style="color:#ae81ff">730</span> -CA ca-cert.pem -CAkey ca-key.pem -set_serial <span style="color:#ae81ff">01</span> &gt; client-cert.pem
+</code></pre></div><p>**注意：**这里我在客户端和服务端使用相同的证书名称。</p>
 <p>确保你在<code>/root/certs/mysql/</code>目录中。</p>
-
 <p>将服务器和客户端CA证书合并到单个文件中：</p>
-
-<pre><code class="language-shell">cat server-cert.pem client-cert.pem &gt; ca.pem
-</code></pre>
-
-<p>确保你可以看到这两个证书：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat server-cert.pem client-cert.pem &gt; ca.pem
+</code></pre></div><p>确保你可以看到这两个证书：</p>
 <pre><code>cat ca.pem
-</code></pre>
-
-<p><strong>现在服务器端工作结束。</strong></p>
-
+</code></pre><p><strong>现在服务器端工作结束。</strong></p>
 <p>开启另外的终端，然后登陆客户端：</p>
-
-<pre><code class="language-shell">ssh appclient
-</code></pre>
-
-<p>和以前一样，为客户端证书创建一个永久的主目录</p>
-
-<pre><code class="language-shell">mkdir /etc/pki/tls/certs/mysql/
-</code></pre>
-
-<p>现在把dbserver上面创建的客户端的证书放到客户端上面。你可以通过scp命令移动，也可以简单的一个个复制粘贴。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ssh appclient
+</code></pre></div><p>和以前一样，为客户端证书创建一个永久的主目录</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir /etc/pki/tls/certs/mysql/
+</code></pre></div><p>现在把dbserver上面创建的客户端的证书放到客户端上面。你可以通过scp命令移动，也可以简单的一个个复制粘贴。</p>
 <pre><code>scp dbserver
-</code></pre>
-
-<p>另外，确保文件夹和文件的权限。mysql需要拥有所有权和访问的权限。</p>
-
+</code></pre><p>另外，确保文件夹和文件的权限。mysql需要拥有所有权和访问的权限。</p>
 <pre><code>chown -R mysql:mysql /etc/pki/tls/certs/mysql
-</code></pre>
-
-<p>你应该有3个文件，文件的拥有者都是mysql：</p>
-
+</code></pre><p>你应该有3个文件，文件的拥有者都是mysql：</p>
 <pre><code>/etc/pki/tls/certs/mysql/ca.pem 
 /etc/pki/tls/certs/mysql/client-cert.pem 
 /etc/pki/tls/certs/mysql/client-key.pem
-</code></pre>
-
-<p>现在编辑MariaDB/MySQL配置文件中的<code>[client]</code>模块的内容：</p>
-
+</code></pre><p>现在编辑MariaDB/MySQL配置文件中的<code>[client]</code>模块的内容：</p>
 <pre><code>vi /etc/my.cnf
 #i
 [client]
@@ -475,71 +349,36 @@ ssl-ca=/etc/pki/tls/certs/mysql/ca.pem
 ssl-cert=/etc/pki/tls/certs/mysql/client-cert.pem 
 ssl-key=/etc/pki/tls/certs/mysql/client-key.pem
 # :wq
-</code></pre>
-
-<p>重启客户端的mariadb服务：</p>
-
+</code></pre><p>重启客户端的mariadb服务：</p>
 <pre><code>systemctl restart mariadb
-</code></pre>
-
-<p><strong>现在在客户端上面</strong></p>
-
+</code></pre><p><strong>现在在客户端上面</strong></p>
 <p>下面的命令应该返回：TRUE</p>
-
 <pre><code>mysql --ssl --help
-</code></pre>
-
-<p>现在登录到客户端的mysql实例上面：</p>
-
+</code></pre><p>现在登录到客户端的mysql实例上面：</p>
 <pre><code>mysql -uroot -p
-</code></pre>
-
-<p>下面两个变量的值应该是YES：</p>
-
+</code></pre><p>下面两个变量的值应该是YES：</p>
 <pre><code>show variables LIKE '%ssl'; 
 have_openssl YES
 have_ssl     YES
-</code></pre>
-
-<p>最初我看到的事：</p>
-
+</code></pre><p>最初我看到的事：</p>
 <pre><code>have_openssl NO
-</code></pre>
-
-<p>在mariadb.log中将会出现：</p>
-
+</code></pre><p>在mariadb.log中将会出现：</p>
 <blockquote>
 <p>SSL error: Unable to get certificate from &lsquo;/etc/pki/tls/certs/mysql/client-cert.pem&rsquo;</p>
 </blockquote>
-
 <p>这个问题是因为client-cert.pem的文件和目录的权限属于root。这里就是修改文件和目录<code>/etc/pki/tls/certs/mysql/</code>为mysql。</p>
-
 <pre><code>chown -R mysql:mysql /etc/pki/tls/certs/mysql
-</code></pre>
-
-<p>如果需要，立即从上面的步骤重新启动Mariadb.</p>
-
+</code></pre><p>如果需要，立即从上面的步骤重新启动Mariadb.</p>
 <p><strong>现在我们准备好测试安全连接了</strong></p>
-
 <p><strong>我们还在客户端上面</strong></p>
-
 <p>试着使用上面创建的用户连接dbserver的mysql实例：</p>
-
 <pre><code> mysql -h dbserver -u iamsecure -p
 # enter password dingdingding (hopefully you changed that to something else)
-</code></pre>
-
-<p>如果幸运的话，你应该毫无错误的登录。</p>
-
+</code></pre><p>如果幸运的话，你应该毫无错误的登录。</p>
 <p>要确认你已经启用了SSL，在MariaDB/MySQL提示符下发出以下命令：</p>
-
 <pre><code>\s
-</code></pre>
-
-<p>这是反斜杠s，也就是状态。</p>
-
+</code></pre><p>这是反斜杠s，也就是状态。</p>
 <p>这将显示连接的状态，该状态应如下所示：</p>
-
 <pre><code>Connection id:        4
 Current database:
 Current user:         iamsecure@appclient
@@ -557,16 +396,10 @@ Client characterset:    utf8
 Conn.  characterset:    utf8
 TCP port:        3306
 Uptime:            42 min 13 sec
-</code></pre>
-
-<p>如果你在连接的时候遇到权限禁止错误，检查上面的GRANT这个命令语句，确保没有错误的字符或&rdquo;标记&rdquo;。</p>
-
+</code></pre><p>如果你在连接的时候遇到权限禁止错误，检查上面的GRANT这个命令语句，确保没有错误的字符或&quot;标记&rdquo;。</p>
 <p>如果有SSL错误，请返回本指南以确保步骤有序。</p>
-
 <p>这对Rhel7起作用，也可能对Centos7起作用。无法确认这些精确步骤是否在其他地方有效。</p>
-
 <p>希望这能节省别人一点时间和烦恼。</p>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -639,6 +472,12 @@ Uptime:            42 min 13 sec
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

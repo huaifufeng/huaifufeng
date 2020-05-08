@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,34 +187,24 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#修改git仓库名称">修改git仓库名称</a>
-<ul>
-<li><a href="#修改本地仓库">修改本地仓库</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#修改git仓库名称">修改git仓库名称</a>
+      <ul>
+        <li><a href="#修改本地仓库">修改本地仓库</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="修改git仓库名称">修改git仓库名称</h2>
-
+        		<h2 id="修改git仓库名称">修改git仓库名称</h2>
 <p>如果你在远端修改了仓库的名称，就像在github或bitbucket。当你推送已经存在的代码时，将会出现错误：Fatal error, repository not found**.</p>
-
 <h3 id="修改本地仓库">修改本地仓库</h3>
-
 <p>在终端中：</p>
-
 <pre><code>cd projectFolder
 git remote -v (it will show previous git url)
 git remote set-url origin https://username@bitbucket.org/username/newName.git git remote -v (double check, it will show new git url)
 git push (do whatever you want.)
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -282,6 +276,12 @@ git push (do whatever you want.)
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

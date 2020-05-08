@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,25 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#cookie">Cookie</a>
-<ul>
-<li><a href="#修改cookie">修改cookie</a></li>
-<li><a href="#设置cookie">设置cookie</a></li>
-<li><a href="#检查cookie是否设置">检查cookie是否设置</a></li>
-<li><a href="#移除cookie">移除cookie</a></li>
-<li><a href="#获取cookie">获取cookie</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#cookie">Cookie</a>
+      <ul>
+        <li><a href="#修改cookie">修改cookie</a></li>
+        <li><a href="#设置cookie">设置cookie</a></li>
+        <li><a href="#检查cookie是否设置">检查cookie是否设置</a></li>
+        <li><a href="#移除cookie">移除cookie</a></li>
+        <li><a href="#获取cookie">获取cookie</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="cookie">Cookie</h2>
-
+        		<h2 id="cookie">Cookie</h2>
 <table>
 <thead>
 <tr>
@@ -209,67 +208,48 @@
 <th>详细说明</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>name</td>
 <td>cookie的名称。这个也是你可以从<code>$_COOKIE</code>中获取值的名称。这个是唯一必须的参数</td>
 </tr>
-
 <tr>
 <td>value</td>
 <td>cookie中存储的值。这个数据可以从浏览器中访问，所以不要在这放敏感信息·</td>
 </tr>
-
 <tr>
 <td>expire</td>
 <td>一个代表cookie过期时间的Unix的时间戳。如果过期时间设置为0，cookie将会在session失效时同时失效。如果设置一个比当前时间早的时间戳，cookie会立即失效。</td>
 </tr>
-
 <tr>
 <td>path</td>
 <td>cookie的范围。如果设置为<code>/</code>这个cookie会在整个域名下有效。如果设置为<code>/somePath/</code>cookie将会只在这个路径和这个路径的子路径中有效。默认cookie会设置为当前问文件的路径</td>
 </tr>
-
 <tr>
 <td>domain</td>
 <td>cookie有效的域名和子域名。如果设置为一级域名<code>stackoverflow.com</code>，这个cookie会在这个域名和子域名中有效。如果设置为<code>sub.stackoverflow.com</code>，这个cookie只会在这个子域名和子域名的子域名下面有效。</td>
 </tr>
-
 <tr>
 <td>secure</td>
 <td>如果设置为<code>true</code>，这个cookie只有当客户端和服务端为https时才会设置。</td>
 </tr>
-
 <tr>
 <td>httponly</td>
 <td>指明这个cookie只能通过http/s协议进行设置，不能使用JavaScript这样的客户端语音设置。只在PHP5.2之后有效</td>
 </tr>
 </tbody>
 </table>
-
 <p>一个HTTP的cookie就是：当用户浏览器浏览的时候，一些从服务器发送到用户端，并存储在用户电脑浏览器下面的数据。</p>
-
 <h3 id="修改cookie">修改cookie</h3>
-
 <p>可以使用<a href="https://www.php.net/manual/en/function.setcookie.php">setcookie</a>来修改cookie中存储的值：</p>
-
-<pre><code class="language-php">setcookie('user', 'John', time()+86400, '/');  
-</code></pre>
-
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">setcookie(&#39;user&#39;, &#39;John&#39;, time()+86400, &#39;/&#39;);  
+</code></pre></div><blockquote>
 <p>cookie是HTTP头的一部分，所有<code>setcookie()</code>方法需要在发送数据到浏览器之前调用。当修改cookie的时候，需要保证<code>path</code>和<code>domain</code>的参数和原来cookie的值一致，否则将会创建一个新的cookie。当你发送cookie的时候，cookie的值部分会被自动的进行urlencode操作。当接收cookie的时候，会被自动的decode并且赋值给cookie名称相同的变量中。</p>
 </blockquote>
-
 <h3 id="设置cookie">设置cookie</h3>
-
 <p>使用<code>setcookie</code>方法来设置一个cookie。因为cookie是HTTP头的一部分，所以你必须在发送数据到浏览器之前设置cookie。例如：</p>
-
-<pre><code class="language-php">setcookie('user', 'Tom', time( + 86400), '/');
-</code></pre>
-
-<p>参数说明：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">setcookie(&#39;user&#39;, &#39;Tom&#39;, time( + 86400), &#39;/&#39;);
+</code></pre></div><p>参数说明：</p>
 <ul>
 <li>创建一个名称为<code>user</code>的cookie</li>
 <li>(可选)为这个cookie设置值<code>Tom</code></li>
@@ -278,52 +258,34 @@
 <li>(可选)cookie只能使用HTTPS传输</li>
 <li>(可选)cookie不能被类似JavaScript的脚本语言访问</li>
 </ul>
-
 <blockquote>
 <p>创建或修改一个cookie只能在(<code>path</code>和<code>domain</code>指定的)子请求生效，在<code>$_COOKIE</code>也不是立即生效的。</p>
 </blockquote>
-
 <h3 id="检查cookie是否设置">检查cookie是否设置</h3>
-
 <p>对<code>$_COOKIE</code>使用<code>isset</code>函数，来检查cookie是否设置。例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//PHP &lt; <span style="color:#f92672">7.0</span>
+<span style="color:#a6e22e">if</span> <span style="color:#960050;background-color:#1e0010">(</span><span style="color:#a6e22e">isset</span><span style="color:#960050;background-color:#1e0010">($</span><span style="color:#a6e22e">_COOKIE</span><span style="color:#960050;background-color:#1e0010">[&#39;</span><span style="color:#a6e22e">user</span><span style="color:#960050;background-color:#1e0010">&#39;]))</span> <span style="color:#960050;background-color:#1e0010">{</span>
+    <span style="color:#960050;background-color:#1e0010">//</span><span style="color:#a6e22e">true</span>  <span style="color:#a6e22e">cookie设置了</span>
+    <span style="color:#a6e22e">echo</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">User</span> <span style="color:#a6e22e">is</span><span style="color:#960050;background-color:#1e0010">&#39;</span> <span style="color:#960050;background-color:#1e0010">.</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">_COOKIE</span><span style="color:#960050;background-color:#1e0010">[&#39;</span><span style="color:#a6e22e">user</span><span style="color:#960050;background-color:#1e0010">&#39;];</span>
+<span style="color:#960050;background-color:#1e0010">}</span> <span style="color:#a6e22e">else</span> <span style="color:#960050;background-color:#1e0010">{</span>
+    <span style="color:#960050;background-color:#1e0010">//</span><span style="color:#a6e22e">false</span> <span style="color:#a6e22e">cookie没有设置</span>
+    <span style="color:#a6e22e">echo</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">User</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">not</span> <span style="color:#a6e22e">logged</span> <span style="color:#a6e22e">in</span><span style="color:#960050;background-color:#1e0010">&#39;;</span>
+<span style="color:#960050;background-color:#1e0010">}</span>
 
-<pre><code class="language-php">//PHP &lt; 7.0
-if (isset($_COOKIE['user'])) {
-    //true  cookie设置了
-    echo 'User is' . $_COOKIE['user'];
-} else {
-    //false cookie没有设置
-    echo 'User is not logged in';
-}
-
-//PHP7.0+
-echo 'User is ' . $_COOKIE['user'] ?? 'User is not logged in';
-</code></pre>
-
-<h3 id="移除cookie">移除cookie</h3>
-
+<span style="color:#960050;background-color:#1e0010">//</span><span style="color:#a6e22e">PHP7</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#a6e22e">0</span><span style="color:#960050;background-color:#1e0010">+</span>
+<span style="color:#a6e22e">echo</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">User</span> <span style="color:#a6e22e">is</span> <span style="color:#960050;background-color:#1e0010">&#39;</span> <span style="color:#960050;background-color:#1e0010">.</span> <span style="color:#960050;background-color:#1e0010">$</span><span style="color:#a6e22e">_COOKIE</span><span style="color:#960050;background-color:#1e0010">[&#39;</span><span style="color:#a6e22e">user</span><span style="color:#960050;background-color:#1e0010">&#39;]</span> <span style="color:#960050;background-color:#1e0010">??</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">User</span> <span style="color:#a6e22e">is</span> <span style="color:#a6e22e">not</span> <span style="color:#a6e22e">logged</span> <span style="color:#a6e22e">in</span><span style="color:#960050;background-color:#1e0010">&#39;;</span>
+</code></pre></div><h3 id="移除cookie">移除cookie</h3>
 <p>想要删除一个cookie，设置一个过去的时间戳。这将会触发浏览器的删除操作：</p>
-
-<pre><code class="language-php">setcookie('user', '', time() - 3600, '/');
-</code></pre>
-
-<blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">setcookie(&#39;user&#39;, &#39;&#39;, time() - 3600, &#39;/&#39;);
+</code></pre></div><blockquote>
 <p>当删除cookie的时候，你需要确保<code>path</code>和<code>domain</code>和之前cookie的值一致，否则将会创建一个立即过去的新cookie。</p>
 </blockquote>
-
 <p>在当前页面中使用unset方法删除<code>$_COOKIE</code>的值也是一个方法。</p>
-
-<pre><code class="language-php">unset($_COOKIE['user']);
-</code></pre>
-
-<h3 id="获取cookie">获取cookie</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">unset($_COOKIE[&#39;user&#39;]);
+</code></pre></div><h3 id="获取cookie">获取cookie</h3>
 <p>可以使用$_COOKIE获取cookie的值。例如我们有一个名为<code>user</code>的cookie，我们可以像下面这样获取cookie的值：</p>
-
-<pre><code class="language-php">echo $_COOKIE['user'];
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">echo $_COOKIE[&#39;user&#39;];
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -395,6 +357,12 @@ echo 'User is ' . $_COOKIE['user'] ?? 'User is not logged in';
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

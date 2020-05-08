@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,24 +187,16 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#开始学习java">开始学习java</a>
-<ul>
-<li><a href="#创建你第一个java程序">创建你第一个Java程序</a>
-<ul>
-<li><a href="#详细解释hello-world">详细解释Hello World</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#开始学习java">开始学习java</a>
+      <ul>
+        <li><a href="#创建你第一个java程序">创建你第一个Java程序</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="开始学习java">开始学习java</h2>
-
+        		<h2 id="开始学习java">开始学习java</h2>
 <table>
 <thead>
 <tr>
@@ -210,7 +206,6 @@
 <th>发布日期</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><a href="https://docs.oracle.com/javase/10/docs/toc.htm">Java SE 10</a></td>
@@ -218,70 +213,60 @@
 <td>future</td>
 <td>2018-03-20</td>
 </tr>
-
 <tr>
 <td><a href="https://docs.oracle.com/javase/9/docs/api/overview-summary.html">Java SE 9</a></td>
 <td>None</td>
 <td>future</td>
 <td>2017-07-27</td>
 </tr>
-
 <tr>
 <td><a href="https://docs.oracle.com/javase/8/docs/api/">Java SE 8</a></td>
 <td>Spider</td>
 <td>future</td>
 <td>2014-03-18</td>
 </tr>
-
 <tr>
 <td><a href="https://docs.oracle.com/javase/7/docs/api/">Java SE 7</a></td>
 <td>Dophin</td>
 <td>2015-04-14</td>
 <td>2011-07-28</td>
 </tr>
-
 <tr>
 <td><a href="https://docs.oracle.com/javase/6/docs/api/">Java SE 6</a></td>
 <td>Mustang</td>
 <td>2013-04-16</td>
 <td>2006-12-23</td>
 </tr>
-
 <tr>
 <td><a href="https://docs.oracle.com/javase/1.5.0/docs/api/">Java SE 5</a></td>
 <td>Tiger</td>
 <td>2009-11-04</td>
 <td>2004-10-04</td>
 </tr>
-
 <tr>
 <td><a href="https://docs.oracle.com/javase/1.4.2/docs/api/">Java SE 1.4</a></td>
 <td>Merlin</td>
 <td>prior to 2009-11-04</td>
 <td>2002-02-06</td>
 </tr>
-
 <tr>
 <td><a href="https://docs.oracle.com/javase/1.3/docs/api/">Java SE 1.3</a></td>
 <td>Kestrel</td>
 <td>prior to 2009-11-04</td>
 <td>2000-05-08</td>
 </tr>
-
 <tr>
 <td><a href="https://www.java.com/zh_CN/">Java SE 1.2</a></td>
 <td>Playground</td>
 <td>prior to 2009-11-04</td>
 <td>1998-12-08</td>
 </tr>
-
 <tr>
 <td><a href="https://www.java.com/zh_CN/">Java SE 1.1</a></td>
 <td>None</td>
 <td>prior to 2009-11-04</td>
 <td>1997-02-19</td>
 </tr>
-
 <tr>
 <td><a href="https://www.java.com/zh_CN/">Java SE 1.0</a></td>
 <td>Oak</td>
@@ -290,133 +275,76 @@
 </tr>
 </tbody>
 </table>
-
 <h3 id="创建你第一个java程序">创建你第一个Java程序</h3>
-
 <p>使用你的<a href="https://en.wikipedia.org/wiki/Text_editor">文本编辑器</a>或<a href="https://en.wikipedia.org/wiki/Integrated_development_environment">IDE</a>创建一个名称为<code>HelloWorld.java</code>的文件。然后把下面的代码贴入那个文件中，并且保存文件：</p>
-
 <pre><code>public class HelloWorld {
     public static void main(String[] args) {
         System.out.println(&quot;Hello, Wolrd!&quot;);
     }
 }
-</code></pre>
-
-<p><strong>注意：</strong>对应Java，将会识别这个文件<code>public class</code>(不会抛出编译时错误)，这个文件名必须和类名是相同的(这里就是<code>HelloWorld</code>)，扩展名为<code>.java</code>。这个类的前面需要<code>public</code>标识符。</p>
-
+</code></pre><p>**注意：**对应Java，将会识别这个文件<code>public class</code>(不会抛出编译时错误)，这个文件名必须和类名是相同的(这里就是<code>HelloWorld</code>)，扩展名为<code>.java</code>。这个类的前面需要<code>public</code>标识符。</p>
 <p>命名约定推荐Java的类以大写字母开始，然后使用<a href="https://en.wikipedia.org/wiki/Camel_case?oldformat=true">驼峰命名</a>格式来命名(就是除了第一个字符之外，单词的首字母大写，其他小写)。这个约定是和下划线和$符相对的。</p>
-
 <p>接下来是编译代码，打开一个终端窗口，切换到<code>HelloWorld.java</code>文件所在的目录：</p>
-
 <pre><code>cd /path/to/containing/folder/
-</code></pre>
-
-<p><strong>注意：</strong><a href="http://www.linfo.org/cd.html">cd</a>是用来切换目录的终端命令</p>
-
+</code></pre><p><strong>注意：</strong><a href="http://www.linfo.org/cd.html">cd</a>是用来切换目录的终端命令</p>
 <pre><code>$ javac HelloWorld.java
-</code></pre>
-
-<p>通常会遇到一个错误<code>'javac' is not recognized as an internal or external command, operable program or batch file</code>，即使你已经安装了JDK并且可以在IDE(eclipse等)中执行。因为命令的路径默认没有添加到环境变量内。</p>
-
+</code></pre><p>通常会遇到一个错误<code>'javac' is not recognized as an internal or external command, operable program or batch file</code>，即使你已经安装了JDK并且可以在IDE(eclipse等)中执行。因为命令的路径默认没有添加到环境变量内。</p>
 <p>因此当你在windows环境遇到这个问题，首先就是查找你的<code>javac.exe</code>的路径。很可能是在<code>C:\Program Files\Java\jdk(version number)\bin</code>，然后在下面这样运行：</p>
-
 <pre><code> $ C:\Program Files\Java\jdk(version number)\bin\javac HelloWorld.java
-</code></pre>
-
-<p>我们想上面代码一样调用<code>javac</code>程序。因为这样你的操作系统才会知道<code>javac</code>所在的位置。现在我们介绍另外的方式，这样就不行填写整个程序路径了，那就是环境变量<code>PATH</code>。</p>
-
+</code></pre><p>我们想上面代码一样调用<code>javac</code>程序。因为这样你的操作系统才会知道<code>javac</code>所在的位置。现在我们介绍另外的方式，这样就不行填写整个程序路径了，那就是环境变量<code>PATH</code>。</p>
 <p>在Windows XP/Vista/7/8/10上面修改<code>PATH</code>环境变量：</p>
-
 <ul>
 <li>控制面板=&gt;系统=&gt;高级系统配置</li>
-<li>切换：&rdquo;高级&rdquo;tab=&gt;环境变量</li>
-<li>在&rdquo;系统环境变量&rdquo;中，选择&rdquo;PATH&rdquo;=&gt;修改</li>
+<li>切换：&ldquo;高级&quot;tab=&gt;环境变量</li>
+<li>在&quot;系统环境变量&quot;中，选择&quot;PATH&quot;=&gt;修改</li>
 </ul>
-
-<p>这修改了就没法测回，你要小心一些。首先把路径复制到编辑器上。然后获得<code>javac</code>所在目录的目录地址，并复制这个地址。这将会是<code>c:\Program Files\Java\jdk1.8.0_xx\bin</code>这样的。</p>
-
-<p>在&rdquo;变量值&rdquo;字段中，添加这个路径在之前存在路径的前面，然后添加分号。不要删除原有的值。</p>
-
+<p>这修改了就没法测回，你要小心一些。首先把路径复制到编辑器上。然后获得<code>javac</code>所在目录的目录地址，并复制这个地址。这将会是<code> c:\Program Files\Java\jdk1.8.0_xx\bin</code>这样的。</p>
+<p>在&quot;变量值&quot;字段中，添加这个路径在之前存在路径的前面，然后添加分号。不要删除原有的值。</p>
 <pre><code>Variable name  : PATH
 Variable value : c:\Program Files\Java\jdk1.8.0_xx\bin;[Existing Entries...]
-</code></pre>
-
-<p>现在就可以了。</p>
-
+</code></pre><p>现在就可以了。</p>
 <p>对于Linux系统，查看<a href="https://docs.oracle.com/javase/tutorial/essential/environment/paths.html">这里</a>。</p>
-
-<p><strong>注意：</strong><code>javac</code>调用java的编译器。</p>
-
+<p>**注意：**<code>javac</code>调用java的编译器。</p>
 <p>这个编译器将会产生一个叫做<code>HelloWorld.class</code>的<a href="https://en.wikipedia.org/wiki/Bytecode">字节码</a>文件，这个文件可以被<a href="https://en.wikipedia.org/wiki/Java_virtual_machine">JVM</a>执行。Java的编译器<code>javac</code>解析有Java代码写的文件，然后生成一个字节码的类文件。另外，编译器还可以使用注释处理API处理源码文件和类文件中的注释。编译器是命令行工具，也可以使用Java编译器API调用。</p>
-
 <p>然后使用<code>java</code>运行包含<code>main</code>方法的类文件(这里是<code>HelloWorld</code>)，这里忽略<code>.class</code>后缀：</p>
-
 <pre><code>$ java HelloWorld
-</code></pre>
-
-<p><strong>注意：</strong>这里<code>java</code>命令运行了一个Java应用。</p>
-
+</code></pre><p>**注意：**这里<code>java</code>命令运行了一个Java应用。</p>
 <p>这将会在你的终端输出：</p>
-
 <blockquote>
 <p>Hello, World!</p>
 </blockquote>
-
 <p>你成功的进行了代码编写，并且实现了你第一个Java程序。</p>
-
-<p><strong>注意：</strong>为了保证上面的命令(<code>java</code>，<code>javac</code>等)正确执行，你必须确保：</p>
-
+<p>**注意：**为了保证上面的命令(<code>java</code>，<code>javac</code>等)正确执行，你必须确保：</p>
 <ul>
 <li>JDK已经安装了(<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html">Orcale</a>，<a href="http://openjdk.java.net/install/">OpenJDK</a>，或者其他的)</li>
 <li>环境变量都正确<a href="https://docs.oracle.com/javase/tutorial/essential/environment/paths.html">设置</a>了</li>
 </ul>
-
 <p>你将需要JVM提供的编译器<code>javac</code>和执行器<code>java</code>。想要知道自己安装的是什么版本的，可以使用命令<code>java -version</code>和<code>javac -version</code>来查看。这将会在终端中输出你使用的版本号(<code>1.8.0_73</code>)</p>
-
 <h4 id="详细解释hello-world">详细解释Hello World</h4>
-
 <p>这个<code>Hello World</code>程序只包含一个文件，这个文件包含了一个<code>HelloWorld</code>类定义，一个<code>main</code>方法和<code>main</code>方法内的一条语句。</p>
-
 <pre><code>public class HelloWorld {
-</code></pre>
-
-<p>这里<code>class</code>关键字在类定义的开始，后面跟着类的名称<code>HelloWorld</code>。每一个Java程序至少包含一个类定义(详细信息查看类定义部分)。</p>
-
+</code></pre><p>这里<code>class</code>关键字在类定义的开始，后面跟着类的名称<code>HelloWorld</code>。每一个Java程序至少包含一个类定义(详细信息查看类定义部分)。</p>
 <pre><code>public static void main(String[] args) {
-</code></pre>
-
-<p>这是一个入口方法(注意这个格式<code>public static void main(String[])</code>)，这个方法是给JVM运行这个程序用的。每一个Java程序都必须有一个。这个方法：</p>
-
+</code></pre><p>这是一个入口方法(注意这个格式<code>public static void main(String[])</code>)，这个方法是给JVM运行这个程序用的。每一个Java程序都必须有一个。这个方法：</p>
 <ul>
 <li>public : 意味着这个方法可以在程序外被调用。查看可见性部分。</li>
 <li>static ：这个方法是类级别的，可以被类直接调用</li>
-<li>void：意味着这个方法没有返回值。<strong>注意：</strong>不像C和C++返会一个整数码，Java这里是<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#exit-int-">System.exit()</a></li>
+<li>void：意味着这个方法没有返回值。**注意：**不像C和C++返会一个整数码，Java这里是<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/System.html#exit-int-">System.exit()</a></li>
 </ul>
-
 <p>这个main方法接收：</p>
-
 <ul>
 <li>一个字符串数组(被叫做args)作为参数(也是命令行参数)</li>
 </ul>
-
 <p>这机会是所有的Java入口方法必须的。</p>
-
 <p>不要求的部分：</p>
-
 <ul>
 <li>这个名称<code>args</code>是一个可选的变量名称，所以你可以叫任何你希望的名字，尽管通常被称作<code>args</code></li>
 <li>这个方法的参数是数组(<code>String[] args</code>)还是Varargs(<code>String… args</code>)都没有关系，因为数组可以被传递个Varargs</li>
 </ul>
-
-<p><strong>注意：</strong>一个应用可以有多个类定义了入口方法<code>main</code>。应用实际使用的如果方法根据<code>java</code>命令后面的类名决定。</p>
-
+<p>**注意：**一个应用可以有多个类定义了入口方法<code>main</code>。应用实际使用的如果方法根据<code>java</code>命令后面的类名决定。</p>
 <p>在main方法里面，我们看到下面这条语句：</p>
-
 <pre><code>System.out.println(&quot;Hello, World!&quot;);
-</code></pre>
-
-<p>让我们把这个语句拆开来一个个分享：</p>
-
+</code></pre><p>让我们把这个语句拆开来一个个分享：</p>
 <table>
 <thead>
 <tr>
@@ -424,77 +352,58 @@ Variable value : c:\Program Files\Java\jdk1.8.0_xx\bin;[Existing Entries...]
 <th>目的</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>System</td>
 <td>这表明后面的表达式是在<code>System</code>上调用的，这个类在<code>java.lang</code>包里面</td>
 </tr>
-
 <tr>
 <td>.</td>
 <td>这是<code>.操作符</code>。这个操作符给你提供访问类元素(类字段和方法)的方法。因此，这个点操作符允许调用<code>System</code>类的<code>out</code>字段。</td>
 </tr>
-
 <tr>
 <td>out</td>
 <td>这是<code>System</code>类中包含的标准输出功能的静态字段<code>PrintStream</code>类型的名称</td>
 </tr>
-
 <tr>
 <td>.</td>
 <td>点运算符。这个点运算符提供访问<code>out</code>变量<code>println</code>方法</td>
 </tr>
-
 <tr>
 <td>println</td>
 <td>这是PrintStream类的一个方法名。这个方法输出参数内容到console中，并且打印一个换行符</td>
 </tr>
-
 <tr>
 <td>(</td>
 <td>这个括号表明是在访问一个方法(不是变量)，后面是传递个<code>println</code>方法的参数</td>
 </tr>
-
 <tr>
 <td>&ldquo;Hello World!&rdquo;</td>
 <td>这个是传递给方法<code>println</code>的字符串字面量参数。双引号表明这些字符是一个字符串</td>
 </tr>
-
 <tr>
 <td>)</td>
 <td>这个括号表示传递给<code>println</code>方法的参数已经结束了</td>
 </tr>
-
 <tr>
 <td>;</td>
 <td>分号表示语句的结尾。</td>
 </tr>
 </tbody>
 </table>
-
-<p><strong>注意：</strong>每一个Java的语句都要以分号结尾。</p>
-
+<p>**注意：**每一个Java的语句都要以分号结尾。</p>
 <p>下面是方法体和类主体的结束部分：</p>
-
 <pre><code> } // end of main function scope
 } // end of class HelloWorld scope
-</code></pre>
-
-<p>下面是另一个介绍面向对象的例子。我们创建一个包含一个成员的球队。这里可以有很多球员，但是当我们讨论数组的时候在这样做。</p>
-
+</code></pre><p>下面是另一个介绍面向对象的例子。我们创建一个包含一个成员的球队。这里可以有很多球员，但是当我们讨论数组的时候在这样做。</p>
 <p>第一步，我们定义一个<code>Team</code>类。</p>
-
 <pre><code>public class Team {
     Member member;
     public Team(Member member) {
         this.member = member;
     }
 }
-</code></pre>
-
-<p>现在，我们定义<code>Member</code>类：</p>
-
+</code></pre><p>现在，我们定义<code>Member</code>类：</p>
 <pre><code>class Member {
     private String name;
     private String type;
@@ -508,12 +417,8 @@ Variable value : c:\Program Files\Java\jdk1.8.0_xx\bin;[Existing Entries...]
         this.rank = rank;
     }
 }
-</code></pre>
-
-<p>为什么这里我们使用<code>private</code>呢？就如同，一个人想要知道你的名字，他应该直接问你，而不是那你的钱包看你的身份证。这里<code>private</code>就是做这种事情的，它避免从外部访问你的变量。你可以只通过<code>getter</code>这类方法来返回<code>private</code>变量。</p>
-
+</code></pre><p>为什么这里我们使用<code>private</code>呢？就如同，一个人想要知道你的名字，他应该直接问你，而不是那你的钱包看你的身份证。这里<code>private</code>就是做这种事情的，它避免从外部访问你的变量。你可以只通过<code>getter</code>这类方法来返回<code>private</code>变量。</p>
 <p>现在我们把所有的代码放到一起，加上上面说的getter方法和main方法：</p>
-
 <pre><code>public class Team { 
     Member member;
     public Team(Member member) { 
@@ -556,20 +461,13 @@ class Member {
         return this.rank; // my rank is
     }
 }
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>Aurieel
 light
 10
 1
-</code></pre>
-
-<p>在强调一下，<code>Test</code>类中的<code>main</code>方法是我们程序的入口。如果没有<code>main</code>方法，我们就没有办法通知JVM从哪里开始运行我们的程序。</p>
-
+</code></pre><p>在强调一下，<code>Test</code>类中的<code>main</code>方法是我们程序的入口。如果没有<code>main</code>方法，我们就没有办法通知JVM从哪里开始运行我们的程序。</p>
 <p>1 - 因为<code>HelloWorld</code>和<code>System</code>类关系很小，所有只能访问<code>public</code>的数据。</p>
-
 <p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
@@ -642,6 +540,12 @@ light
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

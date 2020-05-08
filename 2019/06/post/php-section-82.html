@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,43 +187,33 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#http认证">HTTP认证</a>
-<ul>
-<li><a href="#1-http认证">1. HTTP认证</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#http认证">HTTP认证</a>
+      <ul>
+        <li><a href="#1-http认证">1. HTTP认证</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="http认证">HTTP认证</h2>
-
+        		<h2 id="http认证">HTTP认证</h2>
 <p>在这个主题中我们做一个简单的HTTP认证脚本。</p>
-
 <h3 id="1-http认证">1. HTTP认证</h3>
-
-<p><strong>注意：</strong>只把这个代码放到页面的header部分，否则代码将不会有效果。</p>
-
-<pre><code class="language-php">&lt;?php
-if (!isset($_SERVER['PHP_AUTH_USER'])) {
-    header('WWW-Authenticate: Basic realm=&quot;My Realm&quot;');
-    header('HTTP/1.0 401 Unauthorized');
-    echo 'Text to send if user hits Cancel button';
-    exit;
+<p>**注意：**只把这个代码放到页面的header部分，否则代码将不会有效果。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">isset</span>($_SERVER[<span style="color:#e6db74">&#39;PHP_AUTH_USER&#39;</span>])) {
+    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;WWW-Authenticate: Basic realm=&#34;My Realm&#34;&#39;</span>);
+    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;HTTP/1.0 401 Unauthorized&#39;</span>);
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;Text to send if user hits Cancel button&#39;</span>;
+    <span style="color:#66d9ef">exit</span>;
 }
-echo &quot;&lt;p&gt;Hello {$_SERVER['PHP_AUTH_USER']}.&lt;/p&gt;&quot;;
-$user = $_SERVER['PHP_AUTH_USER']; //Lets save the information
-echo &quot;&lt;p&gt;You entered {$_SERVER['PHP_AUTH_PW']} as your password.&lt;/p&gt;&quot;;
-$pass = $_SERVER['PHP_AUTH_PW']; //Save the password(optionally add encryption)! 
-?&gt;
+<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;&lt;p&gt;Hello </span><span style="color:#e6db74">{</span>$_SERVER[&#39;PHP_AUTH_USER&#39;]<span style="color:#e6db74">}</span><span style="color:#e6db74">.&lt;/p&gt;&#34;</span>;
+$user <span style="color:#f92672">=</span> $_SERVER[<span style="color:#e6db74">&#39;PHP_AUTH_USER&#39;</span>]; <span style="color:#75715e">//Lets save the information
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;&lt;p&gt;You entered </span><span style="color:#e6db74">{</span>$_SERVER[&#39;PHP_AUTH_PW&#39;]<span style="color:#e6db74">}</span><span style="color:#e6db74"> as your password.&lt;/p&gt;&#34;</span>;
+$pass <span style="color:#f92672">=</span> $_SERVER[<span style="color:#e6db74">&#39;PHP_AUTH_PW&#39;</span>]; <span style="color:#75715e">//Save the password(optionally add encryption)! 
+</span><span style="color:#75715e"></span><span style="color:#75715e">?&gt;</span>
 //You html page
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -291,6 +285,12 @@ $pass = $_SERVER['PHP_AUTH_PW']; //Save the password(optionally add encryption)!
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

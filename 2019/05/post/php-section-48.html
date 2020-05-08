@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,126 +187,96 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#utf-8">UTF-8</a>
-<ul>
-<li><a href="#1-输入">1. 输入</a></li>
-<li><a href="#2-输出">2. 输出</a></li>
-<li><a href="#3-数据存储和访问">3. 数据存储和访问</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#utf-8">UTF-8</a>
+      <ul>
+        <li><a href="#1-输入">1. 输入</a></li>
+        <li><a href="#2-输出">2. 输出</a></li>
+        <li><a href="#3-数据存储和访问">3. 数据存储和访问</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="utf-8">UTF-8</h2>
-
+        		<h2 id="utf-8">UTF-8</h2>
 <h3 id="1-输入">1. 输入</h3>
-
 <ul>
-<li>你需要在任何地方存储和使用接收到的UTF-8格式的数据。PHP的<a href="https://php.net/manual/en/function.mb-check-encoding.php">mb_check_encoding</a>可以完成这个功能，但是你要始终如一的使用。确实没有办法解决这个问题，因为恶意客户机可以用他们想要的任何编码提交数据。</li>
+<li>
+<p>你需要在任何地方存储和使用接收到的UTF-8格式的数据。PHP的<a href="https://php.net/manual/en/function.mb-check-encoding.php">mb_check_encoding</a>可以完成这个功能，但是你要始终如一的使用。确实没有办法解决这个问题，因为恶意客户机可以用他们想要的任何编码提交数据。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$string = $_REQUEST[&#39;user_comment&#39;];
+if (!mb_check_encoding($string, &#39;UTF-8&#39;)) {
+    $actualEncoding = mb_detect_encoding($string);
+    $string = mb_convert_encoding($string, &#39;UTF-8&#39;, $actualEncoding);
+}
+</code></pre></div></li>
+<li>
+<p>**如果你使用的事HTML5，你可以忽略这一点。**你希望浏览器发送给你的所有数据都是UTF-8的。唯一有效的方式是在你的<code>&lt;form&gt;</code>标签中添加<code>accept-charset</code>属性。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;somepage.php&#34;</span> <span style="color:#a6e22e">accept-charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+</code></pre></div></li>
 </ul>
-
-<pre><code class="language-php">  $string = $_REQUEST['user_comment'];
-  if (!mb_check_encoding($string, 'UTF-8')) {
-      $actualEncoding = mb_detect_encoding($string);
-      $string = mb_convert_encoding($string, 'UTF-8', $actualEncoding);
-  }
-</code></pre>
-
-<ul>
-<li><strong>如果你使用的事HTML5，你可以忽略这一点。</strong>你希望浏览器发送给你的所有数据都是UTF-8的。唯一有效的方式是在你的<code>&lt;form&gt;</code>标签中添加<code>accept-charset</code>属性。</li>
-</ul>
-
-<pre><code class="language-html">  &lt;form action=&quot;somepage.php&quot; accept-charset=&quot;UTF-8&quot;&gt;
-</code></pre>
-
 <h3 id="2-输出">2. 输出</h3>
-
 <ul>
-<li>如果你的系统传输文本到另外的系统，需要通知他们编码方式。在PHP中，你可以在<code>php.ini</code>中设置<a href="https://www.php.net/manual/zh/ini.core.php#ini.default-charset">default_charset</a>选项，或者手动设置<code>Content-Type</code>这个MIME头。这是针对现代浏览器的首选项：</li>
-</ul>
-
-<pre><code class="language-php">  header('Content-Type: text/html; charset=utf-8');
-</code></pre>
-
+<li>
+<p>如果你的系统传输文本到另外的系统，需要通知他们编码方式。在PHP中，你可以在<code>php.ini</code>中设置<a href="https://www.php.net/manual/zh/ini.core.php#ini.default-charset">default_charset</a>选项，或者手动设置<code>Content-Type</code>这个MIME头。这是针对现代浏览器的首选项：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">header(&#39;Content-Type: text/html; charset=utf-8&#39;);
+</code></pre></div></li>
+<li>
+<p>如果你不能设置响应头的话，你需要在HTML文件中修改<a href="http://stackoverflow.com/q/4696499/4245525">HTML的源信息</a>。</p>
 <ul>
-<li><p>如果你不能设置响应头的话，你需要在HTML文件中修改<a href="http://stackoverflow.com/q/4696499/4245525">HTML的源信息</a>。</p>
-
-<ul>
-<li>HTML5</li>
-</ul>
-
-<pre><code class="language-html">&lt;meta charset=&quot;utf-8&quot;&gt;
-</code></pre>
-
-<ul>
-<li><p>老版本的HTML</p>
-
+<li>
+<p>HTML5</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>&gt;
+</code></pre></div></li>
+<li>
+<p>老版本的HTML</p>
 <pre><code>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
 </code></pre></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="3-数据存储和访问">3. 数据存储和访问</h3>
-
 <blockquote>
 <p>这个主题主要讨论UTF-8以及在数据库中使用的注意点。如果你想要了解更多的PHP中使用数据库的信息，查看更多的信息。</p>
 </blockquote>
-
 <p><strong>存储数据到数据库</strong></p>
-
 <ul>
-<li>指定你数据库中所有的表和文本列为<code>utf8mb4</code>，这使得MySQL可以物理地存储和检索以UTF-8编码的值。</li>
-</ul>
-
+<li>
+<p>指定你数据库中所有的表和文本列为<code>utf8mb4</code>，这使得MySQL可以物理地存储和检索以UTF-8编码的值。</p>
 <blockquote>
 <p>如果指定了utf8mb4_*排序集（没有显示指定字符集），MySQL将会隐式的使用utf8mb4编码</p>
 </blockquote>
-
-<ul>
-<li>老版本的MySQL(早于5.2.3)不支持<code>utf8mb4</code>，你需要使用utf8，这是Unicode字符集的子集。</li>
+</li>
+<li>
+<p>老版本的MySQL(早于5.2.3)不支持<code>utf8mb4</code>，你需要使用utf8，这是Unicode字符集的子集。</p>
+</li>
 </ul>
-
 <p><strong>从MySQL数据库读取数据</strong></p>
-
 <ul>
 <li>在你的应用中，无论你使用什么DB的方法，都需要指定连接的字符集为<code>utf8mb4</code>。这样，当MySQL将数据移交给您的应用程序时，它就不会从它的原生UTF-8进行转换，反之亦然。</li>
 <li>一些驱动程序提供了自己的机制来配置连接字符集，这两个机制都更新了自己的内部状态，并通知MySQL要在连接上使用的编码。这通常是首选的方法。</li>
 </ul>
-
 <p>例如（同样的考虑适用于上述情况）：</p>
-
 <ul>
-<li>如果你在PHP5.3.6之后使用<a href="https://www.php.net/manual/zh/book.pdo.php">PDO</a>抽象层，你需要在<a href="https://www.php.net/manual/zh/ref.pdo-mysql.connection.php">DSN</a>中指定<code>charset</code>:</li>
+<li>
+<p>如果你在PHP5.3.6之后使用<a href="https://www.php.net/manual/zh/book.pdo.php">PDO</a>抽象层，你需要在<a href="https://www.php.net/manual/zh/ref.pdo-mysql.connection.php">DSN</a>中指定<code>charset</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$handle = new PDO(&#39;mysql:charset=utf8mb4&#39;);
+</code></pre></div></li>
+<li>
+<p>如果你使用<a href="https://www.php.net/manual/zh/book.mysqli.php">mysqli</a>，你可以调用<a href="https://www.php.net/manual/zh/mysqli.set-charset.php">set_charset()</a>方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn = mysqli_connect(&#39;localhost&#39;, &#39;my_user&#39;, &#39;my_password&#39;, &#39;my_db&#39;);
+$conn-&gt;set_charset(&#39;utf8mb4&#39;); // object oriented style 
+mysqli_set_charset($conn, &#39;utf8mb4&#39;); // procedural style
+</code></pre></div></li>
+<li>
+<p>如果你坚持使用普通的<a href="https://www.php.net/manual/zh/book.mysql.php">mysql</a>，但恰好运行php≥5.2.3，你可以调用mysql_set_charset：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$conn = mysql_connect(&#39;localhost&#39;, &#39;my_user&#39;, &#39;my_password&#39;);
+$conn-&gt;set_charset(&#39;utf8mb4&#39;); // object oriented style
+mysql_set_charset($conn, &#39;utf8mb4&#39;); // procedural style
+</code></pre></div></li>
+<li>
+<p>如果数据库驱动程序不提供自己的连接字符集设置机制，则可能需要发出一个查询来告诉MySQL应用程序希望如何对连接上的数据进行编码：<a href="https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html">SET NAMES &lsquo;utf8mb4&rsquo;</a>。</p>
+</li>
 </ul>
-
-<pre><code class="language-php">$handle = new PDO('mysql:charset=utf8mb4');
-</code></pre></li>
-
-<li><p>如果你使用<a href="https://www.php.net/manual/zh/book.mysqli.php">mysqli</a>，你可以调用<a href="https://www.php.net/manual/zh/mysqli.set-charset.php">set_charset()</a>方法：</p></li>
-</ul>
-
-<pre><code class="language-php">  $conn = mysqli_connect('localhost', 'my_user', 'my_password', 'my_db');
-  $conn-&gt;set_charset('utf8mb4'); // object oriented style 
-  mysqli_set_charset($conn, 'utf8mb4'); // procedural style
-</code></pre>
-
-<ul>
-<li>如果你坚持使用普通的<a href="https://www.php.net/manual/zh/book.mysql.php">mysql</a>，但恰好运行php≥5.2.3，你可以调用mysql_set_charset：</li>
-</ul>
-
-<pre><code class="language-php">  $conn = mysql_connect('localhost', 'my_user', 'my_password');
-  $conn-&gt;set_charset('utf8mb4'); // object oriented style
-  mysql_set_charset($conn, 'utf8mb4'); // procedural style
-</code></pre>
-
-<ul>
-<li>如果数据库驱动程序不提供自己的连接字符集设置机制，则可能需要发出一个查询来告诉MySQL应用程序希望如何对连接上的数据进行编码：<a href="https://dev.mysql.com/doc/refman/8.0/en/charset-connection.html">SET NAMES &lsquo;utf8mb4&rsquo;</a>。</li>
-</ul>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -375,6 +349,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

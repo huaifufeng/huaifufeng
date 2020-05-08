@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,44 +187,33 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#安全的记住我">安全的记住我</a>
-<ul>
-<li><a href="#1-保持登录-最好方法">1. &ldquo;保持登录&rdquo; - 最好方法</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#安全的记住我">安全的记住我</a>
+      <ul>
+        <li><a href="#1-保持登录---最好方法">1. &ldquo;保持登录&rdquo; - 最好方法</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="安全的记住我">安全的记住我</h2>
-
-<p>我已经找了这个主题很久了，知道我找到<a href="https://stackoverflow.com/a/17266448/4535386这个问题。我想它值得更多人知道。">https://stackoverflow.com/a/17266448/4535386这个问题。我想它值得更多人知道。</a></p>
-
-<h3 id="1-保持登录-最好方法">1. &ldquo;保持登录&rdquo; - 最好方法</h3>
-
+        		<h2 id="安全的记住我">安全的记住我</h2>
+<p>我已经找了这个主题很久了，知道我找到https://stackoverflow.com/a/17266448/4535386这个问题。我想它值得更多人知道。</p>
+<h3 id="1-保持登录---最好方法">1. &ldquo;保持登录&rdquo; - 最好方法</h3>
 <p>使用三部分存储cookie：</p>
-
-<pre><code class="language-php">function onLogin($user) {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function onLogin($user) {
     $token = GenerateRandomToken(); //产生一个token，应该是128-256字符
     storeTokenForUser($user, $token);
-    $cookie = $user . &quot;:&quot; . $token;
-    $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
-    $cookie .= &quot;:&quot; . $mac;
-    setcookie(&quot;rememberme&quot;, $cookie);
+    $cookie = $user . &#34;:&#34; . $token;
+    $mac = hash_hmac(&#39;sha256&#39;, $cookie, SECRET_KEY);
+    $cookie .= &#34;:&#34; . $mac;
+    setcookie(&#34;rememberme&#34;, $cookie);
 }
-</code></pre>
-
-<p>然后，进行验证：</p>
-
-<pre><code class="language-php">functiom rememberMe() {
-    $cookie = isset($_COOKIE['rememberme']) ? $_COOKIE['rememberme'] : &quot;&quot;;
+</code></pre></div><p>然后，进行验证：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">functiom rememberMe() {
+    $cookie = isset($_COOKIE[&#39;rememberme&#39;]) ? $_COOKIE[&#39;rememberme&#39;] : &#34;&#34;;
     if ($cookie) {
-        list($user, $token, $mac) = explode(&quot;:&quot;, $cookie);
-        if (!hash_equals(hash_hmac('sha256', $user . &quot;:&quot; . $token, SECRET_KEY), $mac)) {
+        list($user, $token, $mac) = explode(&#34;:&#34;, $cookie);
+        if (!hash_equals(hash_hmac(&#39;sha256&#39;, $user . &#34;:&#34; . $token, SECRET_KEY), $mac)) {
             return false;
         }
         $usertoken = fetchTokenByUserName($user);
@@ -229,9 +222,7 @@
         }
     }
 }
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -303,6 +294,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,27 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#case语句">case语句</a>
-<ul>
-<li><a href="#简单语句">简单语句</a></li>
-<li><a href="#贯穿语句">贯穿语句</a></li>
-<li><a href="#子模式匹配贯穿">子模式匹配贯穿</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#case语句">case语句</a>
+      <ul>
+        <li><a href="#简单语句">简单语句</a></li>
+        <li><a href="#贯穿语句">贯穿语句</a></li>
+        <li><a href="#子模式匹配贯穿">子模式匹配贯穿</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="case语句">case语句</h2>
-
+        		<h2 id="case语句">case语句</h2>
 <h3 id="简单语句">简单语句</h3>
-
 <p>在所有bash版本支持的最简单格式中，case语句执行与模式匹配的case。如果有的话，<code>;;</code>在第一次匹配后中断。</p>
-
 <pre><code>#!/bin/bash
 var=1
 case $var in 
@@ -217,19 +214,11 @@ case $var in
     echo &quot;Cat&quot;
     ;; 
 esac
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>Antartica
-</code></pre>
-
-<h3 id="贯穿语句">贯穿语句</h3>
-
+</code></pre><h3 id="贯穿语句">贯穿语句</h3>
 <p>Version&gt;=4.0</p>
-
 <p>从4.0开始，引入了新的操作符<code>;&amp;</code>，支持<a href="https://en.wikipedia.org/wiki/Switch_statement#Fallthrough">贯穿</a>操作。</p>
-
 <pre><code>#!/bin/bash
 var=1
 case $var in 
@@ -243,21 +232,13 @@ case $var in
     echo &quot;Cat&quot;
     ;&amp; 
 esac
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>Antartica
 Brazil
 Cat
-</code></pre>
-
-<h3 id="子模式匹配贯穿">子模式匹配贯穿</h3>
-
+</code></pre><h3 id="子模式匹配贯穿">子模式匹配贯穿</h3>
 <p>Version&gt;=4.0</p>
-
 <p>4.0开始，另一个操作符<code>;;&amp;</code>，只有子语句匹配才<a href="https://en.wikipedia.org/wiki/Switch_statement#Fallthrough">贯穿</a>的操作。</p>
-
 <pre><code>#!/bin/bash
 var=abc
 case $var in 
@@ -271,16 +252,10 @@ xyz)
     echo &quot;Cat&quot; 
     ;;&amp;
 esac
-</code></pre>
-
-<p>输出：</p>
-
+</code></pre><p>输出：</p>
 <pre><code>Antartica
 Cat
-</code></pre>
-
-<p>在下面这个例子中，<code>abc</code>匹配了第一个和第三个case，没有匹配第二个case。所有第二个语句没有执行。</p>
-
+</code></pre><p>在下面这个例子中，<code>abc</code>匹配了第一个和第三个case，没有匹配第二个case。所有第二个语句没有执行。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -353,6 +328,12 @@ Cat
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

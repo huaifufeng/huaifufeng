@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hugo on 怀府小阁</title>
@@ -23,17 +23,18 @@
 Hugo环境搭建 Hugo是一个用golang语言实现的一个静态网站生成器，不只是用来生成blog，还可以用来生成商城，信息网站等。它最主要的特性就是快，安全。这里就介绍下安装方法。
 Hugo支持目前市面上的操作系统，包括：Mac，Windows，Linux，OpenBSD，FreeBSD。我这里用的Mac电脑，就介绍下Mac的安装，其他的环境可以到Hugo安装页面查看相应的安装步骤。
 1、首先确定你的电脑是否安装有Homebrew，这是一个mac的安装包管理工具，可以用来安装软件。
-brew --version  如果输出了版本号，说明你的电脑已经安装了这个软件，否则就需要执行下面的命令进行安装。
-/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;quot;  然后重新输入上面的命令进行安装。
+brew --version 如果输出了版本号，说明你的电脑已经安装了这个软件，否则就需要执行下面的命令进行安装。
+/usr/bin/ruby -e &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;#34; 然后重新输入上面的命令进行安装。
 2、使用Homebrew安装Hugo
-brew install hugo  安装完毕之后使用下面的命令验证：
-hugo version  获取到版本号说明安装成功。
+brew install hugo 安装完毕之后使用下面的命令验证：
+hugo version 获取到版本号说明安装成功。
 3、然后就可以使用过hugo的命令来生成网站，生成页面了。
 首先生成网址，先到达你存放网站信息的地方，使用下面的命令生成网站的根目录文件夹example(替换为你自己的项目目录)：
-hugo new site example  生成网站的目录结构如下：
-. ├── archetypes ├── assets ├── config.toml //网站的配置文件 ├── content //网站内容的原始文件 ├── data ├── layouts ├── static └── themes //网站的模板文件  其他的我们暂时不关心，目前用到的是content，themes，config.toml
+hugo new site example 生成网站的目录结构如下：
+. ├── archetypes ├── assets ├── config.toml //网站的配置文件 ├── content //网站内容的原始文件 ├── data ├── layouts ├── static └── themes //网站的模板文件 其他的我们暂时不关心，目前用到的是content，themes，config.toml
 首先需要把我们的项目变成一个git项目，才可以进行下面的操作：
-git init git add . git commit -m &#39;init&#39;  Hugo目前已经有了一批的模板，只需要到这个地址，就可以找到需要的模板了，我这个blog就是从中使用的模板。使用下面的命令就可以把一个模板下载到本地：</description>
+git init git add . git commit -m &#39;init&#39; Hugo目前已经有了一批的模板，只需要到这个地址，就可以找到需要的模板了，我这个blog就是从中使用的模板。使用下面的命令就可以把一个模板下载到本地：
+git submodule add https://github.com/panr/hugo-theme-hello-friend.git themes/hello-friend 修改config.toml文件，配置里面使用的模板：</description>
     </item>
     
   </channel>

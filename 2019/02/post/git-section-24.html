@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,45 +187,34 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#钩子">钩子</a>
-<ul>
-<li><a href="#pre-push">pre-push</a></li>
-<li><a href="#在提交之前验证maven构建-或其他构建系统">在提交之前验证maven构建（或其他构建系统）</a></li>
-<li><a href="#自动将某些推送转发到其他仓库">自动将某些推送转发到其他仓库</a></li>
-<li><a href="#提交信息">提交信息</a></li>
-<li><a href="#本地钩子">本地钩子</a></li>
-<li><a href="#post-checkout">post-checkout</a></li>
-<li><a href="#post-commit">post-commit</a></li>
-<li><a href="#post-receive">post-receive</a></li>
-<li><a href="#pre-commit">pre-commit</a></li>
-<li><a href="#prepare-commit-msg">prepare-commit-msg</a></li>
-<li><a href="#pre-rebase">pre-rebase</a></li>
-<li><a href="#pre-receive">pre-receive</a></li>
-<li><a href="#update">update</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#钩子">钩子</a>
+      <ul>
+        <li><a href="#pre-push">pre-push</a></li>
+        <li><a href="#在提交之前验证maven构建或其他构建系统">在提交之前验证maven构建（或其他构建系统）</a></li>
+        <li><a href="#自动将某些推送转发到其他仓库">自动将某些推送转发到其他仓库</a></li>
+        <li><a href="#提交信息">提交信息</a></li>
+        <li><a href="#本地钩子">本地钩子</a></li>
+        <li><a href="#post-checkout">post-checkout</a></li>
+        <li><a href="#post-commit">post-commit</a></li>
+        <li><a href="#post-receive">post-receive</a></li>
+        <li><a href="#pre-commit">pre-commit</a></li>
+        <li><a href="#prepare-commit-msg">prepare-commit-msg</a></li>
+        <li><a href="#pre-rebase">pre-rebase</a></li>
+        <li><a href="#pre-receive">pre-receive</a></li>
+        <li><a href="#update">update</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="钩子">钩子</h2>
-
+        		<h2 id="钩子">钩子</h2>
 <h3 id="pre-push">pre-push</h3>
-
 <p>在<a href="https://github.com/git/git/blob/master/Documentation/RelNotes/1.8.2.txt">Git1.8.2</a>及以上是有效的。</p>
-
 <p>Version&gt;=1.8</p>
-
 <p>Pre-push钩子可以用来避免过度推送。这很有用，这是其中的一些原因：阻止意外的手动推送到指定分支，或者当遇到错误时阻止推送（单元检测，语法等）。</p>
-
 <p>创建一个Pre-push钩子是很贱的，只需要在<code>.git/hooks/</code>目录下面创建一个名为<code>pre-push</code>的文件，（警戒），并且确保这个文件有执行的权限：<code>chmod +x ./git/hooks/pre-push</code>。</p>
-
 <p>下面是<a href="https://dev.ghost.org/prevent-master-push/">Hannah Wolfe</a>提供的一个阻止推送到<code>master</code>分支的钩子：</p>
-
 <pre><code>#!/bin/bash
 
 protected_branch='master'
@@ -239,10 +232,7 @@ then
 else
 	exit 0 #push 执行
 fi
-</code></pre>
-
-<p>下面是Volkan Unsal提供的要求在push之前需要确保通过了RSpec的测试的例子：</p>
-
+</code></pre><p>下面是Volkan Unsal提供的要求在push之前需要确保通过了RSpec的测试的例子：</p>
 <pre><code>#!/usr/bin/env ruby
 requrie 'pty'
 html_path = &quot;rspec_results.html&quot;
@@ -281,22 +271,13 @@ else
 	# `open #{html_path}`
 	exit 1
 end
-</code></pre>
-
-<p>正如你看到的，有非常多的可能性，但是核心点就是一个：好的事情发生了就返回<code>exit 0</code>，出现问题了就返回<code>exit 1</code>。任何时候执行了<code>exit 1</code>你的push操作就会被中断，你的代码也会被保持在你执行<code>git push</code>命令之前的状态。</p>
-
+</code></pre><p>正如你看到的，有非常多的可能性，但是核心点就是一个：好的事情发生了就返回<code>exit 0</code>，出现问题了就返回<code>exit 1</code>。任何时候执行了<code>exit 1</code>你的push操作就会被中断，你的代码也会被保持在你执行<code>git push</code>命令之前的状态。</p>
 <p>当使用客户端的钩子时，需要注意开发者可以在push的时候使用<code>--no-verify</code>选项来过滤掉所有的客户端钩子。如果你依赖钩子来强制执行的流程，你的要求可能被绕过。</p>
-
 <p>文档：<a href="https://git-scm.com/docs/githooks#_pre_push">https://git-scm.com/docs/githooks#_pre_push</a></p>
-
 <p>专业例子：</p>
-
 <p><a href="https://github.com/git/git/blob/87c86dd14abe8db7d00b0df5661ef8cf147a72a3/templates/hooks--pre-push.sample">https://github.com/git/git/blob/87c86dd14abe8db7d00b0df5661ef8cf147a72a3/templates/hooks&ndash;pre-push.sample</a></p>
-
-<h3 id="在提交之前验证maven构建-或其他构建系统">在提交之前验证maven构建（或其他构建系统）</h3>
-
+<h3 id="在提交之前验证maven构建或其他构建系统">在提交之前验证maven构建（或其他构建系统）</h3>
 <p><code>.git/hooks/pre-commit</code>：</p>
-
 <pre><code>#!/bin/sh
 if [ -s pom.xml ]; then
 	echo &quot;Running mvn verify&quot;
@@ -306,12 +287,8 @@ if [ -s pom.xml ]; then
 		exit 1
 	fi
 fi
-</code></pre>
-
-<h3 id="自动将某些推送转发到其他仓库">自动将某些推送转发到其他仓库</h3>
-
+</code></pre><h3 id="自动将某些推送转发到其他仓库">自动将某些推送转发到其他仓库</h3>
 <p><code>post-receive</code>钩子可以被用作自动的将传入的提交推送到其他仓库：</p>
-
 <pre><code>$ cat .git/hooks/post-receive
 
 #!/bin/bash
@@ -327,18 +304,11 @@ do
 	}
 	
 done
-</code></pre>
-
-<p>在这个例子里面，<code>egrep</code>表达式寻找指定格式的分支（这里JIRA-12345通常被用作Jira问题）。当然，如果你要转发所有的分支，也可以不要这部分。</p>
-
+</code></pre><p>在这个例子里面，<code>egrep</code>表达式寻找指定格式的分支（这里JIRA-12345通常被用作Jira问题）。当然，如果你要转发所有的分支，也可以不要这部分。</p>
 <h3 id="提交信息">提交信息</h3>
-
 <p>这个钩子和<code>prepare-commit-msg</code>钩子很类似，不同的地方再有这个钩子在用户输入提交信息之后触发而不是在输入提交信息之前。这个钩子通常被用作用户提交信息的检查，如果提交信息格式不正确将会提醒用户修改。</p>
-
 <p>这个钩子唯一的参数是包含提交信息的文件名称。如果你不喜欢用户输入的提交信息，可以直接修改这个文件（像<code>prrepare-commit-msg</code>一样），或者可以返回一个非0的状态直接终端整个提交。</p>
-
 <p>下面的例子就检查了提交信息中是否存在单词后面跟着数字的情况：</p>
-
 <pre><code>word=&quot;tcket [0-9]&quot;
 isPresent=$(grep -Eoh &quot;$word&quot; $1)
 
@@ -346,116 +316,70 @@ if [[ -z $isPresent ]]
 	then echo &quot;Commit message KO, $word is missing&quot;; exit 1;
 	else echo &quot;Commit message OK&quot;; exit 0;
 fi
-</code></pre>
-
-<h3 id="本地钩子">本地钩子</h3>
-
+</code></pre><h3 id="本地钩子">本地钩子</h3>
 <p>本地钩子只会影响他们所在的仓库。每个开发者都可以修改听他们本地的钩子，所有这些钩子并不是一个实际的强制提交规则。他们只是设计用来帮助开发者遵守某些规则，避免某些问题。</p>
-
 <p>总共有6种本地的钩子：pre-commit，prepare-commit-msg, commit-msg, post-commit, post-checkout, pre-rebase。</p>
-
 <p>前四个钩子是应用到提交上面的，允许你控制提交中的每个周期。最后两个钩子允许你在执行<code>checkout</code>和<code>rebase</code>操作的时候执行额外的操作或安全检查。</p>
-
 <p>所有的“pre-”钩子允许您更改即将发生的操作，而“post-”钩子主要用于通知。</p>
-
 <h3 id="post-checkout">post-checkout</h3>
-
 <p>这个钩子的行为和<code>post-commit</code>钩子的行为一致，只不过无论你什么使用使用<code>git checkout</code>命令切换一个分支都会被触发。</p>
-
 <p>这是一个有用的工具，可以清除自动生成文件的工作目录，否则会导致混淆。</p>
-
 <p>这个钩子接收下面的3个参数：</p>
-
 <ol>
 <li>之前HEAD的ref</li>
 <li>新HEAD的ref</li>
 <li>一个指示它是分支签出还是文件签出（分别为1或0）的标志</li>
 </ol>
-
 <p>这个钩子的退出状态对应<code>git checkout</code>命令没有影响。</p>
-
 <h3 id="post-commit">post-commit</h3>
-
 <p>这个钩子在<code>commit-msg</code>钩子之后立刻会被触发。它不能改变git提交操作的结果，因此它主要用于通知目的。</p>
-
 <p>这个脚本没有任何参数，并且它的退出状态也不会影响到commit操作。</p>
-
 <h3 id="post-receive">post-receive</h3>
-
 <p>这个钩子当push操作成功运行后触发。主要用作通知的目的。</p>
-
 <p>这个脚本没有任何参数，但通过标准输入发送与预接收相同的信息：</p>
-
 <pre><code> &lt;old-value&gt; &lt;new-value&gt; &lt;ref-name&gt;
-</code></pre>
-
-<h3 id="pre-commit">pre-commit</h3>
-
+</code></pre><h3 id="pre-commit">pre-commit</h3>
 <p>这个钩子在每次执行<code>git commit</code>命令的时候触发，用来验证提交信息。您可以使用这个钩子检查即将提交的快照。</p>
-
 <p>这类钩子主要用来自动化测试来确保指定提交不会造成你项目功能的损坏。这类钩子也可以检查空格或EOL错误。</p>
-
 <p>这个钩子没有参数，并且以非零状态退出执行将会中的commit命令的执行。</p>
-
 <h3 id="prepare-commit-msg">prepare-commit-msg</h3>
-
 <p>这个钩子在<code>pre-commit</code>钩子之后执行，用提交信息填充文本编辑器。这特别被用来修改压缩或merge提交自动产生的提交信息。</p>
-
 <p>有1-3个参数可以传递给这个钩子：</p>
-
 <ul>
 <li>包含提交信息的临时文件名称</li>
 <li>提交的类型，下面中的一个
-
 <ul>
 <li>信息（<code>-m</code>或<code>-F</code>选项）</li>
 <li>模板（<code>-t</code>选项）</li>
 <li>合并（如果是合并提交）或者</li>
 <li>压缩（如果是压缩气体分支）</li>
-</ul></li>
+</ul>
+</li>
 <li>关联的SHA1值。只有在提供了<code>-c</code>，<code>-C</code>，或<code>—amend</code>选项的时候提供。</li>
 </ul>
-
 <p>和<code>pre-commit</code>钩子一样，以非零状态退出将会中断提交操作。</p>
-
 <h3 id="pre-rebase">pre-rebase</h3>
-
 <p>在<code>git rebase</code>命令开始修改代码结构之前会触发这个钩子。这个钩子通常用来确保rebase操作是合适的。</p>
-
 <p>这个钩子有2个参数：</p>
-
 <ul>
 <li>这系列的上游分支</li>
 <li>正在被rebase的分支（当rebase当前分支的时候，就是空）</li>
 </ul>
-
 <p>你可以返回一个非零的退出码，这会中断rebase操作的执行。</p>
-
 <h3 id="pre-receive">pre-receive</h3>
-
 <p>这个钩子当用户在执行<code>git push</code>命令，把提交推送到仓库里面的时候执行。它始终驻留在作为推送目标的远程存储库中，而不是原始（本地）存储库中。</p>
-
 <p>这个钩子在索更新之前执行。这特别被用来限制任何开发规则。</p>
-
 <p>脚本不接受任何参数，但正在推送的每个引用都以以下格式在标准输入的单独行上传递给脚本：</p>
-
 <pre><code> &lt;old-value&gt; &lt;new-value&gt; &lt;ref-name&gt;
-</code></pre>
-
-<h3 id="update">update</h3>
-
+</code></pre><h3 id="update">update</h3>
 <p>这个钩子在<code>pre-receive</code>之后执行，两者的效果一致。在实际更新任何内容之前调用它，但是为每个被推送的ref而不是一次性调用它。</p>
-
 <p>这个钩子可以接受下面的3个参数：</p>
-
 <ul>
 <li>正在更新的索引的名称</li>
 <li>索引中存储的就对象名</li>
 <li>将要存储到索引中的新对象名</li>
 </ul>
-
 <p>这个参数是和传递个<code>pre-rreceive</code>钩子的参数一致，但是因为<code>update</code>是分别对每个引用执行的，所以你可以拒绝一些引用同时接受一些引用。</p>
-
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -528,6 +452,12 @@ fi
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

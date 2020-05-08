@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,113 +187,73 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#union">UNION</a>
-<ul>
-<li><a href="#使用union组合select语句">使用UNION组合SELECT语句</a></li>
-<li><a href="#组合不同列的数据">组合不同列的数据</a></li>
-<li><a href="#order-by">ORDER BY</a></li>
-<li><a href="#offset分页">OFFSET分页</a></li>
-<li><a href="#将具有相同列的不同mysql表上的数据合并到唯一行中并运行查询">将具有相同列的不同MySQL表上的数据合并到唯一行中并运行查询</a></li>
-<li><a href="#union-all和union">Union All和Union</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#union">UNION</a>
+      <ul>
+        <li><a href="#使用union组合select语句">使用UNION组合SELECT语句</a></li>
+        <li><a href="#组合不同列的数据">组合不同列的数据</a></li>
+        <li><a href="#order-by">ORDER BY</a></li>
+        <li><a href="#offset分页">OFFSET分页</a></li>
+        <li><a href="#将具有相同列的不同mysql表上的数据合并到唯一行中并运行查询">将具有相同列的不同MySQL表上的数据合并到唯一行中并运行查询</a></li>
+        <li><a href="#union-all和union">Union All和Union</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="union">UNION</h2>
-
+        		<h2 id="union">UNION</h2>
 <h3 id="使用union组合select语句">使用UNION组合SELECT语句</h3>
-
 <p>你可以使用<code>UNION</code>来组合两个结果相同的查询的结果。</p>
-
 <p>例如，你想要两个独立表的所有联系信息，<code>authors</code>和<code>editors</code>，你可以使用<code>UNION</code>关键字：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> name, email, phone_number
+<span style="color:#66d9ef">FROM</span> authors
 
-<pre><code class="language-mysql">SELECT name, email, phone_number
-FROM authors
+<span style="color:#66d9ef">UNION</span>
 
-UNION
-
-SELECT name, email, phone_number
-FROM editors;
-</code></pre>
-
-<p>使用<code>UNION</code>将会自动过滤重复信息。如果你想要保留重复信息，你可以使用<code>UNION ALL</code>。</p>
-
+<span style="color:#66d9ef">SELECT</span> name, email, phone_number
+<span style="color:#66d9ef">FROM</span> editors;
+</code></pre></div><p>使用<code>UNION</code>将会自动过滤重复信息。如果你想要保留重复信息，你可以使用<code>UNION ALL</code>。</p>
 <h3 id="组合不同列的数据">组合不同列的数据</h3>
-
-<pre><code class="language-mysql">SELECT name. caption as title, year, pages FROM books
-UNION
-SELECT name. title, year, 0 as pages FROM movies;
-</code></pre>
-
-<p>将两个不同列的记录集组合时，使用默认值模拟确实的列。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> name. caption <span style="color:#66d9ef">as</span> title, <span style="color:#66d9ef">year</span>, pages <span style="color:#66d9ef">FROM</span> books
+<span style="color:#66d9ef">UNION</span>
+<span style="color:#66d9ef">SELECT</span> name. title, <span style="color:#66d9ef">year</span>, <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">as</span> pages <span style="color:#66d9ef">FROM</span> movies;
+</code></pre></div><p>将两个不同列的记录集组合时，使用默认值模拟确实的列。</p>
 <h3 id="order-by">ORDER BY</h3>
-
 <p>如果你需要排序UNION之后的结果集，使用下面的语法：</p>
-
-<pre><code class="language-mysql">( SELECT ... )
-UNION
-( SELECT ... )
-ORDER BY
-</code></pre>
-
-<p>如果没有添加括号的话，ORDER BY语句将会添加到最后的SELECT语句上面。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">( <span style="color:#66d9ef">SELECT</span> ... )
+<span style="color:#66d9ef">UNION</span>
+( <span style="color:#66d9ef">SELECT</span> ... )
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span>
+</code></pre></div><p>如果没有添加括号的话，ORDER BY语句将会添加到最后的SELECT语句上面。</p>
 <h3 id="offset分页">OFFSET分页</h3>
-
 <p>当在UNION上添加LIMIT的时候，下面这个语法可以使用:</p>
-
-<pre><code class="language-mysql">( SELECT ... ORDER BY x LIMIT 10 )
-UNION 
-( SELECT ... ORDER BY x LIMIT 10 )
-ORDER BY x LIMIT 10;
-</code></pre>
-
-<p>因为你不知道这&rdquo;10&rdquo;个来自哪里，所以每个都要获取10个，然后进一步减少列表的数量，这里需要重复使用<code>ORDER BY</code>和<code>LIMIT</code>。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">( <span style="color:#66d9ef">SELECT</span> ... <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">10</span> )
+<span style="color:#66d9ef">UNION</span> 
+( <span style="color:#66d9ef">SELECT</span> ... <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">10</span> )
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">10</span>;
+</code></pre></div><p>因为你不知道这&quot;10&quot;个来自哪里，所以每个都要获取10个，然后进一步减少列表的数量，这里需要重复使用<code>ORDER BY</code>和<code>LIMIT</code>。</p>
 <p>对于第四页的内容：</p>
-
-<pre><code class="language-mysql">( SELECT ... ORDER BY x LIMIT 40 )
-UNION 
-( SELECT ... ORDER BY x LIMIT 40 )
-ORDER BY x LIMIT 30,10;
-</code></pre>
-
-<p>这是每个查询获取40个数据，然后汇总之后在回去指定位置的数据。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">( <span style="color:#66d9ef">SELECT</span> ... <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">40</span> )
+<span style="color:#66d9ef">UNION</span> 
+( <span style="color:#66d9ef">SELECT</span> ... <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">40</span> )
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> x <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">30</span>,<span style="color:#ae81ff">10</span>;
+</code></pre></div><p>这是每个查询获取40个数据，然后汇总之后在回去指定位置的数据。</p>
 <h3 id="将具有相同列的不同mysql表上的数据合并到唯一行中并运行查询">将具有相同列的不同MySQL表上的数据合并到唯一行中并运行查询</h3>
-
-<pre><code class="language-mysql">SELECT YEAR(date_time_column), MONTH(date_time_column), MIN(DATE(date_time_column)), MAX(DATE(date_time_column)), COUNT(DISTINCT (ip)), COUNT(ip), (COUNT(ip) / COUNT(DISTINCT (ip))) AS Ratio
-FROM (
-(SELECT date_time_column, ip FROM server_log_1 WHERE state = 'action' AND log_id = 150) UNION ALL
-(SELECT date_time_column, ip FROM server_log_2 WHERE state = 'action' AND log_id = 150) UNION ALL
-(SELECT date_time_column, ip FROM server_log_3 WHERE state = 'action' AND log_id = 150) UNION ALL
-(SELECT date_time_column, ip FROM server_log WHERE state = 'action' AND log_id = 150) ) AS table_all
-GROUP BY YEAR(date_time_column), MONTH(date_time_column);
-</code></pre>
-
-<h3 id="union-all和union">Union All和Union</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">YEAR</span>(date_time_column), <span style="color:#a6e22e">MONTH</span>(date_time_column), <span style="color:#a6e22e">MIN</span>(<span style="color:#66d9ef">DATE</span>(date_time_column)), <span style="color:#a6e22e">MAX</span>(<span style="color:#66d9ef">DATE</span>(date_time_column)), <span style="color:#a6e22e">COUNT</span>(<span style="color:#66d9ef">DISTINCT</span> (ip)), <span style="color:#a6e22e">COUNT</span>(ip), (<span style="color:#a6e22e">COUNT</span>(ip) <span style="color:#f92672">/</span> <span style="color:#a6e22e">COUNT</span>(<span style="color:#66d9ef">DISTINCT</span> (ip))) <span style="color:#66d9ef">AS</span> Ratio
+<span style="color:#66d9ef">FROM</span> (
+(<span style="color:#66d9ef">SELECT</span> date_time_column, ip <span style="color:#66d9ef">FROM</span> server_log_1 <span style="color:#66d9ef">WHERE</span> state <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;action&#39;</span> <span style="color:#66d9ef">AND</span> log_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">150</span>) <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
+(<span style="color:#66d9ef">SELECT</span> date_time_column, ip <span style="color:#66d9ef">FROM</span> server_log_2 <span style="color:#66d9ef">WHERE</span> state <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;action&#39;</span> <span style="color:#66d9ef">AND</span> log_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">150</span>) <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
+(<span style="color:#66d9ef">SELECT</span> date_time_column, ip <span style="color:#66d9ef">FROM</span> server_log_3 <span style="color:#66d9ef">WHERE</span> state <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;action&#39;</span> <span style="color:#66d9ef">AND</span> log_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">150</span>) <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
+(<span style="color:#66d9ef">SELECT</span> date_time_column, ip <span style="color:#66d9ef">FROM</span> server_log <span style="color:#66d9ef">WHERE</span> state <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;action&#39;</span> <span style="color:#66d9ef">AND</span> log_id <span style="color:#f92672">=</span> <span style="color:#ae81ff">150</span>) ) <span style="color:#66d9ef">AS</span> table_all
+<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">YEAR</span>(date_time_column), <span style="color:#a6e22e">MONTH</span>(date_time_column);
+</code></pre></div><h3 id="union-all和union">Union All和Union</h3>
 <p><code>SELECT 1,22,44 UNION SELECT 2,33,55</code></p>
-
-<p><img src="/img/mysql/rF9SA.png" alt="union " /></p>
-
+<p><img src="/img/mysql/rF9SA.png" alt="union "></p>
 <p><code>SELECT 1,22,44 UNION SELECT 2,33,55 UNION SELECT 2,33,55</code></p>
-
 <p>这个和上面的结果一样。</p>
-
 <p>使用Union All</p>
-
 <p><code>SELECT 1,22,44 UNION SELECT 2,33,55 UNION ALL SELECT 2,33,55</code></p>
-
-<p><img src="/img/mysql/tD1Rz.png" alt="union all" /></p>
-
+<p><img src="/img/mysql/tD1Rz.png" alt="union all"></p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -362,6 +326,12 @@ GROUP BY YEAR(date_time_column), MONTH(date_time_column);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

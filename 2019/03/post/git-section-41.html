@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,38 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#搜索-查找错误提交">搜索/查找错误提交</a>
-<ul>
-<li><a href="#二进制搜索-git-bisect">二进制搜索(git bisect)</a></li>
-<li><a href="#半自动查找错误提交">半自动查找错误提交</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#搜索查找错误提交">搜索/查找错误提交</a>
+      <ul>
+        <li><a href="#二进制搜索git-bisect">二进制搜索(git bisect)</a></li>
+        <li><a href="#半自动查找错误提交">半自动查找错误提交</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="搜索-查找错误提交">搜索/查找错误提交</h2>
-
-<h3 id="二进制搜索-git-bisect">二进制搜索(git bisect)</h3>
-
+        		<h2 id="搜索查找错误提交">搜索/查找错误提交</h2>
+<h3 id="二进制搜索git-bisect">二进制搜索(git bisect)</h3>
 <p><a href="https://git-scm.com/docs/git-bisect">git bisect</a>允许你使用二进制搜索查找哪个提交引入了错误。</p>
-
 <p>首先通过两个提交的引用来搜索：一个在bug之前的提交，一个在bug之后的提交。一般来说，错误的提交时HEAD。</p>
-
-<pre><code class="language-shell"># start the git bisect session
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># start the git bisect session</span>
 $ git bisect start
-# give a commit where the bug doesn't exist
+<span style="color:#75715e"># give a commit where the bug doesn&#39;t exist</span>
 $ git bisect good 49c747d
-# give a commit where the bug exist
+<span style="color:#75715e"># give a commit where the bug exist</span>
 $ git bisect bad HEAD
-</code></pre>
-
-<p>这里<code>git</code>开启了一个二进制搜索：这里把修订分为两个部分，并把仓库切换到中间的修订。检查代码确定这个修订是好的还是坏的：</p>
-
+</code></pre></div><p>这里<code>git</code>开启了一个二进制搜索：这里把修订分为两个部分，并把仓库切换到中间的修订。检查代码确定这个修订是好的还是坏的：</p>
 <pre><code># tell git the revision is good,
 # which means it doesn't contain the bug 
 $ git bisect good
@@ -222,58 +215,28 @@ $ git bisect good
 # if the revision contains the bug, 
 # then tell git it's bad
 $ git bisect bad
-</code></pre>
-
-<p><code>git</code>会根据你的操作对没有改包含错误修改的部分进行二进制的搜索。<code>git</code>最后只会有一个修改版本，除非你标记错误了，否则这个版本就是包含错误的版本。</p>
-
+</code></pre><p><code>git</code>会根据你的操作对没有改包含错误修改的部分进行二进制的搜索。<code>git</code>最后只会有一个修改版本，除非你标记错误了，否则这个版本就是包含错误的版本。</p>
 <p>然后不要忘记执行<code>git bisect reset</code>来退出这次搜索，返回到HEAD。</p>
-
 <pre><code>$ git bisect reset
-</code></pre>
-
-<p>如果你有一个可以坚持这个bug的脚本，可以使用这个脚本自动处理这个过程：</p>
-
+</code></pre><p>如果你有一个可以坚持这个bug的脚本，可以使用这个脚本自动处理这个过程：</p>
 <pre><code>$ git bisect run [script] [arguments]
-</code></pre>
-
-<p><code>[script]</code>是你的脚本的位置，<code>[arguments]</code>是任何你要传个这个脚本的参数。</p>
-
+</code></pre><p><code>[script]</code>是你的脚本的位置，<code>[arguments]</code>是任何你要传个这个脚本的参数。</p>
 <p>执行这个命令将会自动的进行二进制搜索，根据你脚本的返回值执行<code>git bisect good</code>或者<code>git bisect bad</code>。返回0代表是<code>good</code>，返回<code>1-124,126,127</code>代表是<code>bad</code>。125代表这个脚本无法判断这个修改，将会触发<code>git bisect skip</code>。</p>
-
 <h3 id="半自动查找错误提交">半自动查找错误提交</h3>
-
 <p>想象一下你在<code>master</code>分支上，但是一些功能没有如期进行(引入回归)，但是你不知道哪里有问题。但是你知道，在上一个版本(例如tag或者提交的hash值，这里使用<code>old-rel</code>代替)，这个功能还是好的。</p>
-
 <p>git将会帮助你，使用很少的步骤(二进制搜索)找到出现问题的地方。</p>
-
 <p>首先开始一个bisect：</p>
-
 <pre><code>git bisect start master old-rel
-</code></pre>
-
-<p>这会通知git<code>master</code>是一个会的版本(或第一个坏的版本)，<code>old-rel</code>是最后一个好的版本。</p>
-
+</code></pre><p>这会通知git<code>master</code>是一个会的版本(或第一个坏的版本)，<code>old-rel</code>是最后一个好的版本。</p>
 <p>git现在会在两个提交之间checkout一个分类的head。现在你可以进行测试，检查它是否有效。</p>
-
 <pre><code>git bisect good
-</code></pre>
-
-<p>或</p>
-
+</code></pre><p>或</p>
 <pre><code>git bisect bad
-</code></pre>
-
-<p>如果无法测试这个提交，你可以简单的<code>git reset</code>然后测试另外一个，git可以处理这个问题。</p>
-
+</code></pre><p>如果无法测试这个提交，你可以简单的<code>git reset</code>然后测试另外一个，git可以处理这个问题。</p>
 <p>在一些步骤之后，git就会输出错误提交的hash值。</p>
-
 <p>为了中的bisect处理过程：</p>
-
 <pre><code>git bisect reset
-</code></pre>
-
-<p>然后会返回之前的状态。</p>
-
+</code></pre><p>然后会返回之前的状态。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -346,6 +309,12 @@ $ git bisect bad
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,23 +187,18 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#bash算法">Bash算法</a>
-<ul>
-<li><a href="#算法">(())算法</a></li>
-<li><a href="#算法命令">算法命令</a></li>
-<li><a href="#expr算法">expr算法</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#bash算法">Bash算法</a>
+      <ul>
+        <li><a href="#算法">(())算法</a></li>
+        <li><a href="#算法命令">算法命令</a></li>
+        <li><a href="#expr算法">expr算法</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="bash算法">Bash算法</h2>
-
+        		<h2 id="bash算法">Bash算法</h2>
 <table>
 <thead>
 <tr>
@@ -207,7 +206,6 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>EXPRESSION</td>
@@ -215,76 +213,47 @@
 </tr>
 </tbody>
 </table>
-
 <h3 id="算法">(())算法</h3>
-
 <pre><code>#!/bin/bash
 echo $((2 + 1))
-</code></pre>
-
-<p>输出3。</p>
-
+</code></pre><p>输出3。</p>
 <pre><code>#!/bin/bash
 var1=4
 var2=5
 ((output=$var1 * $var2))
 printf &quot;%d\n&quot; &quot;$output&quot;
-</code></pre>
-
-<p>输出20</p>
-
+</code></pre><p>输出20</p>
 <h3 id="算法命令">算法命令</h3>
-
 <ul>
-<li><p>let</p>
-
+<li>
+<p>let</p>
 <pre><code>let num=1+2
 let num=&quot;1+2&quot;
 let 'num= 1 + 2'
 let num=1 num+=2
+</code></pre><p>如果有空格或者填充字符，你就需要引号了。所有下面会出现错误：</p>
+<pre><code>let num= 1 + 2 //错误
+let 'num = 1 + 2'  //正确
+let a[1] = 1 + 1  //错误
+let 'a[1] = 1 + 1'  //正确
 </code></pre></li>
-</ul>
-
-<p>如果有空格或者填充字符，你就需要引号了。所有下面会出现错误：</p>
-
-<pre><code>  let num= 1 + 2 //错误
-  let 'num = 1 + 2'  //正确
-  let a[1] = 1 + 1  //错误
-  let 'a[1] = 1 + 1'  //正确
-</code></pre>
-
-<ul>
-<li><p>(())</p>
-
+<li>
+<p>(())</p>
 <pre><code>((a=$a+1))   //a加1
 ((a = a + 1))  //a加1
 ((a += 1)) //a加1
 </code></pre></li>
 </ul>
-
 <p>我们可以在if表达式中使用(())。例如：</p>
-
 <pre><code>if (( a &gt; 1)); then echo &quot;a is greater than 1&quot;; fi
-</code></pre>
-
-<p>(())的输出可以被设置给一个变量：</p>
-
+</code></pre><p>(())的输出可以被设置给一个变量：</p>
 <pre><code>result=$((a+1))
-</code></pre>
-
-<p>或者直接输出：</p>
-
+</code></pre><p>或者直接输出：</p>
 <pre><code>echo &quot;The result of a + 1 $((a + 1))&quot;
-</code></pre>
-
-<h3 id="expr算法">expr算法</h3>
-
+</code></pre><h3 id="expr算法">expr算法</h3>
 <pre><code>#!/bin/bash
 expr 1 + 2
-</code></pre>
-
-<p>输出3。</p>
-
+</code></pre><p>输出3。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -357,6 +326,12 @@ expr 1 + 2
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

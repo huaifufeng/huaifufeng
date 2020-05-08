@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,49 +187,31 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#mailmap文件">.mailmap文件</a>
-<ul>
-<li><a href="#按别名合并贡献者以在短日志中显示提交计数">按别名合并贡献者以在短日志中显示提交计数</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#mailmap文件">.mailmap文件</a>
+      <ul>
+        <li><a href="#按别名合并贡献者以在短日志中显示提交计数">按别名合并贡献者以在短日志中显示提交计数</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="mailmap文件">.mailmap文件</h2>
-
+        		<h2 id="mailmap文件">.mailmap文件</h2>
 <h3 id="按别名合并贡献者以在短日志中显示提交计数">按别名合并贡献者以在短日志中显示提交计数</h3>
-
 <p>当贡献者从不同的机器或操作系统添加到一个项目中时，他们可能会为此使用不同的电子邮件或名称，这将分割贡献者列表和统计信息。</p>
-
 <p><code>git shortlog -sn</code>命令可以获取贡献者的列表和他们各自的提交数量，具体的结果像下面这样：</p>
-
 <pre><code>Patrick Rothfuss 871
 Elizabeth Moon 762
 E. Moon 184
 Rothfuss, Patrick 90
-</code></pre>
-
-<p>可以通过提供包含电子邮件映射的纯文本文件<code>.mailmap</code>来调整此碎片/解除关联。</p>
-
+</code></pre><p>可以通过提供包含电子邮件映射的纯文本文件<code>.mailmap</code>来调整此碎片/解除关联。</p>
 <p>一行中列出的所有名称和电子邮件地址将分别与第一个命名实体关联。</p>
-
 <p>像上面的例子，一个map邮件像下面这样：</p>
-
 <pre><code>Patrick Rothfuss &lt;fussy@kingkiller.com&gt; Rothfuss, Patrick &lt;fussy@kingkiller.com&gt; Elizabeth Moon &lt;emoon@marines.mil&gt; E. Moon &lt;emoon@scifi.org&gt;
-</code></pre>
-
-<p>如果这个文件在项目的根目录，运行<code>git shortlog -sn</code>命令将会返回缩减之后的结果：</p>
-
+</code></pre><p>如果这个文件在项目的根目录，运行<code>git shortlog -sn</code>命令将会返回缩减之后的结果：</p>
 <pre><code>Patrick Rothfuss 961
 Elizabeth Moon 946
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -297,6 +283,12 @@ Elizabeth Moon 946
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,43 +187,27 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#shell类型">shell类型</a>
-<ul>
-<li><a href="#开启一个交互shell">开启一个交互shell</a></li>
-<li><a href="#检查shell类型">检查shell类型</a></li>
-<li><a href="#点文件">点文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#shell类型">shell类型</a>
+      <ul>
+        <li><a href="#开启一个交互shell">开启一个交互shell</a></li>
+        <li><a href="#检查shell类型">检查shell类型</a></li>
+        <li><a href="#点文件">点文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="shell类型">shell类型</h2>
-
+        		<h2 id="shell类型">shell类型</h2>
 <h3 id="开启一个交互shell">开启一个交互shell</h3>
-
 <pre><code>bash
-</code></pre>
-
-<h3 id="检查shell类型">检查shell类型</h3>
-
+</code></pre><h3 id="检查shell类型">检查shell类型</h3>
 <pre><code>shopt -q login_shell &amp;&amp; echo 'login' || echo 'not-login'
-</code></pre>
-
-<h3 id="点文件">点文件</h3>
-
+</code></pre><h3 id="点文件">点文件</h3>
 <p>在Unix中，以<code>.</code>开头的文件或目录包含了指定程序或一系列程序的配置选项。点文件通常对用户是隐藏的，所以你需要使用<code>ls -a</code>来查看这些文件。</p>
-
 <p>一个点文件的例子是<a href="http://unix.stackexchange.com/a/145254">.bash_history</a>，假设用户使用Bash，包含了最近执行的命令。</p>
-
 <p>当你在Bash中时，有各种文件是<a href="https://superuser.com/questions/46139/what-does-source-do/46146#46146">被source</a>的。下面的图片来自<a href="http://www.solipsys.co.uk/new/BashInitialisationFiles.html">这个站点</a>，显示了在启动时选择要源文件的决策过程。</p>
-
-<p><img src="/img/bash/ihulP.png" alt="source加载图" /></p>
-
+<p><img src="/img/bash/ihulP.png" alt="source加载图"></p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -292,6 +280,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

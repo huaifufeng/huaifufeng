@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,50 +187,34 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#设计模式">设计模式</a>
-<ul>
-<li><a href="#1-php中方法链">1. PHP中方法链</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#设计模式">设计模式</a>
+      <ul>
+        <li><a href="#1-php中方法链">1. PHP中方法链</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="设计模式">设计模式</h2>
-
+        		<h2 id="设计模式">设计模式</h2>
 <p>这个主题经典设计模式的PHP实现的例子。</p>
-
 <h3 id="1-php中方法链">1. PHP中方法链</h3>
-
 <p>方法链是<a href="https://www.amazon.com/dp/0321712943/">Martin Fowler&rsquo;s book Domain Specific Languages</a>介绍的技术。方法链总结为：</p>
-
 <blockquote>
 <p><a href="https://martinfowler.com/dslCatalog/methodChaining.html">Makes modifier methods return the host object, so that multiple modifiers can be invoked in a single expression。</a></p>
 </blockquote>
-
 <p>考虑下这段非连接/常规代码（从前面书中移植到PHP）。</p>
-
-<pre><code class="language-php">$hardDrive = new HardDrive; 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$hardDrive = new HardDrive; 
 $hardDrive-&gt;setCapacity(150); 
 $hardDrive-&gt;external(); 
 $hardDrive-&gt;setSpeed(7200);
-</code></pre>
-
-<p>方法链允许你以更加紧凑的方式编写上面的代码：</p>
-
-<pre><code class="language-php">$hardDrive = (new HardDrive) 
+</code></pre></div><p>方法链允许你以更加紧凑的方式编写上面的代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$hardDrive = (new HardDrive) 
   -&gt;setCapacity(150)
   -&gt;external()
   -&gt;setSpeed(7200);
-</code></pre>
-
-<p>为了这个，你需要做的事情就是在所有想要链接的方法后面添加一个<code>return $this</code>。</p>
-
-<pre><code class="language-php">class HardDrive {
+</code></pre></div><p>为了这个，你需要做的事情就是在所有想要链接的方法后面添加一个<code>return $this</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">class HardDrive {
     protected $isExternal = false;
     protected $capacity = 0;
     protected $speed = 0;
@@ -246,32 +234,19 @@ $hardDrive-&gt;setSpeed(7200);
         return $this; // returns the current class instance to allow method chaining
     } 
 }
-</code></pre>
-
-<p><strong>什么时候使用</strong></p>
-
+</code></pre></div><p><strong>什么时候使用</strong></p>
 <p>方法链最主要的用法是构建内部领域指定语言。方法链接是<a href="http://martinfowler.com/bliki/ExpressionBuilder.html">表达式生成器</a>和<a href="https://martinfowler.com/bliki/FluentInterface.html">Fluent接口</a>中的一个构建块。不过，<a href="https://stackoverflow.com/questions/17937755/what-is-the-difference-between-a-fluent-interface-and-the-builder-pattern/17940086#17940086">它并不是那些的同义词</a>。方法链接只启用这些。引用福勒：</p>
-
 <blockquote>
 <p>我还注意到一个常见的误解——许多人似乎把fluent的接口等同于方法链接。当然，链接是与fluent的接口一起使用的一种常见技术，但真正的流畅性远不止这些。</p>
 </blockquote>
-
 <p>也就是说，使用方法链接只是为了避免编写宿主对象，许多人认为这是一种<a href="https://martinfowler.com/bliki/CodeSmell.html">代码味道</a>。它可以创建不可见的API，尤其是与非链接API混合时。</p>
-
 <p><strong>附加说明</strong></p>
-
 <p><strong>命令查询分离</strong></p>
-
 <p><a href="https://martinfowler.com/bliki/CommandQuerySeparation.html">命令查询分离是Bertrand Meyer提出的一种设计原则</a>。它声明改变状态（命令）的方法不应返回任何内容，而返回某些内容（查询）的方法不应改变状态。这使得对系统进行推理变得更容易。方法链接违反了这个原则，因为我们正在改变状态并返回一些东西。</p>
-
 <p><strong>Getters</strong></p>
-
 <p>当使用实现方法链接的类时，在调用getter方法（即返回<code>$this</code>以外的东西的方法）时要特别注意，因为getter必须返回<code>$this</code>以外的值，所以将一个额外的方法链接到getter上会使调用对获取的值进行操作，而不是对原始对象进行操作。虽然对于链接的getter有一些用例，但它们可能会降低代码的可读性。</p>
-
 <p><strong>德米特定律及其对测试的影响</strong></p>
-
 <p>上述方法链接不违反<a href="https://en.wikipedia.org/wiki/Law_of_Demeter">德米特定律</a>。也不会影响测试。这是因为我们返回的是主机实例，而不是某个合作者。这是一个常见的误解，源于人们将仅仅是方法链接与流畅的接口和表达式构建器混淆。只有当方法链接返回主机对象以外的其他对象时，您才会违反德米特定律，并在测试中以模拟fest结束。</p>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -344,6 +319,12 @@ $hardDrive-&gt;setSpeed(7200);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

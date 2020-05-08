@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,68 +187,39 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#grant确保安全">GRANT确保安全</a>
-<ul>
-<li><a href="#1-最佳实践">1. 最佳实践</a></li>
-<li><a href="#2-主机-user-主机">2. 主机(user@主机)</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#grant确保安全">GRANT确保安全</a>
+      <ul>
+        <li><a href="#1-最佳实践">1. 最佳实践</a></li>
+        <li><a href="#2-主机user主机">2. 主机(user@主机)</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="grant确保安全">GRANT确保安全</h2>
-
+        		<h2 id="grant确保安全">GRANT确保安全</h2>
 <h3 id="1-最佳实践">1. 最佳实践</h3>
-
 <p>限制root(或任何其他的超级用户)本地登录：</p>
-
-<pre><code class="language-mysql">GRANT ... TO root@localhost ...
-</code></pre>
-
-<p>这个可以避免从其他服务器上面访问。你应该避免给太多人SUPER权限，并且他们应该意识到他们的责任。应用程序不应该拥有SUPER权限。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> ... <span style="color:#66d9ef">TO</span> root<span style="color:#f92672">@</span>localhost ...
+</code></pre></div><p>这个可以避免从其他服务器上面访问。你应该避免给太多人SUPER权限，并且他们应该意识到他们的责任。应用程序不应该拥有SUPER权限。</p>
 <p>现在用户只能登录一个数据库：</p>
-
-<pre><code class="language-mysql">GRANT ... ON dbnae.* ...
-</code></pre>
-
-<p>这样，这样黑进应用程序代码的人就无法通过dbname。这可以通过下面任何一种方法完善：</p>
-
-<pre><code class="language-mysql">GRANT SELECT ON dbname.* ... -- 只读
-GRANT ... ON dbname.tblname ... -- 只有一个表
-</code></pre>
-
-<p>只读还可以需要&rdquo;安全&rdquo;的配置：</p>
-
-<pre><code class="language-mysql">GRANT SELECT, CREATE TEMPORARY TABLE ON dbname.* ... -- 只读
-</code></pre>
-
-<p>如你所见，没有绝对安全的方法。但是你可以做一些事情来减少被攻破的可能。(诚实的人也是这样。)</p>
-
-<p>在极少数情况下，你可能需要营养程序执行一些只有root用户可以执行的操作。这可以通过&rdquo;存储过程&rdquo;来实现，这个具有安全定义符(并且root定义了)。这将只公开SP所做的，例如，可能是某个特定表上的一个特定操作。</p>
-
-<h3 id="2-主机-user-主机">2. 主机(user@主机)</h3>
-
-<p>这里&rdquo;host&rdquo;可以是一个主机名称或者IP地址。另外，它可能涉及到通配符。</p>
-
-<pre><code class="language-mysql">GRANT SELECT ON db.* TO sam@'my.domain.com' IDENTIFIED BY 'foo';
-</code></pre>
-
-<p>例子：注意：这里通常是需要用引号包起来的</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> ... <span style="color:#66d9ef">ON</span> dbnae.<span style="color:#f92672">*</span> ...
+</code></pre></div><p>这样，这样黑进应用程序代码的人就无法通过dbname。这可以通过下面任何一种方法完善：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">ON</span> dbname.<span style="color:#f92672">*</span> ... <span style="color:#75715e">-- 只读
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">GRANT</span> ... <span style="color:#66d9ef">ON</span> dbname.tblname ... <span style="color:#75715e">-- 只有一个表
+</span></code></pre></div><p>只读还可以需要&quot;安全&quot;的配置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">SELECT</span>, <span style="color:#66d9ef">CREATE</span> TEMPORARY <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">ON</span> dbname.<span style="color:#f92672">*</span> ... <span style="color:#75715e">-- 只读
+</span></code></pre></div><p>如你所见，没有绝对安全的方法。但是你可以做一些事情来减少被攻破的可能。(诚实的人也是这样。)</p>
+<p>在极少数情况下，你可能需要营养程序执行一些只有root用户可以执行的操作。这可以通过&quot;存储过程&quot;来实现，这个具有安全定义符(并且root定义了)。这将只公开SP所做的，例如，可能是某个特定表上的一个特定操作。</p>
+<h3 id="2-主机user主机">2. 主机(user@主机)</h3>
+<p>这里&quot;host&quot;可以是一个主机名称或者IP地址。另外，它可能涉及到通配符。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">ON</span> db.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> sam<span style="color:#f92672">@</span><span style="color:#e6db74">&#39;my.domain.com&#39;</span> <span style="color:#66d9ef">IDENTIFIED</span> <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;foo&#39;</span>;
+</code></pre></div><p>例子：注意：这里通常是需要用引号包起来的</p>
 <pre><code>localhost -- the same machine as mysqld
 'my.domain.com' -- a specific domain; this involves a lookup
 '11.22.33.44' -- a specific IP address
 '192.168.1.%' -- wild card for trailing part of IP address. (192.168.% and 10.% and 11.% are &quot;internal&quot; ip addresses.)
-</code></pre>
-
-<p>使用<code>localhost</code>依赖于服务器的安全性。对最佳实践，只允许root使用localhost。在某些情况下，<code>0.0.0.1</code>和<code>::1</code>是相同的。</p>
-
+</code></pre><p>使用<code>localhost</code>依赖于服务器的安全性。对最佳实践，只允许root使用localhost。在某些情况下，<code>0.0.0.1</code>和<code>::1</code>是相同的。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -317,6 +292,12 @@ GRANT ... ON dbname.tblname ... -- 只有一个表
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

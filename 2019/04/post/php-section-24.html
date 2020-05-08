@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,26 +187,19 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#字符串格式">字符串格式</a>
-<ul>
-<li><a href="#字符串插值">字符串插值</a></li>
-<li><a href="#提取-替换子字符串">提取/替换子字符串</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#字符串格式">字符串格式</a>
+      <ul>
+        <li><a href="#字符串插值">字符串插值</a></li>
+        <li><a href="#提取替换子字符串">提取/替换子字符串</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="字符串格式">字符串格式</h2>
-
+        		<h2 id="字符串格式">字符串格式</h2>
 <h3 id="字符串插值">字符串插值</h3>
-
 <p>你可以使用字符串插值在字符串中插入一个变量。字符串插值只在双引号字符串和heredoc表达式中有效。</p>
-
 <pre><code>$name = 'Joel';
 
 //$name会解析为Joel
@@ -212,19 +209,13 @@ echo &quot;&lt;p&gt;Hello $name, Nice to see you.&lt;/p&gt;&quot;;
 //单引号，变量不会解析
 echo 'Hello $name, Nice to see you.';
 //输出：Hello $name, Nice to see you.
-</code></pre>
-
-<p><a href="https://www.php.net/manual/zh/language.types.string.php">复杂（花括号）语法</a>提供了另一种在字符串中插入变量的语法，就是在变量的周围加上<code>{}</code>。这在变量和文本在一起时是很有用的，避免可能存在的变量和文本引起的歧义。</p>
-
+</code></pre><p><a href="https://www.php.net/manual/zh/language.types.string.php">复杂（花括号）语法</a>提供了另一种在字符串中插入变量的语法，就是在变量的周围加上<code>{}</code>。这在变量和文本在一起时是很有用的，避免可能存在的变量和文本引起的歧义。</p>
 <pre><code>$name = 'Joel';
 // Example using the curly brace syntax for the variable $name
 echo &quot;&lt;p&gt;We need more {$name}s to help us!&lt;/p&gt;&quot;; #&gt; &quot;&lt;p&gt;We need more Joels to help us!&lt;/p&gt;&quot;
 // This line will throw an error (as `$names` is not defined)
 echo &quot;&lt;p&gt;We need more $names to help us!&lt;/p&gt;&quot;; #&gt; &quot;Notice: Undefined variable: names&quot;
-</code></pre>
-
-<p>花括号语法只会把以<code>$</code>开头的变量插入到字符串中，不会处理任何的PHP表达式。</p>
-
+</code></pre><p>花括号语法只会把以<code>$</code>开头的变量插入到字符串中，不会处理任何的PHP表达式。</p>
 <pre><code>// Example tying to interpolate a PHP expression
 echo &quot;1 + 2 = {1 + 2}&quot;; 
 #&gt; &quot;1 + 2 = {1 + 2}&quot;
@@ -239,10 +230,7 @@ function say_hello() {
     return &quot;Hello!&quot;;
 };
 echo &quot;I say: {say_hello()}&quot;; #&gt; &quot;I say: {say_hello()}&quot;
-</code></pre>
-
-<p>然而，<code>{}</code>语法对变量、数组元素或任何数组访问、属性访问和函数方法调用进行处理：</p>
-
+</code></pre><p>然而，<code>{}</code>语法对变量、数组元素或任何数组访问、属性访问和函数方法调用进行处理：</p>
 <pre><code>// Example accessing a value from an array — multidimensional access is allowed
 $companions = [0 =&gt; ['name' =&gt; 'Amy Pond'], 1 =&gt; ['name' =&gt; 'Dave Random']]; 
 echo &quot;The best companion is: {$companions[0]['name']}&quot;;
@@ -264,26 +252,17 @@ $greet = function($num) {
 };
 echo &quot;From us all: {$greet(10 ** 3)}&quot;; 
 #&gt; &quot;From us all: A 1000 greetings!&quot;
-</code></pre>
-
-<p>注意，可以像上面一样<code>$</code>符出现在<code>{</code>的后边，或者像Perl或Shell脚本，出现在<code>{</code>的前面：</p>
-
+</code></pre><p>注意，可以像上面一样<code>$</code>符出现在<code>{</code>的后边，或者像Perl或Shell脚本，出现在<code>{</code>的前面：</p>
 <pre><code>$name = 'Joel';
 // Example using the curly brace syntax with dollar sign before the opening curly brace
 echo &quot;&lt;p&gt;We need more ${name}s to help us!&lt;/p&gt;&quot;; 
 #&gt; &quot;&lt;p&gt;We need more Joels to help us!&lt;/p&gt;&quot;
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>花括号语法这样调用不是因为它复杂，而是因为它允许复杂的表达式。可以查看PHP手册。</p>
 </blockquote>
-
-<h3 id="提取-替换子字符串">提取/替换子字符串</h3>
-
+<h3 id="提取替换子字符串">提取/替换子字符串</h3>
 <p>字符串中单一的字符可以通过数语法或者花括号语法访问。这两种语法只会返回字符串中单独的字符。如果需要更多的字符，可以使用<a href="http://php.net/manual/en/function.substr.php">substr</a>函数。</p>
-
 <p>PHP中的字符串像其他元素一样是0开头的：</p>
-
 <pre><code>$foo = 'Hello World';
 
 $foo[6]; //返回 W
@@ -291,10 +270,7 @@ $foo{6}; //返回 W
 
 substr($foo, 6, 1);  //返回 W
 substr($foo, 6, 2);  //返回 Wo
-</code></pre>
-
-<p>字符串可以修改一个字符使用数组语法和花括号语法。要替换多个字符的话可以使用<a href="https://www.php.net/manual/zh/function.substr-replace.php">substr_replace</a>.</p>
-
+</code></pre><p>字符串可以修改一个字符使用数组语法和花括号语法。要替换多个字符的话可以使用<a href="https://www.php.net/manual/zh/function.substr-replace.php">substr_replace</a>.</p>
 <pre><code>$foo = 'Hello world';
 
 $foo[6] = 'W';  //$foo='Hello World';
@@ -302,9 +278,7 @@ $foo{6} = 'W';  //$foo='Hello World';
 
 substr_replace($foo, 'W', 6, 1); // also results in $foo = 'Hello World' substr_replace($foo, 'Whi', 6, 2); // results in 'Hello Whirled'
 // note that the replacement string need not be the same length as the substring replaced
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -376,6 +350,12 @@ substr_replace($foo, 'W', 6, 1); // also results in $foo = 'Hello World' substr_
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

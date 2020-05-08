@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,45 +187,33 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#null">NULL</a>
-<ul>
-<li><a href="#null的使用">NULL的使用</a></li>
-<li><a href="#验证null">验证NULL</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#null">NULL</a>
+      <ul>
+        <li><a href="#null的使用">NULL的使用</a></li>
+        <li><a href="#验证null">验证NULL</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="null">NULL</h2>
-
+        		<h2 id="null">NULL</h2>
 <h3 id="null的使用">NULL的使用</h3>
-
 <ul>
 <li>不知道的数据：像<code>end_date</code>，<code>rating</code></li>
 <li>可选的数据：像<code>middle_initial</code>(尽管空字符是更加合适的)</li>
 <li>0/0：某些运算的结果，像0除以0</li>
-<li>NULL不等于空字符&rdquo;&ldquo;或者0</li>
+<li>NULL不等于空字符&quot;&ldquo;或者0</li>
 <li>其他？</li>
 </ul>
-
 <h3 id="验证null">验证NULL</h3>
-
 <ul>
 <li><code>IS NULL</code>或<code>IS NOT NULL</code>：<code>= NULL</code>将不会像你预期的一样</li>
-<li><code>x &lt;=&gt; y</code>是一种&rdquo;null安全&rdquo;的比较</li>
+<li><code>x &lt;=&gt; y</code>是一种&quot;null安全&quot;的比较</li>
 </ul>
-
 <p>在<code>LEFT JOIN</code>语句中检查<code>a</code>中的行在<code>b</code>中没有合适的行对应。</p>
-
-<pre><code class="language-mysql">SELECT ... FROM a LEFT JOIN b ON ... WHERE b.id IS NULL:
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> ... <span style="color:#66d9ef">FROM</span> a <span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> b <span style="color:#66d9ef">ON</span> ... <span style="color:#66d9ef">WHERE</span> b.id <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span>:
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -293,6 +285,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

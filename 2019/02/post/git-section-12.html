@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,53 +187,23 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#rebase">rebase</a>
-<ul>
-<li><a href="#本地分支rebase">本地分支rebase</a></li>
-<li><a href="#rebase-我们和他们-本地和远端">rebase:我们和他们，本地和远端</a>
-<ul>
-<li><a href="#不管什么情况下head指针指向-我们的">不管什么情况下HEAD指针指向“我们的”：</a></li>
-<li><a href="#倒置说明">倒置说明</a>
-<ul>
-<li><a href="#合并">合并</a></li>
-<li><a href="#rebase-1">rebase</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#交互式rebase">交互式rebase</a>
-<ul>
-<li><a href="#修改提交信息">修改提交信息</a></li>
-<li><a href="#修改提交内容">修改提交内容</a></li>
-<li><a href="#切分提交">切分提交</a></li>
-<li><a href="#合并提交">合并提交</a></li>
-<li><a href="#重定位到初始提交">重定位到初始提交</a></li>
-<li><a href="#配置自动存储">配置自动存储</a></li>
-</ul></li>
-<li><a href="#测试提交">测试提交</a></li>
-<li><a href="#rebase之前代码审查">rebase之前代码审查</a>
-<ul>
-<li><a href="#摘要">摘要</a>
-<ul>
-<li><a href="#假设">假设</a></li>
-<li><a href="#策略">策略</a></li>
-<li><a href="#例子">例子</a></li>
-<li><a href="#概括">概括</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#终端交互rebase">终端交互rebase</a></li>
-<li><a href="#pull自动执行rebase">pull自动执行rebase</a></li>
-<li><a href="#rebase之后push">rebase之后push</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#rebase">rebase</a>
+      <ul>
+        <li><a href="#本地分支rebase">本地分支rebase</a></li>
+        <li><a href="#rebase我们和他们本地和远端">rebase:我们和他们，本地和远端</a></li>
+        <li><a href="#交互式rebase">交互式rebase</a></li>
+        <li><a href="#测试提交">测试提交</a></li>
+        <li><a href="#rebase之前代码审查">rebase之前代码审查</a></li>
+        <li><a href="#终端交互rebase">终端交互rebase</a></li>
+        <li><a href="#pull自动执行rebase">pull自动执行rebase</a></li>
+        <li><a href="#rebase之后push">rebase之后push</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="rebase">rebase</h2>
-
+        		<h2 id="rebase">rebase</h2>
 <table>
 <thead>
 <tr>
@@ -237,143 +211,94 @@
 <th>Detals</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>&ndash;continue</td>
 <td>在解决完merge冲突之后，重新开始执行rebase命令</td>
 </tr>
-
 <tr>
 <td>&ndash;abort</td>
 <td>中断rebase操作之后，重新吧HEAD定位到原有分支上。如果在使用rebase命令的时候提供了分支名，HEAD将会被设置到这个分支上。否则HEAD将会重新设置到rebase操作开始的位置。</td>
 </tr>
-
 <tr>
 <td>&ndash;keep-empty</td>
 <td>保留那些没有修改的提交</td>
 </tr>
-
 <tr>
 <td>&ndash;skip</td>
 <td>重新开始rebase命令，忽略掉当前的补丁</td>
 </tr>
-
 <tr>
 <td>-m,&ndash;merge</td>
 <td>在rebase的时候使用megre策略。当使用递归(默认)合并策略的话，这允许rebase知道上游的重命名。注意rebase合并的工作方式是从上游分支顶部的工作分支重放每个提交。因此，当合并冲突发生时，报告为我们的一方是迄今为止重新定位的系列，从上游开始，他们是工作分支。换句话说，双方交换。</td>
 </tr>
-
 <tr>
 <td>&ndash;stat</td>
 <td>显示上次rebase之后，上游做的修改。这些不同将会有<code>rebase.stat</code>配置项控制</td>
 </tr>
-
 <tr>
 <td>-x, &ndash;exec <code>command</code></td>
 <td>执行交互式rebase，在每个提交和执行<code>command</code>之间暂停</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="本地分支rebase">本地分支rebase</h3>
-
 <p><a href="https://git-scm.com/docs/git-rebase">rebase</a>在另外提交的顶部应用一系列的提交。<code>rebase</code>一个分支的话，首先切换到这个分支，然后<code>rebase</code>到另一个分支的顶部：</p>
-
 <pre><code>$ git checkout topic
 $ git rebase master
-</code></pre>
-
-<p>这会导致：</p>
-
+</code></pre><p>这会导致：</p>
 <pre><code>	A---B---C topic
 /
 D---E---F---G master
-</code></pre>
-
-<p>变成：</p>
-
+</code></pre><p>变成：</p>
 <pre><code>              A'--B'--C' topic
 /
 D---E---F---G master
-</code></pre>
-
-<p>这些操作可以合并到一个简单命令上面：切换分支然后执行<code>rebase</code>命令</p>
-
+</code></pre><p>这些操作可以合并到一个简单命令上面：切换分支然后执行<code>rebase</code>命令</p>
 <pre><code>$ git rebase master topic # rebase topic branch onto master branch
-</code></pre>
-
-<p><strong>重要：</strong>在rebase之后，这些被应用的提交将会有一个不同的hash值，所以你应该<code>rebase</code>那些你已经push到远端的分支。这种情况下你在本地分支使用<code>git push</code>命令是无效的，除非使用<code>git pus --force</code>。</p>
-
-<h3 id="rebase-我们和他们-本地和远端">rebase:我们和他们，本地和远端</h3>
-
+</code></pre><p>**重要：**在rebase之后，这些被应用的提交将会有一个不同的hash值，所以你应该<code>rebase</code>那些你已经push到远端的分支。这种情况下你在本地分支使用<code>git push</code>命令是无效的，除非使用<code>git pus --force</code>。</p>
+<h3 id="rebase我们和他们本地和远端">rebase:我们和他们，本地和远端</h3>
 <p>一个<code>rebase</code>切换了“我们”和“他们”的含义：</p>
-
 <pre><code>$ git checkout topic
 $ git rebase master # rebase topic branch on top of master branch
-</code></pre>
-
-<h4 id="不管什么情况下head指针指向-我们的">不管什么情况下HEAD指针指向“我们的”：</h4>
-
+</code></pre><h4 id="不管什么情况下head指针指向我们的">不管什么情况下HEAD指针指向“我们的”：</h4>
 <p><code>rebase</code>的第一件事是将HEAD重置为master，在<code>cherry-picking</code>提交从老分支<code>topic</code>到新分支之前（每一个<code>topic</code>的分支将会重写，并且使用不同的hash标记）。</p>
-
 <p>关于合并工具的术语（不要与本地引用和远端引用混淆）：</p>
-
 <pre><code> =&gt; local is master (&quot;ours&quot;), 
  =&gt; remote is topic (&quot;theirs&quot;)
-</code></pre>
-
-<p>这意味着一个合并/差异工具会把上游认为本地（在某个分支<code>master</code>上rebase）；工作分支是<code>master</code>（这个分支<code>topic</code>将会被rebase）。</p>
-
+</code></pre><p>这意味着一个合并/差异工具会把上游认为本地（在某个分支<code>master</code>上rebase）；工作分支是<code>master</code>（这个分支<code>topic</code>将会被rebase）。</p>
 <pre><code>+-----------------------------------------+
 | LOCAL:master |    BASE   | REMOTE:topic |
 +-----------------------------------------+
 |             MERGED                      |
 +-----------------------------------------+
-</code></pre>
-
-<h4 id="倒置说明">倒置说明</h4>
-
+</code></pre><h4 id="倒置说明">倒置说明</h4>
 <h5 id="合并">合并</h5>
-
 <pre><code>c--c--x--x--x(*) &lt;- current branch topic ('*'=HEAD)
 \
 \
 \--y--y--y &lt;- other branch to merge
-</code></pre>
-
-<p>我们不修改当前的分支<code>topic</code>，所有我们还在之前工作的分支（我们合并了另外一个分支）：</p>
-
+</code></pre><p>我们不修改当前的分支<code>topic</code>，所有我们还在之前工作的分支（我们合并了另外一个分支）：</p>
 <pre><code>c--c--x--x--x---------o(*) MERGE, still on branch topic \^/
 \ ours /
 \/
 --y--y--y--/
 ^
 theirs
-</code></pre>
-
-<h5 id="rebase-1">rebase</h5>
-
+</code></pre><h5 id="rebase-1">rebase</h5>
 <p>在一个rebase命令中，在rebase的第一件事就是切换到上游分支，然后在上游分支的顶端把当前的提交应用到那个分之上：</p>
-
 <pre><code>c--c--x--x--x(*) &lt;- current branch topic ('*'=HEAD)
 \
 \
 \--y--y--y &lt;- upstream branch
-</code></pre>
-
-<p><code>git rebase upstream</code>命令把HEAD设置为上游分支，在之前的“当前”工作分支，将会交互&rdquo;我们&rdquo;和“他们”：</p>
-
+</code></pre><p><code>git rebase upstream</code>命令把HEAD设置为上游分支，在之前的“当前”工作分支，将会交互&quot;我们&quot;和“他们”：</p>
 <pre><code>c--c--x--x--x &lt;- former &quot;current&quot; branch, new &quot;theirs&quot;
 \
 \
 \--y--y--y(*) &lt;- set HEAD to this commit, to replay x's on it
 ^       this will be the new &quot;ours&quot;
 | upstream
-</code></pre>
-
-<p>这个rebase操作将会应用“他们的”提交到新的“我们的”<code>topic</code>分支上面：</p>
-
+</code></pre><p>这个rebase操作将会应用“他们的”提交到新的“我们的”<code>topic</code>分支上面：</p>
 <pre><code>c--c..x..x..x &lt;- old &quot;theirs&quot; commits, now &quot;ghosts&quot;, available through &quot;reflogs&quot;
 \
 \
@@ -381,122 +306,68 @@ theirs
 ^                      point branch topic to this commit
 |
 upstream branch
-</code></pre>
-
-<h3 id="交互式rebase">交互式rebase</h3>
-
+</code></pre><h3 id="交互式rebase">交互式rebase</h3>
 <p>这个例子旨在描述如果在交互模式下使用rebase命令。这里首先假设你已经对rebase有了基本的了解，知道这个命令是做什么的。</p>
-
 <p>交互式<code>rebase</code>将会使用下面的命令打开：</p>
-
 <pre><code>$ git rebase -i
-</code></pre>
-
-<p>这个<code>-i</code>选项意外中交互模式。使用交互模式，用户可以更改提交信息，重新排序，切分/压缩（合并为一个）提交。</p>
-
+</code></pre><p>这个<code>-i</code>选项意外中交互模式。使用交互模式，用户可以更改提交信息，重新排序，切分/压缩（合并为一个）提交。</p>
 <p>假设你想重新排列最后三次提交，可以使用：</p>
-
 <pre><code>$ git rebase -i HEAD~3
-</code></pre>
-
-<p>执行上述指令后，将在文本编辑器中打开一个文件，您可以在其中选择如何重新设置提交。 出于这个例子的目的，只需更改提交的顺序，保存文件并关闭编辑器。 这将会按照你处理的顺序执行rebase。 如果你检查<code>git log</code>，你将会看到你重新排序的提交。</p>
-
+</code></pre><p>执行上述指令后，将在文本编辑器中打开一个文件，您可以在其中选择如何重新设置提交。 出于这个例子的目的，只需更改提交的顺序，保存文件并关闭编辑器。 这将会按照你处理的顺序执行rebase。 如果你检查<code>git log</code>，你将会看到你重新排序的提交。</p>
 <h4 id="修改提交信息">修改提交信息</h4>
-
 <p>现在你确定之前提交中有一个提交的信息是含糊不清的，你希望修改的更加合适。让我们用上面的命令重新检查最近3次的提交：</p>
-
 <pre><code>$ git rebase -i HEAD~3
-</code></pre>
-
-<p>这次我们不修改提交的顺序，我们修改<code>pick</code>，默认修改你想要修改的提交信息。</p>
-
+</code></pre><p>这次我们不修改提交的顺序，我们修改<code>pick</code>，默认修改你想要修改的提交信息。</p>
 <p>当你关闭编辑器的时候，rebase将会启动，然后停止在你想要修改的提交信息的地方。这允许你修改你想修改的提交信息。更改之后只要关闭编辑器就可以了。</p>
-
 <h4 id="修改提交内容">修改提交内容</h4>
-
 <p>除了修改提交信息外，你可以修改提交的内容。为此可以通过修改<code>pick</code>来修改提交的内容。Git将在到达该提交时停止并在暂存区域中提供提交的原始更改。 您现在可以通过取消暂存或添加新更改来调整这些更改。</p>
-
 <p>只要暂存区域包含该提交中所需的所有更改，请提交更改。 将显示旧的提交消息，并且可以对其进行调整以反映新的提交。</p>
-
 <h4 id="切分提交">切分提交</h4>
-
 <p>假设你已经提交了一个提交，但是之后想把这个提交拆分为两个或多个提交。可以使用之前的命令，把<code>pick</code>替换为<code>edit</code>，然后按<code>Enter</code>。</p>
-
 <p>这时Git将会在你标记为<code>edit</code>的提交出停止，并把所有的内容放到暂存区内。你可以使用<code>git reset HEAD ^</code>命令把这些内容放到工作区。然后你可以在不同的顺序添加和提交文件，最终将一个提交切分到不同的提交里面。</p>
-
 <h4 id="合并提交">合并提交</h4>
-
 <p>你做了多个提交但是想把这些提交合并到一个提交。这样可以使用<code>git rebase -i HEAD~3</code>命令，你可以把3替换为合适的提交数。</p>
-
 <p>这时把<code>pick</code>替换为<code>squash</code>。在rebase期间，你指定的被压缩提交将会被压缩到之前的提交上，把他们合并到一个提交上。</p>
-
 <h4 id="重定位到初始提交">重定位到初始提交</h4>
-
 <p>从Git<a href="https://github.com/git/git/blob/1d1bdafd64266e5ee3bd46c6965228f32e4022ea/Documentation/RelNotes/1.7.12.txt#L59-L60">1.7.2</a>开始，可以降级到root提交。通常root提交时仓库的第一个提交，一般来说是不允许修改的。可以使用下面的命令修改：</p>
-
 <pre><code>$ git rebase -i --root
-</code></pre>
-
-<h4 id="配置自动存储">配置自动存储</h4>
-
+</code></pre><h4 id="配置自动存储">配置自动存储</h4>
 <p>在使用<code>rebase</code>命令修改本地修改的时候，<code>autostash</code>是非常有用的配置项。通常，你需要从上游获取提交，但还没有准备好提交。</p>
-
 <p>但是当本地有修改的时候，是不允许打开一个rebase操作的。<code>autostash</code>是很有用的：</p>
-
 <pre><code>$ git config --global rebase.autostash # one time configuration
 $ git rebase @{u} # example rebase on upstream branch
-</code></pre>
-
-<p>当rebase完成之后，就会应用自动存储。rebase成功还是终止都是没有关系的。无论什么方式，都会自动暂存。如果<code>rebase</code>成功了，并且修改了之前的提交，在自动存储和新提交之间可能会出现冲突。在这种情况下，你需要在提交之前先解决冲突。这和你手动的暂存，然后提交时没有区别的，所有自动提交时很有用的。</p>
-
+</code></pre><p>当rebase完成之后，就会应用自动存储。rebase成功还是终止都是没有关系的。无论什么方式，都会自动暂存。如果<code>rebase</code>成功了，并且修改了之前的提交，在自动存储和新提交之间可能会出现冲突。在这种情况下，你需要在提交之前先解决冲突。这和你手动的暂存，然后提交时没有区别的，所有自动提交时很有用的。</p>
 <h3 id="测试提交">测试提交</h3>
-
 <p>在发起<code>pull</code>请求之前，在这个分支上为每个提交确保编译成功和测试通过是很有用的。我们可以使用<code>-x</code>参数自动完成这些操作。</p>
-
 <p>例如：</p>
-
 <pre><code>$ git rebase -i -x make
-</code></pre>
-
-<p>这将会执行一个交互式的<code>rebase</code>命令，在每一个提交的时候暂定然后执行<code>make</code>命令。如果<code>make</code>失败了，Git将会暂停之后的操作，让你先把这个问题修复并且提交了，然后才能进行下一个操作。</p>
-
+</code></pre><p>这将会执行一个交互式的<code>rebase</code>命令，在每一个提交的时候暂定然后执行<code>make</code>命令。如果<code>make</code>失败了，Git将会暂停之后的操作，让你先把这个问题修复并且提交了，然后才能进行下一个操作。</p>
 <h3 id="rebase之前代码审查">rebase之前代码审查</h3>
-
 <h4 id="摘要">摘要</h4>
-
 <p>这里的目的是把分散的提交组织为更有意义的提交，方便之后进行代码审查。如果一次太多文件有太多修改，代码审查起来就会很麻烦。如果您可以将按时间顺序创建的提交重新组织到主题提交中，那么代码审查过程将更容易（并且可能更少的错误会漏掉代码审查过程）。</p>
-
 <p>这个简单例子并不是使用Git进行更好代码审查的唯一策略。这是我的工作方式，可以激励他人考虑如果更简单/更容易完成代码审查和查看git的历史。</p>
-
 <p>这也通常证明了<code>rebase</code>的能力。</p>
-
 <p>这个例子假设你已经了解了交互式rebase的命令。</p>
-
 <h5 id="假设">假设</h5>
-
 <ul>
 <li>你在master分支的一个特性分支上工作</li>
 <li>你的功能主要分为：前端，后端，数据库</li>
 <li>你的分支做了很多的提交，每个提交都涉及多个功能</li>
 <li>你只想你分支最后三次提交：
-
 <ul>
 <li>一个包含前端的修改</li>
 <li>一个包含后端的修改</li>
 <li>一个包含数据库的修改</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h5 id="策略">策略</h5>
-
 <ul>
 <li>我们把我们按时间的提交修改为按“主题”的提交</li>
 <li>首先把所有的提交切分到多个小提交：每个提交一次只包含一个主题（这里分为前端，后端，数据库）</li>
 <li>我们把提交重新排序，然后把这些提交“压缩”到一个单独的主题提交</li>
 </ul>
-
 <h5 id="例子">例子</h5>
-
 <pre><code>$ git log --oneline master..
 975430b db adding works: db.sql logic.rb
 3702650 trying to allow adding todo items: page.html logic.rb 43b075a first draft: page.html and db.sql
@@ -504,17 +375,11 @@ $ git rebase -i master
 pick 43b075a first draft: page.html and db.sql
 pick 3702650 trying to allow adding todo items: page.html logic.rb
 pick 975430b db adding works: db.sql logic.rb
-</code></pre>
-
-<p>把这些修改为下面的样子：</p>
-
+</code></pre><p>把这些修改为下面的样子：</p>
 <pre><code>e 43b075a first draft: page.html and db.sql
 e 3702650 trying to allow adding todo items: page.html logic.rb
 e 975430b db adding works: db.sql logic.rb
-</code></pre>
-
-<p>然后Git会一次应用一个提交。在每个提交之后，将会提示你去处理下面的操作：</p>
-
+</code></pre><p>然后Git会一次应用一个提交。在每个提交之后，将会提示你去处理下面的操作：</p>
 <pre><code>Stopped at 43b075a92a952faf999e76c4e4d7fa0f44576579... first draft: page.html and db.sql
 You can amend the commit now, with
 
@@ -541,10 +406,7 @@ $ git commit -m &quot;first draft: db.sql&quot;
 $ git add page.html
 $ git commit -m &quot;first draft: page.html&quot;
 $ git rebase --continue
-</code></pre>
-
-<p>然后对每一个提交，你都会进行上面的操作，最后会有下面的输出：</p>
-
+</code></pre><p>然后对每一个提交，你都会进行上面的操作，最后会有下面的输出：</p>
 <pre><code>$ git log --oneline
 0309336 db adding works: logic.rb
 06f81c9 db adding works: db.sql 
@@ -552,55 +414,34 @@ $ git rebase --continue
 675a02b adding todo items: logic.rb 
 272c674 first draft: page.html 
 08c275d first draft: db.sql
-</code></pre>
-
-<p>现在我们运行一次或多次<code>rebase</code>来重新排序和压缩提交：</p>
-
+</code></pre><p>现在我们运行一次或多次<code>rebase</code>来重新排序和压缩提交：</p>
 <pre><code>$ git rebase -i master
-</code></pre>
-
-<p>这会在编辑器中显示：</p>
-
+</code></pre><p>这会在编辑器中显示：</p>
 <pre><code>pick 08c275d first draft: db.sql
 pick 272c674 first draft: page.html
 pick 675a02b adding todo items: logic.rb
 pick 3264de2 adding todo items: page.html
 pick 06f81c9 db adding works: db.sql
 pick 0309336 db adding works: logic.rb
-</code></pre>
-
-<p>把它修改为下面的样子：</p>
-
+</code></pre><p>把它修改为下面的样子：</p>
 <pre><code>pick 08c275d first draft: db.sql
 s 06f81c9 db adding works: db.sql
 pick 675a02b adding todo items: logic.rb
 s 0309336 db adding works: logic.rb
 pick 272c674 first draft: page.html
 s  3264de2 adding todo items: page.html
-</code></pre>
-
-<p>注意：确保你告诉<code>git rebase</code>按照时间的顺序切分/压缩较小的主题提。否则你可能遇到错误或者不必要的冲突。</p>
-
+</code></pre><p>注意：确保你告诉<code>git rebase</code>按照时间的顺序切分/压缩较小的主题提。否则你可能遇到错误或者不必要的冲突。</p>
 <p>如果所有的交互式rebase已经执行完毕了，你将会有下面的结果：</p>
-
 <pre><code>$ git log --oneline master..
 74bdd5f adding todos: GUI layer
 e8d8f7e adding todos: business logic layer 
 121c578 adding todos: DB layer
-</code></pre>
-
-<h5 id="概括">概括</h5>
-
+</code></pre><h5 id="概括">概括</h5>
 <p>现在你已经安装时间顺序调整为主题提交。现实中，你可能不需要每次都这么做。但是你想要做的话，现在就可以做了。另外，希望你了解更多的rebase信息。</p>
-
 <h3 id="终端交互rebase">终端交互rebase</h3>
-
 <p>你已经开始了一个交互rebase。在这个编辑器里，你挑选你的提交，发现其中有一些错误（例如：一个提交消失了，或者你选择了一个错误的rebase目标），这时你可以中断你的提交。</p>
-
 <p>要做到这个，只需要删除所有的提交和操作（所有的行不以#号开头），然后rebase将会被中断。</p>
-
 <p>编辑器中的帮助文本实际上提供了以下提示：</p>
-
 <pre><code># Rebase 36d15de..612f2f7 onto 36d15de (3 command(s))
 #
 # Commands:
@@ -618,36 +459,20 @@ e8d8f7e adding todos: business logic layer
 # However, if you remove everything, the rebase will be aborted.
 #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # Note that empty commits are commented out
-</code></pre>
-
-<h3 id="pull自动执行rebase">pull自动执行rebase</h3>
-
+</code></pre><h3 id="pull自动执行rebase">pull自动执行rebase</h3>
 <p>如果你的团队使用基于rebase的工作流，这是非常有用的：在创建每个新分支时，使用<code>git pull</code>时，Git执行一个rebase操作，而不是merge操作。</p>
-
 <p>想要让你的每个新分支自动使用rebase，可以修改<code>.gitconfig</code>或者<code>.git/config</code>配置文件：</p>
-
 <pre><code>[branch]
 autosetuprebase = always
-</code></pre>
-
-<p>命令如下：<code>git config [--global] branch.autosetuprebase always</code></p>
-
+</code></pre><p>命令如下：<code>git config [--global] branch.autosetuprebase always</code></p>
 <p>另外你可以设置<code>git pull</code>命令执行的像添加<code>--rebase</code>的选项一样：</p>
-
 <pre><code>[pull]
 rebase = true
-</code></pre>
-
-<p>命令如下：<code>git config [--global] pull.rebase true</code></p>
-
+</code></pre><p>命令如下：<code>git config [--global] pull.rebase true</code></p>
 <h3 id="rebase之后push">rebase之后push</h3>
-
 <p>有时候你需要使用<code>rebase</code>命令重写提交历史，但是<code>git push</code>命令会抱怨你重写了历史。</p>
-
 <p>你可以使用<code>git push --force</code>解决这个问题，但是使用<code>git push --force-with-lease</code>说明如果本地保存的远端分支信息和远端实际的信息（有人重新push了一个分支）不一致时，会push失败。这可以避免无意中覆盖别人最近的push。</p>
-
-<p><strong>注意：</strong><code>git push --force</code>和<code>git push --force-with-lease</code>是一个危险的操作，因为这会修改分支的提交历史。如果另外一个人已经在你强制push之前已经pull或fetch了这个分支，他的<code>git pull</code>和<code>git fetch</code>命令就会出现错误，因为本地的远端信息和远端的时间信息不一致。这会造成这个人出现意外的错误。通过查库<code>reflog</code>的信息，其他用户可以修复这个错误，但是这会浪费很多时间。如果你必须强制push一个和其他人协作的分支，最好提前沟通，避免处理这样的问题。</p>
-
+<p>**注意：**<code>git push --force</code>和<code>git push --force-with-lease</code>是一个危险的操作，因为这会修改分支的提交历史。如果另外一个人已经在你强制push之前已经pull或fetch了这个分支，他的<code>git pull</code>和<code>git fetch</code>命令就会出现错误，因为本地的远端信息和远端的时间信息不一致。这会造成这个人出现意外的错误。通过查库<code>reflog</code>的信息，其他用户可以修复这个错误，但是这会浪费很多时间。如果你必须强制push一个和其他人协作的分支，最好提前沟通，避免处理这样的问题。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -720,6 +545,12 @@ rebase = true
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

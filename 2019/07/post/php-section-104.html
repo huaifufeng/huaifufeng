@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,52 +187,37 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#为php手册做贡献">为PHP手册做贡献</a>
-<ul>
-<li><a href="#1-改进官方文档">1. 改进官方文档</a></li>
-<li><a href="#2-为手册作出贡献的提示">2. 为手册作出贡献的提示</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#为php手册做贡献">为PHP手册做贡献</a>
+      <ul>
+        <li><a href="#1-改进官方文档">1. 改进官方文档</a></li>
+        <li><a href="#2-为手册作出贡献的提示">2. 为手册作出贡献的提示</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="为php手册做贡献">为PHP手册做贡献</h2>
-
+        		<h2 id="为php手册做贡献">为PHP手册做贡献</h2>
 <p>PHP手册包含解释PHP主要特性的函数引用和语言引用。PHP手册不像大多数的语言手册，允许PHP开发者在手册的每一页添加它们自己的例子和注释。本主题解释了对PHP手册的贡献，以及最佳实践的提示、技巧和指南。</p>
-
 <h3 id="1-改进官方文档">1. 改进官方文档</h3>
-
-<p>PHP有一个非常好的官方文档，在<a href="https://www.php.net/manual/zh/index.php。PHP手册记录了几乎所有的语言特性，核心库和大多数可用的扩展。有很多例子可以学习。PHP手册有多种语言和格式。">https://www.php.net/manual/zh/index.php。PHP手册记录了几乎所有的语言特性，核心库和大多数可用的扩展。有很多例子可以学习。PHP手册有多种语言和格式。</a></p>
-
+<p>PHP有一个非常好的官方文档，在https://www.php.net/manual/zh/index.php。PHP手册记录了几乎所有的语言特性，核心库和大多数可用的扩展。有很多例子可以学习。PHP手册有多种语言和格式。</p>
 <p>最重要的是，<strong>文档是免费的，允许任何人编辑</strong>。</p>
-
-<p>PHP手册团队提供了一个PHP手册的在线编辑器，地址是<a href="https://edit.php.net。它支持多个单一登录服务，包括使用Stack">https://edit.php.net。它支持多个单一登录服务，包括使用Stack</a> Overflow账号。你可以在<a href="https://wiki.php.net/doc/editor">https://wiki.php.net/doc/editor</a> 找到编辑器的介绍。</p>
-
-<p>对PHP手册的更改需要得到拥有*Doc Karma*的PHP手册团队人员批准。Doc Karma有点像荣誉，但是很难获得。每个审查过程都只是要确保正确的信息进入手册。</p>
-
+<p>PHP手册团队提供了一个PHP手册的在线编辑器，地址是https://edit.php.net。它支持多个单一登录服务，包括使用Stack Overflow账号。你可以在https://wiki.php.net/doc/editor 找到编辑器的介绍。</p>
+<p>对PHP手册的更改需要得到拥有<em>Doc Karma</em>的PHP手册团队人员批准。Doc Karma有点像荣誉，但是很难获得。每个审查过程都只是要确保正确的信息进入手册。</p>
 <p>这个手册是使用DocBook编写的，这是非常容易学习的编写图书的标记语言。乍一看，它可能有点复杂，但有一些模板可以让您开始。你当然不需要成为一个DocBook专家来做出贡献。</p>
-
 <h3 id="2-为手册作出贡献的提示">2. 为手册作出贡献的提示</h3>
-
 <p>以下是希望为PHP手册做出贡献的人员的提示列表：</p>
-
 <ul>
-<li><strong>遵守手册的样式指南。</strong>确保始终遵循手册的样式指南，以保持一致性。</li>
-<li><strong>执行拼写和语法检查。</strong>确保使用正确的拼写和语法 - 否则提供的信息可能更难被接受，内容看起来也不专业。</li>
-<li><strong>解释要简明扼要。</strong>避免冗长，清楚简明的像查询手册的开发人员提供信息。</li>
-<li><strong>将代码和输出分开。</strong>这为开发人员提供了更清晰、更简单的代码示例。</li>
-<li><strong>检查页面章节的顺序。</strong>确保手册中页面所有的章节被以正确的顺序编写。手册的统一性使快速阅读和查找信息变得更加容易。</li>
-<li><strong>溢出PHP 4相关内容。</strong>考虑到PHP4的例子，关于它的特定提示不在需要。应将其从手册中删除，以防将其与不必要的信息混淆。</li>
-<li><strong>正确的版本文件。</strong>在文档中创建新文件的时候，确保文件的revision ID设置为nothing。像<code>&lt;!-- $Revision$ --&gt;</code></li>
-<li><strong>把有用的注释合并到手册中。</strong>一些评论提供了手册可能从中受益的有用信息。这些应该合并到主页的内容中。</li>
-<li><strong>不要破坏文件的构建。</strong>在提交更改之前，一定要确保正确地构建PHP手册。</li>
+<li>**遵守手册的样式指南。**确保始终遵循手册的样式指南，以保持一致性。</li>
+<li>**执行拼写和语法检查。**确保使用正确的拼写和语法 - 否则提供的信息可能更难被接受，内容看起来也不专业。</li>
+<li>**解释要简明扼要。**避免冗长，清楚简明的像查询手册的开发人员提供信息。</li>
+<li>**将代码和输出分开。**这为开发人员提供了更清晰、更简单的代码示例。</li>
+<li>**检查页面章节的顺序。**确保手册中页面所有的章节被以正确的顺序编写。手册的统一性使快速阅读和查找信息变得更加容易。</li>
+<li>**溢出PHP 4相关内容。**考虑到PHP4的例子，关于它的特定提示不在需要。应将其从手册中删除，以防将其与不必要的信息混淆。</li>
+<li>**正确的版本文件。**在文档中创建新文件的时候，确保文件的revision ID设置为nothing。像<code> &lt;!-- $Revision$ --&gt;</code></li>
+<li>**把有用的注释合并到手册中。**一些评论提供了手册可能从中受益的有用信息。这些应该合并到主页的内容中。</li>
+<li>**不要破坏文件的构建。**在提交更改之前，一定要确保正确地构建PHP手册。</li>
 </ul>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -301,6 +290,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

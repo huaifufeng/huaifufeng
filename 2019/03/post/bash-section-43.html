@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,40 +187,26 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#管道">管道</a>
-<ul>
-<li><a href="#使用">使用|&amp;</a></li>
-<li><a href="#分页展示进程">分页展示进程</a></li>
-<li><a href="#修改命令的连续输出">修改命令的连续输出</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#管道">管道</a>
+      <ul>
+        <li><a href="#使用">使用|&amp;</a></li>
+        <li><a href="#分页展示进程">分页展示进程</a></li>
+        <li><a href="#修改命令的连续输出">修改命令的连续输出</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="管道">管道</h2>
-
+        		<h2 id="管道">管道</h2>
 <h3 id="使用">使用|&amp;</h3>
-
 <p><code>|&amp;</code>连接一命令的标准输出和标准错误到二命令，而<code>|</code>命令连接一命令的标准输出到二命令。</p>
-
 <p>在这个例子中，使用curl命令加下载这个页面，使用<code>-v</code>选项写一些内容到标准错误中，这个页面被输出到标准输出中。这个页面的标题在<code>&lt;title&gt;</code>和<code>&lt;/tilte&gt;</code>之间。</p>
-
 <pre><code>curl -vs 'http://www.google.com/' |&amp; awk '/Host:/{print} /&lt;title&gt;/{match($0,/&lt;title&gt;(.*)&lt;\/title&gt;/,a);print a[1]}'
-</code></pre>
-
-<p>这将会输出：</p>
-
+</code></pre><p>这将会输出：</p>
 <pre><code>&gt; Host: www.google.com 
 Google
-</code></pre>
-
-<p>但是使用<code>|</code>的话，会输出更多的内容：即哪些被输出到标准错误中的信息，因为只有标准输出被管道到下一个命令。在这个例子中除了最后一行，其他的都是输出到标准错误中的：</p>
-
+</code></pre><p>但是使用<code>|</code>的话，会输出更多的内容：即哪些被输出到标准错误中的信息，因为只有标准输出被管道到下一个命令。在这个例子中除了最后一行，其他的都是输出到标准错误中的：</p>
 <pre><code>* Hostname was NOT found in DNS cache
 *   Trying 172.217.20.228...
 * Connected to www.google.com (172.217.20.228) port 80 (#0)
@@ -249,17 +239,10 @@ path=/; domain=.google.com; HttpOnly
 { [data not shown]
 * Closing connection 0
 Google
-</code></pre>
-
-<h3 id="分页展示进程">分页展示进程</h3>
-
+</code></pre><h3 id="分页展示进程">分页展示进程</h3>
 <pre><code>ps -e | less
-</code></pre>
-
-<p><code>ps -e</code>显示所有的输出，它的输出被通过<code>|</code>连接给<code>less</code>命令，用来分页显示结果。</p>
-
+</code></pre><p><code>ps -e</code>显示所有的输出，它的输出被通过<code>|</code>连接给<code>less</code>命令，用来分页显示结果。</p>
 <h3 id="修改命令的连续输出">修改命令的连续输出</h3>
-
 <pre><code>~$ ping -c 1 google.com # unmodified output
 PING google.com (16.58.209.174) 56(84) bytes of data.
 64 bytes from wk-in-f100.1e100.net (16.58.209.174): icmp_seq=1 ttl=53 time=47.4 ms 
@@ -275,10 +258,7 @@ PING google.com (16.58.209.174) 56(84) bytes of data.
 64 bytes from wk-in-f100.1e100.net
 64 bytes from wk-in-f100.1e100.net
 ...
-</code></pre>
-
-<p><code>|</code>连接<code>ping</code>的标准输出作为<code>grep</code>的标准输入，它将立刻进行处理。其他的像<code>sed</code>这样的命令，会缓存输入的信息，这意味着在命令开始处理之前，必须接受足够的信息，可能导致进一步处理的延迟。</p>
-
+</code></pre><p><code>|</code>连接<code>ping</code>的标准输出作为<code>grep</code>的标准输入，它将立刻进行处理。其他的像<code>sed</code>这样的命令，会缓存输入的信息，这意味着在命令开始处理之前，必须接受足够的信息，可能导致进一步处理的延迟。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -351,6 +331,12 @@ PING google.com (16.58.209.174) 56(84) bytes of data.
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,74 +187,45 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#别名">别名</a>
-<ul>
-<li><a href="#绕过别名">绕过别名</a></li>
-<li><a href="#创建别名">创建别名</a></li>
-<li><a href="#删除别名">删除别名</a></li>
-<li><a href="#bash-aliases">BASH_ALIASES</a></li>
-<li><a href="#展开别名">展开别名</a></li>
-<li><a href="#别名列表">别名列表</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#别名">别名</a>
+      <ul>
+        <li><a href="#绕过别名">绕过别名</a></li>
+        <li><a href="#创建别名">创建别名</a></li>
+        <li><a href="#删除别名">删除别名</a></li>
+        <li><a href="#bash_aliases">BASH_ALIASES</a></li>
+        <li><a href="#展开别名">展开别名</a></li>
+        <li><a href="#别名列表">别名列表</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="别名">别名</h2>
-
+        		<h2 id="别名">别名</h2>
 <p>shell的别名是一种创建新命令或者在已有命令添加自己代码的方式。这和shell的函数有重叠的地方，但是shell函数更加通用，最好优先使用。</p>
-
 <h3 id="绕过别名">绕过别名</h3>
-
 <p>有时候你想临时绕过一个别名，而不是让别名不能使用了。下面就是一个例子：</p>
-
 <pre><code>alias ls='ls --color=auto'
-</code></pre>
-
-<p>如果我们想要使用<code>ls</code>命令而不是<code>ls</code>别名，有下面几种方法：</p>
-
+</code></pre><p>如果我们想要使用<code>ls</code>命令而不是<code>ls</code>别名，有下面几种方法：</p>
 <ul>
 <li>使用内建的<code>command</code>命令：<code>command ls</code></li>
 <li>使用命令的完整路径：<code>/bin/ls</code></li>
 <li>在命令名的任何地方添加一个<code>\</code>：<code>\ls</code>或<code>l\s</code></li>
-<li>把命令引用起来：&rdquo;ls&rdquo;或&rsquo;ls&rsquo;</li>
+<li>把命令引用起来：&ldquo;ls&quot;或&rsquo;ls&rsquo;</li>
 </ul>
-
 <h3 id="创建别名">创建别名</h3>
-
 <pre><code>alias word='command'
-</code></pre>
-
-<p>使用<code>word</code>就是运行命令<code>command</code>。任何追加到别名后面的参数就会添加到命令后面：</p>
-
+</code></pre><p>使用<code>word</code>就是运行命令<code>command</code>。任何追加到别名后面的参数就会添加到命令后面：</p>
 <pre><code> alias myAlias='some command --with --options' 
  myAlias foo bar baz
-</code></pre>
-
-<p>上面的别名将会执行下面的命令：</p>
-
+</code></pre><p>上面的别名将会执行下面的命令：</p>
 <pre><code>some command --with --options foo bar baz
-</code></pre>
-
-<p>想要在一行中执行多个命令，可以使用<code>&amp;&amp;</code>连接多个命令字符串。李润：</p>
-
+</code></pre><p>想要在一行中执行多个命令，可以使用<code>&amp;&amp;</code>连接多个命令字符串。李润：</p>
 <pre><code>alias print_things='echo &quot;foo&quot; &amp;&amp; echo &quot;bar&quot; &amp;&amp; echo &quot;baz&quot;'
-</code></pre>
-
-<h3 id="删除别名">删除别名</h3>
-
+</code></pre><h3 id="删除别名">删除别名</h3>
 <p>删除别名使用下面的命令：</p>
-
 <pre><code>unalias {alias_name}
-</code></pre>
-
-<p>例如：</p>
-
+</code></pre><p>例如：</p>
 <pre><code># create an alias
 $ alias now='date'
 
@@ -264,12 +239,8 @@ $ unalias now
 # test if removed
 $ now
 -bash: now: command not found
-</code></pre>
-
-<h3 id="bash-aliases">BASH_ALIASES</h3>
-
+</code></pre><h3 id="bash_aliases">BASH_ALIASES</h3>
 <p>别名是一些命令的快捷方式，可以在交互式bash实例中定义和使用。这些别名被保存在一个名字文件<code>BASH_ALIASES</code>的关联数组文件。想要在脚本中使用这些别名的话，必须在交互式的shell中：</p>
-
 <pre><code>#!/bin/bash -li
 # note the -li above! -l makes this behave like a login shell
 # -i makes it behave like an interactive shell
@@ -281,23 +252,13 @@ echo There are ${#BASH_ALIASES[*]} aliases defined.
 for ali in &quot;${!BASH_ALIASES[@]}&quot;; do
 	printf &quot;alias: %-10s triggers: %s\n&quot; &quot;$ali&quot; &quot;${BASH_ALIASES[$ali]}&quot;
 done
-</code></pre>
-
-<h3 id="展开别名">展开别名</h3>
-
+</code></pre><h3 id="展开别名">展开别名</h3>
 <p>假设<code>bar</code>是命令<code>someCommand -flag1</code>的别名：</p>
-
 <p>在命令行中输入<code>bar</code>命令，然后按下<code>Ctrl+alt+e</code>。</p>
-
 <p>当<code>bar</code>执行的时候，你实际执行的<code>someCommand -flag1</code>命令。</p>
-
 <h3 id="别名列表">别名列表</h3>
-
 <pre><code>$ alias -p
-</code></pre>
-
-<p>可以列出所有的当前拥有的别名。</p>
-
+</code></pre><p>可以列出所有的当前拥有的别名。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -370,6 +331,12 @@ done
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

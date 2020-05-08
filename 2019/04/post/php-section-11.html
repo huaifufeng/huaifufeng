@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,49 +187,30 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#引用">引用</a>
-<ul>
-<li><a href="#引用赋值">引用赋值</a></li>
-<li><a href="#返回引用">返回引用</a></li>
-<li><a href="#传递引用">传递引用</a>
-<ul>
-<li><a href="#数组">数组</a></li>
-<li><a href="#函数">函数</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#引用">引用</a>
+      <ul>
+        <li><a href="#引用赋值">引用赋值</a></li>
+        <li><a href="#返回引用">返回引用</a></li>
+        <li><a href="#传递引用">传递引用</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="引用">引用</h2>
-
+        		<h2 id="引用">引用</h2>
 <h3 id="引用赋值">引用赋值</h3>
-
 <p>这是引用使用的第一个阶段。实际你在<a href="https://php.net/manual/en/language.references.whatdo.php#language.references.whatdo.assign">引用赋值</a>的时候，这里允许你两个变量拥有相同的值。</p>
-
 <pre><code>$foo = &amp;$bar;
-</code></pre>
-
-<p><code>$foo</code>和<code>$bar</code>是相等的。它们指向相同的地址，而不是不同的地址。</p>
-
+</code></pre><p><code>$foo</code>和<code>$bar</code>是相等的。它们指向相同的地址，而不是不同的地址。</p>
 <p>你也可以在<code>array()</code>语言结构中使用引用赋值。并不是严格的引用赋值：</p>
-
 <pre><code>$foo = 'hi';
 $bar = array(1, 2);
 $array = array(&amp;$foo, &amp;$bar[0]);
-</code></pre>
-
-<blockquote>
-<p><strong>注意：</strong>数组里面的引用是非常危险的一种行为。使用右侧引用对左侧进行普通赋值不会将左边变为引用。但是数组中这样的赋值引用将会被保留。在函数中，数组作为值传递时也有这个问题。</p>
+</code></pre><blockquote>
+<p>**注意：**数组里面的引用是非常危险的一种行为。使用右侧引用对左侧进行普通赋值不会将左边变为引用。但是数组中这样的赋值引用将会被保留。在函数中，数组作为值传递时也有这个问题。</p>
 </blockquote>
-
-<p>引用赋值不限制在变量和数组中。在函数和所有&rdquo;引用传递的值&rdquo;都可以。</p>
-
+<p>引用赋值不限制在变量和数组中。在函数和所有&quot;引用传递的值&quot;都可以。</p>
 <pre><code>function incrementArray(&amp;$arr) {
     foreach ($arr as $$val) {
         $var++;
@@ -239,22 +224,14 @@ function &amp;getArray() {
 
 incremetnArray(getArray());
 var_dump(getArray());  //[2,3,4]
-</code></pre>
-
-<p>赋值是上面函数定义的关键点。不能通过引用传递表达式，只能传递值/变量。</p>
-
+</code></pre><p>赋值是上面函数定义的关键点。不能通过引用传递表达式，只能传递值/变量。</p>
 <h3 id="返回引用">返回引用</h3>
-
 <p>偶尔会出现让你通过引用隐藏返回的情况。</p>
-
 <blockquote>
 <p>引用返回在函数定义的参数是引用变量的时候非常有用。不要用返回引用来提升性能。PHP引擎会自动处理这些问题。只有在您有有效的技术原因时才返回引用。</p>
 </blockquote>
-
 <p>查看<a href="https://php.net/manual/en/language.references.return.php">返回引用的PHP文档</a>。</p>
-
 <p>有很多不同的方式可以返回引用，包括下面的例子：</p>
-
 <pre><code>function parent(&amp;$var) {
     echo $var;
     $var = &quot;updated&quot;;
@@ -267,10 +244,7 @@ function &amp;child() {
 
 parent(child());  //返回test
 parent(child());  //返回updated
-</code></pre>
-
-<p>引用返回不仅限于函数引用。您还可以隐式调用函数：</p>
-
+</code></pre><p>引用返回不仅限于函数引用。您还可以隐式调用函数：</p>
 <pre><code>function &amp;myFunction() { 
     static $a = 'foo'; 
     return $a;
@@ -279,66 +253,42 @@ parent(child());  //返回updated
 $bar = &amp;myFunction();
 $bar = &quot;updated&quot;;
 echo myFunction();
-</code></pre>
-
-<p>你不能直接引用函数的调用，必须在使用之前赋值给一个变量。想要看发生了什么，简单的<code>echo &amp;myFunction();</code>就可以了。</p>
-
+</code></pre><p>你不能直接引用函数的调用，必须在使用之前赋值给一个变量。想要看发生了什么，简单的<code>echo &amp;myFunction();</code>就可以了。</p>
 <p>注意：</p>
-
 <ul>
 <li>你被要求在定义和使用的地方都使用<code>&amp;</code>。这个意思是在<code>function &amp;myFunction(){…}</code>函数定义和<code>function callFuncton(&amp;$variable) { … or &amp;myFunction();}</code>都是这样。</li>
 <li>你可以只返回一个变量的引用。像上面例子中的<code>$a</code>。因此你不能反回表达式，否则就会产生一个<code>E_NOTICE</code>的PHP错误<code>Notice: Only variable references should be returned by reference in ……</code></li>
 <li>引用返回确实有合法的使用方式。但是我还是要说明：最好在其他方式都有问题的情况下在谨慎使用这个。</li>
 </ul>
-
 <h3 id="传递引用">传递引用</h3>
-
 <p>这允许你传递一个变量的引用给函数或一个元素，这允许你修改变量原本的值。</p>
-
 <p>传递引用不限制在变量，下面这些类型也可以使用：</p>
-
 <ul>
 <li>new语句，例如<code>foo(new SomeClass)</code></li>
 <li>返回引用的函数</li>
 </ul>
-
 <h4 id="数组">数组</h4>
-
 <p><a href="http://php.net/manual/en/language.references.pass.php">传递引用</a>常见的用法是修改一个数组的值而不用创建新的数组或者丢弃命名空间。通过引用传递就是在变量的前面增加<code>&amp;</code> ，如果<code>&amp;$myElement</code>。</p>
-
 <p>下面是利用数组中的元素并简单地将1添加到其初始值的示例。</p>
-
 <pre><code>$arr = array(1, 2, 3, 4, 5);
 
 foreach($arr as &amp;$num) {
     $num++;
 }
-</code></pre>
-
-<p>现在当你开始使用这个数组<code>$arr</code>的元素时，通过引用传递的值已经被增加了1。你可以使用下面的代码验证：</p>
-
+</code></pre><p>现在当你开始使用这个数组<code>$arr</code>的元素时，通过引用传递的值已经被增加了1。你可以使用下面的代码验证：</p>
 <pre><code>print_r($arr);
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p><strong>注意</strong></p>
-
 <p>你在循环中使用引用的时候要小心注意。在循环的最后，<code>$num</code>的值是数组最后一个元素的引用值。在循环之外使用这个值，将会操作数组的最后一个值。你可以在循环结束之后使用<code>unset</code>函数处理这个变量。</p>
 </blockquote>
-
 <pre><code>$myArray = array(1, 2, 3, 4, 5);
 foreach($myArray as &amp;$num) {
    $num++;
 }
 unset($num);
-</code></pre>
-
-<p>这将避免出现任何问题。一个出问题的例子可以查看<a href="https://stackoverflow.com/questions/24902742/foreach-loop-and-reference-of-value">Stack Overflow的问题</a>。</p>
-
+</code></pre><p>这将避免出现任何问题。一个出问题的例子可以查看<a href="https://stackoverflow.com/questions/24902742/foreach-loop-and-reference-of-value">Stack Overflow的问题</a>。</p>
 <h4 id="函数">函数</h4>
-
 <p>另一个常用的方式是传递引用参数给函数。修改原始的值像下面这样简单：</p>
-
 <pre><code>$var = 5;
 // define
 function add(&amp;$var) {
@@ -346,19 +296,12 @@ function add(&amp;$var) {
 }
 // call
 add($var);
-</code></pre>
-
-<p>下面将会输出<code>$var</code>的值：</p>
-
+</code></pre><p>下面将会输出<code>$var</code>的值：</p>
 <pre><code>echo $var;  //6
-</code></pre>
-
-<p>在函数使用时有一些限制，下面就是PHP文档指出的限制：</p>
-
+</code></pre><p>在函数使用时有一些限制，下面就是PHP文档指出的限制：</p>
 <blockquote>
 <p>在函数调用的时候不需要<code>&amp;</code>符，只有在定义的时候需要。只在函数定义使用已经足够引用传递了。在PHP5.3.0，你使用<code>foo(&amp;$a)</code>将会获取一个<code>call-time pass-by-reference</code>的不推荐信息。在PHP5.4.0已经移除了调用时引用，并且会出现一个致命错误。</p>
 </blockquote>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -431,6 +374,12 @@ add($var);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,89 +187,48 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#运算符">运算符</a>
-<ul>
-<li><a href="#空合并运算符">空合并运算符??</a></li>
-<li><a href="#太空船操作符">太空船操作符 &lt;=&gt;</a></li>
-<li><a href="#执行操作符">执行操作符 ``</a></li>
-<li><a href="#递增和递减操作符">递增和递减操作符</a></li>
-<li><a href="#三元运算符">三元运算符 ?:</a></li>
-<li><a href="#逻辑运算符-and-or">逻辑运算符 &amp;&amp;/and  ||/or</a></li>
-<li><a href="#字符串拼接符-或">字符串拼接符 .或.=</a></li>
-<li><a href="#对象和类操作符">对象和类操作符</a></li>
-<li><a href="#合并赋值运算符-等">合并赋值运算符 +=等</a></li>
-<li><a href="#显示运算符优先级-使用括号">显示运算符优先级(使用括号)</a></li>
-<li><a href="#赋值">赋值 =</a></li>
-<li><a href="#结合性">结合性</a>
-<ul>
-<li><a href="#左结合性">左结合性</a></li>
-<li><a href="#右结合性">右结合性</a></li>
-</ul></li>
-<li><a href="#比较运算符">比较运算符</a>
-<ul>
-<li><a href="#相等">相等</a></li>
-<li><a href="#比较对象">比较对象</a></li>
-<li><a href="#其他比较运算符">其他比较运算符</a></li>
-</ul></li>
-<li><a href="#二进制运算符">二进制运算符</a>
-<ul>
-<li><a href="#前缀位运算符">前缀位运算符</a></li>
-<li><a href="#位掩码运算符">位掩码运算符</a></li>
-<li><a href="#位运算的例子">位运算的例子</a></li>
-<li><a href="#位移运算符">位移运算符</a></li>
-<li><a href="#位移使用例子">位移使用例子</a></li>
-</ul></li>
-<li><a href="#instanceof-类型判断符">instanceof 类型判断符</a></li>
-<li><a href="#告诫">告诫</a>
-<ul>
-<li><a href="#老版本php">老版本PHP</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#运算符">运算符</a>
+      <ul>
+        <li><a href="#空合并运算符">空合并运算符??</a></li>
+        <li><a href="#太空船操作符-">太空船操作符 &lt;=&gt;</a></li>
+        <li><a href="#执行操作符-">执行操作符 ``</a></li>
+        <li><a href="#递增和递减操作符">递增和递减操作符</a></li>
+        <li><a href="#三元运算符-">三元运算符 ?:</a></li>
+        <li><a href="#逻辑运算符-and--or">逻辑运算符 &amp;&amp;/and  ||/or</a></li>
+        <li><a href="#字符串拼接符-或">字符串拼接符 .或.=</a></li>
+        <li><a href="#对象和类操作符">对象和类操作符</a></li>
+        <li><a href="#合并赋值运算符-等">合并赋值运算符 +=等</a></li>
+        <li><a href="#显示运算符优先级使用括号">显示运算符优先级(使用括号)</a></li>
+        <li><a href="#赋值-">赋值 =</a></li>
+        <li><a href="#结合性">结合性</a></li>
+        <li><a href="#比较运算符">比较运算符</a></li>
+        <li><a href="#二进制运算符">二进制运算符</a></li>
+        <li><a href="#instanceof-类型判断符">instanceof 类型判断符</a></li>
+        <li><a href="#告诫">告诫</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="运算符">运算符</h2>
-
+        		<h2 id="运算符">运算符</h2>
 <p>一个运算符就是处理一个或多个值(或表达式，编程术语)，然后产生一个新的值(把本身构造成表达式)的符号。</p>
-
 <p>可以根据运算符操作的数量把它们进行分组。</p>
-
 <h3 id="空合并运算符">空合并运算符??</h3>
-
 <p>空合并运算符是PHP7新增加的运算符。如果第一个操作数设置了并不为null，就返回这个运算符。否则返回第二个运算符的值。</p>
-
 <p>下面是一个例子：</p>
-
 <pre><code>$name = $_POST['name'] ?? 'nobody';
-</code></pre>
-
-<p>这和下面这个例子是等价的：</p>
-
+</code></pre><p>这和下面这个例子是等价的：</p>
 <pre><code>if (isset($_POST['name'])) {
     $name = $_POST['name'];
 } else {
     $name = 'nobody';
 }
-</code></pre>
-
-<p>也和下面等价：</p>
-
+</code></pre><p>也和下面等价：</p>
 <pre><code>$name = isset($_POST['name']) ? $_POST['name'] : 'nobody';
-</code></pre>
-
-<p>这个操作符也可以连着使用，从左到右进行处理：</p>
-
+</code></pre><p>这个操作符也可以连着使用，从左到右进行处理：</p>
 <pre><code>$name = $_GET['name'] ?? $_POST['name'] ?? 'nobody';
-</code></pre>
-
-<p>这和下面是等价的:</p>
-
+</code></pre><p>这和下面是等价的:</p>
 <pre><code>if (isset($_GET['name'])) {
     $name = $_GET['name'];
 } elseif (isset($_POST['name'])) {
@@ -273,28 +236,17 @@
 } else {
     $name = 'nobody';
 }
-</code></pre>
-
-<p>注意在字符串中使用空合并运算符，不要忘了使用括号：</p>
-
+</code></pre><p>注意在字符串中使用空合并运算符，不要忘了使用括号：</p>
 <pre><code>$firstName = &quot;John&quot;;
 $lastName = &quot;Doe&quot;;
 echo $firstName ?? &quot;Unknown&quot; . &quot; &quot; . $lastName ?? &quot;&quot;;
-</code></pre>
-
-<p>这将只输出<code>John</code>。如果<code>$firstName</code>为null，<code>$lastName</code>是Doe的时候，将会输出<code>Unknown Doe</code>。为了输出<code>John Doe</code>，需要像下面这样用括号包围起来：</p>
-
+</code></pre><p>这将只输出<code>John</code>。如果<code>$firstName</code>为null，<code>$lastName</code>是Doe的时候，将会输出<code>Unknown Doe</code>。为了输出<code>John Doe</code>，需要像下面这样用括号包围起来：</p>
 <pre><code>$firstName = &quot;John&quot;;
 $lastName = &quot;Doe&quot;;
 echo ($firstName ?? &quot;Unknown&quot;) . &quot; &quot; . ($lastName ?? &quot;&quot;);
-</code></pre>
-
-<p>这将输出<code>John Doe</code>，而不是只有<code>John</code>。</p>
-
-<h3 id="太空船操作符">太空船操作符 &lt;=&gt;</h3>
-
+</code></pre><p>这将输出<code>John Doe</code>，而不是只有<code>John</code>。</p>
+<h3 id="太空船操作符-">太空船操作符 &lt;=&gt;</h3>
 <p>PHP7提供了一个新的运算符，可以用来比较表示的值。这个运算符返回-1， 0， 1分别当第一个值 小于，等于，大于第二个值的时候。</p>
-
 <pre><code>// Integers
 print (1 &lt;=&gt; 1); // 0
 print (1 &lt;=&gt; 2); // -1 
@@ -308,37 +260,21 @@ print (2.5 &lt;=&gt; 1.5); // 1
 print (&quot;a&quot; &lt;=&gt; &quot;a&quot;); // 0
 print (&quot;a&quot; &lt;=&gt; &quot;b&quot;); // -1
 print (&quot;b&quot; &lt;=&gt; &quot;a&quot;); // 1
-</code></pre>
-
-<p>对象是不可以比较的，所以如果这样做的话，会导致不确定的结果。</p>
-
+</code></pre><p>对象是不可以比较的，所以如果这样做的话，会导致不确定的结果。</p>
 <p>这个运算符在实现用户定义排序方法的函数中非常有用：<code>usort</code>， <code>uasort</code>，<code>uksort</code>。比较一个数组对象中<code>weight</code>属性的大小，可以在一个匿名函数中使用<code>&lt;=&gt;</code>比较这个结果：</p>
-
 <pre><code>usort($list, function($a, $b) { return $a-&gt;weight &lt;=&gt; $b-&gt;weight; });
-</code></pre>
-
-<p>在PHP5里面就需要更多的代码：</p>
-
+</code></pre><p>在PHP5里面就需要更多的代码：</p>
 <pre><code>usort($list, function($a, $b) {
     return $a-&gt;weight &lt; $b-&gt;weight ? -1 : ($a-&gt;weight == $b-&gt;weight ? 0 : 1);
 });
-</code></pre>
-
-<h3 id="执行操作符">执行操作符 ``</h3>
-
+</code></pre><h3 id="执行操作符-">执行操作符 ``</h3>
 <p>PHP的执行操作符是由`组成的，用来运行shell的命令，这个命令的结果会被返回存放到一个变量中：</p>
-
 <pre><code>// List files
 $output = `ls`;
 echo &quot;&lt;pre&gt;$output&lt;/pre&gt;&quot;;
-</code></pre>
-
-<p>注意这个操作符和<a href="http://php.net/manual/en/function.shell-exec.php">shell_exec</a>拥有相同的结果。</p>
-
+</code></pre><p>注意这个操作符和<a href="http://php.net/manual/en/function.shell-exec.php">shell_exec</a>拥有相同的结果。</p>
 <h3 id="递增和递减操作符">递增和递减操作符</h3>
-
 <p>变量可以使用<code>++</code>和<code>—</code>来实现递增和递减操作符。它们可以放在变量之前， 也可以放到变量之后，在语义上面有一些区别，向下面这样：</p>
-
 <pre><code>$i = 1;
 echo $i; // Prints 1
 
@@ -353,47 +289,25 @@ echo $i++; // Prints 1 (but $i value is now 2)
 
 // Post-decrement operator returns $i, then decrements $i by one 
 echo $i--; // Prints 2 (but $i value is now 1)
-</code></pre>
-
-<p>更多更详细的关系递增和递减操作符的信息可以查看<a href="http://php.net/manual/en/language.operators.increment.php">手册</a>。</p>
-
-<h3 id="三元运算符">三元运算符 ?:</h3>
-
+</code></pre><p>更多更详细的关系递增和递减操作符的信息可以查看<a href="http://php.net/manual/en/language.operators.increment.php">手册</a>。</p>
+<h3 id="三元运算符-">三元运算符 ?:</h3>
 <p>三元运算符可以被认为是一个<code>if</code>语句。它包含3个部分：操作符和两个输出结果。语法就像下面这样：</p>
-
 <pre><code>$value = &lt;operator&gt; ? &lt;true value&gt; : &lt;false value&gt;
-</code></pre>
-
-<p>如果<code>opreator</code>的结果是<code>true</code>，第一个部分的结果(<code>&lt;true value&gt;</code>)将会被返回。否则的话第二部分的结果(<code>&lt;false value&gt;</code>)会被返回。然后我们把三元符的返回结果存在<code>$value</code>中。</p>
-
+</code></pre><p>如果<code>opreator</code>的结果是<code>true</code>，第一个部分的结果(<code>&lt;true value&gt;</code>)将会被返回。否则的话第二部分的结果(<code>&lt;false value&gt;</code>)会被返回。然后我们把三元符的返回结果存在<code>$value</code>中。</p>
 <p>例子：</p>
-
 <pre><code>$action = empty($_POST['action']) ? 'default' : $_POST['action'];
-</code></pre>
-
-<p>如果<code>empty($_POST['action'])</code>的结果是true，<code>$action</code>的值将会是字符串<code>default</code>，否则值将会是<code>$_POST['action']</code>的值。</p>
-
+</code></pre><p>如果<code>empty($_POST['action'])</code>的结果是true，<code>$action</code>的值将会是字符串<code>default</code>，否则值将会是<code>$_POST['action']</code>的值。</p>
 <p>表达式<code>(expr1) ? (expr2) : (expr3)</code>当<code>expr1</code>为true的时候将会返会<code>expr2</code>的值，否知将会返回<code>expr3</code>的值。</p>
-
 <p>也可以省略掉中间的部分(expr2)。这样就是<code>(expr1) ? : (expr3)</code>，当<code>expr1</code>的结果是true时，返回expr1的值，否则返回expr3的值。</p>
-
 <p>这个有点像空合并运算符??，除了<code>??</code>邀请表达式的值必须是null，而<code>?:</code>运算符将会解析表达式，只有表达式为false，才会返回expr3的结果值。</p>
-
 <p>例子：</p>
-
 <pre><code>function setWidth(int $width = 0){
     $_SESSION[&quot;width&quot;] = $width ?: getDefaultWidth();
 }
-</code></pre>
-
-<p>在上面的例子中，<code>setWidth</code>函数接收一个宽度值，或者默认值0，然后修改session中的结果。如果<code>$width</code>的值是0(就是没有提供宽度值)，这里会被认为是false，使用<code>getDefaultWidth</code>函数的结果值。当提供了<code>$width</code>的值，<code>getDefaultWidth</code>的默认值将不会被使用。</p>
-
+</code></pre><p>在上面的例子中，<code>setWidth</code>函数接收一个宽度值，或者默认值0，然后修改session中的结果。如果<code>$width</code>的值是0(就是没有提供宽度值)，这里会被认为是false，使用<code>getDefaultWidth</code>函数的结果值。当提供了<code>$width</code>的值，<code>getDefaultWidth</code>的默认值将不会被使用。</p>
 <p>可以查看bool类型转换部分查看详细信息。</p>
-
-<h3 id="逻辑运算符-and-or">逻辑运算符 &amp;&amp;/and  ||/or</h3>
-
+<h3 id="逻辑运算符-and--or">逻辑运算符 &amp;&amp;/and  ||/or</h3>
 <p>在PHP中有两个版本的逻辑与和逻辑或的运算符。</p>
-
 <table>
 <thead>
 <tr>
@@ -401,32 +315,26 @@ echo $i--; // Prints 2 (but $i value is now 1)
 <th>为true的条件</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td><code>$a and $b</code></td>
 <td><code>$a</code>和<code>$b</code>都是true</td>
 </tr>
-
 <tr>
 <td><code>$a &amp;&amp; $b</code></td>
 <td><code>$a</code>和<code>$b</code>都是true</td>
 </tr>
-
 <tr>
 <td><code>$a or $b</code></td>
 <td><code>$a</code>或<code>$b</code>是true</td>
 </tr>
-
 <tr>
-<td>`$a</td>
-<td></td>
+<td><code>$a || $b</code></td>
+<td><code>$a</code>或<code>$b</code>是true</td>
 </tr>
 </tbody>
 </table>
-
 <p>注意<code>&amp;&amp;</code>和<code>||</code>的优先级比<code>and</code>和<code>or</code>的<a href="http://php.net/manual/en/language.operators.precedence.php">优先级</a>高。</p>
-
 <table>
 <thead>
 <tr>
@@ -435,14 +343,12 @@ echo $i--; // Prints 2 (but $i value is now 1)
 <th>实际操作</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>$e = false || true</td>
 <td>true</td>
 <td>$e = (false || true)</td>
 </tr>
-
 <tr>
 <td>$e = false or true</td>
 <td>false</td>
@@ -450,30 +356,23 @@ echo $i--; // Prints 2 (but $i value is now 1)
 </tr>
 </tbody>
 </table>
-
 <h3 id="字符串拼接符-或">字符串拼接符 .或.=</h3>
-
 <p>只有两种字符串拼接运算符：</p>
-
 <ul>
-<li><p>两个字符串拼接</p>
-
+<li>
+<p>两个字符串拼接</p>
 <pre><code>$a = &quot;a&quot;;
 $b = &quot;b&quot;;
 $c = $a . $b; // $c =&gt; &quot;ab&quot;
 </code></pre></li>
-
-<li><p>拼接字符串并且赋值</p>
-
+<li>
+<p>拼接字符串并且赋值</p>
 <pre><code>$a = &quot;a&quot;;
 $a .= &quot;b&quot;; // $a =&gt; &quot;ab&quot;
 </code></pre></li>
 </ul>
-
 <h3 id="对象和类操作符">对象和类操作符</h3>
-
 <p>对象和类型的成员可以通过对象操作符(-&gt;)和类操作符(::)。</p>
-
 <pre><code>class MyClass { 
     public $a = 1;
     public static $b = 2;
@@ -497,12 +396,8 @@ var_dump($object::d());  //int(4)
 var_dump(MyClass::e());  //int(4)
 $classname = &quot;MyClass&quot;;
 var_dump($classname::e()); // also works! int(5)
-</code></pre>
-
-<p>注意在对象操作符后面不应该有<code>$</code>(是<code>$object-&gt;a</code>而不是<code>$object-&gt;$a</code>)。但是类操作符就不是这样了，需要<code>$</code>符。但是对于类常量，是不需要<code>$</code>的。</p>
-
+</code></pre><p>注意在对象操作符后面不应该有<code>$</code>(是<code>$object-&gt;a</code>而不是<code>$object-&gt;$a</code>)。但是类操作符就不是这样了，需要<code>$</code>符。但是对于类常量，是不需要<code>$</code>的。</p>
 <p>注意<code>var_dump(MyClass::d());</code>只有在<code>d()</code>方法是静态方法才可以使用，否则就会出现错误。</p>
-
 <pre><code>class MyClass { 
     private $a = 1;
     public function d() { 
@@ -512,12 +407,8 @@ var_dump($classname::e()); // also works! int(5)
 
 $object = new MyClass(); 
 var_dump(MyClass::d());  // Error!
-</code></pre>
-
-<p>将会引发输出<code>PHP Fatal error: Uncaught Error: Using $this when not in object context</code>。</p>
-
+</code></pre><p>将会引发输出<code>PHP Fatal error: Uncaught Error: Using $this when not in object context</code>。</p>
 <p>因为这个操作符是左结合的，所有可以链接使用：</p>
-
 <pre><code>class MyClass { 
     private $a = 1;
     public function add(int $a) { 
@@ -530,10 +421,7 @@ var_dump(MyClass::d());  // Error!
 }
 $object = new MyClass(); 
 var_dump($object-&gt;add(4)-&gt;get()); // int(5)
-</code></pre>
-
-<p>这两个运算符有最高的优先级(手册里面也没有提到)，甚至比<code>clone</code>优先级高。</p>
-
+</code></pre><p>这两个运算符有最高的优先级(手册里面也没有提到)，甚至比<code>clone</code>优先级高。</p>
 <pre><code>class MyClass { 
     private $a = 0;
     public function add(int $a) { 
@@ -548,25 +436,16 @@ $o1 = new MyClass();
 $o2 = clone $o1-&gt;add(2); 
 var_dump($o1-&gt;get()); // int(2) 
 var_dump($o2-&gt;get()); // int(2)
-</code></pre>
-
-<p>这里<code>$o1</code>的值在<code>clone</code>之前已经先增加了。</p>
-
+</code></pre><p>这里<code>$o1</code>的值在<code>clone</code>之前已经先增加了。</p>
 <p>注意在clone两边增加括号来提升优先级对于PHP5即之前的版本是没有效果的(PHP7开始的)。</p>
-
 <pre><code>// using the class MyClass from the previous code
 $o1 = new MyClass();
 $o2 = (clone $o1)-&gt;add(2); // Error in PHP 5 and before, fine in PHP 7 
 var_dump($o1-&gt;get()); // int(0) in PHP 7
 var_dump($o2-&gt;get()); // int(2) in PHP 7
-</code></pre>
-
-<h3 id="合并赋值运算符-等">合并赋值运算符 +=等</h3>
-
+</code></pre><h3 id="合并赋值运算符-等">合并赋值运算符 +=等</h3>
 <p>合并运算符是一些运算符的总称，这些运算符作用在一个变量上面，然后赋值给这个变量。</p>
-
 <p>算术：</p>
-
 <pre><code>$a = 1; // basic assignment
 $a += 2; // read as '$a = $a + 2'; $a now is (1 + 2) =&gt; 3 
 $a -= 1; // $a now is (3 - 1) =&gt; 2
@@ -578,103 +457,55 @@ $a %= 5; // $a now is (8 % 5) =&gt; 3 (modulus or remainder)
 $arrOne = array(1);
 $arrTwo = array(2);
 $arrOne += $arrTwo;
-</code></pre>
-
-<p>一起处理多个数组</p>
-
+</code></pre><p>一起处理多个数组</p>
 <pre><code>$a **= 2; // $a now is (4 ** 2) =&gt; 16 (4 raised to the power of 2)
-</code></pre>
-
-<p>合并拼接和赋值给一个变量：</p>
-
+</code></pre><p>合并拼接和赋值给一个变量：</p>
 <pre><code>$a = &quot;a&quot;;
 $a .= &quot;b&quot;; // $a =&gt; &quot;ab&quot;
-</code></pre>
-
-<p>合并二进制位赋值运算符：</p>
-
+</code></pre><p>合并二进制位赋值运算符：</p>
 <pre><code>$a = 0b00101010;   // $a now is 42
 $a &amp;= 0b00001111;  // $a now is (00101010 &amp; 00001111) =&gt; 00001010 (bitwise and)
 $a |= 0b00100010;  // $a now is (00001010 | 00100010) =&gt; 00101010 (bitwise or)
 $a ^= 0b10000010;  // $a now is (00101010 ^ 10000010) =&gt; 10101000 (bitwise xor)
 $a &gt;&gt;= 3;   // $a now is (10101000 &gt;&gt; 3) =&gt; 00010101 (shift right by 3)
 $a &lt;&lt;= 1;   // $a now is (00010101 &lt;&lt; 1) =&gt; 00101010 (shift left by 1)
-</code></pre>
-
-<h3 id="显示运算符优先级-使用括号">显示运算符优先级(使用括号)</h3>
-
+</code></pre><h3 id="显示运算符优先级使用括号">显示运算符优先级(使用括号)</h3>
 <p>运算符的解析顺序是按照运算符的优先级确定的。</p>
-
 <pre><code>$a = 2 * 3 + 4;
-</code></pre>
-
-<p><code>$a</code>的值是10，因为<code>2 * 3</code>首先计算(乘法拥有比加法更高的优先级)，然后执行<code>6 + 4</code>，这样结果就是10。</p>
-
+</code></pre><p><code>$a</code>的值是10，因为<code>2 * 3</code>首先计算(乘法拥有比加法更高的优先级)，然后执行<code>6 + 4</code>，这样结果就是10。</p>
 <p>运算符的优先级可以使用括号来限制：</p>
-
 <pre><code>$a = 2 * (3 + 4);
-</code></pre>
-
-<p>这时<code>$a</code>的结果就是14，因为首先执行的事<code>(3 + 4)</code>。</p>
-
-<h3 id="赋值">赋值 =</h3>
-
+</code></pre><p>这时<code>$a</code>的结果就是14，因为首先执行的事<code>(3 + 4)</code>。</p>
+<h3 id="赋值-">赋值 =</h3>
 <pre><code>$a = &quot;some string&quot;;
-</code></pre>
-
-<p>这里的结果<code>$a</code>的值为<code>some string</code>。</p>
-
+</code></pre><p>这里的结果<code>$a</code>的值为<code>some string</code>。</p>
 <p>赋值表达式获得是被赋值的结果的值。<strong>注意单独一个=不是比较运算符</strong>。</p>
-
 <pre><code>$a = 3;
 $b = ($a = 5);
-</code></pre>
-
-<p>将执行下面的操作：</p>
-
+</code></pre><p>将执行下面的操作：</p>
 <ol>
 <li>第一行赋值3给$a</li>
 <li>第二行赋值5给$a。这时表达式的结果也是5。</li>
 <li>第二行赋值表达式的结果值<code>5</code>给$b</li>
 </ol>
-
 <p>因此：这个时候<code>$a</code>和<code>$b</code>的结果都是5。</p>
-
 <h3 id="结合性">结合性</h3>
-
 <h4 id="左结合性">左结合性</h4>
-
 <p>如果两个运算符的优先级是等价的，关联性决定运算的分组：</p>
-
 <pre><code>$a = 5 * 3 % 4； //$a现在是 (5 * 3) % 2 =&gt; (15 % 2) =&gt; 1
-</code></pre>
-
-<p><code>*</code>和<code>%</code>有相同的优先级，并且是左结合的。因为乘法是第一个执行的，所以它们先分为一组：</p>
-
+</code></pre><p><code>*</code>和<code>%</code>有相同的优先级，并且是左结合的。因为乘法是第一个执行的，所以它们先分为一组：</p>
 <pre><code>$a = 5 % 3 * 2; // $a now is (5 % 3) * 2 =&gt; (2 * 2) =&gt; 4
-</code></pre>
-
-<p>现在，取余是首先执行的，所以优先分组。</p>
-
+</code></pre><p>现在，取余是首先执行的，所以优先分组。</p>
 <h4 id="右结合性">右结合性</h4>
-
 <pre><code>$a = 1;
 $b = 1;
 $a = $b += 1;
-</code></pre>
-
-<p><code>$a</code>和<code>$b</code>的值现在都是2，因为<code>$b+=1</code>优先执行的，然后这时<code>$b</code>的值是2，然后把2赋值给<code>$a</code>。</p>
-
+</code></pre><p><code>$a</code>和<code>$b</code>的值现在都是2，因为<code>$b+=1</code>优先执行的，然后这时<code>$b</code>的值是2，然后把2赋值给<code>$a</code>。</p>
 <h3 id="比较运算符">比较运算符</h3>
-
 <h4 id="相等">相等</h4>
-
 <p>对于基本的相等比较，可以使用<code>==</code>运算符。但是对于严格的比较，可以使用全等运算符<code>===</code>。</p>
-
 <p>全等运算符和普通运算符一样，要求运算数有相同的值，但是还要求有相同的类型值。</p>
-
 <p>例如下面的例子，a和b是相等的，但不是全等的。</p>
-
 <pre><code>$a = 4;
 $b = '4';
 if ($a == $b) {
@@ -683,122 +514,76 @@ if ($a == $b) {
 if ($a === $b) {
     echo 'a and b are identical'; // this won't be printed
 }
-</code></pre>
-
-<p>使用相等运算符时，数字字符串或转换为数字。</p>
-
+</code></pre><p>使用相等运算符时，数字字符串或转换为数字。</p>
 <h4 id="比较对象">比较对象</h4>
-
 <p><code>===</code>可以用来比较两个对象是不是同一个实例。这意味着<code>new stdClass() === new stdClass()</code>的结果是false，即使他们是使用相同的方式创建的(并且拥有相同的值)。</p>
-
 <p><code>==</code>比较两个对象，将会递归的比较他们是否相等。这意味值<code>$a == $b</code>，如果满足下面的条件：</p>
-
 <ol>
 <li>是相同的类</li>
 <li>拥有相同的属性，包括动态属性</li>
 <li>对于每个属性<code>$property</code>，<code>$a-&gt;property == $b-&gt;property</code>是true。(因此是递归的)。</li>
 </ol>
-
 <h4 id="其他比较运算符">其他比较运算符</h4>
-
 <p>包括：</p>
-
 <ol>
-<li>大于 &gt;</li>
-</ol>
-
+<li>
+<p>大于 &gt;</p>
 <p><code>$a &gt; $b</code> 如果<code>$a</code>的值比<code>$b</code>的值大，返回<code>true</code>，否则返回<code>false</code>。</p>
-
-<pre><code>    var_dump(5 &gt; 2); // prints bool(true) 
-    var_dump(2 &gt; 7); // prints bool(false)
-</code></pre>
-
-<ol>
-<li>小于 &lt;</li>
-</ol>
-
+<pre><code> var_dump(5 &gt; 2); // prints bool(true) 
+ var_dump(2 &gt; 7); // prints bool(false)
+</code></pre></li>
+<li>
+<p>小于 &lt;</p>
 <p><code>$a &lt; $b</code> 如果<code>$a</code>的值比<code>$b</code>小，返回<code>true</code>，否则返回<code>false</code>。</p>
-
-<pre><code>    var_dump(5 &lt; 2); // prints bool(false) 
-    var_dump(1 &lt; 10); // prints bool(true)
-</code></pre>
-
-<ol>
-<li>大于等于 &gt;=</li>
-</ol>
-
+<pre><code> var_dump(5 &lt; 2); // prints bool(false) 
+ var_dump(1 &lt; 10); // prints bool(true)
+</code></pre></li>
+<li>
+<p>大于等于 &gt;=</p>
 <p><code>$a &gt;= $b</code> 如果<code>$a</code>大于或者等于<code>$b</code>，返回<code>true</code>，否则返回<code>false</code></p>
-
-<pre><code>   var_dump(2 &gt;= 2); // prints bool(true) 
-   var_dump(6 &gt;= 1); // prints bool(true) 
-   var_dump(1 &gt;= 7); // prints bool(false)
-</code></pre>
-
-<ol>
-<li>小于等于 &lt;=</li>
-</ol>
-
+<pre><code>var_dump(2 &gt;= 2); // prints bool(true) 
+var_dump(6 &gt;= 1); // prints bool(true) 
+var_dump(1 &gt;= 7); // prints bool(false)
+</code></pre></li>
+<li>
+<p>小于等于 &lt;=</p>
 <p><code>$a &lt;= $b</code> 如果<code>$a</code>小于或者等于<code>$b</code>，返回<code>true</code>，否则返回<code>false</code></p>
-
-<pre><code>   var_dump(5 &lt;= 5); // prints bool(true) 
-   var_dump(5 &lt;= 8); // prints bool(true) 
-   var_dump(9 &lt;= 1); // prints bool(false)
-</code></pre>
-
-<ol>
-<li><p>不等于 !=</p></li>
-
-<li><p>不全等 !==</p></li>
-</ol>
-
+<pre><code>var_dump(5 &lt;= 5); // prints bool(true) 
+var_dump(5 &lt;= 8); // prints bool(true) 
+var_dump(9 &lt;= 1); // prints bool(false)
+</code></pre></li>
+<li>
+<p>不等于 !=</p>
+</li>
+<li>
+<p>不全等 !==</p>
 <p>不在显示之前的相等判断，下面的例子显示a等于b，但是a不全等于b。</p>
-
-<pre><code>   $a = 4;
-   $b = '4';
-   if ($a != $b) {
-       echo 'a and b are not equal'; // this won't be printed 
-   }
-   if ($a !== $b) {
-       echo 'a and b are not identical'; // this will be printed
-   }
-</code></pre>
-
+<pre><code>$a = 4;
+$b = '4';
+if ($a != $b) {
+    echo 'a and b are not equal'; // this won't be printed 
+}
+if ($a !== $b) {
+    echo 'a and b are not identical'; // this will be printed
+}
+</code></pre></li>
+</ol>
 <h3 id="二进制运算符">二进制运算符</h3>
-
 <h4 id="前缀位运算符">前缀位运算符</h4>
-
 <p>二进制运算符和逻辑运算符很相像，但是不是比较布尔值而是位。</p>
-
 <pre><code> // bitwise NOT ~: sets all unset bits and unsets all set bits 
  printf(&quot;%'06b&quot;, ~0b110110); // 001001
-</code></pre>
-
-<h4 id="位掩码运算符">位掩码运算符</h4>
-
+</code></pre><h4 id="位掩码运算符">位掩码运算符</h4>
 <p>位与<code>&amp;</code>：只有对应的位都是1是才会返回1</p>
-
 <pre><code>printf(&quot;%'06b&quot;, 0b110101 &amp; 0b011001); // 010001
-</code></pre>
-
-<p>位或<code>|</code>：只要对应位有一个是1就会返回1</p>
-
+</code></pre><p>位或<code>|</code>：只要对应位有一个是1就会返回1</p>
 <pre><code>printf(&quot;%'06b&quot;, 0b110101 | 0b011001); // 111101
-</code></pre>
-
-<p>异或<code>^</code>：对应的位的值不同的时候才会返回1</p>
-
+</code></pre><p>异或<code>^</code>：对应的位的值不同的时候才会返回1</p>
 <pre><code>printf(&quot;%'06b&quot;, 0b110101 ^ 0b011001); // 101100
-</code></pre>
-
-<h4 id="位运算的例子">位运算的例子</h4>
-
+</code></pre><h4 id="位运算的例子">位运算的例子</h4>
 <p>这些运算符可以用来操作位：</p>
-
 <pre><code> file_put_contents(&quot;file.log&quot;, LOCK_EX | FILE_APPEND);
-</code></pre>
-
-<p>这里<code>|</code>运算符用来合并两个位值。尽管<code>+</code>拥有同样的效果，但是推荐使用位操作符来实现，而不是添加额外的两个标量整数值：</p>
-
+</code></pre><p>这里<code>|</code>运算符用来合并两个位值。尽管<code>+</code>拥有同样的效果，但是推荐使用位操作符来实现，而不是添加额外的两个标量整数值：</p>
 <pre><code>class Foo{
     const OPTION_A = 1; 
     const OPTION_B = 2; 
@@ -829,75 +614,54 @@ if ($a === $b) {
        // note the parentheses; beware the operator precedence
     } 
 }
-</code></pre>
-
-<p>在这里例子里(假设<code>$options</code>永远只包含一位)：</p>
-
+</code></pre><p>在这里例子里(假设<code>$options</code>永远只包含一位)：</p>
 <ul>
-<li><code>^</code>运算符简单的修改位为相反的值</li>
-<li><code>|</code>设置一个位的值，忽略这个位原来的状态和其他的位的状态</li>
-<li><code>~</code> 用来将只设置一个位变为只有这个位不设置</li>
-
-<li><p><code>&amp;</code> 使用下面的方法将一个位设置为0</p>
-
+<li>
+<p><code>^</code>运算符简单的修改位为相反的值</p>
+</li>
+<li>
+<p><code>|</code>设置一个位的值，忽略这个位原来的状态和其他的位的状态</p>
+</li>
+<li>
+<p><code>~</code> 用来将只设置一个位变为只有这个位不设置</p>
+</li>
+<li>
+<p><code>&amp;</code> 使用下面的方法将一个位设置为0</p>
 <ul>
 <li>当某个位对于<code>&amp;=</code>执行1时((1 &amp; 1) === 1, (0 &amp; 1) === 0)，将不会发生任何事情，原来是什么值现在还是什么值。</li>
 <li>当某个位对于<code>&amp;=</code>执行0时((1 &amp; 0) === 0, (0 &amp; 0) === 0)，不管原来的值是什么值，现在都会是0</li>
-</ul></li>
-
-<li><p>当使用<code>&amp;</code>在一个位掩码时，将会筛选这个位掩码中没有设置的值</p>
-
+</ul>
+</li>
+<li>
+<p>当使用<code>&amp;</code>在一个位掩码时，将会筛选这个位掩码中没有设置的值</p>
 <ul>
 <li>如果任何一个位设置了，这意味着任何一个选项是可以使用的</li>
 <li>如果所有的位都设置了，这意味着所有的选项都是可用的</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <p>一定要注意：普通的比较操作符(&lt; &gt; &lt;= &gt;= == === != !=== &lt;&gt; &lt;=&gt;)比位运算符(&amp; | ^)的优先级更高。所以在进行位处理的时候，一定要注意这点。</p>
-
 <h4 id="位移运算符">位移运算符</h4>
-
 <p>位左移<code>&lt;&lt;</code>运算符按照指定的步数将所有的位向左移，然后丢弃超出int大小的位数。</p>
-
 <p><code>&lt;&lt; $x</code>等价于丢弃<code>$x</code>的高位，然后乘以2的<code>$x</code>次方。</p>
-
 <pre><code>printf(&quot;%'08b&quot;, 0b00001011&lt;&lt; 2); // 00101100
 
 assert(PHP_INT_SIZE === 4); // a 32-bit system
 printf(&quot;%x, %x&quot;, 0x5FFFFFFF &lt;&lt; 2, 0x1FFFFFFF &lt;&lt; 4); // 7FFFFFFC, FFFFFFFF
-</code></pre>
-
-<p>位右移<code>&gt;&gt;</code>：丢弃所有的地位然后所有的位向右移：</p>
-
+</code></pre><p>位右移<code>&gt;&gt;</code>：丢弃所有的地位然后所有的位向右移：</p>
 <p><code>&gt;&gt; $x</code>等价于除以2的<code>$x</code>次方，然后丢弃所有的非整数部分：</p>
-
 <pre><code>printf(&quot;%x&quot;, 0xFFFFFFFF &gt;&gt; 3); // 1FFFFFFF
-</code></pre>
-
-<h4 id="位移使用例子">位移使用例子</h4>
-
+</code></pre><h4 id="位移使用例子">位移使用例子</h4>
 <p>快速除以16(比<code>/=16</code>性能好)：</p>
-
 <pre><code>$x &gt;&gt; 4;
-</code></pre>
-
-<p>在32位系统上面，将会丢掉所有的证书的值，设置值为0。在64位系统上，高位32位丢弃，低32位将会保留。</p>
-
+</code></pre><p>在32位系统上面，将会丢掉所有的证书的值，设置值为0。在64位系统上，高位32位丢弃，低32位将会保留。</p>
 <pre><code>$x = $x &lt;&lt; 32 &gt;&gt; 32;
-</code></pre>
-
-<p>这等价于<code>$x &amp; 0xFFFFFFFF</code>。</p>
-
+</code></pre><p>这等价于<code>$x &amp; 0xFFFFFFFF</code>。</p>
 <p>注意这里使用的是<code>printf(&quot;%'06b'&quot;)</code>，这里输出6位二进制数。</p>
-
 <h3 id="instanceof-类型判断符">instanceof 类型判断符</h3>
-
 <p>从PHP5开始，判断一个对像是不是一个类的实例，可以使用<code>instanceof</code>操作符。</p>
-
 <p>第一个参数要测试的对象。如果第一个参数不是对象将会返回<code>false</code>。如果使用了一个常量表达式，将会throw 一个错误。</p>
-
 <p>第二个参数是一个类的名称。这个参数是这个类的名称，名称的字符串变量或者是这个类的一个对象。</p>
-
 <pre><code>class MyClass {
 }
 
@@ -915,10 +679,7 @@ $b = 'b';
 $a = $o1 instanceof 'MyClass'; // parse error: constant not allowed
 $a = false instanceof MyClass; // fatal error: constant not allowed
 $a = $b instanceof MyClass;  // false ($b is not an object)
-</code></pre>
-
-<p><code>instanceof</code>也可以用来检测一个对象是不是继承另外的类和实现了某个接口。</p>
-
+</code></pre><p><code>instanceof</code>也可以用来检测一个对象是不是继承另外的类和实现了某个接口。</p>
 <pre><code>inteface MyInterface {
 }
 
@@ -934,10 +695,7 @@ $o = new MySubClass();
 $a = $o instanceof MySubClass;
 $a = $o instanceof MySuperClass;
 $a = $o instanceof MyInterface;
-</code></pre>
-
-<p>检测一个对象不是某个类，可以使用<code>!</code>运算符：</p>
-
+</code></pre><p>检测一个对象不是某个类，可以使用<code>!</code>运算符：</p>
 <pre><code>class MyClass { 
 }
 
@@ -946,14 +704,9 @@ class OtherClass {
 
 $o = new MyClass();
 $a = !$o instanceof OtherClass; // true
-</code></pre>
-
-<p>注意这里<code>$o instanceof MyClass</code>是不需要括号的，因为<code>instanceof</code>的优先级比<code>!</code>更高。</p>
-
+</code></pre><p>注意这里<code>$o instanceof MyClass</code>是不需要括号的，因为<code>instanceof</code>的优先级比<code>!</code>更高。</p>
 <h3 id="告诫">告诫</h3>
-
 <p>如果一个类不存在的话，PHP的autoload方法将会试着定义这个类(这个就不在这里介绍)。在PHP5.1.0之前，<code>instanceof</code>操作符也会触发这些类，从而实际定义这些类(如果无法定义就会发生致命错误)。为了避免这种情况，使用下面的字符：</p>
-
 <pre><code>// only PHP versions before 5.1.0!
 class MyClass { 
 }
@@ -967,14 +720,9 @@ $a = $o instanceof OtherClass; // OtherClass is not defined!
 $name = 'YetAnotherClass';
 $a = $o instanceof $name; // YetAnotherClass is not defined!
 // $a simply gets boolean value false, YetAnotherClass remains undefined.
-</code></pre>
-
-<p>从PHP 5.1.0版开始，在这些情况下不再调用已注册的自动加载程序。</p>
-
+</code></pre><p>从PHP 5.1.0版开始，在这些情况下不再调用已注册的自动加载程序。</p>
 <h4 id="老版本php">老版本PHP</h4>
-
 <p>在PHP5.0之前，<code>is_a</code>函数可以用来确定一个对象是不是一个类的实例。这个函数在PHP5.0是不推荐的，在PHP5.3移除了。</p>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -1047,6 +795,12 @@ $a = $o instanceof $name; // YetAnotherClass is not defined!
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

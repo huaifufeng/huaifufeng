@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,115 +187,54 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#数组">数组</a>
-<ul>
-<li><a href="#数组赋值">数组赋值</a>
-<ul>
-<li><a href="#列表赋值">列表赋值</a></li>
-<li><a href="#下标赋值">下标赋值</a></li>
-<li><a href="#索引赋值">索引赋值</a></li>
-<li><a href="#关联数组">关联数组</a></li>
-<li><a href="#动态赋值">动态赋值</a></li>
-</ul></li>
-<li><a href="#访问数组元素">访问数组元素</a>
-<ul>
-<li><a href="#字符串操作">字符串操作</a></li>
-</ul></li>
-<li><a href="#修改数组">修改数组</a>
-<ul>
-<li><a href="#索引修改">索引修改</a></li>
-<li><a href="#追加元素">追加元素</a></li>
-<li><a href="#插入元素">插入元素</a></li>
-<li><a href="#删除元素">删除元素</a></li>
-<li><a href="#合并数组">合并数组</a></li>
-<li><a href="#重新索引数组">重新索引数组</a></li>
-</ul></li>
-<li><a href="#数组迭代">数组迭代</a>
-<ul>
-<li><a href="#迭代命令的输出">迭代命令的输出</a></li>
-</ul></li>
-<li><a href="#数组长度">数组长度</a></li>
-<li><a href="#关联数组-1">关联数组</a>
-<ul>
-<li><a href="#声明关联数组">声明关联数组</a></li>
-<li><a href="#初始化元素">初始化元素</a></li>
-<li><a href="#访问关联数组元素">访问关联数组元素</a></li>
-<li><a href="#列出数组值">列出数组值</a></li>
-<li><a href="#迭代关联数组键值">迭代关联数组键值</a></li>
-<li><a href="#关联数组计数">关联数组计数</a></li>
-</ul></li>
-<li><a href="#循环一个数组">循环一个数组</a></li>
-<li><a href="#销毁数组">销毁数组</a></li>
-<li><a href="#从字符串获取数组">从字符串获取数组</a></li>
-<li><a href="#索引列表">索引列表</a></li>
-<li><a href="#从文件读取内容到数组">从文件读取内容到数组</a></li>
-<li><a href="#数组插入函数">数组插入函数</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#数组">数组</a>
+      <ul>
+        <li><a href="#数组赋值">数组赋值</a></li>
+        <li><a href="#访问数组元素">访问数组元素</a></li>
+        <li><a href="#修改数组">修改数组</a></li>
+        <li><a href="#数组迭代">数组迭代</a></li>
+        <li><a href="#数组长度">数组长度</a></li>
+        <li><a href="#关联数组-1">关联数组</a></li>
+        <li><a href="#循环一个数组">循环一个数组</a></li>
+        <li><a href="#销毁数组">销毁数组</a></li>
+        <li><a href="#从字符串获取数组">从字符串获取数组</a></li>
+        <li><a href="#索引列表">索引列表</a></li>
+        <li><a href="#从文件读取内容到数组">从文件读取内容到数组</a></li>
+        <li><a href="#数组插入函数">数组插入函数</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="数组">数组</h2>
-
+        		<h2 id="数组">数组</h2>
 <h3 id="数组赋值">数组赋值</h3>
-
 <h4 id="列表赋值">列表赋值</h4>
-
 <p>如果你熟悉Perl，C或者Java的话，你可能会认为Bash使用逗号来分隔数组的元素，然而不是这样的，Bash使用空格来分隔元素：</p>
-
 <pre><code># Perl中的数组
 my @array = (1, 2, 3, 4);
 
 #Bash中的数组
 array=(1 2 3 4)
-</code></pre>
-
-<p>使用新元素创建数组：</p>
-
+</code></pre><p>使用新元素创建数组：</p>
 <pre><code>array=('first element' 'second element' 'third element')
-</code></pre>
-
-<h4 id="下标赋值">下标赋值</h4>
-
+</code></pre><h4 id="下标赋值">下标赋值</h4>
 <p>使用明确的元素索引创建一个数组：</p>
-
 <pre><code>array=([3]='fourth element' [4]='fifth element')
-</code></pre>
-
-<h4 id="索引赋值">索引赋值</h4>
-
+</code></pre><h4 id="索引赋值">索引赋值</h4>
 <pre><code>array[0]='first element'
 array[1]='second element'
-</code></pre>
-
-<h4 id="关联数组">关联数组</h4>
-
+</code></pre><h4 id="关联数组">关联数组</h4>
 <p>Version&gt;= 4.0</p>
-
 <pre><code>decalare -A array
 array[first]='First element'
 array[second]='Second elemet'
-</code></pre>
-
-<h4 id="动态赋值">动态赋值</h4>
-
+</code></pre><h4 id="动态赋值">动态赋值</h4>
 <p>从其他命令的输出结果创建一个数组，例如使用<code>seq</code>获取1到10的值：</p>
-
 <pre><code>array=(`seq 1 10`)
-</code></pre>
-
-<p>从脚本的输入参数赋值给数组：</p>
-
+</code></pre><p>从脚本的输入参数赋值给数组：</p>
 <pre><code>array=(&quot;$@&quot;)
-</code></pre>
-
-<p>使用循环赋值：</p>
-
+</code></pre><p>使用循环赋值：</p>
 <pre><code>while read -r; do
     #array+=(&quot;$REPLY&quot;)  #数组追加
     array[$i]=&quot;$REPLY&quot;  #索引赋值
@@ -299,131 +242,65 @@ array[second]='Second elemet'
 done &lt; &lt;(seq 1 10)      #?
 
 echo ${array[@]} # output: 1 2 3 4 5 6 7 8 9 10
-</code></pre>
-
-<p><code>$REPLY</code>总是当期的输入。</p>
-
+</code></pre><p><code>$REPLY</code>总是当期的输入。</p>
 <h3 id="访问数组元素">访问数组元素</h3>
-
 <p>打印索引0位置的元素：</p>
-
 <pre><code>echo &quot;${array[0]}&quot;
-</code></pre>
-
-<p>Version &lt; 4.3</p>
-
+</code></pre><p>Version &lt; 4.3</p>
 <p>使用字符串扩展语法打印最后一个元素：</p>
-
 <pre><code>echo &quot;${arr[@]:-1}&quot;
-</code></pre>
-
-<p>Version &gt;= 4.3</p>
-
+</code></pre><p>Version &gt;= 4.3</p>
 <p>使用下标语法打印最后一个元素：</p>
-
 <pre><code>echo &quot;${array[-1]}&quot;
-</code></pre>
-
-<p>打印所有数组的元素，每个元素单独引用：</p>
-
+</code></pre><p>打印所有数组的元素，每个元素单独引用：</p>
 <pre><code>echo &quot;${array[@]}&quot;
-</code></pre>
-
-<p>打印所有数组元素，使用一个引用：</p>
-
+</code></pre><p>打印所有数组元素，使用一个引用：</p>
 <pre><code>echo &quot;${array[*]}&quot;
-</code></pre>
-
-<p>打印数组从索引1开始的元素，每个元素单独引用：</p>
-
+</code></pre><p>打印数组从索引1开始的元素，每个元素单独引用：</p>
 <pre><code>echo &quot;${array[@]:1}&quot;
-</code></pre>
-
-<p>打印数组从索引1开始的3个元素，每个元素单独引用:</p>
-
+</code></pre><p>打印数组从索引1开始的3个元素，每个元素单独引用:</p>
 <pre><code>echo &quot;${array[@]:1:3}&quot;
-</code></pre>
-
-<h4 id="字符串操作">字符串操作</h4>
-
+</code></pre><h4 id="字符串操作">字符串操作</h4>
 <p>如果引用单个元素，则允许字符串操作：</p>
-
 <pre><code>array=(zero one two)
 echo &quot;${array[0]:0:3}&quot; #输出 zer 字符串zero中0 1 2的字符
 echo &quot;${array[0]:1:3}&quot; #输出 ero 字符串zero中1 2 3的字符
-</code></pre>
-
-<p>所以<code>${array[$i]:N:M}</code>输出一个字符串从Nth开始(第一个是0)，在字符串<code>${array[$i]}</code>后面的M个元素。</p>
-
+</code></pre><p>所以<code>${array[$i]:N:M}</code>输出一个字符串从Nth开始(第一个是0)，在字符串<code>${array[$i]}</code>后面的M个元素。</p>
 <h3 id="修改数组">修改数组</h3>
-
 <h4 id="索引修改">索引修改</h4>
-
 <p>初始化或者更新数组的一个指定元素：</p>
-
 <pre><code>array[10]=&quot;elevenths element&quot; #因为从0开始
-</code></pre>
-
-<p>Version&gt;=3.1</p>
-
+</code></pre><p>Version&gt;=3.1</p>
 <h4 id="追加元素">追加元素</h4>
-
 <p>修改数组，如果没有指定下标则在数组末尾追加元素：</p>
-
 <pre><code>array+=('fourth element' 'fifth element')
-</code></pre>
-
-<p>使用新的元素列表替换数组的所有元素：</p>
-
+</code></pre><p>使用新的元素列表替换数组的所有元素：</p>
 <pre><code>array=(&quot;${array[@]}&quot; &quot;fourth element&quot; &quot;fifth element&quot;)
-</code></pre>
-
-<p>在数组开始追加元素：</p>
-
+</code></pre><p>在数组开始追加元素：</p>
 <pre><code>array=(&quot;new element&quot; &quot;${array[@]}&quot;)
-</code></pre>
-
-<h4 id="插入元素">插入元素</h4>
-
+</code></pre><h4 id="插入元素">插入元素</h4>
 <p>在指定位置插入元素：</p>
-
 <pre><code>arr=(a b c d)
 #在索引2的位置插入一个元素
 i=2
 arr=(&quot;${array[@]:0:$i}&quot; 'new' &quot;${array[@]:$i}&quot;)
 echo &quot;${array[2]}&quot; #输出 new
-</code></pre>
-
-<h4 id="删除元素">删除元素</h4>
-
+</code></pre><h4 id="删除元素">删除元素</h4>
 <p>使用内建的<code>unset</code>命令删除数组的索引：</p>
-
 <pre><code>arr=(a b c)
 echo &quot;${arr[@]}&quot; # outputs: a b c 
 echo &quot;${!arr[@]}&quot; # outputs: 0 1 2 
 unset -v 'arr[1]'
 echo &quot;${arr[@]}&quot; # outputs: a c 
 echo &quot;${!arr[@]}&quot; # outputs: 0 2
-</code></pre>
-
-<h4 id="合并数组">合并数组</h4>
-
+</code></pre><h4 id="合并数组">合并数组</h4>
 <pre><code>array3=(&quot;${array1[@]}&quot; &quot;${array2[@]}&quot;)
-</code></pre>
-
-<p>对于稀疏数组这个操作也是可以的。</p>
-
+</code></pre><p>对于稀疏数组这个操作也是可以的。</p>
 <h4 id="重新索引数组">重新索引数组</h4>
-
 <p>如果元素已从数组中移除，或者您不确定数组中是否存在间隙，则此选项非常有用。重建数组的索引使用：</p>
-
 <pre><code>array=(&quot;${array[@]}&quot;)
-</code></pre>
-
-<h3 id="数组迭代">数组迭代</h3>
-
+</code></pre><h3 id="数组迭代">数组迭代</h3>
 <p>数组迭代有两种风格，foreach和经典for循环：</p>
-
 <pre><code>a=(1 2 3 4)
 #foreach
 for y in &quot;${a[@]}&quot;;do
@@ -434,70 +311,38 @@ done
 for((idx=0; idx &lt; ${#a[@]}; idx++)); do
     echo &quot;${a[$idx]}&quot;
 done
-</code></pre>
-
-<h4 id="迭代命令的输出">迭代命令的输出</h4>
-
+</code></pre><h4 id="迭代命令的输出">迭代命令的输出</h4>
 <pre><code>a=($(tr ',' ' ' &lt;&lt;&lt;&quot;a,b,c,d&quot;)) # tr can transform one character to another 
 for y in &quot;${a[@]}&quot;; do
 	echo &quot;$y&quot; 
 done
-</code></pre>
-
-<h3 id="数组长度">数组长度</h3>
-
+</code></pre><h3 id="数组长度">数组长度</h3>
 <p><code>${#array[@]}</code>获取数组<code>${array[@]}</code>的长度：</p>
-
 <pre><code>array=('first element' 'second element' 'third element') 
 echo &quot;${#array[@]}&quot; # gives out a length of 3
-</code></pre>
-
-<p>这也适用于当个元素的字符串长度：</p>
-
+</code></pre><p>这也适用于当个元素的字符串长度：</p>
 <pre><code>echo &quot;${#array[0]}&quot; # gives out the lenght of the string at element 0: 13
-</code></pre>
-
-<h3 id="关联数组-1">关联数组</h3>
-
+</code></pre><h3 id="关联数组-1">关联数组</h3>
 <p>Version&gt;=4.0</p>
-
 <h4 id="声明关联数组">声明关联数组</h4>
-
 <pre><code>declare -A aa
-</code></pre>
-
-<p>在初始化或使用之前声明关联数组是必需的。</p>
-
+</code></pre><p>在初始化或使用之前声明关联数组是必需的。</p>
 <h4 id="初始化元素">初始化元素</h4>
-
 <p>你可以像下面这样一次初始化一个元素：</p>
-
 <pre><code>aa[hello]=world
 aa[ab]=cd
 aa[&quot;key with space&quot;]=&quot;hello world&quot;
-</code></pre>
-
-<p>你也可以在一个语句里面初始化一个关联数组：</p>
-
+</code></pre><p>你也可以在一个语句里面初始化一个关联数组：</p>
 <pre><code>aa=([hello]=world [ab]=cd [&quot;key with space&quot;]=&quot;hello world&quot;)
-</code></pre>
-
-<h4 id="访问关联数组元素">访问关联数组元素</h4>
-
+</code></pre><h4 id="访问关联数组元素">访问关联数组元素</h4>
 <pre><code>echo ${aa[hello]} 
 # Out: world
 echo &quot;${!aa[@]}&quot;
 #Out: hello ab key with space
-</code></pre>
-
-<h4 id="列出数组值">列出数组值</h4>
-
+</code></pre><h4 id="列出数组值">列出数组值</h4>
 <pre><code>echo &quot;${aa[@]}&quot;
 #Out: world cd hello world
-</code></pre>
-
-<h4 id="迭代关联数组键值">迭代关联数组键值</h4>
-
+</code></pre><h4 id="迭代关联数组键值">迭代关联数组键值</h4>
 <pre><code>for key in &quot;${!aa[@]}&quot;; do
 	echo &quot;Key: ${key}&quot;
 	echo &quot;Value: ${array[$key]}&quot;
@@ -509,146 +354,83 @@ done
 # Value: cd
 # Key:   key with space
 # Value: hello world
-</code></pre>
-
-<h4 id="关联数组计数">关联数组计数</h4>
-
+</code></pre><h4 id="关联数组计数">关联数组计数</h4>
 <pre><code> echo &quot;${#aa[@]}&quot; 
  # Out: 3
-</code></pre>
-
-<h3 id="循环一个数组">循环一个数组</h3>
-
+</code></pre><h3 id="循环一个数组">循环一个数组</h3>
 <p>我们有下面的数组：</p>
-
 <pre><code>arr=(a b c d e f)
-</code></pre>
-
-<p>使用<code>for...in</code>循环：</p>
-
+</code></pre><p>使用<code>for...in</code>循环：</p>
 <pre><code>for i in &quot;${arr[@]}&quot;; do 
 	echo &quot;$i&quot;
 done
-</code></pre>
-
-<p>Version&gt;=2.04</p>
-
+</code></pre><p>Version&gt;=2.04</p>
 <p>使用类C的<code>for</code>循环：</p>
-
 <pre><code>for ((i=0;i&lt;${#arr[@]};i++)); do 
 	echo &quot;${arr[$i]}&quot;
 done
-</code></pre>
-
-<p>使用<code>while</code>循环：</p>
-
+</code></pre><p>使用<code>while</code>循环：</p>
 <pre><code>i=0
 while [ $i -lt ${#arr[@]} ]; do
 	echo &quot;${arr[$i]}&quot;
 	i=$((i + 1)) 
 done
-</code></pre>
-
-<p>Version&gt;=2.04</p>
-
+</code></pre><p>Version&gt;=2.04</p>
 <p>使用数字条件的<code>while</code>循环：</p>
-
 <pre><code>i=0
 while (( $i &lt; ${#arr[@]} )); do
 	echo &quot;${arr[$i]}&quot;
 	((i++)) 
 done
-</code></pre>
-
-<p>使用<code>until</code>循环：</p>
-
+</code></pre><p>使用<code>until</code>循环：</p>
 <pre><code>i=0
 until [ $i -ge ${#arr[@]} ]; do
 	echo &quot;${arr[$i]}&quot;
 	i=$((i + 1)) 
 done
-</code></pre>
-
-<p>Version&gt;=2.04</p>
-
+</code></pre><p>Version&gt;=2.04</p>
 <p>使用数字条件的<code>until</code>循环：</p>
-
 <pre><code>i=0
 until (( $i &gt;= ${#arr[@]} )); do
 	echo &quot;${arr[$i]}&quot;
 	((i++)) 
 done
-</code></pre>
-
-<h3 id="销毁数组">销毁数组</h3>
-
+</code></pre><h3 id="销毁数组">销毁数组</h3>
 <p>要销毁、删除或取消设置数组：</p>
-
 <pre><code>unset array
-</code></pre>
-
-<p>销毁、删除或取消设置数组的一个元素：</p>
-
+</code></pre><p>销毁、删除或取消设置数组的一个元素：</p>
 <pre><code>unset array[10]
-</code></pre>
-
-<h3 id="从字符串获取数组">从字符串获取数组</h3>
-
+</code></pre><h3 id="从字符串获取数组">从字符串获取数组</h3>
 <pre><code> stringVar=&quot;Apple Orange Banana Mango&quot; 
  arrayVar=(${stringVar// / })
-</code></pre>
-
-<p>字符串中每个空格代表了一个数组中的新元素：</p>
-
+</code></pre><p>字符串中每个空格代表了一个数组中的新元素：</p>
 <pre><code>echo ${arrayVar[0]} # will print Apple 
 echo ${arrayVar[3]} # will print Mango
-</code></pre>
-
-<p>相同的，另外的字符也可以用作分割标识：</p>
-
+</code></pre><p>相同的，另外的字符也可以用作分割标识：</p>
 <pre><code>stringVar=&quot;Apple+Orange+Banana+Mango&quot; 
 arrayVar=(${stringVar//+/ })
 echo ${arrayVar[0]} # will print Apple 
 echo ${arrayVar[2]} # will print Banana
-</code></pre>
-
-<h3 id="索引列表">索引列表</h3>
-
+</code></pre><h3 id="索引列表">索引列表</h3>
 <p>获取数组的被初始化的所有索引：</p>
-
 <pre><code>$ arr[2]='second'
 $ arr[10]='tenth'
 $ arr[25]='twenty five' $ echo ${!arr[@]}
 2 10 25
-</code></pre>
-
-<h3 id="从文件读取内容到数组">从文件读取内容到数组</h3>
-
+</code></pre><h3 id="从文件读取内容到数组">从文件读取内容到数组</h3>
 <p>所有的操作在一行内：</p>
-
 <pre><code>IFS=$'\n' read -r -a arr &lt; file
-</code></pre>
-
-<p>循环中读取文件内容：</p>
-
+</code></pre><p>循环中读取文件内容：</p>
 <pre><code>arr=()
 while IFS= read -r line; do
 	arr+=(&quot;$line&quot;) 
 done
-</code></pre>
-
-<p>Version&gt;=4.0</p>
-
+</code></pre><p>Version&gt;=4.0</p>
 <p>使用<code>mapfile</code>或<code>readarray</code>（相同的功能）：</p>
-
 <pre><code> mapfile -t arr &lt; file 
  readarray -t arr &lt; file
-</code></pre>
-
-<h3 id="数组插入函数">数组插入函数</h3>
-
+</code></pre><h3 id="数组插入函数">数组插入函数</h3>
 <p>下面的函数会在数组指定索引的位置插入一个元素：</p>
-
 <pre><code>insert(){ 
 	h='
 ################## insert ########################
@@ -671,15 +453,9 @@ done
 	# Now insert $el at $i
 	__arr__=(&quot;${__arr__[@]:0:$i}&quot; &quot;$el&quot; &quot;${__arr__[@]:$i}&quot;)
 }
-</code></pre>
-
-<p>使用：</p>
-
+</code></pre><p>使用：</p>
 <pre><code> insert array_variable_name index element
-</code></pre>
-
-<p>例子：</p>
-
+</code></pre><p>例子：</p>
 <pre><code>arr=(a b c d)
 echo &quot;${arr[2]}&quot; # output: c
 # Now call the insert function and pass the array variable name, 
@@ -689,9 +465,7 @@ insert arr 2 'New Element'
 # 'New Element' was inserted at index 2 in arr, now print them 
 echo &quot;${arr[2]}&quot; # output: New Element
 echo &quot;${arr[3]}&quot; # output: c
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -763,6 +537,12 @@ echo &quot;${arr[3]}&quot; # output: c
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

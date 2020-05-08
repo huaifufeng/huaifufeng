@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,85 +187,54 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#命令和操作链">命令和操作链</a>
-<ul>
-<li><a href="#统计字符串出现次数">统计字符串出现次数</a></li>
-<li><a href="#传输root命令输出到用户文件">传输root命令输出到用户文件</a></li>
-<li><a href="#逻辑命令链">逻辑命令链 &amp;&amp; ||</a></li>
-<li><a href="#分号串联命令">分号串联命令</a></li>
-<li><a href="#连接命令">|连接命令</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#命令和操作链">命令和操作链</a>
+      <ul>
+        <li><a href="#统计字符串出现次数">统计字符串出现次数</a></li>
+        <li><a href="#传输root命令输出到用户文件">传输root命令输出到用户文件</a></li>
+        <li><a href="#逻辑命令链--">逻辑命令链 &amp;&amp; ||</a></li>
+        <li><a href="#分号串联命令">分号串联命令</a></li>
+        <li><a href="#连接命令">|连接命令</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="命令和操作链">命令和操作链</h2>
-
+        		<h2 id="命令和操作链">命令和操作链</h2>
 <p>有多种方法比命令连接在一起使用。简单的就像<code>;</code>，复杂的像逻辑链(根据条件使用不同的命令)。第三种就是管道命令：在链条中，下一个命令处理上一个命令的输出结果。</p>
-
 <h3 id="统计字符串出现次数">统计字符串出现次数</h3>
-
 <p>使用管道把上一个命令的输出结果作为下个命令的输入值：</p>
-
 <pre><code>ls -l | grep -c &quot;.conf&quot;
-</code></pre>
-
-<p>这个例子中，<code>ls</code>命令的输出结果作为<code>grep</code>命令的输入。结果是文件名中包含<code>.conf</code>的文件的数量。</p>
-
+</code></pre><p>这个例子中，<code>ls</code>命令的输出结果作为<code>grep</code>命令的输入。结果是文件名中包含<code>.conf</code>的文件的数量。</p>
 <p>这个可以用组织尽量长的命令队列：</p>
-
 <pre><code>ls -1 | grep &quot;.conf&quot; | grep -c .
-</code></pre>
-
-<h3 id="传输root命令输出到用户文件">传输root命令输出到用户文件</h3>
-
+</code></pre><h3 id="传输root命令输出到用户文件">传输root命令输出到用户文件</h3>
 <p>有时候想要把root命令的执行结果给其他的用户。<code>tee</code>命令很简单的以用户的权限把root命令的输出结果放入一个文件中。</p>
-
 <pre><code>su -c ifconfig | tee ~/results-of-ifconfig.txt
-</code></pre>
-
-<p>只有ifconfig是以root的身份运行的。</p>
-
-<h3 id="逻辑命令链">逻辑命令链 &amp;&amp; ||</h3>
-
+</code></pre><p>只有ifconfig是以root的身份运行的。</p>
+<h3 id="逻辑命令链--">逻辑命令链 &amp;&amp; ||</h3>
 <p><code>&amp;&amp;</code>连接两个命令，第二个命令只有在第一个命令执行成功的情况下才会执行。<code>||</code>的两个命令只有第一个命令失败的情况下第二个命令才会执行。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span> a <span style="color:#f92672">=</span> b <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;yes&#34;</span> <span style="color:#f92672">||</span> echo <span style="color:#e6db74">&#34;no&#34;</span>
 
-<pre><code class="language-shell">[ a = b ] &amp;&amp; echo &quot;yes&quot; || echo &quot;no&quot;
-
-# if you want to run more commands within a logical chain, use curly braces
-# which designate a block of commands
-# They do need a ; before closing bracket so bash can diffentiate from other uses # of curly braces
-[ a = b ] &amp;&amp; { echo &quot;let me see.&quot;
-               echo &quot;hmmm, yes, i think it is true&quot; ; } \
-          || { echo &quot;as i am in the negation i think &quot;
-               echo &quot;this is false. a is a not b.&quot; ; }
-# mind the use of line continuation sign \
-# only needed to chain yes block with || ....
-</code></pre>
-
-<h3 id="分号串联命令">分号串联命令</h3>
-
+<span style="color:#75715e"># if you want to run more commands within a logical chain, use curly braces</span>
+<span style="color:#75715e"># which designate a block of commands</span>
+<span style="color:#75715e"># They do need a ; before closing bracket so bash can diffentiate from other uses # of curly braces</span>
+<span style="color:#f92672">[</span> a <span style="color:#f92672">=</span> b <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">{</span> echo <span style="color:#e6db74">&#34;let me see.&#34;</span>
+               echo <span style="color:#e6db74">&#34;hmmm, yes, i think it is true&#34;</span> ; <span style="color:#f92672">}</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>          <span style="color:#f92672">||</span> <span style="color:#f92672">{</span> echo <span style="color:#e6db74">&#34;as i am in the negation i think &#34;</span>
+               echo <span style="color:#e6db74">&#34;this is false. a is a not b.&#34;</span> ; <span style="color:#f92672">}</span>
+<span style="color:#75715e"># mind the use of line continuation sign \</span>
+<span style="color:#75715e"># only needed to chain yes block with || ....</span>
+</code></pre></div><h3 id="分号串联命令">分号串联命令</h3>
 <p>一个分号分割两个命令：</p>
-
 <pre><code>echo &quot;i am first&quot; ; echo &quot;i am second&quot; ; echo &quot; i am third&quot;
-</code></pre>
-
-<h3 id="连接命令">|连接命令</h3>
-
+</code></pre><h3 id="连接命令">|连接命令</h3>
 <p><code>|</code>将左侧命令的输出传递给右侧命令作为输入。注意这是在一个subshell中执行的。因此你不能在管道中进行赋值操作。</p>
-
 <pre><code>find . -type f -a -iname '*.mp3' | \
     while read filename; do
         mute --noise &quot;$filename&quot;
     done
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -333,6 +306,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

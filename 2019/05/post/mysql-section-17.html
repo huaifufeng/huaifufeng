@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,52 +187,41 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#join表带有相同列">JOIN表带有相同列</a>
-<ul>
-<li><a href="#join-3个带有相同列的表">join 3个带有相同列的表</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#join表带有相同列">JOIN表带有相同列</a>
+      <ul>
+        <li><a href="#join-3个带有相同列的表">join 3个带有相同列的表</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="join表带有相同列">JOIN表带有相同列</h2>
-
+        		<h2 id="join表带有相同列">JOIN表带有相同列</h2>
 <h3 id="join-3个带有相同列的表">join 3个带有相同列的表</h3>
-
-<pre><code class="language-mysql">CREATE TABLE Table1 (
-    id INT UNSIGNED NOT NULL, 
-    created_on DATE NOT NULL, 
-    PRIMARY KEY (id)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Table1</span> (
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, 
+    created_on <span style="color:#66d9ef">DATE</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, 
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id)
 )
-CREATE TABLE Table2 (
-    id INT UNSIGNED NOT NULL,
-    personName VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id)
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Table2</span> (
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    personName <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id)
 )
-CREATE TABLE Table3 (
-    id INT UNSIGNED NOT NULL,
-    accountName VARCHAR(255) NOT NULL, 
-    PRIMARY KEY (id)
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">Table3</span> (
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    accountName <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>, 
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id)
 )
-</code></pre>
-
-<p>在建表之后，你就可以使用一个查询语句从三个表中寻找具有相同名称的id：</p>
-
-<pre><code class="language-mysql">SELECT
-    t1.id AS table1Id, 
-    t2.id AS table2Id, 
-    t3.id AS table3Id
-FROM Table1 t1
-LEFT JOIN Table2 t2 ON t2.id = t1.id 
-LEFT JOIN Table3 t3 ON t3.id = t1.id
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre></div><p>在建表之后，你就可以使用一个查询语句从三个表中寻找具有相同名称的id：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span>
+    t1.id <span style="color:#66d9ef">AS</span> table1Id, 
+    t2.id <span style="color:#66d9ef">AS</span> table2Id, 
+    t3.id <span style="color:#66d9ef">AS</span> table3Id
+<span style="color:#66d9ef">FROM</span> Table1 t1
+<span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> Table2 t2 <span style="color:#66d9ef">ON</span> t2.id <span style="color:#f92672">=</span> t1.id 
+<span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> Table3 t3 <span style="color:#66d9ef">ON</span> t3.id <span style="color:#f92672">=</span> t1.id
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -300,6 +293,12 @@ LEFT JOIN Table3 t3 ON t3.id = t1.id
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

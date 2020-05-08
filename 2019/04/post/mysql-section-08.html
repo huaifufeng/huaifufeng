@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,79 +187,62 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#变量">变量</a>
-<ul>
-<li><a href="#设置变量">设置变量</a></li>
-<li><a href="#使用select语句中的变量进行行数和分组">使用SELECT语句中的变量进行行数和分组</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#变量">变量</a>
+      <ul>
+        <li><a href="#设置变量">设置变量</a></li>
+        <li><a href="#使用select语句中的变量进行行数和分组">使用SELECT语句中的变量进行行数和分组</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="变量">变量</h2>
-
+        		<h2 id="变量">变量</h2>
 <h3 id="设置变量">设置变量</h3>
-
 <p>有一些方法来设置变量：</p>
-
 <ol>
-<li>可以使用SET将变量设置为特定的、字符串、数字和日期</li>
-</ol>
-
-<pre><code class="language-mysql">   SET @var_string = &quot;my_var&quot;;
-   SET @var_num = '2';
-   SET @var_date = '2015-07-20';
-</code></pre>
-
-<ol>
-<li>你可以使用下面的方法设置变量为select语句的结果：</li>
-</ol>
-
-<pre><code class="language-mysql">   Select @var := '123';
-   (注意：当你没有使用SET设置变量的时候，你需要使用:=，因为在其他的语句(select, update)中，&quot;=&quot;是用来比较的，所以当你在等号前面增加一个冒号的时候，这表明这不是一个比较语句，而是一个SET语句)
-</code></pre>
-
-<ol>
-<li>你可以使用INTO设置一个变量作为select语句的返回值</li>
-</ol>
-
+<li>
+<p>可以使用SET将变量设置为特定的、字符串、数字和日期</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>var_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;my_var&#34;</span>;
+<span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>var_num <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;2&#39;</span>;
+<span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>var_date <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;2015-07-20&#39;</span>;
+</code></pre></div></li>
+<li>
+<p>你可以使用下面的方法设置变量为select语句的结果：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">Select</span> <span style="color:#f92672">@</span>var :<span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;123&#39;</span>;
+(<span style="color:#960050;background-color:#1e0010">注意：当你没有使用</span>SET设置变量的时候<span style="color:#960050;background-color:#1e0010">，你需要使用</span>:<span style="color:#f92672">=</span><span style="color:#960050;background-color:#1e0010">，因为在其他的语句</span>(<span style="color:#66d9ef">select</span>, <span style="color:#66d9ef">update</span>)<span style="color:#960050;background-color:#1e0010">中，</span><span style="color:#e6db74">&#34;=&#34;</span><span style="color:#960050;background-color:#1e0010">是用来比较的，所以当你在等号前面增加一个冒号的时候，这表明这不是一个比较语句，而是一个</span>SET语句)
+</code></pre></div></li>
+<li>
+<p>你可以使用INTO设置一个变量作为select语句的返回值</p>
 <p>(当我需要动态选择要查询的分区时，这是特别有用的)</p>
+</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>start_date <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;2015-07-20&#39;</span>;
+<span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>end_date <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;2016-01-31&#39;</span>;
 
-<pre><code class="language-mysql">SET @start_date = '2015-07-20';
-SET @end_date = '2016-01-31';
+<span style="color:#75715e">#这获取年月来确定使用的分区
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>start_yearmonth <span style="color:#f92672">=</span> (<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">EXTRACT</span>(<span style="color:#66d9ef">YEAR_MONTH</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">@</span>start_date));
+<span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>end_yearmonth <span style="color:#f92672">=</span> (<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">EXTRACT</span>(<span style="color:#66d9ef">YEAR_MONTH</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">@</span>end_date));
 
-#这获取年月来确定使用的分区
-SET @start_yearmonth = (SELECT EXTRACT(YEAR_MONTH FROM @start_date));
-SET @end_yearmonth = (SELECT EXTRACT(YEAR_MONTH FROM @end_date));
+<span style="color:#75715e">#把分区放入变量
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">GROUP_CONCAT</span>(partition_name) FROME information_schema.partitions p 
+<span style="color:#66d9ef">WHERE</span> table_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;partitioned_table&#39;</span> <span style="color:#66d9ef">AND</span> <span style="color:#a6e22e">SUBSTRING_INDEX</span>(partition_name, <span style="color:#e6db74">&#39;P&#39;</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+<span style="color:#66d9ef">BETWEEN</span> <span style="color:#f92672">@</span>start_yearmonth <span style="color:#66d9ef">AND</span> <span style="color:#f92672">@</span>end_yearmonth <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">@</span>partitions;
 
-#把分区放入变量
-SELECT GROUP_CONCAT(partition_name) FROME information_schema.partitions p 
-WHERE table_name='partitioned_table' AND SUBSTRING_INDEX(partition_name, 'P', -1)
-BETWEEN @start_yearmonth AND @end_yearmonth INTO @partitions;
-
-#把查询放入变量。因为MySQL不会把我们的变量任务是一个变量，所有我们需要拼接语句并执行这个语句
-SET @query = CONCAT('CREATE TABLE part_of_partitioned_table(PRIMARY KEY(id))
-SELECT partitioned_table.* FROM partitioned_table PARTITION(', @partitions, ')
-JOIN users u USING(user_id)
-WHERE date(partitioned_table.date) BETWEEN ' , @start_date, ' AND ', @end_date);
+<span style="color:#75715e">#把查询放入变量。因为MySQL不会把我们的变量任务是一个变量，所有我们需要拼接语句并执行这个语句
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>query <span style="color:#f92672">=</span> <span style="color:#a6e22e">CONCAT</span>(<span style="color:#e6db74">&#39;CREATE TABLE part_of_partitioned_table(PRIMARY KEY(id))
+</span><span style="color:#e6db74">SELECT partitioned_table.* FROM partitioned_table PARTITION(&#39;</span>, <span style="color:#f92672">@</span>partitions, <span style="color:#e6db74">&#39;)
+</span><span style="color:#e6db74">JOIN users u USING(user_id)
+</span><span style="color:#e6db74">WHERE date(partitioned_table.date) BETWEEN &#39;</span> , <span style="color:#f92672">@</span>start_date, <span style="color:#e6db74">&#39; AND &#39;</span>, <span style="color:#f92672">@</span>end_date);
                     
-#prepare语句
-PREPARE stmt FROM @query;
-#删除表
-DROP TABLE IF EXISTS tech.part_of_partitioned_table;
-#创建表
-EXECUTE stmt;
-</code></pre>
-
-<h3 id="使用select语句中的变量进行行数和分组">使用SELECT语句中的变量进行行数和分组</h3>
-
+<span style="color:#75715e">#prepare语句
+</span><span style="color:#75715e"></span>PREPARE stmt <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">@</span>query;
+<span style="color:#75715e">#删除表
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> tech.part_of_partitioned_table;
+<span style="color:#75715e">#创建表
+</span><span style="color:#75715e"></span>EXECUTE stmt;
+</code></pre></div><h3 id="使用select语句中的变量进行行数和分组">使用SELECT语句中的变量进行行数和分组</h3>
 <p>假设我们有下面这张表：</p>
-
 <pre><code>+======+===========+
 | team |    person |
 +======+===========+
@@ -278,21 +265,12 @@ UNION ALL SELECT 'A' team, 'Walter' person
 UNION ALL SELECT 'A' team, 'Louis' person
 UNION ALL SELECT 'C' team, 'Elizabeth' person
 UNION ALL SELECT 'B' team, 'Wayne' person;
-</code></pre>
-
-<p>从<code>team_person</code>中查询数据，增加额外的<code>row_number</code>列：</p>
-
-<pre><code class="language-mysql">SELECT @row_no := @row_no + 1 AS row_number, team, person, FROM team_person, (SELECT @row_no := 0) t;
-</code></pre>
-
-<p>或者：</p>
-
-<pre><code class="language-mysql">SET @row_no := 0;
-SELECT @row_no := @row_no + 1 AS row_number, team, person FROM team_person;
-</code></pre>
-
-<p>这将会输出下面的内容：</p>
-
+</code></pre><p>从<code>team_person</code>中查询数据，增加额外的<code>row_number</code>列：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>row_no :<span style="color:#f92672">=</span> <span style="color:#f92672">@</span>row_no <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">AS</span> row_number, team, person, <span style="color:#66d9ef">FROM</span> team_person, (<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>row_no :<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>) t;
+</code></pre></div><p>或者：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> <span style="color:#f92672">@</span>row_no :<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>row_no :<span style="color:#f92672">=</span> <span style="color:#f92672">@</span>row_no <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">AS</span> row_number, team, person <span style="color:#66d9ef">FROM</span> team_person;
+</code></pre></div><p>这将会输出下面的内容：</p>
 <pre><code>+============+======+===========+
 | row_number | team |    person |
 +============+======+===========+
@@ -308,34 +286,29 @@ SELECT @row_no := @row_no + 1 AS row_number, team, person FROM team_person;
 +------------+------+-----------+
 |          6 |   B  |     Wayne |
 +------------+------+-----------+
-</code></pre>
+</code></pre><p>最后，如果我们在<code>team</code>上面进行Group By操作，我们获取<code>row_number</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>row_no :<span style="color:#f92672">=</span> <span style="color:#66d9ef">IF</span>(<span style="color:#f92672">@</span>prev_val <span style="color:#f92672">=</span> t.team, <span style="color:#f92672">@</span>row_no <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">AS</span> row_number, <span style="color:#f92672">@</span>prev_val :<span style="color:#f92672">=</span> t.team <span style="color:#66d9ef">AS</span> team, t.person
+<span style="color:#66d9ef">FROM</span> team_person t,
+(<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>row_no :<span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>) x,
+(<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>prev_val :<span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>) y
+<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> t.team <span style="color:#66d9ef">ASC</span>, t.person <span style="color:#66d9ef">DESC</span>;
 
-<p>最后，如果我们在<code>team</code>上面进行Group By操作，我们获取<code>row_number</code>。</p>
-
-<pre><code class="language-mysql">SELECT @row_no := IF(@prev_val = t.team, @row_no + 1, 1) AS row_number, @prev_val := t.team AS team, t.person
-FROM team_person t,
-(SELECT @row_no := 0) x,
-(SELECT @prev_val := '') y
-ORDER BY t.team ASC, t.person DESC;
-
-+============+======+===========+
-| row_number | team |    person |
-+============+======+===========+
-|          1 |   A  |    Walter |
-+------------+------+-----------+
-|          2 |   A  |     Louis |
-+------------+------+-----------+
-|          3 |   A  |      John |
-+------------+------+-----------+
-|          1 |   B  |     Wayne |
-+------------+------+-----------+
-|          2 |   B  |     Smith |
-+------------+------+-----------+
-|          1 |   C  | Elizabeth |
-+------------+------+-----------+
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<span style="color:#f92672">+============+======+===========+</span>
+<span style="color:#f92672">|</span> row_number <span style="color:#f92672">|</span> team <span style="color:#f92672">|</span>    person <span style="color:#f92672">|</span>
+<span style="color:#f92672">+============+======+===========+</span>
+<span style="color:#f92672">|</span>          <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>   A  <span style="color:#f92672">|</span>    Walter <span style="color:#f92672">|</span>
+<span style="color:#f92672">+------------+------+-----------+</span>
+<span style="color:#f92672">|</span>          <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>   A  <span style="color:#f92672">|</span>     Louis <span style="color:#f92672">|</span>
+<span style="color:#f92672">+------------+------+-----------+</span>
+<span style="color:#f92672">|</span>          <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>   A  <span style="color:#f92672">|</span>      John <span style="color:#f92672">|</span>
+<span style="color:#f92672">+------------+------+-----------+</span>
+<span style="color:#f92672">|</span>          <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>   B  <span style="color:#f92672">|</span>     Wayne <span style="color:#f92672">|</span>
+<span style="color:#f92672">+------------+------+-----------+</span>
+<span style="color:#f92672">|</span>          <span style="color:#ae81ff">2</span> <span style="color:#f92672">|</span>   B  <span style="color:#f92672">|</span>     Smith <span style="color:#f92672">|</span>
+<span style="color:#f92672">+------------+------+-----------+</span>
+<span style="color:#f92672">|</span>          <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span>   C  <span style="color:#f92672">|</span> Elizabeth <span style="color:#f92672">|</span>
+<span style="color:#f92672">+------------+------+-----------+</span>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -407,6 +380,12 @@ ORDER BY t.team ASC, t.person DESC;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

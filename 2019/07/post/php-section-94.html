@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,89 +187,66 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#异常处理和错误报告">异常处理和错误报告</a>
-<ul>
-<li><a href="#1-设置错误报告和在哪里显示">1. 设置错误报告和在哪里显示</a></li>
-<li><a href="#2-记录致命错误日志">2. 记录致命错误日志</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#异常处理和错误报告">异常处理和错误报告</a>
+      <ul>
+        <li><a href="#1-设置错误报告和在哪里显示">1. 设置错误报告和在哪里显示</a></li>
+        <li><a href="#2-记录致命错误日志">2. 记录致命错误日志</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="异常处理和错误报告">异常处理和错误报告</h2>
-
+        		<h2 id="异常处理和错误报告">异常处理和错误报告</h2>
 <h3 id="1-设置错误报告和在哪里显示">1. 设置错误报告和在哪里显示</h3>
-
 <p>如果没有在php.ini中设置，错误报告可以动态设置，应该允许显示大多数的错误。</p>
-
 <p><strong>语法</strong></p>
-
-<pre><code class="language-php">int error_reporting([int $level])
-</code></pre>
-
-<p><strong>例子：</strong></p>
-
-<pre><code class="language-php">//在5.4之前使用
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">int error_reporting([int $level])
+</code></pre></div><p><strong>例子：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">//在5.4之前使用
 error_reporting(E_ALL);
 
 //-1 将会显示任何可能的错误，即使在之后的PHP版本添加新的等级和常量 E_ALL和5.4之前一样
 error_reporting(-1);
 
 //处理注意
-error_reporting(E_ALL &amp; ~E_NOTICE);
+error_reporting(E_ALL <span style="color:#960050;background-color:#1e0010">&amp;</span> ~E_NOTICE);
 
 //只有警告和注意
 //这只是展示，不应该只显示这些
 error_reporting(E_WARNING | E_NOTIICE);
-</code></pre>
-
-<p>错误默认会被PHP记录日志，通常是记录在和运行脚本同级别的error.log文件中。</p>
-
+</code></pre></div><p>错误默认会被PHP记录日志，通常是记录在和运行脚本同级别的error.log文件中。</p>
 <p>在开发环境中，也可以把错误输出到显示中：</p>
-
-<pre><code class="language-php">ini_set('display_errors', 1);
-</code></pre>
-
-<p>在生产环境：</p>
-
-<pre><code class="language-php">ini_set('display_errors', 0);
-</code></pre>
-
-<p>并且使用异常或错误产生一个友好的错误信息。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">ini_set(&#39;display_errors&#39;, 1);
+</code></pre></div><p>在生产环境：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">ini_set(&#39;display_errors&#39;, 0);
+</code></pre></div><p>并且使用异常或错误产生一个友好的错误信息。</p>
 <h3 id="2-记录致命错误日志">2. 记录致命错误日志</h3>
-
 <p>在PHP中，致命错误是一种不可以被捕获的错误，也就是，在遇到致命错误后，程序无法恢复执行。但是要记录这个错误或以某种方式崩溃，可以使用<code>register_shutdown_function</code>来注册shutdown函数。</p>
-
-<pre><code class="language-php">function fatalErrorHandler() {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">function fatalErrorHandler() {
     //获取最后的致命错误
     $error = error_get_last();
     
     //这只是一个展示的错误处理器，没有错误意味着没有错误或崩溃发生。也确保只处理致命错误
-    if (null === $error || E_ERROR != $error['type']) {
+    if (null === $error || E_ERROR != $error[&#39;type&#39;]) {
         return ;
     }
     
     //把最后的错误记录到日志
     //我们假设日志在app的目录
-    $logFile = fopen(&quot;./app/logs/error.log&quot;, &quot;a+&quot;);
+    $logFile = fopen(&#34;./app/logs/error.log&#34;, &#34;a+&#34;);
     
     //获取有用的错误信息
-    $type    = $error[&quot;type&quot;];
-    $file    = $error[&quot;file&quot;];
-    $line    = $error[&quot;line&quot;];
-    $message = $error[&quot;message&quot;];
+    $type    = $error[&#34;type&#34;];
+    $file    = $error[&#34;file&#34;];
+    $line    = $error[&#34;line&#34;];
+    $message = $error[&#34;message&#34;];
     
     
     fprintf(
         $logFile,
-        &quot;[%s] %s: %s in %s:%d\n&quot;, 
-        date(&quot;Y-m-d H:i:s&quot;), 
+        &#34;[%s] %s: %s in %s:%d\n&#34;, 
+        date(&#34;Y-m-d H:i:s&#34;), 
         $type,
         $message,
         $file,
@@ -274,17 +255,13 @@ error_reporting(E_WARNING | E_NOTIICE);
     fclose($logFile);
 }
 
-register_shutdown_function(&quot;fatalErrorHandler&quot;);
-</code></pre>
-
-<p>引用：</p>
-
+register_shutdown_function(&#34;fatalErrorHandler&#34;);
+</code></pre></div><p>引用：</p>
 <ul>
 <li><a href="https://www.php.net/manual/zh/function.register-shutdown-function.php">https://www.php.net/manual/zh/function.register-shutdown-function.php</a></li>
 <li><a href="https://www.php.net/manual/zh/function.error-get-last.php">https://www.php.net/manual/zh/function.error-get-last.php</a></li>
 <li><a href="https://www.php.net/manual/zh/errorfunc.constants.php">https://www.php.net/manual/zh/errorfunc.constants.php</a></li>
 </ul>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -357,6 +334,12 @@ register_shutdown_function(&quot;fatalErrorHandler&quot;);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

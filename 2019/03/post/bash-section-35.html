@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,58 +187,37 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#修改shell">修改shell</a>
-<ul>
-<li><a href="#查找当前的shell">查找当前的shell</a></li>
-<li><a href="#列出所有有效shell">列出所有有效shell</a></li>
-<li><a href="#修改shell-1">修改shell</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#修改shell">修改shell</a>
+      <ul>
+        <li><a href="#查找当前的shell">查找当前的shell</a></li>
+        <li><a href="#列出所有有效shell">列出所有有效shell</a></li>
+        <li><a href="#修改shell-1">修改shell</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="修改shell">修改shell</h2>
-
+        		<h2 id="修改shell">修改shell</h2>
 <h3 id="查找当前的shell">查找当前的shell</h3>
-
 <p>有好几种方式获取当前的shell：</p>
-
 <pre><code>echo $0
 ps -p $$ 
 echo $SHELL
-</code></pre>
-
-<h3 id="列出所有有效shell">列出所有有效shell</h3>
-
+</code></pre><h3 id="列出所有有效shell">列出所有有效shell</h3>
 <p>列出所有有效的shell</p>
-
 <pre><code>cat /etc/shells
-</code></pre>
-
-<p>例如：</p>
-
+</code></pre><p>例如：</p>
 <pre><code>$ cat /etc/shells
 # /etc/shells: valid login shells /bin/sh
 /bin/dash
 /bin/bash
 /bin/rbash
-</code></pre>
-
-<h3 id="修改shell-1">修改shell</h3>
-
+</code></pre><h3 id="修改shell-1">修改shell</h3>
 <p>修改当前的shell可以使用下面的命令：</p>
-
 <pre><code> export SHELL=/bin/bash 
  exec /bin/bash
-</code></pre>
-
-<p>修改.profile文件，添加上面的内容。</p>
-
+</code></pre><p>修改.profile文件，添加上面的内容。</p>
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -307,6 +290,12 @@ echo $SHELL
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

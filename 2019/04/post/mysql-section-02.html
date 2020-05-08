@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,62 +187,39 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#数据格式">数据格式</a>
-<ul>
-<li><a href="#char-n">CHAR(n)</a></li>
-<li><a href="#date-datetime-timestamp-year-time">DATE DATETIME TIMESTAMP YEAR TIME</a></li>
-<li><a href="#varchar-255">VARCHAR(255)</a>
-<ul>
-<li><a href="#建议最大长度">建议最大长度</a></li>
-</ul></li>
-<li><a href="#auto-increment">AUTO_INCREMENT</a></li>
-<li><a href="#其他类型">其他类型</a></li>
-<li><a href="#隐式-自动转换">隐式/自动转换</a></li>
-<li><a href="#数字导言">数字导言</a></li>
-<li><a href="#整形">整形</a></li>
-<li><a href="#定点数类型">定点数类型</a>
-<ul>
-<li><a href="#decimal">DECIMAL</a></li>
-</ul></li>
-<li><a href="#浮点数类型">浮点数类型</a></li>
-<li><a href="#二进制类型">二进制类型</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#数据格式">数据格式</a>
+      <ul>
+        <li><a href="#charn">CHAR(n)</a></li>
+        <li><a href="#date-datetime-timestamp-year-time">DATE DATETIME TIMESTAMP YEAR TIME</a></li>
+        <li><a href="#varchar255">VARCHAR(255)</a></li>
+        <li><a href="#auto_increment">AUTO_INCREMENT</a></li>
+        <li><a href="#其他类型">其他类型</a></li>
+        <li><a href="#隐式自动转换">隐式/自动转换</a></li>
+        <li><a href="#数字导言">数字导言</a></li>
+        <li><a href="#整形">整形</a></li>
+        <li><a href="#定点数类型">定点数类型</a></li>
+        <li><a href="#浮点数类型">浮点数类型</a></li>
+        <li><a href="#二进制类型">二进制类型</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="数据格式">数据格式</h2>
-
-<h3 id="char-n">CHAR(n)</h3>
-
+        		<h2 id="数据格式">数据格式</h2>
+<h3 id="charn">CHAR(n)</h3>
 <p><code>CHAR(n)</code>是包含固定长度的n个字符的字符串。如果<code>CHARACTER SET utf8mb4</code>，这意味着它完全占用4个字节，不管里面包含什么文本。</p>
-
 <p>大多数使用情况下<code>CHAR(n)</code>处理包含英文字符的字符串，因此应该设置ascii字符集(latin1也可以)。</p>
-
-<pre><code class="language-mysql">country_code CHAR(2) CHARACTER SET ascii,
-postal_code CHAR(6) CHARACTER SET ascii,
-uuid CHAR(39) CHARACTER SET ascii, -- more discussion elsewhere
-</code></pre>
-
-<h3 id="date-datetime-timestamp-year-time">DATE DATETIME TIMESTAMP YEAR TIME</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">country_code <span style="color:#66d9ef">CHAR</span>(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">CHARACTER</span> <span style="color:#66d9ef">SET</span> ascii,
+postal_code <span style="color:#66d9ef">CHAR</span>(<span style="color:#ae81ff">6</span>) <span style="color:#66d9ef">CHARACTER</span> <span style="color:#66d9ef">SET</span> ascii,
+uuid <span style="color:#66d9ef">CHAR</span>(<span style="color:#ae81ff">39</span>) <span style="color:#66d9ef">CHARACTER</span> <span style="color:#66d9ef">SET</span> ascii, <span style="color:#75715e">-- more discussion elsewhere
+</span></code></pre></div><h3 id="date-datetime-timestamp-year-time">DATE DATETIME TIMESTAMP YEAR TIME</h3>
 <p><code>DATE</code>处理日期不包含时间部分。格式是<code>'YYYY-MM-DD'</code>，范围是<code>1000-01-01</code>到<code>9999-12-31</code>。</p>
-
 <p><code>DATETIME</code>是包含时间的日期格式<code>'YYYY-MM-DD HH:MM:SS'</code>。范围是<code>1000-01-01 00:00:00</code>到<code>9999-12-31 23:59:59</code>。</p>
-
 <p><code>TIMESTAMP</code>是整数类型的时间格式，包括日期和时间两部分。使用的范围是<code>1970-01-01 00:00:01</code>到<code>2038-01-19 03:14:07</code> UTC (使用4个字节)</p>
-
 <p><code>YEAR</code>表示年份，范围从<code>1901</code>到<code>2155</code>(使用1个字节)</p>
-
-<p><code>TIME</code>表示一个&rsquo;HH:MM:SS&rsquo;格式的时间。范围从<code>-838:59:59</code>到<code>838:59:59</code>。</p>
-
+<p><code>TIME</code>表示一个&rsquo;HH:MM:SS'格式的时间。范围从<code>-838:59:59</code>到<code>838:59:59</code>。</p>
 <p>存储大小：</p>
-
 <table>
 <thead>
 <tr>
@@ -247,32 +228,27 @@ uuid CHAR(39) CHARACTER SET ascii, -- more discussion elsewhere
 <th>MySQL5.6.4及之后</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>YEAR</td>
 <td>1字节</td>
 <td>1字节</td>
 </tr>
-
 <tr>
 <td>DATE</td>
 <td>3字节</td>
 <td>3字节</td>
 </tr>
-
 <tr>
 <td>TIME</td>
 <td>3字节</td>
 <td>3字节+分数秒存储</td>
 </tr>
-
 <tr>
 <td>DATETIME</td>
 <td>8字节</td>
 <td>5字节+分数秒存储</td>
 </tr>
-
 <tr>
 <td>TIMESTAMP</td>
 <td>4字节</td>
@@ -280,9 +256,7 @@ uuid CHAR(39) CHARACTER SET ascii, -- more discussion elsewhere
 </tr>
 </tbody>
 </table>
-
 <p>分数秒(5.6.4之后)</p>
-
 <table>
 <thead>
 <tr>
@@ -290,61 +264,45 @@ uuid CHAR(39) CHARACTER SET ascii, -- more discussion elsewhere
 <th>存储要求</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>0</td>
 <td>0字节</td>
 </tr>
-
 <tr>
 <td>1,2</td>
 <td>1字节</td>
 </tr>
-
 <tr>
 <td>3,4</td>
 <td>2字节</td>
 </tr>
-
 <tr>
 <td>5,6</td>
 <td>3字节</td>
 </tr>
 </tbody>
 </table>
-
 <p>查看MySQL的手册：<a href="https://dev.mysql.com/doc/refman/5.7/en/datetime.html">DATE, DATETIME and TIMESTAMP Types</a>, <a href="https://dev.mysql.com/doc/refman/5.7/en/storage-requirements.html">Data Type Storage Requirements</a>和<a href="https://dev.mysql.com/doc/refman/5.7/en/fractional-seconds.html">Fractional Seconds in Time Values</a>。</p>
-
-<h3 id="varchar-255">VARCHAR(255)</h3>
-
+<h3 id="varchar255">VARCHAR(255)</h3>
 <h4 id="建议最大长度">建议最大长度</h4>
-
 <p>首先我会提到一些一直是十六进制的字符串，或者是ASCII字符。对于这些字段，你应该指定<code>CHARACTER SET ascii</code>(latin1也是ok的)。这样可以避免浪费空间：</p>
-
-<pre><code class="language-mysql">UUID CHAR(36) CHARACTER SET ascii -- 或者使用 BINARY(16)
-country_code CHAR(2) CHARACTER SET ascii
-ip_address CHAR(39) CHARACTER SET ascii -- 或者使用 BINARY(16)
-phone VARCHAR(20) CHARACTER SET ascii -- 可能足够处理扩展
-postal_code VARCHAR(20) CHARACTER SET ascii -- 不是zip_code 不知道最大值
-
-city VARCHAR(100) -- 这个小镇需要91:  Poselok Uchebnogo Khozyaystva Srednego Professionalno-Tekhnicheskoye Uchilishche Nomer Odin
-country VARCHAR(50) -- 可能是足够
-name VARCHAR(64) -- 可能足够；超过了一些政府机构允许的范围
-</code></pre>
-
-<p>为什么不简单的说是255？有两个原因来避免将255作为任何事情的配置：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">UUID <span style="color:#66d9ef">CHAR</span>(<span style="color:#ae81ff">36</span>) <span style="color:#66d9ef">CHARACTER</span> <span style="color:#66d9ef">SET</span> ascii <span style="color:#75715e">-- 或者使用 BINARY(16)
+</span><span style="color:#75715e"></span>country_code <span style="color:#66d9ef">CHAR</span>(<span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">CHARACTER</span> <span style="color:#66d9ef">SET</span> ascii
+ip_address <span style="color:#66d9ef">CHAR</span>(<span style="color:#ae81ff">39</span>) <span style="color:#66d9ef">CHARACTER</span> <span style="color:#66d9ef">SET</span> ascii <span style="color:#75715e">-- 或者使用 BINARY(16)
+</span><span style="color:#75715e"></span>phone <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">20</span>) <span style="color:#66d9ef">CHARACTER</span> <span style="color:#66d9ef">SET</span> ascii <span style="color:#75715e">-- 可能足够处理扩展
+</span><span style="color:#75715e"></span>postal_code <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">20</span>) <span style="color:#66d9ef">CHARACTER</span> <span style="color:#66d9ef">SET</span> ascii <span style="color:#75715e">-- 不是zip_code 不知道最大值
+</span><span style="color:#75715e"></span>
+city <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">100</span>) <span style="color:#75715e">-- 这个小镇需要91:  Poselok Uchebnogo Khozyaystva Srednego Professionalno-Tekhnicheskoye Uchilishche Nomer Odin
+</span><span style="color:#75715e"></span>country <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">50</span>) <span style="color:#75715e">-- 可能是足够
+</span><span style="color:#75715e"></span>name <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">64</span>) <span style="color:#75715e">-- 可能足够；超过了一些政府机构允许的范围
+</span></code></pre></div><p>为什么不简单的说是255？有两个原因来避免将255作为任何事情的配置：</p>
 <ul>
-<li>当一个复杂的SELECT语句需要创建临时表(像子查询，UNION, GROUP BY等等)，最好的建议是使用<code>MEMOR
-Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VARCHAR类型的字段将会被处理成CHAR。这样<code>VARCHAR(255) CHARACTER SET utf8mb4</code>需要花费1020个字节，这在硬盘上面会分片，会很慢。</li>
+<li>当一个复杂的SELECT语句需要创建临时表(像子查询，UNION, GROUP BY等等)，最好的建议是使用<code>MEMOR Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VARCHAR类型的字段将会被处理成CHAR。这样<code>VARCHAR(255) CHARACTER SET utf8mb4</code>需要花费1020个字节，这在硬盘上面会分片，会很慢。</li>
 <li>在某些情况下，InnoDB将查看表中列的潜在大小，并确定它太大，从而中止<code>CREATE TABLE</code>的操作。</li>
 </ul>
-
 <p><strong>VERCHAR</strong> VS  <strong>TEXT</strong></p>
-
 <p>*TEXT、CHAR和VARCHAR的用法提示，以及一些最佳实践：</p>
-
 <ul>
 <li>不要使用<code>TINYTEXT</code></li>
 <li>几乎不要使用<code>CHAR</code>：因为是固定大小的。每个字符都是<code>CHARACTER SET</code>(utfbmb4 就是4个字节)的最大长度。</li>
@@ -352,17 +310,11 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <li>VARCHAR(n)将以n个字符截断；TEXT将以一定数量的字节截断。（但是，是否要截断？）</li>
 <li>根据临时表处理的不同，*TEXT可能会降低SELECT语句的性能。</li>
 </ul>
-
-<h3 id="auto-increment">AUTO_INCREMENT</h3>
-
+<h3 id="auto_increment">AUTO_INCREMENT</h3>
 <p>任何类型的INT都可以用于AUTO_INCREMENT。使用UNSIGNED是合适的。</p>
-
-<p>但是要注意，某些操作会&rdquo;毁掉&rdquo;<code>AUTO_INCREMENT</code>的id。这将会造成不可预期的结果。例如<code>INSERT IGNORE</code>和<code>REPLACE</code>。他们可以在意识到不需要ID之前预先分配ID。这是InnoDB引擎中的预期行为和设计，不妨碍它们的使用。</p>
-
+<p>但是要注意，某些操作会&quot;毁掉&quot;<code>AUTO_INCREMENT</code>的id。这将会造成不可预期的结果。例如<code>INSERT IGNORE</code>和<code>REPLACE</code>。他们可以在意识到不需要ID之前预先分配ID。这是InnoDB引擎中的预期行为和设计，不妨碍它们的使用。</p>
 <h3 id="其他类型">其他类型</h3>
-
-<p><code>FLOAT DOUBLE和 DECIMAL</code>和<code>ENUM</code>有单独的条目了。数据类型做一个单独的主题是很困难的—我建议使用&rdquo;字段类型&rdquo;(或者&rdquo;数据类型&rdquo;)做一个概述，然后分成下面的主题页面：</p>
-
+<p><code>FLOAT DOUBLE和 DECIMAL</code>和<code>ENUM</code>有单独的条目了。数据类型做一个单独的主题是很困难的—我建议使用&quot;字段类型&rdquo;(或者&quot;数据类型&rdquo;)做一个概述，然后分成下面的主题页面：</p>
 <ul>
 <li>INTs</li>
 <li>FLOAT, DOUBLE, DECIMAL</li>
@@ -373,9 +325,7 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <li>JSON类型(MySQL5.7.8+)</li>
 <li>如何表示货币，以及其他需要将其转换为现有数据类型的常见“类型”</li>
 </ul>
-
 <p>在适当的情况下，除了语法和示例外，每个主题页面还应包括：</p>
-
 <ul>
 <li>更改时的注意事项</li>
 <li>字节大小</li>
@@ -384,44 +334,26 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <li>其他最佳实践</li>
 <li>其他性能问题</li>
 </ul>
-
 <p>（我假设当我的建议被满足或否决时，这个“例子”会自我挫败。）</p>
-
-<h3 id="隐式-自动转换">隐式/自动转换</h3>
-
+<h3 id="隐式自动转换">隐式/自动转换</h3>
 <pre><code>select '123' * 2;
-</code></pre>
-
-<p>在MySQL中使用乘法，这里会自动把字符串&rdquo;123&rdquo;转换为整数123。将会返回</p>
-
+</code></pre><p>在MySQL中使用乘法，这里会自动把字符串&quot;123&quot;转换为整数123。将会返回</p>
 <blockquote>
 <p>246</p>
 </blockquote>
-
 <p>这个转换是从左往右的，一旦不能转换的话，将会返回0</p>
-
 <pre><code>selectt '123ABC' * 2;
-</code></pre>
-
-<p>返回：</p>
-
+</code></pre><p>返回：</p>
 <blockquote>
 <p>246</p>
 </blockquote>
-
 <pre><code>select 'ABC123' * 2;
-</code></pre>
-
-<p>返回：</p>
-
+</code></pre><p>返回：</p>
 <blockquote>
 <p>0</p>
 </blockquote>
-
 <h3 id="数字导言">数字导言</h3>
-
 <p>MySQL提供多种不同类型的数字类型，下面是几种分类：</p>
-
 <table>
 <thead>
 <tr>
@@ -429,34 +361,27 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <th>类型</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>整形</td>
 <td>INTEGER, INT, SMALLINT, TINYINT, MEDIUMINT, BIGINT</td>
 </tr>
-
 <tr>
 <td>定点类型</td>
 <td>DECIMAL, NUMERIC</td>
 </tr>
-
 <tr>
 <td>浮点类型</td>
 <td>FLOAT, DOUBLE</td>
 </tr>
-
 <tr>
 <td>二进制类型</td>
 <td>BIT</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="整形">整形</h3>
-
 <p>最小无符号类型是0。</p>
-
 <table>
 <thead>
 <tr>
@@ -467,7 +392,6 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <th>无符号最大值</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>TINYINT</td>
@@ -476,7 +400,6 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <td>127</td>
 <td>255</td>
 </tr>
-
 <tr>
 <td>SMALLINT</td>
 <td>2</td>
@@ -484,7 +407,6 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <td>32767</td>
 <td>65535</td>
 </tr>
-
 <tr>
 <td>MEDIUMINT</td>
 <td>3</td>
@@ -492,7 +414,6 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <td>8388607</td>
 <td>16777215</td>
 </tr>
-
 <tr>
 <td>INT</td>
 <td>4</td>
@@ -500,7 +421,6 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <td>2147483647</td>
 <td>4294967295</td>
 </tr>
-
 <tr>
 <td>BIGINT</td>
 <td>8</td>
@@ -510,30 +430,17 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 </tr>
 </tbody>
 </table>
-
 <h3 id="定点数类型">定点数类型</h3>
-
 <p>MySQL的<code>DECIMAL</code>和<code>NUMERIC</code>存储精确的数字值类型。建议使用这些值来保证精确的精度，比如钱。</p>
-
 <h4 id="decimal">DECIMAL</h4>
-
 <p>这些值是二进制格式存储的。在进行列声明的时候，需要指定精度和小数点位数。</p>
-
 <p>精度代表这个值存储的有效位数。小数点位数表示小数点之后存储的位数。</p>
-
-<pre><code class="language-mysql">salary DECIMAL(5,2)
-</code></pre>
-
-<p>5表示的是精度，2表示小数点位数。对这个例子，存储的数的范围是-999.99到999.99。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">salary <span style="color:#66d9ef">DECIMAL</span>(<span style="color:#ae81ff">5</span>,<span style="color:#ae81ff">2</span>)
+</code></pre></div><p>5表示的是精度，2表示小数点位数。对这个例子，存储的数的范围是-999.99到999.99。</p>
 <p>如果小数点位数忽略的话，默认是0。这个数据类型最多存储65位数字。</p>
-
 <p><code>DECIMAL(M, N)</code>表示的字节数大概是M/2。</p>
-
 <h3 id="浮点数类型">浮点数类型</h3>
-
 <p><code>FLOAT</code>和<code>DOUBLE</code>表示相似的数据类型。</p>
-
 <table>
 <thead>
 <tr>
@@ -543,7 +450,6 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <th>范围</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>FLOAT</td>
@@ -551,7 +457,6 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 <td>23位有效数字/7位十进制数</td>
 <td>10^+/-38次方</td>
 </tr>
-
 <tr>
 <td>DOUBLE</td>
 <td>8字节</td>
@@ -560,27 +465,16 @@ Y</code>引擎，这将会把数据放到内存里面。在这个过程中，VAR
 </tr>
 </tbody>
 </table>
-
 <p><code>REAL</code>是<code>FLOAT</code>的别名。<code>DOUBLE PRECISION</code>是<code>DOUBLE</code>的别名。</p>
-
 <p>尽管MySQL支持<code>(M, N)</code>语法，但是不要使用。<code>(M, D)</code>表示存储的数据最多M个数字，在小数点之后是D个数字。数字将被四舍五入两次或截断；这将导致更多的麻烦而非效果。</p>
-
 <p>因为浮点数是近似值，而不是精度值，所以在比较中将其视为精度值将会造成误差。特别注意:<code>FLOAT</code>值很少等于<code>DOUBLE</code>值。</p>
-
 <h3 id="二进制类型">二进制类型</h3>
-
 <p><code>BIT</code>常用来存储二进制类型的数据。<code>BIT(M)</code>允许至多存储M位的数值，M的范围是1到64。</p>
-
 <p>还可以使用位语法<code>bit value</code>来指定值。</p>
-
 <pre><code>b'111'      -&gt; 7
 b'10000000' -&gt; 128
-</code></pre>
-
-<p>有时候使用&rdquo;位移&rdquo;来构造单个位值是很方便的，像<code>1 &lt;&lt; 7</code>等于128。</p>
-
+</code></pre><p>有时候使用&quot;位移&quot;来构造单个位值是很方便的，像<code>1 &lt;&lt; 7</code>等于128。</p>
 <p>在NDB表中，所有BIT列的最大组合值是4096。</p>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -653,6 +547,12 @@ b'10000000' -&gt; 128
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

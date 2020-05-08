@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,132 +187,85 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#update">UPDATE</a>
-<ul>
-<li><a href="#join语句更新">JOIN语句更新</a></li>
-<li><a href="#基本更新">基本更新</a></li>
-<li><a href="#批量更新">批量更新</a></li>
-<li><a href="#order-by-和-limit限制更新">ORDER BY 和 LIMIT限制更新</a></li>
-<li><a href="#多表更新">多表更新</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#update">UPDATE</a>
+      <ul>
+        <li><a href="#join语句更新">JOIN语句更新</a></li>
+        <li><a href="#基本更新">基本更新</a></li>
+        <li><a href="#批量更新">批量更新</a></li>
+        <li><a href="#order-by-和-limit限制更新">ORDER BY 和 LIMIT限制更新</a></li>
+        <li><a href="#多表更新">多表更新</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="update">UPDATE</h2>
-
+        		<h2 id="update">UPDATE</h2>
 <h3 id="join语句更新">JOIN语句更新</h3>
-
 <p>考虑有一个生存表叫做<code>questions_mysql</code>和一个表示批量导入CSV数据的最后一个记录<code>iwtQuestions</code>使用<a href="http://dev.mysql.com/doc/refman/5.7/en/load-data.html">LOAD_DATA_INFILE</a>。工作表在导入前被截断，数据被导入，并且这个过程在这里不显示。</p>
-
 <p>更新生产表数据使用一个和导入数据表的join语句。</p>
-
-<pre><code class="language-php">UPDATE questions_mysql q
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">UPDATE questions_mysql q
 JOIN iwtQuestions i
 ON i.qId = q.qId
 SET q.closeVotes = i.closeVotes,
 q.votes = i.votes,
 q.answers = i.answers,
 q.views = i.views;
-</code></pre>
-
-<p>这里别名q和i是变量使用表名的简写。这简化开发和可读性。</p>
-
+</code></pre></div><p>这里别名q和i是变量使用表名的简写。这简化开发和可读性。</p>
 <p>主键<code>qId</code>代表题目id。这里join匹配的四个列会被更新。</p>
-
 <h3 id="基本更新">基本更新</h3>
-
 <p><strong>更新一行</strong></p>
-
-<pre><code class="language-mysql">UPDATE customers SET email='luke_smith@email.com' WHERE id=1;
-</code></pre>
-
-<p>这个查询语句更新<code>customers</code>表中<code>id</code>为1的记录的<code>email</code>字段的内容，这里修改为<code>luke_smith@email.com</code>。数据表中老内容和新内容在下面显示了：</p>
-
-<p><img src="/img/mysql/IeWcs.png" alt="表数据对比" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> customers <span style="color:#66d9ef">SET</span> email<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;luke_smith@email.com&#39;</span> <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>;
+</code></pre></div><p>这个查询语句更新<code>customers</code>表中<code>id</code>为1的记录的<code>email</code>字段的内容，这里修改为<code>luke_smith@email.com</code>。数据表中老内容和新内容在下面显示了：</p>
+<p><img src="/img/mysql/IeWcs.png" alt="表数据对比"></p>
 <p>更新所有行</p>
-
-<pre><code class="language-mysql">UPDATE customers SET lastname='smith';
-</code></pre>
-
-<p>这个查询更新<code>customers</code>表中所有记录的<code>lastname</code>字段为<code>smith</code>。下面是老内容和新内容的对比：</p>
-
-<p><img src="/img/mysql/jUYMk.png" alt="lastname对比" /></p>
-
-<p><strong>注意：</strong>在UPDATE语句中使用WHERE是很必要的。如果你没有使用条件语句的话，表中所有记录都会被更新。在上面例子中customers表中所有记录的lastname都更新为smith。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> customers <span style="color:#66d9ef">SET</span> lastname<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;smith&#39;</span>;
+</code></pre></div><p>这个查询更新<code>customers</code>表中所有记录的<code>lastname</code>字段为<code>smith</code>。下面是老内容和新内容的对比：</p>
+<p><img src="/img/mysql/jUYMk.png" alt="lastname对比"></p>
+<p>**注意：**在UPDATE语句中使用WHERE是很必要的。如果你没有使用条件语句的话，表中所有记录都会被更新。在上面例子中customers表中所有记录的lastname都更新为smith。</p>
 <h3 id="批量更新">批量更新</h3>
-
 <p>使用不同的值更新多行时，可以使用批量更新：</p>
-
-<pre><code class="language-mysql">UPDATE people 
-SET name = 
-  (CASE id  WHEN 1 THEN 'Karl'
-            WHEN 2 THEN 'Tom'
-            WHEN 3 THEN 'Mary'
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> people 
+<span style="color:#66d9ef">SET</span> name <span style="color:#f92672">=</span> 
+  (<span style="color:#66d9ef">CASE</span> id  <span style="color:#66d9ef">WHEN</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">THEN</span> <span style="color:#e6db74">&#39;Karl&#39;</span>
+            <span style="color:#66d9ef">WHEN</span> <span style="color:#ae81ff">2</span> <span style="color:#66d9ef">THEN</span> <span style="color:#e6db74">&#39;Tom&#39;</span>
+            <span style="color:#66d9ef">WHEN</span> <span style="color:#ae81ff">3</span> <span style="color:#66d9ef">THEN</span> <span style="color:#e6db74">&#39;Mary&#39;</span>
   END)
-WHERE id IN (1, 2, 3);
-</code></pre>
-
-<p>这里使用一条查询更新多条记录而不是每行使用一条查询。这个CASE语句需要包含WHERE语句中的所有制。</p>
-
+<span style="color:#66d9ef">WHERE</span> id <span style="color:#66d9ef">IN</span> (<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>);
+</code></pre></div><p>这里使用一条查询更新多条记录而不是每行使用一条查询。这个CASE语句需要包含WHERE语句中的所有制。</p>
 <h3 id="order-by-和-limit限制更新">ORDER BY 和 LIMIT限制更新</h3>
-
 <p>如果你的更新语句指定了<code>ORDER BY</code>语句，那这些记录会按照指定的顺序来更新。</p>
-
 <p>如果你的更新语句指定了<code>LIMIT</code>关键字，这个时候只有指定数量的语句被更新。如果没有指定的话，就会不限制更新的数量。</p>
-
 <p><code>ORDER BY</code>和<code>LIMIT</code>语句不能被用来更新多表。</p>
-
 <p>下面是使用<code>ORDER BY</code>和<code>LIMIT</code>进行更新的语法：</p>
-
-<pre><code class="language-mysql">UPDATE [ LOW_PRIORITY ] [ IGNORE ]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> [ <span style="color:#66d9ef">LOW_PRIORITY</span> ] [ <span style="color:#66d9ef">IGNORE</span> ]
 tablename
-SET column1 = expression1,
-    column2 = expression2,
+<span style="color:#66d9ef">SET</span> column1 <span style="color:#f92672">=</span> expression1,
+    column2 <span style="color:#f92672">=</span> expression2,
     ...
-[ WHERE conditions ]
-[ ORDER BY expression [ ASC | DESC ]]
-[ LIMIT row_count];
+[ <span style="color:#66d9ef">WHERE</span> conditions ]
+[ <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> expression [ <span style="color:#66d9ef">ASC</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">DESC</span> ]]
+[ <span style="color:#66d9ef">LIMIT</span> row_count];
 
-UPDATE employees SET isConfirmed=1 ORDER BY joiningDate LIMIT 10;
-</code></pre>
-
-<p>在上面的例子中employees表会按照<code>joiningDate</code>的顺序更新10条记录。</p>
-
+<span style="color:#66d9ef">UPDATE</span> employees <span style="color:#66d9ef">SET</span> isConfirmed<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> joiningDate <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">10</span>;
+</code></pre></div><p>在上面的例子中employees表会按照<code>joiningDate</code>的顺序更新10条记录。</p>
 <h3 id="多表更新">多表更新</h3>
-
 <p>在多表更新中，会更新满足条件的每个指定表中的行。每个匹配的行只会更新一次，即使匹配了多次匹配条件。</p>
-
 <p>在多表更新中，<code>ORDER BY</code>和<code>LIMIT</code>不能使用。</p>
-
 <p>多表更新语法：</p>
-
-<pre><code class="language-mysql">UPDATE [ LOW_PRIORITY ] [ IGNORE ]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> [ <span style="color:#66d9ef">LOW_PRIORITY</span> ] [ <span style="color:#66d9ef">IGNORE</span> ]
 table1, table2, ...
-    SET column1 = expression1,
-        column2 = expression2,
+    <span style="color:#66d9ef">SET</span> column1 <span style="color:#f92672">=</span> expression1,
+        column2 <span style="color:#f92672">=</span> expression2,
         ...
-    [ WHERE conditions ]
-</code></pre>
-
-<p>例子假设有两张表<code>products</code>和<code>salesOrders</code>。在这种情况下，我们会从已经下单的订单中减少指定产品的数量。然后我们也需要增加产品表中的库存数量。这可以在下面一个SQL中完成。</p>
-
-<pre><code class="language-mysql">UPDATE products, salesOrders
-    SET salesOrders.Quantity = salesOrders.Quantity - 5,
-        products.availableStock = products.availableStock + 5
-    WHERE products.productId = salesOrders.productId
-    AND salesOrders.orderId = 100 AND salesOrders.productId = 20;
-</code></pre>
-
-<p>在上面的例子中，根据WHERE条件，将会从<code>salesOrders</code>表中减少quantity的值5，给products中增加相同的数量。</p>
-
+    [ <span style="color:#66d9ef">WHERE</span> conditions ]
+</code></pre></div><p>例子假设有两张表<code>products</code>和<code>salesOrders</code>。在这种情况下，我们会从已经下单的订单中减少指定产品的数量。然后我们也需要增加产品表中的库存数量。这可以在下面一个SQL中完成。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> products, salesOrders
+    <span style="color:#66d9ef">SET</span> salesOrders.Quantity <span style="color:#f92672">=</span> salesOrders.Quantity <span style="color:#f92672">-</span> <span style="color:#ae81ff">5</span>,
+        products.availableStock <span style="color:#f92672">=</span> products.availableStock <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span>
+    <span style="color:#66d9ef">WHERE</span> products.productId <span style="color:#f92672">=</span> salesOrders.productId
+    <span style="color:#66d9ef">AND</span> salesOrders.orderId <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span> <span style="color:#66d9ef">AND</span> salesOrders.productId <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>;
+</code></pre></div><p>在上面的例子中，根据WHERE条件，将会从<code>salesOrders</code>表中减少quantity的值5，给products中增加相同的数量。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -381,6 +338,12 @@ table1, table2, ...
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

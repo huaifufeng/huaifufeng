@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,56 +187,36 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#性能">性能</a>
-<ul>
-<li><a href="#1-xdebug分析">1. Xdebug分析</a></li>
-<li><a href="#2-内存使用">2. 内存使用</a></li>
-<li><a href="#3-xhprof分析">3. XHProf分析</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#性能">性能</a>
+      <ul>
+        <li><a href="#1-xdebug分析">1. Xdebug分析</a></li>
+        <li><a href="#2-内存使用">2. 内存使用</a></li>
+        <li><a href="#3-xhprof分析">3. XHProf分析</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="性能">性能</h2>
-
+        		<h2 id="性能">性能</h2>
 <h3 id="1-xdebug分析">1. Xdebug分析</h3>
-
 <p>一个叫做Xdebug的PHP扩展用来帮助分析PHP英语程序以及运行时调试。当运行这个分析器的时候，输出将会以二进制格式写入到<code>cachegrind</code>文件中。每个平台都有应用程序来分析这个文件。</p>
-
 <p>想要启用分析的话，需要安装这个扩展并且修改php.ini的配置。在我们的例子中，我们根据请求的参数允许分析。这允许我们保持配置静态，只在需要的时候启用分析。</p>
-
-<pre><code class="language-ini">// Set to 1 to turn it on for every request
-xdebug.profiler_enable = 0
-// Let's use a GET/POST parameter to turn on the profiler
-xdebug.profiler_enable_trigger = 1
-// The GET/POST value we will pass; empty for any value xdebug.profiler_enable_trigger_value = &quot;&quot;
-// Output cachegrind files to /tmp so our system cleans them up later xdebug.profiler_output_dir = &quot;/tmp&quot;
-xdebug.profiler_output_name = &quot;cachegrind.out.%p&quot;
-</code></pre>
-
-<p>然后在客户端中发起你希望进行分析的应用地址的请求：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#a6e22e">// Set to 1 to turn it on for every request</span>
+<span style="color:#a6e22e">xdebug.profiler_enable</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">0</span>
+<span style="color:#a6e22e">// Let&#39;s use a GET/POST parameter to turn on the profiler</span>
+<span style="color:#a6e22e">xdebug.profiler_enable_trigger</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">1</span>
+<span style="color:#a6e22e">// The GET/POST value we will pass; empty for any value xdebug.profiler_enable_trigger_value</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+<span style="color:#a6e22e">// Output cachegrind files to /tmp so our system cleans them up later xdebug.profiler_output_dir</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/tmp&#34;</span>
+<span style="color:#a6e22e">xdebug.profiler_output_name</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;cachegrind.out.%p&#34;</span>
+</code></pre></div><p>然后在客户端中发起你希望进行分析的应用地址的请求：</p>
 <pre><code>http://example.com/article/1?XDEBUG_PROFILE=1
-</code></pre>
-
-<p>这个请求将会在类似下面名称的文件中写入数据：</p>
-
+</code></pre><p>这个请求将会在类似下面名称的文件中写入数据：</p>
 <pre><code> /tmp/cachegrind.out.12345 
-</code></pre>
-
-<p>注意这会为执行的每个PHP请求/进程编写一个文件。因此，如果您希望分析一个表单提交，那么将为显示HTML表单的GET请求编写一个概要文件。XDEBUG_PROFILE参数需要传递给后面的post请求中，以分析处理第二个请求。因此在分析时，使用curl来发送POST请求更直接。</p>
-
+</code></pre><p>注意这会为执行的每个PHP请求/进程编写一个文件。因此，如果您希望分析一个表单提交，那么将为显示HTML表单的GET请求编写一个概要文件。XDEBUG_PROFILE参数需要传递给后面的post请求中，以分析处理第二个请求。因此在分析时，使用curl来发送POST请求更直接。</p>
 <p>一旦写入，配置文件缓存就可以被kcachegrind等应用程序读取。</p>
-
-<p><img src="/img/php/ENtOu.gif" alt="xdebug" /></p>
-
+<p><img src="/img/php/ENtOu.gif" alt="xdebug"></p>
 <p>这显示包括下面的信息：</p>
-
 <ul>
 <li>函数执行</li>
 <li>调用次数，包括自己的和后续函数的调用</li>
@@ -240,70 +224,49 @@ xdebug.profiler_output_name = &quot;cachegrind.out.%p&quot;
 <li>调用图</li>
 <li>源码的连接</li>
 </ul>
-
 <p>显然性能调优对于每个应用程序用例都是很具体的。总的来说，非常便于寻找：</p>
-
 <ul>
 <li>你不希望看到的循环方法调用。对于处理和查询数据的函数，这些可能是应用程序缓存的主要机会。</li>
 <li>执行很慢的函数。应用程序大部分时间花在哪里了？性能调优的最佳回报是关注应用程序中消耗时间最多的部分。</li>
 </ul>
-
-<p><strong>注意：</strong>Xdebug，尤其是它的分析特性，是非常资源密集型的，并且会减慢PHP的执行速度。建议不要在生产环境使用。</p>
-
+<p>**注意：**Xdebug，尤其是它的分析特性，是非常资源密集型的，并且会减慢PHP的执行速度。建议不要在生产环境使用。</p>
 <h3 id="2-内存使用">2. 内存使用</h3>
-
 <p>PHP的运行时内存限制是通过php.ini中的<code>memory_limit</code>直接限制的。这个配置避免单独的PHP执行占用太多的内存，用掉其他脚本或系统软件的内存。内存限制默认是128M，可以通过修改<code>php.ini</code>来修改或者在运行时修改。可以设置为不限制，但是这是一种很坏的实践方式。</p>
-
 <p>运行时实际使用的内存可以通过<code>memory_get_usage()</code>来获取。它返回运行当前脚本需要神奇的内存的字节数。从PHP 5.2开始，它有一个可选的布尔值参数来获取分配给系统的总内存，而不是PHP正在使用的内存。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">memory_get_usage</span>() <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+<span style="color:#75715e">// Outputs 350688 (or similar, depending on system and PHP version)
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// Let&#39;s use up some RAM
+</span><span style="color:#75715e"></span>$array <span style="color:#f92672">=</span> <span style="color:#a6e22e">array_fill</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1000</span>, <span style="color:#e6db74">&#39;abc&#39;</span>); 
 
-<pre><code class="language-php">&lt;?php
-echo memory_get_usage() . &quot;\n&quot;;
-// Outputs 350688 (or similar, depending on system and PHP version)
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">memory_get_usage</span>() <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
 
-// Let's use up some RAM
-$array = array_fill(0, 1000, 'abc'); 
-
-echo memory_get_usage() . &quot;\n&quot;;
-
-// Outputs 387704
-// Remove the array from memory
-unset($array);
-echo memory_get_usage() . &quot;\n&quot;; 
-// Outputs 350784
-</code></pre>
-
-<p>现在<code>memory_get_usage</code>给你运行时使用的内存。在调用这个方法之间你可能申请和释放事情的列表。想要获取每个时间点使用的最大的内存，可以使用<code>memory_get_peak_usage()</code>。</p>
-
-<pre><code class="language-php">&lt;?php
-echo memory_get_peak_usage() . &quot;\n&quot;; 
-// 385688
-$array = array_fill(0, 1000, 'abc'); 
-echo memory_get_peak_usage() . &quot;\n&quot;;
-// 422736
-unset($array);
-echo memory_get_peak_usage() . &quot;\n&quot;; 
-// 422776
-</code></pre>
-
-<p>注意这个值只会上升或保持不变。</p>
-
+<span style="color:#75715e">// Outputs 387704
+</span><span style="color:#75715e">// Remove the array from memory
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">unset</span>($array);
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">memory_get_usage</span>() <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>; 
+<span style="color:#75715e">// Outputs 350784
+</span></code></pre></div><p>现在<code>memory_get_usage</code>给你运行时使用的内存。在调用这个方法之间你可能申请和释放事情的列表。想要获取每个时间点使用的最大的内存，可以使用<code>memory_get_peak_usage()</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">memory_get_peak_usage</span>() <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>; 
+<span style="color:#75715e">// 385688
+</span><span style="color:#75715e"></span>$array <span style="color:#f92672">=</span> <span style="color:#a6e22e">array_fill</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1000</span>, <span style="color:#e6db74">&#39;abc&#39;</span>); 
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">memory_get_peak_usage</span>() <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+<span style="color:#75715e">// 422736
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">unset</span>($array);
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">memory_get_peak_usage</span>() <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>; 
+<span style="color:#75715e">// 422776
+</span></code></pre></div><p>注意这个值只会上升或保持不变。</p>
 <h3 id="3-xhprof分析">3. XHProf分析</h3>
-
 <p><a href="https://github.com/phacility/xhprof">XHProf</a>是Facebook提供的一个PHP分析器，它提供了一个Xdebug的更轻量的选择。</p>
-
 <p>在安装<code>xhprof</code>的PHP模块只会，可以在PHP代码中开启/关闭分析。</p>
-
-<pre><code class="language-php">xhprof_enable();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">xhprof_enable();
 doSlowOperation();
 $profile_data = xhprof_disable();
-</code></pre>
-
-<p>这个返回的数组包含下面的数据：调用次数，CPU执行时间，<code>doSlowOperation()</code>方法中使用的方法使用的内存。</p>
-
+</code></pre></div><p>这个返回的数组包含下面的数据：调用次数，CPU执行时间，<code>doSlowOperation()</code>方法中使用的方法使用的内存。</p>
 <p><code>xhprof_sample_enable()</code>/<code>xhprof_sample_disable()</code>可以用来提供一个更轻量的选择：该选项只记录请求的一部分(以不同的格式)的分析信息。</p>
-
 <p>XHProf有一些(大部分未记录)助手函数来显示数据(参见示例)，或者你可以使用其他的工具来可视化数据(platform.sh上<a href="https://platform.sh/2015/07/29/flamegraphs/">有一个例子</a>)。</p>
-
 <p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
@@ -376,6 +339,12 @@ $profile_data = xhprof_disable();
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

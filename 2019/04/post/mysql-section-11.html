@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,30 +187,22 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#delete">DELETE</a>
-<ul>
-<li><a href="#多表删除">多表删除</a>
-<ul>
-<li><a href="#外键">外键</a></li>
-</ul></li>
-<li><a href="#delete-vs-truncate">DELETE VS TRUNCATE</a></li>
-<li><a href="#多表delete">多表DELETE</a></li>
-<li><a href="#基本删除">基本删除</a></li>
-<li><a href="#where">WHERE</a></li>
-<li><a href="#删除所有行">删除所有行</a></li>
-<li><a href="#limit删除">LIMIT删除</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#delete">DELETE</a>
+      <ul>
+        <li><a href="#多表删除">多表删除</a></li>
+        <li><a href="#delete-vs-truncate">DELETE VS TRUNCATE</a></li>
+        <li><a href="#多表delete">多表DELETE</a></li>
+        <li><a href="#基本删除">基本删除</a></li>
+        <li><a href="#where">WHERE</a></li>
+        <li><a href="#删除所有行">删除所有行</a></li>
+        <li><a href="#limit删除">LIMIT删除</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="delete">DELETE</h2>
-
+        		<h2 id="delete">DELETE</h2>
 <table>
 <thead>
 <tr>
@@ -214,190 +210,123 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>LOW_PRIORITY</td>
 <td>如果提供了<code>LOW_PRIORITY</code>，删除操作只有在没有其他进程从数据表上读取数据的时候才会执行</td>
 </tr>
-
 <tr>
 <td>IGNORE</td>
 <td>如果提供了<code>IGNORE</code>，任何删除时遇到的错误都将忽略</td>
 </tr>
-
 <tr>
 <td>table</td>
 <td>你想要删除记录的表</td>
 </tr>
-
 <tr>
 <td>WHERE conditions</td>
 <td>指定要删除数据的条件表达式。如果没有指定条件的话，所有的表记录都会被删除。</td>
 </tr>
-
 <tr>
 <td>ORDER BY expression</td>
 <td>如果提供了<code>ORDER BY</code>，将会按照顺序删除记录</td>
 </tr>
-
 <tr>
 <td>LIMIT</td>
 <td>控制删除的最大记录数量。提供的<code>number_rows</code>将会被删除。</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="多表删除">多表删除</h3>
-
 <p>MySQL的<code>DELETE</code>语句可以用于<code>JOIN</code>语句，允许指定需要删除的表。这用来避免嵌套语句很有用。下面是一个表：</p>
-
-<pre><code class="language-mysql">create table people
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> <span style="color:#a6e22e">people</span>
 (
-    id int primary key,
-    name varchar(100) not null,
-    gender char(1) not null
+    id <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span>,
+    name <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">100</span>) <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span>,
+    gender <span style="color:#66d9ef">char</span>(<span style="color:#ae81ff">1</span>) <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span>
 );
-insert into people(id, name, gender) values 
-(1, 'Kathy', 'f'),(2, 'John', 'm'),(3,'Paul','m'),(4,'Kim','f');
+<span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> <span style="color:#a6e22e">people</span>(id, name, gender) <span style="color:#66d9ef">values</span> 
+(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;Kathy&#39;</span>, <span style="color:#e6db74">&#39;f&#39;</span>),(<span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#39;John&#39;</span>, <span style="color:#e6db74">&#39;m&#39;</span>),(<span style="color:#ae81ff">3</span>,<span style="color:#e6db74">&#39;Paul&#39;</span>,<span style="color:#e6db74">&#39;m&#39;</span>),(<span style="color:#ae81ff">4</span>,<span style="color:#e6db74">&#39;Kim&#39;</span>,<span style="color:#e6db74">&#39;f&#39;</span>);
 
-create table pets
+<span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> <span style="color:#a6e22e">pets</span>
 (
-    id int auto_increment primary key,
-    ownerId int not null,
-    name varchar(100) not null,
-    color varchar(100) not null
+    id <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">auto_increment</span> <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span>,
+    ownerId <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span>,
+    name <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">100</span>) <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span>,
+    color <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">100</span>) <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span>
 );
-insert into pets(ownerId, name, color) values
-(1, 'Rover', 'beige'), (2, 'Bubbles', 'purple'), (3, 'Spot', 'black and white'),
-(1, 'Rover2', 'white');
+<span style="color:#66d9ef">insert</span> <span style="color:#66d9ef">into</span> <span style="color:#a6e22e">pets</span>(ownerId, name, color) <span style="color:#66d9ef">values</span>
+(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;Rover&#39;</span>, <span style="color:#e6db74">&#39;beige&#39;</span>), (<span style="color:#ae81ff">2</span>, <span style="color:#e6db74">&#39;Bubbles&#39;</span>, <span style="color:#e6db74">&#39;purple&#39;</span>), (<span style="color:#ae81ff">3</span>, <span style="color:#e6db74">&#39;Spot&#39;</span>, <span style="color:#e6db74">&#39;black and white&#39;</span>),
+(<span style="color:#ae81ff">1</span>, <span style="color:#e6db74">&#39;Rover2&#39;</span>, <span style="color:#e6db74">&#39;white&#39;</span>);
 
 id name gender
-1  Kathy f
-2  John  m
-3  Paul  m
-4  Kim   f
+<span style="color:#ae81ff">1</span>  Kathy f
+<span style="color:#ae81ff">2</span>  John  m
+<span style="color:#ae81ff">3</span>  Paul  m
+<span style="color:#ae81ff">4</span>  Kim   f
 
 id  ownerId name   color
-1   1       Rover  beige
-2   2       Bubbles purple
-3   3       black and white
-4   1       Rover2 white
-</code></pre>
-
-<p>如果你想要删除Paul的宠物：</p>
-
-<pre><code class="language-mysql">DELETE p2 FROM pets p2 WHERE p2.ownerId in (
-    SELECT p1.id FROM people p1 WHERE p1.name='Paul'
+<span style="color:#ae81ff">1</span>   <span style="color:#ae81ff">1</span>       Rover  beige
+<span style="color:#ae81ff">2</span>   <span style="color:#ae81ff">2</span>       Bubbles purple
+<span style="color:#ae81ff">3</span>   <span style="color:#ae81ff">3</span>       black <span style="color:#66d9ef">and</span> white
+<span style="color:#ae81ff">4</span>   <span style="color:#ae81ff">1</span>       Rover2 white
+</code></pre></div><p>如果你想要删除Paul的宠物：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> p2 <span style="color:#66d9ef">FROM</span> pets p2 <span style="color:#66d9ef">WHERE</span> p2.ownerId <span style="color:#66d9ef">in</span> (
+    <span style="color:#66d9ef">SELECT</span> p1.id <span style="color:#66d9ef">FROM</span> people p1 <span style="color:#66d9ef">WHERE</span> p1.name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Paul&#39;</span>
 );
-</code></pre>
-
-<p>也可以使用JOIN语法：</p>
-
-<pre><code class="language-mysql">DELETE p2 FROM people p1 JOIN pets p2 ON p2.ownerId=p1.id WHERE p1.name='Paul';
-</code></pre>
-
-<p>1 row deleted</p>
-
+</code></pre></div><p>也可以使用JOIN语法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> p2 <span style="color:#66d9ef">FROM</span> people p1 <span style="color:#66d9ef">JOIN</span> pets p2 <span style="color:#66d9ef">ON</span> p2.ownerId<span style="color:#f92672">=</span>p1.id <span style="color:#66d9ef">WHERE</span> p1.name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Paul&#39;</span>;
+</code></pre></div><p>1 row deleted</p>
 <p>从pets中删除了Spot这条记录。其中p1和p2是别名，对于长表名很有用也更加易读。</p>
-
 <p>删除人和宠物：</p>
-
-<pre><code class="language-mysql">DELETE p1, p2 FROM people p1 JOIN pets p2 ON p2.ownerId=p1.id WHERE p1.name='Paul';
-</code></pre>
-
-<p>2 rows deleted</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> p1, p2 <span style="color:#66d9ef">FROM</span> people p1 <span style="color:#66d9ef">JOIN</span> pets p2 <span style="color:#66d9ef">ON</span> p2.ownerId<span style="color:#f92672">=</span>p1.id <span style="color:#66d9ef">WHERE</span> p1.name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Paul&#39;</span>;
+</code></pre></div><p>2 rows deleted</p>
 <p>从pets中删除Spot。从people中删除Paul。</p>
-
 <h4 id="外键">外键</h4>
-
 <p>当DELETE语句使用<code>foreign key</code>来约束表时，优化器可以按照不遵循关系的顺序处理这些表。在pets表中增加一个外键：</p>
-
-<pre><code class="language-mysql">ALTER TABLE pets ADD CONSTRAINT `fk_pets_2_people` FOREIGN KEY(ownerId) references people(id) on DELETE  CASCADE;
-</code></pre>
-
-<p>这个引擎可能试着在pets操作之前先删除people表的记录，因此会造成下面的错误：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> pets <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#f92672">`</span>fk_pets_2_people<span style="color:#f92672">`</span> <span style="color:#66d9ef">FOREIGN</span> <span style="color:#66d9ef">KEY</span>(ownerId) <span style="color:#66d9ef">references</span> <span style="color:#a6e22e">people</span>(id) <span style="color:#66d9ef">on</span> <span style="color:#66d9ef">DELETE</span>  <span style="color:#66d9ef">CASCADE</span>;
+</code></pre></div><p>这个引擎可能试着在pets操作之前先删除people表的记录，因此会造成下面的错误：</p>
 <pre><code>ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`test`.`pets`, CONSTRAINT `pets_ibfk_1` FOREIGN KEY (`ownerId`) REFERENCES `people` (`id`))
-</code></pre>
-
-<p>这个解决办法是从people表进行删除，然后依赖InnoDB的<code>ON DELETE</code>功能传递删除操作：</p>
-
-<pre><code class="language-mysql">DELETE FROM people WHERE name='Paul';
-</code></pre>
-
-<p>2 rows deleted</p>
-
+</code></pre><p>这个解决办法是从people表进行删除，然后依赖InnoDB的<code>ON DELETE</code>功能传递删除操作：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> people <span style="color:#66d9ef">WHERE</span> name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Paul&#39;</span>;
+</code></pre></div><p>2 rows deleted</p>
 <p>从people中删除Paul。从pets关联删除Spot。</p>
-
 <p>第二个解决办法是临时删除外键检查：</p>
-
-<pre><code class="language-mysql">SET foreign_key_checks = 0;
-DELETE p1, p2 FROM people p1 JOIN pets p2 ON p2.ownerId=p1.id WHERE p1.name='Paul';
-SET foreign_key_checks = 1;
-</code></pre>
-
-<h3 id="delete-vs-truncate">DELETE VS TRUNCATE</h3>
-
-<pre><code class="language-mysql">TRUNCATE tablename;
-</code></pre>
-
-<p>这将会删除表的所有数据并且重置<code>AUTO_INCREMENT</code>索引值。在数据表的数据很大的时候，这个操作比<code>DELETE FROM tablename</code>更快。这在开发/测试的过程中很有用。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SET</span> foreign_key_checks <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+<span style="color:#66d9ef">DELETE</span> p1, p2 <span style="color:#66d9ef">FROM</span> people p1 <span style="color:#66d9ef">JOIN</span> pets p2 <span style="color:#66d9ef">ON</span> p2.ownerId<span style="color:#f92672">=</span>p1.id <span style="color:#66d9ef">WHERE</span> p1.name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Paul&#39;</span>;
+<span style="color:#66d9ef">SET</span> foreign_key_checks <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
+</code></pre></div><h3 id="delete-vs-truncate">DELETE VS TRUNCATE</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">TRUNCATE tablename;
+</code></pre></div><p>这将会删除表的所有数据并且重置<code>AUTO_INCREMENT</code>索引值。在数据表的数据很大的时候，这个操作比<code>DELETE FROM tablename</code>更快。这在开发/测试的过程中很有用。</p>
 <p>当使用truncate操作一个表的时候，并不会删除相应的数据，这个操作删除表然后重建这个表，从而取消页面的分配，所以有机会在页面覆盖之前恢复截断的数据。(当innodb_file_per_table=OFF的时候，不会立即重新分配空间。)</p>
-
 <h3 id="多表delete">多表DELETE</h3>
-
 <p>MySQL允许指定哪个表匹配的行必须删除：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 只删除employees记录
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">DELETE</span> e <span style="color:#66d9ef">FROM</span> Employees e <span style="color:#66d9ef">JOIN</span> Department d <span style="color:#66d9ef">ON</span> e.department_id <span style="color:#f92672">=</span> d.department_id
+<span style="color:#66d9ef">WHERE</span> d.name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Sales&#39;</span>;
 
-<pre><code class="language-mysql">-- 只删除employees记录
-DELETE e FROM Employees e JOIN Department d ON e.department_id = d.department_id
-WHERE d.name='Sales';
+<span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">删除</span>employees和department表
+<span style="color:#66d9ef">DELETE</span> e, d <span style="color:#66d9ef">FROM</span> Employees e <span style="color:#66d9ef">JOIN</span> Department d <span style="color:#66d9ef">ON</span> e.department_id <span style="color:#f92672">=</span> d.department_id
+<span style="color:#66d9ef">WHERE</span> d.name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Sales&#39;</span>;
 
---删除employees和department表
-DELETE e, d FROM Employees e JOIN Department d ON e.department_id = d.department_id
-WHERE d.name='Sales';
-
---删除所有的表，和之前的一样
-DELETE FROM Employee e JOIN Department d ON e.department_id = d.department_id
-WHRE d.name = 'Sales';
-</code></pre>
-
-<h3 id="基本删除">基本删除</h3>
-
-<pre><code class="language-mysql">DELETE FROM `myTable` WHERE `someColumn`='something';
-</code></pre>
-
-<p>这里<code>WHERE</code>是可选的，但是没有的话会删除所有的行。</p>
-
+<span style="color:#f92672">--</span><span style="color:#960050;background-color:#1e0010">删除所有的表，和之前的一样</span>
+<span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> Employee e <span style="color:#66d9ef">JOIN</span> Department d <span style="color:#66d9ef">ON</span> e.department_id <span style="color:#f92672">=</span> d.department_id
+WHRE d.name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Sales&#39;</span>;
+</code></pre></div><h3 id="基本删除">基本删除</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>myTable<span style="color:#f92672">`</span> <span style="color:#66d9ef">WHERE</span> <span style="color:#f92672">`</span>someColumn<span style="color:#f92672">`=</span><span style="color:#e6db74">&#39;something&#39;</span>;
+</code></pre></div><p>这里<code>WHERE</code>是可选的，但是没有的话会删除所有的行。</p>
 <h3 id="where">WHERE</h3>
-
-<pre><code class="language-mysql">DELETE FROM `table_name` WHERE `field_one`='value_one';
-</code></pre>
-
-<p>这将删除table_name表中所有<code>field_one</code>的值是<code>value_one</code>的记录。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>table_name<span style="color:#f92672">`</span> <span style="color:#66d9ef">WHERE</span> <span style="color:#f92672">`</span>field_one<span style="color:#f92672">`=</span><span style="color:#e6db74">&#39;value_one&#39;</span>;
+</code></pre></div><p>这将删除table_name表中所有<code>field_one</code>的值是<code>value_one</code>的记录。</p>
 <p>这里的<code>WHERE</code>语句和select中的事一样的，所以像<code>&gt; &lt; &lt;&gt; LIke</code>都是可以使用的。</p>
-
-<p><strong>注意：</strong>在DELETE中使用WHERE语句是必要的。如果你没有指定条件的话，表中的数据豆浆被删除。</p>
-
+<p>**注意：**在DELETE中使用WHERE语句是必要的。如果你没有指定条件的话，表中的数据豆浆被删除。</p>
 <h3 id="删除所有行">删除所有行</h3>
-
-<pre><code class="language-mysql">DELETE FROM table_name;
-</code></pre>
-
-<p>这将删除表table_name中的所有记录。这是语法最基本的例子。这也展示了如果没有提供<code>WHERE</code>语句的话，<code>DELETE</code>将会清空这个表。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> table_name;
+</code></pre></div><p>这将删除表table_name中的所有记录。这是语法最基本的例子。这也展示了如果没有提供<code>WHERE</code>语句的话，<code>DELETE</code>将会清空这个表。</p>
 <h3 id="limit删除">LIMIT删除</h3>
-
-<pre><code class="language-mysql">DELETE FROM `table_name` WHERE `field_one`='value_one' LIMIT 1;
-</code></pre>
-
-<p>这个和WHERE中的例子是一样的，唯一的不同是这里删除指定数量的数据之后，就不会再继续删除了。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>table_name<span style="color:#f92672">`</span> <span style="color:#66d9ef">WHERE</span> <span style="color:#f92672">`</span>field_one<span style="color:#f92672">`=</span><span style="color:#e6db74">&#39;value_one&#39;</span> <span style="color:#66d9ef">LIMIT</span> <span style="color:#ae81ff">1</span>;
+</code></pre></div><p>这个和WHERE中的例子是一样的，唯一的不同是这里删除指定数量的数据之后，就不会再继续删除了。</p>
 <p>如果这样限制删除的行数的话，它将会删除符合条件的第一行。但是它的返回值可能不是你希望的值，因为这里没有对结果进行显示的排序，所以结果可能是未排序的方式返回的。</p>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -470,6 +399,12 @@ WHRE d.name = 'Sales';
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

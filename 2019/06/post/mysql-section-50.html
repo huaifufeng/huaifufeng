@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,28 +187,23 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用mysqldump备份">使用mysqldump备份</a>
-<ul>
-<li><a href="#1-指定用户名和密码">1. 指定用户名和密码</a></li>
-<li><a href="#2-创建数据库或表的备份">2. 创建数据库或表的备份</a></li>
-<li><a href="#3-导入一个数据库或数据表的备份">3. 导入一个数据库或数据表的备份</a></li>
-<li><a href="#4-从一个数据库向另一个数据库传输数据">4. 从一个数据库向另一个数据库传输数据</a></li>
-<li><a href="#5-通过压缩从远程服务器进行mysqldump">5. 通过压缩从远程服务器进行mysqldump</a></li>
-<li><a href="#6-不解压从一个gizp文件导入数据">6. 不解压从一个gizp文件导入数据</a></li>
-<li><a href="#7-备份数据库存储过程和函数">7. 备份数据库存储过程和函数</a></li>
-<li><a href="#8-通过压缩直接备份到amazon-s3">8. 通过压缩直接备份到Amazon S3</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#使用mysqldump备份">使用mysqldump备份</a>
+      <ul>
+        <li><a href="#1-指定用户名和密码">1. 指定用户名和密码</a></li>
+        <li><a href="#2-创建数据库或表的备份">2. 创建数据库或表的备份</a></li>
+        <li><a href="#3-导入一个数据库或数据表的备份">3. 导入一个数据库或数据表的备份</a></li>
+        <li><a href="#4-从一个数据库向另一个数据库传输数据">4. 从一个数据库向另一个数据库传输数据</a></li>
+        <li><a href="#5-通过压缩从远程服务器进行mysqldump">5. 通过压缩从远程服务器进行mysqldump</a></li>
+        <li><a href="#6-不解压从一个gizp文件导入数据">6. 不解压从一个gizp文件导入数据</a></li>
+        <li><a href="#7-备份数据库存储过程和函数">7. 备份数据库存储过程和函数</a></li>
+        <li><a href="#8-通过压缩直接备份到amazon-s3">8. 通过压缩直接备份到Amazon S3</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="使用mysqldump备份">使用mysqldump备份</h2>
-
+        		<h2 id="使用mysqldump备份">使用mysqldump备份</h2>
 <table>
 <thead>
 <tr>
@@ -212,209 +211,125 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>—</td>
 <td>服务器登录选项</td>
 </tr>
-
 <tr>
 <td>-h (—host)</td>
 <td>要连接的服务器的主机(IP地址或主机名称)。默认是<code>localhost(127.0.0.1)</code>。例如<code>-h localhost</code></td>
 </tr>
-
 <tr>
 <td>-u (—user)</td>
 <td>MySQL的用户名</td>
 </tr>
-
 <tr>
 <td>-p (—password)</td>
 <td>MySQL的用户密码。<strong>重要</strong>：当使用这个选项的时候，在<code>-p</code>和密码之间没有空格。例如<code>-pMyPassword</code></td>
 </tr>
-
 <tr>
 <td>—</td>
 <td>导出选项</td>
 </tr>
-
 <tr>
 <td>—add-drop-database</td>
 <td>在每个<code>CREATE DATABASE</code>语句之前添加一个<code>DROP DATABASE</code>。如果你想要替换服务器上面的数据库，这个是很有用的</td>
 </tr>
-
 <tr>
 <td>—add-drop-table</td>
 <td>在每个<code>CREATE TABLE</code>语句前面增加<code>DROP TABLE</code>语句。当你想要替换服务器上面的表的话很有用。</td>
 </tr>
-
 <tr>
 <td>—no-create-db</td>
 <td>禁止在转存中使用<code>CREATE DATABASE</code>语句。当你确定要转存的数据库在目标数据库中已经存在时使用。</td>
 </tr>
-
 <tr>
 <td>-t (—no-create-info)</td>
 <td>禁止在转存中使用<code>CREATE TABLE</code>语句。这在你只想导出表的数据时有用，然后在另外的库中使用这个转存文件导入数据到相同的表中。</td>
 </tr>
-
 <tr>
 <td>-d (—no-data)</td>
-<td>不写表信息。值或导出<code>CREATE TABLE</code>语句。对应创建数据库的&rdquo;模板&rdquo;很有用</td>
+<td>不写表信息。值或导出<code>CREATE TABLE</code>语句。对应创建数据库的&quot;模板&quot;很有用</td>
 </tr>
-
 <tr>
 <td>-R (—routines)</td>
 <td>在导出中包含存储过程/函数</td>
 </tr>
-
 <tr>
 <td>-K (—disable-keys)</td>
 <td>在插入数据之前禁止每个表的key，数据导入之后允许key。这会增加MyISAM中没有唯一索引的表的导入速度。</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-指定用户名和密码">1. 指定用户名和密码</h3>
-
-<pre><code class="language-mysql">&gt;mysqldump -u username -p [other options]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#f92672">&gt;</span>mysqldump <span style="color:#f92672">-</span>u username <span style="color:#f92672">-</span>p [other options]
 Enter password:
-</code></pre>
-
-<p>如果你需要在命令行中指定密码，你需要在<code>-p</code>后面输入密码，注意这里没有空格：</p>
-
-<pre><code class="language-mysql">&gt; mysqldump -u username -ppassword [other options]
-</code></pre>
-
-<p>如果你的密码中包括空格或者特殊字符，需要在你的shell或系统中使用转义字符：</p>
-
+</code></pre></div><p>如果你需要在命令行中指定密码，你需要在<code>-p</code>后面输入密码，注意这里没有空格：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#f92672">&gt;</span> mysqldump <span style="color:#f92672">-</span>u username <span style="color:#f92672">-</span>ppassword [other options]
+</code></pre></div><p>如果你的密码中包括空格或者特殊字符，需要在你的shell或系统中使用转义字符：</p>
 <p>也可以选择下面的方式：</p>
-
-<pre><code class="language-mysql">&gt; mysqldump --user=username --password=password [other options]
-</code></pre>
-
-<p>(在命令行中显示的指定密码是不推荐的，因为这不安全。)</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#f92672">&gt;</span> mysqldump <span style="color:#f92672">--</span><span style="color:#66d9ef">user</span><span style="color:#f92672">=</span>username <span style="color:#f92672">--</span>password<span style="color:#f92672">=</span>password [other options]
+</code></pre></div><p>(在命令行中显示的指定密码是不推荐的，因为这不安全。)</p>
 <h3 id="2-创建数据库或表的备份">2. 创建数据库或表的备份</h3>
-
 <p>创建整个数据库的备份：</p>
-
-<pre><code class="language-mysql">&gt; mysqldump [options] db_name &gt; filename.sql
-</code></pre>
-
-<p>创建多个数据库的备份：</p>
-
-<pre><code class="language-mysql">&gt; mysqldump [options] --databases db_name1 db_name2 ... &gt; filename.sql
-&gt; mysqldump [options] --all-databases &gt; filename.sql
-</code></pre>
-
-<p>创建一个或多个数据表的备份：</p>
-
-<pre><code class="language-mysql">msyqldump [options] db_name table_name ... &gt; filename.sql
-</code></pre>
-
-<p>创建除了指定数据表之外的数据表的备份：</p>
-
-<pre><code class="language-mysql">&gt; mysqldump [options] db_name --ignore-table=tb1 --ignore-table=tbl2 ... &gt;filename.sql
-</code></pre>
-
-<p>文件扩展名<code>.sql</code>完全是样式问题。任何扩展都是可以的。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#f92672">&gt;</span> mysqldump [options] db_name <span style="color:#f92672">&gt;</span> filename.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p>创建多个数据库的备份：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#f92672">&gt;</span> mysqldump [options] <span style="color:#f92672">--</span><span style="color:#66d9ef">databases</span> db_name1 db_name2 ... <span style="color:#f92672">&gt;</span> filename.<span style="color:#66d9ef">sql</span>
+<span style="color:#f92672">&gt;</span> mysqldump [options] <span style="color:#f92672">--</span><span style="color:#66d9ef">all</span><span style="color:#f92672">-</span><span style="color:#66d9ef">databases</span> <span style="color:#f92672">&gt;</span> filename.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p>创建一个或多个数据表的备份：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">msyqldump [options] db_name table_name ... <span style="color:#f92672">&gt;</span> filename.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p>创建除了指定数据表之外的数据表的备份：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#f92672">&gt;</span> mysqldump [options] db_name <span style="color:#f92672">--</span><span style="color:#66d9ef">ignore</span><span style="color:#f92672">-</span><span style="color:#66d9ef">table</span><span style="color:#f92672">=</span>tb1 <span style="color:#f92672">--</span><span style="color:#66d9ef">ignore</span><span style="color:#f92672">-</span><span style="color:#66d9ef">table</span><span style="color:#f92672">=</span>tbl2 ... <span style="color:#f92672">&gt;</span>filename.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p>文件扩展名<code>.sql</code>完全是样式问题。任何扩展都是可以的。</p>
 <h3 id="3-导入一个数据库或数据表的备份">3. 导入一个数据库或数据表的备份</h3>
-
-<pre><code class="language-mysql">mysql [options] db_name &lt; filename.sql
-</code></pre>
-
-<p>注意：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql [options] db_name <span style="color:#f92672">&lt;</span> filename.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p>注意：</p>
 <ul>
 <li><code>db_name</code>需要是一个已经存在的数据库</li>
 <li>你指定的用户需要具备<code>filename.sql</code>中所有命令的执行权限</li>
 <li>这个文件扩展<code>.sql</code>是样式问题，任何扩展都是可以的。</li>
 <li>即使可以指定要从存储转存的表名，也不能指定要加载的表名。这必须在<code>filename.sql</code>中完成。</li>
 </ul>
-
 <p>另外，当在<code>MySQL命令行工具</code>中时，你可以使用source命令或其他命令来导入数据：</p>
-
-<pre><code class="language-mysql">source filename.sql
--- 或者
-\. filename.sql
-</code></pre>
-
-<h3 id="4-从一个数据库向另一个数据库传输数据">4. 从一个数据库向另一个数据库传输数据</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">source filename.<span style="color:#66d9ef">sql</span>
+<span style="color:#75715e">-- 或者
+</span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">\</span>. filename.<span style="color:#66d9ef">sql</span>
+</code></pre></div><h3 id="4-从一个数据库向另一个数据库传输数据">4. 从一个数据库向另一个数据库传输数据</h3>
 <p>如果你需要从一个数据库向另一个数据库传输数据，你有两种选择：</p>
-
 <p><strong>选择1</strong></p>
-
 <ol>
 <li>在原始服务器上面存储导出的文件</li>
 <li>将导出的文件复制到目标服务器上</li>
 <li>在目标服务器中导入文件的内容</li>
 </ol>
-
 <p>在原始服务器上面：</p>
-
-<pre><code class="language-mysql">mysqldump [options] &gt; dump.sql
-</code></pre>
-
-<p>在目标服务器上面，将导出文件复制到目标服务器并且执行：</p>
-
-<pre><code class="language-mysql">mysql [options] &lt; dump.sql
-</code></pre>
-
-<p><strong>选择2</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqldump [options] <span style="color:#f92672">&gt;</span> dump.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p>在目标服务器上面，将导出文件复制到目标服务器并且执行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysql [options] <span style="color:#f92672">&lt;</span> dump.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p><strong>选择2</strong></p>
 <p>当目标服务器可以连接到原始服务器时，可以通过管道从一个服务器向另个服务器复制内容。</p>
-
 <p>在目标服务器上面：</p>
-
-<pre><code class="language-mysql">mysqldump [options to connect to the source server] | mysql [options]
-</code></pre>
-
-<p>相似的是，可以在原始服务器上面执行这个命令，将数据推送到目标服务器上。在这两种情况下，它都可能比选项1快得多。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqldump [options <span style="color:#66d9ef">to</span> connect <span style="color:#66d9ef">to</span> the source server] <span style="color:#f92672">|</span> mysql [options]
+</code></pre></div><p>相似的是，可以在原始服务器上面执行这个命令，将数据推送到目标服务器上。在这两种情况下，它都可能比选项1快得多。</p>
 <h3 id="5-通过压缩从远程服务器进行mysqldump">5. 通过压缩从远程服务器进行mysqldump</h3>
-
 <p>想要使用压缩来更快的传输数据，在<code>mysqldump</code>命令下使用<code>—compress</code>选项。例如：</p>
-
-<pre><code class="language-mysql">mysqldump -h db.example.com -u username -p --compress dbname &gt; dbname.sql
-</code></pre>
-
-<p>重要：如果你不想把原始库锁住，你需要使用<code>—lock-tables=false</code>这个选项。但是这样的话可能无法保持主从一致。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqldump <span style="color:#f92672">-</span>h db.example.com <span style="color:#f92672">-</span>u username <span style="color:#f92672">-</span>p <span style="color:#f92672">--</span>compress dbname <span style="color:#f92672">&gt;</span> dbname.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p>重要：如果你不想把原始库锁住，你需要使用<code>—lock-tables=false</code>这个选项。但是这样的话可能无法保持主从一致。</p>
 <p>想要使用文件压缩，也可以使用<code>gzip</code>操作：</p>
-
-<pre><code class="language-mysql">mysqldump -h db.example.com -u username -p --compress dbname | gzip --stdout &gt; dbname.sql.gz
-</code></pre>
-
-<h3 id="6-不解压从一个gizp文件导入数据">6. 不解压从一个gizp文件导入数据</h3>
-
-<pre><code class="language-mysql">gunzip -c dbname.sql.gz | mysql dbname -u username -p 
-</code></pre>
-
-<p>注意：<code>-c</code>意味着将输出写入到标准输出。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqldump <span style="color:#f92672">-</span>h db.example.com <span style="color:#f92672">-</span>u username <span style="color:#f92672">-</span>p <span style="color:#f92672">--</span>compress dbname <span style="color:#f92672">|</span> gzip <span style="color:#f92672">--</span>stdout <span style="color:#f92672">&gt;</span> dbname.<span style="color:#66d9ef">sql</span>.gz
+</code></pre></div><h3 id="6-不解压从一个gizp文件导入数据">6. 不解压从一个gizp文件导入数据</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">gunzip <span style="color:#f92672">-</span>c dbname.<span style="color:#66d9ef">sql</span>.gz <span style="color:#f92672">|</span> mysql dbname <span style="color:#f92672">-</span>u username <span style="color:#f92672">-</span>p 
+</code></pre></div><p>注意：<code>-c</code>意味着将输出写入到标准输出。</p>
 <h3 id="7-备份数据库存储过程和函数">7. 备份数据库存储过程和函数</h3>
-
 <p>默认<code>mysqldump</code>不会产生存储过程和函数，你需要添加<code>—routines</code>或<code>-R</code>选项：</p>
-
-<pre><code class="language-mysql">mysqldump -u username -p -R db_name &gt; dump.sql
-</code></pre>
-
-<p>当使用<a href="https://dev.mysql.com/doc/refman/5.6/en/mysqldump.html#option_mysqldump_routines">—routines</a>，不维护创建和更新时间戳了，而是应该转储和重新加载<code>mysql.proc</code>的内容。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqldump <span style="color:#f92672">-</span>u username <span style="color:#f92672">-</span>p <span style="color:#f92672">-</span>R db_name <span style="color:#f92672">&gt;</span> dump.<span style="color:#66d9ef">sql</span>
+</code></pre></div><p>当使用<a href="https://dev.mysql.com/doc/refman/5.6/en/mysqldump.html#option_mysqldump_routines">—routines</a>，不维护创建和更新时间戳了，而是应该转储和重新加载<code>mysql.proc</code>的内容。</p>
 <h3 id="8-通过压缩直接备份到amazon-s3">8. 通过压缩直接备份到Amazon S3</h3>
-
 <p>如果你希望对一个大型MySQL安装进行完整的备份，但是没有足够的本地存储空间，你可以指定转储并压缩到Amazon S3存储中。在不将db密码作为命令的一部分的情况下执行此操作也是一个很好的实践：</p>
-
-<pre><code class="language-mysql">mysqldump -u root -p --host=localhost --opt --skip-lock-tables --single-transaction \ --verbose --hex-blob --routines --triggers --all-databases |
-    gzip -9 | s3cmd put - s3://s3-bucket/db-server-name.sql.gz
-</code></pre>
-
-<p>你被要求输入密码，然后就开始备份了。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqldump <span style="color:#f92672">-</span>u root <span style="color:#f92672">-</span>p <span style="color:#f92672">--</span>host<span style="color:#f92672">=</span>localhost <span style="color:#f92672">--</span>opt <span style="color:#f92672">--</span>skip<span style="color:#f92672">-</span><span style="color:#66d9ef">lock</span><span style="color:#f92672">-</span><span style="color:#66d9ef">tables</span> <span style="color:#f92672">--</span>single<span style="color:#f92672">-</span>transaction <span style="color:#960050;background-color:#1e0010">\</span> <span style="color:#f92672">--</span>verbose <span style="color:#f92672">--</span>hex<span style="color:#f92672">-</span><span style="color:#66d9ef">blob</span> <span style="color:#f92672">--</span>routines <span style="color:#f92672">--</span>triggers <span style="color:#f92672">--</span><span style="color:#66d9ef">all</span><span style="color:#f92672">-</span><span style="color:#66d9ef">databases</span> <span style="color:#f92672">|</span>
+    gzip <span style="color:#f92672">-</span><span style="color:#ae81ff">9</span> <span style="color:#f92672">|</span> s3cmd put <span style="color:#f92672">-</span> s3:<span style="color:#f92672">//</span>s3<span style="color:#f92672">-</span>bucket<span style="color:#f92672">/</span>db<span style="color:#f92672">-</span>server<span style="color:#f92672">-</span>name.<span style="color:#66d9ef">sql</span>.gz
+</code></pre></div><p>你被要求输入密码，然后就开始备份了。</p>
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -487,6 +402,12 @@ Enter password:
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

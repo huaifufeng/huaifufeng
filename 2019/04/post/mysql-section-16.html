@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,214 +187,158 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#join">JOIN</a>
-<ul>
-<li><a href="#join可视化效果">JOIN可视化效果</a></li>
-<li><a href="#与子查询join-派生-表">与子查询join(&ldquo;派生&rdquo;表)</a></li>
-<li><a href="#full-outer-join">Full Outer Join</a></li>
-<li><a href="#用订单检索客户-主题的变化">用订单检索客户——主题的变化</a></li>
-<li><a href="#join的例子">JOIN的例子</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#join">JOIN</a>
+      <ul>
+        <li><a href="#join可视化效果">JOIN可视化效果</a></li>
+        <li><a href="#与子查询join派生表">与子查询join(&ldquo;派生&quot;表)</a></li>
+        <li><a href="#full-outer-join">Full Outer Join</a></li>
+        <li><a href="#用订单检索客户主题的变化">用订单检索客户——主题的变化</a></li>
+        <li><a href="#join的例子">JOIN的例子</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="join">JOIN</h2>
-
+        		<h2 id="join">JOIN</h2>
 <h3 id="join可视化效果">JOIN可视化效果</h3>
-
 <p>如果您是一个面向视觉的人，这个venn图可以帮助您理解MySQL中存在的不同类型的连接。</p>
-
-<p><img src="/img/mysql/3bs7C.png" alt="join view" /></p>
-
-<h3 id="与子查询join-派生-表">与子查询join(&ldquo;派生&rdquo;表)</h3>
-
-<pre><code class="language-mysql">SELECT x,... 
-    FROM ( SELECT y, ... FROM ...) AS a
-    JOIN tbl ON tbl.x = a.y
-    WHERE ... 
-</code></pre>
-
-<p>这将会执行一个子查询放入一个临时表，然后join这个临时tbl。</p>
-
+<p><img src="/img/mysql/3bs7C.png" alt="join view"></p>
+<h3 id="与子查询join派生表">与子查询join(&ldquo;派生&quot;表)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> x,... 
+    <span style="color:#66d9ef">FROM</span> ( <span style="color:#66d9ef">SELECT</span> y, ... <span style="color:#66d9ef">FROM</span> ...) <span style="color:#66d9ef">AS</span> a
+    <span style="color:#66d9ef">JOIN</span> tbl <span style="color:#66d9ef">ON</span> tbl.x <span style="color:#f92672">=</span> a.y
+    <span style="color:#66d9ef">WHERE</span> ... 
+</code></pre></div><p>这将会执行一个子查询放入一个临时表，然后join这个临时tbl。</p>
 <p>在5.6之前，临时表上面不能有索引，因此这可能是非常低效：</p>
-
-<pre><code class="language-mysql">SELECT ...
-    FROM ( SELECT y, ... FROM ... ) AS a
-    JOIN ( SELECT x, ... FROM ... ) AS b
-    WHERE ...
-</code></pre>
-
-<p>在5.6，优化器可以计算出最好的索引然后在运行中创建它(这会有一些开销，所以仍然不是&rdquo;完美的&rdquo;)。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> ...
+    <span style="color:#66d9ef">FROM</span> ( <span style="color:#66d9ef">SELECT</span> y, ... <span style="color:#66d9ef">FROM</span> ... ) <span style="color:#66d9ef">AS</span> a
+    <span style="color:#66d9ef">JOIN</span> ( <span style="color:#66d9ef">SELECT</span> x, ... <span style="color:#66d9ef">FROM</span> ... ) <span style="color:#66d9ef">AS</span> b
+    <span style="color:#66d9ef">WHERE</span> ...
+</code></pre></div><p>在5.6，优化器可以计算出最好的索引然后在运行中创建它(这会有一些开销，所以仍然不是&quot;完美的&rdquo;)。</p>
 <p>另外通用的方式是在子查询中创建一些东西：</p>
-
-<pre><code class="language-mysql">SELECT @n := @n + 1,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>n :<span style="color:#f92672">=</span> <span style="color:#f92672">@</span>n <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>,
     ...
-    FROM ( SELECT @n:=0 ) AS initialize
-    JOIn the_real_table
-    ORDER BY ...
-</code></pre>
-
-<p>(注意：从技术上将这是一个交叉连接(笛卡尔积)，入缺少ON所示。但是它是有效的，因为子查询只返回一行，必须与真实表匹配)。</p>
-
+    <span style="color:#66d9ef">FROM</span> ( <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">@</span>n:<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> ) <span style="color:#66d9ef">AS</span> initialize
+    <span style="color:#66d9ef">JOIn</span> the_real_table
+    <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> ...
+</code></pre></div><p>(注意：从技术上将这是一个交叉连接(笛卡尔积)，入缺少ON所示。但是它是有效的，因为子查询只返回一行，必须与真实表匹配)。</p>
 <h3 id="full-outer-join">Full Outer Join</h3>
-
 <p>MySQL不支持<code>FULL OUTER JOIN</code>，但是有一些方法可以模拟：</p>
-
 <p><strong>创建表</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#75715e">-- 表owners
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span>;
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span> (
+<span style="color:#f92672">`</span>owner_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span>,
+<span style="color:#f92672">`</span>owner<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>owner_id<span style="color:#f92672">`</span>)
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">AUTO_INCREMENT</span><span style="color:#f92672">=</span><span style="color:#ae81ff">10</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>latin1;
 
-<pre><code class="language-mysql">-- 表owners
-DROP TABLE IF EXISTS `owners`;
-CREATE TABLE `owners` (
-`owner_id` int(11) NOT NULL AUTO_INCREMENT,
-`owner` varchar(30) DEFAULT NULL,
-PRIMARY KEY (`owner_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+<span style="color:#75715e">-- 添加owners记录
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;1&#39;</span>, <span style="color:#e6db74">&#39;Ben&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;2&#39;</span>, <span style="color:#e6db74">&#39;Jim&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3&#39;</span>, <span style="color:#e6db74">&#39;Harry&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;6&#39;</span>, <span style="color:#e6db74">&#39;John&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;9&#39;</span>, <span style="color:#e6db74">&#39;Ellie&#39;</span>);
 
--- 添加owners记录
-INSERT INTO `owners` VALUES ('1', 'Ben');
-INSERT INTO `owners` VALUES ('2', 'Jim');
-INSERT INTO `owners` VALUES ('3', 'Harry');
-INSERT INTO `owners` VALUES ('6', 'John');
-INSERT INTO `owners` VALUES ('9', 'Ellie');
+<span style="color:#75715e">-- 表tools结构
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#66d9ef">IF</span> <span style="color:#66d9ef">EXISTS</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span><span style="color:#960050;background-color:#1e0010">；</span>
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> (
+<span style="color:#f92672">`</span>tool_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span>,
+<span style="color:#f92672">`</span>tool<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#f92672">`</span>owner_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">int</span>(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">DEFAULT</span> NUMM,
+<span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>tool_id<span style="color:#f92672">`</span>)
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB <span style="color:#66d9ef">AUTO_INCREMENT</span><span style="color:#f92672">=</span><span style="color:#ae81ff">11</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">CHARSET</span><span style="color:#f92672">=</span>latin1;
 
--- 表tools结构
-DROP TABLE IF EXISTS `tools`；
-CREATE TABLE `tools` (
-`tool_id` int(11) NOT NULL AUTO_INCREMENT,
-`tool` varchar(30) DEFAULT NULL,
-`owner_id` int(11) DEFAULT NUMM,
-PRIMARY KEY (`tool_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
-
--- 添加tools记录
-INSERT INTO `tools` VALUES ('1', 'Hammer', '9');
-INSERT INTO `tools` VALUES ('2', 'Pliers', '1');
-INSERT INTO `tools` VALUES ('3', 'Knife', '1');
-INSERT INTO `tools` VALUES ('4', 'Chisel', '2');
-INSERT INTO `tools` VALUES ('5', 'Hacksaw', '1');
-INSERT INTO `tools` VALUES ('6', 'Level', null);
-INSERT INTO `tools` VALUES ('7', 'Wrench', null);
-INSERT INTO `tools` VALUES ('8', 'Tape Measure', '9');
-INSERT INTO `tools` VALUES ('9', 'Screwdriver', null);
-INSERT INTO `tools` VALUES ('10', 'Clamp', null);
-</code></pre>
-
-<p><strong>我们想看什么</strong></p>
-
+<span style="color:#75715e">-- 添加tools记录
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;1&#39;</span>, <span style="color:#e6db74">&#39;Hammer&#39;</span>, <span style="color:#e6db74">&#39;9&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;2&#39;</span>, <span style="color:#e6db74">&#39;Pliers&#39;</span>, <span style="color:#e6db74">&#39;1&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;3&#39;</span>, <span style="color:#e6db74">&#39;Knife&#39;</span>, <span style="color:#e6db74">&#39;1&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;4&#39;</span>, <span style="color:#e6db74">&#39;Chisel&#39;</span>, <span style="color:#e6db74">&#39;2&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;5&#39;</span>, <span style="color:#e6db74">&#39;Hacksaw&#39;</span>, <span style="color:#e6db74">&#39;1&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;6&#39;</span>, <span style="color:#e6db74">&#39;Level&#39;</span>, <span style="color:#66d9ef">null</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;7&#39;</span>, <span style="color:#e6db74">&#39;Wrench&#39;</span>, <span style="color:#66d9ef">null</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;8&#39;</span>, <span style="color:#e6db74">&#39;Tape Measure&#39;</span>, <span style="color:#e6db74">&#39;9&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;9&#39;</span>, <span style="color:#e6db74">&#39;Screwdriver&#39;</span>, <span style="color:#66d9ef">null</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;10&#39;</span>, <span style="color:#e6db74">&#39;Clamp&#39;</span>, <span style="color:#66d9ef">null</span>);
+</code></pre></div><p><strong>我们想看什么</strong></p>
 <p>我们需要一个列表 ，可以查询谁拥有什么工具，什么工具没有拥有者。</p>
-
 <p><strong>查询</strong></p>
-
 <p>要实现这个，我们可以使用<code>UNION</code>来组合两个查询的数据。在第一个查询中，我们使用<code>LEFT JOIN</code>来为每个拥有者添加工具。这将会把所有的拥有者放到结果中，但是不确保每个人都有工具。</p>
-
 <p>在第二个查询中，我们使用<code>RIGHT JOIN</code>把工具添加到拥有者上。这样我们在结果集中会拥有所有的工具，如果这个工具没有拥有者，这一列就是NULL。通过添加WHERE语句，添加<code>owners.owner_id IS NULL</code>这个条件，我们将结果定义为第一个查询尚未返回的数据集，因为我们只在右联接表中查找数据。</p>
-
 <p>因为我们正在使用union，所以第二个查询的所有结果集都将附加到第一个查询结果集。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>owner<span style="color:#f92672">`</span>, tools.tool
+<span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span>
+<span style="color:#66d9ef">LEFT</span> <span style="color:#66d9ef">JOIN</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">ON</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>owner_id<span style="color:#f92672">`</span> <span style="color:#f92672">=</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>owner_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">UNION</span> <span style="color:#66d9ef">ALL</span>
+<span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>owner<span style="color:#f92672">`</span>, tools.tool
+<span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span>
+<span style="color:#66d9ef">RIGHT</span> <span style="color:#66d9ef">JOIN</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span> <span style="color:#66d9ef">ON</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>owner_id<span style="color:#f92672">`</span> <span style="color:#f92672">=</span> <span style="color:#f92672">`</span>tools<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>owner_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">WHERE</span> <span style="color:#f92672">`</span>owners<span style="color:#f92672">`</span>.<span style="color:#f92672">`</span>owner_id<span style="color:#f92672">`</span> <span style="color:#66d9ef">IS</span> <span style="color:#66d9ef">NULL</span>;
 
-<pre><code class="language-mysql">SELECT `owners`.`owner`, tools.tool
-FROM `owners`
-LEFT JOIN `tools` ON `owners`.`owner_id` = `tools`.`owner_id` UNION ALL
-SELECT `owners`.`owner`, tools.tool
-FROM `owners`
-RIGHT JOIN `tools` ON `owners`.`owner_id` = `tools`.`owner_id` WHERE `owners`.`owner_id` IS NULL;
-
- +-------+--------------+
- | owner | tool         |
- +-------+--------------+
- | Ben   | Pliers       |
- | Ben   | Knife        |
- | Ben   | Hacksaw      |
- | Jim   | Chisel       |
- | Harry | NULL         |
- | John  | NULL         |
- | Ellie | Hammer       |
- | Ellie | Tape Measure |
- | NULL  | Level        |
- | NULL  | Wrench       |
- | NULL  | Screwdriver  |
- | NULL  | Clamp        |
- +-------+--------------+
- 12 rows in set (0.00 sec)
-</code></pre>
-
-<h3 id="用订单检索客户-主题的变化">用订单检索客户——主题的变化</h3>
-
+ <span style="color:#f92672">+-------+--------------+</span>
+ <span style="color:#f92672">|</span> owner <span style="color:#f92672">|</span> tool         <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+-------+--------------+</span>
+ <span style="color:#f92672">|</span> Ben   <span style="color:#f92672">|</span> Pliers       <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> Ben   <span style="color:#f92672">|</span> Knife        <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> Ben   <span style="color:#f92672">|</span> Hacksaw      <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> Jim   <span style="color:#f92672">|</span> Chisel       <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> Harry <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>         <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> John  <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>         <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> Ellie <span style="color:#f92672">|</span> Hammer       <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> Ellie <span style="color:#f92672">|</span> Tape Measure <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>  <span style="color:#f92672">|</span> Level        <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>  <span style="color:#f92672">|</span> Wrench       <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>  <span style="color:#f92672">|</span> Screwdriver  <span style="color:#f92672">|</span>
+ <span style="color:#f92672">|</span> <span style="color:#66d9ef">NULL</span>  <span style="color:#f92672">|</span> Clamp        <span style="color:#f92672">|</span>
+ <span style="color:#f92672">+-------+--------------+</span>
+ <span style="color:#ae81ff">12</span> rows <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+</code></pre></div><h3 id="用订单检索客户主题的变化">用订单检索客户——主题的变化</h3>
 <p>下面将会回去所有用户的所有订单：</p>
-
-<pre><code class="language-mysql">SELECT c.CustomerName, o.OrderID
-    FROM Customers AS c
-    INNER JOIN Orders AS o
-        ON c.CustomerID = o.CustomerID
-    ORDER BY c.CustomerID, c.OrderID;
-</code></pre>
-
-<p>这将会统计每个用户的订单数量：</p>
-
-<pre><code class="language-mysql">SELECT c.CustomerID, COUNT(*) AS 'Order Count'
-    FROM Customers AS c
-    INNER JOIN Orders AS o
-        ON c.CustomerID = o.CustomerID
-    GROUP BY c.CustomerID
-    ORDER BY c.CustomerName;
-</code></pre>
-
-<p>也是统计，但是更快：</p>
-
-<pre><code class="language-mysql">SELECT c.CustomerName, 
-    (SELECT COUNT(*) FROM Orders WHERE CustomerID = c.CustomerID) as 'Order Count'
-    FROM Customers AS c
-    ORDER BY c.CustomerName;
-</code></pre>
-
-<p>只列出拥有订单的用户：</p>
-
-<pre><code class="language-mysql">SELECT c.CustomerName,
-    FROM Customers AS c
-    WHERE EXISTS ( SELECT * FROM Orders WHERE CustomerID = c.CustomerID )
-    Order BY c.CustomerName;
-</code></pre>
-
-<h3 id="join的例子">JOIN的例子</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> c.CustomerName, o.OrderID
+    <span style="color:#66d9ef">FROM</span> Customers <span style="color:#66d9ef">AS</span> c
+    <span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> Orders <span style="color:#66d9ef">AS</span> o
+        <span style="color:#66d9ef">ON</span> c.CustomerID <span style="color:#f92672">=</span> o.CustomerID
+    <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> c.CustomerID, c.OrderID;
+</code></pre></div><p>这将会统计每个用户的订单数量：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> c.CustomerID, <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">AS</span> <span style="color:#e6db74">&#39;Order Count&#39;</span>
+    <span style="color:#66d9ef">FROM</span> Customers <span style="color:#66d9ef">AS</span> c
+    <span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> Orders <span style="color:#66d9ef">AS</span> o
+        <span style="color:#66d9ef">ON</span> c.CustomerID <span style="color:#f92672">=</span> o.CustomerID
+    <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> c.CustomerID
+    <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> c.CustomerName;
+</code></pre></div><p>也是统计，但是更快：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> c.CustomerName, 
+    (<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">COUNT</span>(<span style="color:#f92672">*</span>) <span style="color:#66d9ef">FROM</span> Orders <span style="color:#66d9ef">WHERE</span> CustomerID <span style="color:#f92672">=</span> c.CustomerID) <span style="color:#66d9ef">as</span> <span style="color:#e6db74">&#39;Order Count&#39;</span>
+    <span style="color:#66d9ef">FROM</span> Customers <span style="color:#66d9ef">AS</span> c
+    <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> c.CustomerName;
+</code></pre></div><p>只列出拥有订单的用户：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> c.CustomerName,
+    <span style="color:#66d9ef">FROM</span> Customers <span style="color:#66d9ef">AS</span> c
+    <span style="color:#66d9ef">WHERE</span> <span style="color:#66d9ef">EXISTS</span> ( <span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> Orders <span style="color:#66d9ef">WHERE</span> CustomerID <span style="color:#f92672">=</span> c.CustomerID )
+    <span style="color:#66d9ef">Order</span> <span style="color:#66d9ef">BY</span> c.CustomerName;
+</code></pre></div><h3 id="join的例子">JOIN的例子</h3>
 <p>创建表：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span><span style="color:#66d9ef">user</span><span style="color:#f92672">`</span> (
+<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> <span style="color:#66d9ef">smallint</span>(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span>,
+<span style="color:#f92672">`</span>name<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#f92672">`</span>course<span style="color:#f92672">`</span> <span style="color:#66d9ef">smallint</span>(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB;
 
-<pre><code class="language-mysql">CREATE TABLE `user` (
-`id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-`name` varchar(30) NOT NULL,
-`course` smallint(5) unsigned DEFAULT NULL,
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
-CREATE TABLE `course` (
-`id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-`name` varchar(50) NOT NULL,
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-</code></pre>
-
-<p>因为我们使用InnoDB引擎，并且知道user.course和course.id是关联的，所以我们可以定义外键关系：</p>
-
-<pre><code class="language-mysql">ALTER TABLE `user`
-ADD CONSTRAINT `FK_course`
-FOREIGN KEY (`course`) REFERENCES `course` (`id`)
-ON UPDATE CASCADE;
-</code></pre>
-
-<p>JOIN查询(Inner Join)</p>
-
-<pre><code class="language-mysql">SELECT user.name, course.name
-FROM `user`
-INNER JOIN `course` ON user.course = course.id;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>course<span style="color:#f92672">`</span> (
+<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> <span style="color:#66d9ef">smallint</span>(<span style="color:#ae81ff">5</span>) <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span>,
+<span style="color:#f92672">`</span>name<span style="color:#f92672">`</span> <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">50</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+<span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+) <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB;
+</code></pre></div><p>因为我们使用InnoDB引擎，并且知道user.course和course.id是关联的，所以我们可以定义外键关系：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span><span style="color:#66d9ef">user</span><span style="color:#f92672">`</span>
+<span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">CONSTRAINT</span> <span style="color:#f92672">`</span>FK_course<span style="color:#f92672">`</span>
+<span style="color:#66d9ef">FOREIGN</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>course<span style="color:#f92672">`</span>) <span style="color:#66d9ef">REFERENCES</span> <span style="color:#f92672">`</span>course<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+<span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">CASCADE</span>;
+</code></pre></div><p>JOIN查询(Inner Join)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#66d9ef">user</span>.name, course.name
+<span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span><span style="color:#66d9ef">user</span><span style="color:#f92672">`</span>
+<span style="color:#66d9ef">INNER</span> <span style="color:#66d9ef">JOIN</span> <span style="color:#f92672">`</span>course<span style="color:#f92672">`</span> <span style="color:#66d9ef">ON</span> <span style="color:#66d9ef">user</span>.course <span style="color:#f92672">=</span> course.id;
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -462,6 +410,12 @@ INNER JOIN `course` ON user.course = course.id;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

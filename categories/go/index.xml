@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on 怀府小阁</title>
@@ -21,11 +21,12 @@
 环境配置 go语言一般需要设置三个环境变量：
  GOPATH：go的工作区，是我们代码的所在目录。 GOROOT：go的安装路径，即go的安装目录。不过在1.11之后已经不需要再配置这个路径了。 GOBIN：go生成的执行文件的目录，也不需要专门的配置，默认在GOPATH目录下的src/bin目录  GOPATH go语言的代码工作区目录，可以是一个目录，也可以是多个目录，go命令会按照多个目录的顺序依次搜索相应的目录，
 GOPATH目录的基本结构如下，下面会有三个目录：
-bin/ pkg/ src/   bin目录就是GOBIN默认对应的目录，存放编译后的可执行文件，一般不用单独在设置。 src是我们的代码目录文件，下面包含.go文件，就是go的源码文件。 pkg编译后的生成的静态库文件，和平台有关系，每个平台会有相应的目录。在linux下是扩展名为.a的文件。  使用go install会bin目录生成项目的执行文件，而go build会在当前目录生成项目的执行文件。
+bin/ pkg/ src/  bin目录就是GOBIN默认对应的目录，存放编译后的可执行文件，一般不用单独在设置。 src是我们的代码目录文件，下面包含.go文件，就是go的源码文件。 pkg编译后的生成的静态库文件，和平台有关系，每个平台会有相应的目录。在linux下是扩展名为.a的文件。  使用go install会bin目录生成项目的执行文件，而go build会在当前目录生成项目的执行文件。
 管理工具 我们自己在开发时，可能不同的项目会需要在不同版本的go下面执行，就需要在不同版本go下面进行切换，这里就介绍两款工具，方便我们管理不同版本的go；go的包管理工具
 GVM 管理不同版本go的管理工具GVM。
 安装 在终端执行下面的命令，因为我本地安装了oh-my-zsh，所以我这里就最开始是zsh，如果你本地是原生的bash，将zsh替换成bash就可以：
-$ zsh &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) Cloning from https://github.com/moovweb/gvm.git to /Users/test/.gvm Created profile for existing install of Go at &amp;quot;/usr/local/Cellar/go/1.11.4/libexec&amp;quot; Installed GVM v1.0.22 Please restart your terminal session or to get started right away run `source /Users/test/.gvm/scripts/gvm`  出现如上的信息就代表安装成功了，在安装下面的提示执行如下命令，激活gvm的命令：</description>
+$ zsh &amp;lt; &amp;lt;(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer) Cloning from https://github.com/moovweb/gvm.git to /Users/test/.gvm Created profile for existing install of Go at &amp;quot;/usr/local/Cellar/go/1.11.4/libexec&amp;quot; Installed GVM v1.0.22 Please restart your terminal session or to get started right away run `source /Users/test/.gvm/scripts/gvm` 出现如上的信息就代表安装成功了，在安装下面的提示执行如下命令，激活gvm的命令：
+$ source /Users/test/.</description>
     </item>
     
     <item>
@@ -47,14 +48,15 @@ WebAssembly golang和WebAssembly强强联合，加入WASM的大家庭，允许�
 Hello World! 任何语言的第一步都是Hello World!，我们也从这里开始。
 安装 这里就直接使用mac环境介绍了，其他环境自行百度。
 使用mac开发的，一般都已经安装好HomeworkBrew了，这里就直接执行命令就可以：
-$ brew install go  安装网络的不同，等待的时间也不一样长，在命令行输入如下命令，就可以确定是否安装成功了:
-$ go version  当输出类似go version go1.11.4 darwin/amd64的信息就代表安装成功了。
+$ brew install go 安装网络的不同，等待的时间也不一样长，在命令行输入如下命令，就可以确定是否安装成功了:
+$ go version 当输出类似go version go1.11.4 darwin/amd64的信息就代表安装成功了。
 go一般会安装到如下目录：/usr/local/Cellar/go，目录下面是不同版本的目录。同时，会在/usr/local/bin下生成一个指向刚才目录下某个版本的go执行命令，
 代码 环境安装成功之后，只是编写Hello World 的话，在任何目录下都可以。我们就直接在自己的家目录下编写第一个文件吧。
 使用vim在命令行打开hello.go文件，然后输入如下内容：
-package main import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;Hello World!&amp;quot;) }  然后保存文件。
+package main import &amp;#34;fmt&amp;#34; func main() { fmt.Println(&amp;#34;Hello World!&amp;#34;) } 然后保存文件。
 想要执行一个go文件，很简单，直接使用go run filename就可以，比如要执行hello.go文件，我们可以：
-$ go run hello.go Hello World!  这我们就执行成功了，输出了我们想要的Hello World！</description>
+$ go run hello.go Hello World! 这我们就执行成功了，输出了我们想要的Hello World！
+我们学习go当然不只是想要输出一个hello，在代码中每一行又都代表什么含义呢，在接下来的文章中，在更进一步的介绍吧！</description>
     </item>
     
   </channel>

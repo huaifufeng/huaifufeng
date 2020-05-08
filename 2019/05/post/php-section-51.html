@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,32 +187,24 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#怎么分解url">怎么分解URL</a>
-<ul>
-<li><a href="#1-parse-url">1. parse_url()</a></li>
-<li><a href="#2-explode">2. explode</a></li>
-<li><a href="#3-使用basename">3. 使用basename()</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#怎么分解url">怎么分解URL</a>
+      <ul>
+        <li><a href="#1-parse_url">1. parse_url()</a></li>
+        <li><a href="#2-explode">2. explode</a></li>
+        <li><a href="#3-使用basename">3. 使用basename()</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="怎么分解url">怎么分解URL</h2>
-
+        		<h2 id="怎么分解url">怎么分解URL</h2>
 <p>在编写PHP代码的时候，你可能需要将URL地址分解为多个部分。根据你的需要显然有不止一种方式实现这个功能。这个主题就是介绍这些方法，从中你可以选择自己最合适的方法。</p>
-
-<h3 id="1-parse-url">1. parse_url()</h3>
-
+<h3 id="1-parse_url">1. parse_url()</h3>
 <blockquote>
 <p>parse_url()：这个函数解析URL并且放回URL任何部分的一个关联数组。</p>
 </blockquote>
-
-<pre><code class="language-php">$url = parse_url('http://example.com/project/controller/action/param1/param2');
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$url = parse_url(&#39;http://example.com/project/controller/action/param1/param2&#39;);
 
 Array
 (
@@ -216,12 +212,9 @@ Array
     [host] =&gt; example.com
     [path] =&gt; /project/controller/action/param1/param2
 )
-</code></pre>
-
-<p>如果你需要获取将path进行分隔，你可以使用explode方法：</p>
-
-<pre><code class="language-php">$url = parse_url('http://example.com/project/controller/action/param1/param2');
-$url['sections'] = explode('/', $url['path']);
+</code></pre></div><p>如果你需要获取将path进行分隔，你可以使用explode方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$url = parse_url(&#39;http://example.com/project/controller/action/param1/param2&#39;);
+$url[&#39;sections&#39;] = explode(&#39;/&#39;, $url[&#39;path&#39;]);
 
 Array
 (
@@ -238,46 +231,32 @@ Array
         [5] =&gt; param2
     )
 )
-</code></pre>
-
-<p>如果你想要获取section最后的部分，你可以使用下面的方法：</p>
-
-<pre><code class="language-php">$last = end($url['sections']);
-</code></pre>
-
-<p>如果URL中有GET的变量，你可以获取这些值：</p>
-
-<pre><code class="language-php">$url = parse_url('http://example.com?var1=value1&amp;var2=value2');
+</code></pre></div><p>如果你想要获取section最后的部分，你可以使用下面的方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$last = end($url[&#39;sections&#39;]);
+</code></pre></div><p>如果URL中有GET的变量，你可以获取这些值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$url = parse_url(&#39;http://example.com?var1=value1&amp;var2=value2&#39;);
 
 Array
 (
     [scheme] =&gt; http
     [host] =&gt; example.com
-    [query] =&gt; var1=value1&amp;var2=value2
+    [query] =&gt; var1=value1<span style="color:#960050;background-color:#1e0010">&amp;</span>var2=value2
 )
-</code></pre>
-
-<p>如果你想要分解参数部分，可以使用parse_str方法：</p>
-
-<pre><code class="language-php">$url = parse_url('http://example.com?var1=value1&amp;var2=value2');
-parse_str($url['query'], $parts);
+</code></pre></div><p>如果你想要分解参数部分，可以使用parse_str方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$url = parse_url(&#39;http://example.com?var1=value1&amp;var2=value2&#39;);
+parse_str($url[&#39;query&#39;], $parts);
 Array
 (
     [var1] =&gt; value1
     [var2] =&gt; value2
 )
-</code></pre>
-
-<h3 id="2-explode">2. explode</h3>
-
+</code></pre></div><h3 id="2-explode">2. explode</h3>
 <blockquote>
 <p>explode()：返回一个字符串的数组，其中的每个元素是按照指定分隔符进行切分的一个子元素。</p>
 </blockquote>
-
 <p>这个函数用起来很简单：</p>
-
-<pre><code class="language-php">$url = &quot;http://example.com/project/controller/action/param1/param2&quot;;
-$parts = explode('/', $url);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$url = &#34;http://example.com/project/controller/action/param1/param2&#34;;
+$parts = explode(&#39;/&#39;, $url);
 Array
 (
     [0] =&gt; http:
@@ -289,42 +268,26 @@ Array
     [6] =&gt; param1
     [7] =&gt; param2
 )
-</code></pre>
-
-<p>你可以获取URL中最后一个元素：</p>
-
-<pre><code class="language-php">$last = end($parts);
+</code></pre></div><p>你可以获取URL中最后一个元素：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$last = end($parts);
 
 // param2
-</code></pre>
-
-<p>你也可以像下面这样使用sizeof()和数学的运算符进行导航：</p>
-
-<pre><code class="language-php">echo $parts[sizeof($parts)-2];
+</code></pre></div><p>你也可以像下面这样使用sizeof()和数学的运算符进行导航：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">echo $parts[sizeof($parts)-2];
 // 输出: param1
-</code></pre>
-
-<h3 id="3-使用basename">3. 使用basename()</h3>
-
+</code></pre></div><h3 id="3-使用basename">3. 使用basename()</h3>
 <blockquote>
 <p>basename()：接收一个文件或目录的路径，函数将会返回路径最后的部分。</p>
 </blockquote>
-
 <p>这个函数只会返回路径最后的部分：</p>
-
-<pre><code class="language-php">$url = &quot;http://example.com/project/controller/action/param1/param2&quot;;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$url = &#34;http://example.com/project/controller/action/param1/param2&#34;;
 $parts = basename($url);
 // 输出: param2
-</code></pre>
-
-<p>如果路径包含更多的部分，你想要获取包含文件的目录的地址，可以像下面这样和dirname()一起使用：</p>
-
-<pre><code class="language-php">$url = &quot;http://example.com/project/controller/action/param1/param2/index.php&quot;;
+</code></pre></div><p>如果路径包含更多的部分，你想要获取包含文件的目录的地址，可以像下面这样和dirname()一起使用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$url = &#34;http://example.com/project/controller/action/param1/param2/index.php&#34;;
 $parts = basename(dirname($url));
 // 输出: param2
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -396,6 +359,12 @@ $parts = basename(dirname($url));
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

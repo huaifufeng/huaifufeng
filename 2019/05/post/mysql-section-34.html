@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,114 +187,72 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#json">JSON</a>
-<ul>
-<li><a href="#1-创建带有主键和json字段的表">1. 创建带有主键和JSON字段的表</a></li>
-<li><a href="#2-插入一个简单的json">2. 插入一个简单的JSON</a></li>
-<li><a href="#3-更新json字段">3. 更新JSON字段</a></li>
-<li><a href="#4-插入数据到json字段">4. 插入数据到JSON字段</a></li>
-<li><a href="#5-转换数据到json类型">5. 转换数据到JSON类型</a></li>
-<li><a href="#6-创建json对象和数组">6. 创建JSON对象和数组</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#json">JSON</a>
+      <ul>
+        <li><a href="#1-创建带有主键和json字段的表">1. 创建带有主键和JSON字段的表</a></li>
+        <li><a href="#2-插入一个简单的json">2. 插入一个简单的JSON</a></li>
+        <li><a href="#3-更新json字段">3. 更新JSON字段</a></li>
+        <li><a href="#4-插入数据到json字段">4. 插入数据到JSON字段</a></li>
+        <li><a href="#5-转换数据到json类型">5. 转换数据到JSON类型</a></li>
+        <li><a href="#6-创建json对象和数组">6. 创建JSON对象和数组</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="json">JSON</h2>
-
-<p>MySQL5.7.8开始支持元素的JSON数据类型，允许方便的访问JSON数据。<a href="https://dev.mysql.com/doc/refman/5.7/en/json.html">https://dev.mysql.com/doc/refman/5.7/en/json.html</a></p>
-
+        		<h2 id="json">JSON</h2>
+<p>MySQL5.7.8开始支持元素的JSON数据类型，允许方便的访问JSON数据。https://dev.mysql.com/doc/refman/5.7/en/json.html</p>
 <h3 id="1-创建带有主键和json字段的表">1. 创建带有主键和JSON字段的表</h3>
-
-<pre><code class="language-mysql">CREATE TABLE table_name (
-    id INT NOT NULL AUTO_INCREMENT,
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">table_name</span> (
+    id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">AUTO_INCREMENT</span>,
     json_col JSON,
-    PRIMARY KEY (id)
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id)
 );
-</code></pre>
-
-<h3 id="2-插入一个简单的json">2. 插入一个简单的JSON</h3>
-
-<pre><code class="language-mysql">INSERT INTO 
-    table_name(json_col)
-VALUES
-    ('{&quot;City&quot;:&quot;Galle&quot;, &quot;Description&quot;: &quot;Best damn city in the world&quot;}');
-</code></pre>
-
-<p>这个是很容易的，但是注意因为JSON的键必须包围在双引号内，所以整个JSON字符串必须包围在单引号内。如果查询成功了，这个数据将会存储为二进制格式。</p>
-
+</code></pre></div><h3 id="2-插入一个简单的json">2. 插入一个简单的JSON</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> 
+    <span style="color:#a6e22e">table_name</span>(json_col)
+<span style="color:#66d9ef">VALUES</span>
+    (<span style="color:#e6db74">&#39;{&#34;City&#34;:&#34;Galle&#34;, &#34;Description&#34;: &#34;Best damn city in the world&#34;}&#39;</span>);
+</code></pre></div><p>这个是很容易的，但是注意因为JSON的键必须包围在双引号内，所以整个JSON字符串必须包围在单引号内。如果查询成功了，这个数据将会存储为二进制格式。</p>
 <h3 id="3-更新json字段">3. 更新JSON字段</h3>
-
 <p>在前面的例子中，我们查看了组合类型数据怎么存储到一个JSON字段中。如果我们想要更新这个字段怎么办？我们想在之前的数据中数据一个键为<code>variations</code>，值为<code>scheveningen</code>的内容：</p>
-
-<pre><code class="language-mysql">UPDATE 
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> 
     myjson
-SET
-    dict=JSON_ARRAY_APPEND(dict, '$.variations', 'scheveningen')
-WHERE
-    id = 2;
-</code></pre>
-
-<p>注意：</p>
-
+<span style="color:#66d9ef">SET</span>
+    dict<span style="color:#f92672">=</span><span style="color:#a6e22e">JSON_ARRAY_APPEND</span>(dict, <span style="color:#e6db74">&#39;$.variations&#39;</span>, <span style="color:#e6db74">&#39;scheveningen&#39;</span>)
+<span style="color:#66d9ef">WHERE</span>
+    id <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+</code></pre></div><p>注意：</p>
 <ol>
-<li>在我们json字典中的<code>$.variations</code>数组。$符合表示json文档。有关mysql识别的JSON路径的完整解释，请参阅<a href="https://dev.mysql.com/doc/refman/5.7/en/json-path-syntax.html">https://dev.mysql.com/doc/refman/5.7/en/json-path-syntax.html</a></li>
+<li>在我们json字典中的<code>$.variations</code>数组。$符合表示json文档。有关mysql识别的JSON路径的完整解释，请参阅https://dev.mysql.com/doc/refman/5.7/en/json-path-syntax.html</li>
 <li>因为我们没有使用JSON进行查询的例子，所以这个例子使用主键。</li>
 </ol>
-
 <p>现在，如果我们执行<code>SELECT * FROM myjson</code>，我们将看到：</p>
-
 <pre><code>+----+--------------------------------------------------------------------------------+
 | id | dict                                                                           |
 +---+---------------------------------------------------------------------------------+
 | 2  | {&quot;opening&quot;: &quot;Sicilian&quot;, &quot;variations&quot;: [&quot;pelikan&quot;, &quot;dragon&quot;, &quot;najdorf&quot;, &quot;scheveningen&quot;]} |
 +----+--------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
-</code></pre>
-
-<h3 id="4-插入数据到json字段">4. 插入数据到JSON字段</h3>
-
+</code></pre><h3 id="4-插入数据到json字段">4. 插入数据到JSON字段</h3>
 <p>这将插入一个JSON字典，其中一个成员是在另一个示例中创建的表中的字符串数组。</p>
-
-<pre><code class="language-mysql">INSERT INTO myjson(dict)
-VALUES ('{&quot;opening&quot;:&quot;Sicilian&quot;, &quot;variations&quot; : [&quot;pelikan&quot;, &quot;dragon&quot;, &quot;najdorf&quot;]}');
-</code></pre>
-
-<p>再次注意，你必须小心单引号和双引号的使用。整个字符串必须 在一个单引号中。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">myjson</span>(dict)
+<span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;{&#34;opening&#34;:&#34;Sicilian&#34;, &#34;variations&#34; : [&#34;pelikan&#34;, &#34;dragon&#34;, &#34;najdorf&#34;]}&#39;</span>);
+</code></pre></div><p>再次注意，你必须小心单引号和双引号的使用。整个字符串必须 在一个单引号中。</p>
 <h3 id="5-转换数据到json类型">5. 转换数据到JSON类型</h3>
-
 <p>这将转换有效的JSON字符串到MySQL的JSON类型：</p>
-
-<pre><code class="language-mysql">SELECT CAST('[1,2,3]' as JSON);
-SELECT CAST('{&quot;opening&quot;:&quot;Sicilian&quot;, &quot;variations&quot; : [&quot;pelikan&quot;, &quot;dragon&quot;, &quot;najdorf&quot;]}' as JSON);
-</code></pre>
-
-<h3 id="6-创建json对象和数组">6. 创建JSON对象和数组</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">CAST</span>(<span style="color:#e6db74">&#39;[1,2,3]&#39;</span> <span style="color:#66d9ef">as</span> JSON);
+<span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">CAST</span>(<span style="color:#e6db74">&#39;{&#34;opening&#34;:&#34;Sicilian&#34;, &#34;variations&#34; : [&#34;pelikan&#34;, &#34;dragon&#34;, &#34;najdorf&#34;]}&#39;</span> <span style="color:#66d9ef">as</span> JSON);
+</code></pre></div><h3 id="6-创建json对象和数组">6. 创建JSON对象和数组</h3>
 <p><code>JSON_OBJECT</code>创建JSON对象:</p>
-
-<pre><code class="language-mysql">SELECT JSON_OBJECT('key1', col1, 'key2', col2, 'key3', 'col3') as myobj;
-</code></pre>
-
-<p><code>JSON_ARRAY</code>创建JSON数组：</p>
-
-<pre><code class="language-mysql">SELECT JSON_ARRAY(col1, col2, 'col3') as myarray;
-</code></pre>
-
-<p>注意：myobj.key3和myarray[2]都是一个固定的字符串。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">JSON_OBJECT</span>(<span style="color:#e6db74">&#39;key1&#39;</span>, col1, <span style="color:#e6db74">&#39;key2&#39;</span>, col2, <span style="color:#e6db74">&#39;key3&#39;</span>, <span style="color:#e6db74">&#39;col3&#39;</span>) <span style="color:#66d9ef">as</span> myobj;
+</code></pre></div><p><code>JSON_ARRAY</code>创建JSON数组：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">JSON_ARRAY</span>(col1, col2, <span style="color:#e6db74">&#39;col3&#39;</span>) <span style="color:#66d9ef">as</span> myarray;
+</code></pre></div><p>注意：myobj.key3和myarray[2]都是一个固定的字符串。</p>
 <p>组合的JSON数据：</p>
-
-<pre><code class="language-mysql">SELECT JSON_OBJECT(&quot;opening&quot;, &quot;Sicilian&quot;, &quot;variations&quot;, JSON_ARRAY(&quot;pelikan&quot;, &quot;dragon&quot;, &quot;najdorf&quot;)) as mymixed;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">JSON_OBJECT</span>(<span style="color:#e6db74">&#34;opening&#34;</span>, <span style="color:#e6db74">&#34;Sicilian&#34;</span>, <span style="color:#e6db74">&#34;variations&#34;</span>, <span style="color:#a6e22e">JSON_ARRAY</span>(<span style="color:#e6db74">&#34;pelikan&#34;</span>, <span style="color:#e6db74">&#34;dragon&#34;</span>, <span style="color:#e6db74">&#34;najdorf&#34;</span>)) <span style="color:#66d9ef">as</span> mymixed;
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -362,6 +324,12 @@ SELECT CAST('{&quot;opening&quot;:&quot;Sicilian&quot;, &quot;variations&quot; :
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

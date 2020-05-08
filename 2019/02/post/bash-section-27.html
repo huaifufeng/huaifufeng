@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,25 +187,18 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#scoping">Scoping</a>
-<ul>
-<li><a href="#动态作用域">动态作用域</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#scoping">Scoping</a>
+      <ul>
+        <li><a href="#动态作用域">动态作用域</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="scoping">Scoping</h2>
-
+        		<h2 id="scoping">Scoping</h2>
 <h3 id="动态作用域">动态作用域</h3>
-
 <p>动态作用域的含义是：动态范围是指变量查找发生在调用函数的范围内，而不是在定义函数的范围内。</p>
-
 <pre><code>$ x=3
 $ func1 () { echo &quot;in func1: $x&quot;;}
 $ func2 () { local x=9; func1;}
@@ -209,12 +206,8 @@ $ func2
 in func1 9
 $ func1
 in func1: 3
-</code></pre>
-
-<p>在词汇范围语言中，func1总是在全局范围中查找x的值，因为func1是在本地范围中定义的。</p>
-
+</code></pre><p>在词汇范围语言中，func1总是在全局范围中查找x的值，因为func1是在本地范围中定义的。</p>
 <p>在动态范围语言中，func1查找调用它的范围。当从func2中调用它时，它首先在func2的主体中查找值x。如果没有在那里定义它，它将在全局范围中查找，其中func2是从全局范围调用的。</p>
-
 <p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
@@ -287,6 +280,12 @@ in func1: 3
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

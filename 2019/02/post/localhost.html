@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,43 +187,28 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#本地访问">本地访问</a>
-<ul>
-<li><a href="#127-0-0-1">127.0.0.1</a></li>
-<li><a href="#localhost">localhost</a></li>
-<li><a href="#其他">其他</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#本地访问">本地访问</a>
+      <ul>
+        <li><a href="#127001">127.0.0.1</a></li>
+        <li><a href="#localhost">localhost</a></li>
+        <li><a href="#其他">其他</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="本地访问">本地访问</h2>
-
+        		<h2 id="本地访问">本地访问</h2>
 <p>我们在访问本地服务的时候，有的时候使用的是localhost，有的时候用的是127.0.0.1。这在大多数的情况下都是可以互换的，可以使用一种方法换另一种方法。但是在某些情况下localhost可以访问，但是127.0.0.1不可以访问。这说明两者还是有不同存在的。</p>
-
-<h3 id="127-0-0-1">127.0.0.1</h3>
-
+<h3 id="127001">127.0.0.1</h3>
 <p>这个地址一般是分配给loopback接口的，这是一种特殊的接口，用于本机应用的相互通信。只要本机的网络组件正常，这个接口就可以使用。实际上整个127.*的网段都是可以使用的，只不过127.0.0.1是默认的设置而已。ping 127.0.0.2也是可以访问的。</p>
-
 <p>因为数据的传输通过网卡，所以受到网络防火墙和网卡设置的限制。这个在访问的过程中就涉及到网络用户权限的问题。</p>
-
 <h3 id="localhost">localhost</h3>
-
 <p>localhost是一个域名，默认指向127.0.0.1。现在支持IPv6，同时也指向[::1]。</p>
-
 <p>可以设置localhost指向的ip地址，一般是在操作系统的<code>hosts</code>文件中进行配置。在这个配置文件中，可以把不同的ip地址设置到localhost上面。</p>
-
 <p>因为localhost的访问不走网卡，所以不收网络防火墙和网卡的限制。</p>
-
 <p>访问这个地址也是使用本地用户权限去访问的。</p>
-
 <h3 id="其他">其他</h3>
-
 <p>所以访问本地程序时，使用localhost比较好，不占用网卡和网络资源。</p>
 
         
@@ -292,6 +281,12 @@
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

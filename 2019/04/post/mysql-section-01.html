@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,42 +187,18 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#开始学习mysql">开始学习MySQL</a>
-<ul>
-<li><a href="#开始">开始</a>
-<ul>
-<li><a href="#创建mysql数据库">创建MySQL数据库</a></li>
-<li><a href="#使用数据库mydb">使用数据库mydb</a></li>
-<li><a href="#插入一条记录">插入一条记录</a></li>
-<li><a href="#更新表记录">更新表记录</a></li>
-<li><a href="#删除一行">删除一行</a></li>
-<li><a href="#条件搜索">条件搜索</a></li>
-<li><a href="#显示数据库列表">显示数据库列表</a></li>
-<li><a href="#显示数据库中表">显示数据库中表</a></li>
-<li><a href="#显示表的所有字段">显示表的所有字段</a></li>
-<li><a href="#创建用户">创建用户</a></li>
-<li><a href="#添加权限">添加权限</a></li>
-<li><a href="#注意">注意</a></li>
-</ul></li>
-<li><a href="#information-schema例子">information_schema例子</a>
-<ul>
-<li><a href="#进程列表">进程列表</a></li>
-<li><a href="#可存储程序搜索">可存储程序搜索</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#开始学习mysql">开始学习MySQL</a>
+      <ul>
+        <li><a href="#开始">开始</a></li>
+        <li><a href="#information_schema例子">information_schema例子</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="开始学习mysql">开始学习MySQL</h2>
-
+        		<h2 id="开始学习mysql">开始学习MySQL</h2>
 <p><strong>版本历史</strong></p>
-
 <table>
 <thead>
 <tr>
@@ -226,153 +206,103 @@
 <th>1995-05-23</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>3.19</td>
 <td>1996-12-01</td>
 </tr>
-
 <tr>
 <td>3.20</td>
 <td>1997-01-01</td>
 </tr>
-
 <tr>
 <td>3.21</td>
 <td>1998-10-01</td>
 </tr>
-
 <tr>
 <td>3.22</td>
 <td>1999-10-01</td>
 </tr>
-
 <tr>
 <td>3.23</td>
 <td>2001-01-22</td>
 </tr>
-
 <tr>
 <td>4.0</td>
 <td>2003-03-01</td>
 </tr>
-
 <tr>
 <td>4.1</td>
 <td>2004-10-01</td>
 </tr>
-
 <tr>
 <td>5.0</td>
 <td>2005-10-01</td>
 </tr>
-
 <tr>
 <td>5.1</td>
 <td>2008-11-27</td>
 </tr>
-
 <tr>
 <td>5.5</td>
 <td>2010-11-01</td>
 </tr>
-
 <tr>
 <td>5.6</td>
 <td>2013-02-01</td>
 </tr>
-
 <tr>
 <td>5.7</td>
 <td>2015-10-01</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="开始">开始</h3>
-
 <h4 id="创建mysql数据库">创建MySQL数据库</h4>
-
-<pre><code class="language-mysql">CREATE DATABASE mydb;
-</code></pre>
-
-<p>返回：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">DATABASE</span> mydb;
+</code></pre></div><p>返回：</p>
 <blockquote>
 <p>Query OK, 1 row affected (0.05 sec)</p>
 </blockquote>
-
 <h4 id="使用数据库mydb">使用数据库mydb</h4>
-
-<pre><code class="language-mysql">CREATE TABLE mytable
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">mytable</span>
 (
-    id        int unsigned NOT NULL auto_increment,
-    username  varchar(100)  NOT NULL,
-    email     varchar(100)  NOT NULL,
-    PRIMARY KEY (id)
+    id        <span style="color:#66d9ef">int</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">auto_increment</span>,
+    username  <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">100</span>)  <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    email     <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">100</span>)  <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (id)
 );
-</code></pre>
-
-<p><code>CREATE TABLE</code>将会创建一个名为<code>mytable</code>的新表。</p>
-
+</code></pre></div><p><code>CREATE TABLE</code>将会创建一个名为<code>mytable</code>的新表。</p>
 <p><code>id int unsigned NOT NULL auto_increment</code>创建一个id列，字段为表内每个记录创建唯一的数字ID(意味着在标准不会存在两个记录的id相同)，MySQL将会自动的设置一个新的，唯一的记录<code>id</code>字段(从1开始)。</p>
-
 <p>返回：</p>
-
 <blockquote>
 <p>Query OK, 0 rows affected (0.10 sec)</p>
 </blockquote>
-
 <h4 id="插入一条记录">插入一条记录</h4>
-
-<pre><code class="language-mysql">INSERT INTO mytable (username, email) VALUES (&quot;myuser&quot;, &quot;myuser@example.com&quot;);
-</code></pre>
-
-<p>返回值例子：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">mytable</span> (username, email) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#34;myuser&#34;</span>, <span style="color:#e6db74">&#34;myuser@example.com&#34;</span>);
+</code></pre></div><p>返回值例子：</p>
 <blockquote>
 <p>QUERY OK, 1 row affected (0.06 sec)</p>
 </blockquote>
-
 <p><code>varchar</code>字段的字符串可以使用单引号：</p>
-
-<pre><code class="language-mysql">INSERT INTO mytable (username, email) VALUES ('username', 'username@example.com');
-</code></pre>
-
-<h4 id="更新表记录">更新表记录</h4>
-
-<pre><code class="language-mysql">UPDATE mytable SET username=&quot;myuser&quot; WHERE id=8;
-</code></pre>
-
-<p>返回值例子：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#a6e22e">mytable</span> (username, email) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;username&#39;</span>, <span style="color:#e6db74">&#39;username@example.com&#39;</span>);
+</code></pre></div><h4 id="更新表记录">更新表记录</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">UPDATE</span> mytable <span style="color:#66d9ef">SET</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myuser&#34;</span> <span style="color:#66d9ef">WHERE</span> id<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>;
+</code></pre></div><p>返回值例子：</p>
 <blockquote>
 <p>Query OK, 1 row affected (0.06 sec)</p>
 </blockquote>
-
 <p>这个<code>int</code>的值可以不使用引号。字符串和日期必须使用单引号或双引号包围。</p>
-
 <h4 id="删除一行">删除一行</h4>
-
-<pre><code class="language-mysql">DELETE FROM mytable where id=8;
-</code></pre>
-
-<p>返回值例子：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DELETE</span> <span style="color:#66d9ef">FROM</span> mytable <span style="color:#66d9ef">where</span> id<span style="color:#f92672">=</span><span style="color:#ae81ff">8</span>;
+</code></pre></div><p>返回值例子：</p>
 <blockquote>
 <p>QUERY OK, 1 row affected (0.06 sec)</p>
 </blockquote>
-
 <p>这将会删除id为8的行。</p>
-
 <h4 id="条件搜索">条件搜索</h4>
-
-<pre><code class="language-mysql">SELECT * FROM mytable WHERE username=&quot;myuser&quot;;
-</code></pre>
-
-<p>返回值</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> mytable <span style="color:#66d9ef">WHERE</span> username<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myuser&#34;</span>;
+</code></pre></div><p>返回值</p>
 <table>
 <thead>
 <tr>
@@ -381,86 +311,61 @@
 <th>email</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>1</td>
 <td>myuser</td>
-<td>myuser@example.com</td>
+<td><a href="mailto:myuser@example.com">myuser@example.com</a></td>
 </tr>
 </tbody>
 </table>
-
 <blockquote>
 <p>1 rows in set (0.00 sec)</p>
 </blockquote>
-
 <h4 id="显示数据库列表">显示数据库列表</h4>
-
-<pre><code class="language-mysql">SHOW databases;
-</code></pre>
-
-<p>返回值：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SHOW</span> <span style="color:#66d9ef">databases</span>;
+</code></pre></div><p>返回值：</p>
 <table>
 <thead>
 <tr>
 <th>Databases</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>information_schema</td>
 </tr>
-
 <tr>
 <td>mydb</td>
 </tr>
 </tbody>
 </table>
-
 <blockquote>
 <p>2 rows in set (0.00 sec)</p>
 </blockquote>
-
 <h4 id="显示数据库中表">显示数据库中表</h4>
-
-<pre><code class="language-mysql">SHOW tables;
-</code></pre>
-
-<p>返回值：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SHOW</span> <span style="color:#66d9ef">tables</span>;
+</code></pre></div><p>返回值：</p>
 <table>
 <thead>
 <tr>
 <th>Tables_in_mydb</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>mytable</td>
 </tr>
 </tbody>
 </table>
-
 <blockquote>
 <p>1 rows in set (0.00 sec)</p>
 </blockquote>
-
 <h4 id="显示表的所有字段">显示表的所有字段</h4>
-
-<pre><code class="language-mysql">DESCRIBE databaseName.tableName;
-</code></pre>
-
-<p>或者已经use一个数据库了：</p>
-
-<pre><code class="language-mysql">DESCRIBE tableName;
-</code></pre>
-
-<p>返回值：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DESCRIBE</span> databaseName.tableName;
+</code></pre></div><p>或者已经use一个数据库了：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">DESCRIBE</span> tableName;
+</code></pre></div><p>返回值：</p>
 <table>
 <thead>
 <tr>
@@ -472,7 +377,6 @@
 <th>Extra</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>fieldname</td>
@@ -484,96 +388,51 @@
 </tr>
 </tbody>
 </table>
-
 <p><code>Extra</code>可能包含<code>auto_increment</code>。</p>
-
 <p><code>Key</code>引用可能影响这个字段的key的类型，包括Primary(PRI), Unique(UNI)..</p>
-
 <blockquote>
 <p>n row in set (0.00 sec)</p>
 </blockquote>
-
 <p>这里n是表的字段的数量。</p>
-
 <h4 id="创建用户">创建用户</h4>
-
 <p>首先，你需要创建一个用户，然后给与这个用户指定数据库/表的权限。在创建用户的时候，需要指明这个用户可以从哪里进行连接。</p>
-
-<pre><code class="language-mysql">CREATE USER 'user'@'localhost' IDENTIFIER BY 'some_password';
-</code></pre>
-
-<p>创建了一个只能从数据库机器上进行访问的用户user。</p>
-
-<pre><code class="language-mysql">CREATE USER 'user'@'%' IDENTIFIER BY 'some_password';
-</code></pre>
-
-<p>创建一个可以从任何地方连接数据库（除了数据库本机器）的用户。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span> IDENTIFIER <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;some_password&#39;</span>;
+</code></pre></div><p>创建了一个只能从数据库机器上进行访问的用户user。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">USER</span> <span style="color:#e6db74">&#39;user&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;%&#39;</span> IDENTIFIER <span style="color:#66d9ef">BY</span> <span style="color:#e6db74">&#39;some_password&#39;</span>;
+</code></pre></div><p>创建一个可以从任何地方连接数据库（除了数据库本机器）的用户。</p>
 <p>返回值例子：</p>
-
 <blockquote>
 <p>Query OK, 0 rows affected (0.00 sec)</p>
 </blockquote>
-
 <h4 id="添加权限">添加权限</h4>
-
 <p>grant为指定数据库的所有表为用户授予通用的基本权限：</p>
-
-<pre><code class="language-mysql">GRANT SELECT, INSERT, UPDATE ON databaseName.* TO 'username'@'localhost';
-</code></pre>
-
-<p>为用户授予所有数据库和所有表的所有权限(要注意这个)：</p>
-
-<pre><code class="language-mysql">GRANT ALL ON *.* TO 'username'@'localhost' WITH GRANT OPTION;
-</code></pre>
-
-<p>就像上面标明的，<code>*.*</code>表示所有数据库的所有表，<code>databaseName.*</code>表示指定数据库的所有表。指定指定的数据库的指定表也是可以的<code>databaseName.tableName</code>。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">SELECT</span>, <span style="color:#66d9ef">INSERT</span>, <span style="color:#66d9ef">UPDATE</span> <span style="color:#66d9ef">ON</span> databaseName.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> <span style="color:#e6db74">&#39;username&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span>;
+</code></pre></div><p>为用户授予所有数据库和所有表的所有权限(要注意这个)：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">ALL</span> <span style="color:#66d9ef">ON</span> <span style="color:#f92672">*</span>.<span style="color:#f92672">*</span> <span style="color:#66d9ef">TO</span> <span style="color:#e6db74">&#39;username&#39;</span><span style="color:#f92672">@</span><span style="color:#e6db74">&#39;localhost&#39;</span> <span style="color:#66d9ef">WITH</span> <span style="color:#66d9ef">GRANT</span> <span style="color:#66d9ef">OPTION</span>;
+</code></pre></div><p>就像上面标明的，<code>*.*</code>表示所有数据库的所有表，<code>databaseName.*</code>表示指定数据库的所有表。指定指定的数据库的指定表也是可以的<code>databaseName.tableName</code>。</p>
 <p><code>WITH GRANT OPTION</code>当用户无需授予其他用户权限的时候，应该忽略掉。</p>
-
-<p>权限值可以是<code>ALL</code>也可以是具体的逗号分隔的值&rdquo;SELECT INSERT UPDATE DELETE CREATE DROP&rdquo;</p>
-
+<p>权限值可以是<code>ALL</code>也可以是具体的逗号分隔的值&quot;SELECT INSERT UPDATE DELETE CREATE DROP&rdquo;</p>
 <h4 id="注意">注意</h4>
-
 <p>通常你应该避免在列名或表名中包括空白或SQL预留的单词。例如，最好避免名字使用<code>table</code>或<code>first name</code>。</p>
-
 <p>如果你一定要使用这样的名称，把他们放到``分隔符中，例如：</p>
-
-<pre><code class="language-mysql">CREATE TABLE `table`
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span><span style="color:#66d9ef">table</span><span style="color:#f92672">`</span>
 (
-    `first name` VARCHAR(30)
+    <span style="color:#f92672">`</span>first name<span style="color:#f92672">`</span> <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>)
 );
-</code></pre>
-
-<p>在这个表上面的查询可能是：</p>
-
-<pre><code class="language-mysql">SELECT `first name` FROM `table` WHERE `first name` LIKE 'a%';
-</code></pre>
-
-<h3 id="information-schema例子">information_schema例子</h3>
-
+</code></pre></div><p>在这个表上面的查询可能是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">`</span>first name<span style="color:#f92672">`</span> <span style="color:#66d9ef">FROM</span> <span style="color:#f92672">`</span><span style="color:#66d9ef">table</span><span style="color:#f92672">`</span> <span style="color:#66d9ef">WHERE</span> <span style="color:#f92672">`</span>first name<span style="color:#f92672">`</span> <span style="color:#66d9ef">LIKE</span> <span style="color:#e6db74">&#39;a%&#39;</span>;
+</code></pre></div><h3 id="information_schema例子">information_schema例子</h3>
 <h4 id="进程列表">进程列表</h4>
-
 <p>这将会按顺序显示所有活动和休眠的查询，然后显示多长时间。</p>
-
-<pre><code class="language-mysql">SELECT * FROM information_schema.PROCESSLIST ORDER BY INFO DESC, TIME DESC;
-</code></pre>
-
-<p>这是关于时间更复杂的例子，因为默认是秒：</p>
-
-<pre><code class="language-mysql">SELECT ID, USER, HOST, DB, COMMAND, TIME as time_seconds,
-ROUND(TIME / 60, 2) as time_minutes, ROUND(TIME / 60 / 60, 2) as time_hours, STATE, INFO
-FROM information_schema.PROCESSLIST ORDER BY INFO DESC, TIME DESC;
-</code></pre>
-
-<h4 id="可存储程序搜索">可存储程序搜索</h4>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> information_schema.PROCESSLIST <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> INFO <span style="color:#66d9ef">DESC</span>, <span style="color:#66d9ef">TIME</span> <span style="color:#66d9ef">DESC</span>;
+</code></pre></div><p>这是关于时间更复杂的例子，因为默认是秒：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> ID, <span style="color:#66d9ef">USER</span>, HOST, DB, COMMAND, <span style="color:#66d9ef">TIME</span> <span style="color:#66d9ef">as</span> time_seconds,
+<span style="color:#a6e22e">ROUND</span>(<span style="color:#66d9ef">TIME</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">60</span>, <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">as</span> time_minutes, <span style="color:#a6e22e">ROUND</span>(<span style="color:#66d9ef">TIME</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">60</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">60</span>, <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">as</span> time_hours, STATE, INFO
+<span style="color:#66d9ef">FROM</span> information_schema.PROCESSLIST <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> INFO <span style="color:#66d9ef">DESC</span>, <span style="color:#66d9ef">TIME</span> <span style="color:#66d9ef">DESC</span>;
+</code></pre></div><h4 id="可存储程序搜索">可存储程序搜索</h4>
 <p>在所有存储过程中轻松搜索单词和通配符。</p>
-
-<pre><code class="language-mysql">SELECT * FROM information_schema.ROUTINGES WHERE ROUTINE_DEFINITION LIKE '%word%';
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span> information_schema.ROUTINGES <span style="color:#66d9ef">WHERE</span> ROUTINE_DEFINITION <span style="color:#66d9ef">LIKE</span> <span style="color:#e6db74">&#39;%word%&#39;</span>;
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -645,6 +504,12 @@ FROM information_schema.PROCESSLIST ORDER BY INFO DESC, TIME DESC;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

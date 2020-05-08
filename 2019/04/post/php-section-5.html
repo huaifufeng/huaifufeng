@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,118 +187,76 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#输出变量的值">输出变量的值</a>
-<ul>
-<li><a href="#echo和print">echo和print</a>
-<ul>
-<li><a href="#echo的简短写法">echo的简短写法</a></li>
-<li><a href="#print的优先级">print的优先级</a></li>
-<li><a href="#echo和print的不同">echo和print的不同</a></li>
-</ul></li>
-<li><a href="#输出数组和对象">输出数组和对象</a></li>
-<li><a href="#echo拼接字符串">echo拼接字符串</a>
-<ul>
-<li><a href="#字符串拼接和echo的多个参数对比">字符串拼接和echo的多个参数对比</a></li>
-</ul></li>
-<li><a href="#printf-vs-sprintf">printf vs sprintf</a></li>
-<li><a href="#输出大数">输出大数</a></li>
-<li><a href="#多维数组输入表格">多维数组输入表格</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#输出变量的值">输出变量的值</a>
+      <ul>
+        <li><a href="#echo和print">echo和print</a></li>
+        <li><a href="#输出数组和对象">输出数组和对象</a></li>
+        <li><a href="#echo拼接字符串">echo拼接字符串</a></li>
+        <li><a href="#printf-vs-sprintf">printf vs sprintf</a></li>
+        <li><a href="#输出大数">输出大数</a></li>
+        <li><a href="#多维数组输入表格">多维数组输入表格</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="输出变量的值">输出变量的值</h2>
-
+        		<h2 id="输出变量的值">输出变量的值</h2>
 <p>创建一个动态的、交互的PHP项目，输出变量和他们的值是有用的。PHP提供了多个变量值的输出方法。这里主要介绍标准的输出方法和这些方法的使用场景。</p>
-
 <h3 id="echo和print">echo和print</h3>
-
 <p><code>echo</code>和<code>print</code>是语言结构，不是函数。这意味着它们不想函数那样需要括号在参数的周围(当然也可以在参数的周围添加括号，这样也没有什么问题)。这将会输出变量、常量和表达式的字符串格式。不能用来输出数组和对象。</p>
-
 <ul>
-<li><p>把字符串<code>joel</code>赋值给变量<code>$name</code></p>
-
+<li>
+<p>把字符串<code>joel</code>赋值给变量<code>$name</code></p>
 <pre><code>$name = 'joel';
 </code></pre></li>
-
-<li><p>使用<code>echo</code>和<code>print</code>来输出<code>$name</code>的值</p>
-
+<li>
+<p>使用<code>echo</code>和<code>print</code>来输出<code>$name</code>的值</p>
 <pre><code>echo $name; #&gt; Joel 
 print $name; #&gt; Joel
 </code></pre></li>
-
-<li><p>括号不是要求的，但是可以使用</p>
-
-<pre><code>echo($name); #&gt; Joel 
-print($name); #&gt; Joel
+<li>
+<p>括号不是要求的，但是可以使用</p>
+<pre><code> echo($name); #&gt; Joel 
+ print($name); #&gt; Joel
 </code></pre></li>
-
-<li><p>使用多个参数(只有<code>echo</code>支持)</p>
-
+<li>
+<p>使用多个参数(只有<code>echo</code>支持)</p>
 <pre><code>echo $name, &quot;Smith&quot;; #&gt; JoelSmith
 echo($name, &quot; &quot;, &quot;Smith&quot;); #&gt; Joel Smith
 </code></pre></li>
-
-<li><p><code>print</code>不像<code>echo</code>，是一个返回值为1的表达式，可以被用在更多的地方</p>
-
+<li>
+<p><code>print</code>不像<code>echo</code>，是一个返回值为1的表达式，可以被用在更多的地方</p>
 <pre><code>print(&quot;hey&quot;) &amp;&amp; print(&quot; &quot;) &amp;&amp; print(&quot;you&quot;); #&gt; you11
 </code></pre></li>
-
-<li><p>下面和上面是相等的</p>
-
+<li>
+<p>下面和上面是相等的</p>
 <pre><code>print (&quot;hey&quot; &amp;&amp; (print (&quot; &quot; &amp;&amp; print &quot;you&quot;))); #&gt; you11
 </code></pre></li>
 </ul>
-
 <h4 id="echo的简短写法">echo的简短写法</h4>
-
 <p>在<a href="http://php.net/manual/en/language.basic-syntax.phpmode.php">outside of PHP tags</a>，echo的简短写法是有效的。使用<code>&lt;?=</code>开始，<code>?&gt;</code>结束。例如：</p>
-
 <pre><code>&lt;p&gt;&lt;?=$variable?&gt;&lt;/p&gt;
 &lt;p&gt;&lt;?= &quot;This is also PHP&quot; ?&gt;&lt;/p&gt;
-</code></pre>
-
-<p>注意这里没有<code>;</code>，对单独的一行来说，PHP的结束符就是代表了分号。所以在简短写法中忽略分号是可以的。</p>
-
+</code></pre><p>注意这里没有<code>;</code>，对单独的一行来说，PHP的结束符就是代表了分号。所以在简短写法中忽略分号是可以的。</p>
 <h4 id="print的优先级">print的优先级</h4>
-
 <p>尽管<code>print</code>是语言结构，但是它有一个优先级。它在<code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>**=</code> <code>/=</code> <code>.=</code> <code>%=</code> <code>&amp;=</code>和<code>and</code>操作符之间，并且左结合。例如：</p>
-
 <pre><code>echo '1' . print '2' + 3; //output 511
-</code></pre>
-
-<p>带有括号的相同的例子：</p>
-
+</code></pre><p>带有括号的相同的例子：</p>
 <pre><code>echo '1' . print ('2' + 3); //output 511
-</code></pre>
-
-<h4 id="echo和print的不同">echo和print的不同</h4>
-
+</code></pre><h4 id="echo和print的不同">echo和print的不同</h4>
 <p>简单说，它们有两点不同：</p>
-
 <ul>
 <li><code>print</code>只能有一个参数，但是<code>echo</code>有多个参数</li>
 <li><code>print</code>有返回值，所以可以像表达式一样使用</li>
 </ul>
-
 <h3 id="输出数组和对象">输出数组和对象</h3>
-
 <p><a href="https://www.php.net/manual/en/function.print-r.php">print_r</a>()：<strong>输出数组和对象来调试。</strong></p>
-
 <p><code>print_r</code>将会输出数组和对象的人可读格式。</p>
-
 <p>你可能有一个数组或对象的变量。想要用<code>echo</code>来输出这个变量的值，但是出现了错误：<code>Notice: Array to string conversion</code>。你可以使用<code>print_r</code>来打印可读的格式。</p>
-
 <blockquote>
 <p>你可以使用第二个参数为true，来获取字符串的格式。</p>
 </blockquote>
-
 <pre><code>$myobject = new stdClass(); 
 $myobject-&gt;myvalue = 'Hello World'; 
 $myarray = [ &quot;Hello&quot;, &quot;World&quot; ]; 
@@ -306,10 +268,7 @@ print_r($myobject);
 print_r($myarray);
 print_r($mystring);
 print_r($myint);
-</code></pre>
-
-<p>这将会有下边的输出：</p>
-
+</code></pre><p>这将会有下边的输出：</p>
 <pre><code>stdClass Object
 (
     [myvalue] =&gt; Hello World
@@ -322,39 +281,21 @@ Array
 
 Hello World
 42
-</code></pre>
-
-<p>进一步，<code>print_r</code>的输出可以作为一个字符串，而不仅仅是输出。例如，下面的代码将会把<code>$myarray</code>的格式放入另外的变量：</p>
-
+</code></pre><p>进一步，<code>print_r</code>的输出可以作为一个字符串，而不仅仅是输出。例如，下面的代码将会把<code>$myarray</code>的格式放入另外的变量：</p>
 <pre><code>$formatted_array = print_r($myarray, true);
-</code></pre>
-
-<p>如果你在浏览器看这个PHP的输出，它将被解析为HTML，换行将不会显示，输出将更不易读，除非你做了下面的事情：</p>
-
+</code></pre><p>如果你在浏览器看这个PHP的输出，它将被解析为HTML，换行将不会显示，输出将更不易读，除非你做了下面的事情：</p>
 <pre><code>echo '&lt;pre&gt;' . print_r($myarray, true) . '&lt;/pre&gt;';
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>打开源代码也可以相同的方式显示这个变量，而不用<code>&lt;pre&gt;</code>标签。</p>
 </blockquote>
-
 <p>你也可以告诉浏览器你想输出一个文本文件，而不是HTML文件。</p>
-
 <pre><code>header('Content-Type: text/plain; charset=utf-8');
 print_r($myarray);
-</code></pre>
-
-<p><a href="https://www.php.net/manual/en/function.var-dump.php">var_dump</a>：输出参数人可读的包含类型和值的信息。</p>
-
+</code></pre><p><a href="https://www.php.net/manual/en/function.var-dump.php">var_dump</a>：输出参数人可读的包含类型和值的信息。</p>
 <p>这个输出的信息<a href="https://stackoverflow.com/questions/3406171/php-var-dump-vs-print-r/3406224#3406224">比</a><code>print_r</code>更加详细的，包含变量的类型和值，其他的像对象id，数组大小，字符串长度，参考标记等等。</p>
-
 <p>你可以使用var_dump输出更详细的信息。</p>
-
 <pre><code>var_dump($myobject, $myarray, $mystring, $myint);
-</code></pre>
-
-<p>这将会输出下面的内容：</p>
-
+</code></pre><p>这将会输出下面的内容：</p>
 <pre><code>object(stdClass)#12 (1) { 
 [&quot;myvalue&quot;]=&gt;
   string(11) &quot;Hello World&quot;
@@ -367,66 +308,43 @@ array(2) {
 }
 string(11) &quot;Hello World&quot;
 int(42)
-</code></pre>
-
-<p><strong>注意</strong>：如果你在开发环境使用XDebug，var_dump会进行限制和截取。查看修改这个情况的<a href="https://xdebug.org/docs/display">详细信息</a>。</p>
-
+</code></pre><p><strong>注意</strong>：如果你在开发环境使用XDebug，var_dump会进行限制和截取。查看修改这个情况的<a href="https://xdebug.org/docs/display">详细信息</a>。</p>
 <p><a href="https://www.php.net/manual/en/function.var-export.php">var_export</a>：输出有效的PHP代码</p>
-
 <p>var_export输出PHP可以解析的格式。</p>
-
 <blockquote>
 <p>你在第二个参数传入true，可以返回放入变量的内容。</p>
 </blockquote>
-
 <pre><code>array (
   0 =&gt; 'Hello',
   1 =&gt; 'World',
 )
 'Hello World'
 42
-</code></pre>
-
-<p>输出有效的PHP代码：</p>
-
+</code></pre><p>输出有效的PHP代码：</p>
 <pre><code>array (
   0 =&gt; 'Hello',
   1 =&gt; 'World',
 )
 'Hello World'
 42
-</code></pre>
-
-<p>想要把这些内容放入一个变量：</p>
-
+</code></pre><p>想要把这些内容放入一个变量：</p>
 <pre><code>$array_export = var_export($myarray, true);
 $string_export = var_export($mystring, true);
 $int_export = var_export($myint, 1); // any `Truthy` value
-</code></pre>
-
-<p>你的输出和下面是一样的：</p>
-
+</code></pre><p>你的输出和下面是一样的：</p>
 <pre><code>printf('$myarray = %s; %s', $array_export, PHP_EOL);
 printf('$mystring = %s; %s', $string_export, PHP_EOL);
 printf('$myint = %s; %s', $int_export, PHP_EOL);
-</code></pre>
-
-<p>这将获得下面的输出：</p>
-
+</code></pre><p>这将获得下面的输出：</p>
 <pre><code>$myarray = array (
   0 =&gt; 'Hello',
   1 =&gt; 'World',
 );
 $mystring = 'Hello World';
 $myint = 42;
-</code></pre>
-
-<h3 id="echo拼接字符串">echo拼接字符串</h3>
-
+</code></pre><h3 id="echo拼接字符串">echo拼接字符串</h3>
 <p>在输出字符串(使用echo或print)，可以<a href="https://secure.php.net/manual/en/language.operators.string.php">拼接字符串</a>。</p>
-
 <p>你可以使用<code>.</code>拼接字符串：</p>
-
 <pre><code>// String variable
 $name = 'Joel';
 
@@ -436,35 +354,20 @@ echo '&lt;p&gt;Hello ' . $name . ', Nice to see you.&lt;/p&gt;';
 // ↑ ↑ - Concatenation Operators
 
 #&gt; &quot;&lt;p&gt;Hello Joel, Nice to see you.&lt;/p&gt;&quot;
-</code></pre>
-
-<p>和拼接符相似，<code>echo</code>(不带括号)可以拼接字符串和变量(或者其他的表达式)，使用<code>,</code>分割。</p>
-
+</code></pre><p>和拼接符相似，<code>echo</code>(不带括号)可以拼接字符串和变量(或者其他的表达式)，使用<code>,</code>分割。</p>
 <pre><code>$itemCount = 1;
 
 echo 'You have ordered ', $itemCount, ' item', $itemCount === 1 ? '' : 's';
 // ↑ ↑ ↑ - Note the commas
 #&gt; &quot;You have ordered 1 item&quot;
-</code></pre>
-
-<h4 id="字符串拼接和echo的多个参数对比">字符串拼接和echo的多个参数对比</h4>
-
+</code></pre><h4 id="字符串拼接和echo的多个参数对比">字符串拼接和echo的多个参数对比</h4>
 <p>在某些情况下，传递多个参数给echo是比字符串拼接更有优势的。参数将会按照他们的顺序输出出来：</p>
-
 <pre><code> echo &quot;The total is: &quot;, $x + $y;
-</code></pre>
-
-<p><code>.</code>符的问题在于它在表达式中的优先级。如果拼接，上面的代码就需要添加括号了。<code>.</code>的优先级也会影响三元运算符。</p>
-
+</code></pre><p><code>.</code>符的问题在于它在表达式中的优先级。如果拼接，上面的代码就需要添加括号了。<code>.</code>的优先级也会影响三元运算符。</p>
 <pre><code> echo &quot;The total is: &quot; . ($x + $y);
-</code></pre>
-
-<h3 id="printf-vs-sprintf">printf vs sprintf</h3>
-
+</code></pre><h3 id="printf-vs-sprintf">printf vs sprintf</h3>
 <p><a href="https://www.php.net/manual/en/function.printf.php">printf</a>将会<strong>输出</strong>使用空格占位符的格式化字符串。</p>
-
 <p><a href="https://www.php.net/manual/en/function.sprintf.php">sprintf</a>将会<strong>返回</strong>格式化的字符串。</p>
-
 <pre><code>$name = 'Jeff';
 // The `%s` tells PHP to expect a string 
 // ↓ `%s` is replaced by ↓
@@ -475,21 +378,13 @@ printf(&quot;Hello %s, How's it going?&quot;, $name);
 $greeting = sprintf(&quot;Hello %s, How's it going?&quot;, $name); 
 echo $greeting;
 #&gt; Hello Jeff, How's it going?
-</code></pre>
-
-<p>也可以使用这两个函数格式化字符串。这可用于格式化用于表示货币的十进制值，使其始终具有两个十进制数字。</p>
-
+</code></pre><p>也可以使用这两个函数格式化字符串。这可用于格式化用于表示货币的十进制值，使其始终具有两个十进制数字。</p>
 <pre><code>$money = 25.2;
 printf('%01.2f', $money); 
 #&gt; 25.20
-</code></pre>
-
-<p>函数<a href="http://php.net/manual/en/function.vprintf.php">vprintf</a>和<a href="https://www.php.net/manual/en/function.vsprintf.php">vsprintf</a>的操作和printf和sprintf的操作一样，只是接收格式字符串和一个数组参数，而不是单个的参数。</p>
-
+</code></pre><p>函数<a href="http://php.net/manual/en/function.vprintf.php">vprintf</a>和<a href="https://www.php.net/manual/en/function.vsprintf.php">vsprintf</a>的操作和printf和sprintf的操作一样，只是接收格式字符串和一个数组参数，而不是单个的参数。</p>
 <h3 id="输出大数">输出大数</h3>
-
 <p>在32位的机器上面，整数大于PHP_INT_MAX将会自动转换为float。使用printf，可以使用float表示法将这些值输出为整数值（即非科学符号），如下图所示：</p>
-
 <pre><code>foreach ([1, 2, 3, 4, 5, 6, 9, 12] as $p) {
     $i = pow(1024, $p);
     printf(&quot;pow(1024, %d) &gt; (%7s) %20s %38.0F&quot;, $p, gettype($i), $i, $i);
@@ -509,21 +404,14 @@ pow(1024,  9)   double  1.2379400392854E+27 1237940039285380274899124224
  1.2379400392854E+27
 pow(1024, 12)   double  1.3292279957849E+36 1329227995784915872903807060280344576
 1.3292279957849E+36
-</code></pre>
-
-<blockquote>
+</code></pre><blockquote>
 <p>注意浮点数的精度不是无限的</p>
 </blockquote>
-
 <p>虽然这看起来不错，但在这个人为的示例中，这些数字都可以表示为二进制数字，因为它们都是1024的幂（因此是2）。例如，请参见：</p>
-
 <pre><code>$n = pow(10, 27);
 printf(&quot;%s %.0F\n&quot;, $n, $n);
 // 1.0E+27 1000000000000000013287555072
-</code></pre>
-
-<h3 id="多维数组输入表格">多维数组输入表格</h3>
-
+</code></pre><h3 id="多维数组输入表格">多维数组输入表格</h3>
 <pre><code>Array
 (
     [0] =&gt; Array
@@ -555,10 +443,7 @@ printf(&quot;%s %.0F\n&quot;, $n, $n);
             [image] =&gt; NONE
         )
 )
-</code></pre>
-
-<p>把数组值输入一个表格：</p>
-
+</code></pre><p>把数组值输入一个表格：</p>
 <pre><code>&lt;table&gt;
 &lt;?php
 foreach ($products as $key =&gt; $value) {
@@ -571,9 +456,7 @@ foreach ($products as $key =&gt; $value) {
 }
 ?&gt;
 &lt;/table&gt;
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -645,6 +528,12 @@ foreach ($products as $key =&gt; $value) {
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

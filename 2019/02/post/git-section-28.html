@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,23 +187,18 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#重命名">重命名</a>
-<ul>
-<li><a href="#重命名目录">重命名目录</a></li>
-<li><a href="#重命名本地和远端分支">重命名本地和远端分支</a></li>
-<li><a href="#重命名本地分支">重命名本地分支</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#重命名">重命名</a>
+      <ul>
+        <li><a href="#重命名目录">重命名目录</a></li>
+        <li><a href="#重命名本地和远端分支">重命名本地和远端分支</a></li>
+        <li><a href="#重命名本地分支">重命名本地分支</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="重命名">重命名</h2>
-
+        		<h2 id="重命名">重命名</h2>
 <table>
 <thead>
 <tr>
@@ -207,7 +206,6 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>-f 或者&ndash;force</td>
@@ -215,49 +213,27 @@
 </tr>
 </tbody>
 </table>
-
 <h3 id="重命名目录">重命名目录</h3>
-
 <p>重命名一个目录，从<code>oldname</code>到<code>newname</code>：</p>
-
 <pre><code>git mv directoryToFolder/oldName directoryToFolder/newName
-</code></pre>
-
-<p>然后就可以<code>git commit</code>和<code>git push</code>了。</p>
-
+</code></pre><p>然后就可以<code>git commit</code>和<code>git push</code>了。</p>
 <p>如果出现了错误：</p>
-
 <blockquote>
 <p>fatal: renaming &lsquo;directoryToFolder/oldName&rsquo; failed: Invalid argument</p>
 </blockquote>
-
 <p>使用下面的命令：</p>
-
 <pre><code>git mv directoryToFolder/oldName temp &amp;&amp; git mv temp directoryToFolder/newName
-</code></pre>
-
-<h3 id="重命名本地和远端分支">重命名本地和远端分支</h3>
-
+</code></pre><h3 id="重命名本地和远端分支">重命名本地和远端分支</h3>
 <p>最简单的方式是切换出本地的分支：</p>
-
 <pre><code>git checkout old_branch
-</code></pre>
-
-<p>然后重命名本地分支，删除老分支，设置上游的新分支名称：</p>
-
+</code></pre><p>然后重命名本地分支，删除老分支，设置上游的新分支名称：</p>
 <pre><code>git branch -m new_branch
 git push origin :old_branch
 git push --set-upstream origin new_branch
-</code></pre>
-
-<h3 id="重命名本地分支">重命名本地分支</h3>
-
+</code></pre><h3 id="重命名本地分支">重命名本地分支</h3>
 <p>你可以使用下面的命令重命名本地分支：</p>
-
 <pre><code>git branch -m old_name new_name
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -329,6 +305,12 @@ git push --set-upstream origin new_branch
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

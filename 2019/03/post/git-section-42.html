@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,24 +187,19 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#blame">blame</a>
-<ul>
-<li><a href="#只显示指定的行">只显示指定的行</a></li>
-<li><a href="#查找谁修改了这个文件">查找谁修改了这个文件</a></li>
-<li><a href="#显示最后修改这行的提交">显示最后修改这行的提交</a></li>
-<li><a href="#忽略空白修改">忽略空白修改</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#blame">blame</a>
+      <ul>
+        <li><a href="#只显示指定的行">只显示指定的行</a></li>
+        <li><a href="#查找谁修改了这个文件">查找谁修改了这个文件</a></li>
+        <li><a href="#显示最后修改这行的提交">显示最后修改这行的提交</a></li>
+        <li><a href="#忽略空白修改">忽略空白修改</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="blame">blame</h2>
-
+        		<h2 id="blame">blame</h2>
 <table>
 <thead>
 <tr>
@@ -208,118 +207,90 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>filename</td>
 <td>需要显示详情的文件名称</td>
 </tr>
-
 <tr>
 <td>-f</td>
 <td>在详情中显示文件的名称</td>
 </tr>
-
 <tr>
 <td>-e</td>
 <td>使用作者的邮箱地址代替作者的名称</td>
 </tr>
-
 <tr>
 <td>-w</td>
 <td>当在父子版本之间比较时忽略掉空格</td>
 </tr>
-
 <tr>
 <td>-L start,end</td>
 <td>显示指定行范围内的详情，行从1开始。例如 <code>git blame -L 1,2 [filename]</code></td>
 </tr>
-
 <tr>
 <td>—show-stats</td>
 <td>在详情末尾输出额外的统计信息</td>
 </tr>
-
 <tr>
 <td>-l</td>
 <td>输出长的hash值(默认不输出)</td>
 </tr>
-
 <tr>
 <td>-t</td>
 <td>输出时间戳(默认输出时间格式)</td>
 </tr>
-
 <tr>
 <td>-reverse</td>
 <td>反向输出详情信息</td>
 </tr>
-
 <tr>
 <td>-p,—porcelain</td>
 <td>输出机器理解的格式</td>
 </tr>
-
 <tr>
 <td>-M</td>
 <td>检查文件中移动或复制的行</td>
 </tr>
-
 <tr>
 <td>-C</td>
 <td>除了想-M一样，还检查统一提交中其他文件中移动或复制的行</td>
 </tr>
-
 <tr>
 <td>-h</td>
 <td>显示帮助信息</td>
 </tr>
-
 <tr>
 <td>-c</td>
 <td>使用和git annotate相同格式的输出(默认off)</td>
 </tr>
-
 <tr>
 <td>-n</td>
 <td>输出在原来提交中的行号(默认off)</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="只显示指定的行">只显示指定的行</h3>
-
 <p>输出可以被限定在指定的行区间内：</p>
-
 <pre><code>git blame -L start,end
-</code></pre>
-
-<p>这个<code>start</code>和<code>end</code>可以是下面的值：</p>
-
+</code></pre><p>这个<code>start</code>和<code>end</code>可以是下面的值：</p>
 <ul>
-<li><p>行号</p>
-
+<li>
+<p>行号</p>
 <pre><code>git blame -L 10, 30
 </code></pre></li>
-
-<li><p>/regex/ 正则表达式</p>
-
+<li>
+<p>/regex/ 正则表达式</p>
 <pre><code>git blame -L /void main/, git blame -L 46,/void foo/
 </code></pre></li>
-
-<li><p>+offset,-offset(只能用于end)</p>
-
+<li>
+<p>+offset,-offset(只能用于end)</p>
 <pre><code>git blame -L 108,+30, git blame -L 125,-15
 </code></pre></li>
 </ul>
-
 <p>多个行区间是可以的，并且行区间有重叠也是支持的：</p>
-
 <pre><code>git blame -L 10,20 -L 12,80 -L 120,+10 -L ^/void main/,+40
-</code></pre>
-
-<h3 id="查找谁修改了这个文件">查找谁修改了这个文件</h3>
-
+</code></pre><h3 id="查找谁修改了这个文件">查找谁修改了这个文件</h3>
 <pre><code>//显示指定文件每行的提交作者和提交hash
 git blame test.c file
 
@@ -329,24 +300,13 @@ git blame -e test.c file
 
 //限制查看的行范围
 git blame -L 1,10 test.c
-</code></pre>
-
-<h3 id="显示最后修改这行的提交">显示最后修改这行的提交</h3>
-
+</code></pre><h3 id="显示最后修改这行的提交">显示最后修改这行的提交</h3>
 <pre><code>git blame file
-</code></pre>
-
-<p>将会显示文件<code>file</code>中每一行最后一次的提交。</p>
-
+</code></pre><p>将会显示文件<code>file</code>中每一行最后一次的提交。</p>
 <h3 id="忽略空白修改">忽略空白修改</h3>
-
 <p>有时候，仓库的提交只包含了空白：例如修改缩进，交换tab和空格。这让寻找实际的代码修改就比较麻烦了。</p>
-
 <pre><code>git blame -w
-</code></pre>
-
-<p>将会忽略空格的修改，这样查找实际的修改就很方便了。</p>
-
+</code></pre><p>将会忽略空格的修改，这样查找实际的修改就很方便了。</p>
 <p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
@@ -419,6 +379,12 @@ git blame -L 1,10 test.c
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,28 +187,23 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用php发送邮件">使用PHP发送邮件</a>
-<ul>
-<li><a href="#1-发送邮件-基础-更详细和完整的例子">1. 发送邮件 - 基础，更详细和完整的例子</a></li>
-<li><a href="#2-mail-发送html邮件">2. mail()发送HTML邮件</a></li>
-<li><a href="#3-使用mail-发送附件">3. 使用mail()发送附件</a></li>
-<li><a href="#4-phpmailer发送纯文本文件">4. PHPMailer发送纯文本文件</a></li>
-<li><a href="#5-phpmailer发送html邮件">5. PHPMailer发送HTML邮件</a></li>
-<li><a href="#5-phpmailer发送附件邮件">5. PHPMailer发送附件邮件</a></li>
-<li><a href="#7-使用sendgrid发送文本邮件">7. 使用Sendgrid发送文本邮件</a></li>
-<li><a href="#7-sendgrid发送附件邮件">7. Sendgrid发送附件邮件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#使用php发送邮件">使用PHP发送邮件</a>
+      <ul>
+        <li><a href="#1-发送邮件---基础更详细和完整的例子">1. 发送邮件 - 基础，更详细和完整的例子</a></li>
+        <li><a href="#2-mail发送html邮件">2. mail()发送HTML邮件</a></li>
+        <li><a href="#3-使用mail发送附件">3. 使用mail()发送附件</a></li>
+        <li><a href="#4-phpmailer发送纯文本文件">4. PHPMailer发送纯文本文件</a></li>
+        <li><a href="#5-phpmailer发送html邮件">5. PHPMailer发送HTML邮件</a></li>
+        <li><a href="#5-phpmailer发送附件邮件">5. PHPMailer发送附件邮件</a></li>
+        <li><a href="#7-使用sendgrid发送文本邮件">7. 使用Sendgrid发送文本邮件</a></li>
+        <li><a href="#7-sendgrid发送附件邮件">7. Sendgrid发送附件邮件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="使用php发送邮件">使用PHP发送邮件</h2>
-
+        		<h2 id="使用php发送邮件">使用PHP发送邮件</h2>
 <table>
 <thead>
 <tr>
@@ -212,422 +211,346 @@
 <th>想去</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>string $to</td>
 <td>收件人地址</td>
 </tr>
-
 <tr>
 <td>string $subject</td>
 <td>邮件主题行</td>
 </tr>
-
 <tr>
 <td>string $message</td>
 <td>邮件主题</td>
 </tr>
-
 <tr>
 <td>string $additional_headers</td>
 <td>可选：邮件头信息</td>
 </tr>
-
 <tr>
 <td>string $adaitional_parameters</td>
 <td>可选：在命令行中传递给配置的邮件发送应用程序的参数</td>
 </tr>
 </tbody>
 </table>
-
-<h3 id="1-发送邮件-基础-更详细和完整的例子">1. 发送邮件 - 基础，更详细和完整的例子</h3>
-
+<h3 id="1-发送邮件---基础更详细和完整的例子">1. 发送邮件 - 基础，更详细和完整的例子</h3>
 <p>一个典型的邮件包含下面3个主要部分：</p>
-
 <ol>
 <li>一个收件人（是一个邮件地址）</li>
 <li>一个主题</li>
 <li>一个信息主题</li>
 </ol>
-
 <p>在PHP中发送邮件很简单，只需要调用<code>mail()</code>方法。<code>mail()</code>接受5个参数，但是只有前3个是发送一个邮件所需要的（尽管像下面显示的这四个参数是常用的）。前开始的3个参数：</p>
-
 <ol>
 <li>收件人的地址(字符串)</li>
 <li>邮件的主题(字符串)</li>
 <li>邮件的主题(字符串)（邮件的内容）</li>
 </ol>
-
 <p>最简单的例子像下面一样：</p>
-
-<pre><code class="language-php"> mail('recipient@example.com', 'Email Subject', 'This is the email message body');
-</code></pre>
-
-<p>上面的简单例子在有限的环境下（如内部硬编码的报警邮件）是正常工作的。但是通常将放入<code>mail()</code>的内容放到一个变量中，这样让代码更加清晰，便于管理（例如，从表单提交中动态创建邮件内容）。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"> mail(&#39;recipient@example.com&#39;, &#39;Email Subject&#39;, &#39;This is the email message body&#39;);
+</code></pre></div><p>上面的简单例子在有限的环境下（如内部硬编码的报警邮件）是正常工作的。但是通常将放入<code>mail()</code>的内容放到一个变量中，这样让代码更加清晰，便于管理（例如，从表单提交中动态创建邮件内容）。</p>
 <p>例如，<code>mail()</code>接受第四个参数，允许在邮件中发送更多的邮件头。你可以设置下面的头信息：</p>
-
 <ul>
 <li><code>From</code>名称和邮件地址，用户将会看到的</li>
 <li>用户回复将会发送到的<code>Rely-To</code>邮件地址</li>
 <li>额外的非标准头信息：<code>X-Mailer</code>向收件人说明邮件是通过PHP发送的</li>
 </ul>
-
-<pre><code class="language-php">$to = 'recipient@example.com';
-$subject = 'Email Subject';
-$message = 'This is the email message body';
-$headers = implode(&quot;\r\n&quot;, [
-    'From: John Conde &lt;webmaster@example.com&gt;', 
-    'Reply-To: webmaster@example.com', 
-    'X-Mailer: PHP/' . PHP_VERSION
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$to = &#39;recipient@example.com&#39;;
+$subject = &#39;Email Subject&#39;;
+$message = &#39;This is the email message body&#39;;
+$headers = implode(&#34;\r\n&#34;, [
+    &#39;From: John Conde &lt;<span style="color:#f92672">webmaster</span><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">example</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#a6e22e">com</span>&gt;&#39;, 
+    &#39;Reply-To: webmaster@example.com&#39;, 
+    &#39;X-Mailer: PHP/&#39; . PHP_VERSION
 ]);
-</code></pre>
-
-<p>额外的第五个参数可以被用来向命令行选项一样设置发送邮件时使用的配置选项，在<code>sendmail_path</code>中定义的配置。例如，当使用<code>sendmail/postfix</code>的<code>-f</code>选项时，可以设置信封发送人地址。</p>
-
-<pre><code class="language-php">$fifth = '-fno-reply@example.com';
-</code></pre>
-
-<p>尽管使用<code>mail()</code>发送邮件时很可靠的，但是不能保证调用<code>mail()</code>的时候，邮件就发送成功。想要查看邮件发送的时候释放有错误，可以查询<code>mail()</code>的返回值。当邮件成功投递发送的之后，你会获取一个<code>TRUE</code>，否则会获取<code>FALSE</code>。</p>
-
-<pre><code class="language-php">$result = mail($to, $subject, $message, $headers, $fifth);
-</code></pre>
-
-<p><strong>注意：</strong>尽管<code>mail()</code>返回TRUE，但是这并不意味着邮件被发送了，或者邮件被收件人接受了。它只表示邮件已成功移交到系统的邮件系统。</p>
-
+</code></pre></div><p>额外的第五个参数可以被用来向命令行选项一样设置发送邮件时使用的配置选项，在<code>sendmail_path</code>中定义的配置。例如，当使用<code>sendmail/postfix</code>的<code>-f</code>选项时，可以设置信封发送人地址。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$fifth = &#39;-fno-reply@example.com&#39;;
+</code></pre></div><p>尽管使用<code>mail()</code>发送邮件时很可靠的，但是不能保证调用<code>mail()</code>的时候，邮件就发送成功。想要查看邮件发送的时候释放有错误，可以查询<code>mail()</code>的返回值。当邮件成功投递发送的之后，你会获取一个<code>TRUE</code>，否则会获取<code>FALSE</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$result = mail($to, $subject, $message, $headers, $fifth);
+</code></pre></div><p>**注意：**尽管<code>mail()</code>返回TRUE，但是这并不意味着邮件被发送了，或者邮件被收件人接受了。它只表示邮件已成功移交到系统的邮件系统。</p>
 <p>如果你想发送一个HTML邮件，并不需要做非常多的额外工作：</p>
-
 <ol>
 <li>添加<code>MIME-Version</code>头</li>
 <li>添加<code>Conent-Type</code>头</li>
 <li>确保你的邮件内容是HTML的</li>
 </ol>
-
-<pre><code class="language-php">$to = 'recipient@example.com';
-$subject = 'Email Subject';
-$message = '&lt;html&gt;&lt;body&gt;This is the email message body&lt;/body&gt;&lt;/html&gt;'; 
-$headers = implode(&quot;\r\n&quot;, [
-		'From: John Conde &lt;webmaster@example.com&gt;', 
-    'Reply-To: webmaster@example.com', 
-    'MIME-Version: 1.0',
-    'Content-Type: text/html; charset=ISO-8859-1', 
-    'X-Mailer: PHP/' . PHP_VERSION
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$to = &#39;recipient@example.com&#39;;
+$subject = &#39;Email Subject&#39;;
+$message = &#39;&lt;<span style="color:#f92672">html</span>&gt;&lt;<span style="color:#f92672">body</span>&gt;This is the email message body&lt;/<span style="color:#f92672">body</span>&gt;&lt;/<span style="color:#f92672">html</span>&gt;&#39;; 
+$headers = implode(&#34;\r\n&#34;, [
+		&#39;From: John Conde &lt;<span style="color:#f92672">webmaster</span><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">example</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#a6e22e">com</span>&gt;&#39;, 
+    &#39;Reply-To: webmaster@example.com&#39;, 
+    &#39;MIME-Version: 1.0&#39;,
+    &#39;Content-Type: text/html; charset=ISO-8859-1&#39;, 
+    &#39;X-Mailer: PHP/&#39; . PHP_VERSION
 ]);
-</code></pre>
+</code></pre></div><p>下面是PHP的<code>mail()</code>方法的完整例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#75715e">//测试工具，只在开发环境开启
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">error_reporting</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>);
+<span style="color:#a6e22e">ini_set</span>(<span style="color:#e6db74">&#39;display_errors&#39;</span>, <span style="color:#e6db74">&#39;On&#39;</span>);
+<span style="color:#a6e22e">set_error_handler</span>(<span style="color:#e6db74">&#34;var_dump&#34;</span>);
 
-<p>下面是PHP的<code>mail()</code>方法的完整例子：</p>
+<span style="color:#75715e">//设置一些特殊的配置选项
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">ini_set</span>(<span style="color:#e6db74">&#34;mail.log&#34;</span>, <span style="color:#e6db74">&#34;/tmp/mail.log&#34;</span>); 
+<span style="color:#a6e22e">ini_set</span>(<span style="color:#e6db74">&#34;mail.add_x_header&#34;</span>, <span style="color:#66d9ef">TRUE</span>);
 
-<pre><code class="language-php">&lt;?php
-//测试工具，只在开发环境开启
-error_reporting(-1);
-ini_set('display_errors', 'On');
-set_error_handler(&quot;var_dump&quot;);
-
-//设置一些特殊的配置选项
-ini_set(&quot;mail.log&quot;, &quot;/tmp/mail.log&quot;); 
-ini_set(&quot;mail.add_x_header&quot;, TRUE);
-
-// 邮件内容
-$to = 'recipient@example.com';
-$subject = 'Email Subject';
-$message = 'This is the email message body'; 
-$headers = implode(&quot;\r\n&quot;, [
-    'From: webmaster@example.com', 
-    'Reply-To: webmaster@example.com', 
-    'X-Mailer: PHP/' . PHP_VERSION
+<span style="color:#75715e">// 邮件内容
+</span><span style="color:#75715e"></span>$to <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;recipient@example.com&#39;</span>;
+$subject <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Email Subject&#39;</span>;
+$message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;This is the email message body&#39;</span>; 
+$headers <span style="color:#f92672">=</span> <span style="color:#a6e22e">implode</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, [
+    <span style="color:#e6db74">&#39;From: webmaster@example.com&#39;</span>, 
+    <span style="color:#e6db74">&#39;Reply-To: webmaster@example.com&#39;</span>, 
+    <span style="color:#e6db74">&#39;X-Mailer: PHP/&#39;</span> <span style="color:#f92672">.</span> <span style="color:#66d9ef">PHP_VERSION</span>
 ]);
 
-//发送邮件
-$result = mail($to, $subject, $message, $headers); 
+<span style="color:#75715e">//发送邮件
+</span><span style="color:#75715e"></span>$result <span style="color:#f92672">=</span> <span style="color:#a6e22e">mail</span>($to, $subject, $message, $headers); 
 
-//检查邮件发送结果
-if ($result) {
-    //成功跳转到结果页。 
-    header('Location: http://example.com/path/to/thank-you.php', true, 303);
-    exit;
-}else {
-    //失败进行错误处理
-}
-</code></pre>
-
-<p>查看更多的信息</p>
-
+<span style="color:#75715e">//检查邮件发送结果
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> ($result) {
+    <span style="color:#75715e">//成功跳转到结果页。 
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: http://example.com/path/to/thank-you.php&#39;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">303</span>);
+    <span style="color:#66d9ef">exit</span>;
+}<span style="color:#66d9ef">else</span> {
+    <span style="color:#75715e">//失败进行错误处理
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>查看更多的信息</p>
 <p>官方文档</p>
-
 <ul>
 <li><a href="https://www.php.net/manual/zh/function.mail.php">mail()</a></li>
 <li><a href="https://www.php.net/manual/zh/mail.configuration.php">PHP mail()的配置</a></li>
 </ul>
-
 <p>相关的Stack Overflow 问题</p>
-
 <ul>
 <li><a href="https://stackoverflow.com/questions/24644436/php-mail-function-doesnt-complete-sending-of-e-mail">PHP的mail form没有完成发送邮件</a></li>
 <li><a href="https://stackoverflow.com/questions/371/how-do-you-make-sure-email-you-send-programmatically-is-not-automatically-marked">怎么确保你程序发送的邮件不被标记为垃圾邮件</a></li>
 <li><a href="https://stackoverflow.com/questions/15965376/how-to-configure-xampp-to-send-mail-from-localhost/18185233#18185233">怎么使用STMP发送邮件</a></li>
 <li><a href="https://stackoverflow.com/questions/5666312/php-mail-issue-with-www-data/5666682#5666682">设置发送地址信封</a></li>
 </ul>
-
 <p>可选的邮件封装</p>
-
 <ul>
 <li><a href="https://github.com/Synchro/PHPMailer">PHPMailer</a></li>
 <li><a href="http://swiftmailer.org/">SwiftMailer</a></li>
 <li><a href="https://pear.php.net/package/Mail">PEAR::Mail</a></li>
 </ul>
-
 <p>邮件服务器</p>
-
 <ul>
 <li><a href="http://www.pmail.com/overviews/ovw_mercury.htm">Mercury Mail(Windows)</a></li>
 </ul>
+<h3 id="2-mail发送html邮件">2. mail()发送HTML邮件</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$to      <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;recipent@example.com&#39;</span>;
+$subject <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Sending an HTML email using mail() in PHP&#39;</span>;
+$message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;This paragraph is bold.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;i&gt;This text is
+</span><span style="color:#e6db74">italic.&lt;/i&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&#39;</span>;
 
-<h3 id="2-mail-发送html邮件">2. mail()发送HTML邮件</h3>
-
-<pre><code class="language-php">&lt;?php
-$to      = 'recipent@example.com';
-$subject = 'Sending an HTML email using mail() in PHP';
-$message = '&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;This paragraph is bold.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;i&gt;This text is
-italic.&lt;/i&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;';
-
-$headers = implode(&quot;\r\n&quot;, [
-    &quot;From: John Conde &lt;webmaster@example.com&gt;&quot;, 
-    &quot;Reply-To: webmaster@example.com&quot;, 
-    &quot;X-Mailer: PHP/&quot; . PHP_VERSION, &quot;MIME-Version: 1.0&quot;,
-    &quot;Content-Type: text/html; charset=UTF-8&quot;
+$headers <span style="color:#f92672">=</span> <span style="color:#a6e22e">implode</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, [
+    <span style="color:#e6db74">&#34;From: John Conde &lt;webmaster@example.com&gt;&#34;</span>, 
+    <span style="color:#e6db74">&#34;Reply-To: webmaster@example.com&#34;</span>, 
+    <span style="color:#e6db74">&#34;X-Mailer: PHP/&#34;</span> <span style="color:#f92672">.</span> <span style="color:#66d9ef">PHP_VERSION</span>, <span style="color:#e6db74">&#34;MIME-Version: 1.0&#34;</span>,
+    <span style="color:#e6db74">&#34;Content-Type: text/html; charset=UTF-8&#34;</span>
 ]);
 
-mail($to, $subject, $message, $headers);
-</code></pre>
-
-<p>这和文本邮件没有太大的不同。主要的不同是邮件的内容是HTML格式的并且有两个额外的头信息必须添加到邮件中，以便邮件客户端安装HTML来处理这个邮件。两个头信息是：</p>
-
+<span style="color:#a6e22e">mail</span>($to, $subject, $message, $headers);
+</code></pre></div><p>这和文本邮件没有太大的不同。主要的不同是邮件的内容是HTML格式的并且有两个额外的头信息必须添加到邮件中，以便邮件客户端安装HTML来处理这个邮件。两个头信息是：</p>
 <ul>
 <li>MIME-Version: 1.0</li>
 <li>Content-Type: text/html; charset=UTF-8</li>
 </ul>
+<h3 id="3-使用mail发送附件">3. 使用mail()发送附件</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$to    <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;recipient@example.com&#39;</span>; 
+$subject <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Email Subject&#39;</span>; 
+$message <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;This is the email message body&#39;</span>;
 
-<h3 id="3-使用mail-发送附件">3. 使用mail()发送附件</h3>
+$attachment <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/path/to/your/file.pdf&#39;</span>;
+$content <span style="color:#f92672">=</span> <span style="color:#a6e22e">file_get_contents</span>($attachment);
 
-<pre><code class="language-php">&lt;?php
-$to    = 'recipient@example.com'; 
-$subject = 'Email Subject'; 
-$message = 'This is the email message body';
+<span style="color:#75715e">/* Attachment content transferred in Base64 encoding MUST be split into chunks 76 characters in length as specified by RFC 2045 section 6.8. By default, the function chunk_split() uses a chunk length of 76 with a trailing CRLF (\r\n). The 76 character requirement does not include the carriage return and line feed */</span> 
+$content <span style="color:#f92672">=</span> <span style="color:#a6e22e">chunk_split</span>(<span style="color:#a6e22e">base64_encode</span>($content));
 
-$attachment = '/path/to/your/file.pdf';
-$content = file_get_contents($attachment);
+<span style="color:#75715e">/* Boundaries delimit multipart entities. As stated
+</span><span style="color:#75715e">in RFC 2046 section 5.1, the boundary MUST NOT occur
+</span><span style="color:#75715e">in any encapsulated part. Therefore, it should be
+</span><span style="color:#75715e">unique. As stated in the following section 5.1.1, a
+</span><span style="color:#75715e">boundary is defined as a line consisting of two hyphens
+</span><span style="color:#75715e">(&#34;--&#34;), a parameter value, optional linear whitespace,
+</span><span style="color:#75715e">and a terminating CRLF. */</span>
+$prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;part_&#34;</span>; <span style="color:#75715e">// This is an optional prefix
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">/* Generate a unique boundary parameter value with our prefix using the uniqid() function. The second parameter makes the parameter value more unique. */</span>
+$boundary <span style="color:#f92672">=</span> <span style="color:#a6e22e">uniqid</span>($prefix, <span style="color:#66d9ef">true</span>);
 
-/* Attachment content transferred in Base64 encoding MUST be split into chunks 76 characters in length as specified by RFC 2045 section 6.8. By default, the function chunk_split() uses a chunk length of 76 with a trailing CRLF (\r\n). The 76 character requirement does not include the carriage return and line feed */ 
-$content = chunk_split(base64_encode($content));
+<span style="color:#75715e">// headers
+</span><span style="color:#75715e"></span>$headers <span style="color:#f92672">=</span> <span style="color:#a6e22e">implode</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, [
+    <span style="color:#e6db74">&#39;From: webmaster@example.com&#39;</span>,
+    <span style="color:#e6db74">&#39;Reply-To: webmaster@example.com&#39;</span>, 
+    <span style="color:#e6db74">&#39;X-Mailer: PHP/&#39;</span> <span style="color:#f92672">.</span> <span style="color:#66d9ef">PHP_VERSION</span>, <span style="color:#e6db74">&#39;MIME-Version: 1.0&#39;</span>,
+    <span style="color:#75715e">// boundary parameter required, must be enclosed by quotes
+</span><span style="color:#75715e"></span>    <span style="color:#e6db74">&#39;Content-Type: multipart/mixed; boundary=&#34;&#39;</span> <span style="color:#f92672">.</span> $boundary <span style="color:#f92672">.</span> <span style="color:#e6db74">&#39;&#34;&#39;</span>, 
+    <span style="color:#e6db74">&#34;Content-Transfer-Encoding: 7bit&#34;</span>,
+    <span style="color:#e6db74">&#34;This is a MIME encoded message.&#34;</span> <span style="color:#75715e">// message for restricted transports
+</span><span style="color:#75715e"></span>]);
 
-/* Boundaries delimit multipart entities. As stated
-in RFC 2046 section 5.1, the boundary MUST NOT occur
-in any encapsulated part. Therefore, it should be
-unique. As stated in the following section 5.1.1, a
-boundary is defined as a line consisting of two hyphens
-(&quot;--&quot;), a parameter value, optional linear whitespace,
-and a terminating CRLF. */
-$prefix = &quot;part_&quot;; // This is an optional prefix
-
-/* Generate a unique boundary parameter value with our prefix using the uniqid() function. The second parameter makes the parameter value more unique. */
-$boundary = uniqid($prefix, true);
-
-// headers
-$headers = implode(&quot;\r\n&quot;, [
-    'From: webmaster@example.com',
-    'Reply-To: webmaster@example.com', 
-    'X-Mailer: PHP/' . PHP_VERSION, 'MIME-Version: 1.0',
-    // boundary parameter required, must be enclosed by quotes
-    'Content-Type: multipart/mixed; boundary=&quot;' . $boundary . '&quot;', 
-    &quot;Content-Transfer-Encoding: 7bit&quot;,
-    &quot;This is a MIME encoded message.&quot; // message for restricted transports
-]);
-
-// message and attachment
-$message = implode(&quot;\r\n&quot;, [
-    &quot;--&quot; . $boundary, // header boundary delimiter line
-    'Content-Type: text/plain; charset=&quot;iso-8859-1&quot;', &quot;Content-Transfer-Encoding: 8bit&quot;,
+<span style="color:#75715e">// message and attachment
+</span><span style="color:#75715e"></span>$message <span style="color:#f92672">=</span> <span style="color:#a6e22e">implode</span>(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span>, [
+    <span style="color:#e6db74">&#34;--&#34;</span> <span style="color:#f92672">.</span> $boundary, <span style="color:#75715e">// header boundary delimiter line
+</span><span style="color:#75715e"></span>    <span style="color:#e6db74">&#39;Content-Type: text/plain; charset=&#34;iso-8859-1&#34;&#39;</span>, <span style="color:#e6db74">&#34;Content-Transfer-Encoding: 8bit&#34;</span>,
     $message,
-    &quot;--&quot; . $boundary, // content boundary delimiter line 
-    'Content-Type: application/octet-stream; name=&quot;RenamedFile.pdf&quot;', 
-    &quot;Content-Transfer-Encoding: base64&quot;,
-    &quot;Content-Disposition: attachment&quot;,
+    <span style="color:#e6db74">&#34;--&#34;</span> <span style="color:#f92672">.</span> $boundary, <span style="color:#75715e">// content boundary delimiter line 
+</span><span style="color:#75715e"></span>    <span style="color:#e6db74">&#39;Content-Type: application/octet-stream; name=&#34;RenamedFile.pdf&#34;&#39;</span>, 
+    <span style="color:#e6db74">&#34;Content-Transfer-Encoding: base64&#34;</span>,
+    <span style="color:#e6db74">&#34;Content-Disposition: attachment&#34;</span>,
     $content,
-    &quot;--&quot; . $boundary . &quot;--&quot; // closing boundary delimiter line
-]);
+    <span style="color:#e6db74">&#34;--&#34;</span> <span style="color:#f92672">.</span> $boundary <span style="color:#f92672">.</span> <span style="color:#e6db74">&#34;--&#34;</span> <span style="color:#75715e">// closing boundary delimiter line
+</span><span style="color:#75715e"></span>]);
 
-$result = mail($to, $subject, $message, $headers); // send the email
-
-if ($result) {
-// Success! Redirect to a thank you page. Use the
-// POST/REDIRECT/GET pattern to prevent form resubmissions // when a user refreshes the page.
-    header('Location: http://example.com/path/to/thank-you.php', true, 303);
-    exit; 
-}  else {
-// Your mail was not sent. Check your logs to see if // the reason was reported there for you.
-}
-</code></pre>
-
-<p><strong>内容传输加密</strong></p>
-
-<p>有效的加密方式包括<em>7bit</em>, <em>8bit</em>, <em>binary</em>, <em>quoted-printable</em>, <em>base64</em>, <em>ietf-token</em>, 和 *x-token*。在这些加密方式中，当有一个Multipart的Content-Type的头，Content-Transfer-Encoding必须不能是RFC2015第6.4部分记录的<em>7bit</em>, <em>8bit</em>, 或 *binary*。</p>
-
+$result <span style="color:#f92672">=</span> <span style="color:#a6e22e">mail</span>($to, $subject, $message, $headers); <span style="color:#75715e">// send the email
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">if</span> ($result) {
+<span style="color:#75715e">// Success! Redirect to a thank you page. Use the
+</span><span style="color:#75715e">// POST/REDIRECT/GET pattern to prevent form resubmissions // when a user refreshes the page.
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: http://example.com/path/to/thank-you.php&#39;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">303</span>);
+    <span style="color:#66d9ef">exit</span>; 
+}  <span style="color:#66d9ef">else</span> {
+<span style="color:#75715e">// Your mail was not sent. Check your logs to see if // the reason was reported there for you.
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p><strong>内容传输加密</strong></p>
+<p>有效的加密方式包括<em>7bit</em>, <em>8bit</em>, <em>binary</em>, <em>quoted-printable</em>, <em>base64</em>, <em>ietf-token</em>, 和 <em>x-token</em>。在这些加密方式中，当有一个Multipart的Content-Type的头，Content-Transfer-Encoding必须不能是RFC2015第6.4部分记录的<em>7bit</em>, <em>8bit</em>, 或 <em>binary</em>。</p>
 <p>在例子中使用7bit编码（代表US-ASCII字符）作为multipart头部分，因为正如RFC2045第5节描述的，某些协议只支持这种编码。然后可以对边界内的数据进行逐部分编码（RFC2046，第5.1节）。这个例子就是这样做的。第一部分包含文本/纯文本消息，由于可能需要支持其他字符，因此定义为8位。在这种情况下，将使用Latin1（ISO-8859-1）字符集。第二部分是附件，因此它被定义为base64编码的应用程序/octet流。由于base64将任意数据转换为7bit范围，因此可以通过受限传输（RFC2045，第6.2节）发送。</p>
-
 <h3 id="4-phpmailer发送纯文本文件">4. PHPMailer发送纯文本文件</h3>
-
 <p><strong>基础文本文件</strong></p>
-
-<pre><code class="language-php">&lt;?php
-$mail = new PHPMailer();
-$mail-&gt;From     = &quot;from@example.com&quot;;
-$mail-&gt;FromName = &quot;Full Name&quot;;
-$mail-&gt;addReplyTo(&quot;reply@example.com&quot;, &quot;Reply Address&quot;);
-$mail-&gt;Subject  = &quot;Subject Text&quot;;
-$mail-&gt;Body     = &quot;This is a sample basic text email using PHPMailer.&quot;;
-if($mail-&gt;send()) {
-// Success! Redirect to a thank you page. Use the
-// POST/REDIRECT/GET pattern to prevent form resubmissions
-// when a user refreshes the page.
-    header('Location: http://example.com/path/to/thank-you.php', true, 303);
-    exit; 
-} else {
-    echo &quot;Mailer Error: &quot; . $mail-&gt;ErrorInfo;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$mail <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PHPMailer</span>();
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">From</span>     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;from@example.com&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">FromName</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Full Name&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addReplyTo</span>(<span style="color:#e6db74">&#34;reply@example.com&#34;</span>, <span style="color:#e6db74">&#34;Reply Address&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">Subject</span>  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Subject Text&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">Body</span>     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;This is a sample basic text email using PHPMailer.&#34;</span>;
+<span style="color:#66d9ef">if</span>($mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">send</span>()) {
+<span style="color:#75715e">// Success! Redirect to a thank you page. Use the
+</span><span style="color:#75715e">// POST/REDIRECT/GET pattern to prevent form resubmissions
+</span><span style="color:#75715e">// when a user refreshes the page.
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: http://example.com/path/to/thank-you.php&#39;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">303</span>);
+    <span style="color:#66d9ef">exit</span>; 
+} <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Mailer Error: &#34;</span> <span style="color:#f92672">.</span> $mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">ErrorInfo</span>;
 }
-</code></pre>
-
-<p><strong>增加额外的收件人，CC收件人，BCC收件人</strong></p>
-
-<pre><code class="language-php">&lt;?php
-$mail = new PHPMailer();
-$mail-&gt;From     = &quot;from@example.com&quot;;
-$mail-&gt;FromName = &quot;Full Name&quot;;
-$mail-&gt;addReplyTo(&quot;reply@example.com&quot;, &quot;Reply Address&quot;);
-$mail-&gt;addAddress(&quot;recepient1@example.com&quot;, &quot;Recepient Name&quot;);
-$mail-&gt;addAddress(&quot;recepient2@example.com&quot;);
-$mail-&gt;addCC(&quot;cc@example.com&quot;);
-$mail-&gt;addBCC(&quot;bcc@example.com&quot;);
-$mail-&gt;Subject  = &quot;Subject Text&quot;;
-$mail-&gt;Body     = &quot;This is a sample basic text email using PHPMailer.&quot;;
-if($mail-&gt;send()) {
-// Success! Redirect to a thank you page. Use the
-// POST/REDIRECT/GET pattern to prevent form resubmissions // when a user refreshes the page.
-    header('Location: http://example.com/path/to/thank-you.php', true, 303);
-    exit;
-} else {
-    echo &quot;Error: &quot; . $mail-&gt;ErrorInfo;
+</code></pre></div><p><strong>增加额外的收件人，CC收件人，BCC收件人</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$mail <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PHPMailer</span>();
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">From</span>     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;from@example.com&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">FromName</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Full Name&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addReplyTo</span>(<span style="color:#e6db74">&#34;reply@example.com&#34;</span>, <span style="color:#e6db74">&#34;Reply Address&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addAddress</span>(<span style="color:#e6db74">&#34;recepient1@example.com&#34;</span>, <span style="color:#e6db74">&#34;Recepient Name&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addAddress</span>(<span style="color:#e6db74">&#34;recepient2@example.com&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addCC</span>(<span style="color:#e6db74">&#34;cc@example.com&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addBCC</span>(<span style="color:#e6db74">&#34;bcc@example.com&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">Subject</span>  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Subject Text&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">Body</span>     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;This is a sample basic text email using PHPMailer.&#34;</span>;
+<span style="color:#66d9ef">if</span>($mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">send</span>()) {
+<span style="color:#75715e">// Success! Redirect to a thank you page. Use the
+</span><span style="color:#75715e">// POST/REDIRECT/GET pattern to prevent form resubmissions // when a user refreshes the page.
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: http://example.com/path/to/thank-you.php&#39;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">303</span>);
+    <span style="color:#66d9ef">exit</span>;
+} <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Error: &#34;</span> <span style="color:#f92672">.</span> $mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">ErrorInfo</span>;
 }
-</code></pre>
-
-<h3 id="5-phpmailer发送html邮件">5. PHPMailer发送HTML邮件</h3>
-
-<pre><code class="language-php">&lt;?php
-$mail = new PHPMailer();
-$mail-&gt;From     = &quot;from@example.com&quot;;
-$mail-&gt;FromName = &quot;Full Name&quot;;
-$mail-&gt;addReplyTo(&quot;reply@example.com&quot;, &quot;Reply Address&quot;);
-$mail-&gt;addAddress(&quot;recepient1@example.com&quot;, &quot;Recepient Name&quot;);
-$mail-&gt;addAddress(&quot;recepient2@example.com&quot;);
-$mail-&gt;addCC(&quot;cc@example.com&quot;);
-$mail-&gt;addBCC(&quot;bcc@example.com&quot;);
-$mail-&gt;Subject = &quot;Subject Text&quot;;
-$mail-&gt;isHTML(true);
-$mail-&gt;Body = &quot;&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;This paragraph is bold.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;i&gt;This text is italic.&lt;/i&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;;
-$mail-&gt;AltBody = &quot;This paragraph is not bold.\n\nThis text is not italic.&quot;;
-if($mail-&gt;send()) {
-// Success! Redirect to a thank you page. Use the
-// POST/REDIRECT/GET pattern to prevent form resubmissions // when a user refreshes the page.
-    header('Location: http://example.com/path/to/thank-you.php', true, 303);
-    exit;
-} else {
-    echo &quot;Error: &quot; . $mail-&gt;ErrorInfo;
+</code></pre></div><h3 id="5-phpmailer发送html邮件">5. PHPMailer发送HTML邮件</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$mail <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PHPMailer</span>();
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">From</span>     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;from@example.com&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">FromName</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Full Name&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addReplyTo</span>(<span style="color:#e6db74">&#34;reply@example.com&#34;</span>, <span style="color:#e6db74">&#34;Reply Address&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addAddress</span>(<span style="color:#e6db74">&#34;recepient1@example.com&#34;</span>, <span style="color:#e6db74">&#34;Recepient Name&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addAddress</span>(<span style="color:#e6db74">&#34;recepient2@example.com&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addCC</span>(<span style="color:#e6db74">&#34;cc@example.com&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addBCC</span>(<span style="color:#e6db74">&#34;bcc@example.com&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">Subject</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Subject Text&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">isHTML</span>(<span style="color:#66d9ef">true</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">Body</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;This paragraph is bold.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;i&gt;This text is italic.&lt;/i&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">AltBody</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;This paragraph is not bold.</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">This text is not italic.&#34;</span>;
+<span style="color:#66d9ef">if</span>($mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">send</span>()) {
+<span style="color:#75715e">// Success! Redirect to a thank you page. Use the
+</span><span style="color:#75715e">// POST/REDIRECT/GET pattern to prevent form resubmissions // when a user refreshes the page.
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: http://example.com/path/to/thank-you.php&#39;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">303</span>);
+    <span style="color:#66d9ef">exit</span>;
+} <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Error: &#34;</span> <span style="color:#f92672">.</span> $mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">ErrorInfo</span>;
 }
-</code></pre>
-
-<h3 id="5-phpmailer发送附件邮件">5. PHPMailer发送附件邮件</h3>
-
-<pre><code class="language-php">&lt;?php
-$mail = new PHPMailer();
-$mail-&gt;From     = &quot;from@example.com&quot;;
-$mail-&gt;FromName = &quot;Full Name&quot;;
-$mail-&gt;addReplyTo(&quot;reply@example.com&quot;, &quot;Reply Address&quot;);
-$mail-&gt;Subject  = &quot;Subject Text&quot;;
-$mail-&gt;Body     = &quot;This is a sample basic text email with an attachment using PHPMailer.&quot;;
-// Add Static Attachment
-$attachment = '/path/to/your/file.pdf';
-$mail-&gt;AddAttachment($attachment , 'RenamedFile.pdf');
-// Add Second Attachment, run-time created. ie: CSV to be open with Excel
-$csvHeader = &quot;header1,header2,header3&quot;;
-$csvData = &quot;row1col1,row1col2,row1col3\nrow2col1,row2col2,row2col3&quot;;
-$mail-&gt;AddStringAttachment($csvHeader .&quot;\n&quot; . $csvData, 'your-csv-file.csv', 'base64', 'application/vnd.ms-excel');
-if($mail-&gt;send()) {
-// Success! Redirect to a thank you page. Use the
-// POST/REDIRECT/GET pattern to prevent form resubmissions // when a user refreshes the page.
-    header('Location: http://example.com/path/to/thank-you.php', true, 303);
-    exit; 
-} else {
-    echo &quot;Error: &quot; . $mail-&gt;ErrorInfo;
+</code></pre></div><h3 id="5-phpmailer发送附件邮件">5. PHPMailer发送附件邮件</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$mail <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">PHPMailer</span>();
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">From</span>     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;from@example.com&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">FromName</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Full Name&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addReplyTo</span>(<span style="color:#e6db74">&#34;reply@example.com&#34;</span>, <span style="color:#e6db74">&#34;Reply Address&#34;</span>);
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">Subject</span>  <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Subject Text&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">Body</span>     <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;This is a sample basic text email with an attachment using PHPMailer.&#34;</span>;
+<span style="color:#75715e">// Add Static Attachment
+</span><span style="color:#75715e"></span>$attachment <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/path/to/your/file.pdf&#39;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">AddAttachment</span>($attachment , <span style="color:#e6db74">&#39;RenamedFile.pdf&#39;</span>);
+<span style="color:#75715e">// Add Second Attachment, run-time created. ie: CSV to be open with Excel
+</span><span style="color:#75715e"></span>$csvHeader <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;header1,header2,header3&#34;</span>;
+$csvData <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;row1col1,row1col2,row1col3</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">row2col1,row2col2,row2col3&#34;</span>;
+$mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">AddStringAttachment</span>($csvHeader <span style="color:#f92672">.</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">.</span> $csvData, <span style="color:#e6db74">&#39;your-csv-file.csv&#39;</span>, <span style="color:#e6db74">&#39;base64&#39;</span>, <span style="color:#e6db74">&#39;application/vnd.ms-excel&#39;</span>);
+<span style="color:#66d9ef">if</span>($mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">send</span>()) {
+<span style="color:#75715e">// Success! Redirect to a thank you page. Use the
+</span><span style="color:#75715e">// POST/REDIRECT/GET pattern to prevent form resubmissions // when a user refreshes the page.
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">header</span>(<span style="color:#e6db74">&#39;Location: http://example.com/path/to/thank-you.php&#39;</span>, <span style="color:#66d9ef">true</span>, <span style="color:#ae81ff">303</span>);
+    <span style="color:#66d9ef">exit</span>; 
+} <span style="color:#66d9ef">else</span> {
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#34;Error: &#34;</span> <span style="color:#f92672">.</span> $mail<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">ErrorInfo</span>;
 }
-</code></pre>
-
-<h3 id="7-使用sendgrid发送文本邮件">7. 使用Sendgrid发送文本邮件</h3>
-
+</code></pre></div><h3 id="7-使用sendgrid发送文本邮件">7. 使用Sendgrid发送文本邮件</h3>
 <p><strong>基础文本邮件</strong></p>
-
-<pre><code class="language-php">&lt;?php
-$sendgrid = new SendGrid(&quot;YOUR_SENDGRID_API_KEY&quot;);
-$email = new SendGrid\Email();
-$email-&gt;addTo(&quot;recipient@example.com&quot;)
-      -&gt;setFrom(&quot;sender@example.com&quot;)
-      -&gt;setSubject(&quot;Subject Text&quot;)
-      -&gt;setText(&quot;This is a sample basic text email using &quot;);
-$sendgrid-&gt;send($email);
-</code></pre>
-
-<p><strong>增加额外的收件人，CC收件人，BCC收件人</strong></p>
-
-<pre><code class="language-php">&lt;?php
-$sendgrid = new SendGrid(&quot;YOUR_SENDGRID_API_KEY&quot;);
-$email = new SendGrid\Email();
-$email-&gt;addTo(&quot;recipient@example.com&quot;)
-      -&gt;setFrom(&quot;sender@example.com&quot;)
-      -&gt;setSubject(&quot;Subject Text&quot;)
-      -&gt;setHtml(&quot;&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;This paragraph is bold.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;i&gt;This text is
-italic.&lt;/i&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&quot;);
-$personalization = new Personalization();
-$email = new Email(&quot;Recepient Name&quot;, &quot;recepient1@example.com&quot;);
-$personalization-&gt;addTo($email);
-$email = new Email(&quot;RecepientCC Name&quot;, &quot;recepient2@example.com&quot;);
-$personalization-&gt;addCc($email);
-$email = new Email(&quot;RecepientBCC Name&quot;, &quot;recepient3@example.com&quot;); 
-$personalization-&gt;addBcc($email); 
-$email-&gt;addPersonalization($personalization);
-$sendgrid-&gt;send($email);
-</code></pre>
-
-<h3 id="7-sendgrid发送附件邮件">7. Sendgrid发送附件邮件</h3>
-
-<pre><code class="language-php">&lt;?php
-$sendgrid = new SendGrid(&quot;YOUR_SENDGRID_API_KEY&quot;);
-$email = new SendGrid\Email();
-$email-&gt;addTo(&quot;recipient@example.com&quot;)
-      -&gt;setFrom(&quot;sender@example.com&quot;)
-      -&gt;setSubject(&quot;Subject Text&quot;)
-      -&gt;setText(&quot;This is a sample basic text email using &quot;);
-$attachment = '/path/to/your/file.pdf';
-$content    = file_get_contents($attachment);
-$content    = chunk_split(base64_encode($content));
-$attachment = new Attachment();
-$attachment-&gt;setContent($content);
-$attachment-&gt;setType(&quot;application/pdf&quot;);
-$attachment-&gt;setFilename(&quot;RenamedFile.pdf&quot;); 
-$attachment-&gt;setDisposition(&quot;attachment&quot;); 
-$email-&gt;addAttachment($attachment);
-$sendgrid-&gt;send($email);
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$sendgrid <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SendGrid</span>(<span style="color:#e6db74">&#34;YOUR_SENDGRID_API_KEY&#34;</span>);
+$email <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SendGrid\Email</span>();
+$email<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addTo</span>(<span style="color:#e6db74">&#34;recipient@example.com&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setFrom</span>(<span style="color:#e6db74">&#34;sender@example.com&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setSubject</span>(<span style="color:#e6db74">&#34;Subject Text&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setText</span>(<span style="color:#e6db74">&#34;This is a sample basic text email using &#34;</span>);
+$sendgrid<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">send</span>($email);
+</code></pre></div><p><strong>增加额外的收件人，CC收件人，BCC收件人</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$sendgrid <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SendGrid</span>(<span style="color:#e6db74">&#34;YOUR_SENDGRID_API_KEY&#34;</span>);
+$email <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SendGrid\Email</span>();
+$email<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addTo</span>(<span style="color:#e6db74">&#34;recipient@example.com&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setFrom</span>(<span style="color:#e6db74">&#34;sender@example.com&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setSubject</span>(<span style="color:#e6db74">&#34;Subject Text&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setHtml</span>(<span style="color:#e6db74">&#34;&lt;html&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;This paragraph is bold.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;i&gt;This text is
+</span><span style="color:#e6db74">italic.&lt;/i&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;&#34;</span>);
+$personalization <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Personalization</span>();
+$email <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Email</span>(<span style="color:#e6db74">&#34;Recepient Name&#34;</span>, <span style="color:#e6db74">&#34;recepient1@example.com&#34;</span>);
+$personalization<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addTo</span>($email);
+$email <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Email</span>(<span style="color:#e6db74">&#34;RecepientCC Name&#34;</span>, <span style="color:#e6db74">&#34;recepient2@example.com&#34;</span>);
+$personalization<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addCc</span>($email);
+$email <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Email</span>(<span style="color:#e6db74">&#34;RecepientBCC Name&#34;</span>, <span style="color:#e6db74">&#34;recepient3@example.com&#34;</span>); 
+$personalization<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addBcc</span>($email); 
+$email<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addPersonalization</span>($personalization);
+$sendgrid<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">send</span>($email);
+</code></pre></div><h3 id="7-sendgrid发送附件邮件">7. Sendgrid发送附件邮件</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+$sendgrid <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SendGrid</span>(<span style="color:#e6db74">&#34;YOUR_SENDGRID_API_KEY&#34;</span>);
+$email <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">SendGrid\Email</span>();
+$email<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addTo</span>(<span style="color:#e6db74">&#34;recipient@example.com&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setFrom</span>(<span style="color:#e6db74">&#34;sender@example.com&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setSubject</span>(<span style="color:#e6db74">&#34;Subject Text&#34;</span>)
+      <span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setText</span>(<span style="color:#e6db74">&#34;This is a sample basic text email using &#34;</span>);
+$attachment <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/path/to/your/file.pdf&#39;</span>;
+$content    <span style="color:#f92672">=</span> <span style="color:#a6e22e">file_get_contents</span>($attachment);
+$content    <span style="color:#f92672">=</span> <span style="color:#a6e22e">chunk_split</span>(<span style="color:#a6e22e">base64_encode</span>($content));
+$attachment <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Attachment</span>();
+$attachment<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setContent</span>($content);
+$attachment<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setType</span>(<span style="color:#e6db74">&#34;application/pdf&#34;</span>);
+$attachment<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setFilename</span>(<span style="color:#e6db74">&#34;RenamedFile.pdf&#34;</span>); 
+$attachment<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">setDisposition</span>(<span style="color:#e6db74">&#34;attachment&#34;</span>); 
+$email<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">addAttachment</span>($attachment);
+$sendgrid<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">send</span>($email);
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -699,6 +622,12 @@ $sendgrid-&gt;send($email);
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

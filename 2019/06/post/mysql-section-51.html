@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,25 +187,20 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用mysqlimport导入数据">使用mysqlimport导入数据</a>
-<ul>
-<li><a href="#1-基本用法">1. 基本用法</a></li>
-<li><a href="#2-使用自定义字段分隔符">2. 使用自定义字段分隔符</a></li>
-<li><a href="#3-使用自定义行分隔符">3. 使用自定义行分隔符</a></li>
-<li><a href="#5-按照条件导入">5. 按照条件导入</a></li>
-<li><a href="#6-导入标准csv文件">6. 导入标准csv文件</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#使用mysqlimport导入数据">使用mysqlimport导入数据</a>
+      <ul>
+        <li><a href="#1-基本用法">1. 基本用法</a></li>
+        <li><a href="#2-使用自定义字段分隔符">2. 使用自定义字段分隔符</a></li>
+        <li><a href="#3-使用自定义行分隔符">3. 使用自定义行分隔符</a></li>
+        <li><a href="#5-按照条件导入">5. 按照条件导入</a></li>
+        <li><a href="#6-导入标准csv文件">6. 导入标准csv文件</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="使用mysqlimport导入数据">使用mysqlimport导入数据</h2>
-
+        		<h2 id="使用mysqlimport导入数据">使用mysqlimport导入数据</h2>
 <table>
 <thead>
 <tr>
@@ -209,144 +208,100 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>—delete -D</td>
 <td>服务器登录选项</td>
 </tr>
-
 <tr>
 <td>—fields-optionally-enclosed-by</td>
 <td>定义引用字段的字符</td>
 </tr>
-
 <tr>
 <td>—fields-terminated-by</td>
 <td>字段终止符</td>
 </tr>
-
 <tr>
 <td>—ignore -i</td>
 <td>如果key重复了，那就忽略已经插入的行</td>
 </tr>
-
 <tr>
 <td>—lines-terminated-by</td>
 <td>定义行终止符</td>
 </tr>
-
 <tr>
 <td>—password -p</td>
 <td>密码</td>
 </tr>
-
 <tr>
 <td>—port -P</td>
 <td>端口号</td>
 </tr>
-
 <tr>
 <td>—replace -r</td>
 <td>重复key时，覆盖原本的行</td>
 </tr>
-
 <tr>
 <td>—user -u</td>
 <td>用户名</td>
 </tr>
-
 <tr>
 <td>—where -w</td>
 <td>指定条件</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="1-基本用法">1. 基本用法</h3>
-
 <p>使用tab分隔符的<code>employee.txt</code>文件：</p>
-
 <blockquote>
 <p>1 \t Arthur Dent
 2 \t Marvin
 3 \t Zaphod Beeblebrox</p>
 </blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysql --user<span style="color:#f92672">=</span>user --password<span style="color:#f92672">=</span>password mycompany -e <span style="color:#e6db74">&#39;CREATE TABLE employee(id INT, name VARCHAR(100), PRIMARY KEY (id))&#39;</span>
 
-<pre><code class="language-shell">$ mysql --user=user --password=password mycompany -e 'CREATE TABLE employee(id INT, name VARCHAR(100), PRIMARY KEY (id))'
-
-$ ysqlimport --user=user --password=password mycompany employee.txt
-</code></pre>
-
-<h3 id="2-使用自定义字段分隔符">2. 使用自定义字段分隔符</h3>
-
+$ ysqlimport --user<span style="color:#f92672">=</span>user --password<span style="color:#f92672">=</span>password mycompany employee.txt
+</code></pre></div><h3 id="2-使用自定义字段分隔符">2. 使用自定义字段分隔符</h3>
 <p>有下面内容的文件<code>employee.txt</code>:</p>
-
 <blockquote>
 <p>1|Arthur Dent</p>
-
 <p>2|Marvin</p>
-
 <p>3|Zaphod Beeblebrox</p>
 </blockquote>
-
-<pre><code class="language-mysql">$ mysqlimport --fields-terminated-by='|' mycompany empoyee.txt
-</code></pre>
-
-<h3 id="3-使用自定义行分隔符">3. 使用自定义行分隔符</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#960050;background-color:#1e0010">$</span> mysqlimport <span style="color:#f92672">--</span>fields<span style="color:#f92672">-</span><span style="color:#66d9ef">terminated</span><span style="color:#f92672">-</span><span style="color:#66d9ef">by</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;|&#39;</span> mycompany empoyee.txt
+</code></pre></div><h3 id="3-使用自定义行分隔符">3. 使用自定义行分隔符</h3>
 <p>有下面的表<code>Employee</code>：</p>
-
-<pre><code class="language-mysql">id     name
-3    Yooden Vranx
-</code></pre>
-
-<p>有下面这个文件<code>employee.txt</code>:</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">id     name
+<span style="color:#ae81ff">3</span>    Yooden Vranx
+</code></pre></div><p>有下面这个文件<code>employee.txt</code>:</p>
 <blockquote>
 <p>1 \t Arthur Dent
 2 \t Marvin
 3 \t Zaphod Beeblebrox</p>
 </blockquote>
-
 <p>使用<code>—ignore</code>选项忽略重复的key：</p>
-
-<pre><code class="language-shell">$ mysqlimport --ignore mycompany employee.txt
-</code></pre>
-
-<p>表的数据现在是：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysqlimport --ignore mycompany employee.txt
+</code></pre></div><p>表的数据现在是：</p>
 <pre><code>id   name
 1   Arthur Dent
 2   Marvin
 3   Yooden Vranx
-</code></pre>
-
-<p>使用<code>—replace</code>选项将会覆盖之前的数据：</p>
-
-<pre><code class="language-shell">$ mysqlimport --replace mycompany employee.txt
+</code></pre><p>使用<code>—replace</code>选项将会覆盖之前的数据：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysqlimport --replace mycompany employee.txt
 
 id   name
-1   Arthur Dent
-2   Marvin
-3   Zaphod Beeblebrox
-</code></pre>
-
-<h3 id="5-按照条件导入">5. 按照条件导入</h3>
-
-<pre><code class="language-shell">$ mysqlimport --where=&quot;id&gt;2&quot; mycompany employee.txt
-</code></pre>
-
-<h3 id="6-导入标准csv文件">6. 导入标准csv文件</h3>
-
-<pre><code class="language-shell">$ mysqlimport
-    --fields-optionally-enclosed-by='&quot;'
-    --fields-terminated-by=,
-    --lines-terminated-by=&quot;\r\n&quot;
+<span style="color:#ae81ff">1</span>   Arthur Dent
+<span style="color:#ae81ff">2</span>   Marvin
+<span style="color:#ae81ff">3</span>   Zaphod Beeblebrox
+</code></pre></div><h3 id="5-按照条件导入">5. 按照条件导入</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysqlimport --where<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;id&gt;2&#34;</span> mycompany employee.txt
+</code></pre></div><h3 id="6-导入标准csv文件">6. 导入标准csv文件</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ mysqlimport
+    --fields-optionally-enclosed-by<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#34;&#39;</span>
+    --fields-terminated-by<span style="color:#f92672">=</span>,
+    --lines-terminated-by<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;\r\n&#34;</span>
     mycompany employee.csv
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
+</code></pre></div><p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
                 
@@ -418,6 +373,12 @@ id   name
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

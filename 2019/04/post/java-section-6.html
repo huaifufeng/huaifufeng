@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,287 +187,218 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#java代码文档化">Java代码文档化</a>
-<ul>
-<li><a href="#1-从命令行创建javadocs">1. 从命令行创建javadocs</a></li>
-<li><a href="#2-类文档">2. 类文档</a></li>
-<li><a href="#3-方法文档">3. 方法文档</a></li>
-<li><a href="#4-包文档">4. 包文档</a></li>
-<li><a href="#5-连接">5. 连接</a></li>
-<li><a href="#6-文档中的代码片段">6. 文档中的代码片段</a></li>
-<li><a href="#7-字段文档">7. 字段文档</a></li>
-<li><a href="#8-内联代码文档">8. 内联代码文档</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#java代码文档化">Java代码文档化</a>
+      <ul>
+        <li><a href="#1-从命令行创建javadocs">1. 从命令行创建javadocs</a></li>
+        <li><a href="#2-类文档">2. 类文档</a></li>
+        <li><a href="#3-方法文档">3. 方法文档</a></li>
+        <li><a href="#4-包文档">4. 包文档</a></li>
+        <li><a href="#5-连接">5. 连接</a></li>
+        <li><a href="#6-文档中的代码片段">6. 文档中的代码片段</a></li>
+        <li><a href="#7-字段文档">7. 字段文档</a></li>
+        <li><a href="#8-内联代码文档">8. 内联代码文档</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="java代码文档化">Java代码文档化</h2>
-
+        		<h2 id="java代码文档化">Java代码文档化</h2>
 <p>Java代码的文档通常使用<a href="http://www.oracle.com/technetwork/articles/java/index-jsp-135444.html">javadoc</a>生成的。Javadoc是Sun公司创建的用来从Java源码中生成HTML格式的API文档的工具。使用HTML格式可以方便的吧相关的文档链接到一起。</p>
-
 <h3 id="1-从命令行创建javadocs">1. 从命令行创建javadocs</h3>
-
 <p>许多IDE都支持工Javadocs自动生成HTML文档。一些构建工具（例如Maven和Gradle）也有可以处理HTML创建的插件。</p>
-
 <p>但是这些工具不是必须要来生成javadoc HTML的。可以使用命令行工具<code>javadoc</code>。</p>
-
 <p>这个工具的基本用法是：</p>
-
-<pre><code class="language-shell">javadoc JavaFile.java
-</code></pre>
-
-<p>这将会从<code>JavaFile.java</code>文件中的Javadoc注释中产生HTML文件。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">javadoc JavaFile.java
+</code></pre></div><p>这将会从<code>JavaFile.java</code>文件中的Javadoc注释中产生HTML文件。</p>
 <p>命令行工具更好的用法是递归的读取<code>[source-directory]</code>中的所有java文件，创建<code>[package.name]</code>和所有子包的文档，并把这些文档存放到<code>[docs-directory]</code>中：</p>
-
-<pre><code class="language-shell">javadoc -d [docs-directory] -subpackages -sourcepath [source-directory] [package.name]
-</code></pre>
-
-<h3 id="2-类文档">2. 类文档</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">javadoc -d <span style="color:#f92672">[</span>docs-directory<span style="color:#f92672">]</span> -subpackages -sourcepath <span style="color:#f92672">[</span>source-directory<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>package.name<span style="color:#f92672">]</span>
+</code></pre></div><h3 id="2-类文档">2. 类文档</h3>
 <p>所有的javadoc注释都以一个块注释开头，后面跟着一个星号(<code>/**</code>)，以一个快注释结尾(<code>*/</code>)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。</p>
-
-<pre><code class="language-java">/**
- * 类的简单概述，以句号结束。
- *
- * 通常在概述和详情之间会留一行空白。概述(在第一个句号之前的内容)会用在类或包的描述部分。
- *
- * 可以使用下面的行内标记(不是完整的例子)：
- * {@link some.other.class.Documentation} 连接到其他的文档或符号
- * {@link some.other.class.Documentation Some Display Name} 可以通过在文档或符号定位器之后添加 
- * 名称来定义连接的外观
- * {@code code goes here} 用于格式化作为代码
- * {@literal &lt;&gt;[]()foo} 用于在不转换为HTML标记或其他标记的情况下解释文本
- *
- * 或者可以在类文档的末尾使用下面的标记(不是详细的列表)：
- *
- * @author 王子
- * @version 1.0
- * @since 5/10/15
- * @see some.other.class.Documentation
- * @deprecated 这个类被some.other.package.BetterFileReader取代
- *
- * 你可以用自定义的标签显示额外的信息。
- * 使用@custom.&lt;NAME&gt;和 -tag custom.&lt;NAME&gt;:htmltag:&quot;contentx&quot;命令行选项，你可以创建自定义标签
- *
- * 例如自定义标签：
- * @custom.updated 2.0
- * javadoc flag: -tag custom.updated:a:&quot;Updatedi inversion:&quot;
- * 上面的标签将会在&quot;Updated in version&quot;下面显示@custom.updated的值
- *
- */
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 类的简单概述，以句号结束。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 通常在概述和详情之间会留一行空白。概述(在第一个句号之前的内容)会用在类或包的描述部分。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 可以使用下面的行内标记(不是完整的例子)：
+</span><span style="color:#75715e"> * {@link some.other.class.Documentation} 连接到其他的文档或符号
+</span><span style="color:#75715e"> * {@link some.other.class.Documentation Some Display Name} 可以通过在文档或符号定位器之后添加 
+</span><span style="color:#75715e"> * 名称来定义连接的外观
+</span><span style="color:#75715e"> * {@code code goes here} 用于格式化作为代码
+</span><span style="color:#75715e"> * {@literal &lt;&gt;[]()foo} 用于在不转换为HTML标记或其他标记的情况下解释文本
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 或者可以在类文档的末尾使用下面的标记(不是详细的列表)：
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @author 王子
+</span><span style="color:#75715e"> * @version 1.0
+</span><span style="color:#75715e"> * @since 5/10/15
+</span><span style="color:#75715e"> * @see some.other.class.Documentation
+</span><span style="color:#75715e"> * @deprecated 这个类被some.other.package.BetterFileReader取代
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 你可以用自定义的标签显示额外的信息。
+</span><span style="color:#75715e"> * 使用@custom.&lt;NAME&gt;和 -tag custom.&lt;NAME&gt;:htmltag:&#34;contentx&#34;命令行选项，你可以创建自定义标签
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 例如自定义标签：
+</span><span style="color:#75715e"> * @custom.updated 2.0
+</span><span style="color:#75715e"> * javadoc flag: -tag custom.updated:a:&#34;Updatedi inversion:&#34;
+</span><span style="color:#75715e"> * 上面的标签将会在&#34;Updated in version&#34;下面显示@custom.updated的值
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> */</span>
  
- public class FileReader {
+ <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FileReader</span> <span style="color:#f92672">{</span>
  
- }
-</code></pre>
-
-<p><code>Classes</code>使用的相同的标签和格式可以被用于<code>Enums</code>和<code>Interfaces</code>。</p>
-
+ <span style="color:#f92672">}</span>
+</code></pre></div><p><code>Classes</code>使用的相同的标签和格式可以被用于<code>Enums</code>和<code>Interfaces</code>。</p>
 <h3 id="3-方法文档">3. 方法文档</h3>
-
 <p>所有的javadoc注释都以一个块注释开头，后面跟着一个星号(<code>/**</code>)，以一个快注释结尾(<code>*/</code>)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。</p>
-
-<pre><code class="language-java">/**
- * 方法的概述，用一个句号结尾。
- *
- * 方法的更详细描述，它做了什么，尽可能的详细。行内标签像：{@code code here} 
- * {@link some.other.Docs} {@literal text here}可以使用。
- * 
- * 如果方法重写超类的方法，{@inheritDoc}可以用来从超类方法复制文档。
- *
- * @param stream 描述这个参数。尽可能的详细。
- *               参数的文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是概述。
- *
- * @return 描述返回值。尽可能详细的。
- *         返回值文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是概述。
- * 
- * @throw IOException 描述什么时候和为什么这个异常抛出了。
- *                    异常文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是
- *                    概述。处理@throws，可以使用@exception。
- *
- * @since 2.1.0
- * @see some.other.class.Documentation
- * @deprecated 描述为什么这个方法过期了。也可以指定替代的方法。
- */
- public String[] read(InputStream stream) throws IOException {
-     return null;
- }
-</code></pre>
-
-<h3 id="4-包文档">4. 包文档</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 方法的概述，用一个句号结尾。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 方法的更详细描述，它做了什么，尽可能的详细。行内标签像：{@code code here} 
+</span><span style="color:#75715e"> * {@link some.other.Docs} {@literal text here}可以使用。
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 如果方法重写超类的方法，{@inheritDoc}可以用来从超类方法复制文档。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @param stream 描述这个参数。尽可能的详细。
+</span><span style="color:#75715e"> *               参数的文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是概述。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @return 描述返回值。尽可能详细的。
+</span><span style="color:#75715e"> *         返回值文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是概述。
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * @throw IOException 描述什么时候和为什么这个异常抛出了。
+</span><span style="color:#75715e"> *                    异常文档通常在这里对齐，但这是可选的。像其他的文档一样，第一个句号之前的内容是
+</span><span style="color:#75715e"> *                    概述。处理@throws，可以使用@exception。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @since 2.1.0
+</span><span style="color:#75715e"> * @see some.other.class.Documentation
+</span><span style="color:#75715e"> * @deprecated 描述为什么这个方法过期了。也可以指定替代的方法。
+</span><span style="color:#75715e"> */</span>
+ <span style="color:#66d9ef">public</span> String<span style="color:#f92672">[]</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>InputStream stream<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
+     <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+ <span style="color:#f92672">}</span>
+</code></pre></div><h3 id="4-包文档">4. 包文档</h3>
 <p>Version &gt;= Java SE 5</p>
-
 <p>通过使用一个叫做<code>package-info.java</code>的文件，可以穿甲包级别的文档。这个文件必须是下面的格式。</p>
-
-<pre><code class="language-java">/**
- * 包文档显示在这里。任何文档第一个句号之前的内容都是概述。
- * 
- * 通常在概述和其他文档内容之间有一个空行。在这部分尽可能详细的描述。
- *
- * 行内标签像{@code code here} {@link reference.to.other.Documentation} 
- * {@literal text here} 可以用到这个文档
- */
- package com.example.foo;
- //文件剩下的部分必须留空
-</code></pre>
-
-<p>上面的例子中，必须把这个文件<code>package-info.java</code>放到Java包<code>com.example.foo</code>的目录里面。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 包文档显示在这里。任何文档第一个句号之前的内容都是概述。
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 通常在概述和其他文档内容之间有一个空行。在这部分尽可能详细的描述。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 行内标签像{@code code here} {@link reference.to.other.Documentation} 
+</span><span style="color:#75715e"> * {@literal text here} 可以用到这个文档
+</span><span style="color:#75715e"> */</span>
+ <span style="color:#f92672">package</span> com.example.foo<span style="color:#f92672">;</span>
+ <span style="color:#75715e">//文件剩下的部分必须留空
+</span></code></pre></div><p>上面的例子中，必须把这个文件<code>package-info.java</code>放到Java包<code>com.example.foo</code>的目录里面。</p>
 <h3 id="5-连接">5. 连接</h3>
-
 <p>连接到另外的文档使用<code>@link</code>标签。</p>
-
-<pre><code class="language-java">/**
- * 你可以连接已经导入类的文档，用{@link ClassName}
- * 
- * 你也可以使用完全指定的名称，如果类没有导入的话{@link some.other.ClassName}
- * 
- * 你可以指定类的元素(字段或方法)：
- * {@link ClassName#someMethod()}
- * {@link ClassName#someMethodWithParameters(int, String)}
- * {@link ClassName#someField}
- * {@link #someMethodInThisClass()} -- 用来连接当前类的成员
- * 
- * 你可以像链接的文档添加一个标签：
- * {@link ClassName#someMethod() link text}
- */
-</code></pre>
-
-<p><img src="/img/java/3A3cX.png" alt="link" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 你可以连接已经导入类的文档，用{@link ClassName}
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 你也可以使用完全指定的名称，如果类没有导入的话{@link some.other.ClassName}
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 你可以指定类的元素(字段或方法)：
+</span><span style="color:#75715e"> * {@link ClassName#someMethod()}
+</span><span style="color:#75715e"> * {@link ClassName#someMethodWithParameters(int, String)}
+</span><span style="color:#75715e"> * {@link ClassName#someField}
+</span><span style="color:#75715e"> * {@link #someMethodInThisClass()} -- 用来连接当前类的成员
+</span><span style="color:#75715e"> * 
+</span><span style="color:#75715e"> * 你可以像链接的文档添加一个标签：
+</span><span style="color:#75715e"> * {@link ClassName#someMethod() link text}
+</span><span style="color:#75715e"> */</span>
+</code></pre></div><p><img src="/img/java/3A3cX.png" alt="link"></p>
 <p>使用<code>@see</code>标签，你可以添加元素查看另外的部分。像<code>@param</code>和<code>@return</code>出现的位置是不相关的。文档说你应该把它写在<code>@return</code>后面。</p>
-
-<pre><code class="language-java">/**
- * 这个方法有一个很好的注释，但是你可以在下面找到更多的信息。
- *
- * @see ClassName#someMethod()
- */
-</code></pre>
-
-<p><img src="/img/java/WxxAT.png" alt="see" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 这个方法有一个很好的注释，但是你可以在下面找到更多的信息。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @see ClassName#someMethod()
+</span><span style="color:#75715e"> */</span>
+</code></pre></div><p><img src="/img/java/WxxAT.png" alt="see"></p>
 <p>如果你想要添加链接到外部的资源，可以使用HTML的<code>&lt;a&gt;</code>标签。你可以用在行内的任何地方或者在<code>@link</code>和<code>@see</code>两个标签里面</p>
-
-<pre><code class="language-java">/**
- * 好奇这是这个工作的？你可以查看 &lt;a href=&quot;http://stackoverflow.com/&quot;&gt;great service&lt;/a&gt;.
- *
- * @see &lt;a href=&quot;http://stackoverflow.com/&quot;&gt;Stack Overflow&lt;/a&gt;
- */
-</code></pre>
-
-<p><img src="/img/java/VyrDF.png" alt="outlink" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 好奇这是这个工作的？你可以查看 &lt;a href=&#34;http://stackoverflow.com/&#34;&gt;great service&lt;/a&gt;.
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * @see &lt;a href=&#34;http://stackoverflow.com/&#34;&gt;Stack Overflow&lt;/a&gt;
+</span><span style="color:#75715e"> */</span>
+</code></pre></div><p><img src="/img/java/VyrDF.png" alt="outlink"></p>
 <h3 id="6-文档中的代码片段">6. 文档中的代码片段</h3>
-
 <p>在文档中写代码的规范方法是使用{@code}结构。如果你有多行代码可以包围在<code>&lt;pre&gt;</code>里面。</p>
-
-<pre><code class="language-java">/**
- * 类TestUtils.
- * &lt;p&gt;
- * 这是一个 {@code inline(&quot;code example&quot;)}.
- * &lt;p&gt;
- * 当写多行代码的时候，应该写在pre标签里面
- * &lt;pre&gt;{@code
- *  Example example1 = new FirstLineExample();
- *  example1.butYouCanHaveMoreThanOneLine();
- * }&lt;/pre&gt;
- * &lt;p&gt;
- * 感谢阅读
- */
-class TestUtils {
-}
-</code></pre>
-
-<p>有时候你可能需要把一些复杂的代码放到javadoc注释中。这个<code>@</code>标签特别有问题。在就标签<code>&lt;code&gt;</code>标签可以用在{@literal}边上解决这个问题。</p>
-
-<pre><code class="language-java">/**
- * 用法：
- * &lt;pre&gt;&lt;code&gt;
- * class SomethingTest {
- * {@literal @}Rule
- *  public SingleTestRule singleTestRule = new SingleTestRule(&quot;test1&quot;);
-*
-* {@literal @}Test
-* public void test1() {
-* // only this test will be executed *}
-*
-* ...
-*}
-* &lt;/code&gt;&lt;/pre&gt;
-*/
-class SingleTestRule implements TestRule { }
-</code></pre>
-
-<h3 id="7-字段文档">7. 字段文档</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 类TestUtils.
+</span><span style="color:#75715e"> * &lt;p&gt;
+</span><span style="color:#75715e"> * 这是一个 {@code inline(&#34;code example&#34;)}.
+</span><span style="color:#75715e"> * &lt;p&gt;
+</span><span style="color:#75715e"> * 当写多行代码的时候，应该写在pre标签里面
+</span><span style="color:#75715e"> * &lt;pre&gt;{@code
+</span><span style="color:#75715e"> *  Example example1 = new FirstLineExample();
+</span><span style="color:#75715e"> *  example1.butYouCanHaveMoreThanOneLine();
+</span><span style="color:#75715e"> * }&lt;/pre&gt;
+</span><span style="color:#75715e"> * &lt;p&gt;
+</span><span style="color:#75715e"> * 感谢阅读
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestUtils</span> <span style="color:#f92672">{</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>有时候你可能需要把一些复杂的代码放到javadoc注释中。这个<code>@</code>标签特别有问题。在就标签<code>&lt;code&gt;</code>标签可以用在{@literal}边上解决这个问题。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 用法：
+</span><span style="color:#75715e"> * &lt;pre&gt;&lt;code&gt;
+</span><span style="color:#75715e"> * class SomethingTest {
+</span><span style="color:#75715e"> * {@literal @}Rule
+</span><span style="color:#75715e"> *  public SingleTestRule singleTestRule = new SingleTestRule(&#34;test1&#34;);
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* {@literal @}Test
+</span><span style="color:#75715e">* public void test1() {
+</span><span style="color:#75715e">* // only this test will be executed *}
+</span><span style="color:#75715e">*
+</span><span style="color:#75715e">* ...
+</span><span style="color:#75715e">*}
+</span><span style="color:#75715e">* &lt;/code&gt;&lt;/pre&gt;
+</span><span style="color:#75715e">*/</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SingleTestRule</span> <span style="color:#66d9ef">implements</span> TestRule <span style="color:#f92672">{</span> <span style="color:#f92672">}</span>
+</code></pre></div><h3 id="7-字段文档">7. 字段文档</h3>
 <p>所有的javadoc注释都以一个块注释开头，后面跟着一个星号(<code>/**</code>)，以一个快注释结尾(<code>*/</code>)。可选的，每一行可以以任意空格和一个星号开头，生成文档的时候会忽略这些空格和星号。</p>
-
-<pre><code class="language-java">/**
- * 字段也可以添加文档。
- *
- * 通常在概述和其他文档内容之间有一个空行。在这部分尽可能详细的描述。
- *
- * 字段的文档可以使用下面的行内标签：
- * {@code code here}
- * {@literal text here}
- * {@link other.docs.Here}
- *
- * 字段文档也可以使用下面的标签：
- * @since 2.1.0
- * @see some.other.class.Documentation
- * @deprecated Describe why this field is outdated
- */
-public static final String CONSTANT_STRING = &quot;foo&quot;;
-</code></pre>
-
-<h3 id="8-内联代码文档">8. 内联代码文档</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 字段也可以添加文档。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 通常在概述和其他文档内容之间有一个空行。在这部分尽可能详细的描述。
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 字段的文档可以使用下面的行内标签：
+</span><span style="color:#75715e"> * {@code code here}
+</span><span style="color:#75715e"> * {@literal text here}
+</span><span style="color:#75715e"> * {@link other.docs.Here}
+</span><span style="color:#75715e"> *
+</span><span style="color:#75715e"> * 字段文档也可以使用下面的标签：
+</span><span style="color:#75715e"> * @since 2.1.0
+</span><span style="color:#75715e"> * @see some.other.class.Documentation
+</span><span style="color:#75715e"> * @deprecated Describe why this field is outdated
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String CONSTANT_STRING <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;foo&#34;</span><span style="color:#f92672">;</span>
+</code></pre></div><h3 id="8-内联代码文档">8. 内联代码文档</h3>
 <p>除了javadoc文档之外，代码还可以以内联方式记录。</p>
-
 <p>以<code>//</code>开始的行内注释可以放到代码的同行的后面，不能放在前面。</p>
-
-<pre><code class="language-java">public void method() {
-    //单行注释
-    someMethodCall(); //语句后的单行注释
-}
-</code></pre>
-
-<p>多行注释可以定义在<code>/*</code>和<code>*/</code>之间。它们可以跨多行，甚至定位在语句之间。</p>
-
-<pre><code class="language-java">public void method(Object object) {
-    /*
-     * 多行
-     * 注释
-    */
-    object/*内行注释*/.method();
-}
-</code></pre>
-
-<p>Javadocs是特殊的多行注释，以<code>/**</code>开头。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">//单行注释
+</span><span style="color:#75715e"></span>    someMethodCall<span style="color:#f92672">();</span> <span style="color:#75715e">//语句后的单行注释
+</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>多行注释可以定义在<code>/*</code>和<code>*/</code>之间。它们可以跨多行，甚至定位在语句之间。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">(</span>Object object<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">/*
+</span><span style="color:#75715e">     * 多行
+</span><span style="color:#75715e">     * 注释
+</span><span style="color:#75715e">    */</span>
+    object<span style="color:#75715e">/*内行注释*/</span><span style="color:#f92672">.</span><span style="color:#a6e22e">method</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Javadocs是特殊的多行注释，以<code>/**</code>开头。</p>
 <p>太多的行内注释会降低代码的可读性，因此在代码不具有足够的自解释性或设计决策不明显的情况下，应尽量少使用这些注释。</p>
-
 <p>单行注释额外的用处就是标签，简单但约定驱动的关键字。一些开发环境承认这些单行注释的某些约定。例如：</p>
-
 <ul>
 <li>//TODO</li>
 <li>//FIXME</li>
 </ul>
-
 <p>或者问题引用：</p>
-
 <ul>
 <li>//PRJ-1234</li>
 </ul>
-
 <p>参考：<a href="https://goalkicker.com/JavaBook/">Java® Notes for Professionals book</a></p>
 
         
@@ -536,6 +471,12 @@ public static final String CONSTANT_STRING = &quot;foo&quot;;
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

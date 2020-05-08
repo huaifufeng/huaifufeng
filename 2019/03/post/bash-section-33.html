@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,48 +187,30 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#debug调试">debug调试</a>
-<ul>
-<li><a href="#使用-n检查脚本语法">使用-n检查脚本语法</a></li>
-<li><a href="#使用bashdb调试">使用bashdb调试</a></li>
-<li><a href="#使用-x调试一个脚本">使用-x调试一个脚本</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#debug调试">debug调试</a>
+      <ul>
+        <li><a href="#使用-n检查脚本语法">使用-n检查脚本语法</a></li>
+        <li><a href="#使用bashdb调试">使用bashdb调试</a></li>
+        <li><a href="#使用-x调试一个脚本">使用-x调试一个脚本</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="debug调试">debug调试</h2>
-
+        		<h2 id="debug调试">debug调试</h2>
 <h3 id="使用-n检查脚本语法">使用-n检查脚本语法</h3>
-
 <p>使用-n允许你在不执行脚本的情况下检查这个脚本：</p>
-
 <pre><code>~&gt; $ bash -n testscript.sh
 testscript.sh: line 128: unexpected EOF while looking for matching `&quot;' 
 testscript.sh: line 130: syntax error: unexpected end of file
-</code></pre>
-
-<h3 id="使用bashdb调试">使用bashdb调试</h3>
-
+</code></pre><h3 id="使用bashdb调试">使用bashdb调试</h3>
 <p>bashdb是一个和gdb雷士的工具，使用这个工具你可以实现某行或者某个方法的中断，输出变量的内容，或者重启脚本等等。</p>
-
 <p>通常可以使用包管理器按照这个工具，像在Fedroa中：</p>
-
 <pre><code>sudo dnf install bashdb
-</code></pre>
-
-<p>你可以从<a href="http://bashdb.sourceforge.net">首页</a>上获取这个工具。然后可以使用它像参数一样运行这个脚本：</p>
-
+</code></pre><p>你可以从<a href="http://bashdb.sourceforge.net">首页</a>上获取这个工具。然后可以使用它像参数一样运行这个脚本：</p>
 <pre><code>bashdb &lt;YOUR SCRIPT&gt;
-</code></pre>
-
-<p>下面是一些你可以使用的命令：</p>
-
+</code></pre><p>下面是一些你可以使用的命令：</p>
 <pre><code>l - show local lines, press l again to scroll down
 s - step to next line
 print $VAR - echo out content of variable
@@ -235,39 +221,22 @@ c - continue till some breakpoint
 i b - info on break points
 d  - delete breakpoint at line #
 shell - launch a sub-shell in the middle of execution, this is handy for manipulating variables
-</code></pre>
-
-<p>更多的信息，我推荐查看下面的文档：</p>
-
+</code></pre><p>更多的信息，我推荐查看下面的文档：</p>
 <p><a href="http://www.rodericksmith.plus.com/outlines/manuals/bashdbOutline.html">http://www.rodericksmith.plus.com/outlines/manuals/bashdbOutline.html</a></p>
-
 <p>也可以查看软件的首页：</p>
-
 <p><a href="http://bashdb.sourceforge.net/">http://bashdb.sourceforge.net/</a></p>
-
 <h3 id="使用-x调试一个脚本">使用-x调试一个脚本</h3>
-
 <p>使用-x可以调试执行行的输出。它可以在整个会话或脚本上运行，也可以在脚本中以编程方式启用。</p>
-
 <p>使用debug输出运行一个脚本，可以像下面：</p>
-
 <pre><code>$ bash -x myscript.sh
-</code></pre>
-
-<p>也可以：</p>
-
+</code></pre><p>也可以：</p>
 <pre><code>$ bash --debug myscript.sh
-</code></pre>
-
-<p>在一个脚本内部开启debug。尽管调试输出在脚本退出时自动重置，但它可以选择重新打开。</p>
-
+</code></pre><p>在一个脚本内部开启debug。尽管调试输出在脚本退出时自动重置，但它可以选择重新打开。</p>
 <pre><code>#!/bin/bash
 set -x # Enable debugging
 # some code here
 set +x # Disable debugging output.
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com//BashBook/">Bash Notes for Professionals book</a></p>
 
         
                 
@@ -339,6 +308,12 @@ set +x # Disable debugging output.
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

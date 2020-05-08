@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,201 +187,125 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#更改表">更改表</a>
-<ul>
-<li><a href="#1-修改存储引擎-重建表-修改file-per-table">1. 修改存储引擎;重建表;修改file_per_table</a></li>
-<li><a href="#2-修改表的列">2. 修改表的列</a></li>
-<li><a href="#3-修改auto-increment值">3. 修改auto_increment值</a></li>
-<li><a href="#4-重命名表">4. 重命名表</a></li>
-<li><a href="#5-增加索引">5. 增加索引</a></li>
-<li><a href="#6-修改主键列的类型">6. 修改主键列的类型</a></li>
-<li><a href="#7-修改列定义">7. 修改列定义</a></li>
-<li><a href="#8-重命名数据库">8. 重命名数据库</a></li>
-<li><a href="#9-交换两个数据库的名称">9. 交换两个数据库的名称</a></li>
-<li><a href="#10-重命名表的列">10. 重命名表的列</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#更改表">更改表</a>
+      <ul>
+        <li><a href="#1-修改存储引擎重建表修改file_per_table">1. 修改存储引擎;重建表;修改file_per_table</a></li>
+        <li><a href="#2-修改表的列">2. 修改表的列</a></li>
+        <li><a href="#3-修改auto_increment值">3. 修改auto_increment值</a></li>
+        <li><a href="#4-重命名表">4. 重命名表</a></li>
+        <li><a href="#5-增加索引">5. 增加索引</a></li>
+        <li><a href="#6-修改主键列的类型">6. 修改主键列的类型</a></li>
+        <li><a href="#7-修改列定义">7. 修改列定义</a></li>
+        <li><a href="#8-重命名数据库">8. 重命名数据库</a></li>
+        <li><a href="#9-交换两个数据库的名称">9. 交换两个数据库的名称</a></li>
+        <li><a href="#10-重命名表的列">10. 重命名表的列</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="更改表">更改表</h2>
-
-<h3 id="1-修改存储引擎-重建表-修改file-per-table">1. 修改存储引擎;重建表;修改file_per_table</h3>
-
+        		<h2 id="更改表">更改表</h2>
+<h3 id="1-修改存储引擎重建表修改file_per_table">1. 修改存储引擎;重建表;修改file_per_table</h3>
 <p>例如，如果一个表<code>t1</code>当前不是InnoDB表，下面的语句将会修改这个表的存储引擎为InnoDB：</p>
-
-<pre><code class="language-mysql">ALTER TABLE t1 ENGINE=InnoDB;
-</code></pre>
-
-<p>如果这个表已经是<code>InnoDB</code>存储引擎了，这个语句将会重建表和索引，并且和<code>OPTIMIZE TABLE</code>的操作效果相同。你可能获取一些硬盘空间的改进。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> t1 <span style="color:#66d9ef">ENGINE</span><span style="color:#f92672">=</span>InnoDB;
+</code></pre></div><p>如果这个表已经是<code>InnoDB</code>存储引擎了，这个语句将会重建表和索引，并且和<code>OPTIMIZE TABLE</code>的操作效果相同。你可能获取一些硬盘空间的改进。</p>
 <p>如果<code>innodb_file_per_table</code>的值和<code>t1</code>构建时的值不同，就会将这个值转换为(或从)<code>file_per_table</code>。</p>
-
 <h3 id="2-修改表的列">2. 修改表的列</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> stackoverflow;
 
-<pre><code class="language-mysql">CREATE TABLE stackoverflow;
+<span style="color:#66d9ef">USE</span> stackoverflow;
 
-USE stackoverflow;
-
-CREATE TABLE stack(
-    id_user    INT NOT NULL,
-    usernaem   VARCHAR(30) NOT NULL,
-    password   VARCHAR(30) NOT NULL
+<span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#a6e22e">stack</span>(
+    id_user    <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    usernaem   <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>,
+    password   <span style="color:#66d9ef">VARCHAR</span>(<span style="color:#ae81ff">30</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>
 );
 
-ALTER TABLE stack ADD COLUMN submit date NOT NULL; -- 增加新列
-ALTER TABLE stack DROP COLUMN submit;  -- 删除列
-ALTER TABLE stack MODIFY submit DATETIME NOT NULL; -- 修改列类型
-ALTER TABLE stack CHANGE submit submit_date DATETIME NOT NULL; -- 修改列类型和名称
-ALTER TABLE stachk ADD COLUMN mod_id INT NOT NULL AFTER id_user; -- 增加新列在存在的列之后
-</code></pre>
-
-<h3 id="3-修改auto-increment值">3. 修改auto_increment值</h3>
-
+<span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> stack <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">COLUMN</span> submit <span style="color:#66d9ef">date</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>; <span style="color:#75715e">-- 增加新列
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> stack <span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">COLUMN</span> submit;  <span style="color:#75715e">-- 删除列
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> stack MODIFY submit <span style="color:#66d9ef">DATETIME</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>; <span style="color:#75715e">-- 修改列类型
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> stack <span style="color:#66d9ef">CHANGE</span> submit submit_date <span style="color:#66d9ef">DATETIME</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>; <span style="color:#75715e">-- 修改列类型和名称
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> stachk <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">COLUMN</span> mod_id <span style="color:#66d9ef">INT</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> AFTER id_user; <span style="color:#75715e">-- 增加新列在存在的列之后
+</span></code></pre></div><h3 id="3-修改auto_increment值">3. 修改auto_increment值</h3>
 <p>当你不想删除大量数据之后在自增列中出现缝隙，更改自动增量值是非常有用的。</p>
-
 <p>例如，你的表中有很多不想要(广告)的行，你删除了他们，并且希望修复自动增量值的间隙。假设自动增量值的最大值现在是100，你可以使用下面的命令修复自动增量值：</p>
-
-<pre><code class="language-mysql">ALTER TABLE your_table_name AUTO_INCREMENT=101;
-</code></pre>
-
-<h3 id="4-重命名表">4. 重命名表</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> your_table_name <span style="color:#66d9ef">AUTO_INCREMENT</span><span style="color:#f92672">=</span><span style="color:#ae81ff">101</span>;
+</code></pre></div><h3 id="4-重命名表">4. 重命名表</h3>
 <p>重命名表可以使用下面的命令：</p>
-
-<pre><code class="language-mysql">RENAME TABLE `&lt;old name&gt;` TO `&lt;new name&gt;`;
-</code></pre>
-
-<p>下面的语法做了相同的事情：</p>
-
-<pre><code class="language-mysql">ALTER TABLE `&lt;old name&gt;` RENAME TO `&lt;new name&gt;`;
-</code></pre>
-
-<p>如果重命名一个临时表，必须使用<code>ALTER TABLE</code>语法：</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">RENAME</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`&lt;</span>old name<span style="color:#f92672">&gt;`</span> <span style="color:#66d9ef">TO</span> <span style="color:#f92672">`&lt;</span>new name<span style="color:#f92672">&gt;`</span>;
+</code></pre></div><p>下面的语法做了相同的事情：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`&lt;</span>old name<span style="color:#f92672">&gt;`</span> <span style="color:#66d9ef">RENAME</span> <span style="color:#66d9ef">TO</span> <span style="color:#f92672">`&lt;</span>new name<span style="color:#f92672">&gt;`</span>;
+</code></pre></div><p>如果重命名一个临时表，必须使用<code>ALTER TABLE</code>语法：</p>
 <p><strong>步骤：</strong></p>
-
 <ol>
 <li>使用实际的值替换上面语句中的<code>&lt;old name&gt;</code>和<code>&lt;new name&gt;</code>。<strong>注意：如果表已经被移到了一个不同的数据库中，所以要使用<code>dbname.tablename</code>这样的语法。</strong></li>
 <li>在MySQL命令行或类似MySQL WorkBench这样的客户端中执行上面的命令。<strong>注意：这个用户需要在老表上面具备<code>ALTER</code>和<code>DROP</code>的权限，在新表上面具备<code>CREATE</code>和<code>INSERT</code>的权限。</strong></li>
 </ol>
-
 <h3 id="5-增加索引">5. 增加索引</h3>
-
 <p>为了提升性能，想要给列增加索引：</p>
-
-<pre><code class="language-mysql">ALTER TABLE TABLE_NAME ADD INDEX `index_name` (`column_name`)
-</code></pre>
-
-<p>修改表，为多个列增加联合索引：</p>
-
-<pre><code class="language-mysql">ALTER TABLE TABLE_NAME ADD INDEX `index_name` (`col1`, `col2`);
-</code></pre>
-
-<h3 id="6-修改主键列的类型">6. 修改主键列的类型</h3>
-
-<pre><code class="language-mysql">ALTER TABLE fish_data.fish DROP PRIMARY KEY;
-ALTER TABLE fish_data.fish MODIFY COLUMN fish_id DECIMAL(20, 0) NOT NULL PRIMARY KEY;
-</code></pre>
-
-<p>企图不首先删除表的主键，直接修改主键列的类型将会导致一个错误。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> TABLE_NAME <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">INDEX</span> <span style="color:#f92672">`</span>index_name<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>column_name<span style="color:#f92672">`</span>)
+</code></pre></div><p>修改表，为多个列增加联合索引：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> TABLE_NAME <span style="color:#66d9ef">ADD</span> <span style="color:#66d9ef">INDEX</span> <span style="color:#f92672">`</span>index_name<span style="color:#f92672">`</span> (<span style="color:#f92672">`</span>col1<span style="color:#f92672">`</span>, <span style="color:#f92672">`</span>col2<span style="color:#f92672">`</span>);
+</code></pre></div><h3 id="6-修改主键列的类型">6. 修改主键列的类型</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> fish_data.fish <span style="color:#66d9ef">DROP</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>;
+<span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> fish_data.fish MODIFY <span style="color:#66d9ef">COLUMN</span> fish_id <span style="color:#66d9ef">DECIMAL</span>(<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span>;
+</code></pre></div><p>企图不首先删除表的主键，直接修改主键列的类型将会导致一个错误。</p>
 <h3 id="7-修改列定义">7. 修改列定义</h3>
-
 <p>想要修改一个db列的定义，下面的查询就是是一个例子，假设我们有下面的结构：</p>
-
-<pre><code class="language-mysql">users (
-    firstname varchar(20),
-    lastname  varchar(20),
-    age       char(2)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#a6e22e">users</span> (
+    firstname <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">20</span>),
+    lastname  <span style="color:#66d9ef">varchar</span>(<span style="color:#ae81ff">20</span>),
+    age       <span style="color:#66d9ef">char</span>(<span style="color:#ae81ff">2</span>)
 )
-</code></pre>
-
-<p>想要把<code>age</code>列的类型从<code>char</code>修改为<code>int</code>，我们可以使用下面的语句：</p>
-
-<pre><code class="language-mysql">ALTER TABLE users CHANGE age age tinyint UNSIGNED NOT NULL;
-</code></pre>
-
-<p>这个语法的结构是：</p>
-
-<pre><code class="language-m">ALTER TABLE table_name CHANGE column_name new_column_definition;
-</code></pre>
-
-<h3 id="8-重命名数据库">8. 重命名数据库</h3>
-
+</code></pre></div><p>想要把<code>age</code>列的类型从<code>char</code>修改为<code>int</code>，我们可以使用下面的语句：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">ALTER</span> <span style="color:#66d9ef">TABLE</span> users <span style="color:#66d9ef">CHANGE</span> age age <span style="color:#66d9ef">tinyint</span> <span style="color:#66d9ef">UNSIGNED</span> <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span>;
+</code></pre></div><p>这个语法的结构是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-m" data-lang="m">ALTER TABLE table_name CHANGE column_name new_column_definition;
+</code></pre></div><h3 id="8-重命名数据库">8. 重命名数据库</h3>
 <p>没有一个命令可以重命名MySQL的数据库，但是可以通过备份和还原来使用一个简单的方法实现这个功能：</p>
-
-<pre><code class="language-mysql">mysqladmin -uroot -p&lt;password&gt; create &lt;new name&gt;
-mysqladmin -uroot -p&lt;password&gt; --routines &lt;old name&gt; | mysql -uroot -pmypassword &lt;new name&gt;
-mysqladmin -uroot -p&lt;password&gt; drop &lt;old name&gt;
-</code></pre>
-
-<p><strong>步骤：</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">create</span> <span style="color:#f92672">&lt;</span>new name<span style="color:#f92672">&gt;</span>
+mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#f92672">--</span>routines <span style="color:#f92672">&lt;</span>old name<span style="color:#f92672">&gt;</span> <span style="color:#f92672">|</span> mysql <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>pmypassword <span style="color:#f92672">&lt;</span>new name<span style="color:#f92672">&gt;</span>
+mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#f92672">&lt;</span>old name<span style="color:#f92672">&gt;</span>
+</code></pre></div><p><strong>步骤：</strong></p>
 <ol>
 <li>复制上面的代码到一个文本编辑器中</li>
 <li>使用实际的值替换上面代码中的<code>&lt;old name&gt;</code>， <code>&lt;new name&gt;</code>， <code>&lt;password&gt;</code>(可以将<code>root</code>替换为其他不同的用户)</li>
-<li>在命令行中一行行的执行上面的代码(减少在MySQL的&rdquo;bin&rdquo;目录中，但询问的时候输入&rdquo;y&rdquo;)</li>
+<li>在命令行中一行行的执行上面的代码(减少在MySQL的&quot;bin&quot;目录中，但询问的时候输入&quot;y&rdquo;)</li>
 </ol>
-
 <p><strong>可选的步骤</strong></p>
-
 <p>重命名(移动)一个表从一个数据库到另一个数据库中。在每个表中执行下面的命令：</p>
-
-<pre><code class="language-mysql">RENAME TABLE `&lt;old db&gt;`.`&lt;name&gt;` TO `&lt;new db&gt;`.`&lt;name&gt;`;
-</code></pre>
-
-<p>你可以使用下面的语句执行相同的工作：</p>
-
-<pre><code class="language-mysql">SELECT CONCAT('RENAME TABLE old_db.', table_name, ' TO ', 
-               'new_db.', table_name)
-   FROM information_schema.TABLES
-   WHERE table_schema = 'old_db';
-</code></pre>
-
-<p>警告：不要通过简单的移动文件系统上面的文件来尝试执行任何类型的表或数据库。这在以前的MyISAM中很有效，但是在新的InnoDB和表空间中就不起作用了。尤其是可能在下个主要版本中，可能将会把&rdquo;数据字典&rdquo;从文件系统移到系统InnoDB表中。移动（而不是直接删除）InnoDB表的分区需要使用“可传输表空间”。在不久的将来，甚至连一个文件都找不到。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">RENAME</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`&lt;</span>old db<span style="color:#f92672">&gt;`</span>.<span style="color:#f92672">`&lt;</span>name<span style="color:#f92672">&gt;`</span> <span style="color:#66d9ef">TO</span> <span style="color:#f92672">`&lt;</span>new db<span style="color:#f92672">&gt;`</span>.<span style="color:#f92672">`&lt;</span>name<span style="color:#f92672">&gt;`</span>;
+</code></pre></div><p>你可以使用下面的语句执行相同的工作：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="color:#66d9ef">SELECT</span> <span style="color:#a6e22e">CONCAT</span>(<span style="color:#e6db74">&#39;RENAME TABLE old_db.&#39;</span>, table_name, <span style="color:#e6db74">&#39; TO &#39;</span>, 
+               <span style="color:#e6db74">&#39;new_db.&#39;</span>, table_name)
+   <span style="color:#66d9ef">FROM</span> information_schema.<span style="color:#66d9ef">TABLES</span>
+   <span style="color:#66d9ef">WHERE</span> table_schema <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;old_db&#39;</span>;
+</code></pre></div><p>警告：不要通过简单的移动文件系统上面的文件来尝试执行任何类型的表或数据库。这在以前的MyISAM中很有效，但是在新的InnoDB和表空间中就不起作用了。尤其是可能在下个主要版本中，可能将会把&quot;数据字典&quot;从文件系统移到系统InnoDB表中。移动（而不是直接删除）InnoDB表的分区需要使用“可传输表空间”。在不久的将来，甚至连一个文件都找不到。</p>
 <h3 id="9-交换两个数据库的名称">9. 交换两个数据库的名称</h3>
-
 <p>下面的命令用来交换两个数据库的名称(db1和db2)</p>
-
-<pre><code class="language-mysql">mysqladmin -uroot -p&lt;password&gt; create swaptemp
-mysqldump -uroot -p&lt;password&gt; --routines &lt;db1&gt; | mysql -uroot -p&lt;password&gt; swaptemp mysqladmin -uroot -p&lt;password&gt; drop &lt;db1&gt;
-mysqladmin -uroot -p&lt;password&gt; create &lt;db1&gt;
-mysqldump -uroot -p&lt;password&gt; --routines &lt;db2&gt; | mysql -uroot -p&lt;password&gt; &lt;db1&gt; mysqladmin -uroot -p&lt;password&gt; drop &lt;db2&gt;
-mysqladmin -uroot -p&lt;password&gt; create &lt;db2&gt;
-mysqldump -uroot -p&lt;password&gt; --routines swaptemp | mysql -uroot -p&lt;password&gt; &lt;db2&gt; mysqladmin -uroot -p&lt;password&gt; drop swaptemp
-</code></pre>
-
-<p><strong>步骤</strong></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql">mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">create</span> swaptemp
+mysqldump <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#f92672">--</span>routines <span style="color:#f92672">&lt;</span>db1<span style="color:#f92672">&gt;</span> <span style="color:#f92672">|</span> mysql <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> swaptemp mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#f92672">&lt;</span>db1<span style="color:#f92672">&gt;</span>
+mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">create</span> <span style="color:#f92672">&lt;</span>db1<span style="color:#f92672">&gt;</span>
+mysqldump <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#f92672">--</span>routines <span style="color:#f92672">&lt;</span>db2<span style="color:#f92672">&gt;</span> <span style="color:#f92672">|</span> mysql <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&lt;</span>db1<span style="color:#f92672">&gt;</span> mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> <span style="color:#f92672">&lt;</span>db2<span style="color:#f92672">&gt;</span>
+mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">create</span> <span style="color:#f92672">&lt;</span>db2<span style="color:#f92672">&gt;</span>
+mysqldump <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#f92672">--</span>routines swaptemp <span style="color:#f92672">|</span> mysql <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&lt;</span>db2<span style="color:#f92672">&gt;</span> mysqladmin <span style="color:#f92672">-</span>uroot <span style="color:#f92672">-</span>p<span style="color:#f92672">&lt;</span>password<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">drop</span> swaptemp
+</code></pre></div><p><strong>步骤</strong></p>
 <ol>
 <li>将上面的命令复制到一个文本编辑器中</li>
 <li>替换上面命令中的<code>&lt;db1&gt;</code>， <code>&lt;db2&gt;</code>， <code>&lt;password&gt;</code>，(可以替换root为其他的用户)为实际的值</li>
-<li>在命令行中一行行的执行上面的代码(减少在MySQL的&rdquo;bin&rdquo;目录中，但询问的时候输入&rdquo;y&rdquo;)</li>
+<li>在命令行中一行行的执行上面的代码(减少在MySQL的&quot;bin&quot;目录中，但询问的时候输入&quot;y&rdquo;)</li>
 </ol>
-
 <h3 id="10-重命名表的列">10. 重命名表的列</h3>
-
-<p>可以在单个语句中重命名列，但是必须指定新的名称、&rdquo;列定义&rdquo;(即其他的数据类型和其他的可选属性，如可空性，自动递增等)。</p>
-
+<p>可以在单个语句中重命名列，但是必须指定新的名称、&ldquo;列定义&rdquo;(即其他的数据类型和其他的可选属性，如可空性，自动递增等)。</p>
 <pre><code>ALTER TABLE `&lt;table name&gt;` CHANGE `&lt;old name&gt;` `&lt;new name&gt;` &lt;column definition&gt;;
-</code></pre>
-
-<p><strong>步骤</strong></p>
-
+</code></pre><p><strong>步骤</strong></p>
 <ol>
 <li>打开一个MySQL的命令行或像MySQL Workbench一样的客户端</li>
 <li>执行下面的命令<code>SHOW CREATE TABLE &lt;table name&gt;;</code>(使用实际的值替换<code>&lt;table name&gt;</code>)</li>
 <li>记下要重命名的列的整个定义(即在列名称之后但在逗号将其与下一列名称分隔之前出现的所有内容)</li>
 <li>使用实际的值替换上面语句中的<code>&lt;old name&gt;</code>， <code>&lt;new name&gt;</code>， <code>&lt;column definition&gt;</code>，并且执行这个命令</li>
 </ol>
-
 <p>参考：<a href="https://goalkicker.com/MySQLBook/">MySQL Notes for Professionals book</a></p>
 
         
@@ -450,6 +378,12 @@ mysqldump -uroot -p&lt;password&gt; --routines swaptemp | mysql -uroot -p&lt;pas
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

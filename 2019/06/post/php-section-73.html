@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,58 +187,38 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#php中使用yaml">PHP中使用YAML</a>
-<ul>
-<li><a href="#1-安装yaml扩展">1. 安装YAML扩展</a></li>
-<li><a href="#2-使用yaml存储应用配置">2. 使用YAML存储应用配置</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#php中使用yaml">PHP中使用YAML</a>
+      <ul>
+        <li><a href="#1-安装yaml扩展">1. 安装YAML扩展</a></li>
+        <li><a href="#2-使用yaml存储应用配置">2. 使用YAML存储应用配置</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="php中使用yaml">PHP中使用YAML</h2>
-
+        		<h2 id="php中使用yaml">PHP中使用YAML</h2>
 <h3 id="1-安装yaml扩展">1. 安装YAML扩展</h3>
-
 <p>YAML不能使用PHP标准方式安装，需要使用PECL扩展进行安装。在Linux/Unix可以像下面这样安装：</p>
-
-<pre><code class="language-shell">pecl install yaml
-</code></pre>
-
-<p>注意，系统上必须安装<code>libyaml-dev</code>包，PECL扩展只是libYAML的简单封装。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">pecl install yaml
+</code></pre></div><p>注意，系统上必须安装<code>libyaml-dev</code>包，PECL扩展只是libYAML的简单封装。</p>
 <p>在Windows上安装就更简单了，只需要下载编译好的dll文件或者从源码中进行编译就好了。</p>
-
 <h3 id="2-使用yaml存储应用配置">2. 使用YAML存储应用配置</h3>
-
 <p><a href="https://yaml.org">YAML</a>提供了一种存储结构化数据的方式。这个数据可以是简单的键值对数据，也可以是复杂的层次数据，其中值甚至是数组。</p>
-
 <p>查看下面的YAML文件：</p>
-
-<pre><code class="language-yaml">database:
-    driver: mysql
-    host: database.mydomain.com
-    port: 3306
-    db_name: sample_db
-    user: myuser
-password: Passw0rd debug: true
-country: us
-</code></pre>
-
-<p>我们把这个文件保存到<code>config.yaml</code>。然后使用下面的代码在PHP中读取文件的内容：</p>
-
-<pre><code class="language-php">$config = yaml_parse_file('config.yaml');
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">database</span>:
+    <span style="color:#66d9ef">driver</span>: mysql
+    <span style="color:#66d9ef">host</span>: database.mydomain.com
+    <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">3306</span>
+    <span style="color:#66d9ef">db_name</span>: sample_db
+    <span style="color:#66d9ef">user</span>: myuser
+<span style="color:#66d9ef">password: Passw0rd debug</span>: <span style="color:#66d9ef">true</span>
+<span style="color:#66d9ef">country</span>: us
+</code></pre></div><p>我们把这个文件保存到<code>config.yaml</code>。然后使用下面的代码在PHP中读取文件的内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$config = yaml_parse_file(&#39;config.yaml&#39;);
 print_r($config);
-</code></pre>
-
-<p><code>print_r</code>将会输出下面的内容：</p>
-
-<pre><code class="language-php">Array
+</code></pre></div><p><code>print_r</code>将会输出下面的内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">Array
 (
     [database] =&gt; Array
         (
@@ -248,21 +232,16 @@ print_r($config);
     [debug] =&gt; 1
     [country] =&gt; us
 )
-</code></pre>
-
-<p>现在就可以使用数组的元素访问访问配置：</p>
-
-<pre><code class="language-php">$dbConfig = $config['database'];
-$connectString = $dbConfig['driver']
-    . &quot;:host={$dbConfig['host']}&quot;
-    . &quot;:port={$dbConfig['port']}&quot;
-    . &quot;:dbname={$dbConfig['db_name']}&quot;
-    . &quot;:user={$dbConfig['user']}&quot;
-    . &quot;:password={$dbConfig['password']}&quot;;
-$dbConnection = new \PDO($connectString, $dbConfig['user'], $dbConfig['password']);
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
+</code></pre></div><p>现在就可以使用数组的元素访问访问配置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$dbConfig = $config[&#39;database&#39;];
+$connectString = $dbConfig[&#39;driver&#39;]
+    . &#34;:host={$dbConfig[&#39;host&#39;]}&#34;
+    . &#34;:port={$dbConfig[&#39;port&#39;]}&#34;
+    . &#34;:dbname={$dbConfig[&#39;db_name&#39;]}&#34;
+    . &#34;:user={$dbConfig[&#39;user&#39;]}&#34;
+    . &#34;:password={$dbConfig[&#39;password&#39;]}&#34;;
+$dbConnection = new \PDO($connectString, $dbConfig[&#39;user&#39;], $dbConfig[&#39;password&#39;]);
+</code></pre></div><p>参考：<a href="https://goalkicker.com/PHPBook">PHP® Notes for Professionals book</a></p>
 
         
                 
@@ -334,6 +313,12 @@ $dbConnection = new \PDO($connectString, $dbConfig['user'], $dbConfig['password'
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         

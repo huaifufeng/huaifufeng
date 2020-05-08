@@ -80,6 +80,10 @@
                     </li>
                     
                     <li>
+                        <a href="/categories/linux">linux</a>
+                    </li>
+                    
+                    <li>
                         <a href="/categories/php">php</a>
                     </li>
                     
@@ -183,38 +187,28 @@
                         <h2>TOC</h2>
                         </header>
                         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#提交">提交</a>
-<ul>
-<li><a href="#暂存提交修改">暂存提交修改</a>
-<ul>
-<li><a href="#基础">基础</a></li>
-<li><a href="#捷径">捷径</a></li>
-<li><a href="#敏感信息">敏感信息</a></li>
-</ul></li>
-<li><a href="#好的提交信息">好的提交信息</a></li>
-<li><a href="#修改提交">修改提交</a></li>
-<li><a href="#无编辑器提交">无编辑器提交</a></li>
-<li><a href="#直接提交修改">直接提交修改</a></li>
-<li><a href="#选项某些文件暂存">选项某些文件暂存</a></li>
-<li><a href="#空提交">空提交</a></li>
-<li><a href="#提交其他人的工作">提交其他人的工作</a></li>
-<li><a href="#gpg签名提交">GPG签名提交</a></li>
-<li><a href="#提交指定文件">提交指定文件</a></li>
-<li><a href="#提交指定日期">提交指定日期</a></li>
-<li><a href="#修改提交日期">修改提交日期</a></li>
-<li><a href="#修改提交作者">修改提交作者</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#提交">提交</a>
+      <ul>
+        <li><a href="#暂存提交修改">暂存提交修改</a></li>
+        <li><a href="#好的提交信息">好的提交信息</a></li>
+        <li><a href="#修改提交">修改提交</a></li>
+        <li><a href="#无编辑器提交">无编辑器提交</a></li>
+        <li><a href="#直接提交修改">直接提交修改</a></li>
+        <li><a href="#选项某些文件暂存">选项某些文件暂存</a></li>
+        <li><a href="#空提交">空提交</a></li>
+        <li><a href="#提交其他人的工作">提交其他人的工作</a></li>
+        <li><a href="#gpg签名提交">GPG签名提交</a></li>
+        <li><a href="#提交指定文件">提交指定文件</a></li>
+        <li><a href="#提交指定日期">提交指定日期</a></li>
+        <li><a href="#修改提交日期">修改提交日期</a></li>
+        <li><a href="#修改提交作者">修改提交作者</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
         		
-        		
-
-<h2 id="提交">提交</h2>
-
+        		<h2 id="提交">提交</h2>
 <table>
 <thead>
 <tr>
@@ -222,144 +216,87 @@
 <th>详情</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td>&ndash;message, -m</td>
 <td>包含在提交中的信息。这将会打开一个编辑器</td>
 </tr>
-
 <tr>
 <td>&ndash;amend</td>
 <td>指定这个参数将会把当前暂存区的信息添加到之前的提交内。请注意，这将会修改之前的提交历史</td>
 </tr>
-
 <tr>
 <td>&ndash;no-edit</td>
 <td>使用选择的提交信息但是不打开编辑器，例如：<code>git commit --amend --no-edit</code>追加提交到之前的提交上，并且不修改提交信息。</td>
 </tr>
-
 <tr>
 <td>&ndash;all, -a</td>
 <td>提交包括未暂存的文件在内的修改</td>
 </tr>
-
 <tr>
 <td>&ndash;date</td>
 <td>手动设置关联到这个提交的日期信息</td>
 </tr>
-
 <tr>
 <td>&ndash;only</td>
 <td>只提交指定路径的信息。这将只会提交指定的文件</td>
 </tr>
-
 <tr>
 <td>&ndash;patch,-p</td>
 <td>使用交互的补丁选择窗口来选择提交哪些修改</td>
 </tr>
-
 <tr>
 <td>-S[keyid], -S &ndash;gpg- sign[=keyid], -S &ndash;no-gpg-sign</td>
 <td>Sign commit, GPG-sign commit, 取消 commit.gpgSign 配置变量</td>
 </tr>
-
 <tr>
 <td>-n,&ndash;no-verify</td>
 <td>这个参数取消执行预提交和提交信息的钩子。详情看钩子</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="暂存提交修改">暂存提交修改</h3>
-
 <h4 id="基础">基础</h4>
-
 <p>在你修改了你的本地文件之后，在你准备提交这些修改之前，需要把文件暂存起来。</p>
-
 <p>例如，如果你修改<code>README.md</code>和<code>program.py</code>这两文件：</p>
-
 <pre><code>$ git add README.md program.py
-</code></pre>
-
-<p>这告诉Git你想在下次提交把这些修改添加奥仓库内。</p>
-
+</code></pre><p>这告诉Git你想在下次提交把这些修改添加奥仓库内。</p>
 <p>然后，就是提交你的修改了：</p>
-
 <pre><code>$ git commit 
-</code></pre>
-
-<p><strong>注意：</strong>这将打开一个编辑器，一般是<code>vim</code>。如果你不熟悉<code>vim</code>的话，你要了解下面的操作：传入<code>i</code>进入编辑模式，添加你的提交信息，然后按<code>Esc</code>，输入<code>:wq</code>保存并且退出编辑器。如果你不想使用编辑器，可以简单地添加一个<code>-m</code>选项和要添加的信息：</p>
-
+</code></pre><p>**注意：**这将打开一个编辑器，一般是<code>vim</code>。如果你不熟悉<code>vim</code>的话，你要了解下面的操作：传入<code>i</code>进入编辑模式，添加你的提交信息，然后按<code>Esc</code>，输入<code>:wq</code>保存并且退出编辑器。如果你不想使用编辑器，可以简单地添加一个<code>-m</code>选项和要添加的信息：</p>
 <pre><code>$ git commit -m &quot;Commit message here&quot;
-</code></pre>
-
-<p>提交信息通常有这指定的字符串规则。</p>
-
+</code></pre><p>提交信息通常有这指定的字符串规则。</p>
 <h4 id="捷径">捷径</h4>
-
 <p>如果你在目录内修改了很多文件，不想一个个添加他们，可以使用下面的命令：</p>
-
 <pre><code>$ git add --all # equivalent to &quot;git add -a&quot;
-</code></pre>
-
-<p>或者添加所有的文件，包括顶级目录和子目录的文件，除了已经删除的文件：</p>
-
+</code></pre><p>或者添加所有的文件，包括顶级目录和子目录的文件，除了已经删除的文件：</p>
 <pre><code>$ git add .
-</code></pre>
-
-<p>或者只添加已经被追踪的文件：</p>
-
+</code></pre><p>或者只添加已经被追踪的文件：</p>
 <pre><code>$ git add -u
-</code></pre>
-
-<p>可以使用下面的命令查看暂存区文件的修改：</p>
-
+</code></pre><p>可以使用下面的命令查看暂存区文件的修改：</p>
 <pre><code>$ git status # display a list of changed files
 $ git diff --cached # shows staged changes inside staged files
-</code></pre>
-
-<p>最后提交这些修改：</p>
-
+</code></pre><p>最后提交这些修改：</p>
 <pre><code>$ git commit -m &quot;Commit message here&quot;
-</code></pre>
-
-<p>如果你只是修改和删除了文件，并没有新建文件，你可以把<code>git add</code>和<code>git commit</code>命令的效果和到一个命令里面：</p>
-
+</code></pre><p>如果你只是修改和删除了文件，并没有新建文件，你可以把<code>git add</code>和<code>git commit</code>命令的效果和到一个命令里面：</p>
 <pre><code>$ git commit -am &quot;Commit message here&quot;
-</code></pre>
-
-<p><strong>注意：</strong>这将会像<code>git add --all</code>一样暂存所有的文件。</p>
-
+</code></pre><p>**注意：**这将会像<code>git add --all</code>一样暂存所有的文件。</p>
 <h4 id="敏感信息">敏感信息</h4>
-
-<p>你应该不要提交任何敏感信息，包括密码和私钥等。如果这种情况发生了，并且把这些修改提交到了远端的仓库，可以认为这些信息时不安全的。当然，你可以在之后的操作中移除这些数据。一个快捷的方式是使用&rdquo;BFG Repo-Cleaner&rdquo;：<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
-
+<p>你应该不要提交任何敏感信息，包括密码和私钥等。如果这种情况发生了，并且把这些修改提交到了远端的仓库，可以认为这些信息时不安全的。当然，你可以在之后的操作中移除这些数据。一个快捷的方式是使用&quot;BFG Repo-Cleaner&rdquo;：<a href="https://rtyley.github.io/bfg-repo-cleaner/">https://rtyley.github.io/bfg-repo-cleaner/</a></p>
 <h3 id="好的提交信息">好的提交信息</h3>
-
 <p>对于遍历<code>git log</code>的结果的人来说，能够快速的了解一个提交做了哪些事情是非常重要的。好的提交信息通常包括：一个追踪中一系列任务或者问题，用来说明做了什么，为什么做这个，怎么做了这个。</p>
-
 <p>好的提交想下面一样：</p>
-
 <pre><code>TASK-123: Implement login through OAuth
 TASK-124: Add auto minification of JS/CSS files
 TASK-125: Fix minifier error when name &gt; 200 chars
-</code></pre>
-
-<p>但是下面的信息就不够好了：</p>
-
+</code></pre><p>但是下面的信息就不够好了：</p>
 <pre><code>fix                         // What has been fixed?
 just a bit of a change      // What has changed?
 TASK-371                    // No description at all, reader will need to look at the tracker themselves for an explanation
 Implemented IFoo in IBar    // Why it was needed?
-</code></pre>
-
-<p>一个用来测试提交信息是不是正确的方式是使用信息来替换下面的空白，然后看是不是合适：</p>
-
+</code></pre><p>一个用来测试提交信息是不是正确的方式是使用信息来替换下面的空白，然后看是不是合适：</p>
 <p><strong>If I add this commit, I will ___ to my repository.</strong></p>
-
 <p>7个好的Git提交的规则：</p>
-
 <ol>
 <li>使用空行来分割标题和内容主题。</li>
 <li>把主题信息限制到50个字符</li>
@@ -369,105 +306,48 @@ Implemented IFoo in IBar    // Why it was needed?
 <li>主题的每个行限制到72个字符</li>
 <li>使用过主题来结束做了什么和为什么做，而不是怎么做。</li>
 </ol>
-
 <p><a href="https://chris.beams.io/posts/git-commit/#seven-rules">7 rules from Chris Beam&rsquo;s blog.</a></p>
-
 <h3 id="修改提交">修改提交</h3>
-
 <p>如果你最后一个提交还没有push（推送到远端仓库），你可以修改这个提交：</p>
-
 <pre><code>$ git commit --amend
-</code></pre>
-
-<p>这将把当前暂存的文件修改添加到之前的提交上面。</p>
-
-<p><strong>注意：</strong>这同样可以用来修改不正确的提交信息。这允许你打开默认的编辑器（vi，vim或emacs），然后修改之前的提交信息。</p>
-
+</code></pre><p>这将把当前暂存的文件修改添加到之前的提交上面。</p>
+<p>**注意：**这同样可以用来修改不正确的提交信息。这允许你打开默认的编辑器（vi，vim或emacs），然后修改之前的提交信息。</p>
 <p>在提交时指定提交信息：</p>
-
 <pre><code>$ git commit --amend -m &quot;New commit message&quot;
-</code></pre>
-
-<p>或者使用之前的提交信息，不做修改：</p>
-
+</code></pre><p>或者使用之前的提交信息，不做修改：</p>
 <pre><code>$ git commit --amend --no-edit
-</code></pre>
-
-<p>修改会更新提交日期，不会影响作者的日志。你可以让Git去更新这些信息：</p>
-
+</code></pre><p>修改会更新提交日期，不会影响作者的日志。你可以让Git去更新这些信息：</p>
 <pre><code>$ git commit --amend --reset-author
-</code></pre>
-
-<p>你同样可以修改提交的作者信息：</p>
-
+</code></pre><p>你同样可以修改提交的作者信息：</p>
 <pre><code>$ git commit --amend --author &quot;New Author &lt;email@address.com&gt;&quot;
-</code></pre>
-
-<p><strong>注意：</strong>修改最新的提交，将会完全替换它，并且之前的提交将会被从分支历史中移除。在和其他合作者在公共仓库和分支上协作时尤其要注意这点。这意味着在之前提交已经push之后，在修改这个提交就需要<code>push --force.</code>了。</p>
-
+</code></pre><p>**注意：**修改最新的提交，将会完全替换它，并且之前的提交将会被从分支历史中移除。在和其他合作者在公共仓库和分支上协作时尤其要注意这点。这意味着在之前提交已经push之后，在修改这个提交就需要<code>push --force.</code>了。</p>
 <h3 id="无编辑器提交">无编辑器提交</h3>
-
 <p>Git经常会打开一个编辑器（vi，vim）当你在<code>git commit</code>的时候。可以通过<code>-m</code>选项在命令行中传递提交信息，可以不用打开编辑器：</p>
-
 <pre><code>$ git commit -m &quot;Commit message here&quot;
-</code></pre>
-
-<p>你的提交信息可以在多行中：</p>
-
+</code></pre><p>你的提交信息可以在多行中：</p>
 <pre><code>$ git commit -m &quot;Commit 'subject line' message here
 More detailed description follows here (after a blank line).&quot;
-</code></pre>
-
-<p>你可以使用多个<code>-m</code>参数来传递多行信息：</p>
-
+</code></pre><p>你可以使用多个<code>-m</code>参数来传递多行信息：</p>
 <pre><code>$ git commit -m &quot;Commit summary&quot; -m &quot;More detailed description follows here&quot;
-</code></pre>
-
-<p><a href="https://chris.beams.io/posts/git-commit/">How to Write a Git Commit Message</a></p>
-
+</code></pre><p><a href="https://chris.beams.io/posts/git-commit/">How to Write a Git Commit Message</a></p>
 <p><a href="https://udacity.github.io/git-styleguide/">Udacity Git Commit Message Style Guide</a></p>
-
 <h3 id="直接提交修改">直接提交修改</h3>
-
 <p>通常在你使用<code>git commit</code>提交修改之前，你需要用<code>git add</code>和<code>git rm</code>命令来把修改添加到仓库索引中。在<code>git commit</code>命令中添加<code>-a</code>或<code>--all</code>选项，可以把包括删除文件在内的修改添加到仓库索引中：</p>
-
 <pre><code>$ git commit -a
-</code></pre>
-
-<p>如果你想同时添加提交信息：</p>
-
+</code></pre><p>如果你想同时添加提交信息：</p>
 <pre><code>$ git commit -a -m &quot;your commit message goes here&quot;
-</code></pre>
-
-<p>你也可以把两个选项放到一起：</p>
-
+</code></pre><p>你也可以把两个选项放到一起：</p>
 <pre><code>$ git commit -am &quot;your commit message goes here&quot;
-</code></pre>
-
-<p>你不需要一次提交所有的文件，忽略<code>-a</code>或<code>--all</code>选项，可以直接指定想要提交的文件：</p>
-
+</code></pre><p>你不需要一次提交所有的文件，忽略<code>-a</code>或<code>--all</code>选项，可以直接指定想要提交的文件：</p>
 <pre><code>$ git commit path/to/a/file -m &quot;your commit message goes here&quot;
-</code></pre>
-
-<p>想要一次更多的文件，可以添加一个或多个文件、文件夹、字符模式：</p>
-
+</code></pre><p>想要一次更多的文件，可以添加一个或多个文件、文件夹、字符模式：</p>
 <pre><code>$ git commit path/to/a/file path/to/a/folder/* path/to/b/file -m &quot;your commit message goes here&quot;
-</code></pre>
-
-<h3 id="选项某些文件暂存">选项某些文件暂存</h3>
-
+</code></pre><h3 id="选项某些文件暂存">选项某些文件暂存</h3>
 <p>假设你在一个或多个文件中有修改，但是你只想提交这些文件修改的一部分，你可以使用下面的命令提交其中的一部分：</p>
-
 <pre><code>$ git add -p
-</code></pre>
-
-<p>或</p>
-
+</code></pre><p>或</p>
 <pre><code>git add -p [file]
-</code></pre>
-
-<p>这将会显示你的每一个修改，你为每一个修改使用下面的选项来觉得怎么处理这个修改：</p>
-
+</code></pre><p>这将会显示你的每一个修改，你为每一个修改使用下面的选项来觉得怎么处理这个修改：</p>
 <pre><code>y - Yes, add this hunk
 
 n - No, don’t add this hunk
@@ -479,137 +359,73 @@ s - Split the hunk into smaller hunks, if possible
 
 e - Manually edit the hunk.  This is probably the most powerful option.
 It will open the hunk in a text editor and you can edit it as needed.
-</code></pre>
-
-<p>这将会暂存你选择的文件的一部分，然后你可以提交所有的暂存修改：</p>
-
+</code></pre><p>这将会暂存你选择的文件的一部分，然后你可以提交所有的暂存修改：</p>
 <pre><code>$ git commit -m 'Commit Message'
-</code></pre>
-
-<p>这些你没有暂存和提交的文件，将会出现在工作区中，如果需要可以在之后提交。或者如果你不想要的话，可以丢弃这些修改：</p>
-
+</code></pre><p>这些你没有暂存和提交的文件，将会出现在工作区中，如果需要可以在之后提交。或者如果你不想要的话，可以丢弃这些修改：</p>
 <pre><code>$ git reset --hard
-</code></pre>
-
-<p>通过把一个大的提交切分到多个小的提交，你可以浏览什么信息将会提交。依次验证你的每一个提交，可以让你检查你写了什么内容，避免把一些你不想要的信息添加到仓库中。</p>
-
+</code></pre><p>通过把一个大的提交切分到多个小的提交，你可以浏览什么信息将会提交。依次验证你的每一个提交，可以让你检查你写了什么内容，避免把一些你不想要的信息添加到仓库中。</p>
 <h3 id="空提交">空提交</h3>
-
 <p>一般来说，空提交（或者提交状态和父提交一致的提交）都是错误的。</p>
-
 <p>但是，当测试构建挂钩、CI系统和其他触发提交的系统时，可以方便地创建提交，而无需编辑/创建dummy文件。</p>
-
 <p>使用<code>--allow-empty</code>选项可以跳过这个检查：</p>
-
 <pre><code>$ git commit -m &quot;This is a blank commit&quot; --allow-empty
-</code></pre>
-
-<h3 id="提交其他人的工作">提交其他人的工作</h3>
-
+</code></pre><h3 id="提交其他人的工作">提交其他人的工作</h3>
 <p>当一些人修改了你正在提交的文件，你可以使用<code>--author</code>来添加用户证明：</p>
-
 <pre><code>$ git commit -m &quot;msg&quot; --author &quot;John Smith &lt;johnsmith@example.com&gt;&quot;
-</code></pre>
-
-<p>你也可以使用一个表达式，让Git来搜索之前提交的人：</p>
-
+</code></pre><p>你也可以使用一个表达式，让Git来搜索之前提交的人：</p>
 <pre><code>$ git commit -m &quot;msg&quot; --author &quot;John&quot;
-</code></pre>
-
-<p>这样处理的话，最近提交的包含<code>John</code>字符串的提交人将会被使用。</p>
-
+</code></pre><p>这样处理的话，最近提交的包含<code>John</code>字符串的提交人将会被使用。</p>
 <p>在GitHub中，以上述任何一种方式进行的提交都将显示一个大作者的缩略图，其中提交者的缩略图较小且在前面：</p>
-
-<p><img src="/img/git/iy2My.png" alt="提交显示" /></p>
-
+<p><img src="/img/git/iy2My.png" alt="提交显示"></p>
 <h3 id="gpg签名提交">GPG签名提交</h3>
-
 <ol>
-<li><p>确定你的key ID</p>
-
+<li>
+<p>确定你的key ID</p>
 <pre><code>gpg --list-secret-keys --keyid-format LONG
    
 /Users/davidcondrey/.gnupg/secring.gpg 
 --------------------------------------
 sec 2048R/YOUR-16-DIGIT-KEY-ID YYYY-MM-DD [expires: YYYY-MM-DD]
-</code></pre></li>
-</ol>
-
-<p>你的ID是第一个斜杠之后的16位字母数字字符串</p>
-
-<ol>
-<li><p>把你的ID添加到你的配置文件中</p>
-
+</code></pre><p>你的ID是第一个斜杠之后的16位字母数字字符串</p>
+</li>
+<li>
+<p>把你的ID添加到你的配置文件中</p>
 <pre><code>$ git config --global user.signingkey YOUR-16-DIGIT-KEY-ID
 </code></pre></li>
-
-<li><p>在版本1.7.9时，你可以在提交时使用<code>-S</code>选项为你的提交添加一个签名。使用这个选项会提醒你输入你的GPG密码，将会给这个提交历史添加签名：</p>
-
+<li>
+<p>在版本1.7.9时，你可以在提交时使用<code>-S</code>选项为你的提交添加一个签名。使用这个选项会提醒你输入你的GPG密码，将会给这个提交历史添加签名：</p>
 <pre><code>$ git commit -S -m &quot;Your commit message&quot;
 </code></pre></li>
 </ol>
-
 <h3 id="提交指定文件">提交指定文件</h3>
-
 <p>你可以使用<code>git add</code>命令来添加或取消某个文件的暂存操作：</p>
-
 <pre><code>$ git commit file1.c file2.h
-</code></pre>
-
-<p>或者你可以先暂存文件：</p>
-
+</code></pre><p>或者你可以先暂存文件：</p>
 <pre><code>$ git add file1.c file2.h
-</code></pre>
-
-<p>然后提交这些修改：</p>
-
+</code></pre><p>然后提交这些修改：</p>
 <pre><code>$ git commit
-</code></pre>
-
-<h3 id="提交指定日期">提交指定日期</h3>
-
+</code></pre><h3 id="提交指定日期">提交指定日期</h3>
 <pre><code>$ git commit -m 'Fix UI bug' --date 2016-07-01
-</code></pre>
-
-<p><code>--date</code>选项用来这个作者日期。这个日期将会出现在<code>git log</code>的标准输出中。</p>
-
+</code></pre><p><code>--date</code>选项用来这个作者日期。这个日期将会出现在<code>git log</code>的标准输出中。</p>
 <p>也可以使用下面的方法强制日期：</p>
-
 <pre><code>GIT_COMMITTER_DATE=2016-07-01 git commit -m 'Fix UI bug' --date 2016-07-01
-</code></pre>
-
-<p>这个日期参数接受一个灵活的GNU日期，例如：</p>
-
+</code></pre><p>这个日期参数接受一个灵活的GNU日期，例如：</p>
 <pre><code>git commit -m 'Fix UI bug' --date yesterday
 git commit -m 'Fix UI bug' --date '3 days ago' 
 git commit -m 'Fix UI bug' --date '3 hours ago'
-</code></pre>
-
-<p>当日期没有指定的话，当前时间将会被使用，并且只有日期会被覆盖。</p>
-
+</code></pre><p>当日期没有指定的话，当前时间将会被使用，并且只有日期会被覆盖。</p>
 <h3 id="修改提交日期">修改提交日期</h3>
-
 <p>你可以使用下面的命令修改提交的日期：</p>
-
 <pre><code>$ git commit --amend --date=&quot;Thu Jul 28 11:30 2016 -0400&quot;
-</code></pre>
-
-<p>或者：</p>
-
+</code></pre><p>或者：</p>
 <pre><code>$ git commit --amend --date=&quot;now&quot;
-</code></pre>
-
-<h3 id="修改提交作者">修改提交作者</h3>
-
+</code></pre><h3 id="修改提交作者">修改提交作者</h3>
 <p>如果你的提交使用了错误的作者，你可以修改并且重新提交：</p>
-
 <pre><code>git config user.name &quot;Full Name&quot;
 git config user.email &quot;email@example.com&quot;
 
 git commit --amend --reset-author
-</code></pre>
-
-<p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
+</code></pre><p>参考：<a href="https://goalkicker.com/GitBook/">Git® Notes for Professionals book</a></p>
 
         
                 
@@ -681,6 +497,12 @@ git commit --amend --reset-author
                         
                         <a href="/tags/java" title="java">
                         java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/linux" title="linux">
+                        linux
                         </a>
                         
                         
